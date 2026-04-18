@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>Agentタイプの使い分け - MK's Claude Code Tutorial - Subagents Mastery</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code - Subagents
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav class="active"><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Practice</span><span class="phase-pct" id="pct-practice">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.03</span>
+    Agentタイプの使い分け
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 8 sections</text>
+    </svg>
+    <div class="progress-info">0h / 4h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-subagents-overview.html"><span class="status-dot" data-chapter="01"></span> Subagentsとは</a></li>
+    <li><a href="02-agent-tool-basics.html"><span class="status-dot" data-chapter="02"></span> Agentツールの基本</a></li>
+    <li><a href="03-agent-types.html" class="active"><span class="status-dot" data-chapter="03"></span> Agentタイプの使い分け</a></li>
+    <li><a href="04-parallel-design.html"><span class="status-dot" data-chapter="04"></span> 並列実行の設計</a></li>
+  </ul>
+  <div class="section-label">Practice</div>
+  <ul>
+    <li><a href="05-prompt-craft.html"><span class="status-dot" data-chapter="05"></span> Subagentプロンプト術</a></li>
+    <li><a href="06-research-parallel.html"><span class="status-dot" data-chapter="06"></span> 実践：リサーチ5並列</a></li>
+    <li><a href="07-review-parallel.html"><span class="status-dot" data-chapter="07"></span> 実践：コードレビュー分割</a></li>
+    <li><a href="08-final-exercise.html"><span class="status-dot" data-chapter="08"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 1: Basics &gt; Chapter 03</div>
+  <h1>Agentタイプの使い分け</h1>
+  <p class="subtitle">Explore / general-purpose / 専門Agent それぞれの適材適所</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 30分</span>
+    <span class="badge">Phase: Basics</span>
+    <span class="badge">難易度: 初級</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">この章のゴール</span>
+    <p>Claude Codeで <code>Agent</code> ツールを呼ぶとき、<strong><code>subagent_type</code></strong> に何を指定すべきか——その判断を「なんとなく」ではなく<strong>5秒で決めきれる</strong>状態を作ります。3つの主要タイプ(<strong>Explore / general-purpose / 専門型</strong>)の得意・苦手、ツール権限の違い、選定フローを押さえ、最後に同じ目的を2タイプで走らせて<strong>挙動の違いを肌で感じる</strong>ハンズオンまでやります。<span class="term" data-tip="2026年1月時点の記述。最新は公式ドキュメント参照">本章の記述は2026年1月時点の情報</span>です。</p>
+  </div>
+
+  <!-- ===== Section 1: 3つの主要Agentタイプ ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 3つの主要Agentタイプ</h2>
+
+  <p>Ch02で見た通り、<code>Agent</code> ツールには必ず <code>subagent_type</code> を指定します。Claude Codeに<span class="term" data-tip="2026年1月時点で標準搭載されている3タイプ。Plan/code-reviewer等の専門型は環境によって異なる場合がある">2026年1月時点で主に使える3タイプ</span>は、大きく次の3系統に分類できます。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">3タイプの関係 — 役割と権限で住み分ける</div>
+    <svg viewBox="0 0 520 260" width="100%" style="max-width:520px; display:block; margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <!-- Explore -->
+      <g>
+        <circle cx="130" cy="120" r="80" fill="#D97757" opacity="0.18" stroke="#D97757" stroke-width="1.5"/>
+        <text x="130" y="80" text-anchor="middle" font-size="14" font-weight="700" fill="#D97757">Explore</text>
+        <text x="130" y="100" text-anchor="middle" font-size="10" fill="#475569">読むだけ</text>
+        <text x="130" y="118" text-anchor="middle" font-size="10" fill="#475569">(Read / Grep /</text>
+        <text x="130" y="132" text-anchor="middle" font-size="10" fill="#475569">Glob / WebFetch)</text>
+        <text x="130" y="154" text-anchor="middle" font-size="9" fill="#94a3b8">編集は不可</text>
+      </g>
+      <!-- general-purpose -->
+      <g>
+        <circle cx="260" cy="120" r="85" fill="#D97757" opacity="0.28" stroke="#D97757" stroke-width="1.5"/>
+        <text x="260" y="80" text-anchor="middle" font-size="14" font-weight="700" fill="#18181b">general-purpose</text>
+        <text x="260" y="100" text-anchor="middle" font-size="10" fill="#475569">読み書き両方</text>
+        <text x="260" y="118" text-anchor="middle" font-size="10" fill="#475569">(+Edit / Write /</text>
+        <text x="260" y="132" text-anchor="middle" font-size="10" fill="#475569">Bash / TodoWrite)</text>
+        <text x="260" y="154" text-anchor="middle" font-size="9" fill="#94a3b8">万能、デフォルト</text>
+      </g>
+      <!-- 専門型 -->
+      <g>
+        <circle cx="400" cy="120" r="78" fill="#D97757" opacity="0.38" stroke="#D97757" stroke-width="1.5"/>
+        <text x="400" y="80" text-anchor="middle" font-size="14" font-weight="700" fill="#18181b">専門型</text>
+        <text x="400" y="100" text-anchor="middle" font-size="10" fill="#475569">特定タスクに特化</text>
+        <text x="400" y="118" text-anchor="middle" font-size="10" fill="#475569">(Plan / code-</text>
+        <text x="400" y="132" text-anchor="middle" font-size="10" fill="#475569">reviewer等)</text>
+        <text x="400" y="154" text-anchor="middle" font-size="9" fill="#94a3b8">精度UP・プロンプト込</text>
+      </g>
+      <!-- 下のラベル -->
+      <text x="260" y="230" text-anchor="middle" font-size="11" fill="#64748b">← 権限が少ない(安全)</text>
+      <text x="260" y="248" text-anchor="middle" font-size="11" fill="#64748b">権限が多い(自由)→</text>
+      <line x1="50" y1="210" x2="470" y2="210" stroke="#cbd5e1" stroke-width="1"/>
+      <polygon points="470,210 464,206 464,214" fill="#cbd5e1"/>
+      <polygon points="50,210 56,206 56,214" fill="#cbd5e1"/>
+    </svg>
+    <div class="diagram-caption">左に行くほど「読むだけで安全」、右に行くほど「できることが広い」。</div>
+  </div>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="search" width="20" height="20"></i>
+      <div><strong>Explore</strong> — <span class="term" data-tip="Explore：コードベースや外部情報を読み取って要約することに特化。ファイル編集権限を持たない">読み取り専門のリサーチ専用Agent</span>。コードベース調査、仕様の収集、ドキュメントの横断読みに最適。編集しないので安全。</div>
+    </li>
+    <li>
+      <i data-lucide="wrench" width="20" height="20"></i>
+      <div><strong>general-purpose</strong> — <span class="term" data-tip="general-purpose：Claude Code全般の機能(読み書き実行)を使える万能型。迷ったらこれ">万能型のデフォルトAgent</span>。読み込みも編集もコマンド実行もできる。1人のミニClaude Codeとして動く。</div>
+    </li>
+    <li>
+      <i data-lucide="target" width="20" height="20"></i>
+      <div><strong>専門型</strong> — <span class="term" data-tip="専門型Agent：Plan / code-reviewer / claude-code-guide など、プロンプトと権限がタスク別に調整済みのAgent">タスク別に調整された専用Agent</span>。<code>Plan</code>(計画立案)、<code>code-reviewer</code>(コードレビュー)、<code>claude-code-guide</code>(Claude Code使用法)など。</div>
+    </li>
+  </ul>
+
+  <div class="info-box">
+    <span class="label">ざっくり覚え方</span>
+    <p><strong>「読むだけ=Explore / 作らせる=general-purpose / 専用タスクあり=専門型」</strong>。この3択で95%のケースは即決まります。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span></p>
+  </div>
+
+  <!-- ===== Section 2: 比較表 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> タイプ別の得意・苦手とツール権限</h2>
+
+  <p>「何ができて・何ができないか」は<strong>許可されるツールセット</strong>で決まります。ここが各タイプの性格を作っています。</p>
+
+  <table>
+    <thead>
+      <tr><th>観点</th><th>Explore</th><th>general-purpose</th><th>専門型 (例: code-reviewer)</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>読み取り (Read/Grep/Glob)</td><td>◎</td><td>◎</td><td>◎</td></tr>
+      <tr><td>編集 (Edit/Write)</td><td><strong>×</strong></td><td>◎</td><td>△(タイプ依存)</td></tr>
+      <tr><td>コマンド実行 (Bash)</td><td>×</td><td>◎</td><td>△</td></tr>
+      <tr><td>Web検索 (WebFetch/WebSearch)</td><td>◎</td><td>◎</td><td>△</td></tr>
+      <tr><td>別Agent起動 (Agent tool)</td><td>×</td><td>×(通常)</td><td>×</td></tr>
+      <tr><td>得意分野</td><td>調査・要約・横断grep</td><td>実装・修正・実験</td><td>一貫したスタイルで同じ観点</td></tr>
+      <tr><td>苦手</td><td>編集やビルド検証</td><td>超専門タスクでブレる</td><td>守備範囲外のタスク</td></tr>
+      <tr><td>プロンプト長</td><td>短めでOK</td><td>明確な指示必須</td><td>最小でも動く(組込済)</td></tr>
+      <tr><td>典型コスト</td><td>低〜中</td><td>中〜高</td><td>中</td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-box">
+    <span class="label">重要: Exploreは編集できない</span>
+    <p>Exploreは<strong>ファイル編集系のツール(Edit/Write)を持っていない</strong>ため、どんなに詳細な指示を出しても、コードは1行も書き換えません。「調査のついでに直して」と頼んでも、結果は調査レポートだけ戻ります。<strong>書き換えが要るならgeneral-purposeを選ぶ</strong>——これが一番多い取り違えです。</p>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: 「編集不可」が効く場面</summary>
+    <div class="more-body">
+      <p>Exploreの「編集できない」は一見制約ですが、<strong>並列調査で威力を発揮</strong>します。5つのExploreを同時に走らせても、互いのファイルを壊し合う心配がゼロ。worktreeを用意する必要もなく、読み取りだけなので安全にリサーチを並列化できます。</p>
+      <p>一方general-purposeを5並列で走らせると、同じファイルに書き込み合う<span class="term" data-tip="レースコンディション：複数プロセスが同じリソースに同時アクセスして結果が壊れる事象">レースコンディション</span>のリスクがあり、<code>isolation="worktree"</code> 等で隔離する設計が必要になります(Ch04で扱う)。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 3: 適合度レーダー ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> タスク別の適合度</h2>
+
+  <p>6つの典型タスクで3タイプがどれくらい向いているかを見ます。<strong>相対的な強み</strong>を感覚でつかむのが目的。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">タイプ×タスクの適合度レーダー</div>
+    <canvas id="ch3-radar-1" height="260"></canvas>
+  </div>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="file-search" width="20" height="20"></i>
+      <div><strong>コードベース調査</strong>: Explore◎ / general-purpose○ — 読むだけならExploreの方が安価で速い。</div>
+    </li>
+    <li>
+      <i data-lucide="edit-3" width="20" height="20"></i>
+      <div><strong>ファイル編集</strong>: general-purpose◎ / Explore× — Exploreは物理的に書けない。</div>
+    </li>
+    <li>
+      <i data-lucide="list-checks" width="20" height="20"></i>
+      <div><strong>コードレビュー</strong>: code-reviewer◎ / general-purpose△ — 専門型は観点がブレない。</div>
+    </li>
+    <li>
+      <i data-lucide="clipboard-list" width="20" height="20"></i>
+      <div><strong>計画立案</strong>: Plan◎ / general-purpose○ — Planは段取り化のプロンプト込。</div>
+    </li>
+    <li>
+      <i data-lucide="globe" width="20" height="20"></i>
+      <div><strong>Webリサーチ</strong>: Explore◎ / general-purpose○ — WebFetchは両方使えるが、Exploreの方が軽い。</div>
+    </li>
+    <li>
+      <i data-lucide="play" width="20" height="20"></i>
+      <div><strong>コマンド実行・検証</strong>: general-purpose◎ / Explore× — Bash権限がExploreには無い。</div>
+    </li>
+  </ul>
+
+  <!-- ===== Section 4: 選定フロー ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 選定フローチャート — 5秒で決めきる</h2>
+
+  <p>この章で一番大事なのがここ。<strong>タスクを見て、上から順にYes/Noで辿れば</strong>どのタイプかが決まります。迷ったらこのフロー1枚に戻ってください。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">subagent_type 選定フロー(2026年1月版)</div>
+    <pre class="mermaid">
+graph TD
+  Start(["タスクが決まった"]) --> Q1{"ファイルを書き換える必要ある?"}
+  Q1 -- "いいえ 読むだけ" --> Q2{"Web上の情報も必要?"}
+  Q1 -- "はい 編集する" --> Q3{"タスクが決まった専門領域?"}
+  Q2 -- "いいえ コードだけ" --> AExplore["Explore<br/>(コードベース調査)"]
+  Q2 -- "はい 公式docや記事も" --> AExplore2["Explore<br/>(Web+コード)"]
+  Q3 -- "いいえ 汎用的な実装" --> AGP["general-purpose"]
+  Q3 -- "はい レビューや計画" --> Q4{"どの専門?"}
+  Q4 -- "コードレビュー" --> ACR["code-reviewer"]
+  Q4 -- "計画立案" --> APlan["Plan"]
+  Q4 -- "Claude Code使い方" --> ACG["claude-code-guide"]
+  Q4 -- "どれも違う" --> AGP
+    </pre>
+    <div class="diagram-caption">Q1「書き換える?」が最初の分岐点。ここでExploreかそれ以外が決まる。</div>
+  </div>
+
+  <h3>判断の軸3つを覚えるだけでOK</h3>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-num">Q1</div>
+      <div class="stat-label">書き換える?</div>
+      <div class="stat-trend up">No → Explore</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">Q2</div>
+      <div class="stat-label">Web情報も?</div>
+      <div class="stat-trend up">どちらでもExplore可</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">Q3</div>
+      <div class="stat-label">専門領域?</div>
+      <div class="stat-trend up">Yes → 専門型</div>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <span class="label">迷ったらこれ</span>
+    <p>判断が2秒以上かかりそうなら、<strong>general-purposeを選んでOK</strong>。万能型なので失敗はしません。ただし「明らかに読むだけ」「明らかにレビュー」なら、専用タイプを選ぶほうが<strong>プロンプト短縮・コスト減・精度UP</strong>の三重メリットが得られます。</p>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: 「専門型」の中身は何が違うのか</summary>
+    <div class="more-body">
+      <p>専門型は2つの要素で調整されています:(1) <strong>システムプロンプト</strong> にタスク固有の指示が埋め込み済み(例: code-reviewerなら「セキュリティ/パフォーマンス/可読性の観点で見る」が既に入っている)、(2) <strong>ツール権限</strong> がタスクに最適化(Planならファイル編集なし、計画だけ返す)。このため呼び出し側の <code>prompt</code> は短くても動き、出力の品質も安定します。</p>
+      <p>自分用の専門型が欲しい場合、<code>~/.claude/agents/</code> にマークダウンで定義する<span class="term" data-tip="ユーザー定義Agent：~/.claude/agents/ 配下に .md で定義する自作Subagent。プロンプトと許可ツールを指定できる">ユーザー定義Agent</span>の機能がありますが、本カリキュラムではビルトインの3タイプに集中します(作成は応用編)。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 5: 典型ユースケース対応表 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 典型ユースケース対応表</h2>
+
+  <p>現場でよく出るタスクを挙げて、それぞれどのタイプが正解か。<strong>このページをブックマークしておくだけ</strong>でも判断速度が上がります。</p>
+
+  <table>
+    <thead>
+      <tr><th>やりたいこと</th><th>正解タイプ</th><th>理由</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>「認証関連のコードがどこに書いてあるか全部探して」</td><td>Explore</td><td>読むだけで済む、編集不要</td></tr>
+      <tr><td>「このPRのセキュリティ観点を見て」</td><td>code-reviewer</td><td>観点が定まった専門型あり</td></tr>
+      <tr><td>「リファクタ計画を立てて」</td><td>Plan</td><td>計画立案に最適化済</td></tr>
+      <tr><td>「テストを書いて動作確認して」</td><td>general-purpose</td><td>編集+Bash実行が必要</td></tr>
+      <tr><td>「Next.js 15の新機能を調べてまとめて」</td><td>Explore</td><td>WebFetch+要約、編集なし</td></tr>
+      <tr><td>「バグ原因を特定して修正して」</td><td>general-purpose</td><td>調査→編集→検証の複合</td></tr>
+      <tr><td>「Claude Codeのhooksの書き方を教えて」</td><td>claude-code-guide</td><td>専門的知識の取り出し</td></tr>
+      <tr><td>「5つのライブラリを並列比較して」</td><td>Explore × 5並列</td><td>編集不要・並列しやすい</td></tr>
+      <tr><td>「本番デプロイスクリプトを書いて」</td><td>general-purpose</td><td>新規ファイル作成が必須</td></tr>
+      <tr><td>「ログファイルから異常を探して」</td><td>Explore</td><td>読むだけ、GrepとRead</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ===== Section 6: ハンズオン — 同じ目的を2タイプで走らせる ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> ハンズオン — Explore vs general-purpose</h2>
+
+  <p>頭で分かっても体感しないと定着しません。ここで<strong>同じ目的を2タイプに投げて、出力の違いを見ます</strong>。お手元のClaude Codeで実際に試してください。</p>
+
+  <div class="info-box">
+    <span class="label">今すぐ試す</span>
+    <p>任意のGitリポジトリ(自分のプロジェクトでOK)を開いたClaude Codeで、下の2つを<strong>同じメッセージに入れて並列実行</strong>します。プロンプトはわざと同一にして、タイプの違いだけ見ます。</p>
+  </div>
+
+  <div class="compare-cards">
+    <div class="cc neutral">
+      <span class="cc-label">Explore版</span>
+      <h4>読み取り専門で調査だけ</h4>
+      <pre><code>Agent(
+  subagent_type="Explore",
+  description="認証コード調査",
+  prompt="このリポジトリで認証に関連するファイルと関数をすべて列挙し、役割を50語以内で要約してください。"
+)</code></pre>
+    </div>
+    <div class="cc neutral">
+      <span class="cc-label">general-purpose版</span>
+      <h4>万能型で同じプロンプト</h4>
+      <pre><code>Agent(
+  subagent_type="general-purpose",
+  description="認証コード調査",
+  prompt="このリポジトリで認証に関連するファイルと関数をすべて列挙し、役割を50語以内で要約してください。"
+)</code></pre>
+    </div>
+  </div>
+
+  <h3>観察ポイント</h3>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="timer" width="20" height="20"></i>
+      <div><strong>実行時間</strong> — Exploreの方が速く返るはず(ツールが少なく選択が速い)。</div>
+    </li>
+    <li>
+      <i data-lucide="file-text" width="20" height="20"></i>
+      <div><strong>出力スタイル</strong> — Exploreは<span class="term" data-tip="調査レポート形式：ファイル列挙+要約という一貫したフォーマットで返す傾向">調査レポート形式</span>に寄り、general-purposeは自由度が高く文体が揺れがち。</div>
+    </li>
+    <li>
+      <i data-lucide="shield-check" width="20" height="20"></i>
+      <div><strong>副作用</strong> — Exploreはどう頼んでも1行も変更しない。general-purposeはプロンプト次第で余計な編集が入ることも。</div>
+    </li>
+    <li>
+      <i data-lucide="coins" width="20" height="20"></i>
+      <div><strong>コスト</strong> — Exploreの方が<span class="term" data-tip="同じ調査タスクでExploreの方が安価になる傾向がある。2026年1月時点の観察">コストが安くなる傾向</span>。並列で5本走らせるなら差がさらに開く。</div>
+    </li>
+  </ul>
+
+  <div class="diagram-box">
+    <div class="diagram-title">2タイプ同時実行のイメージ</div>
+    <pre class="mermaid">
+sequenceDiagram
+  participant U as あなた
+  participant M as メインClaude
+  participant E as Explore (sub)
+  participant G as general-purpose (sub)
+  U->>M: 「認証コード調査してほしい」
+  M->>E: Agent呼出(同一プロンプト)
+  M->>G: Agent呼出(同一プロンプト)
+  E-->>M: ファイル一覧+要約(短い)
+  G-->>M: ファイル一覧+要約(詳しめ、余計な提案含む)
+  M-->>U: 2タイプの結果を統合
+    </pre>
+    <div class="diagram-caption">メインClaudeが同じプロンプトで2タイプを同時呼出。結果を並べて比較できる。</div>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: 結果をいちばん学び深く見る方法</summary>
+    <div class="more-body">
+      <p>両方の結果を得たら、次の3点に注目してノートに書き出してください:<br>
+      (1) <strong>どちらがより簡潔だったか</strong>、(2) <strong>どちらがより網羅的だったか</strong>、(3) <strong>余計な改善提案や編集を始めそうになったのはどちらか</strong>。この3問を言語化すると、自分のタスクに対する「タイプ選びの直感」が加速度的に育ちます。</p>
+      <p>さらに気力があれば、同じプロンプトを<code>Plan</code>にも投げてみてください。計画立案系タイプに「調査」を頼むと<strong>観点のズレ</strong>が体感できます。適材適所の肌感覚はこういう<span class="term" data-tip="ミスマッチ実験：あえて不適なタイプに頼んで挙動のズレを確かめる学習法">ミスマッチ実験</span>で育ちます。</p>
+    </div>
+  </details>
+
+  <p>ここまで来れば、タイプ選びは「なんとなく」ではなく<strong>意志をもって決められる</strong>状態です。Ch04ではこの知識を土台に、複数Agentを並列で回すときの設計を学びます。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span></p>
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>10個のタスクを正しいタイプに割り当てる</h4>
+    <p>次の10タスクを、自分の頭で <code>subagent_type</code> に分類してみましょう。答えを出してから模範解答で答え合わせ。</p>
+    <ol>
+      <li>「プロジェクトの依存ライブラリ一覧を抽出して」</li>
+      <li>「package.jsonのscripts欄に新しいlintコマンドを追加して」</li>
+      <li>「この関数のセキュリティリスクをレビューして」</li>
+      <li>「今週やるべき機能追加の計画を作って」</li>
+      <li>「Reactの新しいルーティング方式を調べて」</li>
+      <li>「テストを書いて、失敗したら修正して」</li>
+      <li>「config.tomlの古いキーを全部grepして」</li>
+      <li>「Claude Codeのhooks機能について教えて」</li>
+      <li>「未使用のexportを探して削除するPRを作って」</li>
+      <li>「ログから404が増えた時間帯を見つけて」</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <ol>
+        <li>Explore — 読むだけ、編集不要</li>
+        <li>general-purpose — ファイル編集が必須</li>
+        <li>code-reviewer — レビュー専門型</li>
+        <li>Plan — 計画立案専門型</li>
+        <li>Explore — Web+コード横断で読むだけ</li>
+        <li>general-purpose — 編集+Bash実行の複合</li>
+        <li>Explore — Grepは読み取り</li>
+        <li>claude-code-guide — Claude Code固有の知識</li>
+        <li>general-purpose — 削除+PR作成で編集あり</li>
+        <li>Explore — ログGrepと要約</li>
+      </ol>
+      <p><strong>分け方のコツ</strong>:「書き換えるか?」を最初に問い、書き換え無しならExplore一択。書き換えありで専門領域(レビュー/計画/Claude Code使い方)なら専門型、そうでなければgeneral-purpose。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>自分の環境でExplore vs general-purpose を走らせ、違いを言語化する</h4>
+    <p>本章のハンズオンを実際に自分のプロジェクトで実行し、観察結果を記録します。</p>
+    <ol>
+      <li>任意のGitリポジトリを開いてClaude Codeを起動</li>
+      <li>本章の「今すぐ試す」2つのAgent呼び出しを<strong>同じメッセージに並べて</strong>実行</li>
+      <li>戻ってきた結果を比較し、次の4点を自分の言葉でメモ:<br>
+          (a) 応答の長さ / (b) 出力フォーマット / (c) 余計な提案の有無 / (d) 処理時間(体感でOK)</li>
+      <li>「次に同じ調査をするなら、自分はどちらを選ぶか」を結論として書く</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><strong>典型的な観察例(筆者の環境, 2026年1月):</strong></p>
+      <ul>
+        <li>(a) 応答の長さ — Explore約300語、general-purpose約500語。Exploreは要約に絞る傾向</li>
+        <li>(b) 出力フォーマット — Exploreは「ファイル名: 役割」の箇条書きで整然。general-purposeは散文+時折リファクタ提案が混じる</li>
+        <li>(c) 余計な提案 — general-purposeで「この関数はリファクタ候補です」等の未依頼コメントが2件。Exploreは依頼通りだけ</li>
+        <li>(d) 処理時間 — Exploreが約3割短い(Bash/Editの検討が不要のため)</li>
+      </ul>
+      <p><strong>結論例:</strong> 単なる調査ならExplore一択。編集や検証まで含むならgeneral-purpose。<strong>「依頼の粒度に応じてタイプを切り替える」</strong>と、コストも結果の質も両取りできる。</p>
+      <p>※ 同じ体験を3回別のタスクでやると、選定フローチャートを<strong>見なくても手が動く</strong>ようになります。Ch04の並列実行設計でさらに活きてきます。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式ドキュメント</a> <span class="res-type doc">Doc</span> — subagent_typeの最新リスト確認に</li>
+      <li><a href="https://docs.claude.com/en/docs/claude-code/sdk" target="_blank" rel="noopener">Agent SDK ドキュメント</a> <span class="res-type doc">Doc</span> — Agentツールのパラメータ詳細</li>
+      <li><a href="https://github.com/anthropics/anthropic-cookbook" target="_blank" rel="noopener">Anthropic Cookbook</a> <span class="res-type doc">Doc</span> — Subagent利用サンプル集</li>
+      <li><a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener">Claude Code GitHub リポジトリ</a> <span class="res-type doc">Doc</span> — 組込タイプの定義を追える</li>
+      <li><a href="https://www.anthropic.com/news" target="_blank" rel="noopener">Anthropic Blog: Building with Claude Code</a> <span class="res-type doc">Doc</span> — アップデート追跡</li>
+      <li><a href="https://www.youtube.com/results?search_query=Claude+Code+subagents" target="_blank" rel="noopener">YouTube: Claude Code subagents 検索</a> <span class="res-type video">Video</span> — 他ユーザーのタイプ使い分け例</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="03">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="02-agent-tool-basics.html"><span class="direction">&larr; Prev</span>Agentツールの基本</a>
+    <a href="04-parallel-design.html"><span class="direction">Next &rarr;</span>並列実行の設計</a>
+  </div>
+</main>
+
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+<script>
+  window.addEventListener("load", function(){
+    var ctx = document.getElementById('ch3-radar-1');
+    if (!ctx || !window.Chart) return;
+    new Chart(ctx, {
+      type: 'radar',
+      data: {
+        labels: ['コード調査','ファイル編集','コードレビュー','計画立案','Webリサーチ','コマンド実行'],
+        datasets: [
+          {
+            label: 'Explore',
+            data: [95, 0, 50, 40, 90, 0],
+            backgroundColor: 'rgba(217,119,87,0.15)',
+            borderColor: '#D97757',
+            pointBackgroundColor: '#D97757'
+          },
+          {
+            label: 'general-purpose',
+            data: [80, 95, 70, 75, 80, 95],
+            backgroundColor: 'rgba(24,24,27,0.10)',
+            borderColor: '#18181b',
+            pointBackgroundColor: '#18181b'
+          },
+          {
+            label: '専門型 (code-reviewer/Plan)',
+            data: [60, 40, 95, 95, 50, 30],
+            backgroundColor: 'rgba(96,165,250,0.15)',
+            borderColor: '#60a5fa',
+            pointBackgroundColor: '#60a5fa'
+          }
+        ]
+      },
+      options: {
+        plugins: { legend: { position: 'bottom' } },
+        scales: { r: { suggestedMin: 0, suggestedMax: 100 } }
+      }
+    });
+  });
+</script>
+</body>
+</html>

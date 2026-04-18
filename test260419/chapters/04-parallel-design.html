@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>並列実行の設計 - MK's Claude Code Tutorial - Subagents Mastery</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code - Subagents
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav class="active"><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Practice</span><span class="phase-pct" id="pct-practice">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.04</span>
+    並列実行の設計
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 8 sections</text>
+    </svg>
+    <div class="progress-info">0h / 4h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-subagents-overview.html"><span class="status-dot" data-chapter="01"></span> Subagentsとは</a></li>
+    <li><a href="02-agent-tool-basics.html"><span class="status-dot" data-chapter="02"></span> Agentツールの基本</a></li>
+    <li><a href="03-agent-types.html"><span class="status-dot" data-chapter="03"></span> Agentタイプの使い分け</a></li>
+    <li><a href="04-parallel-design.html" class="active"><span class="status-dot" data-chapter="04"></span> 並列実行の設計</a></li>
+  </ul>
+  <div class="section-label">Practice</div>
+  <ul>
+    <li><a href="05-prompt-craft.html"><span class="status-dot" data-chapter="05"></span> Subagentプロンプト術</a></li>
+    <li><a href="06-research-parallel.html"><span class="status-dot" data-chapter="06"></span> 実践：リサーチ5並列</a></li>
+    <li><a href="07-review-parallel.html"><span class="status-dot" data-chapter="07"></span> 実践：コードレビュー分割</a></li>
+    <li><a href="08-final-exercise.html"><span class="status-dot" data-chapter="08"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 1: Basics &gt; Chapter 04</div>
+  <h1>並列実行の設計</h1>
+  <p class="subtitle">独立性判定・並列 vs 直列・バッチングの戦略</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 30分</span>
+    <span class="badge">Phase: Basics</span>
+    <span class="badge">難易度: 中級</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">この章のゴール</span>
+    <p>Subagentの<strong>真価は並列実行</strong>にあります。1メッセージ内で3〜5個のSubagentを同時に起動すれば、リサーチ・レビュー・多案比較の所要時間を一気に数倍圧縮できます。本章では「何を並列化すべきか(独立性判定)」「どう投げるか(1メッセージ複数call)」「どこで止めるか(バッチング戦略)」「失敗とコストの制御」までを一本のワークフローにまとめます。<em>本章の記述は2026年1月時点の情報です。</em></p>
+  </div>
+
+  <!-- ===== Section 1: なぜ並列化するのか ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> なぜ並列化するのか: 時間 vs コストの構造</h2>
+
+  <p>Subagentを<span class="term" data-tip="順次実行。1つのタスクが終わってから次を開始する方式">直列</span>で呼ぶと、各タスク時間が足し算になります。<span class="term" data-tip="並列実行。独立したタスクを同時に走らせ、実時間を最長タスクに圧縮する方式">並列</span>にすると、実時間は<strong>最も遅いタスクの時間</strong>で済みます。3タスクが各90秒なら、直列は270秒、並列は90秒。3倍の高速化です。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">直列 vs 並列 タイムチャート(3タスク × 90秒)</div>
+    <svg viewBox="0 0 640 260" width="100%" style="max-width:640px; display:block; margin:0 auto;">
+      <line x1="80" y1="30" x2="80" y2="230" stroke="#475569" stroke-width="1"/>
+      <line x1="80" y1="230" x2="620" y2="230" stroke="#475569" stroke-width="1"/>
+      <text x="350" y="252" text-anchor="middle" font-size="11" fill="#64748b">経過時間 (秒)</text>
+      <text x="80" y="248" text-anchor="middle" font-size="10" fill="#64748b">0</text>
+      <text x="260" y="248" text-anchor="middle" font-size="10" fill="#64748b">90</text>
+      <text x="440" y="248" text-anchor="middle" font-size="10" fill="#64748b">180</text>
+      <text x="620" y="248" text-anchor="middle" font-size="10" fill="#64748b">270</text>
+      <text x="10" y="55" font-size="12" font-weight="700" fill="#475569">直列</text>
+      <rect x="80" y="40" width="180" height="30" rx="4" fill="#cbd5e1" stroke="#64748b"/>
+      <text x="170" y="60" text-anchor="middle" font-size="11" font-weight="600">Task A</text>
+      <rect x="260" y="40" width="180" height="30" rx="4" fill="#cbd5e1" stroke="#64748b"/>
+      <text x="350" y="60" text-anchor="middle" font-size="11" font-weight="600">Task B</text>
+      <rect x="440" y="40" width="180" height="30" rx="4" fill="#cbd5e1" stroke="#64748b"/>
+      <text x="530" y="60" text-anchor="middle" font-size="11" font-weight="600">Task C</text>
+      <text x="10" y="130" font-size="12" font-weight="700" fill="#D97757">並列</text>
+      <rect x="80" y="100" width="180" height="30" rx="4" fill="rgba(217,119,87,0.4)" stroke="#D97757" stroke-width="2"/>
+      <text x="170" y="120" text-anchor="middle" font-size="11" font-weight="600">Task A</text>
+      <rect x="80" y="140" width="180" height="30" rx="4" fill="rgba(217,119,87,0.4)" stroke="#D97757" stroke-width="2"/>
+      <text x="170" y="160" text-anchor="middle" font-size="11" font-weight="600">Task B</text>
+      <rect x="80" y="180" width="180" height="30" rx="4" fill="rgba(217,119,87,0.4)" stroke="#D97757" stroke-width="2"/>
+      <text x="170" y="200" text-anchor="middle" font-size="11" font-weight="600">Task C</text>
+      <text x="265" y="160" font-size="11" font-weight="700" fill="#D97757">実時間 90秒(3倍高速)</text>
+      <line x1="260" y1="40" x2="260" y2="220" stroke="#D97757" stroke-dasharray="3 3" stroke-width="1"/>
+    </svg>
+    <div class="diagram-caption">並列化の効果は<strong>タスク数にほぼ比例</strong>。ただし<strong>トークン課金は直列と同じ</strong>(同時並行=同じ量を一気に消費)。</div>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section 2: 並列化の判断軸 独立性 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 並列化の判断軸: 独立性(Independence)</h2>
+
+  <p>並列化できるかどうかの唯一の判断基準は「<strong><span class="term" data-tip="タスク間に依存関係がなく、互いの結果を参照せずに完遂できる性質">独立性</span></strong>」です。タスクAの結果をタスクBが使うなら並列化できません。逆に「5つの異なる切り口で同じ問いを調べる」「ファイルごとにレビューする」などは典型的な並列向き。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">並列化できるか判定フロー</div>
+    <pre class="mermaid">
+graph TD
+  S["タスクを並列化すべきか?"] --> Q1{"結果が<br/>互いに必要?"}
+  Q1 -- "Yes 依存あり" --> SEQ["直列で実行<br/>(パイプライン)"]
+  Q1 -- "No 独立" --> Q2{"同じファイル・<br/>状態を書き換える?"}
+  Q2 -- "Yes 競合リスク" --> SEQ
+  Q2 -- "No 読み取り中心" --> Q3{"1タスク<br/>30秒以上?"}
+  Q3 -- "No 短すぎる" --> INLINE["メインで処理<br/>(Agent呼ばず)"]
+  Q3 -- "Yes 十分重い" --> PAR["並列で実行<br/>(Subagent複数call)"]
+    </pre>
+    <div class="diagram-caption">「独立」かつ「書き換え競合なし」かつ「十分に重い」の3条件が揃ったときだけ並列化する。</div>
+  </div>
+
+  <h3>独立/非独立の典型例</h3>
+
+  <div class="compare-cards">
+    <div class="cc good">
+      <span class="cc-label">独立(並列OK)</span>
+      <h4>結果が互いに不要</h4>
+      <ul>
+        <li>5つのライブラリの性能をそれぞれ調査</li>
+        <li>ディレクトリ配下のファイルを個別レビュー</li>
+        <li>同じ仕様から3案の設計書を並列ドラフト</li>
+        <li>観点別(セキュリティ/性能/可読性)のレビュー</li>
+      </ul>
+    </div>
+    <div class="cc neutral">
+      <span class="cc-label">非独立(直列必須)</span>
+      <h4>順番に依存</h4>
+      <ul>
+        <li>調査→設計→実装→テスト(パイプライン型)</li>
+        <li>DB移行スクリプトの順次適用</li>
+        <li>前タスクの出力を次タスクの入力に</li>
+        <li>同一ファイルへの複数編集(競合)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="hands-on-box info-box">
+    <span class="label">今すぐ試す: 独立性チェック</span>
+    <p>自分が今週やっている仕事を3つ挙げて、上の判定フローに当てはめてみてください。「独立・競合なし・30秒以上」が揃うものが並列化候補です。多くの人は<strong>3つ中1-2つは当てはまる</strong>はずです。</p>
+  </div>
+
+  <!-- ===== Section 3: 1メッセージ内で複数Agentを呼ぶ ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 1メッセージ内で複数Agent call(並列起動の作法)</h2>
+
+  <p>Claude Codeの並列化は「<strong>同じアシスタントメッセージ内で <span class="term" data-tip="Agentツール。Subagentを起動するツール。1メッセージで複数呼び出すと並列実行される">Agentツール</span>を複数回連続呼び出しする</strong>」ことで実現します。別メッセージに分けると直列になるので注意。</p>
+
+  <h3>同時呼び出しの構造(3 Agent calls)</h3>
+
+  <pre><code>// 1つのアシスタントメッセージが tool_use ブロックを3つ含む → 3つとも並列実行される
+[
+  { "type": "tool_use", "name": "Agent", "input": {
+      "subagent_type": "Explore",
+      "description": "Next.js 15の性能を調査",
+      "prompt": "Next.js 15の主要性能改善(RSC, Turbopack)を..." } },
+  { "type": "tool_use", "name": "Agent", "input": {
+      "subagent_type": "Explore",
+      "description": "Remix v3の性能を調査",
+      "prompt": "Remix v3(2025年リリース)の性能特性を..." } },
+  { "type": "tool_use", "name": "Agent", "input": {
+      "subagent_type": "Explore",
+      "description": "Astro 5の性能を調査",
+      "prompt": "Astro 5のSSR/Islands性能を..." } }
+]</code></pre>
+
+  <div class="info-box">
+    <span class="label">重要: 「同じメッセージ内」の意味</span>
+    <p>ここでいう「メッセージ」はアシスタント(Claude)の1ターンの出力を指します。<strong>ユーザーから見ると1回の応答の中で複数のtool_useが並ぶ</strong>だけ。ユーザーは「Subagentを3つ並列で起動する」と依頼するだけでよく、並列化自体は<span class="term" data-tip="2026年1月時点の記述。最新は公式ドキュメント参照">Claudeが自動的に</span>1メッセージ内にまとめてくれます。</p>
+  </div>
+
+  <h3>手順: 3独立タスクを並列で投げる</h3>
+
+  <ul class="icon-list">
+    <li><i data-lucide="list-checks" width="20" height="20"></i><div><strong>1. タスクを列挙</strong> — 3つの独立した問いを紙に書き出す。依存関係があれば除外。</div></li>
+    <li><i data-lucide="file-text" width="20" height="20"></i><div><strong>2. 各promptを自己完結に</strong> — Subagentは会話履歴を見ない前提。背景/目的/期待形式を毎回書く。</div></li>
+    <li><i data-lucide="zap" width="20" height="20"></i><div><strong>3. 「3つ並列で」と依頼</strong> — 「同時に」「parallel」を明示すると確実。</div></li>
+    <li><i data-lucide="check-circle-2" width="20" height="20"></i><div><strong>4. 結果を集約</strong> — 3つのsummaryが返ったらメインAgentで統合レポート化。</div></li>
+  </ul>
+
+  <!-- ===== Section 4: バッチング戦略 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> バッチング戦略: 全並列 vs 3-5ずつに分割</h2>
+
+  <p>「10タスクあるから10並列で!」は必ずしも正解ではありません。並列数が増えるほど、<strong>結果集約が破綻しやすく、1件失敗の影響も大きい</strong>。実用の落とし所は<span class="term" data-tip="Batching。複数タスクを小さなグループに分けて段階的に実行する方式">バッチング</span>で3〜5個ずつ処理することです。</p>
+
+  <div class="compare-cards">
+    <div class="cc neutral">
+      <span class="cc-label">全並列 (N>5)</span>
+      <h4>最速だがリスク大</h4>
+      <ul>
+        <li>実時間は最短(最長タスクに等しい)</li>
+        <li>同時課金で一気にトークン消費</li>
+        <li>1件失敗で再実行判断が面倒</li>
+        <li>集約メッセージが長大化 → 精度低下</li>
+        <li><strong>適用</strong>: 独立性100%、タスクが軽量、失敗許容</li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">3-5並列バッチ</span>
+      <h4>実用の最適解</h4>
+      <ul>
+        <li>1バッチの集約が扱いやすいサイズ</li>
+        <li>1バッチ失敗時に局所的に再実行可能</li>
+        <li>コスト/進捗を可視化しやすい</li>
+        <li>メインAgentのコンテキスト圧迫を抑制</li>
+        <li><strong>適用</strong>: 中〜重タスク、品質重視、継続運用</li>
+      </ul>
+    </div>
+    <div class="cc neutral">
+      <span class="cc-label">完全直列 (N=1)</span>
+      <h4>遅いが確実</h4>
+      <ul>
+        <li>前タスクの結果を次に渡せる</li>
+        <li>失敗箇所で止めやすい</li>
+        <li>時間は足し算で最遅</li>
+        <li><strong>適用</strong>: パイプライン依存があるとき</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="diagram-box">
+    <div class="diagram-title">並列数別: 実時間・コスト・失敗リスクの推移(タスク10個想定)</div>
+    <canvas id="ch4-line-1" height="180"></canvas>
+    <div class="diagram-caption">実時間は並列数を上げるほど短縮されるが、失敗リスクと集約負荷が急増。<strong>3-5並列</strong>が時間・品質・コスト管理のバランス良点。</div>
+  </div>
+
+  <div class="info-box">
+    <span class="label">経験則: 3-5-10の法則</span>
+    <p>独立タスクが<strong>3つまで → 全並列</strong>、<strong>5つまで → 全並列も許容</strong>、<strong>10個以上 → 必ず3-5ずつバッチング</strong>。これを覚えるだけで事故の8割を回避できます。</p>
+  </div>
+
+  <!-- ===== Section 5: 失敗時挙動と再実行 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 失敗時挙動と再実行の設計</h2>
+
+  <p>並列Subagentの1つが失敗しても<strong>他は独立に完遂される</strong>のが基本挙動です。失敗したものだけを後追いで再実行するパターンが現実解。</p>
+
+  <table>
+    <thead>
+      <tr><th>失敗パターン</th><th>症状</th><th>対処</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>タイムアウト</strong></td><td>Agentが長時間返らない</td><td>promptを短く/範囲を限定して再実行</td></tr>
+      <tr><td><strong>結果がスカスカ</strong></td><td>summaryが空 or 「未発見」のみ</td><td>prompt不足 → 背景と検索手段を追記</td></tr>
+      <tr><td><strong>tool権限エラー</strong></td><td>Exploreで編集しようとした等</td><td>subagent_typeを見直す(general-purposeへ)</td></tr>
+      <tr><td><strong>部分的成功</strong></td><td>5並列中2件だけ失敗</td><td>失敗分のみ再並列投入(バッチ再実行)</td></tr>
+    </tbody>
+  </table>
+
+  <div class="hands-on-box info-box">
+    <span class="label">今すぐ試す: 失敗後の再並列</span>
+    <p>一度並列リサーチを実行し、結果が薄いSubagentが出たら、それらだけを抽出して「<strong>この2つだけ、範囲を狭めて再度並列で</strong>」と依頼。1メッセージ内なので再び並列実行されます。この「部分再実行」が並列ワークフロー最大の強み。</p>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section 6: コスト管理 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> コスト管理: 並列=同時課金という現実</h2>
+
+  <p>並列化で縮むのは<strong>時間だけ</strong>、トークン量は直列と同じです。しかも<strong>同じ瞬間に一気に消費</strong>されるため、Claude Max等の利用枠に短時間で負荷がかかります。2026年1月時点、Claude Code(Max契約)では<span class="term" data-tip="2026年1月時点の記述。最新は公式ドキュメント参照">使用制限ウィンドウ</span>が5時間単位で計算されるため、並列数が多いほどウィンドウ上限に早く到達します。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">並列数とトークン消費の推移(5時間ウィンドウ視点)</div>
+    <canvas id="ch4-line-2" height="180"></canvas>
+    <div class="diagram-caption">同じ10タスクでも「10並列一括」はウィンドウを10分で使い切る。「3並列×3バッチ」なら1時間かけて分散消費できる。</div>
+  </div>
+
+  <h3>コスト抑制の3つのテクニック</h3>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="scissors" width="20" height="20"></i>
+      <div><strong>promptを短く書く</strong> — 各Subagentに渡す背景情報は<strong>必要最小限</strong>に。500字 vs 2000字でトークン4倍。</div>
+    </li>
+    <li>
+      <i data-lucide="layers" width="20" height="20"></i>
+      <div><strong>結果はsummaryで受ける</strong> — raw出力をそのまま展開せず、summary(要約)で受け取ればメインのコンテキストが軽い。</div>
+    </li>
+    <li>
+      <i data-lucide="clock" width="20" height="20"></i>
+      <div><strong>バッチ間に間隔を入れる</strong> — 10タスクを3並列×3+1にする、バッチ間に他の作業を挟むとウィンドウ負荷が均される。</div>
+    </li>
+  </ul>
+
+  <details class="more-box">
+    <summary>もっと詳しく: Subagentのコストはメインの何倍か</summary>
+    <div class="more-body">
+      <p>Subagentは<strong>独立コンテキスト</strong>を持つため、呼び出しごとに「システムプロンプト+与えられたprompt+作業トークン」を新たに消費します。メインAgentが同じ内容を直接処理するのに比べ、<strong>固定オーバーヘッド分だけ割高</strong>になります(目安: Subagent 1回あたり5-10k tokens追加)。</p>
+      <p>ただし<strong>メインのコンテキストが汚れない</strong>という強みがあり、長いセッションではむしろトータル消費が抑えられるケースも多い。短いワンショットタスクには向かず、「30秒以上の調査」「ファイル複数読む」のような重めの仕事で効いてきます。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 7: ハンズオン ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> ハンズオン: 3独立タスクを並列で投げる</h2>
+
+  <p>ここまでの知識を<strong>一度に実行してみる</strong>のがこの章のメインイベント。以下の3タスクを1メッセージで並列投入します。</p>
+
+  <div class="hands-on-box info-box">
+    <span class="label">今すぐ試す: 並列リサーチ実習</span>
+    <p>Claude Codeを開いて、下記プロンプトをそのまま貼り付けてください。3つのSubagentが同時起動し、90秒前後で全結果が返ってきます。</p>
+  </div>
+
+  <pre><code>以下の3つを独立したSubagent(subagent_type: Explore)で
+**同時に並列**起動して調査してください。完了後にメインAgentで
+3本のsummaryを200字以内で統合レポート化してください。
+
+【タスク1】 React Server Components (RSC) の長所と短所を3点ずつ
+【タスク2】 TanStack Start の特徴とRSCとの違いを3点
+【タスク3】 Solid.js の性能特性と主な採用事例を3点
+
+制約:
+- 各Subagentのpromptは自己完結で書くこと
+- 結果はsummary(要約)として返すこと
+- 2026年1月時点の情報であることを明記</code></pre>
+
+  <h3>期待される挙動</h3>
+
+  <ul class="icon-list">
+    <li><i data-lucide="split" width="20" height="20"></i><div><strong>1メッセージ内に3つのtool_use</strong>が並ぶ(アシスタント応答で確認可能)。</div></li>
+    <li><i data-lucide="timer" width="20" height="20"></i><div><strong>実時間は最長タスクに収束</strong>。直列なら3倍かかっていたはず。</div></li>
+    <li><i data-lucide="git-merge" width="20" height="20"></i><div><strong>メインが集約レポートを生成</strong>。3本のsummaryを1本の意思決定用文書に統合。</div></li>
+  </ul>
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">初級</span>
+    <h4>独立性の判定</h4>
+    <p>以下の4タスクを「並列可/不可」に分類し、理由を1行で書いてください。</p>
+    <ol>
+      <li>A: 「ライブラリX, Y, Zの性能を調査する」</li>
+      <li>B: 「仕様書を読む → 設計書を書く → コードを書く」</li>
+      <li>C: 「同じ関数を3パターンで書き換える候補を出す」</li>
+      <li>D: 「src/配下の全.tsファイルに型エラーがないか確認する」</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <ul>
+        <li><strong>A → 並列可</strong>: 3ライブラリは独立、同じ読み取り中心、重い調査なので典型的な並列向き。</li>
+        <li><strong>B → 並列不可</strong>: 仕様→設計→実装は明確なパイプライン。前段の出力が次の入力なので直列必須。</li>
+        <li><strong>C → 並列可</strong>: 3案は互いに独立(むしろ多様性を出すために別コンテキストで生成したい)。各Subagentに異なる制約を与えて並列実行。</li>
+        <li><strong>D → 並列可(バッチング推奨)</strong>: ファイル単位で独立。ただしファイル数が10+あるなら3-5ずつのバッチングが賢明。</li>
+      </ul>
+      <p>判定軸は「結果の依存」「書き換え競合」「タスクの重さ」。この3つで迷わず振り分けられるようになれば実務に応用できます。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>自分の業務で3独立タスクを並列投入する</h4>
+    <p>今日・明日やる予定の仕事から、並列化できる3タスクを抽出して実際にClaude Codeへ投入してください。</p>
+    <ol>
+      <li>候補を5つリストアップ</li>
+      <li>独立性判定フローでフィルタ(3つに絞る)</li>
+      <li>各タスクのprompt(自己完結)を書く</li>
+      <li>「3つ並列で起動して」と明示して投入</li>
+      <li>実時間と結果品質を記録(直列で想像した場合との比較)</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>回答例: <strong>MK(筆者)の実運用から</strong></p>
+      <ul>
+        <li>タスク1: 「次の学習サイトで使うチャート系ライブラリ比較(Chart.js / D3 / ECharts)」</li>
+        <li>タスク2: 「Claude Code の subagents 機能について2026年の最新アップデート調査」</li>
+        <li>タスク3: 「類似チュートリアルサイト(日本語)を3つ検索してUI/UXの差分を抽出」</li>
+      </ul>
+      <p>3つとも<strong>独立</strong>(互いの結果を参照しない)、<strong>書き換え競合なし</strong>(読み取り中心)、<strong>30秒以上</strong>(調査タスク)。Explore agentを3並列で起動し、実時間は約2分、直列なら6分以上かかっていた計算。</p>
+      <p>気づき: <strong>promptを雑に書くと1つだけ結果が薄くなる</strong>。その場合は該当1件のみ再並列で投げ直す(= バッチ再実行)と全体の品質が揃う。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式ドキュメント</a> — Agentツール・Subagentの仕様</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.claude.com/en/docs/claude-code/sdk" target="_blank" rel="noopener">Agent SDK ドキュメント</a> — tool_use/tool_result の仕組み</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://github.com/anthropics/anthropic-cookbook" target="_blank" rel="noopener">Anthropic Cookbook</a> — 並列Agent呼び出しの実装例</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener">Claude Code GitHub リポジトリ</a> — 実装ソースとIssues</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://www.anthropic.com/news" target="_blank" rel="noopener">Anthropic Blog</a> — 並列ワークフローのベストプラクティス記事</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="04">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="03-agent-types.html"><span class="direction">&larr; Prev</span>Agentタイプの使い分け</a>
+    <a href="05-prompt-craft.html"><span class="direction">Next &rarr;</span>Subagentプロンプト術</a>
+  </div>
+</main>
+
+<script>
+window.addEventListener("load", function(){
+  // Line 1: 並列数別 実時間・コスト・失敗リスク
+  var ctx1 = document.getElementById('ch4-line-1');
+  if (ctx1 && window.Chart) {
+    new Chart(ctx1, {
+      type: 'line',
+      data: {
+        labels: ['1(直列)', '2並列', '3並列', '5並列', '8並列', '10並列'],
+        datasets: [
+          {
+            label: '実時間 (相対)',
+            data: [100, 52, 36, 22, 15, 12],
+            borderColor: '#D97757',
+            backgroundColor: 'rgba(217,119,87,0.15)',
+            tension: 0.3,
+            borderWidth: 2
+          },
+          {
+            label: '失敗時の再実行負荷 (相対)',
+            data: [10, 15, 22, 38, 65, 85],
+            borderColor: '#64748b',
+            backgroundColor: 'rgba(100,116,139,0.1)',
+            tension: 0.3,
+            borderWidth: 2,
+            borderDash: [4, 3]
+          },
+          {
+            label: '集約の複雑さ (相対)',
+            data: [5, 10, 18, 35, 60, 80],
+            borderColor: '#a16207',
+            backgroundColor: 'rgba(161,98,7,0.1)',
+            tension: 0.3,
+            borderWidth: 2,
+            borderDash: [2, 2]
+          }
+        ]
+      },
+      options: {
+        plugins: { legend: { position: 'bottom' } },
+        scales: {
+          y: { beginAtZero: true, title: { display: true, text: '相対値(100=基準)' } },
+          x: { title: { display: true, text: '並列数' } }
+        }
+      }
+    });
+  }
+
+  // Line 2: 並列数とトークン消費の推移
+  var ctx2 = document.getElementById('ch4-line-2');
+  if (ctx2 && window.Chart) {
+    new Chart(ctx2, {
+      type: 'line',
+      data: {
+        labels: ['0分', '10分', '20分', '30分', '45分', '60分', '90分'],
+        datasets: [
+          {
+            label: '10並列一括',
+            data: [0, 95, 100, 100, 100, 100, 100],
+            borderColor: '#D97757',
+            backgroundColor: 'rgba(217,119,87,0.2)',
+            tension: 0.2,
+            fill: true,
+            borderWidth: 2
+          },
+          {
+            label: '3並列×3バッチ+1',
+            data: [0, 30, 35, 62, 68, 92, 100],
+            borderColor: '#475569',
+            backgroundColor: 'rgba(71,85,105,0.1)',
+            tension: 0.2,
+            fill: true,
+            borderWidth: 2
+          }
+        ]
+      },
+      options: {
+        plugins: { legend: { position: 'bottom' } },
+        scales: {
+          y: { beginAtZero: true, max: 110, title: { display: true, text: 'トークン累積消費 (%)' } },
+          x: { title: { display: true, text: '経過時間' } }
+        }
+      }
+    });
+  }
+});
+</script>
+
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>

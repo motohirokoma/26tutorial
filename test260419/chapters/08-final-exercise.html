@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>最終演習：自分のワークフローに3つ組み込む - MK's Claude Code Tutorial - Subagents Mastery</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code - Subagents
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav class="active"><span class="phase-name">Practice</span><span class="phase-pct" id="pct-practice">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.08</span>
+    最終演習：自分のワークフローに3つ組み込む
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 8 sections</text>
+    </svg>
+    <div class="progress-info">0h / 4h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-subagents-overview.html"><span class="status-dot" data-chapter="01"></span> Subagentsとは</a></li>
+    <li><a href="02-agent-tool-basics.html"><span class="status-dot" data-chapter="02"></span> Agentツールの基本</a></li>
+    <li><a href="03-agent-types.html"><span class="status-dot" data-chapter="03"></span> Agentタイプの使い分け</a></li>
+    <li><a href="04-parallel-design.html"><span class="status-dot" data-chapter="04"></span> 並列実行の設計</a></li>
+  </ul>
+  <div class="section-label">Practice</div>
+  <ul>
+    <li><a href="05-prompt-craft.html"><span class="status-dot" data-chapter="05"></span> Subagentプロンプト術</a></li>
+    <li><a href="06-research-parallel.html"><span class="status-dot" data-chapter="06"></span> 実践：リサーチ5並列</a></li>
+    <li><a href="07-review-parallel.html"><span class="status-dot" data-chapter="07"></span> 実践：コードレビュー分割</a></li>
+    <li><a href="08-final-exercise.html" class="active"><span class="status-dot" data-chapter="08"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 2: Practice &gt; Chapter 08</div>
+  <h1>最終演習：自分のワークフローに3つ組み込む</h1>
+  <p class="subtitle">業務から3つ抽出→Subagent化→効果測定 — 7章の総仕上げ</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 35分</span>
+    <span class="badge">Phase: Practice</span>
+    <span class="badge">難易度: 応用</span>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- Section 1: 7章の学びを「自分の業務」に落とす -->
+  <!-- ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 7章の学びを「自分の業務」に落とす</h2>
+
+  <p>ここまでの7章で、Subagent の概念・パラメータ・タイプの使い分け・並列設計・プロンプト術・リサーチ5並列・レビュー分割並列を学んできました。ただし知識は使わなければ腐ります。この最終章で <strong>自分の業務に3つ組み込む</strong>ところまで行きましょう。</p>
+
+  <p>目標は<strong>「2週間のうちに3つの Subagent ワークフローを自分の業務で動かし、効果を数値で測定できている」</strong>状態です。ゼロから「候補抽出→プロンプト設計→実行→測定」までを1枚の表にまとめるのが本演習のゴール。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span></p>
+
+  <div class="info-box">
+    <span class="label">Tips</span>
+    <p>完璧な3つを選ぶ必要はありません。<strong>まずノートに5分で10個書き出し</strong>、その中から「頻度が高い×並列にしやすい×定型化できる」の3軸で3つに絞る。先に動かしてから、後で磨けばいいという割り切りが肝心です。</p>
+  </div>
+
+  <!-- 7章が最終演習のどこに効くか SVG -->
+  <div class="diagram-box">
+    <div class="diagram-title">7章の知識が「3つ組み込む」のどこに効くか</div>
+    <svg viewBox="0 0 720 340" width="100%" style="max-width:720px; display:block; margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0" y="0" width="720" height="340" rx="12" fill="#fafafa" stroke="#e4e4e7"/>
+      <text x="360" y="28" text-anchor="middle" font-size="13" font-weight="700" fill="#18181b">7章分の知識が1つの運用設計書に収束する</text>
+
+      <!-- 基礎 -->
+      <rect x="30" y="55" width="200" height="115" rx="8" fill="rgba(217,119,87,0.15)" stroke="#D97757"/>
+      <text x="130" y="78" text-anchor="middle" font-size="12" font-weight="700" fill="#D97757">概念・基礎(CONCEPT)</text>
+      <text x="130" y="98" text-anchor="middle" font-size="10" fill="#52525b">Ch01 なぜ Subagent か</text>
+      <text x="130" y="114" text-anchor="middle" font-size="10" fill="#52525b">Ch02 ツール構文・パラメータ</text>
+      <text x="130" y="130" text-anchor="middle" font-size="10" fill="#52525b">Ch03 タイプ選定</text>
+      <text x="130" y="146" text-anchor="middle" font-size="10" fill="#52525b">Ch04 並列設計の判定</text>
+      <text x="130" y="162" text-anchor="middle" font-size="10" fill="#52525b">→ 候補の抽出で使う</text>
+
+      <!-- プロンプト -->
+      <rect x="260" y="55" width="200" height="115" rx="8" fill="rgba(217,119,87,0.15)" stroke="#D97757"/>
+      <text x="360" y="78" text-anchor="middle" font-size="12" font-weight="700" fill="#D97757">設計(DESIGN)</text>
+      <text x="360" y="98" text-anchor="middle" font-size="10" fill="#52525b">Ch05 self-contained prompt</text>
+      <text x="360" y="114" text-anchor="middle" font-size="10" fill="#52525b">目的/背景/形式/制約</text>
+      <text x="360" y="130" text-anchor="middle" font-size="10" fill="#52525b">検証基準の明示</text>
+      <text x="360" y="146" text-anchor="middle" font-size="10" fill="#52525b">完了報告テンプレ</text>
+      <text x="360" y="162" text-anchor="middle" font-size="10" fill="#52525b">→ プロンプト設計で使う</text>
+
+      <!-- 実践 -->
+      <rect x="490" y="55" width="200" height="115" rx="8" fill="rgba(217,119,87,0.15)" stroke="#D97757"/>
+      <text x="590" y="78" text-anchor="middle" font-size="12" font-weight="700" fill="#D97757">実行(EXECUTE)</text>
+      <text x="590" y="98" text-anchor="middle" font-size="10" fill="#52525b">Ch06 リサーチ5並列</text>
+      <text x="590" y="114" text-anchor="middle" font-size="10" fill="#52525b">Ch07 レビュー観点別並列</text>
+      <text x="590" y="130" text-anchor="middle" font-size="10" fill="#52525b">結果集約のパターン</text>
+      <text x="590" y="146" text-anchor="middle" font-size="10" fill="#52525b">再実行・失敗対応</text>
+      <text x="590" y="162" text-anchor="middle" font-size="10" fill="#52525b">→ 実行と測定で使う</text>
+
+      <!-- 矢印 -->
+      <line x1="130" y1="175" x2="360" y2="235" stroke="#D97757" stroke-width="1.5"/>
+      <line x1="360" y1="175" x2="360" y2="235" stroke="#D97757" stroke-width="1.5"/>
+      <line x1="590" y1="175" x2="360" y2="235" stroke="#D97757" stroke-width="1.5"/>
+
+      <!-- 成果物 -->
+      <rect x="180" y="235" width="360" height="85" rx="8" fill="#ffffff" stroke="#18181b" stroke-width="1.5"/>
+      <text x="360" y="258" text-anchor="middle" font-size="13" font-weight="700" fill="#18181b">あなたの Subagent 運用設計書</text>
+      <text x="360" y="278" text-anchor="middle" font-size="10" fill="#52525b">候補3つ / プロンプトテンプレ / 並列設計</text>
+      <text x="360" y="294" text-anchor="middle" font-size="10" fill="#52525b">測定指標 / 2週間ログ / 次の3つの計画</text>
+      <text x="360" y="310" text-anchor="middle" font-size="10" fill="#52525b">本章の記述は2026年1月時点の情報に基づく</text>
+    </svg>
+    <div class="diagram-caption">CONCEPT × DESIGN × EXECUTE の3軸を束ねたものが、あなた専用の運用テンプレートになる。</div>
+  </div>
+
+  <h3>今回の演習の進め方</h3>
+
+  <div class="steps">
+    <div class="step done"><div class="step-num">1</div><div class="step-label">棚卸し</div><div class="step-desc">繰り返し業務10個</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-label">候補3つ抽出</div><div class="step-desc">頻度×並列性×定型度</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-label">プロンプト設計</div><div class="step-desc">self-contained化</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-label">実行</div><div class="step-desc">2週間動かす</div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-label">測定</div><div class="step-desc">時間/品質/満足度</div></div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- Section 2: 問題提示 -->
+  <!-- ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 問題: 自分のワークフローに Subagent を3つ組み込む</h2>
+
+  <p>以下の前提条件で、<strong>1枚の運用設計書</strong>を作ってください。フォーマットはスプレッドシート・Notion・Markdown、何でも構いません。</p>
+
+  <h3>前提条件</h3>
+
+  <table>
+    <thead>
+      <tr><th>項目</th><th>内容</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>対象者</td><td>Claude Code を日常業務で1週間以上使っている人</td></tr>
+      <tr><td>期間</td><td>設計1日 + 運用2週間(実運用で検証)</td></tr>
+      <tr><td>個数</td><td><span class="term" data-tip="最初は多すぎないことが大事。3つが設計・測定・改善を同時に回せる上限。">3つ</span>(欲張らない)</td></tr>
+      <tr><td>選定基準</td><td>週1回以上発生する定型業務 / 独立タスクに分解可能 / 時間かコストが痛い</td></tr>
+      <tr><td>タイプ</td><td>Explore / general-purpose / 自作どれでも可(Ch03の判定フロー適用)</td></tr>
+      <tr><td><span class="term" data-tip="主エージェントが触る会話履歴を専用 Subagent に渡さず、独立コンテキストで処理させる方式。Ch01参照。">コンテキスト隔離</span></td><td>原則 isolation 有効(長いリサーチ系は必須)</td></tr>
+      <tr><td>測定指標</td><td>所要時間 / 完了率 / 満足度(5段階) の3つを最低限記録</td></tr>
+      <tr><td>検証環境</td><td>Claude Code CLI (<span class="term" data-tip="2026年1月時点の記述。最新は公式ドキュメント参照">2026年1月時点</span>)</td></tr>
+    </tbody>
+  </table>
+
+  <h3>求めるアウトプット (5点セット)</h3>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="clipboard-list" width="20" height="20"></i>
+      <div><strong>棚卸しマトリクス</strong> — 自分の繰り返し業務を10個リストアップし、頻度×並列性×定型度で評価</div>
+    </li>
+    <li>
+      <i data-lucide="target" width="20" height="20"></i>
+      <div><strong>3つの候補カード</strong> — 名前・目的・起動トリガー・使う Agent タイプ・並列数</div>
+    </li>
+    <li>
+      <i data-lucide="file-text" width="20" height="20"></i>
+      <div><strong>プロンプトテンプレ(3種)</strong> — Ch05の self-contained 原則を満たす。コピペで即起動できる粒度</div>
+    </li>
+    <li>
+      <i data-lucide="git-branch" width="20" height="20"></i>
+      <div><strong>実行フロー図</strong> — トリガー→並列起動→集約→出力の流れを Mermaid 1枚で</div>
+    </li>
+    <li>
+      <i data-lucide="activity" width="20" height="20"></i>
+      <div><strong>測定指標と2週間ログ</strong> — 時間/完了率/満足度を数字で。Before/After の差分を出す</div>
+    </li>
+  </ul>
+
+  <!-- タイムライン: 設計→実行→測定 -->
+  <h3>演習のタイムライン(2週間運用)</h3>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-date">D-0</div>
+      <div class="tl-title">棚卸し・候補抽出</div>
+      <div class="tl-body">10分で業務10個リストアップ。頻度×並列性×定型度で評価し、3つに絞る。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">D-1</div>
+      <div class="tl-title">プロンプト設計</div>
+      <div class="tl-body">3つのプロンプトテンプレを Ch05 の型に沿って作成。ドライランで1回ずつ動かす。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">D-2 〜 D-14</div>
+      <div class="tl-title">実運用・記録</div>
+      <div class="tl-body">業務で実際に使う。実行のたびに所要時間・完了率・満足度をメモ(1行/回で十分)。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">D-15</div>
+      <div class="tl-title">測定・振り返り</div>
+      <div class="tl-body">Before/After 比較。失敗の傾向、プロンプトの磨き所、やめるべき1つを特定。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">D-16 〜</div>
+      <div class="tl-title">次の3つの計画</div>
+      <div class="tl-body">応用課題: 計測データを踏まえて、次に組み込む3つの候補を決める。</div>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <span class="label">Note</span>
+    <p>「3つ全部うまく行く」ことを目指さないで構いません。3つのうち<strong>1つが残れば成功</strong>、2つ残れば合格、3つ残れば上出来。むしろ「やめるべき1つ」を見つけるのがこの演習の大きな収穫です。</p>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- Section 3: 段階ヒント (5つ) -->
+  <!-- ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 段階ヒント (行き詰まったら開く)</h2>
+
+  <p>いきなり全部開くと「答え写し」になります。まず自分で1つ書いてみて、詰まったヒントだけ開いてください。5つのヒントは <strong>棚卸し → 分割 → プロンプト → 集約 → 測定</strong> の順に対応しています。</p>
+
+  <details class="more-box">
+    <summary>もっと詳しく: ヒント1 — 候補の見つけ方 (Ch01 / Ch03)</summary>
+    <div class="more-body">
+      <p>Subagent 化の<strong>良い候補</strong>には5つのシグナルがあります:</p>
+      <ul>
+        <li><strong>週1回以上発生する</strong> — 1度きりなら手でやったほうが速い</li>
+        <li><strong>独立タスクに分解できる</strong> — 5観点 / 5URL / 5ファイル など</li>
+        <li><strong>結果の形式が決まっている</strong> — 箇条書き・表・pros-cons など定型</li>
+        <li><strong>コンテキストが重い</strong> — 主エージェントに余計な履歴を残したくない</li>
+        <li><strong>時間かコストが痛い</strong> — 1回30分以上か、認知負荷が高い</li>
+      </ul>
+      <p>逆に<strong>悪い候補</strong>は: ①判断が対話的に変わる / ②中間状態の共有が必須 / ③1ステップで終わる軽タスク / ④厳密な再現性が必要(Agent は毎回少しゆらぐ)。この4つは手で書くか Slash Command にするほうが総じて速いです。</p>
+      <div class="info-box">
+        <span class="label">Tips</span>
+        <p>「候補を10個書き出せ」と言われて6個しか出ない人は、<strong>1日のタイムライン</strong>(9時→10時→…)を紙に書き、各時間帯に何をやっているかを埋めてみる。「メールトリアージ」「会議の準備メモ」「PRレビュー」「週報」など、無意識でやってる定型業務が必ず何個か出てきます。</p>
+      </div>
+    </div>
+  </details>
+
+  <details class="more-box">
+    <summary>もっと詳しく: ヒント2 — 分割単位の決め方 (Ch04 / Ch07)</summary>
+    <div class="more-body">
+      <p>並列分割のパターンは4つ(Ch04・Ch07で扱いました)。候補業務に当てはめて1つ選びます:</p>
+      <table>
+        <thead><tr><th>パターン</th><th>分割軸</th><th>並列数の目安</th><th>合う業務の例</th></tr></thead>
+        <tbody>
+          <tr><td>観点分割</td><td>評価の側面(性能/可読性/安全性...)</td><td>3-5</td><td>PRレビュー / 企画書レビュー</td></tr>
+          <tr><td>対象分割</td><td>同じ処理を複数対象に</td><td>3-8</td><td>複数URL調査 / 複数ファイル要約</td></tr>
+          <tr><td>候補分割</td><td>複数解の並列生成</td><td>3-5</td><td>コピー3案 / 設計案3案</td></tr>
+          <tr><td>時系列分割</td><td>時期・フェーズ別</td><td>2-4</td><td>過去半年の月次レポート比較</td></tr>
+        </tbody>
+      </table>
+      <p>迷ったら <strong>「結果が互いを参照しなくて完結するか?」</strong>だけ自問する。Yesなら並列、Noなら直列で十分。並列は <strong>3-5</strong>がコストと効果のスイートスポット(Ch04)。</p>
+    </div>
+  </details>
+
+  <details class="more-box">
+    <summary>もっと詳しく: ヒント3 — プロンプトテンプレ (Ch05)</summary>
+    <div class="more-body">
+      <p>Ch05 の self-contained 原則に沿った<strong>テンプレート骨格</strong>:</p>
+      <pre><code># 目的
+[何を成果としたいか1行]
+
+# 背景
+[agent は会話履歴を見れない前提で、最低限の文脈]
+
+# 入力
+[ファイルパス or URL or 調査対象]
+
+# 期待する形式
+[箇条書き / 表 / pros-cons / コードdiff など具体的に]
+
+# 制約
+- 時間: [何分以内]
+- 長さ: [何語以内]
+- [その他の禁止事項]
+
+# 完了報告
+- 成果物のパス: [必須]
+- 検証済みか: [Yes/No + 根拠]
+- 所要時間: [実測]
+</code></pre>
+      <p>悪い例は「PRをレビューして」だけ。良い例は「本プロンプトに記載の観点3つ(性能/可読性/テスト)に限定し、優先度 H/M/L 付きの箇条書きで、完了報告はパス・検証済み可否・所要時間の3点を必須」まで書ききったもの。<strong>曖昧さを残すと揺らぐ</strong>のが Subagent の特性です。</p>
+    </div>
+  </details>
+
+  <details class="more-box">
+    <summary>もっと詳しく: ヒント4 — 結果集約の仕方 (Ch06 / Ch07)</summary>
+    <div class="more-body">
+      <p>並列実行の結果をどう束ねるか、3パターン:</p>
+      <ol>
+        <li><strong>要約+優先度付け</strong> — 主エージェントが各 Subagent の出力を読み、重要度の高い項目 Top N を抽出して1枚のレポートに</li>
+        <li><strong>マージテーブル</strong> — 観点別の結果を行に、対象別の結果を列にして1つの表に統合(Ch07のPRレビュー方式)</li>
+        <li><strong>投票・コンセンサス</strong> — 候補並列(3案生成)の場合、各案を別 Agent に採点させ、最高得点の案を採用</li>
+      </ol>
+      <p>集約のコツは <strong>形式を先に決めること</strong>。各 Subagent のプロンプトに「この表のこの列を埋める形で返せ」と指示すれば、集約時のマージコストがゼロに近くなります。</p>
+      <div class="info-box">
+        <span class="label">Warning</span>
+        <p>Subagent の戻り値は <span class="term" data-tip="原文そのままではなく、Subagent が要点だけに圧縮した要約。長さが一定でないため、集約時に再読込が必要なケースもある。">summary</span> で返ることが多く、細部が落ちます。細部が必要な場合はプロンプトで「成果物ファイルに書いて、サマリにはパスだけ返せ」と指示するのが定石(Ch02)。</p>
+      </div>
+    </div>
+  </details>
+
+  <details class="more-box">
+    <summary>もっと詳しく: ヒント5 — 効果測定(時間削減/品質向上)</summary>
+    <div class="more-body">
+      <p>最小の測定セットは<strong>3指標</strong>:</p>
+      <div class="kv-grid">
+        <div class="kv"><div class="kv-key">所要時間</div><div class="kv-val">Before(手動分) vs After(Subagent分)</div></div>
+        <div class="kv"><div class="kv-key">完了率</div><div class="kv-val">期待出力を一発で得られた割合(%)</div></div>
+        <div class="kv"><div class="kv-key">満足度</div><div class="kv-val">5段階(1:ひどい〜5:最高)で自己評価</div></div>
+      </div>
+      <p>記録は <strong>1行/回</strong>で十分。「2026-04-20 リサーチ 22分 完了◯ 満足度4 メモ: 代替案2の調査が浅い」のような形式。スプレッドシート1枚で2週間運用し、合計40行程度の生データが溜まれば、次の改善点は自然と見えます。</p>
+      <p>測定で見るべき<strong>本当の指標</strong>は「<strong>自分が再びそれを使いたいと思うか</strong>」。満足度4以上が 70% 超えなら定着候補、50%未満ならプロンプト再設計またはやめる判断。</p>
+    </div>
+  </details>
+
+  <!-- ============================================================ -->
+  <!-- Section 4: 模範解答 -->
+  <!-- ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 模範解答: MK 自身の「新技術調査5並列」モデル</h2>
+
+  <p>自分で書いてみましたか? ここから下は、MK 本人が2026年1月時点で実際に動かしている <strong>「新技術調査5並列」</strong>を含む3つのワークフローの設計書です。まずは書き上げてから答え合わせにどうぞ。</p>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+
+      <h3>1. 棚卸しマトリクス</h3>
+
+      <p>MK の場合、棚卸しで出てきた10候補を、頻度(週何回)・並列性(分割単位)・定型度(形式の固定度)の3軸で10段階評価しました。採用は合計スコア上位3つです。</p>
+
+      <div class="diagram-box">
+        <div class="diagram-title">候補10業務の評価スコア(棚卸しマトリクス)</div>
+        <canvas id="ch8-bar-1" height="220"></canvas>
+        <div class="diagram-caption">上位3つ(新技術調査・PRレビュー・記事下書き3案)が今回採用した Subagent 候補。</div>
+      </div>
+
+      <h3>2. 採用した3つの Subagent</h3>
+
+      <div class="compare-cards">
+        <div class="cc good">
+          <span class="cc-label">#1</span>
+          <h4>新技術調査5並列</h4>
+          <ul>
+            <li>目的: 新技術導入判断</li>
+            <li>タイプ: Explore × 5</li>
+            <li>分割: 観点(技術/コスト/学習/代替/リスク)</li>
+            <li>頻度: 週2-3回</li>
+            <li>短縮: 90分 → 25分</li>
+          </ul>
+        </div>
+        <div class="cc good">
+          <span class="cc-label">#2</span>
+          <h4>PRレビュー3観点並列</h4>
+          <ul>
+            <li>目的: レビュー品質の底上げ</li>
+            <li>タイプ: general-purpose × 3</li>
+            <li>分割: 観点(設計/テスト/命名)</li>
+            <li>頻度: 週5-8回</li>
+            <li>短縮: 40分 → 15分</li>
+          </ul>
+        </div>
+        <div class="cc good">
+          <span class="cc-label">#3</span>
+          <h4>記事下書き3案並列</h4>
+          <ul>
+            <li>目的: 書き出しの型から抜ける</li>
+            <li>タイプ: general-purpose × 3</li>
+            <li>分割: 候補(逆説/エピソード/定義型)</li>
+            <li>頻度: 週1-2回</li>
+            <li>短縮: 60分 → 20分</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>3. プロンプトテンプレ(3種)</h3>
+
+      <table>
+        <thead>
+          <tr><th>Subagent</th><th>タイプ</th><th>並列数</th><th>isolation</th><th>完了報告の必須項目</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>新技術調査</td><td>Explore</td><td>5</td><td>true</td><td>結論・根拠URL 3本・リスク2つ</td></tr>
+          <tr><td>PRレビュー</td><td>general-purpose</td><td>3</td><td>true</td><td>指摘3〜5件(優先度H/M/L付)</td></tr>
+          <tr><td>記事下書き</td><td>general-purpose</td><td>3</td><td>true</td><td>冒頭400字・タイトル案3本</td></tr>
+        </tbody>
+      </table>
+
+      <h4>#1 新技術調査5並列の実プロンプト(観点: 技術評価の例)</h4>
+      <pre><code># 目的
+新技術 X の「技術面」評価を、チーム導入可否判断の材料として5分以内で返す。
+
+# 背景
+- 対象: {TECH_NAME}(例: Agent SDK v2)
+- 想定読者: Engineering Manager(技術詳細より結論重視)
+- この Subagent は5並列の1つ。他4つ(コスト/学習曲線/代替案/リスク)は別 Agent が担当。
+
+# 入力
+- 公式 Docs URL: {DOC_URL}
+- 既存システム概要: {CONTEXT_FILE_PATH}
+
+# 期待する形式
+## 結論(3行)
+## 技術的な強み(箇条書き3つ、根拠URLつき)
+## 技術的な弱み(箇条書き2つ、根拠URLつき)
+## 既存スタックへの統合難度(S/A/B/C)
+
+# 制約
+- 400語以内
+- 一次情報(公式Doc・一次ブログ)を優先、SNS/まとめサイトは除外
+- 未確認の事項は「要検証」と明記
+
+# 完了報告
+- 成果物のパス: {OUTPUT_FILE}
+- 検証済みか: Yes/No + 根拠
+- 所要時間: 実測(分)
+</code></pre>
+
+      <h4>実行手順(Claude Code CLI の例)</h4>
+      <pre><code># 5つを1メッセージ内で並列起動
+# 主エージェントで以下を1メッセージに束ねて送信
+
+Task(subagent_type="Explore", description="新技術X: 技術評価",
+     prompt="...(上記プロンプトの {TECH_NAME} 等を埋めたもの)")
+Task(subagent_type="Explore", description="新技術X: コスト評価", prompt="...")
+Task(subagent_type="Explore", description="新技術X: 学習曲線", prompt="...")
+Task(subagent_type="Explore", description="新技術X: 代替案",   prompt="...")
+Task(subagent_type="Explore", description="新技術X: リスク",   prompt="...")
+
+# 戻ってきた5件を主エージェントで集約
+# → 1枚の判断メモ(結論 / 5観点の要約 / Go/No-Go)を出力
+</code></pre>
+
+      <h3>4. 実行フロー図</h3>
+
+      <div class="diagram-box">
+        <div class="diagram-title">新技術調査5並列の実行フロー</div>
+        <pre class="mermaid">
+graph TD
+  Trigger["トリガー: 新技術を検討したい"] --> Main["主エージェント<br/>プロンプト準備"]
+  Main --> A1["Agent 1: 技術評価<br/>(Explore)"]
+  Main --> A2["Agent 2: コスト評価<br/>(Explore)"]
+  Main --> A3["Agent 3: 学習曲線<br/>(Explore)"]
+  Main --> A4["Agent 4: 代替案<br/>(Explore)"]
+  Main --> A5["Agent 5: リスク<br/>(Explore)"]
+  A1 --> Merge["主エージェントで集約<br/>5件 → 1枚の判断メモ"]
+  A2 --> Merge
+  A3 --> Merge
+  A4 --> Merge
+  A5 --> Merge
+  Merge --> Out["出力: Go/No-Go 判定"]
+        </pre>
+        <div class="diagram-caption">5並列起動 → 各 Subagent が独立コンテキストで評価 → 主エージェントが1枚に束ねる。</div>
+      </div>
+
+      <h3>5. 測定結果(2週間の実測値)</h3>
+
+      <div class="stats-grid">
+        <div class="stat">
+          <div class="stat-num">58<small>%</small></div>
+          <div class="stat-label">所要時間の削減(3業務平均)</div>
+          <div class="stat-trend up">↑ Before平均63分 → After26分</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">82<small>%</small></div>
+          <div class="stat-label">一発完了率</div>
+          <div class="stat-trend up">↑ 41回中34回が再実行なし</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">4.2<small>/5</small></div>
+          <div class="stat-label">平均満足度</div>
+          <div class="stat-trend up">↑ 4以上が75%</div>
+        </div>
+      </div>
+
+      <!-- 2週間の所要時間推移 -->
+      <div class="diagram-box">
+        <div class="diagram-title">2週間の所要時間推移(日次・3業務合算)</div>
+        <canvas id="ch8-line-1" height="180"></canvas>
+        <div class="diagram-caption">最初の3日は慣れで遅く、4日目以降で Before(赤破線)を明確に下回る。14日目時点で定着。</div>
+      </div>
+
+      <h3>考え方の解説</h3>
+
+      <p>この3つに絞った理由は <strong>3つの設計判断</strong>です。</p>
+
+      <ol>
+        <li><strong>週当たり頻度の分散を作る</strong> — 週2-3回(調査)/ 週5-8回(レビュー)/ 週1-2回(執筆) のように頻度をバラしておくと、<strong>運用のリズムが偏らない</strong>。どれかが今週使えなくても他が回る設計。</li>
+        <li><strong>observation vs creation の両方を持つ</strong> — 調査・レビューは「読む Subagent」、記事下書きは「書く Subagent」。役割が違うので <strong>プロンプト設計スキルが2方向に磨かれる</strong>。</li>
+        <li><strong>成功体験の早い勝ち筋を1つ入れる</strong> — PRレビュー3観点は <strong>最も導入コストが低く効果が見えやすい</strong>(Before/After が毎日取れる)。最初の2週間のモチベーション維持に効く。</li>
+      </ol>
+
+      <div class="info-box">
+        <span class="label">Insight</span>
+        <p>MK 自身の2週間で最も効いたのは <strong>新技術調査5並列</strong>でした。「90分→25分」の圧縮より、<strong>「1つに偏らない視点」</strong>が得られたこと(リスク観点が必ず独立 Agent で入るので、盲点が埋まる)。量より質の改善が本命だったと後から気づきました。</p>
+      </div>
+
+      <p>この3つを自分の業務で動かせる人は、もう「Subagent を使える人」から「<strong>Subagent でワークフローを設計できる人</strong>」に変わっています。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span></p>
+
+    </div>
+  </details>
+
+  <!-- ============================================================ -->
+  <!-- Section 5: 応用課題 -->
+  <!-- ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 応用課題: 2週間後にさらに3つ追加する計画</h2>
+
+  <p>最初の3つが2週間動けば、次は「追加する3つ」を選ぶフェーズです。測定データを踏まえて設計するのが、1周目との違い。</p>
+
+  <div class="exercise-box">
+    <div class="exercise-label">応用 1</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>次の3つを選ぶレビュー会議を1人で30分でやる</h4>
+    <p>2週間の計測データ(時間/完了率/満足度)を見ながら、次の3つを選ぶ判断を <strong>30分の自己レビュー</strong>で済ませてください。最終アウトプットは「追加3つの候補カード」と「やめる1つの決定」です。</p>
+    <ol>
+      <li>現在の3つのうち、<strong>満足度3以下の週が半分を超えたもの</strong>を「やめる」判断</li>
+      <li>棚卸しで上位4〜6位だったものから、次の3候補を選ぶ(2周目のスコア基準で見直す)</li>
+      <li>新しい3つは <strong>1周目の強み</strong>(観点分割が得意 / プロンプト短め が得意 等)を生かせる形で設計</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>MK の2周目(2026年1月時点で仮運用中)の例:</p>
+      <ul>
+        <li><strong>やめる1つ:</strong> 「記事下書き3案並列」(満足度3.1/5、案の重複が多く集約コストが想定以上)</li>
+        <li><strong>追加3つ:</strong>
+          <ol>
+            <li><strong>議事録からToDo抽出3並列</strong>(担当別の粒度で分割、週3-5回)</li>
+            <li><strong>メールトリアージ観点分割</strong>(返信要/情報のみ/削除、毎朝1回)</li>
+            <li><strong>既存コードの依存関係マッピング</strong>(ファイル×3並列、月2-3回の調査タスク)</li>
+          </ol>
+        </li>
+        <li><strong>設計の変化:</strong> 1周目で「候補並列(複数案生成)」は思ったほど効かなかったので、2周目は <strong>観点分割 × 対象分割</strong>に振り切る</li>
+      </ul>
+      <div class="info-box">
+        <span class="label">Insight</span>
+        <p>2周目で一番効くのは「<strong>やめる判断を怖がらない</strong>」こと。1周目で作り上げたものを捨てるのは心理的コストが高いが、<strong>データが示している</strong>ならやめる一択。捨てた業務は手作業 or Slash Command に戻すのが正解で、Subagent 一辺倒にしないバランスが熟練の証です。</p>
+      </div>
+    </div>
+  </details>
+
+  <!-- ============================================================ -->
+  <!-- Section 6: 総まとめ -->
+  <!-- ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 修了のことば</h2>
+
+  <p>おつかれさまでした。8章・4時間の旅、そしてこの演習をやり遂げたあなたは、もう「Subagent を知っている」側ではなく「<strong>Subagent で自分の業務を再設計できる</strong>」側の人間です。概念(Ch01-04)・設計(Ch05)・実践(Ch06-07)を束ね、最後に自分の仕事に刻み込むところまでやりきりました。</p>
+
+  <div class="quote">
+    並列実行は、時間を買い戻す行為ではない。<strong>自分の判断の質</strong>を、複数視点で補強する行為である。
+    <cite>— 本チュートリアルの総括</cite>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-num">8<small>章</small></div>
+      <div class="stat-label">学んだトピック</div>
+      <div class="stat-trend up">完了</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">3<small>→6</small></div>
+      <div class="stat-label">組み込んだ Subagent</div>
+      <div class="stat-trend up">2周目へ</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">2<small>週間</small></div>
+      <div class="stat-label">運用ログ</div>
+      <div class="stat-trend up">データで判断</div>
+    </div>
+  </div>
+
+  <p>この運用設計書は、<strong>作って終わりではなく</strong> 2週間運用してから本当のスタートです。1周目で気づいた「プロンプトの抜け・集約のズレ・測定の粗さ」を記録し、次の3つに持ち越す。3周やれば、自分専用の運用テンプレートが完成します。</p>
+
+  <p>あなたの仕事が、Subagent による <strong>多視点の補強</strong>で、少しだけ速く、そして大きく静かになりますように。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span></p>
+
+  <div class="info-box">
+    <span class="label">Note</span>
+    <p>本章および本チュートリアル全体の記述は <strong>2026年1月時点</strong>の Claude Code / Agent SDK 仕様に基づきます。パラメータ名・挙動は変わる可能性があります。必ず <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">公式ドキュメント</a>で最新を確認してから運用してください。</p>
+  </div>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式ドキュメント</a> — Subagent/Task ツールの最新仕様。運用設計前に必ず一次情報を確認。</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.claude.com/en/docs/claude-code/sdk" target="_blank" rel="noopener">Claude Agent SDK ドキュメント</a> — プログラム的にエージェントを組むときの一次情報源。</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://github.com/anthropics/anthropic-cookbook" target="_blank" rel="noopener">Anthropic Cookbook</a> — 並列 Agent・評価パターンの公式サンプル集。コピペ可の実装例多数。</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener">Claude Code GitHub</a> — CLI 挙動・Issue・新機能のリリースノート。</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://www.anthropic.com/news" target="_blank" rel="noopener">Anthropic Blog</a> — 運用事例・モデル更新・設計思想の公式情報。</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://zenn.dev/topics/claudecode" target="_blank" rel="noopener">Zenn: Claude Code 関連記事</a> — 日本語の実運用事例。他の人の「3つ組み込んだ例」を読むとヒントが増える。</li>
+      <li><span class="res-type video">Video</span> <a href="https://www.youtube.com/results?search_query=Claude+Code+subagents" target="_blank" rel="noopener">YouTube: Claude Code subagents</a> — 海外エンジニアの運用動画。並列デモの実速度が体感できる。</li>
+      <li><span class="res-type video">Video</span> <a href="https://www.youtube.com/results?search_query=Claude+Code+%E4%B8%A6%E5%88%97" target="_blank" rel="noopener">YouTube: Claude Code 並列</a> — 日本語の実演動画。ワークフロー組み込みの日本語事例を拾うのに便利。</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>全8章の最終演習、おつかれさまでした。下のボタンで完走を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="08">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="07-review-parallel.html"><span class="direction">&larr; Prev</span>実践：コードレビュー分割</a>
+    <span></span>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<!-- 視覚化ライブラリ群 -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+<script>
+  window.addEventListener("load", function(){
+    // 候補10業務の評価スコア (棚卸しマトリクス)
+    var ctx1 = document.getElementById('ch8-bar-1');
+    if (ctx1 && window.Chart) {
+      new Chart(ctx1, {
+        type: 'bar',
+        data: {
+          labels: [
+            '新技術調査', 'PRレビュー', '記事下書き3案',
+            '議事録ToDo抽出', 'メールトリアージ', '依存関係マップ',
+            '週報まとめ', 'バグ再現調査', 'SQL最適化', '資料レビュー'
+          ],
+          datasets: [
+            { label: '頻度', data: [8,10,6,7,9,4,8,5,3,5], backgroundColor: '#D97757', borderRadius: 4 },
+            { label: '並列性', data: [9,8,7,7,6,6,4,5,5,7], backgroundColor: 'rgba(217,119,87,0.45)', borderRadius: 4 },
+            { label: '定型度', data: [8,9,6,8,7,7,9,4,6,6], backgroundColor: '#cbd5e1', borderRadius: 4 }
+          ]
+        },
+        options: {
+          plugins: { legend: { position: 'bottom' } },
+          scales: {
+            x: { stacked: true },
+            y: { stacked: true, beginAtZero: true, max: 30, title: { display: true, text: 'スコア合計(3軸)' } }
+          }
+        }
+      });
+    }
+
+    // 2週間の所要時間推移 (line)
+    var ctx2 = document.getElementById('ch8-line-1');
+    if (ctx2 && window.Chart) {
+      new Chart(ctx2, {
+        type: 'line',
+        data: {
+          labels: ['D1','D2','D3','D4','D5','D6','D7','D8','D9','D10','D11','D12','D13','D14'],
+          datasets: [
+            {
+              label: 'After(Subagent導入後・分)',
+              data: [72, 68, 65, 58, 50, 44, 40, 38, 34, 32, 30, 28, 27, 26],
+              borderColor: '#D97757',
+              backgroundColor: 'rgba(217,119,87,0.2)',
+              tension: 0.3,
+              fill: true,
+              pointRadius: 4,
+              pointBackgroundColor: '#D97757'
+            },
+            {
+              label: 'Before(手動・平均63分)',
+              data: [63,63,63,63,63,63,63,63,63,63,63,63,63,63],
+              borderColor: '#dc2626',
+              borderDash: [6, 4],
+              backgroundColor: 'transparent',
+              tension: 0,
+              pointRadius: 0,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          plugins: { legend: { position: 'bottom' } },
+          scales: {
+            y: { beginAtZero: true, title: { display: true, text: '1日の3業務合計(分)' } },
+            x: { title: { display: true, text: '運用日(2週間)' } }
+          }
+        }
+      });
+    }
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>Agentツールの基本 - MK's Claude Code Tutorial - Subagents Mastery</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code - Subagents
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav class="active"><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Practice</span><span class="phase-pct" id="pct-practice">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.02</span>
+    Agentツールの基本
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 8 sections</text>
+    </svg>
+    <div class="progress-info">0h / 4h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-subagents-overview.html"><span class="status-dot" data-chapter="01"></span> Subagentsとは</a></li>
+    <li><a href="02-agent-tool-basics.html" class="active"><span class="status-dot" data-chapter="02"></span> Agentツールの基本</a></li>
+    <li><a href="03-agent-types.html"><span class="status-dot" data-chapter="03"></span> Agentタイプの使い分け</a></li>
+    <li><a href="04-parallel-design.html"><span class="status-dot" data-chapter="04"></span> 並列実行の設計</a></li>
+  </ul>
+  <div class="section-label">Practice</div>
+  <ul>
+    <li><a href="05-prompt-craft.html"><span class="status-dot" data-chapter="05"></span> Subagentプロンプト術</a></li>
+    <li><a href="06-research-parallel.html"><span class="status-dot" data-chapter="06"></span> 実践：リサーチ5並列</a></li>
+    <li><a href="07-review-parallel.html"><span class="status-dot" data-chapter="07"></span> 実践：コードレビュー分割</a></li>
+    <li><a href="08-final-exercise.html"><span class="status-dot" data-chapter="08"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 1: Basics &gt; Chapter 02</div>
+  <h1>Agentツールの基本</h1>
+  <p class="subtitle">subagent_type・description・prompt・isolation パラメータを押さえる</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 30分</span>
+    <span class="badge">Phase: Basics</span>
+    <span class="badge">難易度: 入門</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">この章のゴール</span>
+    <p>Ch01でSubagentの概念を掴んだ今、<strong>Agentツールの具体的な呼び出し方</strong>を身体で覚えます。6つのパラメータ(<span class="term" data-tip="起動するSubagentの種類。Explore / general-purpose など">subagent_type</span>・<span class="term" data-tip="UI表示用の極短い説明。3-5単語が目安">description</span>・<span class="term" data-tip="Subagentへの実際の指示文。self-containedで詳細に書く">prompt</span>・<span class="term" data-tip="Subagentの作業空間を分離するモード。通常は省略">isolation</span>・<span class="term" data-tip="使用するモデル名。コスト節約で Haiku 等を指定">model</span>・<span class="term" data-tip="true にすると Agent がバックグラウンドで走り続ける">run_in_background</span>)の役割と書き分け、<span class="term" data-tip="Agent呼び出しの戻り値形式。Agent が最終出力としてまとめたテキストが返る">戻り値の扱い</span>、よくある書き忘れの落とし穴まで、この章の末尾には「自分で1つ Agent を動かせる」状態を目指します。</p>
+  </div>
+
+  <div class="info-box">
+    <span class="label">2026年1月時点の注記</span>
+    <p>本章の記述は<strong>2026年1月時点の Claude Code / Claude Agent SDK 仕様</strong>を基にしています。Agent 関連 API は活発に更新されるため、パラメータ名やモデル名の最新は<a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">公式ドキュメント</a>を必ず確認してください。</p>
+  </div>
+
+  <!-- ===== Section 1: Agent tool の基本構文 ===== -->
+  <h2 data-section="02-01">
+    <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+    Agent tool の基本構文 ― まずは最小例
+  </h2>
+
+  <p>Claude Code での Subagent 起動は、内部的には <code>Agent</code> という名前の<strong>ツール呼び出し</strong>として実行されます。モデルはユーザーのメッセージを読み、「ここは Subagent に任せるべき」と判断したら自動で Agent ツールを tool_use ブロックで呼び出します。我々が意識するのは「どう指示を書けば良い Subagent 呼び出しが生成されるか」という上位レイヤーですが、<strong>内部構造を知っていると指示の精度が桁違いに上がる</strong>ので、まず1回だけ覗いておきましょう。</p>
+
+  <p>最小の Agent 呼び出しは次のような JSON 構造になります。</p>
+
+  <pre><code>{
+  "type": "tool_use",
+  "name": "Agent",
+  "input": {
+    "subagent_type": "Explore",
+    "description": "auth middleware 調査",
+    "prompt": "このリポジトリの `src/middleware/` 以下から認証関連ミドルウェアを列挙し、各ファイルの責務を1行で要約してください。ファイルパスは絶対パスで。"
+  }
+}</code></pre>
+
+  <p>必須は <code>subagent_type</code> / <code>description</code> / <code>prompt</code> の3つだけ。他は任意です。「これだけ?」と思うかもしれませんが、その通りで、<strong>パラメータの少なさ=自由度の高さ</strong>。3行で書けるから気軽に使える、そして prompt 次第でどうにでも化ける、という設計思想です。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Agent 呼び出しの6パラメータ俯瞰図</div>
+    <svg viewBox="0 0 640 360" width="100%" style="max-width:640px; display:block; margin:0 auto;">
+      <!-- 中央の Agent Box -->
+      <rect x="240" y="150" width="160" height="60" rx="8" fill="#D97757" stroke="#b55a3d" stroke-width="2"/>
+      <text x="320" y="180" text-anchor="middle" font-size="14" font-weight="800" fill="white">Agent tool</text>
+      <text x="320" y="198" text-anchor="middle" font-size="11" fill="rgba(255,255,255,0.85)">6 parameters</text>
+
+      <!-- 必須 3つ (上) -->
+      <rect x="60" y="40" width="150" height="55" rx="6" fill="rgba(217,119,87,0.25)" stroke="#D97757" stroke-width="2"/>
+      <text x="135" y="62" text-anchor="middle" font-size="12" font-weight="700" fill="#8a3d20">必須 subagent_type</text>
+      <text x="135" y="80" text-anchor="middle" font-size="10" fill="#64748b">Explore / general-purpose</text>
+
+      <rect x="245" y="40" width="150" height="55" rx="6" fill="rgba(217,119,87,0.25)" stroke="#D97757" stroke-width="2"/>
+      <text x="320" y="62" text-anchor="middle" font-size="12" font-weight="700" fill="#8a3d20">必須 description</text>
+      <text x="320" y="80" text-anchor="middle" font-size="10" fill="#64748b">3-5単語のラベル</text>
+
+      <rect x="430" y="40" width="150" height="55" rx="6" fill="rgba(217,119,87,0.25)" stroke="#D97757" stroke-width="2"/>
+      <text x="505" y="62" text-anchor="middle" font-size="12" font-weight="700" fill="#8a3d20">必須 prompt</text>
+      <text x="505" y="80" text-anchor="middle" font-size="10" fill="#64748b">実際の指示文(長め推奨)</text>
+
+      <!-- 任意 3つ (下) -->
+      <rect x="60" y="265" width="150" height="55" rx="6" fill="rgba(217,119,87,0.10)" stroke="#D97757" stroke-width="1.5" stroke-dasharray="5 3"/>
+      <text x="135" y="287" text-anchor="middle" font-size="12" font-weight="700" fill="#8a3d20">任意 isolation</text>
+      <text x="135" y="305" text-anchor="middle" font-size="10" fill="#64748b">worktree 等の分離</text>
+
+      <rect x="245" y="265" width="150" height="55" rx="6" fill="rgba(217,119,87,0.10)" stroke="#D97757" stroke-width="1.5" stroke-dasharray="5 3"/>
+      <text x="320" y="287" text-anchor="middle" font-size="12" font-weight="700" fill="#8a3d20">任意 model</text>
+      <text x="320" y="305" text-anchor="middle" font-size="10" fill="#64748b">Opus / Sonnet / Haiku</text>
+
+      <rect x="430" y="265" width="150" height="55" rx="6" fill="rgba(217,119,87,0.10)" stroke="#D97757" stroke-width="1.5" stroke-dasharray="5 3"/>
+      <text x="505" y="287" text-anchor="middle" font-size="12" font-weight="700" fill="#8a3d20">任意 run_in_background</text>
+      <text x="505" y="305" text-anchor="middle" font-size="10" fill="#64748b">true で非同期化</text>
+
+      <!-- 線 -->
+      <line x1="135" y1="95" x2="275" y2="150" stroke="#D97757" stroke-width="1.5"/>
+      <line x1="320" y1="95" x2="320" y2="150" stroke="#D97757" stroke-width="2"/>
+      <line x1="505" y1="95" x2="365" y2="150" stroke="#D97757" stroke-width="1.5"/>
+      <line x1="135" y1="265" x2="275" y2="210" stroke="#D97757" stroke-width="1.5" stroke-dasharray="5 3"/>
+      <line x1="320" y1="265" x2="320" y2="210" stroke="#D97757" stroke-width="1.5" stroke-dasharray="5 3"/>
+      <line x1="505" y1="265" x2="365" y2="210" stroke="#D97757" stroke-width="1.5" stroke-dasharray="5 3"/>
+
+      <text x="320" y="30" text-anchor="middle" font-size="13" font-weight="600" fill="#8a3d20">実線=必須、破線=任意</text>
+      <text x="320" y="350" text-anchor="middle" font-size="11" fill="#64748b">最小呼び出しは上段3つだけで成立する</text>
+    </svg>
+    <div class="diagram-caption">3必須 + 3任意。最初は上段だけ覚えれば動く。</div>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+  <p>Claude Code の CLI で普通に Agent を呼ぶ時、ユーザーが直接 JSON を書くことはありません。モデルが自動生成します。ですが「こういうフィールドが埋められる」と知っておくと、日本語で指示する時も「<em>Explore で auth 系を調査して</em>」のように<strong>subagent_type と prompt を意識した言い回し</strong>ができて、望むような呼び出しを引き出しやすくなります。</p>
+
+  <!-- ===== Section 2: 6パラメータ詳解 ===== -->
+  <h2 data-section="02-02">
+    <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+    6つのパラメータを1つずつ
+  </h2>
+
+  <p>各パラメータの役割と注意点を表で一覧してから、よく迷うものだけ深掘りします。</p>
+
+  <table>
+    <thead>
+      <tr><th>パラメータ</th><th>必須</th><th>型</th><th>役割</th><th>よくある失敗</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>subagent_type</code></td><td>必須</td><td>string</td><td>起動する Subagent の種類。Explore / general-purpose など</td><td>typo / 存在しない type 指定</td></tr>
+      <tr><td><code>description</code></td><td>必須</td><td>string</td><td>UI 表示用の3-5単語の短いラベル</td><td>長すぎる / prompt と混同</td></tr>
+      <tr><td><code>prompt</code></td><td>必須</td><td>string</td><td>Subagent への実際の指示文(長め可)</td><td>短すぎ / 背景情報なし</td></tr>
+      <tr><td><code>isolation</code></td><td>任意</td><td>string</td><td>作業空間の分離モード(worktree 等)</td><td>不要なのに指定 / 目的との不整合</td></tr>
+      <tr><td><code>model</code></td><td>任意</td><td>string</td><td>使用モデル(Opus/Sonnet/Haiku)</td><td>存在しないモデル名</td></tr>
+      <tr><td><code>run_in_background</code></td><td>任意</td><td>boolean</td><td>true で非同期化、後で結果を取得</td><td>戻り値の扱いを忘れる</td></tr>
+    </tbody>
+  </table>
+
+  <h3>subagent_type ― どの Subagent を呼ぶか</h3>
+
+  <p>一番よく使うのは <code>Explore</code>(リサーチ・調査特化、編集権限なし)と <code>general-purpose</code>(コード編集含むフルパワー)の2択。他にも Plan や code-reviewer 等、環境によって<span class="term" data-tip="2026年1月時点の記述。最新は公式ドキュメント参照">ユーザーが定義した専門 Subagent</span> が追加されている場合もあります。詳しくは Ch03 で扱います。</p>
+
+  <h3>description ― 極短いラベル</h3>
+
+  <p>UI で「今どの Subagent が走っているか」を表示するためだけに使われるラベル。<strong>3-5単語(短い英語)が理想</strong>。ここに長文を書く人が多いですが、無意味。prompt に詳細を書きます。</p>
+
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">Bad</span>
+      <h4>description が長すぎる</h4>
+      <pre><code>"description": "Explore the auth middleware files in the src directory and summarize each of them in one line..."</code></pre>
+      <p>これは prompt に書くべき内容。description の枠に入れても UI が崩れるだけで Subagent の挙動は変わりません。</p>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">Good</span>
+      <h4>description は短く</h4>
+      <pre><code>"description": "auth middleware 調査"</code></pre>
+      <p>UI に表示された時に一目で「何が走っているか」がわかる長さ。日本語でもOK、3-5単語で。</p>
+    </div>
+  </div>
+
+  <h3>prompt ― 本体となる指示文</h3>
+
+  <p>Agent 呼び出しの<strong>9割はここで決まる</strong>と言っても過言ではありません。Subagent は呼び出し元の会話履歴を<strong>見ない</strong>ので、prompt だけで必要な情報・文脈・期待する成果物形式をすべて伝える必要があります(<span class="term" data-tip="Subagentが他の情報に依存せず、prompt 単体で完結していること">self-contained</span>な指示)。詳しくは Ch05 で扱いますが、最低限以下4要素を含めるのが鉄則です。</p>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="target" width="20" height="20"></i>
+      <div><strong>目的</strong> — 何を調べる/作るのか。1文で明示。</div>
+    </li>
+    <li>
+      <i data-lucide="book-open" width="20" height="20"></i>
+      <div><strong>背景/コンテキスト</strong> — 関連ファイルパス、参照仕様、制約条件。</div>
+    </li>
+    <li>
+      <i data-lucide="clipboard-list" width="20" height="20"></i>
+      <div><strong>期待する成果物の形式</strong> — 「マークダウン表で」「1行要約×5件」等。</div>
+    </li>
+    <li>
+      <i data-lucide="check-circle" width="20" height="20"></i>
+      <div><strong>完了条件/検証基準</strong> — 「全ファイル網羅」「テスト合格」等。</div>
+    </li>
+  </ul>
+
+  <!-- ===== Section 3: isolation モード ===== -->
+  <h2 data-section="02-03">
+    <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+    isolation モード ― 分離の段階を選ぶ
+  </h2>
+
+  <p><code>isolation</code> は Subagent の<strong>作業空間を本流から切り離すか</strong>を制御する任意パラメータ。典型値は <code>"worktree"</code>。使わないなら省略でOKで、ほとんどの読み取り専用タスク(Explore)では不要です。</p>
+
+  <table>
+    <thead>
+      <tr><th>モード</th><th>ファイル編集</th><th>作業空間</th><th>ユースケース</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>(省略)</td><td>メイン作業ツリーで直接</td><td>共有</td><td>読み取り専用 / 単純な編集 / リサーチ</td></tr>
+      <tr><td><code>worktree</code></td><td>別の git worktree で独立</td><td>分離</td><td>複数案を並列試作 / 失敗してもメインを汚さない実験</td></tr>
+    </tbody>
+  </table>
+
+  <div class="diagram-box">
+    <div class="diagram-title">通常モード vs worktree モードの違い</div>
+    <svg viewBox="0 0 640 280" width="100%" style="max-width:640px; display:block; margin:0 auto;">
+      <!-- 左: 通常 -->
+      <text x="140" y="28" text-anchor="middle" font-size="14" font-weight="700" fill="#8a3d20">(省略) = 共有ツリー</text>
+      <rect x="40" y="50" width="200" height="170" rx="8" fill="rgba(217,119,87,0.10)" stroke="#D97757" stroke-width="2"/>
+      <text x="140" y="78" text-anchor="middle" font-size="12" font-weight="600">main branch</text>
+      <rect x="60" y="100" width="70" height="35" rx="4" fill="#D97757" stroke="#b55a3d"/>
+      <text x="95" y="122" text-anchor="middle" font-size="10" font-weight="600" fill="white">Main</text>
+      <rect x="150" y="100" width="70" height="35" rx="4" fill="rgba(217,119,87,0.5)" stroke="#b55a3d"/>
+      <text x="185" y="122" text-anchor="middle" font-size="10" font-weight="600" fill="white">SubA</text>
+      <rect x="60" y="150" width="70" height="35" rx="4" fill="rgba(217,119,87,0.5)" stroke="#b55a3d"/>
+      <text x="95" y="172" text-anchor="middle" font-size="10" font-weight="600" fill="white">SubB</text>
+      <rect x="150" y="150" width="70" height="35" rx="4" fill="rgba(217,119,87,0.5)" stroke="#b55a3d"/>
+      <text x="185" y="172" text-anchor="middle" font-size="10" font-weight="600" fill="white">SubC</text>
+      <text x="140" y="210" text-anchor="middle" font-size="10" fill="#64748b">全員が同じファイルを触る</text>
+
+      <!-- 右: worktree -->
+      <text x="500" y="28" text-anchor="middle" font-size="14" font-weight="700" fill="#8a3d20">worktree = 別ツリーで分離</text>
+      <rect x="400" y="50" width="90" height="170" rx="8" fill="rgba(217,119,87,0.10)" stroke="#D97757" stroke-width="2"/>
+      <text x="445" y="78" text-anchor="middle" font-size="11" font-weight="600">main</text>
+      <rect x="410" y="100" width="70" height="35" rx="4" fill="#D97757"/>
+      <text x="445" y="122" text-anchor="middle" font-size="10" font-weight="600" fill="white">Main</text>
+
+      <rect x="510" y="50" width="60" height="50" rx="6" fill="#fef3c7" stroke="#d97706" stroke-dasharray="3 2"/>
+      <text x="540" y="80" text-anchor="middle" font-size="10" font-weight="600" fill="#a16207">SubA</text>
+      <rect x="510" y="110" width="60" height="50" rx="6" fill="#fef3c7" stroke="#d97706" stroke-dasharray="3 2"/>
+      <text x="540" y="140" text-anchor="middle" font-size="10" font-weight="600" fill="#a16207">SubB</text>
+      <rect x="510" y="170" width="60" height="50" rx="6" fill="#fef3c7" stroke="#d97706" stroke-dasharray="3 2"/>
+      <text x="540" y="200" text-anchor="middle" font-size="10" font-weight="600" fill="#a16207">SubC</text>
+      <text x="500" y="240" text-anchor="middle" font-size="10" fill="#64748b">各自の独立した作業ツリー</text>
+
+      <text x="320" y="260" text-anchor="middle" font-size="11" fill="#64748b">独立性が必要なら worktree、共有でよければ省略</text>
+    </svg>
+    <div class="diagram-caption">worktree は「別の作業部屋」を git のパワーで実現する仕組み。</div>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: worktree が効くのはどんな時か</summary>
+    <div class="more-body">
+      <p><span class="term" data-tip="git worktree コマンドで作る、同じリポジトリの別チェックアウト">git worktree</span>は1つのリポジトリから複数の作業ツリーを同時に開く機能。Subagent がそこで編集しても他の Subagent・メイン側に干渉しません。</p>
+      <p><strong>worktree が特に効くシーン</strong>:</p>
+      <ul>
+        <li>同じ機能に対して<strong>3案並列試作</strong>→後で比較して採用する案を決める</li>
+        <li>「壊れるかもしれない」リスキーな変更を<strong>安全に試す</strong></li>
+        <li>並列 Subagent がそれぞれ<strong>独立したファイル編集</strong>を行う(Ch04 の並列実行で再登場)</li>
+      </ul>
+      <p><strong>不要なケース</strong>: 読み取り専用の調査 / 1つだけ走らせる単発編集 / 変更が小さくぶつからないと確信できる場合。指定するとオーバーヘッドが増えるだけです。</p>
+    </div>
+  </details>
+
+  <h3>今すぐ試す ― isolation の指定方法</h3>
+
+  <p>Claude Code に「<em>この機能の実装案を3つ、worktree で並列試作して</em>」と依頼すると、モデルが自動で3つの Agent 呼び出しを <code>isolation="worktree"</code> 付きで発行します。手で JSON を書く必要はありません。</p>
+
+  <pre><code>// モデルが自動生成する呼び出しの模式図
+{
+  "name": "Agent",
+  "input": {
+    "subagent_type": "general-purpose",
+    "description": "案A 試作",
+    "prompt": "src/auth.ts にJWT実装を追加してください。方針A(自前実装)で。",
+    "isolation": "worktree"
+  }
+}
+// 同じメッセージ内でもう2つ並列呼び出し(案B: ライブラリ使用 / 案C: 外部サービス)</code></pre>
+
+  <!-- ===== Section 4: model と run_in_background ===== -->
+  <h2 data-section="02-04">
+    <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+    model と run_in_background ― コスト/速度の調整弁
+  </h2>
+
+  <p>残る2つの任意パラメータはコスト・速度・待ち方の調整弁です。</p>
+
+  <h3>model ― モデルをSubagentごとに変える</h3>
+
+  <p><strong>呼び出し元が Opus でも、Subagent は Sonnet や Haiku で動かせる</strong>のがポイント。軽いタスク(ファイル列挙・grep・短いまとめ)を Haiku/Sonnet に逃がせばコストが1桁安くなります。重要な判断は Opus のまま、足回りの作業だけ安いモデルへ、の使い分けが実用的。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">モデル別のコスト比(1Mトークン相対)</div>
+    <canvas id="ch2-bar-1" height="180"></canvas>
+  </div>
+
+  <h3>run_in_background ― 投げて先に進む</h3>
+
+  <p><code>run_in_background: true</code> を指定すると Agent が<strong>バックグラウンドで走り続け、結果を待たずにメインの会話は次へ進めます</strong>。後で別のツールで結果取得。長時間タスク(ビルド・広範な grep・大量リサーチ)で有効。</p>
+
+  <div class="compare-cards">
+    <div class="cc neutral">
+      <span class="cc-label">通常モード</span>
+      <h4>同期実行(デフォルト)</h4>
+      <ul>
+        <li>Agent 完了まで待つ</li>
+        <li>メインの処理はブロック</li>
+        <li>1分前後のタスク向き</li>
+        <li>結果は即戻り値で手に入る</li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">background</span>
+      <h4>run_in_background: true</h4>
+      <ul>
+        <li>Agent は裏で動き続ける</li>
+        <li>メインは即次のステップへ</li>
+        <li>ビルド・長期リサーチ向き</li>
+        <li>後で結果を取りに行く必要あり</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <span class="label">使い分けの指針</span>
+    <p><strong>1分以内に返ってくる見込み</strong>なら通常モード。<strong>5分以上かかりそう / 結果を見るのは後でいい</strong>なら background。両者を混在させて「重い1本は background、軽い5本は同期並列」という構成も実用的です。</p>
+  </div>
+
+  <!-- ===== Section 5: 戻り値の扱い ===== -->
+  <h2 data-section="02-05">
+    <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+    戻り値の扱い ― サマリ、生データ、そして保存
+  </h2>
+
+  <p>Agent 呼び出しの戻り値は、Subagent が<strong>最終メッセージとして出力したテキスト</strong>が1本返ってくる仕組みです。途中の思考プロセスやツール使用ログは返りません。つまり「Subagent から呼び出し元が受け取れるのは、最後のまとめ1本だけ」。ここを理解していないと、「10分もかけて走らせたのに要点が戻ってこない」という悲劇になります。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Agent 実行フローと戻り値</div>
+    <pre class="mermaid">
+sequenceDiagram
+  participant M as Main Agent
+  participant S as Subagent
+  participant T as Tools(Read/Grep...)
+  M->>S: Agent(subagent_type, prompt)
+  S->>T: Read file
+  T-->>S: 内容
+  S->>T: Grep pattern
+  T-->>S: 結果
+  S->>S: 中間推論(戻らない)
+  S-->>M: 最終メッセージ(サマリ)
+  M->>M: サマリを基に次の判断
+    </pre>
+    <div class="diagram-caption">途中のツール利用・思考は全て Subagent 内で閉じ、呼び出し元には最終テキストだけ返る。</div>
+  </div>
+
+  <h3>サマリ vs 生データ ― どっちで受け取るか</h3>
+
+  <p>prompt で指示すれば戻り値の形は自由にコントロールできます。</p>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="list" width="20" height="20"></i>
+      <div><strong>サマリ(要約)受け取り</strong> — 「3行でまとめて」「結論だけ」と指示。メインが判断材料として使うケース。</div>
+    </li>
+    <li>
+      <i data-lucide="file-text" width="20" height="20"></i>
+      <div><strong>生データ受け取り</strong> — 「該当ファイルの中身を全文」「JSON形式で構造化して」と指示。後続処理で使うケース。</div>
+    </li>
+    <li>
+      <i data-lucide="save" width="20" height="20"></i>
+      <div><strong>ファイルに書き出し</strong> — 「`/tmp/result.md` に書いて、戻りではパスだけ返して」と指示。大量結果を戻り値でなく<strong>ファイル経由で渡す</strong>テクニック。</div>
+    </li>
+  </ul>
+
+  <details class="more-box">
+    <summary>もっと詳しく: 大きな結果はファイル経由が鉄則</summary>
+    <div class="more-body">
+      <p>Subagent の戻り値はテキスト1本で、トークン上限があります。<strong>100ファイル分のレビュー結果</strong>のような大きな成果物を戻り値に詰めるのは無理。そこで定番の指示が:</p>
+      <pre><code>...結果は `/tmp/review-{観点名}.md` に書き出してください。
+戻りメッセージでは
+  - 成果物のパス
+  - 発見した重要度high の issue 数
+  - 1行サマリ
+の3点だけを返してください。</code></pre>
+      <p>これで Subagent は大きな成果をファイルに残し、呼び出し元には<strong>要点だけ</strong>を渡せます。メインはパスを受け取って Read で必要部分だけ読みに行く、という流れ。Ch06/Ch07 の実践章で繰り返し使うパターンです。</p>
+    </div>
+  </details>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+  <p>戻り値は<strong>次にメインAgent が読むコンテキスト</strong>そのもの。長く詰めるほどメイン側のトークン消費が増えるので、「要点だけ上げてもらう・詳細はファイルに」が省エネで最もスケールします。この設計はコンテキスト保護の観点でも Subagent を使う本来の意義と合致します。</p>
+
+  <!-- ===== Section 6: ハンズオン ===== -->
+  <h2 data-section="02-06">
+    <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+    ハンズオン ― 初めての Agent を1本動かす
+  </h2>
+
+  <p>ここから実際に自分の環境で Subagent を1つ動かしてみましょう。難しく考える必要はなく、<strong>Claude Code に日本語で話しかけるだけ</strong>。モデルが自動で Agent 呼び出しを組み立てます。</p>
+
+  <div class="steps">
+    <div class="step done">
+      <div class="step-num">1</div>
+      <div class="step-label">リポジトリ選定</div>
+      <div class="step-desc">手元の適当なコードベース</div>
+    </div>
+    <div class="step done">
+      <div class="step-num">2</div>
+      <div class="step-label">指示文を書く</div>
+      <div class="step-desc">self-containedで4要素入り</div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-label">実行</div>
+      <div class="step-desc">Claude Codeに投げる</div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-label">戻り値確認</div>
+      <div class="step-desc">どんなサマリが返ってきたか</div>
+    </div>
+  </div>
+
+  <h3>プロンプト例 ― そのままコピペOK</h3>
+
+  <pre><code>Explore Subagent を起動して、このリポジトリの構造調査をお願いします。
+
+# 目的
+このプロジェクトのエントリーポイントと主要なディレクトリ構成を把握する。
+
+# 背景
+私はこのリポジトリを初めて触ります。まだファイル配置を知りません。
+
+# 調査してほしいこと
+1. package.json(または Cargo.toml / go.mod 等)の main/scripts を確認
+2. src/ 配下の主要ディレクトリを列挙、各ディレクトリの責務を1行で
+3. README/docs があれば概要部分を読んで「このプロジェクトは何?」を3行で
+
+# 期待する成果物の形式
+マークダウンで以下3セクション:
+- ## エントリーポイント
+- ## ディレクトリ構造(表形式、5-10行)
+- ## プロジェクト概要(3行)
+
+# 完了条件
+上記3セクションが埋まっていること。不明な部分は「不明」と正直に書いてOK。</code></pre>
+
+  <div class="info-box">
+    <span class="label">この指示文のポイント</span>
+    <p>「目的・背景・調査内容・成果物形式・完了条件」の<strong>5要素がきれいに揃っている</strong>のが肝。Claude Code のモデルはこの構造をそのまま Agent の prompt に流し込むので、Subagent 側で迷いません。逆に「調査して」の1行だけだと、Subagent は何を・どこまで・どう返せばいいか判断できず空振りします。</p>
+  </div>
+
+  <h3>実行中に画面で起こること</h3>
+
+  <ol>
+    <li>メインの Claude Code が Agent ツール呼び出しを発行(UI に「<code>auth middleware 調査</code>」等の description が表示される)</li>
+    <li>Subagent が独立コンテキストで Read / Grep / Glob を連発</li>
+    <li>中間ログは UI 上で開閉可能(気になる時だけ詳細を覗く)</li>
+    <li>最終メッセージが呼び出し元に戻る → メインが受け取って次のステップへ</li>
+  </ol>
+
+  <!-- ===== Section 7: よくある書き忘れ ===== -->
+  <h2 data-section="02-07">
+    <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+    よくある書き忘れ ― 5つの地雷
+  </h2>
+
+  <p>ここまでの内容を試すと、ほぼ確実にどこかでつまずきます。初心者が連続でハマるパターンを5つだけ先に潰しておきましょう。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">書き忘れ上位5件(失敗頻度の体感値)</div>
+    <canvas id="ch2-bar-2" height="180"></canvas>
+  </div>
+
+  <ol>
+    <li><strong>description を長く書きすぎ</strong> ― UI ラベルなのに prompt 本文を入れてしまう。短い3-5単語に。</li>
+    <li><strong>prompt に背景情報がない</strong> ― Subagent は会話履歴を見ないのに、「上のファイル」「さっきの方針」等の参照で書く。必ず self-contained に。</li>
+    <li><strong>期待する成果物の形式を書き忘れ</strong> ― 「調べて」とだけ頼むと、箇条書き・文章・表・JSON のどれが来るか運次第。「表形式で」と指定する。</li>
+    <li><strong>worktree を無駄に指定</strong> ― 読み取りだけの Explore に worktree は無意味(書かない)。逆に並列編集で worktree を<strong>付け忘れ</strong>て衝突するのも頻出。</li>
+    <li><strong>background にして結果取りに行くのを忘れる</strong> ― 投げっぱなしで放置→セッション終了時に未取得で消える、の悲劇。background の後は必ず「結果確認」のステップを計画に入れる。</li>
+  </ol>
+
+  <div class="info-box">
+    <span class="label">MK流チェックリスト</span>
+    <p>Agent を1本投げる前に唱える3行の呪文: <strong>「description 5単語以内? prompt に4要素全部入った? 戻り値の形、指定した?」</strong>。これだけで8割の事故を防げます。</p>
+  </div>
+
+  <!-- ===== Section 8: まとめ ===== -->
+  <h2 data-section="02-08">
+    <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+    この章のまとめ
+  </h2>
+
+  <div class="kv-grid">
+    <div class="kv"><div class="kv-key">必須3つ</div><div class="kv-val">subagent_type / description / prompt</div></div>
+    <div class="kv"><div class="kv-key">任意3つ</div><div class="kv-val">isolation / model / run_in_background</div></div>
+    <div class="kv"><div class="kv-key">prompt4要素</div><div class="kv-val">目的 / 背景 / 形式 / 完了条件</div></div>
+    <div class="kv"><div class="kv-key">戻り値</div><div class="kv-val">最終メッセージ1本のみ</div></div>
+  </div>
+
+  <div class="quote">
+    Subagent の呼び出しは 3行のパラメータでできる。だが、その3行目(prompt)が運命を決める。
+    <cite>— 本章の核心</cite>
+  </div>
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>自分のリポジトリで Explore を1回動かす</h4>
+    <p>手元の任意のリポジトリ(小さなOSSでもOK)で Claude Code を起動し、上のハンズオンのプロンプトをそのままコピペして実行。戻ってきたサマリを読んで以下を確認してください。</p>
+    <ol>
+      <li>期待通り「## エントリーポイント」「## ディレクトリ構造」「## プロジェクト概要」の3セクションが揃っているか</li>
+      <li>UI 上で Subagent の description(英語3-5単語)が何と表示されたか</li>
+      <li>戻ってきた文章のトークン量がメインのコンテキストを圧迫していないか(長すぎるなら「3行で」「表は5行以内」を指示して縮める)</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><strong>確認ポイントと典型的な戻り値</strong>:</p>
+      <pre><code>## エントリーポイント
+- package.json の `main`: dist/index.js
+- scripts: `npm run dev` で起動
+
+## ディレクトリ構造
+| dir        | 責務                          |
+|------------|-------------------------------|
+| src/api    | HTTPエンドポイント定義         |
+| src/db     | Prisma モデル / マイグレーション |
+| src/utils  | 共通ヘルパー                   |
+
+## プロジェクト概要
+このリポジトリはECサイトのBFF層で、フロントエンドと決済APIを仲介する。
+Node.js(Express)+ TypeScript + Prisma(PostgreSQL)。
+テストは vitest、CIは GitHub Actions。</code></pre>
+      <p><strong>観察ポイント</strong>:</p>
+      <ul>
+        <li>description は「<code>repo structure scan</code>」のような英語短句が多い → 期待通り</li>
+        <li>戻り値が300〜600トークン程度で収まっていれば上出来。1000超なら「3行で」等の制約を追加</li>
+        <li>不明点を「不明」と正直に書いてくれている = self-contained 指示が効いている証拠</li>
+      </ul>
+      <p>うまくいかなかった場合の典型原因は「prompt の<strong>完了条件</strong>が曖昧」。「この3セクションが埋まれば終わり」とゴールを明示すると精度が上がります。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>悪い Agent 呼び出しを直す</h4>
+    <p>以下は「良くない」Agent 呼び出しの例です。5つの地雷のうちいくつが踏まれているかを特定し、改善版を書いてください。</p>
+    <pre><code>{
+  "subagent_type": "Explore",
+  "description": "このリポジトリのauth周りのファイルを全部読んで中身をまとめてください。できれば危険そうな箇所も教えてほしいです。",
+  "prompt": "上記の通り調べて。",
+  "isolation": "worktree",
+  "run_in_background": true
+}</code></pre>
+    <ol>
+      <li>何が間違っているかを地雷リスト(本章の5つ)と対応させる</li>
+      <li>description・prompt を書き直し、不要な任意パラメータを削除</li>
+      <li>改善版 JSON を提示</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><strong>踏んでいる地雷(5つ中4つ)</strong>:</p>
+      <ul>
+        <li>① description が長すぎ(prompt の内容が入っている)</li>
+        <li>② prompt が「上記の通り」と参照している(self-contained 違反、Subagent は description も会話履歴も見ない)</li>
+        <li>③ 成果物の形式指定なし(「まとめて」だけ)</li>
+        <li>④ Explore(読み取り専用)に worktree は無意味</li>
+        <li>⑤ run_in_background: true だが後続で結果を取る計画が示されていない(呼び出し側の問題だがリスク)</li>
+      </ul>
+      <p><strong>改善版</strong>:</p>
+      <pre><code>{
+  "subagent_type": "Explore",
+  "description": "auth 脆弱性調査",
+  "prompt": "このリポジトリの `src/auth/` 配下の全ファイルを読み、以下をマークダウン形式で報告してください。\n\n# 目的\n認証ロジックの全体像把握と潜在的セキュリティリスクの洗い出し。\n\n# 調査項目\n1. auth ディレクトリ配下のファイル一覧(絶対パス)\n2. 各ファイルの責務を1行で\n3. 気になるセキュリティ観点(平文保存・弱いハッシュ・タイミング攻撃等)を list で\n\n# 期待する成果物\n## ファイル一覧(表)\n## 責務サマリ(箇条書き)\n## リスク候補(箇条書き、見つからなければ『該当なし』)\n\n# 完了条件\n上記3セクションが埋まっていること。ファイル読み取りのみ、編集禁止。"
+}</code></pre>
+      <p><strong>変更点まとめ</strong>:</p>
+      <ul>
+        <li>description を「auth 脆弱性調査」の3単語に圧縮</li>
+        <li>prompt を self-contained に書き直し、4要素+完了条件を明示</li>
+        <li>isolation(worktree)を削除 ― Explore は読み取り専用なので不要</li>
+        <li>run_in_background を削除 ― この規模なら同期実行で1分以内に返る</li>
+      </ul>
+      <p>これで <strong>「3パラメータだけのシンプルかつ確実に動く呼び出し」</strong> に整います。シンプルさこそ安定性。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span><a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式ドキュメント: Agent tool の最新仕様はここが正本</a></li>
+      <li><span class="res-type doc">Doc</span><a href="https://docs.claude.com/en/docs/claude-code/sdk" target="_blank" rel="noopener">Claude Agent SDK ドキュメント: プログラマブルに Agent を扱うならこちら</a></li>
+      <li><span class="res-type doc">Doc</span><a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener">Claude Code GitHub リポジトリ: Issue/Discussions で最新仕様の議論が追える</a></li>
+      <li><span class="res-type doc">Doc</span><a href="https://github.com/anthropics/anthropic-cookbook" target="_blank" rel="noopener">Anthropic Cookbook: Subagent を使った具体コード例が豊富</a></li>
+      <li><span class="res-type doc">Doc</span><a href="https://git-scm.com/docs/git-worktree" target="_blank" rel="noopener">git-worktree 公式ドキュメント: isolation=worktree の内部理解に必須</a></li>
+      <li><span class="res-type video">Video</span><a href="https://www.youtube.com/results?search_query=Claude+Code+subagents" target="_blank" rel="noopener">YouTube 検索: 「Claude Code subagents」の実演動画</a></li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="02">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="01-subagents-overview.html"><span class="direction">&larr; Prev</span>Subagentsとは</a>
+    <a href="03-agent-types.html"><span class="direction">Next &rarr;</span>Agentタイプの使い分け</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<!-- 視覚化ライブラリ群 -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+<script>
+  window.addEventListener("load", function(){
+    // モデル別コスト比
+    var ctx1 = document.getElementById('ch2-bar-1');
+    if (ctx1 && window.Chart) {
+      new Chart(ctx1, {
+        type: 'bar',
+        data: {
+          labels: ['Opus (高精度)', 'Sonnet (標準)', 'Haiku (軽量)'],
+          datasets: [{
+            label: '相対コスト(Opus=10)',
+            data: [10, 2, 0.4],
+            backgroundColor: ['#D97757', 'rgba(217,119,87,0.55)', 'rgba(217,119,87,0.25)'],
+            borderRadius: 6
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: function(ctx) { return '相対コスト: ' + ctx.parsed.x + 'x'; }
+              }
+            }
+          },
+          scales: {
+            x: { beginAtZero: true, title: { display: true, text: '相対コスト(目安・2026/01 時点)' } }
+          }
+        }
+      });
+    }
+
+    // 書き忘れ頻度
+    var ctx2 = document.getElementById('ch2-bar-2');
+    if (ctx2 && window.Chart) {
+      new Chart(ctx2, {
+        type: 'bar',
+        data: {
+          labels: [
+            'prompt が背景不足',
+            '成果物の形式未指定',
+            'description が長すぎ',
+            'background で結果取り忘れ',
+            'worktree を無駄に指定'
+          ],
+          datasets: [{
+            label: '体感頻度(%)',
+            data: [85, 70, 55, 35, 25],
+            backgroundColor: '#D97757',
+            borderRadius: 6
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: function(ctx) { return '頻度: ' + ctx.parsed.x + '%'; }
+              }
+            }
+          },
+          scales: {
+            x: { beginAtZero: true, max: 100, ticks: { callback: function(v){ return v + '%'; } } }
+          }
+        }
+      });
+    }
+  });
+</script>
+</body>
+</html>

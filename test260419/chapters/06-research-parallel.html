@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>実践：リサーチを5並列で回す - MK's Claude Code Tutorial - Subagents Mastery</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code - Subagents
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav class="active"><span class="phase-name">Practice</span><span class="phase-pct" id="pct-practice">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.06</span>
+    実践：リサーチを5並列で回す
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 8 sections</text>
+    </svg>
+    <div class="progress-info">0h / 4h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-subagents-overview.html"><span class="status-dot" data-chapter="01"></span> Subagentsとは</a></li>
+    <li><a href="02-agent-tool-basics.html"><span class="status-dot" data-chapter="02"></span> Agentツールの基本</a></li>
+    <li><a href="03-agent-types.html"><span class="status-dot" data-chapter="03"></span> Agentタイプの使い分け</a></li>
+    <li><a href="04-parallel-design.html"><span class="status-dot" data-chapter="04"></span> 並列実行の設計</a></li>
+  </ul>
+  <div class="section-label">Practice</div>
+  <ul>
+    <li><a href="05-prompt-craft.html"><span class="status-dot" data-chapter="05"></span> Subagentプロンプト術</a></li>
+    <li><a href="06-research-parallel.html" class="active"><span class="status-dot" data-chapter="06"></span> 実践：リサーチ5並列</a></li>
+    <li><a href="07-review-parallel.html"><span class="status-dot" data-chapter="07"></span> 実践：コードレビュー分割</a></li>
+    <li><a href="08-final-exercise.html"><span class="status-dot" data-chapter="08"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 2: Practice &gt; Chapter 06</div>
+  <h1>実践：リサーチを5並列で回す</h1>
+  <p class="subtitle">同じ問いを多面で検証、結果を集約する実例</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 30分</span>
+    <span class="badge">Phase: Practice</span>
+    <span class="badge">難易度: 中級</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">この章のゴール</span>
+    <p>「新技術 X をチームに導入すべきか」という曖昧で難しい問いを、<strong>5側面</strong>(技術 / コスト / 学習曲線 / 代替案 / リスク)に分解し、5つの<span class="term" data-tip="Subagent = Claude Code の Agent ツールで起動する独立コンテキストのサブタスク実行者">Subagent</span>を<strong>1メッセージで並列起動</strong>して調査する。結果をメインAgentで統合し、経営会議に出せる1枚のサマリまで仕上げる一連の流れを、あなたの業務テーマで再現できるようになる。本章の記述は<span class="term" data-tip="2026年1月時点の記述。最新は公式ドキュメント参照">2026年1月時点</span>の情報です。</p>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>シナリオ：新技術Xをチーム導入すべきか</h2>
+
+  <p>想定する現場はこうです。あなたはあるチームのリードで、「<strong>Bun を本番の Node.js 代替として導入すべきか</strong>」を問われています。判断に必要な情報は広く、深く、そして多面的。ひとりで全部調べたら半日潰れますし、ChatGPT に一発で聞くと「多分イケます」みたいな<span class="term" data-tip="根拠が薄いのに結論だけ断定する、生成AIの典型的な失敗モード">薄い結論</span>しか返ってきません。</p>
+
+  <p>そこで<strong>Subagentを5つ並列で起動</strong>します。各Subagentには固有の観点を与え、同じテーマを別角度で深掘りさせる。あなたはメインAgentに戻ってきた5つの独立レポートを読み、最終的な意思決定材料に統合する──これが本章の全体像です。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">5並列リサーチの全体像</div>
+    <svg viewBox="0 0 720 320" width="100%" style="max-width:720px; display:block; margin:0 auto;">
+      <defs>
+        <marker id="ch6-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#D97757"/>
+        </marker>
+      </defs>
+      <rect x="280" y="20" width="160" height="56" rx="10" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="2"/>
+      <text x="360" y="44" text-anchor="middle" font-size="13" font-weight="700">問い: Bun を導入すべきか?</text>
+      <text x="360" y="62" text-anchor="middle" font-size="11" fill="#64748b">メインAgent が 5観点に分解</text>
+      <line x1="360" y1="76" x2="80" y2="130" stroke="#D97757" stroke-width="1.5" marker-end="url(#ch6-arr)"/>
+      <line x1="360" y1="76" x2="220" y2="130" stroke="#D97757" stroke-width="1.5" marker-end="url(#ch6-arr)"/>
+      <line x1="360" y1="76" x2="360" y2="130" stroke="#D97757" stroke-width="1.5" marker-end="url(#ch6-arr)"/>
+      <line x1="360" y1="76" x2="500" y2="130" stroke="#D97757" stroke-width="1.5" marker-end="url(#ch6-arr)"/>
+      <line x1="360" y1="76" x2="640" y2="130" stroke="#D97757" stroke-width="1.5" marker-end="url(#ch6-arr)"/>
+      <rect x="20" y="130" width="120" height="80" rx="8" fill="#fff" stroke="#D97757"/>
+      <text x="80" y="155" text-anchor="middle" font-size="12" font-weight="700">A1 技術</text>
+      <text x="80" y="176" text-anchor="middle" font-size="10" fill="#64748b">互換性</text>
+      <text x="80" y="190" text-anchor="middle" font-size="10" fill="#64748b">性能</text>
+      <text x="80" y="204" text-anchor="middle" font-size="10" fill="#64748b">安定性</text>
+      <rect x="160" y="130" width="120" height="80" rx="8" fill="#fff" stroke="#D97757"/>
+      <text x="220" y="155" text-anchor="middle" font-size="12" font-weight="700">A2 コスト</text>
+      <text x="220" y="176" text-anchor="middle" font-size="10" fill="#64748b">移行工数</text>
+      <text x="220" y="190" text-anchor="middle" font-size="10" fill="#64748b">運用費</text>
+      <text x="220" y="204" text-anchor="middle" font-size="10" fill="#64748b">ライセンス</text>
+      <rect x="300" y="130" width="120" height="80" rx="8" fill="#fff" stroke="#D97757"/>
+      <text x="360" y="155" text-anchor="middle" font-size="12" font-weight="700">A3 学習曲線</text>
+      <text x="360" y="176" text-anchor="middle" font-size="10" fill="#64748b">教育時間</text>
+      <text x="360" y="190" text-anchor="middle" font-size="10" fill="#64748b">資料</text>
+      <text x="360" y="204" text-anchor="middle" font-size="10" fill="#64748b">コミュニティ</text>
+      <rect x="440" y="130" width="120" height="80" rx="8" fill="#fff" stroke="#D97757"/>
+      <text x="500" y="155" text-anchor="middle" font-size="12" font-weight="700">A4 代替案</text>
+      <text x="500" y="176" text-anchor="middle" font-size="10" fill="#64748b">Deno</text>
+      <text x="500" y="190" text-anchor="middle" font-size="10" fill="#64748b">Node最新</text>
+      <text x="500" y="204" text-anchor="middle" font-size="10" fill="#64748b">現状維持</text>
+      <rect x="580" y="130" width="120" height="80" rx="8" fill="#fff" stroke="#D97757"/>
+      <text x="640" y="155" text-anchor="middle" font-size="12" font-weight="700">A5 リスク</text>
+      <text x="640" y="176" text-anchor="middle" font-size="10" fill="#64748b">ベンダー依存</text>
+      <text x="640" y="190" text-anchor="middle" font-size="10" fill="#64748b">脆弱性</text>
+      <text x="640" y="204" text-anchor="middle" font-size="10" fill="#64748b">撤退コスト</text>
+      <line x1="80"  y1="210" x2="340" y2="256" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#ch6-arr)"/>
+      <line x1="220" y1="210" x2="350" y2="256" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#ch6-arr)"/>
+      <line x1="360" y1="210" x2="360" y2="256" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#ch6-arr)"/>
+      <line x1="500" y1="210" x2="370" y2="256" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#ch6-arr)"/>
+      <line x1="640" y1="210" x2="380" y2="256" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#ch6-arr)"/>
+      <rect x="260" y="260" width="200" height="44" rx="10" fill="#18181b"/>
+      <text x="360" y="281" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">統合サマリ (意思決定)</text>
+      <text x="360" y="297" text-anchor="middle" font-size="10" fill="#cbd5e1">GO / NO-GO / 条件付きGO</text>
+    </svg>
+    <div class="diagram-caption">1つの問いを5観点に分解 → 5並列で深掘り → メインAgentが統合して1枚サマリ。</div>
+  </div>
+
+  <p>ポイントは <strong>5つのSubagentが互いの結果を参照しない</strong> こと。依存がないから並列化できる。この「独立性」の判定は Ch04 で詳しくやりました。</p>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>5観点への分解設計</h2>
+
+  <p>観点数は「<span class="term" data-tip="Mutually Exclusive, Collectively Exhaustive=漏れなくダブりなく">MECE</span>」で決めるのが鉄則ですが、本番では <strong>3〜7個</strong> が扱いやすいゾーン。2個だと粗すぎて意思決定できない、8個以上だと統合段階でメインAgentのコンテキストが膨らみすぎます。導入判断なら「<strong>技術 / コスト / 学習 / 代替 / リスク</strong>」の5点セットがほぼテンプレとして機能します。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">観点分解ロジックツリー</div>
+    <pre class="mermaid">
+graph TD
+  Q["Bun を導入すべきか?"] --> F["Feasibility (実現可能性)"]
+  Q --> B["Business (事業性)"]
+  Q --> O["Org (組織影響)"]
+  F --> A1["A1: 技術"]
+  F --> A4["A4: 代替案"]
+  B --> A2["A2: コスト"]
+  B --> A5["A5: リスク"]
+  O --> A3["A3: 学習曲線"]
+    </pre>
+    <div class="diagram-caption">上位3カテゴリに束ねると5観点の抜け漏れも検証しやすい。</div>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>観点</th><th>調べる中核</th><th>成果物の形式</th><th>所要目安</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>A1 技術</td><td>互換性/性能/安定性/エコシステム</td><td>箇条書き+主要ベンチ数値</td><td>3-5min</td></tr>
+      <tr><td>A2 コスト</td><td>移行工数/運用費/ライセンス/CI変更</td><td>表(項目×金額/人日)</td><td>3-5min</td></tr>
+      <tr><td>A3 学習曲線</td><td>教育時間/資料/コミュニティ/採用影響</td><td>ロードマップ風リスト</td><td>2-4min</td></tr>
+      <tr><td>A4 代替案</td><td>Deno/Node最新/現状維持 の優劣比較</td><td>比較表(軸×選択肢)</td><td>3-5min</td></tr>
+      <tr><td>A5 リスク</td><td>ベンダー依存/脆弱性履歴/撤退コスト</td><td>リスク×影響度表</td><td>3-5min</td></tr>
+    </tbody>
+  </table>
+
+  <p>各観点で <strong>成果物の形式を指定</strong> することが後段の統合を楽にする最大のコツ。表なら表、ロードマップならロードマップ、と <span class="term" data-tip="self-contained=Subagent が会話履歴を見ずに単独で実行できる完結したprompt">self-contained</span> に明記します。これはCh05で学んだ原則の実戦適用です。</p>
+
+  <details class="more-box">
+    <summary>もっと詳しく: 観点が5つを超えそうな時どうするか</summary>
+    <div class="more-body">
+      <p>「セキュリティ」「法務」「インフラ」なども気になる──と欲が出たら、以下のどれかで調整します:</p>
+      <ol>
+        <li><strong>A5 リスクに吸収</strong>:セキュリティと法務はリスクカテゴリの下位項目として1つのSubagentに扱わせる。prompt内で「セキュリティ観点とライセンス法務観点も含めること」と明示</li>
+        <li><strong>第2ラウンド</strong>:まず5観点で回し、統合後に「深掘りが必要」となった1〜2テーマだけ第2ラウンドで起動</li>
+        <li><strong>7観点並列に拡大</strong>:どうしても独立に見たいなら7並列。コストは上がるが可能。ただし8以上はメインの統合負荷が重くなる</li>
+      </ol>
+      <p>MKの実務では <strong>「まず5観点→結果を見て必要なら2個追加」</strong> の二段構えが最も失敗が少ない運用です。</p>
+    </div>
+  </details>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>5つの Agent call プロンプト全文</h2>
+
+  <p>ここからが本章のメイン。<strong>実行可能な5つのプロンプトを全部掲載</strong> します。あなたのClaude Codeに貼り付けると、そのまま5並列リサーチが動きます。Subagentタイプは全て <code>general-purpose</code>(または <code>Explore</code>)を使用。</p>
+
+  <div class="info-box">
+    <span class="label">実行方法</span>
+    <p>Claude Code に「以下の5つを<strong>1メッセージ内で並列に</strong> Agent ツールで起動してほしい」と伝え、下記5ブロックを続けて貼り付けます。1メッセージ内に5つの Agent call を書くことで、メインAgentが内部的に並列起動します。</p>
+  </div>
+
+  <h3>A1: 技術観点</h3>
+<pre><code>subagent_type: general-purpose
+description: Bun 技術調査 (互換性/性能/安定性)
+prompt: |
+  あなたは Node.js エコシステムに詳しい技術リサーチャーです。
+  「Bun を本番の Node.js 代替として採用可能か」を技術観点から評価してください。
+
+  【調査項目】
+  1. Node.js API 互換性の現状 (2026年1月時点)
+  2. 代表的ベンチマーク(HTTP/JSON/ファイルI/O)での性能差
+  3. メジャーバージョン安定性と過去のbreaking change履歴
+  4. パッケージエコシステム(主要ライブラリの動作状況)
+  5. TypeScript/Test runner組み込み機能の成熟度
+
+  【成果物形式】
+  - 各項目を3-5行の箇条書きで
+  - ベンチは具体数値(例: req/s, ms)を1つ以上引用
+  - 最後に「技術観点のみでの採用推奨度: 5段階」
+  - 出典URLを各項目に1本以上
+
+  【制約】
+  - 推測で断定しない。不確実な箇所は「不確実」と明記
+  - 報告は800字以内
+  - 完了報告の末尾に「検証済み: (Yes/No)」を明記</code></pre>
+
+  <h3>A2: コスト観点</h3>
+<pre><code>subagent_type: general-purpose
+description: Bun コスト試算 (移行工数/運用費)
+prompt: |
+  あなたは SaaS のエンジニアリングマネージャーです。
+  「Bun を既存 Node.js サービスへ導入する総コスト」を試算してください。
+
+  【前提(あなたが仮置き)】
+  - 対象: Node.js 20 + Express + TypeScript のAPI 1本
+  - 規模: 5万行, 月額運用費 20万円のクラウド環境
+  - チーム: 4人のバックエンドエンジニア
+
+  【調査項目】
+  1. 初期移行工数(人日)と内訳(CI/CD, パッケージ差替, テスト修正)
+  2. ランタイム差替によるクラウド運用費の変化試算
+  3. ライセンス/商用サポート費用
+  4. 既存モニタリング/APMツール対応コスト
+  5. 隠れコスト(本番障害時の切り戻し準備等)
+
+  【成果物形式】
+  - 表形式: | 項目 | 単位 | 初期 | 年間 | 備考 |
+  - 総額レンジ(最低/中央/最高)を円建てで
+  - 前提の仮置きは冒頭に明記
+
+  【制約】
+  - 根拠のない過度な安値/高値は避ける
+  - 報告は900字以内
+  - 完了報告の末尾に「成果物: 表を含む」を明記</code></pre>
+
+  <h3>A3: 学習曲線観点</h3>
+<pre><code>subagent_type: general-purpose
+description: Bun 学習曲線調査 (教育/資料/コミュニティ)
+prompt: |
+  あなたは社内の Developer Enablement 担当です。
+  「4人のNode.js経験者チームが Bun を使いこなすまでの学習曲線」を評価してください。
+
+  【調査項目】
+  1. 初心者が独学で追いつける公式資料の質と量
+  2. 日本語での解説記事/書籍/動画の現状
+  3. コミュニティ規模(Discord/GitHub stars/Stack Overflow質問数)
+  4. 採用市場への影響(Bun経験者の採用難易度)
+  5. チュートリアル完走から業務適用までの推定時間
+
+  【成果物形式】
+  - ロードマップ風の箇条書き
+    - Week 1: 何ができるようになる
+    - Week 2-3: ...
+    - Month 2: 業務適用可能
+  - 「習得難易度: 5段階」で評価
+
+  【制約】
+  - 個人差は「平均的経験者」を仮定して1つに絞る
+  - 報告は700字以内
+  - 完了報告の末尾に「参照URL数: N」を明記</code></pre>
+
+  <h3>A4: 代替案観点</h3>
+<pre><code>subagent_type: general-purpose
+description: Bun 代替案比較 (Deno/Node最新/現状維持)
+prompt: |
+  あなたは技術選定のコンサルタントです。
+  「Bun を採用しない場合の現実的な代替案」を3つ挙げて、Bun と横並び比較してください。
+
+  【候補(最低この3つを含める)】
+  - Deno 2.x
+  - Node.js 最新LTS(22.x系)をそのまま継続
+  - 現状維持(Node.js 20 そのまま)
+
+  【比較軸】
+  1. 性能
+  2. 安定性
+  3. 互換性(既存コード)
+  4. 将来性(5年後に主流か)
+  5. 移行リスク
+  6. コスト
+
+  【成果物形式】
+  - 表形式: | 軸 | Bun | Deno 2 | Node 22 | 現状維持 |
+  - 各セルは「◎/○/△/✕」+ 1行補足
+  - 最下行に「総合スコア」を加点式で
+  - 末尾に「あなたの推奨: (1つ選ぶ)」と理由2-3行
+
+  【制約】
+  - 軸ごとの評価理由を簡潔に
+  - 報告は900字以内
+  - 完了報告の末尾に「推奨候補: X」を明記</code></pre>
+
+  <h3>A5: リスク観点</h3>
+<pre><code>subagent_type: general-purpose
+description: Bun リスク分析 (ベンダー/脆弱性/撤退)
+prompt: |
+  あなたはプロダクトセキュリティと事業継続の責任者です。
+  「Bun を本番導入する際の主要リスク」を洗い出し、影響度×発生確率で評価してください。
+
+  【リスクカテゴリ(最低)】
+  1. ベンダーロック(Oven社の持続可能性、オープン度)
+  2. 過去のCVE/セキュリティ脆弱性履歴
+  3. 本番障害時のサポート入手経路
+  4. 代替ランタイムへの撤退コスト
+  5. 法務/ライセンス(MIT以外の混入リスク)
+  6. 人材流出時の属人化
+
+  【成果物形式】
+  - 表形式: | リスク | 発生確率(H/M/L) | 影響度(H/M/L) | 緩和策 |
+  - リスクは最低6個
+  - 末尾に「最も注視すべきTOP3」を選出
+
+  【制約】
+  - 「可能性がある」だけで終わらせず、必ず緩和策を1行添える
+  - 報告は900字以内
+  - 完了報告の末尾に「High×High リスク数: N」を明記</code></pre>
+
+  <p>5つとも共通するのは、<strong>「成果物形式」「文字数制約」「完了報告フォーマット」</strong> が明示されていること。これがないと統合時に形式バラバラで読めないサマリが5つ戻ってきます(Ch05の黄金律)。</p>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <div class="info-box">
+    <span class="label">今すぐ試す</span>
+    <p>上記5ブロックを <code>research-bun.md</code> というファイルに保存し、Claude Code にこう指示します:「<code>research-bun.md</code> の内容を読み、記載された5つのAgent callを<strong>1メッセージで並列に</strong>実行して」。これだけで5並列が動きます。実行前に対象を自分の検討中テーマに差し替えれば、そのまま業務に使えます。</p>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>結果の集約と意思決定</h2>
+
+  <p>5つのSubagentが戻ってきたら、メインAgentで<strong>統合サマリ</strong>を作ります。統合指示は次の形式で与えます(これもそのまま使えます):</p>
+
+<pre><code>5つのSubagentレポート(A1〜A5)を読み、以下の形式で1枚サマリを作成してください。
+
+【出力形式】
+# Bun 導入判断サマリ (2026-01-XX)
+
+## TL;DR
+- 結論: GO / NO-GO / 条件付きGO
+- 最大の根拠1行
+- 最大のリスク1行
+
+## 観点別スコア (各5点満点)
+| 観点 | スコア | 一言 |
+|---|---|---|
+| 技術    | X/5 | ... |
+| コスト  | X/5 | ... |
+| 学習    | X/5 | ... |
+| 代替案  | X/5 | ... |
+| リスク  | X/5 | ... |
+| 総合   | X/25 | ... |
+
+## 意思決定の分岐点
+- GO にするなら: 満たすべき条件3つ
+- NO-GO にするなら: その判断材料3つ
+
+## 次のアクション(24時間以内)
+1. ...
+2. ...
+3. ...</code></pre>
+
+  <div class="diagram-box">
+    <div class="diagram-title">結果集約フロー</div>
+    <pre class="mermaid">
+graph LR
+  R1["A1 技術レポート"] --> M["メインAgent<br/>統合prompt"]
+  R2["A2 コストレポート"] --> M
+  R3["A3 学習レポート"] --> M
+  R4["A4 代替案レポート"] --> M
+  R5["A5 リスクレポート"] --> M
+  M --> S["1枚サマリ<br/>TL;DR + スコア表"]
+  S --> D{"総合 ≧ 18?"}
+  D -- "Yes" --> GO["GO 決裁資料へ"]
+  D -- "No" --> Q["条件付き/NO-GO を検討"]
+    </pre>
+    <div class="diagram-caption">5独立レポート → 統合prompt → スコア判定で分岐。</div>
+  </div>
+
+  <p><span class="term" data-tip="スコアリングルーブリック=評価基準を数値化した採点表">ルーブリック</span> をあらかじめ決めておくと、主観バイアスが薄まります。MK式は「<strong>総合18点以上ならGO、13-17は条件付き、12以下はNO-GO</strong>」。この閾値は組織文化に合わせて調整してください。</p>
+
+  <details class="more-box">
+    <summary>もっと詳しく: 5レポートが矛盾した時の対処</summary>
+    <div class="more-body">
+      <p>A1(技術)が「◎」なのにA5(リスク)が「H×H」多数、のように<strong>観点間で結論が割れる</strong> ケースは頻出します。これは失敗ではなく「正しく多面で見えた証拠」。対処は3パターン:</p>
+      <ol>
+        <li><strong>追加Subagentで争点を深掘り</strong>:矛盾の原因1つに絞って第2ラウンド実行</li>
+        <li><strong>人間の判断軸を追加</strong>:「このチームはリスク回避文化か攻めか」をルーブリックに明記</li>
+        <li><strong>条件付きGO</strong>:「リスク緩和策を3つ実装できれば GO」のように条件化</li>
+      </ol>
+      <p>一番やってはいけないのは「矛盾を見なかったことにして平均点で決める」こと。多面で見る意味がなくなります。</p>
+    </div>
+  </details>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>並列多数 vs 順次1件ずつ</h2>
+
+  <p>5並列が本当にお得か?ここはよく誤解されます。「順次だと30分、並列だと6分」ぐらいの素朴な期待を持ちがちですが、実態は下のグラフのとおり。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">5並列 vs 順次 の所要時間比較(体感ベンチ)</div>
+    <canvas id="ch6-bar-1" height="180"></canvas>
+    <div class="diagram-caption">順次は線形加算。並列は最も重いSubagentに律速される(+統合オーバーヘッド)。</div>
+  </div>
+
+  <div class="compare-cards">
+    <div class="cc good">
+      <span class="cc-label">5並列の強み</span>
+      <h4>壁時計時間が大幅に短い</h4>
+      <ul>
+        <li>メインAgentの待ち時間が重Subagent1個分に収束</li>
+        <li>観点ごとにコンテキストが独立で汚れない</li>
+        <li>人間が他作業と並行しやすい(非同期)</li>
+      </ul>
+    </div>
+    <div class="cc bad">
+      <span class="cc-label">5並列の弱み</span>
+      <h4>コストは同時に5倍</h4>
+      <ul>
+        <li>トークン消費は合算(課金は並列でも割引なし)</li>
+        <li>途中経過で方針転換ができない</li>
+        <li>不要な観点に気づく前に5件走ってしまう</li>
+      </ul>
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>観点</th><th>順次1件ずつ</th><th>5並列</th><th>3並列×2バッチ</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>壁時計時間</td><td>遅い(5倍)</td><td>速い(最遅に律速)</td><td>中くらい</td></tr>
+      <tr><td>トークン消費</td><td>同じ</td><td>同じ(同時に発生)</td><td>同じ</td></tr>
+      <tr><td>途中軌道修正</td><td>○ できる</td><td>✕ できない</td><td>△ バッチ間で可</td></tr>
+      <tr><td>観点の相互参照</td><td>○ 可(累積)</td><td>✕ 不可</td><td>△ 2バッチ目のみ</td></tr>
+      <tr><td>初学者にお勧め</td><td>○ まず順次から</td><td>慣れてから</td><td>中間解</td></tr>
+    </tbody>
+  </table>
+
+  <p>結論は単純で:「<strong>観点が独立 & 急ぎ & ある程度プロンプト設計に自信あり → 5並列</strong>」「<strong>観点間に依存 or 途中で判断したい → 順次 or バッチ</strong>」。あなたの業務状況で選びましょう。</p>
+
+  <div class="info-box">
+    <span class="label">2026年1月時点の注意</span>
+    <p><span class="term" data-tip="2026年1月時点の記述。最新は公式ドキュメント参照">2026年1月時点</span>で、1メッセージ内の Agent call 数に公式制限は明記されていませんが、実運用では <strong>5〜7並列</strong> までがコンテキスト・レート制限の観点で安定します。10並列以上は失敗率が上がるので避け、必要なら2バッチに分割してください。</p>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>ハンズオン手順</h2>
+
+  <p>ここまで読んだら、自分のテーマで実行します。「Bun」は私の例題なので、あなたの職場で今まさに検討中の何かを選んでください。候補の出し方:</p>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="search" width="20" height="20"></i>
+      <div><strong>直近の会議で出た「X どうする?」</strong> — 新ツール導入、SaaS乗り換え、組織変更、プロセス改善など、判断保留になっている問い</div>
+    </li>
+    <li>
+      <i data-lucide="layers" width="20" height="20"></i>
+      <div><strong>多面的に見るべき投資判断</strong> — 金額・期間・影響範囲が大きく、ひとりで決めきれないもの</div>
+    </li>
+    <li>
+      <i data-lucide="scale" width="20" height="20"></i>
+      <div><strong>賛成派と反対派で割れているテーマ</strong> — 感情論を冷やすために客観5観点が欲しい議題</div>
+    </li>
+  </ul>
+
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-label">テーマ決定</div><div class="step-desc">自分の検討中Xを1つ</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-label">5観点分解</div><div class="step-desc">技術/コスト/学習/代替/リスク</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-label">prompt作成</div><div class="step-desc">本章の雛形を流用</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-label">並列実行</div><div class="step-desc">1メッセージで5 Agent call</div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-label">統合サマリ</div><div class="step-desc">ルーブリック採点</div></div>
+    <div class="step"><div class="step-num">6</div><div class="step-label">決裁化</div><div class="step-desc">GO/NO-GO/条件付きGO</div></div>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>自分のテーマで5観点のprompt雛形を書き換える</h4>
+    <p>本章A1〜A5の5つのpromptを、あなたが今検討中のテーマに置き換えて保存してください。<strong>実行は不要</strong>、まずは書き換えてファイル化するところまで。</p>
+    <ol>
+      <li>テーマを1行で言語化(例: 「社内DBをPostgreSQLからAmazon Auroraへ移行すべきか」)</li>
+      <li>A1〜A5のpromptで「Bun」と書かれている箇所を全置換</li>
+      <li>前提(規模・チーム構成・予算)をA2の【前提】欄に差し替え</li>
+      <li>ファイル <code>research-{theme}.md</code> として保存</li>
+      <li>読み返して「これでSubagentが単独で動けるか?」自己チェック</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><strong>テーマ例:「社内CRMを Salesforce から HubSpot へ移行すべきか」</strong>の書き換え例(A1抜粋)</p>
+      <pre><code>subagent_type: general-purpose
+description: HubSpot 技術調査 (互換性/性能/機能)
+prompt: |
+  あなたは SaaS CRM に詳しい技術リサーチャーです。
+  「Salesforce から HubSpot へ移行可能か」を技術観点から評価してください。
+
+  【調査項目】
+  1. 既存 Salesforce カスタムオブジェクト/フローの移植性
+  2. API レート制限と連携ツール対応状況(2026年1月時点)
+  3. 過去のメジャーアップデート安定性
+  4. 外部SaaS(Slack/GAS/MAツール)との統合
+  5. カスタムレポート/ダッシュボード移行の難易度
+
+  【成果物形式/制約】
+  (本章A1と同じテンプレ)</code></pre>
+      <p>ポイントは<strong>「テーマ名の置換」だけでなく「前提」「調査項目」も業界特化に書き直す</strong>こと。ここを手抜きするとSubagentがBun向けの一般論を返してきます。A2〜A5も同様に、CRM特有の軸(ライセンス課金体系、営業部門の教育、競合 Zoho/Dynamics との比較、顧客データ漏洩リスク)で書き換えます。保存先は <code>research-crm-migration.md</code>。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>実際に5並列を回して統合サマリまで作る</h4>
+    <p>Exercise 1で作ったprompt集を、<strong>実際にClaude Codeで並列実行</strong>し、統合サマリまで作成してください。</p>
+    <ol>
+      <li><code>research-{theme}.md</code> を保存</li>
+      <li>Claude Codeに「このファイルを読み、5つのAgent callを<strong>1メッセージで並列に</strong>実行して」と指示</li>
+      <li>5レポートが戻ってきたら、本章「結果の集約」節の統合promptをメインAgentに投げる</li>
+      <li>出力されたTL;DR+スコア表を <code>summary-{theme}.md</code> に保存</li>
+      <li>同僚1人に見せて「このサマリで判断できる?」フィードバックをもらう</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><strong>MKの実例(社内CRM移行テーマで実行した場合)</strong>の統合サマリ出力イメージ:</p>
+      <pre><code># HubSpot 移行判断サマリ (2026-01-15)
+
+## TL;DR
+- 結論: 条件付きGO
+- 最大の根拠: 年間ライセンス費 -38% かつ API連携数が現状ツールを全カバー
+- 最大のリスク: 営業部20人の教育期間2ヶ月の受注機会損失
+
+## 観点別スコア
+| 観点 | スコア | 一言 |
+|---|---|---|
+| 技術    | 4/5 | API互換性は十分、カスタム移植に工数 |
+| コスト  | 5/5 | 3年TCO -2,400万円 |
+| 学習    | 3/5 | 営業部の教育2ヶ月が要 |
+| 代替案  | 3/5 | Zoho/Dynamics より優位だが Salesforce据置も有力 |
+| リスク  | 3/5 | 顧客データ移行時の漏洩リスクH×M |
+| 総合   | 18/25 | GO ライン |
+
+## 意思決定の分岐点
+- GO条件: ①移行期の並行稼働3ヶ月 ②教育予算200万円確保 ③PoC部門先行
+- NO-GO材料: 既存カスタムフロー30本以上が再現不可 / 営業部の強硬反対
+
+## 次のアクション(24時間以内)
+1. 情シスにカスタムフロー棚卸しを依頼
+2. HubSpot日本法人に移行支援見積もりを打診
+3. 営業部長に教育期間の受注影響ヒアリング</code></pre>
+      <p>重要なのは<strong>「戻ってきた5レポートを鵜呑みにしない」</strong>こと。数値の根拠、出典URLを1件ずつ自分で軽く確認するだけで、生成AI特有の<span class="term" data-tip="事実と異なる内容を自信満々に生成する現象">ハルシネーション</span>の9割は弾けます。あとはこのサマリをそのまま決裁資料の1枚目に貼って上司に持っていく。ここまで通して <strong>普通なら丸一日かかる調査が30-45分</strong> で終わります。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式ドキュメント</a> <span class="res-type doc">Doc</span> Agent ツールと並列実行の最新仕様</li>
+      <li><a href="https://docs.claude.com/en/docs/claude-code/sdk" target="_blank" rel="noopener">Agent SDK ドキュメント</a> <span class="res-type doc">Doc</span> subagent_type / prompt 引数の詳細</li>
+      <li><a href="https://github.com/anthropics/anthropic-cookbook" target="_blank" rel="noopener">Anthropic Cookbook</a> <span class="res-type doc">Doc</span> Subagent 活用レシピ集</li>
+      <li><a href="https://www.anthropic.com/news" target="_blank" rel="noopener">Anthropic Blog: Building with Claude Code</a> <span class="res-type doc">Doc</span> 並列リサーチの事例紹介</li>
+      <li><a href="https://www.youtube.com/results?search_query=Claude+Code+subagents+parallel" target="_blank" rel="noopener">YouTube: Claude Code subagents parallel</a> <span class="res-type video">Video</span> 並列実行の動画デモ集</li>
+      <li><a href="https://zenn.dev/topics/claudecode" target="_blank" rel="noopener">Zenn: Claude Code トピック</a> <span class="res-type doc">Doc</span> 日本語の実践記事が集まるタグ</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="06">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="05-prompt-craft.html"><span class="direction">&larr; Prev</span>Subagentプロンプト術</a>
+    <a href="07-review-parallel.html"><span class="direction">Next &rarr;</span>実践：コードレビュー分割</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<!-- 視覚化ライブラリ群 -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+<script>
+  window.addEventListener("load", function() {
+    var ctx = document.getElementById('ch6-bar-1');
+    if (!ctx || !window.Chart) return;
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['順次1件ずつ', '3並列×2バッチ', '5並列'],
+        datasets: [{
+          label: '壁時計時間(分)',
+          data: [25, 12, 6],
+          backgroundColor: ['#cbd5e1', 'rgba(217,119,87,0.55)', '#D97757'],
+          borderRadius: 6
+        }, {
+          label: 'トークン消費(相対)',
+          data: [100, 100, 100],
+          backgroundColor: 'rgba(24,24,27,0.2)',
+          borderRadius: 6
+        }]
+      },
+      options: {
+        plugins: { legend: { position: 'bottom' } },
+        scales: { y: { beginAtZero: true, title: { display: true, text: '相対値' } } }
+      }
+    });
+  });
+</script>
+</body>
+</html>

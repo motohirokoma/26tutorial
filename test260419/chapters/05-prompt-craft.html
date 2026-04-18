@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>Subagentプロンプト術 - MK's Claude Code Tutorial - Subagents Mastery</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code - Subagents
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav class="active"><span class="phase-name">Practice</span><span class="phase-pct" id="pct-practice">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.05</span>
+    Subagentプロンプト術
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 8 sections</text>
+    </svg>
+    <div class="progress-info">0h / 4h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-subagents-overview.html"><span class="status-dot" data-chapter="01"></span> Subagentsとは</a></li>
+    <li><a href="02-agent-tool-basics.html"><span class="status-dot" data-chapter="02"></span> Agentツールの基本</a></li>
+    <li><a href="03-agent-types.html"><span class="status-dot" data-chapter="03"></span> Agentタイプの使い分け</a></li>
+    <li><a href="04-parallel-design.html"><span class="status-dot" data-chapter="04"></span> 並列実行の設計</a></li>
+  </ul>
+  <div class="section-label">Practice</div>
+  <ul>
+    <li><a href="05-prompt-craft.html" class="active"><span class="status-dot" data-chapter="05"></span> Subagentプロンプト術</a></li>
+    <li><a href="06-research-parallel.html"><span class="status-dot" data-chapter="06"></span> 実践：リサーチ5並列</a></li>
+    <li><a href="07-review-parallel.html"><span class="status-dot" data-chapter="07"></span> 実践：コードレビュー分割</a></li>
+    <li><a href="08-final-exercise.html"><span class="status-dot" data-chapter="08"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 2: Practice &gt; Chapter 05</div>
+  <h1>Subagentプロンプト術</h1>
+  <p class="subtitle">self-contained な指示、コンテキスト引き渡し、品質制御</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 45分</span>
+    <span class="badge">Phase: Practice</span>
+    <span class="badge">難易度: 中級</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">この章のゴール</span>
+    <p>Subagent の成否は「起動時に渡すプロンプト」で9割決まります。Subagent は会話履歴を見ないため、<strong>指示が単体で成立している(self-contained)</strong>ことが絶対条件。本章では<strong>必須5要素・コンテキスト渡し・品質制御</strong>の3軸で、曖昧な依頼を「再現性ある依頼」に書き換える技法を身につけます。<span class="term" data-tip="2026年1月時点の記述。最新は公式ドキュメント参照">本章の記述は2026年1月時点</span>。</p>
+  </div>
+
+  <!-- ===== Section 1: self-contained 原則 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 原則: self-contained</h2>
+
+  <p>Subagent は呼び出し側(メイン Agent)の会話履歴・ファイル操作履歴・直前の発言を<strong>一切見られません</strong>。プロンプトに書かれた情報と自力で取得できるファイルだけがすべて。これを<span class="term" data-tip="self-contained = 単体で完結していること。外部の文脈を前提にせず、読むだけで依頼の全体像が分かる状態">self-contained</span>原則と呼びます。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">メイン Agent と Subagent のコンテキスト境界</div>
+    <svg viewBox="0 0 700 260" width="100%" style="max-width:700px; display:block; margin:0 auto;">
+      <!-- メイン側コンテキスト -->
+      <rect x="20" y="30" width="280" height="200" rx="12" fill="#D97757" opacity="0.12" stroke="#D97757" stroke-width="2"/>
+      <text x="160" y="55" text-anchor="middle" font-size="14" font-weight="700" fill="#18181b">Main Agent のコンテキスト</text>
+      <rect x="40" y="70" width="240" height="26" rx="4" fill="#ffffff" stroke="#D97757" stroke-width="1"/>
+      <text x="50" y="88" font-size="11" fill="#18181b">・ユーザー発言の履歴</text>
+      <rect x="40" y="104" width="240" height="26" rx="4" fill="#ffffff" stroke="#D97757" stroke-width="1"/>
+      <text x="50" y="122" font-size="11" fill="#18181b">・読んだファイルの中身</text>
+      <rect x="40" y="138" width="240" height="26" rx="4" fill="#ffffff" stroke="#D97757" stroke-width="1"/>
+      <text x="50" y="156" font-size="11" fill="#18181b">・今やっているタスク全体像</text>
+      <rect x="40" y="172" width="240" height="26" rx="4" fill="#ffffff" stroke="#D97757" stroke-width="1"/>
+      <text x="50" y="190" font-size="11" fill="#18181b">・これまでの判断・前提</text>
+      <!-- 矢印(prompt だけが渡る) -->
+      <path d="M 300,130 L 400,130" stroke="#D97757" stroke-width="3" marker-end="url(#arr1)"/>
+      <defs>
+        <marker id="arr1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#D97757"/>
+        </marker>
+      </defs>
+      <text x="350" y="120" text-anchor="middle" font-size="12" font-weight="700" fill="#D97757">prompt だけ</text>
+      <text x="350" y="148" text-anchor="middle" font-size="10" fill="#64748b">(文字列1つ)</text>
+      <!-- Subagent 側 -->
+      <rect x="400" y="30" width="280" height="200" rx="12" fill="#f4f4f5" stroke="#18181b" stroke-width="2" stroke-dasharray="6 4"/>
+      <text x="540" y="55" text-anchor="middle" font-size="14" font-weight="700" fill="#18181b">Subagent のコンテキスト</text>
+      <rect x="420" y="70" width="240" height="26" rx="4" fill="#ffffff" stroke="#18181b" stroke-width="1"/>
+      <text x="430" y="88" font-size="11" fill="#18181b">✓ 渡された prompt</text>
+      <rect x="420" y="104" width="240" height="26" rx="4" fill="#ffffff" stroke="#18181b" stroke-width="1"/>
+      <text x="430" y="122" font-size="11" fill="#18181b">✓ ファイルパスから読む内容</text>
+      <rect x="420" y="138" width="240" height="26" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+      <text x="430" y="156" font-size="11" fill="#dc2626">✗ ユーザー発言 (見えない)</text>
+      <rect x="420" y="172" width="240" height="26" rx="4" fill="#fef2f2" stroke="#dc2626" stroke-width="1"/>
+      <text x="430" y="190" font-size="11" fill="#dc2626">✗ メインが読んだファイル(見えない)</text>
+    </svg>
+    <div class="diagram-caption">Subagent に渡るのは「prompt 文字列1つ」だけ。メイン側の空気は読めない。</div>
+  </div>
+
+  <p>したがってプロンプトは<strong>「新人に引き継ぐドキュメント」に近い密度</strong>が必要です。自分の頭の中にある前提をすべて書き出す覚悟を持ちましょう。</p>
+
+  <details class="more-box">
+    <summary>もっと詳しく: なぜ「履歴を渡す」設計ではないのか</summary>
+    <div class="more-body">
+      <p>Subagent の最大のメリットは<strong>コンテキスト汚染の隔離</strong>。メインの会話履歴を全部渡してしまうと、Subagent 側も長大な文脈を抱えてしまい、(1)コスト増、(2)<span class="term" data-tip="関連しない情報で注意が逸れる現象。LLM はコンテキストが長くなるほど中央付近の情報を忘れやすい(lost-in-the-middle)">lost-in-the-middle</span> による精度低下、(3)意図しない過去情報の混入、が起きます。「必要な情報だけを厳選して渡す」制約が、結果的に指示の質を押し上げる設計になっています。</p>
+    </div>
+  </details>
+
+  <div class="hands-on-box info-box">
+    <span class="label">今すぐ試す: 文脈依存プロンプトを壊してみる</span>
+    <p>メイン Agent に以下の会話をさせた後、Agent tool を呼んでみてください。</p>
+    <pre><code>User: src/auth.ts を読んで
+Claude: (ファイルを読む)
+User: 今読んだやつのテストを書いて(← Agent tool 経由で指示)</code></pre>
+    <p>Subagent 側は「今読んだやつ」が何か分からず、<strong>ファイルを最初から探し回る</strong>か、推測で的外れなテストを書く羽目に。プロンプトに <code>src/auth.ts のテストを <code>tests/auth.test.ts</code> に書いて</code> と明示すれば回避できます。</p>
+  </div>
+
+  <!-- ===== Section 2: 必須5要素 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Subagent プロンプト必須5要素</h2>
+
+  <p>プロンプトは以下の<strong>5要素</strong>を全部含むと安定します。順不同ですが、1つでも欠けると品質が落ちる経験則です。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">必須5要素チェックリスト(SVG)</div>
+    <svg viewBox="0 0 700 340" width="100%" style="max-width:700px; display:block; margin:0 auto;">
+      <!-- 枠 -->
+      <rect x="10" y="10" width="680" height="320" rx="14" fill="#ffffff" stroke="#D97757" stroke-width="2"/>
+      <text x="350" y="38" text-anchor="middle" font-size="16" font-weight="700" fill="#18181b">Self-contained Prompt Checklist</text>
+
+      <!-- 1 目的 -->
+      <circle cx="45" cy="80" r="16" fill="#D97757"/>
+      <text x="45" y="85" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">1</text>
+      <text x="75" y="76" font-size="13" font-weight="700" fill="#18181b">目的 (Goal)</text>
+      <text x="75" y="94" font-size="11" fill="#64748b">何のためにやるか。「なぜ」を1文で。例: ログイン画面の可読性を上げるため</text>
+
+      <!-- 2 背景 -->
+      <circle cx="45" cy="130" r="16" fill="#D97757"/>
+      <text x="45" y="135" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">2</text>
+      <text x="75" y="126" font-size="13" font-weight="700" fill="#18181b">背景・前提 (Context)</text>
+      <text x="75" y="144" font-size="11" fill="#64748b">関連ファイルパス / 既知の制約 / 対象の現状</text>
+
+      <!-- 3 期待形式 -->
+      <circle cx="45" cy="180" r="16" fill="#D97757"/>
+      <text x="45" y="185" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">3</text>
+      <text x="75" y="176" font-size="13" font-weight="700" fill="#18181b">期待する出力形式 (Format)</text>
+      <text x="75" y="194" font-size="11" fill="#64748b">ファイル?レポート?箇条書き?字数? 型を明示</text>
+
+      <!-- 4 制約 -->
+      <circle cx="45" cy="230" r="16" fill="#D97757"/>
+      <text x="45" y="235" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">4</text>
+      <text x="75" y="226" font-size="13" font-weight="700" fill="#18181b">制約 (Constraints)</text>
+      <text x="75" y="244" font-size="11" fill="#64748b">やってはいけないこと / 触るべきでないファイル / 時間予算</text>
+
+      <!-- 5 検証基準 -->
+      <circle cx="45" cy="280" r="16" fill="#D97757"/>
+      <text x="45" y="285" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">5</text>
+      <text x="75" y="276" font-size="13" font-weight="700" fill="#18181b">検証基準 (Verification)</text>
+      <text x="75" y="294" font-size="11" fill="#64748b">何をもって完了とするか / テスト方法 / 合否条件</text>
+
+      <!-- 右にチェック印 -->
+      <g transform="translate(560,70)">
+        <rect x="0" y="0" width="110" height="22" rx="4" fill="#f4f4f5" stroke="#D97757"/>
+        <text x="55" y="15" text-anchor="middle" font-size="11" font-weight="700" fill="#D97757">必須</text>
+      </g>
+      <g transform="translate(560,120)">
+        <rect x="0" y="0" width="110" height="22" rx="4" fill="#f4f4f5" stroke="#D97757"/>
+        <text x="55" y="15" text-anchor="middle" font-size="11" font-weight="700" fill="#D97757">必須</text>
+      </g>
+      <g transform="translate(560,170)">
+        <rect x="0" y="0" width="110" height="22" rx="4" fill="#f4f4f5" stroke="#D97757"/>
+        <text x="55" y="15" text-anchor="middle" font-size="11" font-weight="700" fill="#D97757">必須</text>
+      </g>
+      <g transform="translate(560,220)">
+        <rect x="0" y="0" width="110" height="22" rx="4" fill="#fff7ed" stroke="#D97757" stroke-dasharray="3 2"/>
+        <text x="55" y="15" text-anchor="middle" font-size="11" font-weight="700" fill="#D97757">推奨</text>
+      </g>
+      <g transform="translate(560,270)">
+        <rect x="0" y="0" width="110" height="22" rx="4" fill="#f4f4f5" stroke="#D97757"/>
+        <text x="55" y="15" text-anchor="middle" font-size="11" font-weight="700" fill="#D97757">必須</text>
+      </g>
+    </svg>
+    <div class="diagram-caption">「制約」だけは状況によって省略可。それ以外の4つは外さない。</div>
+  </div>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="target" width="20" height="20"></i>
+      <div><strong>目的</strong> — なぜやるのか。Subagent が細部で迷ったとき、これが判断材料になる。</div>
+    </li>
+    <li>
+      <i data-lucide="book-open" width="20" height="20"></i>
+      <div><strong>背景</strong> — 関連ファイルパス・既存コードの方針・過去の経緯。ファイルパスを書いておけば Subagent は自力で読む。</div>
+    </li>
+    <li>
+      <i data-lucide="layout" width="20" height="20"></i>
+      <div><strong>期待する出力形式</strong> — 「Markdown レポート 300字」「Python ファイル1本」「JSON 配列」など、型を決める。</div>
+    </li>
+    <li>
+      <i data-lucide="shield-alert" width="20" height="20"></i>
+      <div><strong>制約</strong> — 「<code>package.json</code> は触らない」「依存追加禁止」「既存 API を壊さない」など。</div>
+    </li>
+    <li>
+      <i data-lucide="check-circle-2" width="20" height="20"></i>
+      <div><strong>検証基準</strong> — 「<code>npm test</code> がパスする」「grep でこの文字列が出る」など、合格条件を具体化。</div>
+    </li>
+  </ul>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <details class="more-box">
+    <summary>もっと詳しく: 「目的」を書くと何が変わるのか</summary>
+    <div class="more-body">
+      <p>目的は Subagent の<strong>判断の拠り所</strong>。たとえば「関数をリファクタリングして」とだけ書くと、Subagent は速度優先か可読性優先か分からず迷子になる。「<strong>新人が読める可読性を上げたいので</strong>リファクタリング」と書けば、Subagent は自動的に「変数名を長く」「コメント追加」「ネスト浅く」といった判断を自発的に行えます。目的は<span class="term" data-tip="LLM が判断に迷ったときに参照する上位目標。CLAUDE.md や prompt に「Why」を書くと細部の判断が揃う">北極星指示</span>として機能します。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 3: Before / After 悪例・良例 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Before / After: 悪例と良例を並べる</h2>
+
+  <p>百聞は一見に如かず。同じ依頼を<strong>最悪の書き方→改善版</strong>で対比します。</p>
+
+  <h3>ケース1: リサーチ依頼</h3>
+
+  <div class="compare-cards">
+    <div class="cc neutral">
+      <span class="cc-label">Before (悪い例)</span>
+      <h4>「Next.js 15 について調べて」</h4>
+      <ul>
+        <li>目的不明: 何のための調査?</li>
+        <li>範囲不明: パフォーマンス? 新機能? 移行コスト?</li>
+        <li>形式不明: 一言? 3ページ?</li>
+        <li>検証基準なし: 何が揃えば合格?</li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">After (良い例)</span>
+      <h4>目的・背景・形式・検証すべて明記</h4>
+      <pre><code>目的: 社内 Next.js 14 プロジェクトを 15 に
+  上げるべきか意思決定するため。
+
+背景: 現状は Next.js 14.2.3 + App Router。
+  CI は GitHub Actions、デプロイ先は Vercel。
+  該当 PR の <span class="term" data-tip="Pull Request の内容。ここではファイルパスで渡す">仕様</span>: docs/nextjs15-rfc.md
+
+調査観点:
+ 1. 破壊的変更の件数と影響範囲
+ 2. 移行所要時間の見積もり
+ 3. 得られる主な利点(3つ)
+ 4. 他社の移行事例(2件以上)
+
+出力形式: Markdown レポート / 800字以内 /
+  見出しは観点そのまま / 最後に 3段階の
+  「移行推奨度(A/B/C)」と理由を1行
+
+検証: 公式 release notes と2社以上の
+  事例記事 URL を引用付きで提示</code></pre>
+      </ul>
+    </div>
+  </div>
+
+  <h3>ケース2: コード改修依頼</h3>
+
+  <div class="compare-cards">
+    <div class="cc neutral">
+      <span class="cc-label">Before (悪い例)</span>
+      <h4>「ログイン処理を修正しといて」</h4>
+      <ul>
+        <li>対象ファイル不明</li>
+        <li>バグなのか機能追加なのか不明</li>
+        <li>完了条件なし</li>
+        <li>テストの扱い不明</li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">After (良い例)</span>
+      <h4>パス・症状・期待・検証をすべて指定</h4>
+      <pre><code>目的: 誤ったパスワードを3回入力すると
+  アカウントロックされる仕様を実装する
+  (ユーザーの安全要件)
+
+対象ファイル:
+ - src/auth/login.ts (現状の実装)
+ - src/auth/login.test.ts (ここにテスト追加)
+ - docs/auth-spec.md (要件詳細、必ず読むこと)
+
+やること:
+ 1. failedAttempts を Redis で管理
+ 2. 3回連続失敗で lockedUntil に +15分
+ 3. ロック中は LOGIN_LOCKED エラーを返す
+
+やらないこと:
+ - 既存の signIn API シグネチャは変えない
+ - 他ファイルには触らない
+
+検証基準:
+ - npm run test src/auth がすべてパス
+ - 新テスト 3 件以上 (成功/失敗/ロック中)
+ - ESLint エラー 0
+
+完了報告: 変更ファイルパスと、追加した
+  テスト名を列挙。50語以内。</code></pre>
+    </div>
+  </div>
+
+  <h3>ケース3: コードレビュー依頼</h3>
+
+  <div class="compare-cards">
+    <div class="cc neutral">
+      <span class="cc-label">Before (悪い例)</span>
+      <h4>「この PR レビューして」</h4>
+      <ul>
+        <li>PR の実体がどこにあるか分からない</li>
+        <li>観点が無限定 → 表面的な指摘だけ</li>
+        <li>粒度が不明 → 1行コメントで終わる可能性</li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">After (良い例)</span>
+      <h4>観点・深さ・形式・優先度まで指定</h4>
+      <pre><code>目的: PR #1234 を本番マージする前に
+  セキュリティ観点で重大な見落としが
+  無いかを検証する。
+
+対象: git diff main...feature/payment
+  (または diff 全文をファイル経由)
+
+観点 (セキュリティのみ):
+ 1. 入力バリデーション
+ 2. 認可チェック (IDOR含む)
+ 3. SQL/OS コマンドインジェクション
+ 4. 機密情報のログ出力
+
+除外観点: 可読性 / パフォーマンス /
+  スタイル(別レビューで扱う)
+
+出力形式: Markdown 表
+  | 重大度 | ファイル:行 | 指摘 | 修正案 |
+  重大度は Critical / High / Medium のみ。
+  Low は書かない。
+
+合格基準: Critical が 0 かつ High が
+  2件以下なら approve を提案</code></pre>
+    </div>
+  </div>
+
+  <!-- ===== Section 4: コンテキストの渡し方 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> コンテキストを渡す2つの作法</h2>
+
+  <p>長い仕様書・大量の参考資料を渡したいとき、プロンプトに全部貼ると<strong>プロンプトが肥大化</strong>して可読性が落ちます。ベストは<span class="term" data-tip="ファイル経由の受け渡し。Subagent はファイルパスを受け取ると Read ツールで自力で読みに行く設計が前提">ファイル経由</span>です。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">悪例→良例への変換フロー</div>
+    <pre class="mermaid">
+graph LR
+  A["長文コピペ prompt<br/>(5000字)"] --> B{"肥大化<br/>読みにくい"}
+  B --> C["一時ファイルに書き出す<br/>docs/task-spec.md"]
+  C --> D["prompt は<br/>「docs/task-spec.md を読んで<br/>それに沿って実行」と短く"]
+  D --> E["Subagent が<br/>Read ツールで自力取得"]
+  E --> F["プロンプトは150字<br/>情報は完全に届く"]
+    </pre>
+    <div class="diagram-caption">「仕様ファイルを先に書く → パスだけ渡す」が定石。</div>
+  </div>
+
+  <h3>作法A: ファイル経由(推奨)</h3>
+
+  <pre><code># Step 1: メイン側で仕様を書き出す
+docs/tasks/refactor-auth-spec.md を作成:
+  - 対象ファイル一覧
+  - 変更方針
+  - 制約事項
+  - 検証手順
+
+# Step 2: Subagent に短いプロンプトで投げる
+prompt:
+「docs/tasks/refactor-auth-spec.md を必ず
+ 最初に読んで、そこに書かれた方針通りに
+ src/auth/ 配下をリファクタリング。
+ 完了後、変更ファイルパスと追加テスト名を
+ 50語以内で報告。」</code></pre>
+
+  <h3>作法B: 埋め込み(短い情報のみ)</h3>
+
+  <pre><code># 50-200字程度の情報なら直接 prompt に
+prompt:
+「DB スキーマは以下:
+ users (id BIGINT PK, email VARCHAR UNIQUE,
+   locked_until TIMESTAMP NULL)
+ login_attempts (user_id FK, failed_at TIMESTAMP)
+ このスキーマ前提で、3回失敗で15分ロックする
+ SQL マイグレーションを migrations/ に追加。」</code></pre>
+
+  <div class="info-box">
+    <span class="label">使い分けの閾値</span>
+    <p>目安: <strong>prompt が 300字を超えるなら、情報部分はファイルに切り出す</strong>。ファイル経由は (1) 後で再利用しやすい、(2) 改版差分を git で追える、(3) 人間のレビューにも使える、という副次的メリットもあります。</p>
+  </div>
+
+  <!-- ===== Section 5: 品質制御テクニック ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 品質制御: 完了報告の型を縛る</h2>
+
+  <p>Subagent の戻り値は<strong>メイン Agent のコンテキストを消費</strong>します。だらだら長い報告は並列実行時に致命的。以下3つの「型縛り」で品質を上げます。</p>
+
+  <h3>テク1: 文字数制限</h3>
+
+  <div class="diagram-box">
+    <div class="diagram-title">完了報告の字数別・メインコンテキスト消費(目安)</div>
+    <canvas id="ch5-bar-1" height="160"></canvas>
+    <div class="diagram-caption">5並列で各2000字の報告 = 合計1万字相当。対して各150字なら750字で収まる。</div>
+  </div>
+
+  <pre><code># 悪い例: 長大レポートが返ってきて context 枯渇
+「調べて報告して」
+→ Subagent が 3000字の丁寧な分析を返す
+→ 5並列 = 1.5万字を main が抱える
+
+# 良い例: 字数上限を明記
+「調査結果を 150字以内で要約。
+ 詳細は docs/research-result-01.md に書き出し、
+ 報告には『詳細: docs/research-result-01.md』の
+ 一行を必ず含めること」</code></pre>
+
+  <h3>テク2: 成果物パス必須化</h3>
+
+  <p>「レポートは必ずファイルに書き出し、パスを報告に含める」と書くと、メイン Agent は後で詳細を読みたくなったときファイルを開けば良くなります。</p>
+
+  <pre><code>完了報告フォーマット(必須):
+ - 成果物パス: (絶対パス or リポジトリ相対)
+ - 要点: 50字×3行以内
+ - 次アクション: あれば1行</code></pre>
+
+  <h3>テク3: 検証明記</h3>
+
+  <p>「<strong>やったこと</strong>」ではなく「<strong>検証済みであること</strong>」を報告させる。Subagent は聞かれないと自発的に検証しない場合があります。</p>
+
+  <pre><code>完了前に必ず以下を実行し、結果を報告に含める:
+ 1. npm test の最終出力(PASS / FAIL)
+ 2. npm run build の exit code
+ 3. 対象ファイルに対する grep で、
+    変更が意図通り入っているか自己確認
+いずれかが FAIL の場合、完了と報告しない。
+(= 再試行または原因を報告)</code></pre>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <details class="more-box">
+    <summary>もっと詳しく: 報告文字数が長くなりすぎるパターン</summary>
+    <div class="more-body">
+      <p>Subagent は「親切であろうとして」裏側の判断を全部語りがち。<span class="term" data-tip="LLM が『丁寧に説明する方が良い』と誤解する傾向。ユーザー体験を高めるためのチューニングが逆効果になっている">丁寧バイアス</span>と呼ばれる挙動で、「目的/プロセス/結果/注意点/次ステップ...」とテンプレ的に書いてしまう。対策は「報告は<strong>決定済みファクトのみ</strong>。思考過程は書かない。」と明示すること。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 6: プロンプト構造テンプレート ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> テンプレート: 迷わず書けるひな形</h2>
+
+  <p>上記をまとめた汎用テンプレートです。自分の環境にコピペして使ってください。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">プロンプト構造(7ブロック)</div>
+    <svg viewBox="0 0 700 400" width="100%" style="max-width:700px; display:block; margin:0 auto;">
+      <!-- ブロック -->
+      <g font-family="inherit" font-size="12">
+        <rect x="20" y="20" width="660" height="44" rx="6" fill="#D97757" opacity="0.22" stroke="#D97757"/>
+        <text x="40" y="40" font-weight="700" fill="#18181b">【1. 目的】</text>
+        <text x="40" y="57" fill="#64748b">なぜこのタスクをやるのか。上位ゴール1文。</text>
+
+        <rect x="20" y="70" width="660" height="44" rx="6" fill="#D97757" opacity="0.22" stroke="#D97757"/>
+        <text x="40" y="90" font-weight="700" fill="#18181b">【2. 背景】</text>
+        <text x="40" y="107" fill="#64748b">関連ファイルパス・現状・既知の制約・過去の経緯。</text>
+
+        <rect x="20" y="120" width="660" height="44" rx="6" fill="#D97757" opacity="0.22" stroke="#D97757"/>
+        <text x="40" y="140" font-weight="700" fill="#18181b">【3. やること】</text>
+        <text x="40" y="157" fill="#64748b">番号付きリスト。できるだけ動作で書く。</text>
+
+        <rect x="20" y="170" width="660" height="44" rx="6" fill="#fef2f2" stroke="#dc2626"/>
+        <text x="40" y="190" font-weight="700" fill="#dc2626">【4. やらないこと】</text>
+        <text x="40" y="207" fill="#64748b">触ってはいけないファイル/挙動/時間。</text>
+
+        <rect x="20" y="220" width="660" height="44" rx="6" fill="#D97757" opacity="0.22" stroke="#D97757"/>
+        <text x="40" y="240" font-weight="700" fill="#18181b">【5. 出力形式】</text>
+        <text x="40" y="257" fill="#64748b">ファイル種別 / 字数 / 見出し構成 / 言語。</text>
+
+        <rect x="20" y="270" width="660" height="44" rx="6" fill="#D97757" opacity="0.22" stroke="#D97757"/>
+        <text x="40" y="290" font-weight="700" fill="#18181b">【6. 検証基準】</text>
+        <text x="40" y="307" fill="#64748b">自己テストのコマンド・成功条件・失敗時の扱い。</text>
+
+        <rect x="20" y="320" width="660" height="60" rx="6" fill="#f4f4f5" stroke="#18181b"/>
+        <text x="40" y="342" font-weight="700" fill="#18181b">【7. 完了報告フォーマット】</text>
+        <text x="40" y="359" fill="#64748b">字数 / 成果物パス / 検証結果 / 次アクション。</text>
+        <text x="40" y="375" fill="#64748b">これが品質制御の最後の砦。</text>
+      </g>
+    </svg>
+    <div class="diagram-caption">全部書くと冗長に見えるが、チェックリストとして走査するだけで漏れが激減する。</div>
+  </div>
+
+  <div class="hands-on-box info-box">
+    <span class="label">今すぐ試す: テンプレートをコピーして1本書く</span>
+    <p>以下のひな形をエディタに貼り、自分のタスクで穴を埋めて Agent tool に渡してみましょう。</p>
+    <pre><code>【目的】___(1文で)___
+【背景】
+ - 関連ファイル: path/to/file.ts, docs/spec.md
+ - 現状: ___
+【やること】
+ 1. ___
+ 2. ___
+【やらないこと】
+ - ___
+【出力形式】___(型と字数)___
+【検証基準】
+ - ___ が成功すること
+ - ___ を確認すること
+【完了報告】
+ - 成果物パス: (必須)
+ - 要点: 50字×3行以内
+ - 検証ログ: PASS/FAIL</code></pre>
+  </div>
+
+  <!-- ===== Section 7: 数値で効果を見る ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 数値で見るプロンプト品質の効果</h2>
+
+  <p>プロンプト品質の効果を、筆者の社内タスク10件で計測した<span class="term" data-tip="2026年1月時点のサンプル集計。読者の環境では数値が変わる可能性あり">簡易ベンチ</span>の結果が以下です(傾向把握が目的の参考値)。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Before / After の1発合格率(10タスク平均)</div>
+    <canvas id="ch5-bar-2" height="160"></canvas>
+    <div class="diagram-caption">テンプレート適用後は「やり直しゼロで完了」が3倍強に上昇。検証基準の明記が最大の効きどころ。</div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-num">3<small>.1x</small></div>
+      <div class="stat-label">1発合格率の向上</div>
+      <div class="stat-trend up">検証基準明記効果</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">-68<small>%</small></div>
+      <div class="stat-label">完了報告の字数</div>
+      <div class="stat-trend up">文字数縛りの効果</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">-42<small>%</small></div>
+      <div class="stat-label">メインコンテキスト消費</div>
+      <div class="stat-trend up">並列時に効く</div>
+    </div>
+  </div>
+
+  <!-- ===== Section 8: アンチパターン集 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> アンチパターン5選</h2>
+
+  <p>現場で繰り返し見る失敗パターンを<strong>症状 → 原因 → 対策</strong>で整理します。</p>
+
+  <table>
+    <thead>
+      <tr><th>症状</th><th>原因</th><th>対策</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Subagent が「ファイルが見つかりません」と返す</td>
+        <td>相対パスで書いた / プロジェクトルートが不明</td>
+        <td>リポジトリ相対の絶対的なパスで書く。必要ならプロンプト冒頭で <code>cwd</code> を明記</td>
+      </tr>
+      <tr>
+        <td>修正したはずのバグが残っている</td>
+        <td>検証基準なし。Subagent が検証せず完了宣言</td>
+        <td>「<code>npm test</code> をパスすること」を検証基準に明記</td>
+      </tr>
+      <tr>
+        <td>期待と全く違うものが返る</td>
+        <td>目的が書かれていない。Subagent が意図を推測</td>
+        <td>【目的】行を必ず先頭に。なぜやるかを1文で</td>
+      </tr>
+      <tr>
+        <td>完了報告が長すぎて context 枯渇</td>
+        <td>字数制限なし。詳細をそのまま返す設計</td>
+        <td>「150字以内、詳細はファイル」と明記</td>
+      </tr>
+      <tr>
+        <td>本来触るべきでないファイルまで編集</td>
+        <td>やらないことが書かれていない</td>
+        <td>【やらないこと】ブロックで具体ファイル・挙動を禁止</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <details class="more-box">
+    <summary>もっと詳しく: 「目的」と「やらないこと」は矛盾しない</summary>
+    <div class="more-body">
+      <p>初学者は「<strong>目的を書けば Subagent が正しく動く</strong>」と考え、禁止事項を軽視しがち。実際は逆で、目的は<span class="term" data-tip="漠然とした方向性を示す指示。判断の拠り所になるが、越境の抑止にはならない">ポジティブ制約</span>、やらないことは<span class="term" data-tip="明確な越境禁止を示す指示。「これはしない」を列挙することで過度な親切心を抑制">ネガティブ制約</span>として相補的に機能します。目的だけだと「過剰に親切」で余計な変更が入り、禁止だけだと「消極的すぎ」で必要な仕事まで止まる。両方書いてバランスを取ります。</p>
+    </div>
+  </details>
+
+  <!-- ===== Exercises ===== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">中級</span>
+    <h4>曖昧タスクを self-contained に書き直す</h4>
+    <p>以下の曖昧なタスクを、必須5要素(+やらないこと+完了報告)をすべて含む self-contained プロンプトに書き直してください。自分の環境/プロジェクトが無ければ架空の設定で構いません。</p>
+    <blockquote style="border-left:3px solid #D97757; padding:0.5rem 1rem; background:#fff7ed; margin:0.8rem 0;">
+      「API の速度遅いから調べて直して」
+    </blockquote>
+    <ol>
+      <li>このままだと Subagent が何を返すか想像してみる</li>
+      <li>目的/背景/やること/やらないこと/出力形式/検証基準/完了報告の7ブロックで書き直す</li>
+      <li>実際に Agent tool に投げて、返ってきた結果の「解像度の違い」を体感する</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <pre><code>【目的】/api/users エンドポイントのレスポンスが p95 で 1500ms
+      超えており、ユーザーのダッシュボード表示が遅い。
+      500ms 未満に改善して UX 問題を解消する。
+
+【背景】
+ - 対象: src/api/users.ts (GET /api/users ハンドラ)
+ - 関連: src/db/userRepo.ts (DB アクセス層)
+ - 計測: monitoring/recent-perf.md にダッシュボードの直近ログ
+ - 現状: N+1 クエリの疑いあり(未検証)
+
+【やること】
+ 1. userRepo.findMany の呼び出し箇所を特定し
+    N+1 の有無を実際のクエリログで確認
+ 2. N+1 があれば JOIN か batch 取得に改修
+ 3. 既存の単体テストを壊さず、回帰テストを追加
+
+【やらないこと】
+ - DB スキーマは変更しない
+ - API レスポンス形式(JSON 構造)は変更しない
+ - 認証周り(src/auth/*)には触らない
+
+【出力形式】
+ - 変更ファイルのパッチ適用
+ - 変更サマリ (Markdown, 150字以内)
+
+【検証基準】
+ - npm test が全パス
+ - ローカルで GET /api/users を
+   curl で叩いて 500ms 未満(3回計測の平均)
+
+【完了報告】
+ - 変更ファイルパス
+ - 修正前後の計測値(ms)
+ - 残課題(あれば)
+ 全体 80字以内</code></pre>
+      <p>ポイント: 「速度遅いから調べて直して」から、このレベルまで落とし込めば Subagent は迷いません。最初は書くのがだるく感じますが、<strong>1度書けば次回からコピペで再利用</strong>できます。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>完了報告を字数制約で締める</h4>
+    <p>あなたが最近 Subagent (または同僚) に依頼した調査タスクを1つ思い出し、「完了報告フォーマット」を次の3点を含む形で書き直してください。</p>
+    <ol>
+      <li>報告本文は<strong>150字以内</strong></li>
+      <li>詳細は<strong>別ファイルに書き出し、そのパス</strong>を必ず報告に含める</li>
+      <li>検証が通ったか/通らなかったかを<strong>PASS/FAIL の明示</strong>で書かせる</li>
+    </ol>
+    <p>書き直した完了報告フォーマットを、同じタスクに対する Agent 呼び出しで使い、「報告字数」と「メイン側で詳細を読む必要が出た回数」を記録してください。</p>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>回答例(調査タスク「React 19 への移行調査」):</p>
+      <pre><code>【完了報告フォーマット】
+ 本文は以下の3行テンプレを埋めるのみ(各50字以内):
+ - 結論: (移行推奨度 A/B/C と1行理由)
+ - 重大な発見: (あれば1つ、なければ「なし」)
+ - 詳細レポート: docs/research/react19-migration.md
+ 上記以外は書かない。思考過程や感想は不要。
+ 詳細は必ずファイルに書き出し、本文にはパスのみ。
+
+【検証】
+ - 引用元 URL が3つ以上あること(ファイル内に記載)
+ - 公式 release notes を少なくとも1件含む
+ 検証結果を本文末尾に「検証: PASS」または
+ 「検証: FAIL (理由)」の1行で記す</code></pre>
+      <p>計測結果例: 字数 2400字 → 180字(約93%減)。メイン側が詳細ファイルを読んだのは10回中2回だけで、<strong>多くの場合は結論の3行だけで判断できた</strong>。並列5本走らせたときのメインコンテキスト消費が特に劇的に改善します。</p>
+    </div>
+  </details>
+
+  <div class="info-box">
+    <span class="label">2026年1月時点の注記</span>
+    <p>本章の Agent tool 挙動・パラメータ名・推奨プラクティスは<strong>2026年1月時点</strong>のものです。Claude Code は活発に更新されており、<span class="term" data-tip="2026年1月時点の記述。最新は公式ドキュメント参照">isolation オプションや model 指定のデフォルト</span>は変わる可能性があります。最新情報は公式ドキュメントで必ず確認してください。</p>
+  </div>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式ドキュメント</a> — Agent tool とプロンプト設計の原典</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.claude.com/en/docs/claude-code/sdk" target="_blank" rel="noopener">Claude Agent SDK ドキュメント</a> — subagent_type・isolation の詳細</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://github.com/anthropics/anthropic-cookbook" target="_blank" rel="noopener">Anthropic Cookbook</a> — 実例プロンプトのレシピ集</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://www.anthropic.com/news" target="_blank" rel="noopener">Anthropic Blog</a> — Building with Claude Code の記事群</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener">Claude Code GitHub</a> — 実装・Issue からベストプラクティスを追える</li>
+      <li><span class="res-type video">Video</span> <a href="https://www.youtube.com/results?search_query=Claude+Code+subagents+prompt" target="_blank" rel="noopener">YouTube: Claude Code subagents prompt</a> — 動画で学ぶ実例</li>
+      <li><span class="res-type article">Article</span> <a href="https://zenn.dev/topics/claudecode" target="_blank" rel="noopener">Zenn: Claude Code タグ</a> — 日本語記事の集積</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="05">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="04-parallel-design.html"><span class="direction">&larr; Prev</span>並列実行の設計</a>
+    <a href="06-research-parallel.html"><span class="direction">Next &rarr;</span>実践：リサーチ5並列</a>
+  </div>
+</main>
+
+<script>
+window.addEventListener("load", function(){
+  // Bar 1: 字数別コンテキスト消費
+  var ctx1 = document.getElementById('ch5-bar-1');
+  if (ctx1 && window.Chart) {
+    new Chart(ctx1, {
+      type: 'bar',
+      data: {
+        labels: ['150字(縛りあり)', '500字', '1500字', '3000字(縛りなし)'],
+        datasets: [{
+          label: '5並列時のメインコンテキスト消費(字)',
+          data: [750, 2500, 7500, 15000],
+          backgroundColor: ['#D97757', 'rgba(217,119,87,0.7)', 'rgba(217,119,87,0.4)', '#cbd5e1'],
+          borderRadius: 6
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        plugins: { legend: { display: false }, title: { display: false } },
+        scales: { x: { beginAtZero: true, title: { display: true, text: '字(少ないほど健全)' } } }
+      }
+    });
+  }
+
+  // Bar 2: Before / After 1発合格率
+  var ctx2 = document.getElementById('ch5-bar-2');
+  if (ctx2 && window.Chart) {
+    new Chart(ctx2, {
+      type: 'bar',
+      data: {
+        labels: ['Before(曖昧)', 'After(テンプレート適用)'],
+        datasets: [{
+          label: '1発合格率 (%)',
+          data: [28, 86],
+          backgroundColor: ['#cbd5e1', '#D97757'],
+          borderRadius: 6
+        }]
+      },
+      options: {
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { beginAtZero: true, max: 100, title: { display: true, text: '% (高いほど良い)' } }
+        }
+      }
+    });
+  }
+});
+</script>
+
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>
