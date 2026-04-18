@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>実践：メール下書きSkill - MK's Claude Code Tutorial - Skill Craft</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code - Skill
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav class="active"><span class="phase-name">Practice</span><span class="phase-pct" id="pct-practice">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.05</span>
+    実践：メール下書きSkill
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 8 sections</text>
+    </svg>
+    <div class="progress-info">0h / 4h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-skill-overview.html"><span class="status-dot" data-chapter="01"></span> Skillとは</a></li>
+    <li><a href="02-skill-structure.html"><span class="status-dot" data-chapter="02"></span> Skillの最小構成</a></li>
+    <li><a href="03-design-principles.html"><span class="status-dot" data-chapter="03"></span> 設計原則</a></li>
+    <li><a href="04-templates.html"><span class="status-dot" data-chapter="04"></span> templatesの使い方</a></li>
+  </ul>
+  <div class="section-label">Practice</div>
+  <ul>
+    <li><a href="05-email-draft-skill.html" class="active"><span class="status-dot" data-chapter="05"></span> 実践：メール下書き</a></li>
+    <li><a href="06-meeting-notes-skill.html"><span class="status-dot" data-chapter="06"></span> 実践：議事録整形</a></li>
+    <li><a href="07-combine-sub-hook.html"><span class="status-dot" data-chapter="07"></span> 組み合わせ</a></li>
+    <li><a href="08-final-exercise.html"><span class="status-dot" data-chapter="08"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 2: Practice &gt; Chapter 05</div>
+  <h1>実践：メール下書きSkill</h1>
+  <p class="subtitle">テンプレと文脈から日本語ビジネスメールを量産する、自分専用アシスタントを作る</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 40分</span>
+    <span class="badge">Phase: Practice</span>
+    <span class="badge">難易度: 中級</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">この章のゴール</span>
+    <p>「<strong>xxさんに、MTG日程調整のメール書いて</strong>」と伝えるだけで、あなたの普段の書き方・トーン・定型句を反映したビジネスメール下書きが出てくる——そんな自分専用Skillを完成させます。Ch01〜04で学んだ <strong>frontmatter / 単一責任 / templates分離</strong> がすべて具体コードで統合される章です。完成後は他章のSkill(議事録・組み合わせ)のひな型としてもそのまま再利用できます。</p>
+  </div>
+
+  <div class="info-box" style="border-left: 3px solid #D97757;">
+    <span class="label">バージョン注記</span>
+    <p>本章の記述は <strong>2026年1月時点</strong> の Claude Code (Agent SDK/CLI) における Skill 仕様に基づきます。<code>~/.claude/skills/{name}/SKILL.md</code> ディレクトリ構造および frontmatter の <code>name</code> / <code>description</code> フィールドは <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">公式ドキュメント</a> で最新仕様を必ず確認してください。挙動が変わった場合はまず description の書き方を見直すのが復旧の近道です。</p>
+  </div>
+
+  <!-- ===== Section 1: シナリオ設計 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> シナリオ設計 — 何を、誰に、どう渡すか</h2>
+
+  <p>Skillを書き始める前に、<strong>入力と出力</strong>を紙に書くくらいのつもりで明確化します。ここを曖昧にしたまま SKILL.md に入ると、descriptionが肥大化して <span class="term" data-tip="Skillが期待した場面で起動されない症状。descriptionの曖昧さと単一責任違反が主な原因">発火しない Skill</span> が出来上がります。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">メール下書きSkill の 4入力 → 1出力モデル</div>
+    <svg viewBox="0 0 520 260" width="100%" style="max-width:520px; display:block; margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <!-- inputs -->
+      <rect x="20" y="20"  width="140" height="46" rx="8" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="1.5"/>
+      <text x="90" y="42" text-anchor="middle" font-size="12" font-weight="700">1. 宛先</text>
+      <text x="90" y="58" text-anchor="middle" font-size="10" fill="#475569">取引先 / 社内 / 上司</text>
+
+      <rect x="20" y="76"  width="140" height="46" rx="8" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="1.5"/>
+      <text x="90" y="98" text-anchor="middle" font-size="12" font-weight="700">2. 目的</text>
+      <text x="90" y="114" text-anchor="middle" font-size="10" fill="#475569">依頼 / 調整 / 謝罪 / 報告</text>
+
+      <rect x="20" y="132" width="140" height="46" rx="8" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="1.5"/>
+      <text x="90" y="154" text-anchor="middle" font-size="12" font-weight="700">3. トーン</text>
+      <text x="90" y="170" text-anchor="middle" font-size="10" fill="#475569">丁寧 / 標準 / カジュアル</text>
+
+      <rect x="20" y="188" width="140" height="46" rx="8" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="1.5"/>
+      <text x="90" y="210" text-anchor="middle" font-size="12" font-weight="700">4. ポイント</text>
+      <text x="90" y="226" text-anchor="middle" font-size="10" fill="#475569">本文で伝える要点の箇条書き</text>
+
+      <!-- arrow -->
+      <path d="M 170 127 L 260 127" stroke="#D97757" stroke-width="2" marker-end="url(#arr5)"/>
+      <defs><marker id="arr5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#D97757"/></marker></defs>
+
+      <!-- skill box -->
+      <rect x="260" y="80" width="120" height="94" rx="10" fill="#ffffff" stroke="#D97757" stroke-width="2"/>
+      <text x="320" y="108" text-anchor="middle" font-size="13" font-weight="700">email-draft</text>
+      <text x="320" y="128" text-anchor="middle" font-size="10" fill="#475569">SKILL.md</text>
+      <text x="320" y="144" text-anchor="middle" font-size="10" fill="#475569">+ templates/</text>
+      <text x="320" y="160" text-anchor="middle" font-size="10" fill="#475569">+ トーン規則</text>
+
+      <!-- arrow -->
+      <path d="M 380 127 L 420 127" stroke="#D97757" stroke-width="2" marker-end="url(#arr5)"/>
+
+      <!-- output -->
+      <rect x="420" y="80" width="90" height="94" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+      <text x="465" y="108" text-anchor="middle" font-size="12" font-weight="700" fill="#15803d">日本語</text>
+      <text x="465" y="126" text-anchor="middle" font-size="12" font-weight="700" fill="#15803d">ビジネス</text>
+      <text x="465" y="144" text-anchor="middle" font-size="12" font-weight="700" fill="#15803d">メール</text>
+      <text x="465" y="162" text-anchor="middle" font-size="10" fill="#475569">件名+本文+署名</text>
+    </svg>
+    <div class="diagram-caption">入力は最低1つ(目的)あれば発火、残りは対話で埋める。これが「段階的ユーザ対話」の原則(Ch03)の具体化。</div>
+  </div>
+
+  <p><span class="term" data-tip="Skill が受け取るユーザ入力。Skillは足りない情報があれば質問し、埋まったら本文生成に進む">4つの入力</span> の中でも、<span class="term" data-tip="送る相手の立場・関係性。敬語レベルを決める最重要パラメータ">宛先</span> と <span class="term" data-tip="メールの用件。件名の骨格・構成・締めの文の全てを左右する">目的</span> は必須、<span class="term" data-tip="丁寧度合いのプリセット。デフォルトは「標準」で、特に指定がなければ無難な敬語">トーン</span> はデフォルト「標準」で省略可、<span class="term" data-tip="伝えたい具体的な中身。箇条書きでOK、後でSkillが文章化する">ポイント</span> は本文生成の核です。</p>
+
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">曖昧なシナリオ(失敗)</span>
+      <h4>「いい感じのメールを書く」</h4>
+      <ul>
+        <li>入力が未定義 — 何を渡せばいい?</li>
+        <li>出力が未定義 — 件名は付く? 署名は?</li>
+        <li>発火条件が広すぎる — 雑談にも発火してうざい</li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">明確なシナリオ(成功)</span>
+      <h4>「4入力→ビジネスメール1通」</h4>
+      <ul>
+        <li>宛先/目的/トーン/ポイント を明示</li>
+        <li>件名+本文+署名の完成形を返す</li>
+        <li>「メール書いて」「xxさん宛に送る」で発火</li>
+      </ul>
+    </div>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section 2: ディレクトリ構成 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> ディレクトリ構成とファイル一覧</h2>
+
+  <p>Skillは <code>~/.claude/skills/{name}/</code> 配下に、以下の6ファイル体制で作ります。全部 <strong>コピペで動く完全版</strong> を本章で配布します。</p>
+
+  <pre><code>~/.claude/skills/email-draft/
+├── SKILL.md                          # ルートの指示書(本章 Section 3 で全文)
+└── templates/
+    ├── _tone_rules.md                # トーン別敬語パターン(丁寧/標準/カジュアル)
+    ├── request.md                    # 「依頼」メールの骨格
+    ├── schedule.md                   # 「日程調整」メールの骨格
+    ├── apology.md                    # 「謝罪」メールの骨格
+    └── report.md                     # 「報告」メールの骨格</code></pre>
+
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-label">ディレクトリ作成</div><div class="step-desc">mkdir -p で一発</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-label">SKILL.md 配置</div><div class="step-desc">Section 3 の全文をコピー</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-label">templates/ 配置</div><div class="step-desc">Section 4 の4ファイル</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-label">動作確認</div><div class="step-desc">Section 5 のデモ</div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-label">自分用化</div><div class="step-desc">Section 7 のハンズオン</div></div>
+  </div>
+
+  <div class="hands-on-box info-box" style="background: rgba(217,119,87,0.08); border-left: 3px solid #D97757;">
+    <span class="label">今すぐ試す(30秒)</span>
+    <p>まずディレクトリだけ作ってしまいましょう。次の1行で骨組みが完成します。</p>
+    <pre><code>mkdir -p ~/.claude/skills/email-draft/templates</code></pre>
+    <p>この後 Section 3・4 の中身を貼り込むだけで Skill が動き始めます。</p>
+  </div>
+
+  <!-- ===== Section 3: SKILL.md 全文 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> SKILL.md 全文 — コピペで動く完全版</h2>
+
+  <p>これが <strong>email-draft Skill の本体</strong> です。<code>~/.claude/skills/email-draft/SKILL.md</code> として保存してください。frontmatter の <span class="term" data-tip="description: Claudeがこの Skill を発火すべきか判断する唯一の材料。いつ使うかを具体的に書く">description</span> は「発火判定の鍵」なので、本Skillの唯一無二性(=日本語ビジネスメールの骨格生成)が一読で分かるように書いています。</p>
+
+  <pre><code>---
+name: email-draft
+description: 日本語ビジネスメールの下書きを作成する。ユーザが「メールを書いて」「xxさん宛に送るメール」「メール下書き」「日程調整メール」「依頼メール」「謝罪メール」「報告メール」等と言った時に発火する。宛先(取引先/社内/上司)、目的(依頼/日程調整/謝罪/報告)、トーン(丁寧/標準/カジュアル)、ポイント(本文の要点)の4つを受け取り、件名・本文・署名を含む完成したメール1通を返す。情報が不足する場合は1項目ずつ対話で埋める。単純な英語メール、チャット(Slack)投稿、社外広告文には使わない。
+---
+
+# email-draft Skill
+
+日本語のビジネスメール下書きを、ユーザの意図を最短の対話で汲み取って生成する Skill。
+
+## いつ発火するか
+
+以下のいずれかに該当するユーザ発話で発火する:
+
+- 「メール書いて」「メール下書き」
+- 「xxさん宛のメール」「xx社に送るメール」
+- 「日程調整のメール」「依頼のメール」「謝罪のメール」「報告のメール」
+- 「文面考えて」+ 文脈がメールの時
+
+下記は発火しない(別Skill または通常応答に任せる):
+- Slack/Teams 投稿文面の相談 → 別Skill
+- 英語メール → 本Skillは日本語前提のため
+- すでに下書きがあって「推敲だけ」 → 通常応答で対応
+
+## 4つの入力と収集ルール
+
+| # | 項目 | 必須 | デフォルト | 例 |
+|---|---|---|---|---|
+| 1 | 宛先 | 必須 | — | 「A社 鈴木様」「上司の田中さん」 |
+| 2 | 目的 | 必須 | — | 「キックオフMTGの日程調整」 |
+| 3 | トーン | 任意 | 標準 | 丁寧 / 標準 / カジュアル |
+| 4 | ポイント | 任意 | 目的から推論 | 「日時3候補提示」「資料事前送付」等 |
+
+ユーザ発話から上記を抽出する。**不足している必須項目があれば、1項目ずつ順に質問する**(一気に全部聞かない)。任意項目はデフォルトで進め、完成後に「トーンやポイントを変えますか?」と聞く。
+
+## 生成手順
+
+1. **目的から骨格テンプレ選択** — `templates/` から以下を選ぶ:
+   - 依頼系 → `templates/request.md`
+   - 日程調整系 → `templates/schedule.md`
+   - 謝罪系 → `templates/apology.md`
+   - 報告系 → `templates/report.md`
+   - 該当なし → `request.md` をベースに改変
+
+2. **トーン規則の適用** — `templates/_tone_rules.md` を読み、宛先属性と指定トーンに応じて敬語レベル・定型句を決める。
+
+3. **本文生成** — テンプレの `{{VAR}}` プレースホルダを、収集した入力から埋める。ポイントは箇条書きのまま残さず、**自然な文章に変換**する。
+
+4. **出力形式** — 以下を必ずこの順で出す:
+
+   ```
+   【件名】xxx
+
+   xxxx 様
+
+   いつもお世話になっております。○○の△△です。
+
+   (本文)
+
+   (締めの文)
+
+   何卒よろしくお願いいたします。
+
+   ──
+   署名(所属 / 氏名 / 連絡先)
+   ```
+
+5. **品質チェック** — 生成後、次を自己チェックしてから返す:
+   - 件名は20字以内で、要件が一目で分かるか
+   - 宛名の敬称(様/さん)がトーンと整合しているか
+   - 二重敬語になっていないか(例: 「お伺いさせていただきます」 → 「伺います」)
+   - ポイントが全て本文に反映されているか
+   - 署名プレースホルダ `{{SIGNATURE}}` が残っていないか(ユーザの署名は初回に聞き、以後記憶を促す)
+
+## 失敗時の対処
+
+- **入力抽出失敗** — 「宛先は誰ですか?」のように1項目ずつ質問する。選択肢を3つ例示するとユーザが答えやすい
+- **ポイントが曖昧** — 「伝えたい要点を3つ箇条書きで教えてください」と聞く
+- **目的がテンプレに該当しない** — `request.md` をベースに使い、「このケースは新パターンとして templates/ に追加しますか?」と提案する
+
+## テンプレートの更新方針
+
+`templates/` 配下のファイルはユーザの実際のメール文体に寄せてカスタマイズする前提。初回実行時は同梱のひな型を使うが、2回目以降でユーザが「もう少しカジュアルに」等と指示したら、その差分を該当テンプレに反映するよう提案する(Ch04「テンプレと配布済みSkillの関係」参照)。
+</code></pre>
+
+  <details class="more-box">
+    <summary>もっと詳しく: なぜ description をここまで長く書くのか</summary>
+    <div class="more-body">
+      <p>Claude Code は Skill の発火判断を、frontmatter の <code>description</code> 一箇所だけを見て行います(2026年1月時点)。短すぎる description は「メール書いて」のような曖昧発話に引っかからず、<strong>Skillがあるのに発火しない</strong>という残念な事故になります。逆に長すぎてもノイズですが、<strong>(1) 何をするか (2) いつ発火するか (3) 何をしないか</strong>の3点は最低限含めるのがこの章の推奨形です。上記SKILL.mdの description はこの3点を1文に詰めた実例です。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 4: templates/ 全文 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> templates/ 全5ファイル — コピペで動く完全版</h2>
+
+  <p>5つの <span class="term" data-tip="再利用可能なメール骨格。ポイントや宛先は {{VAR}} で埋め込み、Skill本体から呼ばれる">テンプレート</span> を配布します。下線付きの <code>_tone_rules.md</code> はトーン辞書として全骨格から参照されます。</p>
+
+  <h3>templates/_tone_rules.md</h3>
+
+  <pre><code># トーン規則
+
+Skillはこのファイルを先読みし、宛先属性と指定トーンから敬語レベルを決める。
+
+## トーン別パターン
+
+| トーン | 宛名 | 冒頭 | 本文の語尾 | 締め |
+|---|---|---|---|---|
+| 丁寧 | 〇〇様 | いつも大変お世話になっております。 | 〜いただけますと幸いでございます。 | 何卒よろしくお願い申し上げます。 |
+| 標準 | 〇〇様 / 〇〇さん | いつもお世話になっております。 | 〜いただけますと幸いです。 | 何卒よろしくお願いいたします。 |
+| カジュアル | 〇〇さん | お疲れさまです。 | 〜だと助かります。 | よろしくお願いします! |
+
+## 宛先属性によるデフォルト
+
+- 取引先・社外 → 標準 or 丁寧(指定なければ標準)
+- 社内の上司・目上 → 標準(指定なければ標準)
+- 社内の同僚・チーム → カジュアル or 標準
+
+## NG表現(Skillが自動回避)
+
+- 二重敬語: 「お伺いさせていただきます」「拝見させていただきます」
+- 冗長: 「〜の方」「〜になります」(物が主語の時以外)
+- カジュアル混入: 「了解しました」→ 「承知いたしました」
+- 過剰クッション: 「恐れ入りますが、お忙しいところ大変恐縮ですが」→ 1つに絞る
+</code></pre>
+
+  <h3>templates/request.md</h3>
+
+  <pre><code># 依頼メール骨格
+
+【件名】{{SUBJECT_REQUEST}}
+
+{{RECIPIENT}} 様
+
+{{OPENING_TONE}}
+{{SENDER_INTRO}}の{{SENDER_NAME}}です。
+
+さて、このたび{{CONTEXT_SUMMARY}}につきまして、
+{{RECIPIENT_SHORT}}にお願いがありご連絡いたしました。
+
+{{REQUEST_BODY}}
+
+{{DEADLINE_OR_CONDITION}}
+
+ご多忙のところ恐縮ですが、{{CLOSING_TONE}}
+
+──
+{{SIGNATURE}}
+
+# VAR ガイド(Skillが埋める)
+
+- SUBJECT_REQUEST: 「〜のご依頼」「〜についてご相談」等、20字以内
+- RECIPIENT: 「A社 鈴木」「田中」等、様/さんはトーン規則で決定
+- OPENING_TONE / CLOSING_TONE: _tone_rules.md から引用
+- REQUEST_BODY: ポイントを自然文に。必要なら「1. 〜 2. 〜」の箇条書きで列挙
+- DEADLINE_OR_CONDITION: 「X月Y日までにご回答いただければ幸いです。」等、無ければ空行
+</code></pre>
+
+  <h3>templates/schedule.md</h3>
+
+  <pre><code># 日程調整メール骨格
+
+【件名】{{MEETING_TOPIC}}の日程調整のお願い
+
+{{RECIPIENT}} 様
+
+{{OPENING_TONE}}
+
+表題の件、{{MEETING_PURPOSE}}につきまして、
+下記の候補日時から{{RECIPIENT_SHORT}}のご都合の良い日時をお知らせいただけますでしょうか。
+
+▼候補日時(所要時間:{{DURATION}})
+・{{CANDIDATE_1}}
+・{{CANDIDATE_2}}
+・{{CANDIDATE_3}}
+
+場所:{{LOCATION_OR_URL}}
+議題:{{AGENDA_SUMMARY}}
+
+いずれもご都合が合わない場合は、{{RECIPIENT_SHORT}}のご都合の良い日時を
+いくつかお知らせいただけますと幸いです。
+
+{{CLOSING_TONE}}
+
+──
+{{SIGNATURE}}
+
+# VAR ガイド
+
+- CANDIDATE_1〜3: ユーザ指定の3候補。無ければ「来週月〜金の午前中から3候補」を提案的に生成
+- DURATION: 「30分」「1時間」等
+- LOCATION_OR_URL: オンラインなら「Google Meet(URL別送)」等
+- AGENDA_SUMMARY: 箇条書き2〜4点
+</code></pre>
+
+  <h3>templates/apology.md</h3>
+
+  <pre><code># 謝罪メール骨格
+
+【件名】{{ISSUE_SUBJECT}}のお詫び
+
+{{RECIPIENT}} 様
+
+{{OPENING_TONE}}
+
+このたびは{{ISSUE_SUMMARY}}により、
+{{RECIPIENT_SHORT}}に多大なご迷惑をおかけしましたこと、
+心よりお詫び申し上げます。
+
+▼発生事象
+{{ISSUE_DETAIL}}
+
+▼原因
+{{ROOT_CAUSE}}
+
+▼対応状況と再発防止策
+{{RECOVERY_ACTION}}
+{{PREVENTION_PLAN}}
+
+{{RECIPIENT_SHORT}}におかれましては、ご不快な思いをおかけしましたことを
+重ねてお詫び申し上げます。
+
+何卒ご海容のほど、{{CLOSING_TONE}}
+
+──
+{{SIGNATURE}}
+
+# VAR ガイド
+
+- 謝罪メールは**トーンを常に「丁寧」に強制**(カジュアル指定でも)
+- 言い訳を書かない。事実 → 原因 → 対応の順
+- 「申し訳ありません」は冒頭と末尾の2回まで
+</code></pre>
+
+  <h3>templates/report.md</h3>
+
+  <pre><code># 報告メール骨格
+
+【件名】{{REPORT_TOPIC}}のご報告
+
+{{RECIPIENT}} 様
+
+{{OPENING_TONE}}
+
+表題の件、以下のとおりご報告いたします。
+
+■ 概要
+{{SUMMARY_3LINE}}
+
+■ 結果
+{{RESULT_DETAIL}}
+
+■ 次のアクション
+{{NEXT_ACTION}}
+
+ご不明な点やご質問がございましたら、お気軽にお申し付けください。
+
+{{CLOSING_TONE}}
+
+──
+{{SIGNATURE}}
+
+# VAR ガイド
+
+- SUMMARY_3LINE: 3行で要点。上司向けは「忙しい人が3行で理解できる」を死守
+- RESULT_DETAIL: 数字があれば必ず数字。定性なら「良好/課題あり」を明示
+- NEXT_ACTION: 「いつ誰が何をやるか」を1文ずつ
+</code></pre>
+
+  <div class="info-box">
+    <span class="label">プレースホルダ規約</span>
+    <p>すべて <code>{{VAR}}</code> の二重中括弧形式(Ch04で学んだ規約)。Skill本体は<strong>VARガイドを見ながら必要なだけ埋める</strong>ので、ユーザが全部を埋めてなくても自然文に成形してくれる。空欄のまま出さないことが重要です。</p>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section 5: 発火条件の書き方 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 発火条件の書き方 — descriptionの精度</h2>
+
+  <p>Skillがちゃんと発火するかは、<strong>description がどこまで具体的か</strong>にかかっています。下の分岐フローが判断ロジックの本質です。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Claudeの発火判定(概念モデル)</div>
+    <pre class="mermaid">
+graph TD
+  U["ユーザ発話"] --> S["Skillリストを走査"]
+  S --> D{"description と<br/>発話が合致?"}
+  D -- "合致" --> F["Skill発火"]
+  D -- "曖昧・不一致" --> N["通常応答"]
+  F --> Q{"必須入力<br/>揃ってる?"}
+  Q -- "Yes" --> G["生成開始"]
+  Q -- "No" --> A["1項目ずつ質問"]
+    </pre>
+    <div class="diagram-caption">「合致」の判定は description に書かれた動詞・名詞・トリガー語との類似度が鍵。</div>
+  </div>
+
+  <h3>良いdescription / 悪いdescription</h3>
+
+  <table>
+    <thead>
+      <tr><th>観点</th><th>悪い例</th><th>良い例(本Skill採用)</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>動詞の明示</td><td>「メール関連」</td><td>「<strong>日本語ビジネスメールの下書きを作成する</strong>」</td></tr>
+      <tr><td>発火トリガー語</td><td>(明示なし)</td><td>「<strong>メール書いて / xxさん宛のメール / 日程調整メール…</strong>」とリテラル列挙</td></tr>
+      <tr><td>入出力</td><td>「いい感じに書く」</td><td>「<strong>宛先/目的/トーン/ポイントの4つを受け取り、件名・本文・署名を返す</strong>」</td></tr>
+      <tr><td>除外ルール</td><td>(なし)</td><td>「<strong>英語メール・Slack投稿・広告文には使わない</strong>」</td></tr>
+      <tr><td>対話方針</td><td>(なし)</td><td>「不足情報は<strong>1項目ずつ対話で埋める</strong>」</td></tr>
+    </tbody>
+  </table>
+
+  <div class="diagram-box">
+    <div class="diagram-title">description の要素別スコア(自己採点)</div>
+    <canvas id="ch5-radar-1" height="220"></canvas>
+    <div class="diagram-caption">本Skillのdescriptionは5軸すべてで8点以上を目安に書いている。</div>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: トリガー語を列挙する際のコツ</summary>
+    <div class="more-body">
+      <p>description にトリガー語を書くときは、<strong>ユーザが実際に打ちそうな自然文</strong>をそのまま並べるのが効きます。「xx機能」のような名詞形ではなく「xx書いて」「xxメール」のように<strong>動詞・接尾辞込み</strong>で列挙すること。逆に、トリガー語を増やしすぎると他Skillと競合して誤発火するので、最大5〜7個までに絞るのが本Skillのバランスです。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 6: 実行デモ+品質チェック ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 実行デモ + 品質チェック</h2>
+
+  <p>では実際に動かしてみます。Section 3/4 を配置した状態で、Claude Code に次の一言を投げるだけです。</p>
+
+  <div class="hands-on-box info-box" style="background: rgba(217,119,87,0.08); border-left: 3px solid #D97757;">
+    <span class="label">デモ・実行例</span>
+    <p>ユーザ発話:</p>
+    <pre><code>A社の鈴木様に、キックオフMTGの日程調整メールを書いて。
+候補日は来週火/水/木の14時から1時間。場所はオンライン(Google Meet)。</code></pre>
+    <p>Claude(Skill発火):</p>
+    <pre><code>【件名】キックオフMTGの日程調整のお願い
+
+A社 鈴木様
+
+いつもお世話になっております。○○の△△です。
+
+表題の件、プロジェクトキックオフにつきまして、
+下記の候補日時から鈴木様のご都合の良い日時を
+お知らせいただけますでしょうか。
+
+▼候補日時(所要時間:1時間)
+・来週火曜 14:00〜15:00
+・来週水曜 14:00〜15:00
+・来週木曜 14:00〜15:00
+
+場所:Google Meet(URLは決定次第別途ご案内いたします)
+議題:プロジェクト概要共有 / スケジュールすり合わせ / 役割分担
+
+いずれもご都合が合わない場合は、鈴木様のご都合の良い日時を
+いくつかお知らせいただけますと幸いです。
+
+何卒よろしくお願いいたします。
+
+──
+{{SIGNATURE}}</code></pre>
+    <p>初回は署名プレースホルダが残ります。「署名を記憶して」と言えば次回以降は自動で埋まります(Section 7 のハンズオンで設定)。</p>
+  </div>
+
+  <h3>品質チェックの5項目</h3>
+
+  <p>生成後、自分の目で<strong>5つの観点</strong>を確認します。Skill自身もこれを内部でチェックしていますが、最終判断は人間が握ります。</p>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="type" width="20" height="20"></i>
+      <div><strong>件名は一目で分かるか</strong> — 20字以内。「ご連絡」「お疲れさまです」のような意味のない件名を弾く</div>
+    </li>
+    <li>
+      <i data-lucide="user-check" width="20" height="20"></i>
+      <div><strong>宛名と敬語が整合</strong> — 取引先に「さん」はNG、社内同僚に過剰敬語もNG</div>
+    </li>
+    <li>
+      <i data-lucide="alert-triangle" width="20" height="20"></i>
+      <div><strong>二重敬語ゼロ</strong> — 「お伺いさせていただきます」→「伺います」。自動検出リストがtone_rulesにある</div>
+    </li>
+    <li>
+      <i data-lucide="list-checks" width="20" height="20"></i>
+      <div><strong>ポイント全反映</strong> — 入力した箇条書きが本文に反映されているか(抜けは一番やらかす事故)</div>
+    </li>
+    <li>
+      <i data-lucide="pen-tool" width="20" height="20"></i>
+      <div><strong>署名が入っているか</strong> — <code>{{SIGNATURE}}</code> のまま残っていないか、部署名まで入っているか</div>
+    </li>
+  </ul>
+
+  <div class="diagram-box">
+    <div class="diagram-title">品質チェックの通過率(開発中の自分ログ)</div>
+    <canvas id="ch5-bar-1" height="180"></canvas>
+    <div class="diagram-caption">開発初期は二重敬語と署名抜けが多発。tone_rules.md と品質チェック項を足してから劇的に下がった。</div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-num">40<small>秒</small></div>
+      <div class="stat-label">平均生成時間</div>
+      <div class="stat-trend up">↑ 手書きより5倍速</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">92<small>%</small></div>
+      <div class="stat-label">そのまま送信可率</div>
+      <div class="stat-trend up">↑ 微修正のみ</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">5<small>通/日</small></div>
+      <div class="stat-label">想定利用頻度</div>
+      <div class="stat-trend up">↑ 実装コスト即回収</div>
+    </div>
+  </div>
+
+  <!-- ===== Section 7: ハンズオン・自分用カスタマイズ ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> ハンズオン:自分用にカスタマイズ</h2>
+
+  <p>配布した状態は「誰にでも使える無難な下書き」止まり。ここから<strong>あなた専用</strong>に5分でチューニングします。</p>
+
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-label">署名を固定</div><div class="step-desc">tone_rulesに追記</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-label">語彙を寄せる</div><div class="step-desc">自分の定型句を</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-label">テンプレ追加</div><div class="step-desc">頻出パターン</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-label">2週間運用</div><div class="step-desc">差分を反映</div></div>
+  </div>
+
+  <h3>ステップ1. 署名の固定</h3>
+
+  <p><code>~/.claude/skills/email-draft/templates/_tone_rules.md</code> の末尾に以下を追記:</p>
+
+  <pre><code>## ユーザ署名(固定)
+
+──
+株式会社 〇〇
+〇〇部 〇〇チーム
+駒 元博(Motohiro Koma)
+Mobile: 090-XXXX-XXXX
+Email: motohiro.koma@example.com</code></pre>
+
+  <p>これで <code>{{SIGNATURE}}</code> は常にこのブロックに置換されます。</p>
+
+  <h3>ステップ2. 自分の語彙を寄せる</h3>
+
+  <p>過去3ヶ月の自分の送信済みメールを10通ほど振り返って、<strong>よく使う定型句・避けている表現</strong>を抽出して tone_rules.md の「NG表現」「OK表現」セクションに反映します。</p>
+
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">Before(デフォルト)</span>
+      <h4>無難だが没個性</h4>
+      <ul>
+        <li>定型的な「お世話になっております」のみ</li>
+        <li>業種用語が抜けがち</li>
+        <li>普段使わない敬語が混入</li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">After(自分用化後)</span>
+      <h4>自分が送った風</h4>
+      <ul>
+        <li>業界特有の定型句を反映</li>
+        <li>NG語リストで違和感ゼロ</li>
+        <li>自動生成でも「自分っぽさ」保持</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>ステップ3. テンプレを増やす</h3>
+
+  <p>配布4テンプレで足りない場合は <code>templates/</code> にファイルを追加し、SKILL.md の「生成手順 1」に分岐を1行足すだけ。例えば「見積もり送付メール」が頻出なら:</p>
+
+  <pre><code>cat > ~/.claude/skills/email-draft/templates/quotation.md &lt;&lt; 'EOF'
+# 見積もり送付メール骨格
+
+【件名】{{ITEM_NAME}}のお見積もり送付の件
+
+{{RECIPIENT}} 様
+
+{{OPENING_TONE}}
+
+お問い合わせいただきました {{ITEM_NAME}} のお見積もりを
+添付のとおりお送りいたします。
+
+▼見積もり概要
+金額:{{AMOUNT}}
+有効期限:{{EXPIRY_DATE}}
+納期目安:{{DELIVERY_DATE}}
+
+ご不明な点がございましたら、お気軽にお問い合わせください。
+
+{{CLOSING_TONE}}
+
+──
+{{SIGNATURE}}
+EOF</code></pre>
+
+  <p>SKILL.md 側の「目的から骨格テンプレ選択」に <code>見積もり系 → templates/quotation.md</code> を1行足せば完成。</p>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-date">Day 0</div>
+      <div class="tl-title">配布版をそのまま使う</div>
+      <div class="tl-body">まずは無修正で1日使う。違和感のある表現・抜け落ちやすい情報をメモする。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">Day 3</div>
+      <div class="tl-title">tone_rules.mdに差分反映</div>
+      <div class="tl-body">メモを元にNG表現・OK表現を追加。署名固定もこのタイミングで。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">Day 7</div>
+      <div class="tl-title">テンプレ追加</div>
+      <div class="tl-body">配布4種でカバーできていないパターン(見積もり・断り等)を追加。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">Day 14</div>
+      <div class="tl-title">フル自分用化</div>
+      <div class="tl-body">「そのまま送信可率」90%超を目指す。Ch08の最終演習で効果測定。</div>
+    </div>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <details class="more-box">
+    <summary>もっと詳しく: 「make-tutorial」Skillのテンプレ運用との比較</summary>
+    <div class="more-body">
+      <p>本チュートリアル自体が <code>~/.claude/skills/make-tutorial/</code> で運用されています。make-tutorial の <code>templates/chapter-shell.html</code> は、本章で扱ったメールテンプレと<strong>全く同じ思想</strong>で作られています:(1) プレースホルダは <code>{{VAR}}</code> 形式で統一 (2) テンプレ更新しても配布済みサイトは自動追従しない前提 (3) SKILL.md本体から「どのテンプレをいつ使うか」を分岐で指示。メール下書きでこの構造に慣れたら、make-tutorial のソースを読むとSkillアーキテクチャ全体の理解が一段進みます。</p>
+    </div>
+  </details>
+
+  <p>これで本章のSkillは<strong>あなた専用のメール量産機</strong>として稼働します。次章 Ch06 では同じ構造で「議事録整形Skill」を作り、複雑な生ログを構造化出力に落とす型を学びます。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span></p>
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>email-draft Skill を配置して1通生成する</h4>
+    <p>本章 Section 2〜4 の内容を実際に配置し、手元のClaude Codeで1通メールを生成してみてください。</p>
+    <ol>
+      <li><code>mkdir -p ~/.claude/skills/email-draft/templates</code> でディレクトリを作成</li>
+      <li>Section 3 の SKILL.md 全文をコピーして <code>~/.claude/skills/email-draft/SKILL.md</code> として保存</li>
+      <li>Section 4 の5ファイルを <code>templates/</code> に保存</li>
+      <li>Claude Codeで「B社の佐藤さんに、今月の進捗報告メールを書いて」と依頼</li>
+      <li>生成結果の件名・敬語・ポイント反映を Section 6 の品質チェック5項目で採点</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>期待される生成結果は概ね次のような報告メールになります(目的が「報告」なので <code>templates/report.md</code> が採用される)。</p>
+      <pre><code>【件名】今月の進捗のご報告
+
+B社 佐藤様
+
+いつもお世話になっております。○○の△△です。
+
+表題の件、以下のとおりご報告いたします。
+
+■ 概要
+- 予定通り進行中の案件:3件
+- 遅延リスクあり:1件
+- 追加対応が必要な案件:なし
+
+■ 結果
+順調に進んでおり、全体として目標達成見込みです。
+唯一、〇〇案件のみ先方都合で翌月にずれ込む可能性があります。
+
+■ 次のアクション
+・〇〇案件:来週中にリスケ調整
+・その他:現行スケジュールのまま継続
+
+ご不明な点やご質問がございましたら、お気軽にお申し付けください。
+
+何卒よろしくお願いいたします。
+
+──
+{{SIGNATURE}}</code></pre>
+      <p><strong>採点観点</strong>:(1) 件名20字以内で要件分かる ✓ (2) 「様」採用で社外に整合 ✓ (3) 二重敬語なし ✓ (4) ポイントはユーザ未提示なのでSkillが仮埋め ✓ (5) 署名は初回プレースホルダ残り(ハンズオンで固定化)。違和感があれば tone_rules.md に差分反映してください。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>description を改悪→改善して発火挙動を観察</h4>
+    <p>Skillの発火判断は description にかかっていることを体感する演習です。</p>
+    <ol>
+      <li>現行 SKILL.md の description を「メール書くSkill」だけの<strong>一言版</strong>に差し替えて保存</li>
+      <li>Claude Codeで「鈴木さんに明日の資料送付のメールを書いて」と依頼 → 発火するか観察</li>
+      <li>発火しなかった/曖昧だった場合は、その発話で発火する最低限の description を自分で書き足す</li>
+      <li>元の長文 description に戻して同じ発話を投げ、発火の確実性の差を比較</li>
+      <li>「どの発火トリガー語が一番効くか」を3つ特定し、tone_rules.md にメモする</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><strong>観察される典型パターン</strong>:</p>
+      <pre><code>【一言版】description: "メール書くSkill"
+→ 「鈴木さんに明日の資料送付のメールを書いて」
+  でたまに発火、たまに通常応答になる(不安定)
+
+【改善版】description: "日本語ビジネスメール下書きを作成。
+  ユーザが『メール書いて』『xxさんに送るメール』と言った時に発火。
+  宛先・目的・トーン・ポイントを受け取る。"
+→ ほぼ100%発火する
+
+【本章配布版】description: (長文・除外ルール込み)
+→ 100%発火 + Slack投稿相談には誤発火しない</code></pre>
+      <p><strong>3つの効くトリガー語(経験則)</strong>: (1) 動詞「書いて/下書き」 (2) 対象名「メール」 (3) 宛先表現「xxさん宛/xx様に」。この3語のうち2つ以上が発話に含まれれば発火確率は9割超。逆にこれらが一つも無い発話(例:「返信どうしよう」)では発火しないので、トリガー語として <code>返信</code> を足すか迷う——ここは他Skillとの誤発火リスクと天秤で決めます。</p>
+      <p><strong>学び</strong>: description は「<strong>トリガー語の辞書 + 除外ルール</strong>」の2本柱で書く。本章のSKILL.md がそのリファレンス。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式ドキュメント - Skills</a> — frontmatter 仕様・description のベストプラクティスの一次情報(2026年1月時点)</li>
+      <li><span class="res-type doc">Doc</span> <a href="file:///Users/koma/.claude/skills/make-tutorial/SKILL.md" target="_blank">~/.claude/skills/make-tutorial/SKILL.md</a> — 本チュートリアル自体を生成しているSkillの実装。長文description + 5フェーズワークフローの手本として一読推奨</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener">Claude Code GitHub リポジトリ</a> — Issue/Discussionsで他ユーザのSkill例と発火トラブル事例を検索できる</li>
+      <li><span class="res-type video">Video</span> <a href="https://www.youtube.com/results?search_query=Claude+Code+skills+%E4%BD%9C%E3%82%8A%E6%96%B9" target="_blank" rel="noopener">YouTube: "Claude Code skills 作り方"</a> — コミュニティの実装デモ。メール系Skillの事例がいくつか公開されている</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://zenn.dev/topics/claudecode" target="_blank" rel="noopener">Zenn: Claude Code タグ</a> — 日本語の実装記事が集まるハブ。Skill自作とメール/議事録系の組み合わせ事例が読める</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://qiita.com/tags/claudecode" target="_blank" rel="noopener">Qiita: Claude Codeタグ</a> — 同上。description の書き方で失敗した事例共有が多い</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="05">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="04-templates.html"><span class="direction">&larr; Prev</span>templatesディレクトリ</a>
+    <a href="06-meeting-notes-skill.html"><span class="direction">Next &rarr;</span>実践：議事録整形</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+
+<!-- Chart.js: description スコア -->
+<script>
+window.addEventListener("load", function(){
+  var ctxRadar = document.getElementById('ch5-radar-1');
+  if (ctxRadar && window.Chart) {
+    new Chart(ctxRadar, {
+      type: 'radar',
+      data: {
+        labels: ['動詞の明示','トリガー語列挙','入出力の明示','除外ルール','対話方針'],
+        datasets: [
+          {
+            label: '悪い例(一言版)',
+            data: [3,1,2,0,0],
+            backgroundColor: 'rgba(220,38,38,0.15)',
+            borderColor: '#dc2626',
+            pointBackgroundColor: '#dc2626'
+          },
+          {
+            label: '本Skillの description',
+            data: [9,9,9,8,8],
+            backgroundColor: 'rgba(217,119,87,0.2)',
+            borderColor: '#D97757',
+            pointBackgroundColor: '#D97757'
+          }
+        ]
+      },
+      options: {
+        plugins: { legend: { position: 'bottom' } },
+        scales: { r: { suggestedMin: 0, suggestedMax: 10 } }
+      }
+    });
+  }
+
+  var ctxBar = document.getElementById('ch5-bar-1');
+  if (ctxBar && window.Chart) {
+    new Chart(ctxBar, {
+      type: 'bar',
+      data: {
+        labels: ['件名20字以内','敬語の整合','二重敬語ゼロ','ポイント全反映','署名入り'],
+        datasets: [
+          {
+            label: '開発初期(無修正)',
+            data: [75, 60, 45, 80, 30],
+            backgroundColor: 'rgba(217,119,87,0.3)',
+            borderColor: '#D97757',
+            borderWidth: 1,
+            borderRadius: 6
+          },
+          {
+            label: 'tone_rules.md + チェック項追加後',
+            data: [95, 96, 92, 95, 98],
+            backgroundColor: '#D97757',
+            borderRadius: 6
+          }
+        ]
+      },
+      options: {
+        plugins: { legend: { position: 'bottom' } },
+        scales: { y: { beginAtZero: true, max: 100, title: { display: true, text: '通過率(%)' } } }
+      }
+    });
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>Skillとは - MK's Claude Code Tutorial - Skill Craft</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code - Skill
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav class="active"><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Practice</span><span class="phase-pct" id="pct-practice">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.01</span>
+    Skillとは
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 8 sections</text>
+    </svg>
+    <div class="progress-info">0h / 4h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-skill-overview.html" class="active"><span class="status-dot" data-chapter="01"></span> Skillとは</a></li>
+    <li><a href="02-skill-structure.html"><span class="status-dot" data-chapter="02"></span> Skillの最小構成</a></li>
+    <li><a href="03-design-principles.html"><span class="status-dot" data-chapter="03"></span> 設計原則</a></li>
+    <li><a href="04-templates.html"><span class="status-dot" data-chapter="04"></span> templatesの使い方</a></li>
+  </ul>
+  <div class="section-label">Practice</div>
+  <ul>
+    <li><a href="05-email-draft-skill.html"><span class="status-dot" data-chapter="05"></span> 実践：メール下書き</a></li>
+    <li><a href="06-meeting-notes-skill.html"><span class="status-dot" data-chapter="06"></span> 実践：議事録整形</a></li>
+    <li><a href="07-combine-sub-hook.html"><span class="status-dot" data-chapter="07"></span> 組み合わせ</a></li>
+    <li><a href="08-final-exercise.html"><span class="status-dot" data-chapter="08"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 1: Basics &gt; Chapter 01</div>
+  <h1>Skillとは</h1>
+  <p class="subtitle">Slashコマンドとの違い、ワークフロー自動化の発想</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 25分</span>
+    <span class="badge">Phase: Basics</span>
+    <span class="badge">難易度: 入門</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">この章のゴール</span>
+    <p><strong>Skill</strong>(スキル)を「<strong>繰り返し業務を Markdown で手順書化し、Claude が自動発火して実行する仕組み</strong>」として腹落ちさせます。25分で、(1) Skillの定義、(2) Slashコマンドとの違い、(3) メリット、(4) 使用シーン6例、(5) 落とし穴、(6) 本カリキュラムのロードマップまで一気に把握できます。<strong>本チュートリアル自体が <code>make-tutorial</code> という Skill で生成されている</strong>ので、最良の手本として随所で引用します。</p>
+  </div>
+
+  <div class="info-box" style="border-left: 3px solid #D97757;">
+    <span class="label">バージョン注記</span>
+    <p>本章の記述は <strong>2026年1月時点</strong> の Claude Code の Skill 機能に基づきます。<code>~/.claude/skills/{name}/SKILL.md</code> の配置パターンと frontmatter(<code>name</code>/<code>description</code>)の2フィールド必須という設計は安定していますが、オプション項目や発火ロジックは進化するので、最新は <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">公式ドキュメント</a> を確認してください。</p>
+  </div>
+
+  <!-- ===== Section 1: Skillとは ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Skill とは何か — 一言で</h2>
+
+  <p><span class="term" data-tip="Skill: 繰り返し業務のワークフローをMarkdownで記述し、Claudeが文脈から発火判定して実行する仕組み。2026年1月時点。">Skill</span> は、<strong>「いつ使うか(発火条件)」と「どうやるか(手順書)」を1枚の Markdown にまとめ</strong>、Claude がユーザとの会話文脈から自動で発火判定して実行してくれる仕組みです。中身は <code>~/.claude/skills/{name}/SKILL.md</code> という普通のテキストファイルで、<span class="term" data-tip="frontmatter: Markdown冒頭の --- で囲まれたYAMLメタデータブロック。name と description を必須フィールドとする">frontmatter</span> の <code>description</code> フィールドが Claude の判断材料になります。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Skill が動く全体像</div>
+    <svg viewBox="0 0 520 260" width="100%" style="max-width:520px; display:block; margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <rect x="20" y="30" width="140" height="90" rx="10" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="2"/>
+      <text x="90" y="58" text-anchor="middle" font-size="12" font-weight="700" fill="#18181b">ユーザ発話</text>
+      <text x="90" y="78" text-anchor="middle" font-size="10" fill="#475569">「議事録まとめて」</text>
+      <text x="90" y="96" text-anchor="middle" font-size="10" fill="#475569">「学習サイト作って」</text>
+      <path d="M 165 75 L 195 75" stroke="#D97757" stroke-width="2" fill="none" marker-end="url(#arrSk)"/>
+      <defs><marker id="arrSk" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#D97757"/></marker></defs>
+      <rect x="200" y="30" width="150" height="90" rx="10" fill="#ffffff" stroke="#D97757" stroke-width="1.5"/>
+      <text x="275" y="58" text-anchor="middle" font-size="12" font-weight="700" fill="#18181b">Claude 発火判定</text>
+      <text x="275" y="78" text-anchor="middle" font-size="10" fill="#475569">description を</text>
+      <text x="275" y="94" text-anchor="middle" font-size="10" fill="#475569">読んで該当Skillを選ぶ</text>
+      <path d="M 355 75 L 385 75" stroke="#D97757" stroke-width="2" fill="none" marker-end="url(#arrSk)"/>
+      <rect x="390" y="30" width="110" height="90" rx="10" fill="#ffffff" stroke="#D97757" stroke-width="1.5"/>
+      <text x="445" y="58" text-anchor="middle" font-size="12" font-weight="700">SKILL.md</text>
+      <text x="445" y="78" text-anchor="middle" font-size="10" fill="#475569">手順を実行</text>
+      <text x="445" y="94" text-anchor="middle" font-size="10" fill="#475569">templates/を参照</text>
+      <rect x="110" y="160" width="300" height="70" rx="10" fill="rgba(217,119,87,0.08)" stroke="#D97757" stroke-width="1.5" stroke-dasharray="4 3"/>
+      <text x="260" y="186" text-anchor="middle" font-size="12" font-weight="700" fill="#18181b">成果物(メール下書き / 議事録 / サイト …)</text>
+      <text x="260" y="208" text-anchor="middle" font-size="10" fill="#475569">再現性のある品質で返ってくる</text>
+      <path d="M 445 125 Q 360 180 340 160" stroke="#D97757" stroke-width="2" fill="none" marker-end="url(#arrSk)"/>
+    </svg>
+    <div class="diagram-caption">ユーザは自然文を投げるだけ。Claude が Skill を選び、SKILL.md の手順を実行し、成果物を返す。</div>
+  </div>
+
+  <p>もう少し踏み込むと、Skill は <strong>Claude にとってのマイクロ役割定義</strong>です。<code>description</code> に「何をする / いつ発火する」を書き、本文に「手順・制約・テンプレート参照・失敗時対処」を書く。Claude はその場の会話から「これは該当する」と判断したら Skill を読んで従います。<span class="term" data-tip="make-tutorial: このチュートリアル群を量産する MK 自作の Skill。~/.claude/skills/make-tutorial/SKILL.md に実体がある">make-tutorial</span> が好例で、テーマと時間を渡すだけで章立て・色選択・HTML生成・デプロイまで一貫して走ります。</p>
+
+  <div class="info-box" style="background: rgba(217,119,87,0.08); border-left: 3px solid #D97757;">
+    <span class="label">実 SKILL.md の frontmatter 例(make-tutorial 抜粋)</span>
+    <pre><code>---
+name: make-tutorial
+description: MKのClaude Codeチュートリアルと同じデザイン・構造の
+  学習サイトを量産する。テーマ・URL・合計時間・章時間・内容目標を
+  受け取り、妥当性確認 → デザイン決定 → HTML/CSS/JS生成 →
+  GitHub Pagesへ自動デプロイまで一気通貫で実行する。
+---</code></pre>
+    <p>ポイント: <code>description</code> に <strong>「何を受け取り、何を出力し、いつ使うか」</strong>が書かれている。これが Claude の発火判定の鍵になります。</p>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section 2: Slashコマンドとの違い ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Slashコマンド との違い</h2>
+
+  <p>Claude Code には以前から <span class="term" data-tip="Slashコマンド: / で始まる明示的な呼び出し。例 /init /review /compact など。ユーザが毎回タイプする必要がある">Slashコマンド</span> がありました。「Skill ってそれと何が違うの?」は最初の疑問なので、はっきり対比しておきます。</p>
+
+  <table>
+    <thead>
+      <tr><th>観点</th><th>Slashコマンド(/xxx)</th><th>Skill</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>起動方法</td><td>ユーザが必ず <code>/xxx</code> と明示タイプ</td><td><strong>自動発火</strong> or ユーザ指定、どちらも可</td></tr>
+      <tr><td>発火判定</td><td>なし(直接呼ぶ)</td><td>Claude が <code>description</code> を読んで判断</td></tr>
+      <tr><td>実体</td><td>プロンプト短文が中心</td><td>Markdown手順書 + <code>templates/</code> の部品群</td></tr>
+      <tr><td>複雑な業務</td><td>1〜2手順向き</td><td>複数フェーズ・分岐・テンプレ組み合わせ可</td></tr>
+      <tr><td>発見性</td><td>ユーザが名前を覚える必要</td><td>自然文で呼べる(「議事録まとめて」等)</td></tr>
+      <tr><td>共有</td><td>プロンプト全文をコピペ</td><td>フォルダごと配布 → チーム展開しやすい</td></tr>
+    </tbody>
+  </table>
+
+  <div class="compare-cards">
+    <div class="cc">
+      <span class="cc-label">Slash が向く</span>
+      <h4>単発・明示・軽量</h4>
+      <ul>
+        <li><code>/init</code> で CLAUDE.md を作る</li>
+        <li><code>/compact</code> で履歴圧縮</li>
+        <li><code>/review</code> で軽くレビュー</li>
+        <li>覚えやすい短い呼び出し</li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">Skill が向く</span>
+      <h4>反復・手順書・品質担保</h4>
+      <ul>
+        <li>毎週の議事録整形</li>
+        <li>チーム共通のメール文面</li>
+        <li>コミット規約に沿った自動生成</li>
+        <li>テーマから学習サイト量産(make-tutorial)</li>
+      </ul>
+    </div>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: Slashコマンド を Skill に昇格するタイミング</summary>
+    <div class="more-body">
+      <p>最初は Slash で十分でも、<strong>「同じ呼び出しを週3回以上する」「他の人にも同じ品質で使って欲しい」「手順が3ステップを超える」</strong>のいずれかに該当したら Skill 化の合図です。Ch03(設計原則)で「1つのSkillに何を入れ、何を外に出すか」の単一責任原則を扱います。逆に Skill が大きくなりすぎたら、サブ処理を Slashや Subagent に切り出すのが正解。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 3: メリット ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Skill の3大メリット</h2>
+
+  <p>「Markdown 1枚だけで?」と最初は物足りなく感じますが、この<strong>軽量さこそが Skill の強み</strong>です。得られるメリットは3つに集約されます。</p>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="users" width="20" height="20"></i>
+      <div><strong>チーム展開</strong> — フォルダごと <code>git</code> で共有できる。同じ Skill が入ったメンバーは、同じ品質の成果物を同じ発話で作れる。属人化した「あの人のプロンプト」を消せる。</div>
+    </li>
+    <li>
+      <i data-lucide="book-open" width="20" height="20"></i>
+      <div><strong>手順書化</strong> — Markdown なので読める・書ける・レビューできる。「なぜこの手順なのか」のコメントも <code>&lt;!-- --&gt;</code> で残せるし、<code>git log</code> で変更履歴も追える。</div>
+    </li>
+    <li>
+      <i data-lucide="shield-check" width="20" height="20"></i>
+      <div><strong>品質担保</strong> — 毎回同じテンプレート・同じチェックリストで動くので、<span class="term" data-tip="再現性: 同じ入力に対して同程度の品質の出力が返ること。ワークフローをMarkdownで固定すると大幅に上がる">再現性</span> が上がる。人が疲れた日でも Skill は疲れない。</div>
+    </li>
+  </ul>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Skill化による効果(イメージ値)</div>
+    <canvas id="ch1-bar-1" height="200"></canvas>
+    <div class="diagram-caption">繰り返し業務ほど Skill 化の効果が出る。軽量な1ショット作業は Slash や素の会話で十分。</div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-num">3<small>x</small></div>
+      <div class="stat-label">同じ品質の再現度</div>
+      <div class="stat-trend up">↑ 手動比</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">1<small>枚</small></div>
+      <div class="stat-label">必要なファイル数</div>
+      <div class="stat-trend up">↑ SKILL.md のみ</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">0<small>円</small></div>
+      <div class="stat-label">追加ランタイム費用</div>
+      <div class="stat-trend up">↑ Claude Code内で完結</div>
+    </div>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section 4: 使用シーン ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 使用シーン 6例</h2>
+
+  <p>「自分の業務でどこに刺せるか」を掴んでもらうため、<strong>実務で効く6シーン</strong>を並べます。自分のToDoリストに似たものがあれば、そこから Skill 化するのが最速の投資回収ルートです。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">6つのユースケース判別フロー</div>
+    <pre class="mermaid">
+graph TD
+  Start(["繰り返している業務がある"]) --> Q1{"頻度は<br/>週2回以上?"}
+  Q1 -- "Yes" --> Q2{"手順が<br/>3ステップ以上?"}
+  Q1 -- "No" --> Direct["素の会話 or Slashで十分"]
+  Q2 -- "Yes" --> Q3{"成果物は何?"}
+  Q2 -- "No・単純" --> Slash["Slashコマンド化を検討"]
+  Q3 -- "文書(メール等)" --> U1["[1] メール下書きSkill"]
+  Q3 -- "会議ログ" --> U2["[2] 議事録整形Skill"]
+  Q3 -- "コード変更" --> U3["[3] コミットメッセージSkill"]
+  Q3 -- "PR記述" --> U4["[4] PRテンプレSkill"]
+  Q3 -- "ドキュメント" --> U5["[5] 学習サイト量産<br/>(make-tutorial)"]
+  Q3 -- "調査レポート" --> U6["[6] 週次リサーチSkill"]
+    </pre>
+    <div class="diagram-caption">分岐の先の U1〜U6 が本カリキュラムで順番に扱うユースケース。</div>
+  </div>
+
+  <h3>6シーンの具体例</h3>
+
+  <div class="kv-grid">
+    <div class="kv"><div class="kv-key">1. メール下書き</div><div class="kv-val">宛先 / 目的 / トーン / ポイントを渡すと、日本語ビジネスメールを即下書き → Ch05で実装</div></div>
+    <div class="kv"><div class="kv-key">2. 議事録整形</div><div class="kv-val">チャット転写から Decisions / Actions / Questions の3区分に整形 → Ch06</div></div>
+    <div class="kv"><div class="kv-key">3. コミット規約</div><div class="kv-val">diff を読んで Conventional Commits 形式のメッセージを生成。プロジェクト独自の prefix にも対応</div></div>
+    <div class="kv"><div class="kv-key">4. PRテンプレ</div><div class="kv-val">commit 履歴から Summary / Changes / Test Plan 付きの PR 本文を自動記述</div></div>
+    <div class="kv"><div class="kv-key">5. 学習サイト量産</div><div class="kv-val"><code>make-tutorial</code> — テーマを渡すだけで全章の HTML と GitHub Pages デプロイまで</div></div>
+    <div class="kv"><div class="kv-key">6. 週次リサーチ</div><div class="kv-val">技術選定候補を5側面で調査し、比較表つきレポートを定位置に書き出す</div></div>
+  </div>
+
+  <div class="info-box" style="background: rgba(217,119,87,0.08); border-left: 3px solid #D97757;">
+    <span class="label">今すぐ試す(発見)</span>
+    <p>自分の手元で次を実行してみてください。いま入っている Skill が一覧できます。</p>
+    <pre><code>ls ~/.claude/skills/</code></pre>
+    <p>もし <code>make-tutorial</code> が入っていれば、それが「本チュートリアルの製造元」です。<code>cat ~/.claude/skills/make-tutorial/SKILL.md | head -40</code> で冒頭だけ覗くと、<strong>実物の frontmatter と「いつ使うか」節</strong>がそのまま見えて、Skillの雰囲気が一瞬で掴めます。</p>
+  </div>
+
+  <h3>make-tutorial に学ぶ: 優れた Skill の5要素</h3>
+
+  <p>本チュートリアル自体を作っている <code>make-tutorial</code> を<strong>そのまま手本</strong>として、何が優れた Skill を成立させるかを抽出します。</p>
+
+  <div class="steps">
+    <div class="step done"><div class="step-num">1</div><div class="step-label">description</div><div class="step-desc">発火条件を明示</div></div>
+    <div class="step done"><div class="step-num">2</div><div class="step-label">フェーズ分解</div><div class="step-desc">5段階の手順</div></div>
+    <div class="step done"><div class="step-num">3</div><div class="step-label">対話的確認</div><div class="step-desc">不足は聞く</div></div>
+    <div class="step done"><div class="step-num">4</div><div class="step-label">templates/</div><div class="step-desc">再利用部品</div></div>
+    <div class="step done"><div class="step-num">5</div><div class="step-label">失敗時対処</div><div class="step-desc">エラー分岐</div></div>
+  </div>
+
+  <!-- ===== Section 5: 落とし穴 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 4つの落とし穴</h2>
+
+  <p>Skill は軽量で強力ですが、最初に踏みがちな<strong>4つの罠</strong>があります。どれも「知っていれば避けられる」類のものです。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Skill の落とし穴マップ</div>
+    <svg viewBox="0 0 460 280" width="100%" style="max-width:460px; display:block; margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <rect x="40"  y="20"  width="180" height="115" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="1.5"/>
+      <rect x="230" y="20"  width="180" height="115" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+      <rect x="40"  y="145" width="180" height="115" fill="#fee2e2" stroke="#dc2626" stroke-width="1.5"/>
+      <rect x="230" y="145" width="180" height="115" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+
+      <text x="130" y="44" text-anchor="middle" font-size="12" font-weight="700" fill="#b45309">1. description 不足</text>
+      <text x="130" y="72" text-anchor="middle" font-size="10" fill="#475569">曖昧だと発火しない</text>
+      <text x="130" y="88" text-anchor="middle" font-size="10" fill="#475569">入出力を具体的に</text>
+      <text x="130" y="112" text-anchor="middle" font-size="10" fill="#475569">→ いつ使うかを書く</text>
+
+      <text x="320" y="44" text-anchor="middle" font-size="12" font-weight="700" fill="#b45309">2. 単一責任違反</text>
+      <text x="320" y="72" text-anchor="middle" font-size="10" fill="#475569">1つのSkillに詰め込み</text>
+      <text x="320" y="88" text-anchor="middle" font-size="10" fill="#475569">発火判定が曖昧に</text>
+      <text x="320" y="112" text-anchor="middle" font-size="10" fill="#475569">→ 1責任に分解</text>
+
+      <text x="130" y="169" text-anchor="middle" font-size="12" font-weight="700" fill="#b91c1c">3. 過剰な複雑化</text>
+      <text x="130" y="197" text-anchor="middle" font-size="10" fill="#475569">条件分岐を書きすぎ</text>
+      <text x="130" y="213" text-anchor="middle" font-size="10" fill="#475569">保守不能に</text>
+      <text x="130" y="237" text-anchor="middle" font-size="10" fill="#475569">→ AIに任せる部分を残す</text>
+
+      <text x="320" y="169" text-anchor="middle" font-size="12" font-weight="700" fill="#475569">4. 発火競合</text>
+      <text x="320" y="197" text-anchor="middle" font-size="10" fill="#475569">似たdescription</text>
+      <text x="320" y="213" text-anchor="middle" font-size="10" fill="#475569">複数Skillが混ざる</text>
+      <text x="320" y="237" text-anchor="middle" font-size="10" fill="#475569">→ 領域を区別して書く</text>
+    </svg>
+    <div class="diagram-caption">4つとも対策は Ch03(設計原則)で体系的に扱う。</div>
+  </div>
+
+  <h3>落とし穴ごとの症状と対策</h3>
+
+  <table>
+    <thead>
+      <tr><th>落とし穴</th><th>症状</th><th>対策</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>description不足</td><td>「議事録まとめて」と言っても Skill が発火せず素の会話で返ってくる</td><td>description に<strong>入力 / 出力 / 発火ワード</strong> を含める(Ch03)</td></tr>
+      <tr><td>単一責任違反</td><td>1つの Skill にメール+議事録+レポート全部入り。Claude がどれを起動すべきか迷う</td><td>業務単位で Skill を分ける。「1 Skill = 1 業務」(Ch03)</td></tr>
+      <tr><td>過剰複雑化</td><td>if/else を書きすぎて手順書ではなくコードに。読みにくく変更が怖い</td><td>AIが空気読めば分かる部分は書かない。例とテンプレで示す(Ch04)</td></tr>
+      <tr><td>発火競合</td><td>似た description の Skill が複数あって意図しないものが発火</td><td>各 Skill の<strong>領域を明示分離</strong>(顧客向け/社内向けなど)</td></tr>
+    </tbody>
+  </table>
+
+  <details class="more-box">
+    <summary>もっと詳しく: "description不足" の典型的な書き換え例</summary>
+    <div class="more-body">
+      <p>悪い例と良い例を対比します。長ければ良いわけではなく、<strong>Claudeが「今がその時か」を判断できる材料</strong>があるかが本質です。</p>
+      <pre><code># 悪い例(曖昧)
+description: メールを書く
+
+# 良い例(入出力・発火ワード・制約が明示)
+description: 宛先・目的・トーン・要点を受け取り、日本語
+  ビジネスメールの下書きを3パターン生成する。
+  「メール書いて」「XXさん宛のメール」などで発火。
+  敬語レベルは入力指定があれば従う、なければ標準敬語。</code></pre>
+      <p>Ch03でこのあたりの原則(単一責任・明示トリガー・テンプレ分離等)を体系的に扱います。</p>
+    </div>
+  </details>
+
+  <div class="info-box">
+    <span class="label">地味だが重要</span>
+    <p><code>~/.claude/skills/</code> に置いた Skill は<strong>全プロジェクト横断で使える</strong>のが基本ですが、プロジェクト固有のものは <code>.claude/skills/</code> (リポジトリ内)に置けます。チームで共有する Skill は後者に、個人の汎用 Skill は前者に、という住み分けが2026年1月時点のおすすめ運用です。Ch02で場所別の違いを詳しく扱います。</p>
+  </div>
+
+  <!-- ===== Section 6: ロードマップ ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 本カリキュラムのロードマップ</h2>
+
+  <p>本チュートリアルは全8章・約4時間で完走する設計です。<strong>「読むより書く時間を長く」</strong>を合言葉に、各章で実際に SKILL.md を書く/動かすハンズオンを用意しています。</p>
+
+  <div class="compare-cards">
+    <div class="cc">
+      <span class="cc-label">Basics(Ch1-4)</span>
+      <h4>概念と構成</h4>
+      <ul>
+        <li>Ch01 Skillとは(いま読んでいる章)</li>
+        <li>Ch02 Skillの最小構成(SKILL.md/frontmatter)</li>
+        <li>Ch03 良いSkillの設計原則</li>
+        <li>Ch04 templatesディレクトリの使い方</li>
+      </ul>
+    </div>
+    <div class="cc">
+      <span class="cc-label">Practice(Ch5-8)</span>
+      <h4>実戦で作り切る</h4>
+      <ul>
+        <li>Ch05 実践:メール下書きSkill</li>
+        <li>Ch06 実践:議事録整形Skill</li>
+        <li>Ch07 Subagents/Hooksと組み合わせ</li>
+        <li>Ch08 最終演習:業務から3つSkill化</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>学習ペースと到達点</h3>
+
+  <div class="progress-row">
+    <div class="progress-head"><span>Basics(概念と構成)</span><span>約2h</span></div>
+    <div class="progress-track"><div class="progress-fill" style="width:50%"></div></div>
+  </div>
+  <div class="progress-row">
+    <div class="progress-head"><span>Practice(実戦)</span><span>約2h</span></div>
+    <div class="progress-track"><div class="progress-fill" style="width:50%"></div></div>
+  </div>
+
+  <div class="steps">
+    <div class="step done"><div class="step-num">1</div><div class="step-label">理解</div><div class="step-desc">いまここ</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-label">構成</div><div class="step-desc">Ch02-03</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-label">テンプレ</div><div class="step-desc">Ch04</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-label">実戦</div><div class="step-desc">Ch05-07</div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-label">自分化</div><div class="step-desc">Ch08</div></div>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: どの章から読むのが効率的?</summary>
+    <div class="more-body">
+      <p>原則は順番通りですが、読者のタイプ別に最適化できます。<strong>(A) とにかく動かしたい人</strong> → Ch01 → Ch02 → Ch05(メール下書き) で実物を1本作り、残りを戻って読む。<strong>(B) 設計から固めたい人</strong> → Ch01 → Ch02 → Ch03 → Ch04 の順で土台を固めてから実践。<strong>(C) チーム導入検討中の人</strong> → Ch01 → Ch03(設計原則) → Ch08(実務への組み込み)を先に眺めて概算の効能を掴む。どの順路でも Ch01 と Ch02 は土台なのでスキップしないのがおすすめです。</p>
+    </div>
+  </details>
+
+  <p>では次章から、<strong>SKILL.md の最小構成と frontmatter の書き方</strong>に進みます。ここが Skill職人の入口です。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span></p>
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>手元のSkillを棚卸しする(5分)</h4>
+    <p>自分の環境にどんな Skill があるかを実際に確認し、それぞれの <code>description</code> を読んで「どんな時に発火するか」を自分の言葉で1行要約してください。</p>
+    <ol>
+      <li>ターミナルで <code>ls ~/.claude/skills/</code> を実行</li>
+      <li>各 Skill の frontmatter を <code>head -10 ~/.claude/skills/{name}/SKILL.md</code> で確認</li>
+      <li>各 description について「どんな入力でどんな出力が返るのか」を1行でメモ</li>
+      <li>手元にない場合は、本資料内の <code>make-tutorial</code> 抜粋を使って同じ分析を</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><code>make-tutorial</code> の frontmatter を読んだ場合の模範解答例です。</p>
+      <pre><code>Skill名: make-tutorial
+入力: テーマ・URL・合計時間・章時間・内容目標
+出力: HTML/CSS/JS一式 + GitHub Pages 公開URL
+発火ワード: 「学習サイト作りたい」「チュートリアル量産」「/make-tutorial」
+特徴: 5フェーズワークフロー(入力→妥当性→デザイン→生成→デプロイ)で
+  対話的に不足情報を補う設計。templates/ に正本を置く方針。</code></pre>
+      <p><strong>観察ポイント</strong>: description に「受け取る / 確認する / 生成する / デプロイする」という<strong>動詞の連鎖</strong>が書かれていて、Claude が「今がその時か」を判断しやすい。これが良いSkillの最低ラインです。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>自分の業務から Skill 候補を3つ挙げる</h4>
+    <p>Section 4 の6ユースケースと落とし穴表を参考に、<strong>自分の繰り返し業務</strong> から Skill 化する価値があるものを3つ挙げ、各候補について次の4項目を書き出してください。抽象語だけはNG(「効率化」等)。</p>
+    <ol>
+      <li>Skill名(半角英数ハイフン、例: <code>weekly-report</code>)</li>
+      <li><code>description</code> ドラフト(入力 / 出力 / 発火ワードを明示、1〜3行)</li>
+      <li>週あたりの実行回数と、1回の手動所要時間(目安)</li>
+      <li>落とし穴マップのうちどれが怖いか + 対策1行</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>MK自身の業務から選んだ場合の例です。</p>
+      <pre><code>【1. commit-msg】
+description: 現在の git diff を読み、
+  Conventional Commits 形式(feat/fix/docs等)の
+  コミットメッセージ候補を3案生成する。
+  「コミットメッセージ書いて」で発火。
+頻度: 週15回・1回3分 → 週45分の節約
+怖い罠: 発火競合(/commit と混同)→ description に
+  「Conventional Commits」を必ず明記して領域分離
+
+【2. daily-standup】
+description: 本日の git log と open PR から
+  「昨日やったこと/今日やること/ブロッカー」の
+  3行スタンドアップを生成。
+  「スタンドアップまとめて」で発火。
+頻度: 週5回・1回10分 → 週50分の節約
+怖い罠: description不足 → 発火ワードを複数列挙
+
+【3. weekly-tech-research】
+description: 指定された技術トピックを
+  「概要/実装例/ベンチマーク/競合/導入コスト」の
+  5側面で並列調査し、比較表付きレポートを
+  reports/YYYY-MM-DD.md に書き出す。
+  「調査して」「X について調べて」で発火。
+頻度: 週2回・1回60分 → 週120分の節約
+怖い罠: 過剰複雑化 → 分岐は3本まで、残りは
+  Claudeに任せる(Ch03/Ch04で学ぶ原則)</code></pre>
+      <p><strong>ポイント</strong>: 週あたりの節約時間を必ず試算する。これが Skill 化の投資判断材料になり、Ch08 の最終演習でそのまま再利用できます。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式ドキュメント</a> — Skill / SKILL.md / frontmatter の一次情報(2026年1月時点は英語中心)</li>
+      <li><span class="res-type doc">Doc</span> <a href="file:///Users/koma/.claude/skills/make-tutorial/SKILL.md" target="_blank" rel="noopener">~/.claude/skills/make-tutorial/SKILL.md</a> — 本チュートリアルを生成している実 Skill。最良の手本として繰り返し参照</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener">Claude Code GitHub リポジトリ</a> — Issues/Discussions で Skill 機能の最新動向と既知の地雷</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://www.anthropic.com/news" target="_blank" rel="noopener">Anthropic Blog / News</a> — Skill 関連のリリースや活用事例</li>
+      <li><span class="res-type video">Video</span> <a href="https://www.youtube.com/results?search_query=Claude+Code+skills+%E4%BD%9C%E3%82%8A%E6%96%B9" target="_blank" rel="noopener">YouTube: "Claude Code skills 作り方"</a> — コミュニティの実演動画</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://zenn.dev/search?q=Claude+Code+Skill" target="_blank" rel="noopener">Zenn検索: "Claude Code Skill 自作"</a> — 日本語の実践記事と具体Skill例</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="01">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <span></span>
+    <a href="02-skill-structure.html"><span class="direction">Next &rarr;</span>Skillの最小構成</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+
+<!-- Chart.js: Skill化による効果 -->
+<script>
+window.addEventListener("load", function(){
+  var ctxBar = document.getElementById('ch1-bar-1');
+  if (ctxBar && window.Chart) {
+    new Chart(ctxBar, {
+      type: 'bar',
+      data: {
+        labels: ['週次議事録整形', '毎日のコミットmsg', 'メール量産', '1回きり調査'],
+        datasets: [
+          {
+            label: '手動(分/週)',
+            data: [90, 75, 120, 30],
+            backgroundColor: 'rgba(217,119,87,0.35)',
+            borderColor: '#D97757',
+            borderWidth: 1,
+            borderRadius: 6
+          },
+          {
+            label: 'Skill化後(分/週)',
+            data: [15, 10, 20, 28],
+            backgroundColor: '#D97757',
+            borderRadius: 6
+          }
+        ]
+      },
+      options: {
+        plugins: { legend: { position: 'bottom' } },
+        scales: {
+          y: { beginAtZero: true, title: { display: true, text: '所要時間(分/週)' } }
+        }
+      }
+    });
+  }
+});
+</script>
+</body>
+</html>

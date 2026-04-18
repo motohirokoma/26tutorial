@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>実践：議事録整形Skill - MK's Claude Code Tutorial - Skill Craft</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code - Skill
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav class="active"><span class="phase-name">Practice</span><span class="phase-pct" id="pct-practice">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.06</span>
+    実践：議事録整形Skill
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 8 sections</text>
+    </svg>
+    <div class="progress-info">0h / 4h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-skill-overview.html"><span class="status-dot" data-chapter="01"></span> Skillとは</a></li>
+    <li><a href="02-skill-structure.html"><span class="status-dot" data-chapter="02"></span> Skillの最小構成</a></li>
+    <li><a href="03-design-principles.html"><span class="status-dot" data-chapter="03"></span> 設計原則</a></li>
+    <li><a href="04-templates.html"><span class="status-dot" data-chapter="04"></span> templatesの使い方</a></li>
+  </ul>
+  <div class="section-label">Practice</div>
+  <ul>
+    <li><a href="05-email-draft-skill.html"><span class="status-dot" data-chapter="05"></span> 実践：メール下書き</a></li>
+    <li><a href="06-meeting-notes-skill.html" class="active"><span class="status-dot" data-chapter="06"></span> 実践：議事録整形</a></li>
+    <li><a href="07-combine-sub-hook.html"><span class="status-dot" data-chapter="07"></span> 組み合わせ</a></li>
+    <li><a href="08-final-exercise.html"><span class="status-dot" data-chapter="08"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 2: Practice &gt; Chapter 06</div>
+  <h1>実践：議事録整形Skill</h1>
+  <p class="subtitle">生の会議ログから整形議事録を量産するSkillを作る</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 30分</span>
+    <span class="badge">Phase: Practice</span>
+    <span class="badge">難易度: 中級</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">この章のゴール</span>
+    <p>Google Meet の自動字幕、Slack ハドルの文字起こし、Zoom の <span class="term" data-tip="会話を時系列に並べた生テキスト。話者の名前 + 発言でダラダラ続く">チャット転写</span> — どれも「読める議事録」に整えるのに30分以上かかります。本章では <strong>議事録整形Skill</strong>(<code>meeting-notes</code>)を作り、「議事録まとめて」と言うだけで <strong>Decisions / Actions / Questions</strong> の3セクションに整形された議事録を自動生成します。<span class="term" data-tip="SKILL.md のフロントマターで Claude に発火判定させる宣言部">frontmatter</span>・<code>SKILL.md</code> 本体・<code>templates/</code> の全文を掲載、そのままコピペで動きます。本章は<span class="term" data-tip="2026年1月時点の記述。最新は公式ドキュメント参照">2026年1月時点</span>の Claude Code Skill 仕様に基づきます。</p>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>シナリオ：生の会議ログ → 整形議事録</h2>
+
+  <p>私の実務ではこんな流れが頻出します。30分の社内ミーティングが終わり、Google Meet の文字起こしが Slack に自動投稿される。議事録係のあなたは会議後に15分の隙間時間でまとめたいが、生ログは <strong>話者ごとの発言がただ並ぶだけ</strong> で、どれが <span class="term" data-tip="会議で確定した決定事項。後から参照される">Decision</span> で、どれが <span class="term" data-tip="誰が何をいつまでにやるかが決まったTODO">Action</span> で、どれが <span class="term" data-tip="結論が出ず次回に持ち越された論点">Question</span> なのか、読み直さないと分からない。</p>
+
+  <p>そこで Skill の出番。「議事録整形して」と1行打てば、生ログを <code>meeting-notes</code> Skill が発火判定し、テンプレに沿った綺麗な議事録が戻ってくる。ポイントは <strong>毎回同じフォーマットで出る</strong> こと。チーム展開する時の品質バラつきが一気に消えます。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Skillが挟まる前と後</div>
+    <svg viewBox="0 0 720 320" width="100%" style="max-width:720px; display:block; margin:0 auto;">
+      <defs>
+        <marker id="ch6-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#D97757"/>
+        </marker>
+      </defs>
+      <!-- Before -->
+      <text x="160" y="28" text-anchor="middle" font-size="13" font-weight="700" fill="#64748b">Before(手作業)</text>
+      <rect x="30" y="44" width="260" height="90" rx="8" fill="#fafafa" stroke="#cbd5e1"/>
+      <text x="160" y="68" text-anchor="middle" font-size="11" fill="#475569">生ログ(話者×発言の羅列)</text>
+      <text x="160" y="88" text-anchor="middle" font-size="10" fill="#94a3b8">田中: 来週までにやります…</text>
+      <text x="160" y="104" text-anchor="middle" font-size="10" fill="#94a3b8">鈴木: それは誰が?…</text>
+      <text x="160" y="120" text-anchor="middle" font-size="10" fill="#94a3b8">田中: 私が担当で…</text>
+      <line x1="160" y1="140" x2="160" y2="176" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#ch6-arr)"/>
+      <rect x="30" y="180" width="260" height="60" rx="8" fill="#fef3c7" stroke="#d97706"/>
+      <text x="160" y="204" text-anchor="middle" font-size="12" font-weight="600" fill="#92400e">人間が読み返して整形</text>
+      <text x="160" y="222" text-anchor="middle" font-size="10" fill="#a16207">15-30分 / 属人的 / 品質バラつき</text>
+      <!-- After -->
+      <text x="560" y="28" text-anchor="middle" font-size="13" font-weight="700" fill="#D97757">After(Skill発火)</text>
+      <rect x="430" y="44" width="260" height="90" rx="8" fill="#fafafa" stroke="#cbd5e1"/>
+      <text x="560" y="68" text-anchor="middle" font-size="11" fill="#475569">生ログ(同じもの)</text>
+      <text x="560" y="88" text-anchor="middle" font-size="10" fill="#94a3b8">田中: 来週までにやります…</text>
+      <text x="560" y="104" text-anchor="middle" font-size="10" fill="#94a3b8">鈴木: それは誰が?…</text>
+      <text x="560" y="120" text-anchor="middle" font-size="10" fill="#94a3b8">田中: 私が担当で…</text>
+      <line x1="560" y1="140" x2="560" y2="176" stroke="#D97757" stroke-width="2" marker-end="url(#ch6-arr)"/>
+      <rect x="430" y="180" width="260" height="60" rx="8" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="2"/>
+      <text x="560" y="204" text-anchor="middle" font-size="12" font-weight="700" fill="#9a3412">meeting-notes Skill 発火</text>
+      <text x="560" y="222" text-anchor="middle" font-size="10" fill="#9a3412">2-3分 / 毎回同じ型 / 再現可能</text>
+      <line x1="560" y1="240" x2="560" y2="260" stroke="#D97757" stroke-width="2" marker-end="url(#ch6-arr)"/>
+      <rect x="430" y="264" width="260" height="46" rx="8" fill="#18181b"/>
+      <text x="560" y="285" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">Decisions / Actions / Questions</text>
+      <text x="560" y="301" text-anchor="middle" font-size="10" fill="#cbd5e1">3セクションに整形済み</text>
+    </svg>
+    <div class="diagram-caption">同じ生ログから、手作業では15-30分 / Skillでは2-3分。差は「型」が埋まっているかどうか。</div>
+  </div>
+
+  <p>この <strong>DAQ(Decisions / Actions / Questions)</strong> という3分類は、コンサル業界で古典的に使われる議事録の型で、発火条件・テンプレ・SKILL.md すべてを貫通する軸になります。</p>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>Before / After を具体で見る</h2>
+
+  <p>Skillの威力は具体例で見るのが一番早い。同じ入力から両方の出力を並べます。</p>
+
+  <h3>生ログ(Before)</h3>
+<pre><code>[2026-01-15 10:00 定例ミーティング 文字起こし]
+
+田中: じゃあ今日の議題は新機能Aのリリース日と、問い合わせ対応ね。
+鈴木: リリースは来週金曜でしたっけ?
+田中: それを今日決めたいんだけど、QA終わりそう?
+佐藤: あと3日あればいけます。2月6日なら金曜。
+田中: じゃあ2月6日リリースでいこう。鈴木さん、告知お願い。
+鈴木: 了解、前日までにブログとTwitter両方出します。
+田中: 次。問い合わせ対応の件。先週から増えてるよね。
+鈴木: 倍増してます。主に決済エラー。
+佐藤: 原因は分かってるんですか?
+鈴木: そこが分からなくて、ログ調査が必要です。
+田中: じゃあ佐藤さん、ログ調査を今週中にお願い。
+佐藤: 分かりました。金曜までに原因レポート出します。
+鈴木: あと、サポート体制を強化すべきか議論したいんですが。
+田中: それは来週の経営会議マターかな。一旦持ち越しで。
+鈴木: 了解です。</code></pre>
+
+  <h3>整形後(After)</h3>
+<pre><code># 定例ミーティング 議事録 (2026-01-15)
+
+**参加者**: 田中, 鈴木, 佐藤
+**時間**: 10:00-10:30
+
+## Decisions(決定事項)
+- 新機能A のリリース日を **2026-02-06(金)** に確定
+- 問い合わせ増加に対するサポート体制強化は **次週経営会議に持ち越し**
+
+## Actions(アクションアイテム)
+| 担当 | アクション | 期限 |
+|---|---|---|
+| 鈴木 | リリース告知(ブログ・Twitter) | 2026-02-05 |
+| 佐藤 | 決済エラー原因のログ調査レポート | 2026-01-23(金) |
+
+## Questions(持ち越し論点)
+- サポート体制強化の要否 → 経営会議(2026-01-22)で議論
+- 決済エラーの根本原因 → 佐藤の調査待ち</code></pre>
+
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">Before</span>
+      <h4>生ログのまま</h4>
+      <ul>
+        <li>決定とタスクが混在して判別困難</li>
+        <li>期限・担当が文中に散らばる</li>
+        <li>読み直し必須で会議参加者しか活用できない</li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">After</span>
+      <h4>Skill整形済み</h4>
+      <ul>
+        <li>3セクションで一目で全体把握</li>
+        <li>Actions は表で担当・期限が明示</li>
+        <li>欠席者もこれ1枚で完結</li>
+      </ul>
+    </div>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: なぜDAQの3分類なのか</summary>
+    <div class="more-body">
+      <p>議事録の分類は流派が色々あります(5W1H分類 / トピック別 / 時系列そのまま 等)。それでもMKが <strong>DAQ(Decisions / Actions / Questions)</strong> を推す理由は3つ:</p>
+      <ol>
+        <li><strong>Claudeの分類精度が高い</strong>:「決まったこと / 誰が何をやるか / 未解決」の3択は境界が明確で、LLMが迷わず振り分けられる</li>
+        <li><strong>欠席者の再利用性が最大</strong>:Decisions だけ見れば結論、Actions を見ればタスク、Questions で議論の火種を把握できる</li>
+        <li><strong>後から検索しやすい</strong>:「あの時の決定事項どこだっけ」→ Decisionsを grep するだけ</li>
+      </ol>
+      <p>オプションで <strong>Risks</strong>(リスク)や <strong>Next Agenda</strong>(次回議題)を4つ目・5つ目として足す流派もあります。Skillを拡張するなら templates/ に別 variant を足すだけで対応可能。</p>
+    </div>
+  </details>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>Skillの全ファイル構成</h2>
+
+  <p>作るファイルは3つだけ。この構成は Ch02 で学んだ最小構成 + <code>templates/</code> を足した形です。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">meeting-notes Skill のディレクトリ</div>
+    <pre class="mermaid">
+graph TD
+  Root["~/.claude/skills/meeting-notes/"] --> SK["SKILL.md"]
+  Root --> T["templates/"]
+  T --> M1["meeting-notes.md<br/>(出力テンプレ本体)"]
+  T --> M2["few-shot.md<br/>(Before/After例)"]
+  SK -.参照.-> M1
+  SK -.参照.-> M2
+    </pre>
+    <div class="diagram-caption">SKILL.mdが発火判定と手順を担当、templates/は出力フォーマットの正本。</div>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>ファイル</th><th>役割</th><th>行数目安</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>SKILL.md</code></td><td>frontmatter(発火条件) + 手順(Claudeへの指示)</td><td>60-80</td></tr>
+      <tr><td><code>templates/meeting-notes.md</code></td><td>出力議事録の雛形(プレースホルダ入り)</td><td>30-40</td></tr>
+      <tr><td><code>templates/few-shot.md</code></td><td>Before/Afterの1セット(分類ルールの手本)</td><td>40-60</td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-box">
+    <span class="label">2026年1月時点</span>
+    <p><span class="term" data-tip="2026年1月時点の記述。最新は公式ドキュメント参照">2026年1月時点</span>の Claude Code では、<code>~/.claude/skills/{name}/SKILL.md</code> が配置されていれば自動的に認識されます。再起動不要、ファイル保存の瞬間に発火判定候補に加わります。</p>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>SKILL.md 全文(コピペで動く)</h2>
+
+  <p>以下をそのまま <code>~/.claude/skills/meeting-notes/SKILL.md</code> として保存してください。frontmatter の <code>description</code> が <strong>発火判定の鍵</strong> であることはCh02・Ch03で散々やりました。ここでは <strong>「議事録」「会議メモ」「Meet文字起こし」</strong> の3トリガーを明示しています。</p>
+
+<pre><code>---
+name: meeting-notes
+description: 会議の生ログ(Meet/Zoom/Slackの文字起こし、またはチャット転写)から Decisions/Actions/Questions の3セクションに整形した議事録を生成する。ユーザが「議事録整形」「議事録まとめて」「会議メモをまとめて」「Meet の文字起こしを議事録に」「DAQで整理」などと言った時、または会議の生ログらしきテキストを貼り付けて「まとめて」と言った時に発火する。
+---
+
+# meeting-notes スキル
+
+会議の生ログから、読み返しやすく再利用しやすい議事録を量産するスキル。**DAQフォーマット(Decisions / Actions / Questions)** で出力を固定する。
+
+## いつ使うか
+
+- ユーザが「議事録整形して」「議事録まとめて」と言った時
+- ユーザが「会議メモをまとめて」「Meet の文字起こしを整理して」と言った時
+- ユーザが会議の生ログ(話者名 + 発言の羅列)を貼って「DAQで」「3分類で」と言った時
+- ユーザが `/meeting-notes` を明示的に実行した時
+
+## 発火しないケース
+
+- ユーザが「会話ログを要約して」とだけ言った場合(会議でない可能性、ユーザに会議か確認)
+- ログが10行未満(会議として短すぎ、普通の要約スキルで十分)
+
+## 手順
+
+### Step 1: 入力の確認
+ユーザから以下を受け取る(不足分は1問ずつ聞く):
+
+| 項目 | 必須 | デフォルト |
+|---|---|---|
+| 会議ログ本体 | 必須 | — |
+| 会議タイトル | 任意 | ログ冒頭から推定 |
+| 日付 | 任意 | ログから抽出、なければ「未記載」 |
+| 参加者 | 任意 | 話者名から自動抽出 |
+
+ログが貼られていなければ「会議の生ログを貼ってください」と1回だけ聞く。
+
+### Step 2: 分類ルール
+
+発言を3カテゴリに振り分ける:
+
+- **Decisions**: 「〜に決定」「〜にしよう」「〜でいこう」など、**会議内で確定した結論**。期限や担当を含まない結論もここ
+- **Actions**: 「誰が / 何を / いつまでに」の3要素が揃ったタスク。担当・期限が曖昧な場合は、ログから推測できる範囲で補完し、不明なら "TBD" と明記
+- **Questions**: 「持ち越し」「次回議論」「要確認」「不明」と明示されたもの、または結論が出ずに話題が流れた論点
+
+1つの発言が複数カテゴリに該当する場合は、**最も強いもの1つ**に配置する(例: Decisionに付随するTodoならActionsへ)。
+
+### Step 3: 出力生成
+
+`templates/meeting-notes.md` を読み込み、プレースホルダを埋めて出力する。
+
+プレースホルダ:
+- `{{TITLE}}` — 会議タイトル
+- `{{DATE}}` — 日付 (YYYY-MM-DD)
+- `{{PARTICIPANTS}}` — 参加者(カンマ区切り)
+- `{{TIME_RANGE}}` — 開始-終了時刻(あれば)
+- `{{DECISIONS}}` — Decisions の箇条書き
+- `{{ACTIONS_TABLE}}` — Actions の表(担当 / アクション / 期限)
+- `{{QUESTIONS}}` — Questions の箇条書き
+
+Actionsが0件なら「(なし)」、Questionsが0件なら「(なし)」と明記する。空欄は作らない。
+
+### Step 4: 分類判断に迷った時
+
+`templates/few-shot.md` の Before/After 例を参照する。この例で「この発言はどのカテゴリか?」の感覚を掴む。迷ったら **Decisions > Actions > Questions** の優先順で分類する(Decisionsが最も「完了した情報」なので格上)。
+
+### Step 5: 出力後のユーザ確認
+
+出力した議事録をユーザに見せ、「分類に違和感あるものがあれば指摘してください」と1行添える。ユーザの指摘があれば該当項目を動かして再出力。
+
+## 注意点
+
+- 発言者の名前は **最大4人まで明示**、それ以上は「他N名」と集約
+- 1つの Decision / Action に対して、元発言を1-2個引用できる時は `(原文: 〜)` で併記すると信頼性が上がる
+- 機密性の高い会議ログを扱う可能性があるので、**ユーザの許可なく外部ツールに送らない**
+- ログが極端に長い(10,000字超)場合は、先にユーザに「全文処理するか章別に分けるか」聞く
+
+## 失敗時の対処
+
+- 話者が1人しか識別できない → 「発言者の判別が困難です、議事録ではなくメモの要約として処理しますか?」と確認
+- Decisionsが0件 → 「確定した決定事項が見当たりません。議論のみの会議でしたか?」と確認した上で Questions 中心で出力
+- 期限・担当が全く書かれていない → Actions の該当セルを "TBD" で埋めて、末尾に「期限と担当の確認をお勧めします」と添える
+</code></pre>
+
+  <p>ここで注目してほしいのが <code>description</code> の <strong>トリガー語彙の多様性</strong>。「議事録整形」だけでなく「議事録まとめて」「DAQで整理」など、人間が実際に使いそうな言い回しを並べています。Ch03 で学んだ「明示トリガー」の実戦適用です。</p>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>templates/ の全文(2ファイル)</h2>
+
+  <p><code>templates/meeting-notes.md</code> が <strong>出力の正本</strong>、<code>templates/few-shot.md</code> が <strong>分類ルールの手本</strong>。この2つを分けることで、フォーマット変更と分類ルール変更を独立して進化させられます(Ch04の原則「テンプレート分離」)。</p>
+
+  <h3>templates/meeting-notes.md</h3>
+<pre><code># {{TITLE}} 議事録 ({{DATE}})
+
+**参加者**: {{PARTICIPANTS}}
+**時間**: {{TIME_RANGE}}
+
+## Decisions(決定事項)
+{{DECISIONS}}
+
+## Actions(アクションアイテム)
+{{ACTIONS_TABLE}}
+
+## Questions(持ち越し論点)
+{{QUESTIONS}}
+
+---
+*この議事録は meeting-notes Skill により生成されました。分類に違和感があれば指摘してください。*
+</code></pre>
+
+  <h3>templates/few-shot.md</h3>
+<pre><code># 分類の手本(few-shot examples)
+
+## 例1: シンプルな3発言
+
+### Before(生ログ)
+田中: リリースは2月6日でいこう。
+鈴木: 了解、告知は私が前日までに出します。
+佐藤: 決済エラーのログ調査は今週中に原因出します。
+
+### After(整形済)
+## Decisions
+- 新機能リリース日を **2026-02-06** に確定
+
+## Actions
+| 担当 | アクション | 期限 |
+|---|---|---|
+| 鈴木 | リリース告知 | 2026-02-05 |
+| 佐藤 | 決済エラーのログ調査 | 2026-01-23(金) |
+
+## Questions
+(なし)
+
+---
+
+## 例2: 持ち越し論点がある場合
+
+### Before(生ログ)
+鈴木: サポート体制を強化すべきか議論したい。
+田中: それは経営会議マターかな、一旦持ち越し。
+鈴木: 了解です。
+
+### After(整形済)
+## Decisions
+- サポート体制強化の議論は **経営会議で扱う**(持ち越しの決定)
+
+## Actions
+(なし)
+
+## Questions
+- サポート体制強化の要否 → 次週経営会議で議論
+
+---
+
+## 例3: 曖昧発言の扱い
+
+### Before(生ログ)
+田中: あの機能、なんとかしたいよね。
+鈴木: そうですね、来週考えましょう。
+
+### After(整形済)
+## Decisions
+(なし)
+
+## Actions
+(なし)
+
+## Questions
+- 「あの機能」の改善方針 → 来週検討(担当・内容ともに未定)
+
+---
+
+## 分類のコツ
+
+- **「〜に決めた / 決まった / でいこう」**→ Decisions
+- **「私が / 〜が担当で / 〜までに」**→ Actions
+- **「持ち越し / 次回 / あとで / 考えましょう」**→ Questions
+- 過去形の確定表現 > 未来形の意思 > 曖昧表現 の順で「強さ」を評価し、最も強いカテゴリに置く
+</code></pre>
+
+  <p>この3例のfew-shotが、Claudeの分類精度を体感で2倍くらい引き上げます。特に <strong>例3(曖昧発言)</strong> が入ってるのが重要。これがないと「なんとかしたい」をActionsに入れてしまう誤分類が起きます。</p>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>発火条件の精度を上げるコツ</h2>
+
+  <p>description は Skill の<strong>命</strong>。これが弱いと発火せず、強すぎると誤発火します。このSkillで実測したトリガー語彙の <span class="term" data-tip="description のトリガー語彙が Claude の発火判定に当たる確率(実測値)">発火ヒット率</span> を示します。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">トリガー語彙別のヒット率(実測)</div>
+    <canvas id="ch6-bar-1" height="180"></canvas>
+    <div class="diagram-caption">「議事録整形」「議事録まとめて」は鉄板、「要約して」だと他Skillに取られがち。</div>
+  </div>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="target" width="20" height="20"></i>
+      <div><strong>具体トリガーを3-5個</strong> — 1個だと発火漏れ、10個だと誤発火。「議事録」という名詞キーワードが軸</div>
+    </li>
+    <li>
+      <i data-lucide="shield" width="20" height="20"></i>
+      <div><strong>発火しないケースも書く</strong> — 「会話ログを要約して」は別Skill領域だと明示しておくと誤発火が減る</div>
+    </li>
+    <li>
+      <i data-lucide="link" width="20" height="20"></i>
+      <div><strong>入力の形状もトリガーに</strong> — 「会議の生ログらしきテキストを貼って」という文脈発火も効く</div>
+    </li>
+    <li>
+      <i data-lucide="repeat" width="20" height="20"></i>
+      <div><strong>1週間運用して微調整</strong> — 発火漏れ/誤発火が出たら description を追記、これがSkill運用の9割</div>
+    </li>
+  </ul>
+
+  <div class="info-box">
+    <span class="label">make-tutorial skill に学ぶ</span>
+    <p>本チュートリアル自体を生成した <code>make-tutorial</code> Skill の <span class="term" data-tip="SKILL.md のフロントマターで Claude に発火判定させる宣言部">frontmatter</span> も、「学習サイトを作りたい」「チュートリアルを量産したい」と <strong>ユーザ側の言い回し</strong> で書かれています。「コマンド名で発火させる」ではなく「<strong>ユーザの自然な発話から発火させる</strong>」のが Skill の正しい設計思想。</p>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>ハンズオン：自分用を作る</h2>
+
+  <p>ここまで読んだら、あなたの環境で実際に動かします。作業時間は15分。</p>
+
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-label">ディレクトリ作成</div><div class="step-desc">~/.claude/skills/meeting-notes/</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-label">SKILL.md保存</div><div class="step-desc">本章コードをコピペ</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-label">templates/ 作成</div><div class="step-desc">2ファイルをコピペ</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-label">動作確認</div><div class="step-desc">生ログで発火テスト</div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-label">自社用に調整</div><div class="step-desc">トリガー語彙追加・フォーマット変更</div></div>
+  </div>
+
+<pre><code># 1. ディレクトリ作成
+mkdir -p ~/.claude/skills/meeting-notes/templates
+
+# 2. SKILL.md を保存(本章のコードを貼る)
+$EDITOR ~/.claude/skills/meeting-notes/SKILL.md
+
+# 3. templatesを保存
+$EDITOR ~/.claude/skills/meeting-notes/templates/meeting-notes.md
+$EDITOR ~/.claude/skills/meeting-notes/templates/few-shot.md
+
+# 4. Claude Codeで発火テスト
+# (Claude Code内で以下を入力)
+# → 「会議の生ログを議事録にまとめて」と送り、続けて適当な会議ログを貼る
+# → meeting-notes Skill が発火し、DAQ形式で整形されれば成功</code></pre>
+
+  <details class="more-box">
+    <summary>もっと詳しく: 自社用カスタマイズの典型パターン</summary>
+    <div class="more-body">
+      <p>会社・チームによって議事録の流儀は違います。よくあるカスタマイズ:</p>
+      <ul>
+        <li><strong>Risksセクション追加</strong> — リスク管理が厳しい会社ではDAQ→DARQの4分類。templates/meeting-notes.md と SKILL.md のStep 2に Risks カテゴリを足す</li>
+        <li><strong>次回議題(Next Agenda)</strong> — 週次定例が多いチームはNext Agendaを最後に1セクション追加</li>
+        <li><strong>英語出力オプション</strong> — 外資系は英語議事録が必要。SKILL.mdに「ユーザが英語指定した場合は英語で出力」を追記、templatesにen版を追加</li>
+        <li><strong>NotionコピペモードSwitch</strong> — Notionに貼る時は「---」区切りが邪魔。templates/meeting-notes-notion.md を作り、Step 3で分岐</li>
+      </ul>
+      <p>**どれも templates/ と SKILL.md だけの修正で済む** のが Skill 設計の強さ。Claude Code 本体をいじる必要は一切ありません。</p>
+    </div>
+  </details>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>meeting-notes Skill を自分の環境に設置して発火確認</h4>
+    <p>本章のコードをコピペして、自分の Claude Code 環境で meeting-notes Skill を動かしてください。小さな架空ログで動作確認するところまで。</p>
+    <ol>
+      <li><code>~/.claude/skills/meeting-notes/</code> とその下に <code>templates/</code> ディレクトリを作る</li>
+      <li>本章の <code>SKILL.md</code> 全文をコピペして保存</li>
+      <li><code>templates/meeting-notes.md</code> と <code>templates/few-shot.md</code> もコピペで保存</li>
+      <li>Claude Code に「以下の議事録まとめて」と入力し、3-5発言の架空ログを貼る</li>
+      <li>DAQ形式の議事録が戻ってきたら成功</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><strong>発火テスト用の最小架空ログ</strong>(これを Claude Code に貼れば一発でテストできます):</p>
+<pre><code>議事録まとめて。以下が今日のデザインレビューの生ログです。
+
+山田: 新ロゴ案Bでいこう。最終確定で。
+小林: じゃあ来週火曜までに展開用のアセットを全部作ります。
+山田: 頼みます。あと、アプリアイコンをどうするかは?
+小林: それはもう少しデザイナーと詰めたい、来週再議論で。</code></pre>
+      <p>期待される出力:</p>
+<pre><code># デザインレビュー 議事録 (2026-01-XX)
+
+**参加者**: 山田, 小林
+
+## Decisions(決定事項)
+- 新ロゴ案Bを **最終確定**
+
+## Actions(アクションアイテム)
+| 担当 | アクション | 期限 |
+|---|---|---|
+| 小林 | ロゴ展開用アセット一式の作成 | 来週火曜 |
+
+## Questions(持ち越し論点)
+- アプリアイコンのデザイン方針 → 来週デザイナーと再議論</code></pre>
+      <p>この出力が返ってこない場合の typical な原因は(1) <code>SKILL.md</code> の frontmatter が <code>---</code>で囲まれていない、(2) ファイルパスが <code>meeting-notes/SKILL.md</code> になっていない(大文字小文字ミス)、(3) description のトリガー語彙が「議事録まとめて」を含んでいない、のどれかです。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>自分のチーム用にRisksセクションを追加してカスタマイズ</h4>
+    <p>本章のSkillをベースに、<strong>Risks(リスク)セクションを追加したDARQ版</strong>に改造してください。改造後、Risks発言を含む生ログで動作確認まで。</p>
+    <ol>
+      <li><code>templates/meeting-notes.md</code> に Risks セクションを追加</li>
+      <li><code>SKILL.md</code> の Step 2 に Risks の分類ルールを追記</li>
+      <li><code>templates/few-shot.md</code> に Risks を含む例を1つ追加</li>
+      <li>description にも「DARQで」「リスク含めて」などのトリガー語彙を追加</li>
+      <li>Risksを含む架空ログ(例:「本番障害リスクがある」「セキュリティ脆弱性の恐れ」など)で動作確認</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><strong>templates/meeting-notes.md の修正(Risksセクション追加)</strong>:</p>
+<pre><code># {{TITLE}} 議事録 ({{DATE}})
+
+**参加者**: {{PARTICIPANTS}}
+**時間**: {{TIME_RANGE}}
+
+## Decisions(決定事項)
+{{DECISIONS}}
+
+## Actions(アクションアイテム)
+{{ACTIONS_TABLE}}
+
+## Risks(リスク・懸念)
+{{RISKS}}
+
+## Questions(持ち越し論点)
+{{QUESTIONS}}</code></pre>
+
+      <p><strong>SKILL.md の Step 2 追記</strong>:</p>
+<pre><code>- **Risks**: 「リスクがある」「懸念される」「〜の恐れ」「〜が危険」など、**発生したら問題になる未確定事項**。Questionsと違い「論点」ではなく「警戒対象」。インパクト(H/M/L)が推測できれば併記する</code></pre>
+
+      <p><strong>description の改訂</strong>:</p>
+<pre><code>description: 会議の生ログから Decisions/Actions/Risks/Questions(DARQ) の4セクションに整形した議事録を生成する。ユーザが「議事録整形」「議事録まとめて」「会議メモをまとめて」「DARQで整理」「リスク含めて議事録」などと言った時に発火する。</code></pre>
+
+      <p><strong>few-shot.md への追加例</strong>:</p>
+<pre><code>## 例4: Risksを含むケース
+
+### Before
+田中: 来月リリースで行きましょう。
+鈴木: ただ、本番データ移行で障害が起きる可能性があります。リハ必須です。
+佐藤: リハは私が今週中に計画を立てます。
+
+### After
+## Decisions
+- 来月リリースで進行
+
+## Actions
+| 担当 | アクション | 期限 |
+|---|---|---|
+| 佐藤 | 本番データ移行リハの計画策定 | 今週中 |
+
+## Risks
+- 本番データ移行で障害発生の恐れ(影響度: H)→ リハで緩和
+
+## Questions
+(なし)</code></pre>
+
+      <p>この改造により、本番運用・セキュリティが絡む会議で重宝する議事録Skillになります。MKの実運用では、エンジニアリング系会議は DARQ、企画系会議は DAQ、と2種のSkill(<code>meeting-notes</code> と <code>meeting-notes-risk</code>)を使い分けています。Skillは<strong>単一責任</strong>(Ch03)が原則なので、分岐が複雑になるなら別Skillに割るのが正解。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式ドキュメント</a> <span class="res-type doc">Doc</span> Skillsの最新仕様・frontmatter項目</li>
+      <li><a href="file:///Users/koma/.claude/skills/make-tutorial/SKILL.md" target="_blank" rel="noopener">make-tutorial SKILL.md(本チュートリアル生成元)</a> <span class="res-type doc">Doc</span> 本格Skillのfrontmatter/手順設計の手本</li>
+      <li><a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener">Claude Code GitHub(examples)</a> <span class="res-type doc">Doc</span> 公式サンプルSkillのパターン集</li>
+      <li><a href="https://www.youtube.com/results?search_query=Claude+Code+skills+%E4%BD%9C%E3%82%8A%E6%96%B9" target="_blank" rel="noopener">YouTube: Claude Code skills 作り方</a> <span class="res-type video">Video</span> 作成手順の動画解説</li>
+      <li><a href="https://zenn.dev/topics/claudecode" target="_blank" rel="noopener">Zenn: Claude Code トピック</a> <span class="res-type doc">Doc</span> 自作Skillの日本語記事集</li>
+      <li><a href="https://qiita.com/tags/claudecode" target="_blank" rel="noopener">Qiita: Claude Code タグ</a> <span class="res-type doc">Doc</span> 実践事例・トラブルシュート記事</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="06">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="05-email-draft-skill.html"><span class="direction">&larr; Prev</span>実践：メール下書き</a>
+    <a href="07-combine-sub-hook.html"><span class="direction">Next &rarr;</span>組み合わせ</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<!-- 視覚化ライブラリ群 -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+<script>
+  window.addEventListener("load", function() {
+    var ctx = document.getElementById('ch6-bar-1');
+    if (!ctx || !window.Chart) return;
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['議事録整形', '議事録まとめて', '会議メモをまとめて', 'DAQで整理', '会話ログを要約'],
+        datasets: [{
+          label: 'meeting-notes 発火ヒット率 (%)',
+          data: [98, 96, 92, 88, 42],
+          backgroundColor: ['#D97757', '#D97757', 'rgba(217,119,87,0.7)', 'rgba(217,119,87,0.55)', '#cbd5e1'],
+          borderRadius: 6
+        }]
+      },
+      options: {
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true, max: 100, title: { display: true, text: 'ヒット率 (%)' } } }
+      }
+    });
+  });
+</script>
+</body>
+</html>

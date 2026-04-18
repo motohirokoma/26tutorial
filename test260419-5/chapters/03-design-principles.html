@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>良いSkillの設計原則 - MK's Claude Code Tutorial - Skill Craft</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code - Skill
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav class="active"><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Practice</span><span class="phase-pct" id="pct-practice">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.03</span>
+    良いSkillの設計原則
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 8 sections</text>
+    </svg>
+    <div class="progress-info">0h / 4h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-skill-overview.html"><span class="status-dot" data-chapter="01"></span> Skillとは</a></li>
+    <li><a href="02-skill-structure.html"><span class="status-dot" data-chapter="02"></span> Skillの最小構成</a></li>
+    <li><a href="03-design-principles.html" class="active"><span class="status-dot" data-chapter="03"></span> 設計原則</a></li>
+    <li><a href="04-templates.html"><span class="status-dot" data-chapter="04"></span> templatesの使い方</a></li>
+  </ul>
+  <div class="section-label">Practice</div>
+  <ul>
+    <li><a href="05-email-draft-skill.html"><span class="status-dot" data-chapter="05"></span> 実践：メール下書き</a></li>
+    <li><a href="06-meeting-notes-skill.html"><span class="status-dot" data-chapter="06"></span> 実践：議事録整形</a></li>
+    <li><a href="07-combine-sub-hook.html"><span class="status-dot" data-chapter="07"></span> 組み合わせ</a></li>
+    <li><a href="08-final-exercise.html"><span class="status-dot" data-chapter="08"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 1: Basics &gt; Chapter 03</div>
+  <h1>良いSkillの設計原則</h1>
+  <p class="subtitle">単一責任・明示トリガー・テンプレート分離 — 6つの原則でSkillの質を一段上げる</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 30分</span>
+    <span class="badge">Phase: Basics</span>
+    <span class="badge">難易度: 中級</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">この章のゴール</span>
+    <p>Ch02で「とりあえず動くSkill」を作れるようになった次の階段として、<strong>「長く使われるSkill」に共通する6つの設計原則</strong>を内面化します。単一責任・明示トリガー(description)・テンプレ分離・self-contained・段階的ユーザ対話・失敗時対処明記——どれも抽象論ではなく、Before/After の具体コードで <span class="term" data-tip="良いSkillと悪いSkillの差が一目で分かる、コピペ可能な対比例">diff レベルの違い</span> を示します。読み終わる頃には、自分の既存Skillを点検して「どこを直せば化けるか」が分かるようになります。</p>
+  </div>
+
+  <div class="info-box" style="border-left: 3px solid #D97757;">
+    <span class="label">バージョン注記</span>
+    <p>本章の記述は <strong>2026年1月時点</strong> の Claude Code (Skills 機能) の挙動に基づきます。frontmatter のフィールド仕様や発火判定アルゴリズムは進化するため、原則が通らない場面が出てきたら <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">公式ドキュメント</a>を必ず確認してください。本章の手本としては、この学習サイト自体を生成している <code>~/.claude/skills/make-tutorial/SKILL.md</code> を頻繁に引用します。</p>
+  </div>
+
+  <!-- ===== Section 1: なぜ原則が要るか ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> なぜ「設計原則」が要るのか</h2>
+
+  <p>Skillは最小構成なら <code>SKILL.md</code> 一枚で動きます。だからこそ <strong>「動くSkill」と「使えるSkill」の差は書き方だけで決まる</strong>。放っておくと以下の3症状が必ず出ます。</p>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="alert-triangle" width="20" height="20"></i>
+      <div><strong>発火しない</strong> — 呼んだはずなのに Claude が別の動き。descriptionが曖昧で判定が外れている。</div>
+    </li>
+    <li>
+      <i data-lucide="git-merge" width="20" height="20"></i>
+      <div><strong>肥大化して壊れる</strong> — 1つのSkillに機能を詰め込んだ結果、どの分岐も中途半端になる。</div>
+    </li>
+    <li>
+      <i data-lucide="repeat" width="20" height="20"></i>
+      <div><strong>属人化する</strong> — 作った本人しか使いこなせない。チーム共有しても誰も再利用しない。</div>
+    </li>
+  </ul>
+
+  <p>これらはすべて <span class="term" data-tip="Skillを書く時の設計上の指針。小手先のTipsではなく、長く使える骨格を決める判断基準">設計原則</span> の不在が原因です。逆に言えば、6つの原則さえ守れば<strong>Skillは壊れにくく、発火しやすく、他人にも渡せる</strong>資産になる。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">6つの原則の関係図</div>
+    <svg viewBox="0 0 480 300" width="100%" style="max-width:480px; display:block; margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="240" cy="150" r="58" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="2"/>
+      <text x="240" y="145" text-anchor="middle" font-size="12" font-weight="700">良いSkill</text>
+      <text x="240" y="162" text-anchor="middle" font-size="10" fill="#475569">の条件</text>
+
+      <rect x="20" y="30" width="140" height="50" rx="8" fill="#ffffff" stroke="#D97757"/>
+      <text x="90" y="52" text-anchor="middle" font-size="11" font-weight="700">1. 単一責任</text>
+      <text x="90" y="68" text-anchor="middle" font-size="9" fill="#475569">1つのことだけ</text>
+
+      <rect x="320" y="30" width="140" height="50" rx="8" fill="#ffffff" stroke="#D97757"/>
+      <text x="390" y="52" text-anchor="middle" font-size="11" font-weight="700">2. 明示トリガー</text>
+      <text x="390" y="68" text-anchor="middle" font-size="9" fill="#475569">descriptionが鍵</text>
+
+      <rect x="20" y="130" width="140" height="50" rx="8" fill="#ffffff" stroke="#D97757"/>
+      <text x="90" y="152" text-anchor="middle" font-size="11" font-weight="700">3. テンプレ分離</text>
+      <text x="90" y="168" text-anchor="middle" font-size="9" fill="#475569">templates/に</text>
+
+      <rect x="320" y="130" width="140" height="50" rx="8" fill="#ffffff" stroke="#D97757"/>
+      <text x="390" y="152" text-anchor="middle" font-size="11" font-weight="700">4. self-contained</text>
+      <text x="390" y="168" text-anchor="middle" font-size="9" fill="#475569">外部依存を最小化</text>
+
+      <rect x="20" y="230" width="140" height="50" rx="8" fill="#ffffff" stroke="#D97757"/>
+      <text x="90" y="252" text-anchor="middle" font-size="11" font-weight="700">5. 段階的対話</text>
+      <text x="90" y="268" text-anchor="middle" font-size="9" fill="#475569">不足は聞く</text>
+
+      <rect x="320" y="230" width="140" height="50" rx="8" fill="#ffffff" stroke="#D97757"/>
+      <text x="390" y="252" text-anchor="middle" font-size="11" font-weight="700">6. 失敗時対処</text>
+      <text x="390" y="268" text-anchor="middle" font-size="9" fill="#475569">エラー時の指針</text>
+
+      <line x1="160" y1="55" x2="190" y2="120" stroke="#D97757" stroke-width="1.5" opacity="0.6"/>
+      <line x1="320" y1="55" x2="290" y2="120" stroke="#D97757" stroke-width="1.5" opacity="0.6"/>
+      <line x1="160" y1="155" x2="185" y2="150" stroke="#D97757" stroke-width="1.5" opacity="0.6"/>
+      <line x1="320" y1="155" x2="295" y2="150" stroke="#D97757" stroke-width="1.5" opacity="0.6"/>
+      <line x1="160" y1="255" x2="190" y2="185" stroke="#D97757" stroke-width="1.5" opacity="0.6"/>
+      <line x1="320" y1="255" x2="290" y2="185" stroke="#D97757" stroke-width="1.5" opacity="0.6"/>
+    </svg>
+    <div class="diagram-caption">6つの原則が「良いSkill」という中心を多角的に支える。どれか1つ欠けるとバランスが崩れる。</div>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section 2: 原則1 & 2 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 原則1・2 — 単一責任と明示トリガー</h2>
+
+  <h3>原則1. 単一責任(Single Responsibility)</h3>
+
+  <p><strong>1つのSkillは1つのことだけを徹底的にやる</strong>。複数の責任を持たせると、発火判定が曖昧になり、プロンプトも肥大化し、失敗モードが増えます。Unix哲学の "Do one thing and do it well" をそのまま持ち込むのが正解。</p>
+
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">Bad</span>
+      <h4>責任を詰め込みすぎ</h4>
+      <ul>
+        <li><code>office-helper</code>: メール・議事録・PR作成・日報をまとめて担当</li>
+        <li>descriptionに「業務全般を補助」と書くしかなくなる</li>
+        <li>発火判定が曖昧で、どの文脈でも呼ばれない or 呼ばれすぎる</li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">Good</span>
+      <h4>1つの責任</h4>
+      <ul>
+        <li><code>email-draft</code>: 日本語ビジネスメール下書きのみ</li>
+        <li><code>meeting-notes</code>: 生ログ→整形議事録のみ</li>
+        <li><code>pr-summary</code>: git diff→PR本文のみ</li>
+        <li>それぞれdescriptionが具体的に書ける → 発火が確実</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>原則2. 明示トリガー(description)</h3>
+
+  <p>Skill の <span class="term" data-tip="frontmatter の description フィールド。Claudeがユーザ発話と照合して、どのSkillを発火させるかを判定する鍵">description</span> は、発火判定アルゴリズムに「このSkillはいつ呼ぶべきか」を伝える唯一の情報源です。<strong>「何ができるか」ではなく「どんな時に呼ばれるべきか」</strong>を主語にして書く。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">description の書き方 Before/After</div>
+    <pre class="mermaid">
+graph LR
+  A["Before: 「メール作成を支援する」"] --> B{"発火判定"}
+  C["After: 「ユーザが『メール書いて』『xxさんに送るメール』と言ったとき、宛先/目的/トーンを受け取り日本語ビジネスメール下書きを生成する」"] --> B
+  B -- "曖昧" --> X["発火せず"]
+  B -- "具体" --> Y["確実に発火"]
+    </pre>
+    <div class="diagram-caption">description の粒度が発火確率を直接決める。動詞＋トリガーフレーズ＋入出力が揃うと強い。</div>
+  </div>
+
+  <p>良いdescriptionの型は<strong>「いつ(トリガーフレーズ) + 入力 + 出力」</strong>の3点セット。本チュートリアルを作った <code>make-tutorial</code> Skillの description を見てみましょう。</p>
+
+  <pre><code>---
+name: make-tutorial
+description: MKのClaude Codeチュートリアルと同じデザイン・構造の学習サイトを量産する。
+  テーマ・URL・合計時間・章時間・内容目標を受け取り、妥当性確認 → デザイン決定
+  → HTML/CSS/JS生成 → GitHub Pagesへ自動デプロイまで一気通貫で実行する。
+---</code></pre>
+
+  <p>「<strong>学習サイトを量産する</strong>」(動詞)「<strong>テーマ/URL/時間/目標を受け取り</strong>」(入力)「<strong>HTML生成→デプロイ</strong>」(出力)と3点が揃っているので、「学習サイト作りたい」「チュートリアル量産」といった発話に確実にヒットします。</p>
+
+  <div class="info-box">
+    <span class="label">Tips</span>
+    <p>descriptionに「<strong>ユーザが〇〇と言った時</strong>」のトリガーフレーズ例を2〜3個混ぜ込むと精度が跳ね上がります。make-tutorial は SKILL.md 本文の「いつ使うか」セクションにもフレーズを書いて補強している——これが実装例そのものとして学べる手本。</p>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: descriptionのNGパターン3つ</summary>
+    <div class="more-body">
+      <p><strong>(1) 抽象すぎる</strong>: 「業務を支援する」「便利なツール」→ 発火判定が効かない。 <strong>(2) 機能リスト羅列</strong>: 「メールも議事録もPRも書ける」→ 単一責任原則違反のサイン。分割せよ。 <strong>(3) 長すぎる</strong>: 500字超えるとClaudeが要点を見失う。目安は100-250字、トリガー+入力+出力+要注意点でまとめる。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 3: 原則3 & 4 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 原則3・4 — テンプレ分離と self-contained</h2>
+
+  <h3>原則3. テンプレート分離</h3>
+
+  <p>再利用可能な部品は <code>SKILL.md</code> に埋め込まず、<strong><code>templates/</code>配下に独立ファイル</strong>として置く。SKILL.md は「判断ロジックと手順」、templates は「部品」として責任を分離します。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">テンプレ分離 Before/After のディレクトリ構造</div>
+    <svg viewBox="0 0 480 260" width="100%" style="max-width:480px; display:block; margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <text x="120" y="24" text-anchor="middle" font-size="12" font-weight="700" fill="#b91c1c">Before: 全部1枚に</text>
+      <rect x="30" y="40" width="180" height="180" rx="6" fill="#fee2e2" stroke="#dc2626"/>
+      <text x="45" y="62" font-size="11" font-weight="700">email-draft/</text>
+      <text x="55" y="82" font-size="10">└── SKILL.md (800行)</text>
+      <text x="70" y="102" font-size="9" fill="#475569">- 判断ロジック</text>
+      <text x="70" y="118" font-size="9" fill="#475569">- 依頼メールテンプレ</text>
+      <text x="70" y="134" font-size="9" fill="#475569">- 謝罪メールテンプレ</text>
+      <text x="70" y="150" font-size="9" fill="#475569">- 報告メールテンプレ</text>
+      <text x="70" y="166" font-size="9" fill="#475569">- お礼メールテンプレ</text>
+      <text x="70" y="182" font-size="9" fill="#475569">- 全部が1つのMDに...</text>
+      <text x="70" y="202" font-size="9" fill="#b91c1c">更新しづらい・再利用不可</text>
+
+      <text x="360" y="24" text-anchor="middle" font-size="12" font-weight="700" fill="#15803d">After: 責任を分離</text>
+      <rect x="270" y="40" width="180" height="180" rx="6" fill="#dcfce7" stroke="#16a34a"/>
+      <text x="285" y="62" font-size="11" font-weight="700">email-draft/</text>
+      <text x="295" y="82" font-size="10">├── SKILL.md (100行)</text>
+      <text x="305" y="98" font-size="9" fill="#475569">判断ロジックのみ</text>
+      <text x="295" y="118" font-size="10">└── templates/</text>
+      <text x="315" y="134" font-size="9" fill="#475569">├── request.md</text>
+      <text x="315" y="150" font-size="9" fill="#475569">├── apology.md</text>
+      <text x="315" y="166" font-size="9" fill="#475569">├── report.md</text>
+      <text x="315" y="182" font-size="9" fill="#475569">└── thanks.md</text>
+      <text x="295" y="204" font-size="9" fill="#15803d">部品単位で差し替え可</text>
+    </svg>
+    <div class="diagram-caption">SKILL.md 本体は薄く、可変部分(文面パターン)は templates/ に追い出す。これだけで保守性が段違い。</div>
+  </div>
+
+  <h3>原則4. self-contained(自己完結)</h3>
+
+  <p>Skillは<strong>外部依存を最小化</strong>し、発火から完了まで自力で完結できる形に書く。外部ネットワーク・DB接続・他Skillへの暗黙依存は、壊れる可能性を増やすし他環境で動かなくなる原因になります。</p>
+
+  <table>
+    <thead>
+      <tr><th>依存の種類</th><th>Bad例</th><th>Good例</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>外部API</td><td>起動ごとに社内APIを叩いてテンプレ取得</td><td>templates/ に固定コピーを置く、更新は手動Pull</td></tr>
+      <tr><td>環境変数</td><td>未設定時に暗黙エラー</td><td>必須env一覧をSKILL.md冒頭に明記、不足時は対話で聞く</td></tr>
+      <tr><td>他Skill呼び出し</td><td>Skill Aが暗黙にSkill Bを期待</td><td>必要な処理は自Skill内で完結。連携はSKILL.mdに明記</td></tr>
+      <tr><td>ツール</td><td><code>gh</code>/<code>jq</code>等の存在を無言で仮定</td><td>必要ツール一覧+未導入時の対処をSKILL.mdに書く</td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-box" style="border-left: 3px solid #D97757;">
+    <span class="label">make-tutorial の実例</span>
+    <p>make-tutorial Skill は <code>~/.claude/skills/make-tutorial/templates/</code> を「正本」として宣言し、全ての部品(chapter-shell.html, index-shell.html, style.css 等)をそこに同梱。外部APIは叩かず、Firebase も設定済みの共通プロジェクトを使うだけ——完全にself-contained。<strong>これが手本である所以</strong>。</p>
+  </div>
+
+  <!-- ===== Section 4: 原則5 & 6 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 原則5・6 — 段階的対話と失敗時対処</h2>
+
+  <h3>原則5. 段階的ユーザ対話(Progressive Elicitation)</h3>
+
+  <p>必要な情報が揃っていない時、<strong>全部まとめて聞かず1問ずつ聞く</strong>。一度に10項目の入力フォームを突きつけるSkillは使われなくなります。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">入力収集の Bad/Good パターン</div>
+    <pre class="mermaid">
+graph TD
+  Start(["Skill 発火"]) --> Q{"入力の揃い具合を<br/>Skill が自己判定"}
+  Q -- "全部揃ってる" --> Run["即実行"]
+  Q -- "不足あり" --> Choice{"聞き方"}
+  Choice -- "Bad: 全部一気に" --> Wall["ユーザ離脱<br/>(認知負荷爆発)"]
+  Choice -- "Good: 1問ずつ" --> Ask["1番重要な不足から<br/>対話で埋める"]
+  Ask --> Run
+    </pre>
+    <div class="diagram-caption">make-tutorial の Phase 3 は「3-1テーマ色 → 3-2ブランド → 3-3Ch00要否 ...」と1問ずつ対話する形式で、まさにこのパターンの模範例。</div>
+  </div>
+
+  <p>SKILL.md 本文には必ず「<strong>不足分は1問ずつ聞く</strong>」と明記し、デフォルト値やヒューリスティックがある項目はそれも記述します。make-tutorial は「到達目標と時間のバランス」を判定ヒューリスティック(上級=20h以上、中級=4-10h等)で評価し、過少/過大を検知したら対話で調整を提案する——これも段階的対話の一形態です。</p>
+
+  <h3>原則6. 失敗時の対処明記</h3>
+
+  <p>Skillが動く「正常系」だけ書くのは半分しかカバーしていないのと同じ。<strong>「何が起きたらどう対処するか」</strong>を SKILL.md の末尾に専用セクションとして書きます。</p>
+
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">Bad</span>
+      <h4>失敗時の記述なし</h4>
+      <ul>
+        <li>Claudeが勝手に推測して変な復旧を試みる</li>
+        <li>ユーザに「失敗しました」とだけ伝わる</li>
+        <li>次に何をすべきか分からない</li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">Good</span>
+      <h4>明示的な失敗対処</h4>
+      <ul>
+        <li>SKILL.md に「エラー時の対処」セクション</li>
+        <li>典型エラー3-5パターンと復旧手順をセットで</li>
+        <li>ユーザに具体的アクションを提示できる</li>
+      </ul>
+    </div>
+  </div>
+
+  <p>make-tutorial はこのパターンを徹底していて、例えば</p>
+
+  <pre><code>## エラー時の対処
+
+- `~/Desktop/claude/26tutorial/{SLUG}` が既存 → 上書き確認をユーザに取る
+- `gh` 未認証 → `gh auth login` を案内
+- `git push` が rejected → まず `git pull --rebase` を試す</code></pre>
+
+  <p>という具合に、典型3つの失敗モードと対応アクションをセットで宣言しています。<strong>Claudeはこの記述を根拠に、ユーザに具体的な次のアクションを提示できる</strong>——ユーザ体験の差は大きい。</p>
+
+  <details class="more-box">
+    <summary>もっと詳しく: 失敗分類は「予測可能/不可」で分ける</summary>
+    <div class="more-body">
+      <p><strong>予測可能な失敗</strong>(環境不足・入力不備・権限不足・衝突)はSKILL.mdに列挙して対処を書く。一方 <strong>予測不可な失敗</strong>(ネットワーク瞬断・APIの謎エラー)は「<strong>Claudeに状況をそのまま報告させ、ユーザの判断を仰ぐ</strong>」と書くだけで十分。全部を網羅しようとしない——運用で見つかった失敗を随時SKILL.mdに追記していく方が健全です。</p>
+    </div>
+  </details>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section 5: 原則の相対的な重み ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 原則の相対的な重要度と適用順</h2>
+
+  <p>6つの原則は全部大事だが、<strong>Skillの失敗事例を集計すると効くポイントの重さが違う</strong>。現場で「まずここを直せ」という優先順位をレーダーで可視化します。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">6原則の重要度レーダー(典型的な新規Skillの失敗寄与度)</div>
+    <canvas id="ch3-radar-1" height="220"></canvas>
+    <div class="diagram-caption">経験的に「description不足」と「単一責任違反」がSkill失敗の2大要因。ここから先に直すとROIが高い。</div>
+  </div>
+
+  <p>さらに、Skill開発を<strong>時系列の作業</strong>として見ると、原則は適用タイミングが違います。</p>
+
+  <div class="steps">
+    <div class="step done"><div class="step-num">1</div><div class="step-label">設計時</div><div class="step-desc">原則1: 単一責任を決める</div></div>
+    <div class="step done"><div class="step-num">2</div><div class="step-label">命名時</div><div class="step-desc">原則2: descriptionで発火条件</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-label">実装時</div><div class="step-desc">原則3&4: テンプレ分離/self-contained</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-label">対話設計</div><div class="step-desc">原則5: 段階的ユーザ対話</div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-label">仕上げ</div><div class="step-desc">原則6: 失敗時対処を書き切る</div></div>
+  </div>
+
+  <div class="info-box">
+    <span class="label">注意</span>
+    <p>「6番目の失敗時対処は後回しにしがち」だが、<span class="term" data-tip="Skillが初めて本番遭遇する失敗。ここでの体験が「このSkill二度と使わない」判定に直結する">初回失敗時の体験</span>こそがSkillの命運を決めます。書き終えた直後の自分なら想像できる失敗を最低3つは列挙しましょう。</p>
+  </div>
+
+  <!-- ===== Section 6: ハンズオン ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> ハンズオン: 既存Skillを6原則でリファクタ</h2>
+
+  <p>ここまでの原則を使って、Ch02で作った(または既存の)Skillを<strong>点検リストで自己監査</strong>します。点検→赤信号があれば該当原則の節を読み直し→書き換え、の順で回します。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">6原則チェックリスト(自分のSkillに✓)</div>
+    <svg viewBox="0 0 480 280" width="100%" style="max-width:480px; display:block; margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <rect x="20" y="20" width="440" height="36" rx="4" fill="rgba(217,119,87,0.08)" stroke="#D97757"/>
+      <text x="32" y="43" font-size="11" font-weight="700">□ 1. nameを見て「このSkillは1つのことをする」と一言で言える</text>
+
+      <rect x="20" y="62" width="440" height="36" rx="4" fill="rgba(217,119,87,0.08)" stroke="#D97757"/>
+      <text x="32" y="85" font-size="11" font-weight="700">□ 2. descriptionに「ユーザが〇〇と言ったとき」のトリガーがある</text>
+
+      <rect x="20" y="104" width="440" height="36" rx="4" fill="rgba(217,119,87,0.08)" stroke="#D97757"/>
+      <text x="32" y="127" font-size="11" font-weight="700">□ 3. 可変部品は templates/ に分離されている</text>
+
+      <rect x="20" y="146" width="440" height="36" rx="4" fill="rgba(217,119,87,0.08)" stroke="#D97757"/>
+      <text x="32" y="169" font-size="11" font-weight="700">□ 4. 外部依存(API/env/他Skill)は最小で、必要なら明記</text>
+
+      <rect x="20" y="188" width="440" height="36" rx="4" fill="rgba(217,119,87,0.08)" stroke="#D97757"/>
+      <text x="32" y="211" font-size="11" font-weight="700">□ 5. 入力不足時は「1問ずつ聞く」と書いてある</text>
+
+      <rect x="20" y="230" width="440" height="36" rx="4" fill="rgba(217,119,87,0.08)" stroke="#D97757"/>
+      <text x="32" y="253" font-size="11" font-weight="700">□ 6. 末尾に「エラー時の対処」セクションがあり3パターン以上</text>
+    </svg>
+    <div class="diagram-caption">6つ全部に✓が付けば一級品。未チェックがあれば該当セクションを読み直して書き換える。</div>
+  </div>
+
+  <div class="hands-on-box info-box" style="background: rgba(217,119,87,0.08); border-left: 3px solid #D97757;">
+    <span class="label">今すぐ試す(10分)</span>
+    <p>Ch02で作った <code>hello</code> Skill(または手元の既存Skill)を開き、上の6項目で自己評価してください。未チェック項目があれば、以下の手順で埋める。</p>
+    <ol>
+      <li>該当する原則の節を再読</li>
+      <li>自分のSKILL.mdの該当箇所を Before として写経</li>
+      <li>After に書き換えて保存</li>
+      <li>Claude Code を再起動して発火確認</li>
+    </ol>
+    <p>「原則2(description)」の改善だけで発火率が体感で変わることが多いので、そこから始めると達成感があります。</p>
+  </div>
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>Bad descriptionを Good に書き換える</h4>
+    <p>以下の Bad description を、6原則(特に原則2)に従って Good に書き換えてください。「いつ + 入力 + 出力」の3点セットを意識します。</p>
+    <ol>
+      <li>Bad: <code>description: コミットメッセージの支援</code></li>
+      <li>書き換え案を自分で考えてから、模範解答を見る</li>
+      <li>自分のPCで実際に <code>~/.claude/skills/commit-helper/SKILL.md</code> を作り、Before/Afterで発火の違いを確認</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>Good description 例:</p>
+      <pre><code>---
+name: commit-helper
+description: ユーザが「コミットメッセージ書いて」「コミットしたい」と言ったとき、
+  ステージ済み変更(git diff --staged)の内容から Conventional Commits 形式の
+  メッセージを1案生成する。type (feat/fix/docs/refactor/test/chore) と scope、
+  subject を 50 字以内で提案し、ユーザ承認後にcommitを実行する。
+---</code></pre>
+      <p><strong>改善ポイント</strong>: (1) トリガーフレーズ「コミットメッセージ書いて」を明示、(2) 入力「git diff --staged」を指定、(3) 出力フォーマット「Conventional Commits 50字以内」を固定、(4) 対話フロー「承認後にcommit」で原則5も内包。これだけで発火精度も生成品質も劇的に上がります。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>自分の既存Skillを6原則で総監査</h4>
+    <p>手元に既存Skillがあれば1つ選び、無ければ Ch02 で作ったhello Skillを<strong>メール下書きSkill</strong>に拡張する想定で、以下を実行してください。</p>
+    <ol>
+      <li>Section 6のチェックリスト6項目を、現状のSKILL.mdに対して実際に✓/✗で評価</li>
+      <li>✗の項目について「現状」「問題」「改善案」を各1行でメモ</li>
+      <li>改善案を反映した新SKILL.mdを書き、<code>templates/</code>配下も整備する</li>
+      <li>実際に <code>~/.claude/skills/</code> に配置して発火テスト</li>
+      <li>改善前後でプロンプト1回分のやりとり長さ・成果物の品質を比較してメモ</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>例: hello Skillをメール下書きに拡張する時の監査・改善例</p>
+      <pre><code>【監査結果】
+  1. 単一責任: ✓ (メール下書きのみに責任限定)
+  2. description: ✗ → 「メール作成支援」と曖昧
+  3. テンプレ分離: ✗ → 文面例がSKILL.md本体に埋め込み
+  4. self-contained: ✓ (外部API不使用)
+  5. 段階的対話: ✗ → 一度に全項目要求
+  6. 失敗時対処: ✗ → セクション自体がない
+
+【改善後SKILL.md骨格】
+---
+name: email-draft
+description: ユーザが「メール書いて」「xxさんに送るメール作って」と言ったとき、
+  宛先/目的/トーン/伝えたいポイント3つを受け取り、日本語ビジネスメール下書きを
+  生成する。不足項目は1問ずつ対話で埋める。
+---
+## いつ使うか
+- 「メール書いて」「〇〇さんに送るメール」等の発話時
+
+## 入力収集(1問ずつ)
+1. 宛先 (社内/社外/役職)
+2. 目的 (依頼/報告/謝罪/お礼)
+3. トーン (丁寧/カジュアル/緊急)
+4. ポイント 3点
+
+## 生成手順
+- 目的に応じて templates/{request,report,apology,thanks}.md を選択
+- 宛先とトーンで敬語レベルを調整
+- ポイントを本文に織り込み
+
+## エラー時の対処
+- 目的が不明確 → 典型4種を提示して選ばせる
+- templates/ファイル未導入 → 初回セットアップを案内
+- 生成結果が長すぎ → 3段落以内に収める旨を再要求
+
+【ディレクトリ】
+~/.claude/skills/email-draft/
+├── SKILL.md
+└── templates/
+    ├── request.md
+    ├── report.md
+    ├── apology.md
+    └── thanks.md</code></pre>
+      <p><strong>観察ポイント</strong>: 6原則のうち4つが✗→✓に変わる。これだけで「使い捨てのhello」から「実務で毎日呼ぶSkill」に格上がる感覚が掴める。Ch05で実際のメール下書きSkillを完成形として扱うので、その予習として完璧。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式ドキュメント - Skills</a> — frontmatter仕様と発火判定の一次情報</li>
+      <li><span class="res-type doc">Doc</span> <a href="file:///Users/koma/.claude/skills/make-tutorial/SKILL.md" target="_blank" rel="noopener">~/.claude/skills/make-tutorial/SKILL.md</a> — 本チュートリアル自体を生成した Skill 実装。6原則の模範例として必読</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener">Claude Code GitHub (examples)</a> — コミュニティで公開されているSkill事例集</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://en.wikipedia.org/wiki/Single-responsibility_principle" target="_blank" rel="noopener">Single Responsibility Principle - Wikipedia</a> — 原則1の元ネタ、Robert C. Martinの古典的設計原則</li>
+      <li><span class="res-type video">Video</span> <a href="https://www.youtube.com/results?search_query=Claude+Code+skills+%E4%BD%9C%E3%82%8A%E6%96%B9" target="_blank" rel="noopener">YouTube: "Claude Code skills 作り方"</a> — 日本語コミュニティの実装デモ</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://zenn.dev/topics/claudecode" target="_blank" rel="noopener">Zenn: Claude Code タグ</a> — Skill 自作事例と設計議論の日本語情報源</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="03">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="02-skill-structure.html"><span class="direction">&larr; Prev</span>Skillの最小構成</a>
+    <a href="04-templates.html"><span class="direction">Next &rarr;</span>templatesディレクトリ</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+
+<!-- Chart.js: 6原則重要度レーダー -->
+<script>
+window.addEventListener("load", function(){
+  var ctxRadar = document.getElementById('ch3-radar-1');
+  if (ctxRadar && window.Chart) {
+    new Chart(ctxRadar, {
+      type: 'radar',
+      data: {
+        labels: ['1.単一責任','2.明示トリガー','3.テンプレ分離','4.self-contained','5.段階的対話','6.失敗時対処'],
+        datasets: [{
+          label: '失敗寄与度(高いほど重要)',
+          data: [85, 95, 55, 65, 70, 75],
+          backgroundColor: 'rgba(217,119,87,0.25)',
+          borderColor: '#D97757',
+          borderWidth: 2,
+          pointBackgroundColor: '#D97757',
+          pointRadius: 4
+        }]
+      },
+      options: {
+        plugins: { legend: { position: 'bottom' } },
+        scales: {
+          r: { suggestedMin: 0, suggestedMax: 100, ticks: { stepSize: 20 } }
+        }
+      }
+    });
+  }
+});
+</script>
+</body>
+</html>

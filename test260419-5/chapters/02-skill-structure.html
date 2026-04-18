@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>Skillの最小構成 - MK's Claude Code Tutorial - Skill Craft</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code - Skill
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav class="active"><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Practice</span><span class="phase-pct" id="pct-practice">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.02</span>
+    Skillの最小構成
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 8 sections</text>
+    </svg>
+    <div class="progress-info">0h / 4h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-skill-overview.html"><span class="status-dot" data-chapter="01"></span> Skillとは</a></li>
+    <li><a href="02-skill-structure.html" class="active"><span class="status-dot" data-chapter="02"></span> Skillの最小構成</a></li>
+    <li><a href="03-design-principles.html"><span class="status-dot" data-chapter="03"></span> 設計原則</a></li>
+    <li><a href="04-templates.html"><span class="status-dot" data-chapter="04"></span> templatesの使い方</a></li>
+  </ul>
+  <div class="section-label">Practice</div>
+  <ul>
+    <li><a href="05-email-draft-skill.html"><span class="status-dot" data-chapter="05"></span> 実践：メール下書き</a></li>
+    <li><a href="06-meeting-notes-skill.html"><span class="status-dot" data-chapter="06"></span> 実践：議事録整形</a></li>
+    <li><a href="07-combine-sub-hook.html"><span class="status-dot" data-chapter="07"></span> 組み合わせ</a></li>
+    <li><a href="08-final-exercise.html"><span class="status-dot" data-chapter="08"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 1: Basics &gt; Chapter 02</div>
+  <h1>Skillの最小構成</h1>
+  <p class="subtitle">SKILL.md・frontmatter・呼び出し方</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 30分</span>
+    <span class="badge">Phase: Basics</span>
+    <span class="badge">難易度: 初級</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">この章のゴール</span>
+    <p>Skillの<strong>物理的な姿</strong>を理解する——ディレクトリはどこに置くのか、<code>SKILL.md</code> の中身は何でできているのか、<code>frontmatter</code> の<strong>name</strong>/<strong>description</strong> は何に使われるのか、そしてどうやって起動するのか。この30分で <strong>"hello" と挨拶するだけの最小Skill</strong> を自分の手で1つ作り、<code>/hello</code> で呼び出して動かすところまで到達します。ここが腑に落ちれば、Ch03以降の設計論・実践章は<strong>全部あなた自身のSkill</strong>で読めるようになります。</p>
+  </div>
+
+  <div class="info-box" style="border-left: 3px solid #D97757;">
+    <span class="label">バージョン注記</span>
+    <p>本章の記述は <strong>2026年1月時点</strong> の Claude Code における Skill 機能の挙動に基づきます。<code>~/.claude/skills/</code> のスキャンタイミング・frontmatter の拡張フィールド・自動発火のアルゴリズムは進化するため、手元で動かない時は <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">公式ドキュメント</a> で最新仕様を確認してください。</p>
+  </div>
+
+  <!-- ===== Section 1: ディレクトリ構成 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Skill の物理配置 — どこに・何を置くか</h2>
+
+  <p>Skill の正体は、たった1つの <span class="term" data-tip="frontmatter 付きのMarkdown。SkillのメタデータとAIへの指示書を1ファイルに同居させる">Markdownファイル</span>(<code>SKILL.md</code>)が入った <strong>名前付きフォルダ</strong> です。Claude Code は起動時にこのフォルダ群をスキャンして「使えるSkill一覧」を作ります。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">最小構成 vs 実用構成</div>
+    <svg viewBox="0 0 520 280" width="100%" style="max-width:520px; display:block; margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <!-- 最小構成 -->
+      <rect x="20" y="30" width="220" height="220" rx="10" fill="rgba(217,119,87,0.10)" stroke="#D97757" stroke-width="1.5"/>
+      <text x="130" y="55" text-anchor="middle" font-size="13" font-weight="700" fill="#18181b">最小構成(これだけでOK)</text>
+      <text x="40" y="90"  font-size="11" font-family="monospace" fill="#18181b">~/.claude/skills/</text>
+      <text x="60" y="110" font-size="11" font-family="monospace" fill="#18181b">└─ hello/</text>
+      <text x="80" y="130" font-size="11" font-family="monospace" fill="#D97757" font-weight="700">   └─ SKILL.md</text>
+      <text x="40" y="170" font-size="10" fill="#475569">必要なのは</text>
+      <text x="40" y="186" font-size="10" fill="#475569">1フォルダ + 1ファイル</text>
+      <text x="40" y="212" font-size="10" fill="#475569">フォルダ名 = Skill名</text>
+      <text x="40" y="228" font-size="10" fill="#475569">/ と対話発火の両方で使える</text>
+
+      <!-- 実用構成 -->
+      <rect x="280" y="30" width="220" height="220" rx="10" fill="#ffffff" stroke="#D97757" stroke-width="1.5"/>
+      <text x="390" y="55" text-anchor="middle" font-size="13" font-weight="700" fill="#18181b">実用構成(Ch04以降で扱う)</text>
+      <text x="300" y="90"  font-size="11" font-family="monospace" fill="#18181b">~/.claude/skills/</text>
+      <text x="320" y="110" font-size="11" font-family="monospace" fill="#18181b">└─ meeting-notes/</text>
+      <text x="340" y="130" font-size="11" font-family="monospace" fill="#D97757" font-weight="700">   ├─ SKILL.md</text>
+      <text x="340" y="150" font-size="11" font-family="monospace" fill="#18181b">   ├─ templates/</text>
+      <text x="360" y="168" font-size="10" font-family="monospace" fill="#475569">   │   └─ note.md</text>
+      <text x="340" y="188" font-size="11" font-family="monospace" fill="#18181b">   └─ examples/</text>
+      <text x="360" y="206" font-size="10" font-family="monospace" fill="#475569">   │   └─ sample.md</text>
+      <text x="300" y="238" font-size="10" fill="#475569">部品を足すだけで拡張可能</text>
+    </svg>
+    <div class="diagram-caption">最小は「フォルダ+SKILL.md」だけ。templates/ や examples/ は必要になったら足す。</div>
+  </div>
+
+  <p>この <code>SKILL.md</code> こそ <strong>Skillの全て</strong> です。Claudeはこのファイルを<span class="term" data-tip="system promptに読み込む。frontmatterのdescriptionは常時ロード、本体は発火時にロード">発火時に本体を読み込んで指示書として実行</span>します。つまりあなたは「誰か(Claude)に手順書を書いて渡す」だけでSkillが作れます。プログラムは不要です。</p>
+
+  <h3>スコープ2種 — ユーザー / プロジェクト</h3>
+
+  <p>配置場所は <strong>ユーザースコープ</strong> と <strong>プロジェクトスコープ</strong> の2種類。役割が違うので最初に切り分けます。</p>
+
+  <table>
+    <thead>
+      <tr><th>スコープ</th><th>配置パス</th><th>有効範囲</th><th>向いてる用途</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>ユーザー</strong></td><td><code>~/.claude/skills/{name}/SKILL.md</code></td><td>そのマシンの全プロジェクト</td><td>メール下書き・議事録整形・make-tutorial など横断的な業務</td></tr>
+      <tr><td><strong>プロジェクト</strong></td><td><code>&lt;repo&gt;/.claude/skills/{name}/SKILL.md</code></td><td>そのリポジトリ内のみ</td><td>特定プロダクトのPR規約・コミット規約・デプロイ手順</td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-box">
+    <span class="label">迷ったら</span>
+    <p><strong>まずユーザースコープから始める</strong>のが鉄則。自分ひとりで試して良かったSkillだけ、チーム共有のためプロジェクトスコープに昇格させる(gitで追跡する)、という流れがストレスが少ない。<code>~/.claude/skills/</code> は他の人のリポジトリを壊さないサンドボックスとして使えます。</p>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section 2: frontmatter ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> frontmatter — Skillの"看板"</h2>
+
+  <p><code>SKILL.md</code> の先頭には <span class="term" data-tip="YAML形式のメタデータを --- で囲んだブロック。Markdownの慣習">frontmatter</span> を書きます。ここは<strong>Skillの"看板"</strong>で、Claudeはまずここだけを読んで「このSkillがいま呼ばれるべきか」を判定します。</p>
+
+  <pre><code>---
+name: hello
+description: ユーザーに短く挨拶して雰囲気を和ませる。雑談の流れで「挨拶して」「hello」「自己紹介して」「元気?」などと言われた時に発火する。
+---
+
+# hello スキル
+
+あなたはこのファイルを読んだら...(SKILL.md本体)</code></pre>
+
+  <h3>必須フィールドは2つだけ</h3>
+
+  <div class="kv-grid">
+    <div class="kv"><div class="kv-key">name</div><div class="kv-val">Skillの識別子。半角英数+ハイフン。<code>/skill-name</code> の名前にもなる。フォルダ名と一致させるのが慣習</div></div>
+    <div class="kv"><div class="kv-key">description</div><div class="kv-val"><strong>発火判定の鍵</strong>。Claudeはこの文字列を常時ロードして「ユーザー入力に合うか」を判定する。具体的であればあるほど正しく発火する</div></div>
+  </div>
+
+  <div class="diagram-box">
+    <div class="diagram-title">description が発火判定に使われる流れ</div>
+    <pre class="mermaid">
+graph LR
+  U["ユーザー入力<br/>(例: 挨拶して)"] --> C{"Claudeが<br/>判定"}
+  C --> D["Skill一覧の<br/>description を照合"]
+  D --> M{"マッチ?"}
+  M -- "Yes" --> L["SKILL.md本体を<br/>ロード&amp;実行"]
+  M -- "No" --> N["通常の応答"]
+    </pre>
+    <div class="diagram-caption">description がスカスカだとマッチせず、せっかく書いたSkillが永遠に眠ることになる。</div>
+  </div>
+
+  <h3>description の良い例 vs 悪い例</h3>
+
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">Bad</span>
+      <h4>抽象的で発火しない</h4>
+      <ul>
+        <li><code>description: メールのスキル</code></li>
+        <li><code>description: 議事録</code></li>
+        <li><code>description: コード関係</code></li>
+      </ul>
+      <p style="font-size:12px; color:#991b1b; margin-top:8px;">→ 何をするのか・いつ呼ぶかが分からないのでClaudeが判定できない</p>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">Good</span>
+      <h4>動詞・対象・トリガー語が明確</h4>
+      <ul>
+        <li>「社外向けの日本語ビジネスメールを下書きする。"メール書いて" "xxさん宛のメール"と言われた時に発火」</li>
+        <li>「会議の生ログから Decisions / Actions / Questions に整形。"議事録整形" "会議メモまとめて" で発火」</li>
+      </ul>
+      <p style="font-size:12px; color:#15803d; margin-top:8px;">→ 目的・出力・発火ワードの3点セットが揃っている</p>
+    </div>
+  </div>
+
+  <div class="info-box" style="border-left: 3px solid #D97757;">
+    <span class="label">鉄則</span>
+    <p><strong>description は「何を・いつ・なぜ」を1-2文で書く</strong>。本チュートリアル自体を生成している <code>make-tutorial</code> の description が手本:「MKのClaude Codeチュートリアルと同じデザイン・構造の学習サイトを量産する。テーマ・URL・合計時間・章時間・内容目標を受け取り、妥当性確認 → デザイン決定 → HTML/CSS/JS生成 → GitHub Pagesへ自動デプロイまで一気通貫で実行する。」——<strong>何を(量産)・入力(5項目)・流れ(5フェーズ)</strong> がこの1文に詰まっている。</p>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: description はどれくらい長く書いていいか</summary>
+    <div class="more-body">
+      <p>短すぎると発火しない、長すぎると他Skillの判定を圧迫する——というトレードオフ。目安は <strong>1-3文、100-300文字</strong>。発火ワードを入れたい時は「"キーワード1" "キーワード2" などと言われた時」のように具体例を引用符付きで並べるのが効きます。「何でも屋」Skillは作らない——単一責任(Ch03)に則って description を尖らせるほど、Claudeは正確に選んでくれます。</p>
+    </div>
+  </details>
+
+  <h3>任意フィールド(将来拡張)</h3>
+
+  <p>2026年1月時点、必須は <code>name</code> と <code>description</code> の2つだけ。バージョン表記や作者情報を付けたい時は、以下のような任意フィールドを追加しても無視されるだけで害はありません(将来的に意味を持つ可能性あり)。</p>
+
+  <pre><code>---
+name: hello
+description: 雑談の流れで挨拶する最小Skill
+version: 0.1.0
+author: MK
+tags: [greeting, minimal, demo]
+---</code></pre>
+
+  <!-- ===== Section 3: SKILL.md本体 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> SKILL.md本体 — AIへの指示書として書く</h2>
+
+  <p>frontmatterの下は<strong>普通のMarkdown</strong>です。ただし読み手は人間ではなく <strong>Claude自身</strong>——「この指示書を受け取った将来の自分」向けの<span class="term" data-tip="AIに手順・制約・前提を明文化する文書。曖昧さは全部消すのが鉄則">AI向け仕様書</span>として書きます。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">SKILL.md本体の典型的な章立て</div>
+    <pre class="mermaid">
+graph TD
+  A["1. 概要<br/>(1-2行で何をするか)"] --> B["2. いつ使うか<br/>(トリガー条件の明示)"]
+  B --> C["3. 入力の受け取り方<br/>(不足は対話で聞く)"]
+  C --> D["4. 手順<br/>(番号付きで具体的に)"]
+  D --> E["5. 出力形式<br/>(例を1つ付ける)"]
+  E --> F["6. 失敗時の対処<br/>(エラーハンドリング)"]
+    </pre>
+    <div class="diagram-caption">この6節を意識すると、誰が読んでも同じ結果が出る"手順書"になる。</div>
+  </div>
+
+  <h3>"hello" Skill の SKILL.md 全文</h3>
+
+  <p>これから作る <code>~/.claude/skills/hello/SKILL.md</code> の完成形は、こんな感じです。</p>
+
+  <pre><code>---
+name: hello
+description: ユーザーに短く挨拶する最小Skill。雑談の流れで「挨拶して」「hello」「自己紹介して」「元気?」などと言われた時に発火する。/hello でも明示呼び出し可能。
+---
+
+# hello スキル
+
+あなたは軽快な挨拶担当です。このSkillが呼ばれたら、以下の手順で短く挨拶してください。
+
+## いつ使うか
+- ユーザーが「挨拶して」「hello」「こんにちは」「自己紹介」などと言った時
+- ユーザーが `/hello` を実行した時
+- 会話の雰囲気を和ませたい時
+
+## 手順
+1. 現在時刻に応じて「おはよう/こんにちは/こんばんは」を選ぶ(分からなければ「こんにちは」)
+2. 自分の役割を1行で名乗る(例: "Claude Code で作業のお手伝いをしています")
+3. ユーザーの名前が既に分かっていれば呼びかけに使う
+4. 「今日は何をしますか?」で締める
+
+## 出力形式
+3〜5行の自然な日本語。絵文字は使わない。装飾なしの素朴な挨拶。
+
+## 例
+&gt; こんにちは、MKさん。Claude Code で作業のお手伝いをしています。
+&gt; 今日もよろしくお願いします。
+&gt; 今日は何をしますか?
+
+## 失敗時の対処
+- ユーザー名が不明 → 呼びかけを省略して汎用の挨拶にする
+- 時刻が取れない → 無難に「こんにちは」で始める</code></pre>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="target" width="20" height="20"></i>
+      <div><strong>「いつ使うか」を先頭で明示</strong> — frontmatter の description を補強する位置付け。ユーザー目線のトリガーを列挙する</div>
+    </li>
+    <li>
+      <i data-lucide="list-ordered" width="20" height="20"></i>
+      <div><strong>手順は番号付きリスト</strong> — 「まず〜それから〜」の散文ではなく、Claudeが1項目ずつ確実に実行できるよう分解する</div>
+    </li>
+    <li>
+      <i data-lucide="layout" width="20" height="20"></i>
+      <div><strong>出力形式の例を必ず1つ付ける</strong> — 「3〜5行」と書くだけでなく具体例を添えると、出力のブレが激減する</div>
+    </li>
+    <li>
+      <i data-lucide="alert-triangle" width="20" height="20"></i>
+      <div><strong>失敗時の分岐を書く</strong> — 情報不足・エラー・想定外の入力を、<strong>手順と同じ精度で</strong>明文化する</div>
+    </li>
+  </ul>
+
+  <details class="more-box">
+    <summary>もっと詳しく: "プロンプトを書く" との違い</summary>
+    <div class="more-body">
+      <p>チャットに1回投げるプロンプトと違い、SKILL.md は <strong>毎回同じ入力で同じ結果</strong> が出る必要があります。そのため:(1)気分で書かない、(2)抽象語を避ける、(3)例示を載せる、(4)分岐を明示する——この4点が必須になります。良いSKILL.mdを書く作業は、実は <strong>業務手順の標準化</strong> そのもの。人に引き継げないノウハウが、人にもAIにも渡せる手順書になります。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 4: 呼び出し方 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 呼び出し方 — 明示 vs 自動発火</h2>
+
+  <p>Skill は <strong>2つの経路</strong> で起動されます。これがSlashコマンドとの決定的な違いで、「呼ばれなくても勝手に出てくる」挙動を理解することが、Skill設計の腕を分けます。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">2つの起動経路</div>
+    <svg viewBox="0 0 480 240" width="100%" style="max-width:480px; display:block; margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <!-- 左: 明示呼び出し -->
+      <rect x="20" y="30" width="200" height="180" rx="10" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="2"/>
+      <text x="120" y="56" text-anchor="middle" font-size="13" font-weight="700" fill="#18181b">明示呼び出し</text>
+      <text x="120" y="80" text-anchor="middle" font-size="11" font-family="monospace" fill="#D97757" font-weight="700">/hello</text>
+      <text x="120" y="110" text-anchor="middle" font-size="10" fill="#475569">ユーザーが直接起動</text>
+      <text x="120" y="128" text-anchor="middle" font-size="10" fill="#475569">description 関係なく発火</text>
+      <text x="120" y="160" text-anchor="middle" font-size="10" fill="#475569">確実・予測可能</text>
+      <text x="120" y="178" text-anchor="middle" font-size="10" fill="#475569">手動タスクに向く</text>
+
+      <!-- 右: 自動発火 -->
+      <rect x="260" y="30" width="200" height="180" rx="10" fill="#ffffff" stroke="#D97757" stroke-width="2" stroke-dasharray="6 4"/>
+      <text x="360" y="56" text-anchor="middle" font-size="13" font-weight="700" fill="#18181b">自動発火</text>
+      <text x="360" y="80" text-anchor="middle" font-size="11" fill="#D97757">"挨拶して" などの対話から</text>
+      <text x="360" y="110" text-anchor="middle" font-size="10" fill="#475569">Claudeが description で判定</text>
+      <text x="360" y="128" text-anchor="middle" font-size="10" fill="#475569">ユーザーは Skill を知らなくてよい</text>
+      <text x="360" y="160" text-anchor="middle" font-size="10" fill="#475569">流れるようなUX</text>
+      <text x="360" y="178" text-anchor="middle" font-size="10" fill="#475569">description の質が命</text>
+    </svg>
+    <div class="diagram-caption">同じSkillが2つの入口を持つ。片方だけを想定して書くと、もう片方で事故る。</div>
+  </div>
+
+  <h3>1. 明示呼び出し: <code>/skill-name</code></h3>
+
+  <p>最も単純な経路。チャット入力で <code>/hello</code> と打てば、description の照合を飛ばしていきなり本体がロードされて実行されます。<strong>Slashコマンドと見た目が同じ</strong>ですが、中身はSKILL.mdなのでSlashよりリッチに書けます。</p>
+
+  <pre><code># 会話の例
+You: /hello
+
+Claude: こんにちは、MKさん。Claude Code で作業のお手伝いをしています。
+        今日もよろしくお願いします。
+        今日は何をしますか?</code></pre>
+
+  <h3>2. 自動発火: 会話の流れから</h3>
+
+  <p>Claudeはユーザー発話のたびに、登録されているSkillの <code>description</code> リストを見て「この入力に合うSkillがあるか」を判定します。マッチすれば <strong>ユーザーがSkillの存在を知らなくても</strong>、本体がロードされて実行されます。</p>
+
+  <pre><code># 会話の例(/hello と打たなくても発火する)
+You: ちょっと挨拶してくれる?
+
+Claude: (hello Skillのdescriptionにマッチ → SKILL.md本体を実行)
+        こんにちは、MKさん。Claude Code で作業のお手伝いをしています。
+        ...</code></pre>
+
+  <div class="info-box">
+    <span class="label">自動発火の注意</span>
+    <p>自動発火は便利な反面、<strong>description の書き方が悪いと想定外のタイミングで発火</strong>したり、逆に<strong>呼ぶべき場面で静かに無視</strong>されたりします。Ch03でこの発火精度を上げる「単一責任 × 具体的 description」の設計原則を扱います。</p>
+  </div>
+
+  <div class="hands-on-box info-box" style="background: rgba(217,119,87,0.08); border-left: 3px solid #D97757;">
+    <span class="label">今すぐ試す(体感)</span>
+    <p>この章の終盤でhello Skill を作り終えたら、以下を2回ずつ試してください。</p>
+    <ol>
+      <li>チャットに <code>/hello</code> と打つ → 明示呼び出しで発火</li>
+      <li>チャットに「ちょっと挨拶して」と打つ → 自動発火でSKILL.mdが読まれる</li>
+      <li>チャットに「天気はどう?」と打つ → 関係ないので発火しない(=description が正しく尖っている証拠)</li>
+    </ol>
+    <p>3つ目が「関係なくても発火してしまう」なら description が広すぎるサイン。Ch03で矯正します。</p>
+  </div>
+
+  <!-- ===== Section 5: ハンズオン ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> ハンズオン — 最小"hello" Skill を3分で作る</h2>
+
+  <p>これまでの知識を統合して、<strong>実際に動くSkillを1つ作ります</strong>。所要3分。ターミナルと Claude Code があれば他は何も要りません。</p>
+
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-label">フォルダ作成</div><div class="step-desc">~/.claude/skills/hello/</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-label">SKILL.md作成</div><div class="step-desc">frontmatter + 本体</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-label">Claude再起動</div><div class="step-desc">スキルを再スキャン</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-label">動作確認</div><div class="step-desc">/hello と自動発火両方</div></div>
+  </div>
+
+  <h3>Step 1: フォルダを作る</h3>
+
+  <pre><code>mkdir -p ~/.claude/skills/hello</code></pre>
+
+  <h3>Step 2: SKILL.md を書く</h3>
+
+  <p>以下の内容で <code>~/.claude/skills/hello/SKILL.md</code> を作成します。エディタでもいいですし、ヒアドキュメントでも。</p>
+
+  <pre><code>cat &gt; ~/.claude/skills/hello/SKILL.md &lt;&lt;'EOF'
+---
+name: hello
+description: ユーザーに短く挨拶する最小Skill。雑談の流れで「挨拶して」「hello」「自己紹介して」「元気?」などと言われた時に発火する。/hello でも明示呼び出し可能。
+---
+
+# hello スキル
+
+あなたは軽快な挨拶担当です。このSkillが呼ばれたら、以下の手順で短く挨拶してください。
+
+## いつ使うか
+- ユーザーが「挨拶して」「hello」「こんにちは」「自己紹介」などと言った時
+- ユーザーが /hello を実行した時
+
+## 手順
+1. 現在時刻に応じて「おはよう/こんにちは/こんばんは」を選ぶ(分からなければ「こんにちは」)
+2. 自分の役割を1行で名乗る
+3. ユーザー名が既に分かっていれば呼びかけに使う
+4. 「今日は何をしますか?」で締める
+
+## 出力形式
+3〜5行の自然な日本語。絵文字は使わない。
+
+## 失敗時の対処
+- ユーザー名が不明 → 呼びかけを省略
+- 時刻が取れない → 「こんにちは」で始める
+EOF</code></pre>
+
+  <h3>Step 3: Claude Code を再起動</h3>
+
+  <p>Claude Code を一度終了して、もう一度起動してください。起動時に <code>~/.claude/skills/</code> を再スキャンして、今作った <code>hello</code> が認識されます。</p>
+
+  <h3>Step 4: 動作確認</h3>
+
+  <p>新しい会話を開いて、以下を順に試してください。</p>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-date">Test 1</div>
+      <div class="tl-title">明示呼び出し</div>
+      <div class="tl-body">チャットに <code>/hello</code> と入力 → Skillが起動して3〜5行の挨拶が返る</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">Test 2</div>
+      <div class="tl-title">自動発火</div>
+      <div class="tl-body">チャットに「ちょっと挨拶して」と入力 → description にマッチ → 同じ挨拶が返る</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">Test 3</div>
+      <div class="tl-title">発火しない確認</div>
+      <div class="tl-body">「今日の天気は?」と入力 → 関係ないSkillは起動せず普通の応答</div>
+    </div>
+  </div>
+
+  <div class="diagram-box">
+    <div class="diagram-title">動作確認の観察ポイント(3種類の入力×発火率)</div>
+    <canvas id="ch2-bar-1" height="200"></canvas>
+    <div class="diagram-caption">明示・関連・無関連の3種で、Skillが <strong>意図通りのタイミングだけ</strong>で発火するかチェックする。</div>
+  </div>
+
+  <div class="info-box" style="border-left: 3px solid #D97757;">
+    <span class="label">うまく発火しない時のチェック</span>
+    <p><strong>(1) ファイルパスが正確か</strong> — <code>ls ~/.claude/skills/hello/SKILL.md</code> で存在確認。<strong>(2) frontmatter が有効か</strong> — 先頭の <code>---</code> が1文字目にあり、YAMLとして valid か。<strong>(3) Claude を再起動したか</strong> — 起動後のスキャンが必要。<strong>(4) description が尖っているか</strong> — 抽象的すぎると判定が迷う。</p>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section 6: まとめ ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> この章のまとめ・Ch03への橋渡し</h2>
+
+  <p>この章で手に入れた最小セットは次の4つ。</p>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-num">1<small>ファイル</small></div>
+      <div class="stat-label">Skillに必要なもの</div>
+      <div class="stat-trend up">SKILL.md だけ</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">2<small>必須</small></div>
+      <div class="stat-label">frontmatter</div>
+      <div class="stat-trend up">name / description</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">2<small>経路</small></div>
+      <div class="stat-label">起動方法</div>
+      <div class="stat-trend up">/明示 + 自動発火</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">2<small>スコープ</small></div>
+      <div class="stat-label">配置先</div>
+      <div class="stat-trend up">ユーザー / プロジェクト</div>
+    </div>
+  </div>
+
+  <p>次章 <strong>Ch03「良いSkillの設計原則」</strong> では、この最小セットを <span class="term" data-tip="単一責任 / 明示トリガー / テンプレ分離 / self-contained / 段階的対話 / 失敗時対処">6つの設計原則</span> で肉付けします。「動くSkill」から「使い続けられるSkill」への昇格です。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span></p>
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>hello Skill を自分の環境で動かす</h4>
+    <p>本章の Step 1〜4 を実際に実行して、以下を確認してください。</p>
+    <ol>
+      <li><code>~/.claude/skills/hello/SKILL.md</code> を作成</li>
+      <li>Claude Code を再起動</li>
+      <li><code>/hello</code> で明示呼び出しが成功するか</li>
+      <li>「挨拶して」で自動発火が成功するか</li>
+      <li>「天気は?」で発火しないことを確認</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>全ステップ成功時のチェックリスト:</p>
+      <pre><code>$ ls ~/.claude/skills/hello/SKILL.md
+/Users/&lt;name&gt;/.claude/skills/hello/SKILL.md
+
+$ head -3 ~/.claude/skills/hello/SKILL.md
+---
+name: hello
+description: ユーザーに短く挨拶する最小Skill。...</code></pre>
+      <p><strong>Test 1 (明示)</strong>: <code>/hello</code> → 3〜5行の挨拶が返る。<br>
+      <strong>Test 2 (自動)</strong>: 「挨拶して」→ 同じ挨拶パターンが返る(description 経由)。<br>
+      <strong>Test 3 (無関連)</strong>: 「天気は?」→ 通常応答。helloは起動しない。</p>
+      <p>もしTest 2が失敗する場合は description に「挨拶」「hello」などの発火ワードが入っているか確認。Test 3で誤発火する場合は description が広すぎるので、Ch03の原則で絞ります。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>"goodbye" Skill を自力で作る(+スコープ実験)</h4>
+    <p>hello のミラーで、別れの挨拶をする <code>goodbye</code> Skill を自力で作成してください。ただし以下の条件付きです。</p>
+    <ol>
+      <li>frontmatter の <strong>description</strong> を自分で考える(発火ワードを具体的に3つ以上含める)</li>
+      <li>本体には「いつ使うか / 手順 / 出力形式 / 失敗時の対処」の4節を必ず書く</li>
+      <li><strong>プロジェクトスコープ</strong>に配置する(任意のテスト用リポジトリの <code>&lt;repo&gt;/.claude/skills/goodbye/</code>)</li>
+      <li>そのリポジトリの中で自動発火するか確認</li>
+      <li>別の(関係ない)リポジトリに移動した時、発火しないことを確認</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>SKILL.md の例:</p>
+      <pre><code>---
+name: goodbye
+description: 会話の締めくくりで短くお礼と別れの挨拶をする。「終わり」「お疲れ様」「また後で」「bye」「ありがとう」などと言われた時、または /goodbye で発火する。
+---
+
+# goodbye スキル
+
+あなたは会話を気持ちよく締める役です。
+
+## いつ使うか
+- ユーザーが「終わり」「お疲れ様」「bye」「ありがとう」などと言った時
+- /goodbye が実行された時
+
+## 手順
+1. その日の成果を1行で要約(会話履歴から)
+2. 感謝の言葉を1行
+3. 次回への引き継ぎがあれば1行
+4. 「お疲れ様でした」で締める
+
+## 出力形式
+3〜4行の丁寧な日本語。
+
+## 失敗時の対処
+- 成果が曖昧 → 要約を省略して感謝のみ</code></pre>
+      <p><strong>配置と検証</strong>:</p>
+      <pre><code>mkdir -p &lt;repo&gt;/.claude/skills/goodbye
+# 上記SKILL.mdを保存
+cd &lt;repo&gt;  # このリポジトリで Claude Code を起動
+
+# Test A: 「お疲れ様」と打つ → 発火する
+# Test B: cd ~/tmp (別の場所) で起動 → 発火しない</code></pre>
+      <p><strong>学び</strong>: プロジェクトスコープは「このリポジトリ専用の手順書」を閉じ込める用途に最適。横断的に使いたくなったら <code>~/.claude/skills/</code> に移して昇格させればいい。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式ドキュメント</a> — Skill機能の一次情報。2026年1月時点は英語中心</li>
+      <li><span class="res-type doc">Doc</span> <a href="file:///Users/koma/.claude/skills/make-tutorial/SKILL.md" target="_blank" rel="noopener">~/.claude/skills/make-tutorial/SKILL.md</a> — 本チュートリアルを生成した実働Skill。骨太なSKILL.mdの手本</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener">Claude Code GitHub リポジトリ</a> — Issue/Discussions でSkillの挙動議論や既知の地雷が追える</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://www.anthropic.com/news" target="_blank" rel="noopener">Anthropic Blog / News</a> — Skill機能の仕様追加アナウンス</li>
+      <li><span class="res-type video">Video</span> <a href="https://www.youtube.com/results?search_query=Claude+Code+skills+%E4%BD%9C%E3%82%8A%E6%96%B9" target="_blank" rel="noopener">YouTube: "Claude Code skills 作り方"</a> — 日本語コミュニティの動作デモ</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://zenn.dev/topics/claudecode" target="_blank" rel="noopener">Zenn: Claude Code タグ</a> — 日本語のSkill自作事例・落とし穴集</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="02">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="01-skill-overview.html"><span class="direction">&larr; Prev</span>Skillとは</a>
+    <a href="03-design-principles.html"><span class="direction">Next &rarr;</span>良いSkillの設計原則</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+
+<!-- Chart.js: 発火率の観察 -->
+<script>
+window.addEventListener("load", function(){
+  var ctxBar = document.getElementById('ch2-bar-1');
+  if (ctxBar && window.Chart) {
+    new Chart(ctxBar, {
+      type: 'bar',
+      data: {
+        labels: ['/hello (明示)', '「挨拶して」(関連)', '「天気は?」(無関連)'],
+        datasets: [
+          {
+            label: '期待される発火率',
+            data: [100, 95, 5],
+            backgroundColor: ['#D97757', 'rgba(217,119,87,0.5)', 'rgba(217,119,87,0.15)'],
+            borderColor: '#D97757',
+            borderWidth: 1,
+            borderRadius: 6
+          }
+        ]
+      },
+      options: {
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { beginAtZero: true, max: 100, title: { display: true, text: '発火率 (%)' } }
+        }
+      }
+    });
+  }
+});
+</script>
+</body>
+</html>

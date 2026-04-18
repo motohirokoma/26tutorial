@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>Skills と Subagents/Hooks の組み合わせ - MK's Claude Code Tutorial - Skill Craft</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code - Skill
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav class="active"><span class="phase-name">Practice</span><span class="phase-pct" id="pct-practice">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.07</span>
+    Skills と Subagents/Hooks の組み合わせ
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 8 sections</text>
+    </svg>
+    <div class="progress-info">0h / 4h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-skill-overview.html"><span class="status-dot" data-chapter="01"></span> Skillとは</a></li>
+    <li><a href="02-skill-structure.html"><span class="status-dot" data-chapter="02"></span> Skillの最小構成</a></li>
+    <li><a href="03-design-principles.html"><span class="status-dot" data-chapter="03"></span> 設計原則</a></li>
+    <li><a href="04-templates.html"><span class="status-dot" data-chapter="04"></span> templatesの使い方</a></li>
+  </ul>
+  <div class="section-label">Practice</div>
+  <ul>
+    <li><a href="05-email-draft-skill.html"><span class="status-dot" data-chapter="05"></span> 実践：メール下書き</a></li>
+    <li><a href="06-meeting-notes-skill.html"><span class="status-dot" data-chapter="06"></span> 実践：議事録整形</a></li>
+    <li><a href="07-combine-sub-hook.html" class="active"><span class="status-dot" data-chapter="07"></span> 組み合わせ</a></li>
+    <li><a href="08-final-exercise.html"><span class="status-dot" data-chapter="08"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 2: Practice &gt; Chapter 07</div>
+  <h1>Skills と Subagents/Hooks の組み合わせ</h1>
+  <p class="subtitle">3つを束ねて強力なワークフローを作る — 並列処理・自動発火・定期実行の統合設計</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 30分</span>
+    <span class="badge">Phase: Practice</span>
+    <span class="badge">難易度: 中級</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">この章のゴール</span>
+    <p>ここまで単独で覚えてきた <strong>Skill</strong> を、<strong>Subagent / Hook / Schedule&amp;Loop</strong> の3つと組み合わせて「<strong>本当に手が離せる自動化</strong>」に昇華させます。Skillは「<em>何を・どう書くか</em>」の塊、Subagentは「<em>誰に並列で任せるか</em>」、Hookは「<em>いつ勝手に発火するか</em>」、Schedule&amp;Loopは「<em>どの周期で走らせ続けるか</em>」。4つの軸を1つのワークフローに束ねるコツを、<strong>毎朝Slackサマリを送るSkill</strong> のハンズオンで体得します。</p>
+  </div>
+
+  <div class="info-box" style="border-left: 3px solid #D97757;">
+    <span class="label">バージョン注記</span>
+    <p>本章の記述は <strong>2026年1月時点</strong> の Claude Code (Agent SDK / CLI / Skills / Hooks) 挙動を基準にしています。<code>settings.json</code> のhookイベント名や <code>/loop</code> / <code>/schedule</code> の引数体系は進化するので、コマンドが通らない時は <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">公式ドキュメント</a> を必ず確認してください。</p>
+  </div>
+
+  <!-- ===== Section 1: 統合アーキテクチャ ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 統合アーキテクチャ — 4本の軸と1つの中心</h2>
+
+  <p>まず <span class="term" data-tip="Skill: ~/.claude/skills/{name}/SKILL.md に書いた、Claudeが自動発火できる手順書。2026/1時点の仕様。">Skill</span> が中心にあり、その周りに <span class="term" data-tip="Subagent: 親から分岐した独立文脈の子Claude。並列で回せる。">Subagent</span>・<span class="term" data-tip="Hook: settings.jsonに書いた、特定イベント(コミット時など)で発火するシェルコマンド。Claudeではなくharnessが実行する。">Hook</span>・<span class="term" data-tip="Schedule&Loop: /schedule で cron、/loop で定期polling。どちらも定期的にSkillを叩ける。">Schedule&amp;Loop</span> が接続される、というのが全体像です。Skillは「呼ばれたら動く振る舞いのテンプレ」、他の3つは「<strong>どこから呼ぶか</strong>」の入口の違いと捉えると頭が整理されます。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Skill を中心にした4本の軸(統合アーキテクチャ)</div>
+    <svg viewBox="0 0 540 360" width="100%" style="max-width:540px; display:block; margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arrCh7" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill="#D97757"/>
+        </marker>
+      </defs>
+
+      <!-- center: Skill -->
+      <circle cx="270" cy="180" r="78" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="2.5"/>
+      <text x="270" y="170" text-anchor="middle" font-size="16" font-weight="700" fill="#18181b">Skill</text>
+      <text x="270" y="190" text-anchor="middle" font-size="11" fill="#475569">~/.claude/skills/</text>
+      <text x="270" y="206" text-anchor="middle" font-size="11" fill="#475569">{name}/SKILL.md</text>
+
+      <!-- top: User -->
+      <rect x="210" y="20" width="120" height="54" rx="8" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+      <text x="270" y="42" text-anchor="middle" font-size="12" font-weight="700">User</text>
+      <text x="270" y="60" text-anchor="middle" font-size="10" fill="#475569">/skill-name or 自動判定</text>
+      <line x1="270" y1="74" x2="270" y2="100" stroke="#D97757" stroke-width="2" marker-end="url(#arrCh7)"/>
+
+      <!-- left: Hook -->
+      <rect x="20" y="140" width="140" height="78" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+      <text x="90" y="164" text-anchor="middle" font-size="12" font-weight="700" fill="#b45309">Hook</text>
+      <text x="90" y="182" text-anchor="middle" font-size="10" fill="#475569">settings.json</text>
+      <text x="90" y="198" text-anchor="middle" font-size="10" fill="#475569">PostToolUse /</text>
+      <text x="90" y="212" text-anchor="middle" font-size="10" fill="#475569">Stop event → 発火</text>
+      <line x1="160" y1="180" x2="191" y2="180" stroke="#D97757" stroke-width="2" marker-end="url(#arrCh7)"/>
+
+      <!-- right: Subagent (Skillから使う) -->
+      <rect x="380" y="140" width="140" height="78" rx="8" fill="#ffffff" stroke="#D97757" stroke-width="1.5"/>
+      <text x="450" y="164" text-anchor="middle" font-size="12" font-weight="700">Subagent</text>
+      <text x="450" y="182" text-anchor="middle" font-size="10" fill="#475569">Skill内から</text>
+      <text x="450" y="198" text-anchor="middle" font-size="10" fill="#475569">Agent tool で</text>
+      <text x="450" y="212" text-anchor="middle" font-size="10" fill="#475569">並列呼び出し</text>
+      <line x1="348" y1="180" x2="380" y2="180" stroke="#D97757" stroke-width="2" marker-end="url(#arrCh7)"/>
+
+      <!-- bottom: Schedule & Loop -->
+      <rect x="180" y="290" width="180" height="60" rx="8" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="1.5"/>
+      <text x="270" y="313" text-anchor="middle" font-size="12" font-weight="700">Schedule &amp; Loop</text>
+      <text x="270" y="331" text-anchor="middle" font-size="10" fill="#475569">/schedule cron · /loop 5m</text>
+      <line x1="270" y1="290" x2="270" y2="262" stroke="#D97757" stroke-width="2" marker-end="url(#arrCh7)"/>
+
+      <!-- legend -->
+      <text x="20" y="340" font-size="10" fill="#64748b">→ 矢印は「発火 or 呼び出し」の方向</text>
+    </svg>
+    <div class="diagram-caption">Skillは「呼ばれて動く」側。User / Hook / Schedule&amp;Loop の3つが入口、Subagent は Skill が <strong>自分から呼ぶ</strong> 並列の手足。これを押さえれば組み合わせは無限に設計できる。</div>
+  </div>
+
+  <p>覚え方は <strong>「Skillが頭脳、Subagentが手足、Hook/Loopが時計」</strong>。本章のハンズオンでは全部を1本のワークフローに束ねます。</p>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section 2: 組み合わせ例A - Skill×Subagent ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 組み合わせ例A：Skill から Subagent を並列呼び出し</h2>
+
+  <p>Skillは単なる手順書なので、「この部分は並列で調査してきて」と書けば、Claudeは自動的に <span class="term" data-tip="Agent tool: Claude Code 組み込みのSubagent起動ツール。subagent_type / description / prompt を取る。">Agent tool</span> で子を並列起動します。Skillに明記しておくのがポイント。</p>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="layers" width="20" height="20"></i>
+      <div><strong>調査系Skill</strong> — 3つ以上の独立した観点で同時に裏取りさせると、直列10分 → 並列2分に。</div>
+    </li>
+    <li>
+      <i data-lucide="users" width="20" height="20"></i>
+      <div><strong>比較系Skill</strong> — 候補A/B/Cを並列で触って評価させ、親はマージ表を作るだけ。</div>
+    </li>
+    <li>
+      <i data-lucide="shield" width="20" height="20"></i>
+      <div><strong>レビュー系Skill</strong> — セキュリティ/性能/可読性を並列で査読、親が要約だけ受け取る。</div>
+    </li>
+  </ul>
+
+  <p>Skillの中で並列化を <strong>明示的に指示する書き方</strong> は次のようになります。このパターンを <code>SKILL.md</code> 本文に1箇所入れるだけで、Claudeは自発的に並列化してくれます。</p>
+
+  <pre><code>---
+name: tech-research
+description: 新技術Xを導入すべきか、技術/コスト/学習/代替/リスクの5側面で裏取りしたい時に使う。「技術調査して」「導入検討して」で発火。
+---
+
+# tech-research スキル
+
+## 手順
+
+1. ユーザから対象技術名を受け取る(不足なら質問)
+2. **並列調査フェーズ** — 次の5タスクを **1メッセージ内で Agent tool により並列起動する**:
+   - A: 技術観点(API/成熟度/エコシステム) subagent_type=general-purpose
+   - B: コスト観点(ライセンス/運用費/人的コスト)
+   - C: 学習コスト観点(ドキュメント/日本語資料/チュートリアル)
+   - D: 代替技術観点(最低3候補)
+   - E: リスク観点(障害事例/サポート終了可能性)
+   各子は **100語以内のサマリ+根拠URL3本** を返すこと
+3. 統合フェーズ — 5つの要約を1つの比較表にマージ
+4. 結論を 150 字以内で提示し、判断材料を整理</code></pre>
+
+  <div class="info-box">
+    <span class="label">Tip: 並列が効く判定</span>
+    <p>「5観点の調査」のように <strong>依存がない</strong> タスクなら必ず並列化してください。逆に「設計→実装→テスト」のように前段の結果が次段の入力になるタスクは、並列化すると破綻します。この見極めは本シリーズの姉妹 <a href="https://motohirokoma.github.io/26tutorial/test260419/" target="_blank" rel="noopener">Subagents Mastery</a> Ch04 で扱います。</p>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: Subagent の成果物はどう親に返すか?</summary>
+    <div class="more-body">
+      <p>子は要約しか返せない(Ch01の落とし穴2)ので、長文や生ログが必要な時は「<strong>成果物はファイルに書き、パスだけ返す</strong>」運用にします。Skill側でこう書いておけば、子はその通り動きます:</p>
+      <pre><code>各子は成果物を /tmp/research_{A-E}.md に書き、
+親には「ファイルパス+100語以内サマリ」だけを返すこと。
+親はパスを読んで必要な部分だけ引用する。</code></pre>
+      <p>これで親のコンテキストを汚さず、詳細は必要なときだけ読めます。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 3: 組み合わせ例B - Skill×Hook ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 組み合わせ例B：Skill を Hook から自動発火</h2>
+
+  <p>Hook は <code>~/.claude/settings.json</code> に書いた「<strong>イベントで勝手に発動するシェルコマンド</strong>」です。ClaudeではなくClaude Code harness(ランタイム)が実行するため、「毎回必ず」発動する点が強力。コミット時にレビューSkillを自動発火させる、Stop時に日報Skillを自動発火させる、などの使い方ができます。</p>
+
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">Memoryだけで頼る</span>
+      <h4>抜けが出る</h4>
+      <ul>
+        <li>CLAUDE.mdに「コミット後にレビューして」</li>
+        <li>Claudeが忘れることがある</li>
+        <li>セッションを跨ぐと曖昧</li>
+        <li>毎回必ずは保証されない</li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">Hookで必ず発火</span>
+      <h4>確実な自動化</h4>
+      <ul>
+        <li>settings.jsonに書く</li>
+        <li>harnessが毎回実行</li>
+        <li>セッションに依存しない</li>
+        <li>Skillと組み合わせて強力</li>
+      </ul>
+    </div>
+  </div>
+
+  <p>設定の最小例はこうなります。「<code>git commit</code> を Bash ツールで実行した直後に <code>/pr-prep</code> Skill を叩く」パターン:</p>
+
+  <pre><code>// ~/.claude/settings.json
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'if echo \"$TOOL_INPUT\" | grep -q \"git commit\"; then claude --skill pr-prep --non-interactive; fi'"
+          }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+
+  <div class="info-box" style="background: rgba(217,119,87,0.08); border-left: 3px solid #D97757;">
+    <span class="label">注意: Hookの設定は update-config skillで</span>
+    <p>MK自身の環境で実際に <code>settings.json</code> をいじる時は、<strong>Claude Codeの <code>update-config</code> skillに任せるのが安全</strong>です。「コミット後にpr-prepを自動発火させて」と伝えれば、正しいマッチャーと構文で settings.json を書き換えてくれます。手書きで壊してエディタが起動しなくなる事故を避けられます。</p>
+  </div>
+
+  <h3>Hookで発火できる代表イベント(2026/1時点)</h3>
+
+  <table>
+    <thead>
+      <tr><th>イベント</th><th>発火タイミング</th><th>Skill組み合わせ例</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>PostToolUse (Bash)</td><td>Bashコマンド実行直後</td><td><code>git commit</code> 検知 → <code>/commit-review</code> Skill</td></tr>
+      <tr><td>PostToolUse (Write)</td><td>ファイル書き込み直後</td><td><code>*.ts</code> 書き込み → <code>/type-check</code> Skill</td></tr>
+      <tr><td>Stop</td><td>Claudeが応答終了時</td><td>セッション終了 → <code>/session-log</code> Skill</td></tr>
+      <tr><td>UserPromptSubmit</td><td>ユーザがメッセージ送信時</td><td>送信前 → <code>/context-inject</code> Skill で文脈追加</td></tr>
+      <tr><td>SubagentStop</td><td>Subagent終了時</td><td>子の成果物を <code>/archive</code> Skill で保存</td></tr>
+    </tbody>
+  </table>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section 4: 組み合わせ例C - Skill × Schedule/Loop ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 組み合わせ例C：Skill を /schedule や /loop で定期実行</h2>
+
+  <p><span class="term" data-tip="/schedule: cron式で遠隔のエージェントを定期起動する。毎朝9時など絶対時刻で回したい時に使う。">/schedule</span> は cron 式で絶対時刻トリガー、<span class="term" data-tip="/loop: ローカルセッションで5分ごとなどの相対インターバルで繰り返し実行。セッション中のポーリングに向く。">/loop</span> は相対インターバルでのポーリング。両方とも「<strong>Skillを呼ぶだけ</strong>」の最小プロンプトを登録すれば、Skill本体の手順は全部SKILL.mdに書けるので、スケジューラ側はシンプルに保てます。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">/schedule と /loop の使い分け</div>
+    <svg viewBox="0 0 460 280" width="100%" style="max-width:460px; display:block; margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <rect x="30"  y="20"  width="180" height="115" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="1.5"/>
+      <rect x="250" y="20"  width="180" height="115" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+      <rect x="30"  y="145" width="180" height="115" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+      <rect x="250" y="145" width="180" height="115" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+
+      <text x="120" y="46" text-anchor="middle" font-size="13" font-weight="700" fill="#18181b">/schedule</text>
+      <text x="120" y="68" text-anchor="middle" font-size="10" fill="#475569">cron式・絶対時刻</text>
+      <text x="120" y="86" text-anchor="middle" font-size="10" fill="#475569">例: 毎朝9時</text>
+      <text x="120" y="104" text-anchor="middle" font-size="10" fill="#475569">→ /morning-summary</text>
+      <text x="120" y="122" text-anchor="middle" font-size="10" fill="#475569">サーバ側で動作</text>
+
+      <text x="340" y="46" text-anchor="middle" font-size="13" font-weight="700" fill="#b45309">/loop</text>
+      <text x="340" y="68" text-anchor="middle" font-size="10" fill="#475569">相対インターバル</text>
+      <text x="340" y="86" text-anchor="middle" font-size="10" fill="#475569">例: 5分ごと</text>
+      <text x="340" y="104" text-anchor="middle" font-size="10" fill="#475569">→ /check-deploy</text>
+      <text x="340" y="122" text-anchor="middle" font-size="10" fill="#475569">ローカル・セッション中</text>
+
+      <text x="120" y="170" text-anchor="middle" font-size="11" font-weight="700" fill="#64748b">使う場面</text>
+      <text x="120" y="190" text-anchor="middle" font-size="10" fill="#475569">・日次レポート</text>
+      <text x="120" y="206" text-anchor="middle" font-size="10" fill="#475569">・週次集計</text>
+      <text x="120" y="222" text-anchor="middle" font-size="10" fill="#475569">・毎朝/夜の通知</text>
+      <text x="120" y="240" text-anchor="middle" font-size="10" fill="#475569">・月末締め</text>
+
+      <text x="340" y="170" text-anchor="middle" font-size="11" font-weight="700" fill="#64748b">使う場面</text>
+      <text x="340" y="190" text-anchor="middle" font-size="10" fill="#475569">・デプロイ監視</text>
+      <text x="340" y="206" text-anchor="middle" font-size="10" fill="#475569">・PR状態ポーリング</text>
+      <text x="340" y="222" text-anchor="middle" font-size="10" fill="#475569">・ビルド完了待ち</text>
+      <text x="340" y="240" text-anchor="middle" font-size="10" fill="#475569">・会話中の定期チェック</text>
+    </svg>
+    <div class="diagram-caption">絶対時刻 = <code>/schedule</code>、相対間隔 = <code>/loop</code>。「毎朝」は scheduleの十八番、「5分ごと」は loopの十八番。</div>
+  </div>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Skill呼び出しの1日タイムライン(統合イメージ)</div>
+    <canvas id="ch7-bar-1" height="200"></canvas>
+    <div class="diagram-caption">朝のsummary、昼のreview、夕方のdeploy-check、夜のsession-log。Skill本体は各1つだが入口は4種類混在。</div>
+  </div>
+
+  <!-- ===== Section 5: 5本シリーズの統合設計 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 5本シリーズの統合設計 — MKの推奨構成</h2>
+
+  <p>本家MKチュートリアルは <strong>Subagents / MCP / Hooks / Schedule&amp;Loop / Skill Craft</strong> の5本立てです。5つをバラバラに覚えても強くなりません。<strong>Skillを真ん中に置いて他4つを入口や手足として並べる</strong> と、全体が一枚の設計図になります。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">5本シリーズのハブ&amp;スポーク(Skill中心設計)</div>
+    <pre class="mermaid">
+graph LR
+  User(["ユーザ"]) --> Skill["Skill<br/>(中心・頭脳)"]
+  Hook["Hook<br/>(時計・入口)"] --> Skill
+  Sched["Schedule&amp;Loop<br/>(時計・入口)"] --> Skill
+  Skill --> Sub["Subagent<br/>(並列の手足)"]
+  Skill --> MCP["MCP<br/>(外部接続の手足)"]
+  Sub --> Out["成果物<br/>Slack / ファイル / ログ"]
+  MCP --> Out
+    </pre>
+    <div class="diagram-caption">入口(左)と手足(右)を分けて設計。新しいSkillを作る時は「入口は何か、手足は何を呼ぶか」の2軸で書き出すと迷わない。</div>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>シリーズ</th><th>役割(Skill中心の視点)</th><th>主な書き込み場所</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Skill Craft (本書)</td><td>中心・振る舞いのテンプレ</td><td><code>~/.claude/skills/{name}/SKILL.md</code></td></tr>
+      <tr><td>Subagents</td><td>Skillの手足・並列処理</td><td>SKILL.md本文の「並列起動」指示</td></tr>
+      <tr><td>MCP</td><td>Skillの手足・外部接続(Slack/DB等)</td><td>MCPサーバ設定 + SKILL.mdで呼ぶ</td></tr>
+      <tr><td>Hooks</td><td>Skillの入口・イベント駆動発火</td><td><code>~/.claude/settings.json</code></td></tr>
+      <tr><td>Schedule &amp; Loop</td><td>Skillの入口・時刻/間隔駆動発火</td><td><code>/schedule</code> / <code>/loop</code> コマンド</td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-box">
+    <span class="label">設計のコツ</span>
+    <p>「新しい業務を自動化したい」と思ったら、<strong>まずSkill(中心)を書き、次に入口(Hook/Schedule/Loop)を1つ選び、最後に手足(Subagent/MCP)を足す</strong> という順番で考えてください。いきなりHookから書くとロジックが分散して保守不能になります。</p>
+  </div>
+
+  <!-- ===== Section 6: ハンズオン ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> ハンズオン：毎朝Slackサマリを送るSkill</h2>
+
+  <p>ここまでの全要素を束ねた統合ハンズオン。<strong>「毎朝9時に、GitHubとカレンダーとメールから今日のToDoをまとめ、Slackに投稿するSkill」</strong> を作ります。Skill本体に並列Subagent呼び出しを書き、<code>/loop</code>(または <code>/schedule</code>)で定期起動します。</p>
+
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-label">Skill作成</div><div class="step-desc">SKILL.md本体</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-label">並列化</div><div class="step-desc">3観点をSubagent</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-label">Slack接続</div><div class="step-desc">MCPで送信</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-label">定期実行</div><div class="step-desc">/loop or /schedule</div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-label">運用</div><div class="step-desc">1週間回す</div></div>
+  </div>
+
+  <h3>1. Skillのファイル</h3>
+
+  <p>まず <code>~/.claude/skills/morning-summary/SKILL.md</code> を作成。中身は次の通り:</p>
+
+  <pre><code>---
+name: morning-summary
+description: 毎朝のToDoサマリをGitHub/カレンダー/メールから集約し、Slackの #daily チャンネルに投稿したい時に使う。「朝のまとめ」「デイリーサマリ」「今日のToDo」で発火。
+---
+
+# morning-summary スキル
+
+## 手順
+
+1. **並列収集フェーズ** — 次の3タスクを 1メッセージ内で Agent tool により並列起動する:
+   - A: GitHubの今日締切Issue・自分にアサインされたPR一覧(subagent_type=general-purpose)
+   - B: Googleカレンダーの今日の予定一覧(MCP google-calendar 経由)
+   - C: 未読の重要メールの件名+差出人Top 5(MCP gmail 経由)
+   各子は **Markdown箇条書きで15行以内** にまとめて返すこと。
+
+2. **統合フェーズ** — 3つの要約を以下のテンプレートに流し込む:
+   ```
+   【おはようございます、{{DATE}} のまとめ】
+
+   ◆ 今日のGitHub
+   {{A_SUMMARY}}
+
+   ◆ 今日の予定
+   {{B_SUMMARY}}
+
+   ◆ 注目メール Top 5
+   {{C_SUMMARY}}
+
+   今日も1日よろしくお願いします。
+   ```
+
+3. **Slack投稿** — MCP slack を使い、#daily チャンネルに上記テキストを投稿。
+   失敗した場合は、同じテキストを /tmp/morning_summary_{{DATE}}.md に保存して終了。
+
+## 発火条件
+
+- `/morning-summary` が明示的に呼ばれた時
+- ユーザから「朝のまとめ」「デイリーサマリ」「今日のToDo」と言われた時
+- `/loop` や `/schedule` から自動呼び出しされた時</code></pre>
+
+  <h3>2. 並列化の確認</h3>
+
+  <p>Skill本文の「並列起動する」の一文が重要。これがないとClaudeが順次実行してしまい、3倍遅くなります。<strong>「1メッセージ内で」</strong> という語を必ず入れてください。</p>
+
+  <h3>3. Slack接続(MCP)</h3>
+
+  <p>Slack投稿は <span class="term" data-tip="MCP: Model Context Protocol。Slack/DB/カレンダー等の外部サービスをClaudeのツールとして公開する。本シリーズの姉妹「MCP」章で扱う。">MCP</span> slack サーバを使います。既に設定済みの前提ですが、未設定なら姉妹シリーズ「MCP」のSlack導入章を先に済ませてください。SKILL.md内では <code>slack_post_message</code> を呼ぶと意識するだけで、Claudeが自動で MCP ツールを選択します。</p>
+
+  <h3>4. /loop から定期実行</h3>
+
+  <p>Claude Code のセッションで次のように打ちます:</p>
+
+  <pre><code>/loop 24h /morning-summary</code></pre>
+
+  <p>これで24時間ごとに <code>/morning-summary</code> が自動実行されます。セッションを閉じずに放置するか、サーバ版で回すのが実運用。「毎朝9時」の絶対時刻にこだわるなら <code>/schedule</code> を使います:</p>
+
+  <pre><code>/schedule "0 9 * * *" /morning-summary</code></pre>
+
+  <h3>5. 運用と改善</h3>
+
+  <p>1週間運用したら、次の観点でSkillを見直します。2週目でグッとクオリティが上がります。</p>
+
+  <div class="kv-grid">
+    <div class="kv"><div class="kv-key">発火頻度</div><div class="kv-val">毎朝ちゃんと飛んでいるか / /loopがセッション切れで止まっていないか</div></div>
+    <div class="kv"><div class="kv-key">要約の質</div><div class="kv-val">A/B/Cの各要約が15行以内に収まっているか / 冗長なら語数制限を厳しく</div></div>
+    <div class="kv"><div class="kv-key">Slack投稿成功率</div><div class="kv-val">失敗時のフォールバック(/tmpへの保存)が機能しているか</div></div>
+    <div class="kv"><div class="kv-key">コスト</div><div class="kv-val">Subagent3並列×毎日 = 月90回。トークン消費を月次で振り返る</div></div>
+  </div>
+
+  <div class="diagram-box">
+    <div class="diagram-title">1週間運用した時の改善ポイント分布(例)</div>
+    <canvas id="ch7-donut-1" height="200"></canvas>
+    <div class="diagram-caption">要約冗長化が最多の改善対象。Skill文面に「必ずN行以内」と厳しく書くと大半が解消する。</div>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section 7: 落とし穴 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 組み合わせ時の落とし穴4選</h2>
+
+  <p>3つを重ねる時ほど、単独では見えなかった罠が出ます。MKが実際にやらかしたやつも含め、代表的な4つを押さえてください。</p>
+
+  <table>
+    <thead>
+      <tr><th>落とし穴</th><th>症状</th><th>対策</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Hook暴走ループ</td><td>Skill内の git commit がまた Hook を発火 → 無限ループ</td><td>Hookで発火するSkillでは該当ツール使用を避ける / Hookに再入防止フラグ</td></tr>
+      <tr><td>並列数×定期 = コスト爆発</td><td>5並列 × 毎時 × 24h × 30日 = 3600回/月</td><td>並列上限を3にする + 頻度は日次か時間単位で</td></tr>
+      <tr><td>/loopセッション切れ</td><td>夜にPC閉じたら朝のsummaryが動いてなかった</td><td>絶対時刻なら /schedule(サーバ側) / ローカル運用ならPC常時起動</td></tr>
+      <tr><td>Skillとmemoryの混線</td><td>CLAUDE.mdに「毎朝まとめて」と書いて、Skillと競合</td><td>自動化はSkill+Hook/Schedule一本に統一。memoryは「知識」のみ</td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-box" style="background: rgba(217,119,87,0.08); border-left: 3px solid #D97757;">
+    <span class="label">MKの失敗談</span>
+    <p>一度、<code>PostToolUse(Bash)</code> Hookで git commit 後にレビューSkillを起動した際、レビューSkillが内部で <code>git log</code> を Bash で叩いたせいで再度Hookが発火して、15回ループしてからCtrl+Cで止めました。ループ防止の環境変数(<code>CLAUDE_HOOK_DEPTH</code> 等、2026/1時点の目安)をHook側で見てスキップする設計が必須です。</p>
+  </div>
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>既存Skillに並列Subagent指示を足す</h4>
+    <p>Ch06で作った <code>meeting-notes</code> Skillを開き、「Decisions/Actions/Questions の3観点を並列で抽出する」ようにSKILL.mdを1箇所だけ書き換えてください。</p>
+    <ol>
+      <li><code>~/.claude/skills/meeting-notes/SKILL.md</code> を開く</li>
+      <li>本文に「次の3タスクを<strong>1メッセージ内でAgent toolにより並列起動する</strong>」の一文を追記</li>
+      <li>3観点をそれぞれ Subagent の <code>prompt</code> として明示</li>
+      <li>動作確認: 実際に長めの会議ログを渡して、Claudeが並列起動するかを見る</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>SKILL.md本文の「手順」直下にこう追記します:</p>
+      <pre><code>## 手順
+
+1. 生の会議ログをユーザから受け取る(なければ要求)
+
+2. **並列抽出フェーズ** — 次の3タスクを 1メッセージ内で Agent tool により並列起動する:
+   - A: Decisions(意思決定)を箇条書きで抽出 subagent_type=general-purpose
+   - B: Actions(ToDo/担当者/期限)を箇条書きで抽出
+   - C: Questions(保留/要確認)を箇条書きで抽出
+   各子は 10行以内で Markdown 箇条書きを返すこと
+
+3. 統合: Decisions / Actions / Questions の3セクションを持つ議事録として整形
+4. ユーザに提示</code></pre>
+      <p><strong>観察ポイント</strong>: 並列化前は Claude が1つずつ抽出して10-15秒かかっていたのが、並列後は5秒前後で返ります。手応えとして3倍速くなるのが体感できます。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>自分の業務から「Skill + Hook + Schedule」の統合ワークフローを1つ設計</h4>
+    <p>本章の3つの組み合わせ例を参考に、自分の業務から <strong>Skill(中心)+ Hook or Schedule(入口)+ Subagent or MCP(手足)</strong> を全部使う統合ワークフローを1つ設計して、SKILL.md + settings.json の断片を書いてください。抽象で終わらせず、具体Skill名+具体イベントまで踏み込むこと。</p>
+    <ol>
+      <li>対象業務を1つ選ぶ(デイリー振り返り / PRレビュー / 週次棚卸し 等)</li>
+      <li>Skill名と frontmatter(name/description)を決める</li>
+      <li>入口を1つ決める(PostToolUse Hook / /schedule / /loop から選ぶ)</li>
+      <li>手足としてSubagent並列 or MCP外部接続を最低1つ使う</li>
+      <li>落とし穴(暴走ループ / コスト / セッション切れ)への対策を1行書く</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>例: MK自身の「週次チュートリアル棚卸し」ワークフロー</p>
+      <pre><code>【Skill】 weekly-tutorial-review
+---
+name: weekly-tutorial-review
+description: 自分が公開中の全チュートリアルを棚卸ししたい時に使う。各サイトの進捗・壊れリンク・視覚化不足箇所を並列調査して週次レポート化。「週次棚卸し」「チュートリアル健康診断」で発火。
+---
+
+## 手順
+1. ~/Desktop/claude/26tutorial/*/ 配下のディレクトリを一覧化
+2. 並列調査フェーズ — 各サイトごとにSubagentを並列起動(最大5並列):
+   - 壊れリンクの検出 / 視覚化要素カウント / 最終更新日
+   各子は 50語以内+結果ファイルパスで返却
+3. 統合: 比較表にまとめ /tmp/weekly_tutorial_{{DATE}}.md に保存
+4. MCP slack で #tutorial-ops チャンネルに投稿
+
+【入口】 /schedule(毎週月曜9時)
+  /schedule "0 9 * * 1" /weekly-tutorial-review
+
+【手足】 Subagent 5並列 + MCP slack
+
+【落とし穴対策】
+  - 並列数は最大5(サイトが増えたらバッチング)
+  - セッション切れ対策で /schedule を選択(/loopは不採用)
+  - 再入防止: この Skill 自体は Bash で git commit しない</code></pre>
+      <p><strong>ポイント</strong>: 入口は1つに絞る(Hookと /schedule を両方つけると二重発火)。手足は「並列で効くか」で判定する。コスト対策は数字で書く(並列数や頻度)。この粒度で書けると最終章Ch08の「3つSkill化」演習がスムーズになります。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式ドキュメント</a> — Skills / Hooks / Agent tool の一次情報(2026年1月時点)</li>
+      <li><span class="res-type doc">Doc</span> <a href="file:///Users/koma/.claude/skills/make-tutorial/SKILL.md" target="_blank" rel="noopener">~/.claude/skills/make-tutorial/SKILL.md</a> — 本チュートリアルを生成しているSkillの実装。Subagent呼び出し+templates統合の手本</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://motohirokoma.github.io/26tutorial/test260419/" target="_blank" rel="noopener">姉妹シリーズ: Subagents Mastery</a> — 並列設計の深掘り。特にCh04(並列 vs 直列判定)とCh05(プロンプト術)</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener">Claude Code GitHub</a> — Hookイベント名・settings.jsonスキーマの最新変更を追うなら Issues / Discussions</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://github.com/anthropics/anthropic-cookbook" target="_blank" rel="noopener">Anthropic Cookbook</a> — Agent × Tool × Workflow の組み合わせサンプル</li>
+      <li><span class="res-type video">Video</span> <a href="https://www.youtube.com/results?search_query=Claude+Code+skills+hooks" target="_blank" rel="noopener">YouTube: "Claude Code skills hooks"</a> — コミュニティの統合ワークフロー実演</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://zenn.dev/topics/claudecode" target="_blank" rel="noopener">Zenn: Claude Code タグ</a> — 日本語で skill / hook 事例。「Claude Code Skill 自作」で検索</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="07">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="06-meeting-notes-skill.html"><span class="direction">&larr; Prev</span>実践：議事録整形</a>
+    <a href="08-final-exercise.html"><span class="direction">Next &rarr;</span>最終演習</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+
+<!-- Chart.js: 1日タイムライン -->
+<script>
+window.addEventListener("load", function(){
+  var ctxBar = document.getElementById('ch7-bar-1');
+  if (ctxBar && window.Chart) {
+    new Chart(ctxBar, {
+      type: 'bar',
+      data: {
+        labels: ['9:00 morning-summary', '12:30 pr-review', '17:00 deploy-check', '22:00 session-log'],
+        datasets: [
+          {
+            label: 'Skill呼び出し(入口別)',
+            data: [1, 1, 1, 1],
+            backgroundColor: ['#D97757', '#fef3c7', 'rgba(217,119,87,0.35)', '#cbd5e1'],
+            borderColor: '#D97757',
+            borderWidth: 1,
+            borderRadius: 6
+          }
+        ]
+      },
+      options: {
+        indexAxis: 'y',
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: function(ctx) {
+                var entries = ['/schedule(絶対時刻)', 'PostToolUse Hook(PRマージ時)', '/loop(相対間隔)', 'Stop Hook(セッション終了)'];
+                return entries[ctx.dataIndex];
+              }
+            }
+          }
+        },
+        scales: {
+          x: { beginAtZero: true, display: false }
+        }
+      }
+    });
+  }
+
+  var ctxDonut = document.getElementById('ch7-donut-1');
+  if (ctxDonut && window.Chart) {
+    new Chart(ctxDonut, {
+      type: 'doughnut',
+      data: {
+        labels: ['要約が冗長', 'Slack送信失敗', '発火忘れ(loop切れ)', '並列化されていない', 'その他'],
+        datasets: [{
+          data: [40, 20, 18, 15, 7],
+          backgroundColor: ['#D97757', '#fef3c7', 'rgba(217,119,87,0.35)', '#60a5fa', '#cbd5e1']
+        }]
+      },
+      options: { plugins: { legend: { position: 'bottom' } } }
+    });
+  }
+});
+</script>
+</body>
+</html>

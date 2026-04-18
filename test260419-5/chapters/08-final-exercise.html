@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>最終演習：業務から3つSkill化 - MK's Claude Code Tutorial - Skill Craft</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code - Skill
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav class="active"><span class="phase-name">Practice</span><span class="phase-pct" id="pct-practice">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.08</span>
+    最終演習：業務から3つSkill化
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 8 sections</text>
+    </svg>
+    <div class="progress-info">0h / 4h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-skill-overview.html"><span class="status-dot" data-chapter="01"></span> Skillとは</a></li>
+    <li><a href="02-skill-structure.html"><span class="status-dot" data-chapter="02"></span> Skillの最小構成</a></li>
+    <li><a href="03-design-principles.html"><span class="status-dot" data-chapter="03"></span> 設計原則</a></li>
+    <li><a href="04-templates.html"><span class="status-dot" data-chapter="04"></span> templatesの使い方</a></li>
+  </ul>
+  <div class="section-label">Practice</div>
+  <ul>
+    <li><a href="05-email-draft-skill.html"><span class="status-dot" data-chapter="05"></span> 実践：メール下書き</a></li>
+    <li><a href="06-meeting-notes-skill.html"><span class="status-dot" data-chapter="06"></span> 実践：議事録整形</a></li>
+    <li><a href="07-combine-sub-hook.html"><span class="status-dot" data-chapter="07"></span> 組み合わせ</a></li>
+    <li><a href="08-final-exercise.html" class="active"><span class="status-dot" data-chapter="08"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 2: Practice &gt; Chapter 08</div>
+  <h1>最終演習：業務から3つSkill化</h1>
+  <p class="subtitle">繰り返し作業3つをSkillとして公開し、2週間運用して改善サイクルを回す</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 25分</span>
+    <span class="badge">Phase: Practice</span>
+    <span class="badge">難易度: 応用</span>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- Section 1: 7章の学びを「自分の業務」に落とす -->
+  <!-- ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 7章分の知識を「自分の業務」に焼き付ける</h2>
+
+  <p>ここまでの7章で、Skillの定義・最小構成・設計原則・<span class="term" data-tip="再利用可能な部品を配置するディレクトリ。SKILL.mdから参照される雛形や設定断片を置く。Ch04参照。">templates</span>・メール下書き・議事録整形・Subagents/Hooksとの組み合わせまで扱いました。ただし知識は使わなければ腐ります。この最終章で<strong>自分の業務からSkillを3つ起こし、2週間運用し、改善点を記録する</strong>ところまでやりきります。</p>
+
+  <p>目標は<strong>「2週間以内に3つのSkillが実発火し、使用ログと改善ノートが残っている」</strong>状態です。<span class="term" data-tip="2026年1月時点の記述。フィールド名・挙動は変わる可能性があるため、運用時は必ず公式Docで最新確認。">2026年1月時点</span>の Claude Code / Skills 仕様を前提にします。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span></p>
+
+  <div class="info-box">
+    <span class="label">Tips</span>
+    <p>完璧な3つを選ぶ必要はありません。<strong>まずノートに5分で10個書き出し</strong>、その中から「頻度が高い×型が決まっている×自分が毎回少し疲れる」の3軸で上位3つを選ぶ。先にSkill化してから磨くのがコツです。本チュートリアル自身も <code>make-tutorial</code> という Skill の実装例で、原則違反なく作られています(良い手本)。</p>
+  </div>
+
+  <!-- 7章の知識が演習のどこに効くか SVG -->
+  <div class="diagram-box">
+    <div class="diagram-title">7章分の知識が「3つSkill化」のどこに効くか</div>
+    <svg viewBox="0 0 720 340" width="100%" style="max-width:720px; display:block; margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0" y="0" width="720" height="340" rx="12" fill="#fafafa" stroke="#e4e4e7"/>
+      <text x="360" y="28" text-anchor="middle" font-size="13" font-weight="700" fill="#18181b">7章分の知識が1つの運用セットに収束する</text>
+
+      <!-- 基礎 -->
+      <rect x="30" y="55" width="200" height="115" rx="8" fill="rgba(217,119,87,0.15)" stroke="#D97757"/>
+      <text x="130" y="78" text-anchor="middle" font-size="12" font-weight="700" fill="#D97757">CONCEPT(概念)</text>
+      <text x="130" y="98" text-anchor="middle" font-size="10" fill="#52525b">Ch01 Skillとは/発火の仕組み</text>
+      <text x="130" y="114" text-anchor="middle" font-size="10" fill="#52525b">Ch02 最小構成/frontmatter</text>
+      <text x="130" y="130" text-anchor="middle" font-size="10" fill="#52525b">Ch03 設計原則(単一責任ほか)</text>
+      <text x="130" y="146" text-anchor="middle" font-size="10" fill="#52525b">Ch04 templatesの使い方</text>
+      <text x="130" y="162" text-anchor="middle" font-size="10" fill="#52525b">→ 候補抽出・分解で使う</text>
+
+      <!-- 設計 -->
+      <rect x="260" y="55" width="200" height="115" rx="8" fill="rgba(217,119,87,0.15)" stroke="#D97757"/>
+      <text x="360" y="78" text-anchor="middle" font-size="12" font-weight="700" fill="#D97757">DESIGN(設計)</text>
+      <text x="360" y="98" text-anchor="middle" font-size="10" fill="#52525b">Ch03 トリガー明示/テンプレ分離</text>
+      <text x="360" y="114" text-anchor="middle" font-size="10" fill="#52525b">Ch04 {{VAR}}プレースホルダ</text>
+      <text x="360" y="130" text-anchor="middle" font-size="10" fill="#52525b">frontmatter設計</text>
+      <text x="360" y="146" text-anchor="middle" font-size="10" fill="#52525b">段階的ユーザ対話</text>
+      <text x="360" y="162" text-anchor="middle" font-size="10" fill="#52525b">→ SKILL.md記述で使う</text>
+
+      <!-- 実践 -->
+      <rect x="490" y="55" width="200" height="115" rx="8" fill="rgba(217,119,87,0.15)" stroke="#D97757"/>
+      <text x="590" y="78" text-anchor="middle" font-size="12" font-weight="700" fill="#D97757">EXECUTE(運用)</text>
+      <text x="590" y="98" text-anchor="middle" font-size="10" fill="#52525b">Ch05 メール下書き</text>
+      <text x="590" y="114" text-anchor="middle" font-size="10" fill="#52525b">Ch06 議事録整形</text>
+      <text x="590" y="130" text-anchor="middle" font-size="10" fill="#52525b">Ch07 Subagents/Hooks統合</text>
+      <text x="590" y="146" text-anchor="middle" font-size="10" fill="#52525b">実発火ログ・改善</text>
+      <text x="590" y="162" text-anchor="middle" font-size="10" fill="#52525b">→ 2週間運用/測定で使う</text>
+
+      <!-- 矢印 -->
+      <line x1="130" y1="175" x2="360" y2="235" stroke="#D97757" stroke-width="1.5"/>
+      <line x1="360" y1="175" x2="360" y2="235" stroke="#D97757" stroke-width="1.5"/>
+      <line x1="590" y1="175" x2="360" y2="235" stroke="#D97757" stroke-width="1.5"/>
+
+      <!-- 成果物 -->
+      <rect x="180" y="235" width="360" height="85" rx="8" fill="#ffffff" stroke="#18181b" stroke-width="1.5"/>
+      <text x="360" y="258" text-anchor="middle" font-size="13" font-weight="700" fill="#18181b">あなたのSkillパック(3本)</text>
+      <text x="360" y="278" text-anchor="middle" font-size="10" fill="#52525b">SKILL.md × 3 / templates / 発火ログ</text>
+      <text x="360" y="294" text-anchor="middle" font-size="10" fill="#52525b">測定指標 / 2週間運用レポート / 次の3本の計画</text>
+      <text x="360" y="310" text-anchor="middle" font-size="10" fill="#52525b">本章の記述は2026年1月時点の情報に基づく</text>
+    </svg>
+    <div class="diagram-caption">CONCEPT × DESIGN × EXECUTE の3軸が、あなた専用のSkillパックに束ねられる。</div>
+  </div>
+
+  <h3>演習のステップ(1日設計 + 2週間運用)</h3>
+
+  <div class="steps">
+    <div class="step done"><div class="step-num">1</div><div class="step-label">候補抽出</div><div class="step-desc">10個から3つ絞る</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-label">単一責任分解</div><div class="step-desc">1 Skill = 1仕事</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-label">frontmatter設計</div><div class="step-desc">description重視</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-label">templates作成</div><div class="step-desc">再利用部品の抽出</div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-label">効果測定</div><div class="step-desc">発火率/満足度</div></div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- Section 2: 問題提示 -->
+  <!-- ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 問題: 業務から3つをSkill化→運用→改善</h2>
+
+  <p>以下の前提で、<strong>あなた専用のSkillパック</strong>を作ってください。納品物は <code>~/.claude/skills/</code> 配下の3ディレクトリ + 運用レポート1枚です。</p>
+
+  <h3>前提条件</h3>
+
+  <table>
+    <thead>
+      <tr><th>項目</th><th>内容</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>対象者</td><td>Claude Code を1週間以上、日常業務で使っている人</td></tr>
+      <tr><td>期間</td><td>設計1日 + 運用2週間(実業務で検証)</td></tr>
+      <tr><td>本数</td><td><span class="term" data-tip="最初は多すぎないことが大事。3本が設計・測定・改善を同時に回せる上限。">3本</span>(欲張らない)</td></tr>
+      <tr><td>選定基準</td><td>週1回以上発生する定型業務 / 出力形式が固定できる / 手作業が認知的に痛い</td></tr>
+      <tr><td>配置</td><td><code>~/.claude/skills/{name}/SKILL.md</code>(ユーザスコープ)</td></tr>
+      <tr><td>frontmatter</td><td><span class="term" data-tip="SKILL.mdの冒頭YAML。`name`と`description`が必須。descriptionは発火判定の鍵で「いつ使うか」を具体的に書く。">name / description</span> 必須、description はいつ発火するか具体的に</td></tr>
+      <tr><td>templates</td><td>再利用する部品は <code>templates/</code> に分離(Ch04)</td></tr>
+      <tr><td>測定指標</td><td><span class="term" data-tip="期待通りの場面でSkillが自動的に呼び出された率。description設計の成否を直接反映する。">発火率</span> / 一発完了率 / 満足度(5段階) の3つ</td></tr>
+    </tbody>
+  </table>
+
+  <h3>求めるアウトプット (5点セット)</h3>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="clipboard-list" width="20" height="20"></i>
+      <div><strong>候補マトリクス</strong> — 繰り返し業務を10個書き出し、頻度×型固定度×認知負荷で評価</div>
+    </li>
+    <li>
+      <i data-lucide="package" width="20" height="20"></i>
+      <div><strong>3つのSkillディレクトリ</strong> — <code>SKILL.md</code> + <code>templates/</code> が最低限揃った状態</div>
+    </li>
+    <li>
+      <i data-lucide="file-text" width="20" height="20"></i>
+      <div><strong>frontmatter 3本</strong> — description にトリガーフレーズを具体的に(曖昧は発火しない)</div>
+    </li>
+    <li>
+      <i data-lucide="git-branch" width="20" height="20"></i>
+      <div><strong>発火フロー図</strong> — ユーザ発話 → 発火判定 → Skill実行 → 出力 を Mermaid 1枚で</div>
+    </li>
+    <li>
+      <i data-lucide="activity" width="20" height="20"></i>
+      <div><strong>2週間運用レポート</strong> — 発火率/一発完了率/満足度の3指標を数値で記録</div>
+    </li>
+  </ul>
+
+  <!-- タイムライン: 設計→実行→測定 -->
+  <h3>2週間のタイムライン</h3>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-date">D-0</div>
+      <div class="tl-title">棚卸し・候補抽出</div>
+      <div class="tl-body">10分で業務を10個リストアップ。頻度×型固定度×認知負荷で評価、3本に絞る。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">D-1</div>
+      <div class="tl-title">SKILL.md と templates 作成</div>
+      <div class="tl-body">3本分の frontmatter + 本文 + templates を書く。ドライランで手動発火して動作確認。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">D-2 〜 D-14</div>
+      <div class="tl-title">実運用・記録</div>
+      <div class="tl-body">業務中に使う。発火したか / 一発で完了したか / 満足度5段階 を1行/回で記録。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">D-15</div>
+      <div class="tl-title">測定・改善</div>
+      <div class="tl-body">発火率50%未満 → description 書き換え。満足度3以下多発 → templates 磨き直し。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">D-16 〜</div>
+      <div class="tl-title">チーム共有・次の3本</div>
+      <div class="tl-body">応用: <code>skills-pack-v1</code>としてGitに置いてチームと共有、次の3本を計画。</div>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <span class="label">Note</span>
+    <p>「3本全部うまく回す」必要はありません。<strong>2本残れば成功、1本は捨ててよい</strong>です。むしろ「捨てる1本」を見極めるのが改善の第一歩。Skillに向かない業務(判断がその都度変わる、対話的、再現性が最重要)は手作業 or Slash Command に戻すのが正解です。</p>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- Section 3: 段階ヒント (5つ) -->
+  <!-- ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 段階ヒント (詰まったら開く)</h2>
+
+  <p>一度に全部開くと「答え写し」になります。まず自分で書いてみて、詰まったヒントだけ開いてください。5つのヒントは <strong>候補抽出 → 単一責任分解 → frontmatter設計 → テンプレ作成 → 効果測定</strong> の順に対応しています。</p>
+
+  <details class="more-box">
+    <summary>もっと詳しく: ヒント1 — 候補の見つけ方 (Ch01 / Ch03)</summary>
+    <div class="more-body">
+      <p>Skill化に<strong>向く業務</strong>の5シグナル:</p>
+      <ul>
+        <li><strong>週1回以上</strong> — 単発なら手作業のほうが速い</li>
+        <li><strong>出力形式が固定できる</strong> — メール / 議事録 / レポート / コミットメッセージ など</li>
+        <li><strong>入力が渡せる</strong> — ファイルパス / URL / テキスト で表現可</li>
+        <li><strong>認知負荷が高い</strong> — 書き出しで毎回止まる、型を思い出すのがダルい</li>
+        <li><strong>品質にブレがある</strong> — 自分でも毎回出来が違う</li>
+      </ul>
+      <p>逆に<strong>向かない業務</strong>: ①判断が対話でコロコロ変わる / ②外部システムと深く絡む(APIキーや認証が都度変わる) / ③厳密な再現性が必須 / ④1ステップで終わる軽タスク(Slashで十分)。</p>
+      <div class="info-box">
+        <span class="label">Tips</span>
+        <p>候補が6個で止まる人は、<strong>1日のタイムライン</strong>(9時→10時→...)を紙に書き、各時間帯の作業を埋めてみる。「朝のPRレビュー」「昼会の議事録」「夕方の日報」「コミットメッセージ書き」など、無意識の定型業務が必ず出てきます。</p>
+      </div>
+    </div>
+  </details>
+
+  <details class="more-box">
+    <summary>もっと詳しく: ヒント2 — 単一責任で分解 (Ch03)</summary>
+    <div class="more-body">
+      <p>Ch03の大原則、<strong>1 Skill = 1仕事</strong>。候補業務が複合的なら先に分解します。例:</p>
+      <table>
+        <thead><tr><th>複合業務(悪)</th><th>分解後(良)</th><th>理由</th></tr></thead>
+        <tbody>
+          <tr><td>「PRレビューして マージする」</td><td>pr-review-prep / pr-merge-msg</td><td>レビューとマージ宣言は別責務。発火条件も違う</td></tr>
+          <tr><td>「議事録作って Slackに流す」</td><td>meeting-notes-format / slack-announce</td><td>整形と配信は別。Slack側は Hook で繋げる</td></tr>
+          <tr><td>「調査して スライドにする」</td><td>research-brief / slide-outline</td><td>調査結果 → スライド骨子の橋渡しは手動で判断したい</td></tr>
+        </tbody>
+      </table>
+      <p>判定基準: <strong>「この業務を分解すると、片方だけ単独で使いたい日があるか?」</strong>。答えがYesなら分割、Noなら1本で良い。</p>
+    </div>
+  </details>
+
+  <details class="more-box">
+    <summary>もっと詳しく: ヒント3 — frontmatter設計(発火率の鍵)</summary>
+    <div class="more-body">
+      <p>Ch02でやった通り、<code>description</code> が Skill発火の判定源です。<strong>曖昧な description は発火しません</strong>。</p>
+      <pre><code>---
+name: pr-review-prep
+description: |
+  PRレビューを始める前に、変更ファイル一覧・テスト差分・
+  リスクポイントを1枚のブリーフにまとめる。
+  「PRレビューする」「PR#123見て」「レビューの前に整理して」
+  等で発火。単なるdiff表示ではなく、レビュー観点(設計/テスト/命名)
+  別に論点を整理するのが特徴。
+---</code></pre>
+      <p>description に入れるべき<strong>4要素</strong>:</p>
+      <ol>
+        <li><strong>何をするSkillか</strong>(1-2行で本質)</li>
+        <li><strong>トリガーフレーズ3-5個</strong>(ユーザが言いそうな表現を具体的に)</li>
+        <li><strong>似た別Skillとの差別化</strong>(重複すると両方とも発火が不安定に)</li>
+        <li><strong>入力の形</strong>(URL / パス / テキストブロック 等)</li>
+      </ol>
+      <div class="info-box">
+        <span class="label">Warning</span>
+        <p>「PRを助ける」など<strong>動詞が弱いdescription は発火しない</strong>。「PRレビューの前処理」「レビュー観点別に整理」のように、<strong>具体的動作を動詞で書く</strong>のが発火率を上げるコツ。make-tutorial の SKILL.md は描写の濃い description のお手本です。</p>
+      </div>
+    </div>
+  </details>
+
+  <details class="more-box">
+    <summary>もっと詳しく: ヒント4 — templates作成(Ch04)</summary>
+    <div class="more-body">
+      <p><code>templates/</code> は再利用可能な部品を置くディレクトリ。プレースホルダは <code>{{VAR}}</code> 形式で統一。</p>
+      <pre><code>~/.claude/skills/pr-review-prep/
+├── SKILL.md
+└── templates/
+    ├── brief.md          # レビューブリーフの雛形
+    ├── risk-checklist.md # 観点チェックリスト
+    └── completion.md     # 完了報告フォーマット</code></pre>
+      <p>templates の<strong>正しい切り出し方</strong>:</p>
+      <ul>
+        <li><strong>繰り返し現れる文字列</strong>(定型ヘッダ・フッタ・署名)は最初に分離</li>
+        <li><strong>可変部分は {{VAR}} に統一</strong>(自由に名付けると後で壊れる)</li>
+        <li><strong>1ファイル1役割</strong> — brief.md に雑多に詰めるとメンテが壊れる</li>
+        <li><strong>SKILL.md 本体から参照</strong> — 「<code>templates/brief.md</code> を土台に...」と具体的に書く</li>
+      </ul>
+      <p><strong>落とし穴</strong>: templatesを更新しても配布済みSkillには自動反映されません。チーム共有するときは「templatesを更新したらバージョンタグを切る」運用を決めておくのが安全(応用課題で詳述)。</p>
+    </div>
+  </details>
+
+  <details class="more-box">
+    <summary>もっと詳しく: ヒント5 — 効果測定(発火率/品質)</summary>
+    <div class="more-body">
+      <p>最小の測定セットは<strong>3指標</strong>:</p>
+      <div class="kv-grid">
+        <div class="kv"><div class="kv-key">発火率</div><div class="kv-val">期待シーンで実際に発火した割合(%) = description 設計力</div></div>
+        <div class="kv"><div class="kv-key">一発完了率</div><div class="kv-val">追加修正なしで成果物が得られた割合(%) = 本文・templates 力</div></div>
+        <div class="kv"><div class="kv-key">満足度</div><div class="kv-val">5段階(1:ひどい〜5:最高)で自己評価</div></div>
+      </div>
+      <p>記録は<strong>1行/回</strong>で十分。「2026-04-20 pr-review-prep 発火◯ 一発◯ 満足度4 メモ: テスト差分の抜けあり」。スプレッドシート1枚で2週間運用し40行程度の生データが溜まれば、改善点は自然と見えます。</p>
+      <p>見るべき<strong>本質指標</strong>は「<strong>また使いたいと自然に思うか</strong>」。発火率50%未満 → description 再設計、満足度3以下多発 → templates 書き直し、どちらでもないのに使いたくならない → <strong>そもそもSkill化に向かなかった</strong>ので捨てる判断。</p>
+    </div>
+  </details>
+
+  <!-- ============================================================ -->
+  <!-- Section 4: 模範解答 -->
+  <!-- ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 模範解答: MK版「日次スタンドアップ / PRレビュー前処理 / 調査レポート」</h2>
+
+  <p>自分で書いてみましたか? ここから下は、MK本人が2026年1月時点で実運用している3本のSkill設計書です。まずは書き上げてから答え合わせにどうぞ。</p>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+
+      <h3>1. 候補マトリクス</h3>
+
+      <p>棚卸しで10候補が出て、頻度・型固定度・認知負荷の3軸で10段階評価。合計スコア上位3つを採用しました。</p>
+
+      <div class="diagram-box">
+        <div class="diagram-title">候補10業務の評価スコア(棚卸しマトリクス)</div>
+        <canvas id="ch8-bar-1" height="220"></canvas>
+        <div class="diagram-caption">上位3つ(日次スタンドアップ / PRレビュー前処理 / 調査レポート)を採用。</div>
+      </div>
+
+      <h3>2. 採用した3本のSkill</h3>
+
+      <div class="compare-cards">
+        <div class="cc good">
+          <span class="cc-label">#1</span>
+          <h4>daily-standup</h4>
+          <ul>
+            <li>目的: 毎朝のスタンドアップ報告を3分で</li>
+            <li>入力: 昨日の作業ログ / 今日の予定</li>
+            <li>出力: Yesterday/Today/Blockers 形式</li>
+            <li>頻度: 週5回</li>
+            <li>短縮: 15分 → 3分</li>
+          </ul>
+        </div>
+        <div class="cc good">
+          <span class="cc-label">#2</span>
+          <h4>pr-review-prep</h4>
+          <ul>
+            <li>目的: レビュー観点別に論点整理</li>
+            <li>入力: PR番号 or 差分URL</li>
+            <li>出力: 設計/テスト/命名別ブリーフ</li>
+            <li>頻度: 週5-8回</li>
+            <li>短縮: 30分 → 10分</li>
+          </ul>
+        </div>
+        <div class="cc good">
+          <span class="cc-label">#3</span>
+          <h4>research-brief</h4>
+          <ul>
+            <li>目的: URL群から判断材料1枚レポート</li>
+            <li>入力: URL 3-5本 + 判断軸</li>
+            <li>出力: 結論/根拠/反証/次アクション</li>
+            <li>頻度: 週2-3回</li>
+            <li>短縮: 90分 → 30分</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>3. SKILL.md 全文(3本)</h3>
+
+      <h4>#1 <code>~/.claude/skills/daily-standup/SKILL.md</code></h4>
+      <pre><code>---
+name: daily-standup
+description: |
+  日次スタンドアップの報告を Yesterday / Today / Blockers 形式で生成する。
+  「スタンドアップ」「朝会の報告」「昨日今日ブロッカー」「デイリー書いて」
+  等で発火。入力は昨日の作業ログ(gitコミット/PR/メモ)と今日の予定。
+  出力は Slack貼り付け向けの3ブロック構成。pr-review-prep のような
+  詳細レビューではなく、あくまで報告テンプレ整形に特化。
+---
+
+# daily-standup Skill
+
+あなたは毎朝のスタンドアップ報告を高速に整形するアシスタントです。
+`templates/standup.md` を土台に、入力情報を埋めて返してください。
+
+## 入力
+- 昨日のログ(git log / PR / 手書きメモ いずれか)
+- 今日の予定(箇条書き or カレンダー抜粋)
+- ブロッカー(任意、なければ `なし`)
+
+## 出力形式
+`templates/standup.md` の3ブロックを埋めた Markdown のみ。装飾・前置き禁止。
+
+## ユーザ対話
+- 入力が不足していたら<strong>1問だけ</strong>聞いてから進む(段階的ユーザ対話)
+- ブロッカーが空なら「なし」と書いて進む(聞き直さない)
+
+## 失敗時
+- 入力が全く不明 → 「昨日のgit logを貼ってください」と1行で依頼
+- 出力が3ブロックを満たさない → 自動で再生成</code></pre>
+
+      <h4>#1 templates/standup.md</h4>
+      <pre><code># Standup {{DATE}}
+
+## Yesterday
+{{YESTERDAY_BULLETS}}
+
+## Today
+{{TODAY_BULLETS}}
+
+## Blockers
+{{BLOCKERS_OR_NONE}}</code></pre>
+
+      <h4>#2 <code>~/.claude/skills/pr-review-prep/SKILL.md</code></h4>
+      <pre><code>---
+name: pr-review-prep
+description: |
+  PRレビューを開始する前に、変更ファイル一覧・テスト差分・
+  観点別リスクを1枚のブリーフにまとめる。
+  「PRレビューする」「PR#123見て」「レビュー前に整理」
+  等で発火。単なるdiff閲覧ではなく、設計/テスト/命名の3観点で
+  論点を整理するのが daily-standup との違い。
+---
+
+# pr-review-prep Skill
+
+あなたはPRレビューの<strong>前処理</strong>を行うアシスタントです。
+レビューそのものはしません。観点別に論点を整理するだけです。
+
+## 入力
+- PR番号 or 差分URL or ローカル branch 名
+
+## 出力形式
+`templates/brief.md` に沿って:
+1. 変更ファイル一覧(追加/変更/削除の件数つき)
+2. テスト差分(追加されたテスト/消えたテスト)
+3. 観点別リスク(設計 / テスト / 命名 の3見出し、各3点以内)
+
+## 制約
+- 観点はこの3つに限定。他観点(性能/セキュリティ等)が必要なら別Skillを呼ぶ
+- 判断(merge可否)は絶対に出さない — レビュアーの仕事
+
+## 完了報告
+- ブリーフのパス / 観点別リスクの件数 / 所要時間を1行で</code></pre>
+
+      <h4>#2 templates/brief.md</h4>
+      <pre><code># PR #{{PR_NUMBER}} Review Brief
+
+## Files
+- Added: {{ADDED_COUNT}} / Changed: {{CHANGED_COUNT}} / Removed: {{REMOVED_COUNT}}
+
+## Tests
+- Added: {{TESTS_ADDED}}
+- Removed: {{TESTS_REMOVED}}
+
+## Risks by Perspective
+
+### 設計
+{{DESIGN_RISKS}}
+
+### テスト
+{{TEST_RISKS}}
+
+### 命名
+{{NAMING_RISKS}}</code></pre>
+
+      <h4>#3 <code>~/.claude/skills/research-brief/SKILL.md</code></h4>
+      <pre><code>---
+name: research-brief
+description: |
+  3-5本のURLと判断軸を受け取り、導入判断用の1枚レポートを生成。
+  「調査まとめて」「リサーチ結果を1枚に」「導入判断のブリーフ」
+  等で発火。結論・根拠・反証・次アクションの4ブロック固定。
+  単なる要約ではなく<strong>判断軸に沿った再構成</strong>が本質。
+---
+
+# research-brief Skill
+
+あなたは調査結果を<strong>判断材料</strong>に再構成するアシスタントです。
+
+## 入力
+- URL 3-5本
+- 判断軸(例: 「自社に導入すべきか」「v1 と v2 どちらを選ぶか」)
+
+## 出力形式
+`templates/brief.md` の4ブロック:
+1. 結論(3行 + 自信度 H/M/L)
+2. 根拠(箇条書き、必ずURL付与)
+3. 反証(結論に反する情報、見つからなければ「なし(要追加調査)」)
+4. 次アクション(3つまで、期限つき)
+
+## 制約
+- 一次情報(公式Doc/一次ブログ)を優先、SNSまとめサイトは除外
+- 400語以内
+- 未確認事項は「要検証」明記
+
+## Subagents連携
+長い調査は Subagent 並列化を検討。そのときは pr-review-prep の
+観点分割パターンを真似る(Ch07 参照)。</code></pre>
+
+      <h3>4. 発火フロー図</h3>
+
+      <div class="diagram-box">
+        <div class="diagram-title">3本のSkillが発火する流れ</div>
+        <pre class="mermaid">
+graph TD
+  U["ユーザ発話"] --> Judge["Claudeが description を照合<br/>発火判定"]
+  Judge -->|"スタンドアップ系"| S1["daily-standup"]
+  Judge -->|"PR系"| S2["pr-review-prep"]
+  Judge -->|"調査系"| S3["research-brief"]
+  Judge -->|"該当なし"| Normal["通常応答"]
+  S1 --> T1["templates/standup.md<br/>+ 入力埋め込み"]
+  S2 --> T2["templates/brief.md<br/>+ 観点分割"]
+  S3 --> T3["templates/brief.md<br/>+ URL根拠整理"]
+  T1 --> Out["整形済み出力"]
+  T2 --> Out
+  T3 --> Out
+        </pre>
+        <div class="diagram-caption">description の差別化が曖昧だと Judge が揺れる。テンプレは各Skill独立。</div>
+      </div>
+
+      <h3>5. 2週間運用の測定結果</h3>
+
+      <div class="stats-grid">
+        <div class="stat">
+          <div class="stat-num">78<small>%</small></div>
+          <div class="stat-label">平均発火率(3本合算)</div>
+          <div class="stat-trend up">↑ 期待シーン47回中37回で自動発火</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">85<small>%</small></div>
+          <div class="stat-label">一発完了率</div>
+          <div class="stat-trend up">↑ 37回中31回が再生成なし</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">4.3<small>/5</small></div>
+          <div class="stat-label">平均満足度</div>
+          <div class="stat-trend up">↑ 4以上が78%</div>
+        </div>
+      </div>
+
+      <!-- 2週間の発火回数推移 -->
+      <div class="diagram-box">
+        <div class="diagram-title">2週間の日次発火回数(3Skill合算)</div>
+        <canvas id="ch8-line-1" height="180"></canvas>
+        <div class="diagram-caption">D1-D3は「呼び方を試す」フェーズで低め、D4以降に定着。週末D6/D7/D13/D14は使用自体が減る。</div>
+      </div>
+
+      <h3>考え方の解説</h3>
+
+      <p>この3本に絞った理由は <strong>3つの設計判断</strong>:</p>
+
+      <ol>
+        <li><strong>頻度の分散</strong> — 週5(スタンドアップ)/ 週5-8(PR)/ 週2-3(調査)と頻度をバラし、運用リズムが偏らない構成に。どれか不調でも他が回る。</li>
+        <li><strong>input→outputの形が違う3本</strong> — テキスト整形 / 構造化分析 / 判断材料化。<strong>description設計スキルが3方向に磨かれる</strong>(似た3本だと改善が偏る)。</li>
+        <li><strong>早い勝ち筋を1本入れる</strong> — daily-standup は最も導入コストが低く効果が即日見える。最初2週間のモチベ維持に効く。</li>
+      </ol>
+
+      <div class="info-box">
+        <span class="label">Insight</span>
+        <p>MKの2週間で最も効いたのは <strong>pr-review-prep</strong>でした。「30分→10分」の短縮より、<strong>観点が毎回抜けない</strong>(命名が抜けがちだった盲点が埋まる)。<span class="term" data-tip="単一責任原則。1つのSkillは1つの仕事に集中する。Ch03の最重要原則。">単一責任</span>を徹底して<strong>レビュー判断自体はしない</strong>と決めたのが成功要因。やりすぎると結局人の手が要る。</p>
+      </div>
+
+      <p>この3本を自分の業務で回せる人は、もう「Skillを使える人」から「<strong>Skillで自分の仕事を再設計できる人</strong>」に変わっています。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span></p>
+
+    </div>
+  </details>
+
+  <!-- ============================================================ -->
+  <!-- Section 5: 応用課題 -->
+  <!-- ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 応用課題: チーム共有Skillパック + バージョン管理</h2>
+
+  <p>個人で3本回せたら、次は<strong>チームに配布</strong>するフェーズ。<span class="term" data-tip="複数Skillを束ねたGitリポジトリ。チームで共有し、バージョンタグで更新を管理する配布単位。">Skillパック</span>として束ね、バージョン管理も回しましょう。</p>
+
+  <div class="exercise-box">
+    <div class="exercise-label">応用 1</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>3本を <code>skills-pack-v1</code> としてGit公開し、チーム2人に配布</h4>
+    <p>ディレクトリ構成と運用ルールを決めたうえで、配布→利用→フィードバック回収までを1週間で完了させてください。</p>
+    <ol>
+      <li>GitHub に <code>skills-pack-{your-name}</code> を作成、3本のSkillをサブディレクトリとして配置</li>
+      <li><code>README.md</code> に: 各Skillの1行説明、導入手順(<code>~/.claude/skills/</code>にclone/symlink)、想定発火トリガー例</li>
+      <li><code>CHANGELOG.md</code> と <code>v1.0.0</code> タグ — templates 更新時は minor / 破壊的変更は major を上げる</li>
+      <li>チーム2人に配布 → 1週間使ってもらい、発火率と満足度をヒアリング</li>
+      <li>フィードバックを <code>v1.1.0</code> として反映(description の追加トリガー / templates の微修正)</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>MK版 <code>skills-pack-mk-v1</code> のディレクトリ構成:</p>
+      <pre><code>skills-pack-mk/
+├── README.md                    # 全体説明 + 導入手順
+├── CHANGELOG.md                 # v1.0.0 / v1.1.0 の差分
+├── install.sh                   # ~/.claude/skills/ に symlink
+├── daily-standup/
+│   ├── SKILL.md
+│   └── templates/standup.md
+├── pr-review-prep/
+│   ├── SKILL.md
+│   └── templates/brief.md
+└── research-brief/
+    ├── SKILL.md
+    └── templates/brief.md</code></pre>
+
+      <p><strong>配布時の落とし穴と対処</strong>:</p>
+      <ul>
+        <li><strong>チーム員ごとに description のヒット傾向が違う</strong> — 人によって言い回しが違うので、v1.1 でトリガーフレーズを追加(英語表現も足すと範囲拡大)</li>
+        <li><strong>templates の個人カスタマイズ問題</strong> — <code>templates/*.local.md</code> を <code>.gitignore</code> に入れ、個人カスタムは local 版で上書き可にする設計</li>
+        <li><strong>更新の追従</strong> — symlink 運用なら <code>git pull</code> で即反映。各自で Skill を clone コピーしていると古いまま残るので要注意</li>
+      </ul>
+
+      <p><strong>CHANGELOG.md の書き方例</strong>:</p>
+      <pre><code># Changelog
+
+## [1.1.0] - 2026-04-28
+### Changed
+- daily-standup: description に「朝会まとめ」「daily書いて」を追加(発火率+12%)
+- pr-review-prep: templates/brief.md に「Test Coverage Delta」行を追加
+### Fixed
+- research-brief: URLが1本のときもエラーにならないよう入力最小値を1に
+
+## [1.0.0] - 2026-04-14
+### Added
+- 初版リリース: daily-standup / pr-review-prep / research-brief の3本</code></pre>
+
+      <div class="info-box">
+        <span class="label">Insight</span>
+        <p>チーム配布で一番効くのは<strong>「description のチームレビュー」</strong>。自分では自然に書いたつもりが、他人の発話パターンでは発火しないケースが多発します。2人に1週間使ってもらうだけで、description を書く精度が一段階上がる。make-tutorial Skill 自身もこうした実運用フィードバックで磨かれてきました(手本として参照価値あり)。</p>
+      </div>
+    </div>
+  </details>
+
+  <!-- ============================================================ -->
+  <!-- Section 6: 総まとめ -->
+  <!-- ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 修了のことば</h2>
+
+  <p>おつかれさまでした。8章・4時間の旅、そして最終演習をやり切ったあなたは、もう「Skillを知っている」側ではなく「<strong>Skillで自分の業務を再設計できる</strong>」側の人間です。概念(Ch01-02)・設計原則(Ch03-04)・実践(Ch05-07)を束ね、最後に自分の仕事に刻み込むところまで到達しました。</p>
+
+  <div class="quote">
+    Skillは<strong>道具ではなく、自分の働き方の輪郭</strong>である。
+    どのSkillを書いたか・書かなかったかが、そのまま自分の仕事の定義になる。
+    <cite>— 本チュートリアルの総括</cite>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-num">8<small>章</small></div>
+      <div class="stat-label">学んだトピック</div>
+      <div class="stat-trend up">完了</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">3<small>→6</small></div>
+      <div class="stat-label">自分のSkill本数</div>
+      <div class="stat-trend up">2周目へ</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">2<small>週間</small></div>
+      <div class="stat-label">運用ログ</div>
+      <div class="stat-trend up">データ駆動で改善</div>
+    </div>
+  </div>
+
+  <p>このSkillパックは<strong>作って終わりではなく</strong>2週間運用してからが本番です。1周目で気づいた「description の抜け・templates のズレ・発火の揺れ」を記録し、次の3本に持ち越す。3周やれば、自分専用のSkillパックが完成します。</p>
+
+  <p>そして忘れないでほしいのは、<strong>本チュートリアル自身が <code>make-tutorial</code> という Skill で作られた</strong>ということ。単一責任・明示トリガー・templates分離・段階的対話——Ch03で学んだ原則が全部生きた実装例です。迷ったら <code>~/.claude/skills/make-tutorial/SKILL.md</code> を読み返してください。</p>
+
+  <p>あなたの仕事が、3本のSkillを起点にして、少しだけ速く、そして大きく静かになりますように。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span></p>
+
+  <div class="info-box">
+    <span class="label">Note</span>
+    <p>本章および本チュートリアル全体の記述は <strong>2026年1月時点</strong>の Claude Code / Skills 仕様に基づきます。frontmatter フィールド名・発火判定の挙動は変わる可能性があります。必ず <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">公式ドキュメント</a>で最新確認してから運用してください。</p>
+  </div>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式ドキュメント</a> — Skills / frontmatter / 発火判定の最新一次情報。運用前に必読。</li>
+      <li><span class="res-type doc">Doc</span> <a href="file:///Users/koma/.claude/skills/make-tutorial/SKILL.md" target="_blank" rel="noopener"><code>~/.claude/skills/make-tutorial/SKILL.md</code></a> — 本チュートリアル自身を生成したSkill。設計原則の実装手本として繰り返し参照。</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener">Claude Code GitHub</a> — CLI挙動・Issue・リリースノート。Skill仕様の変更はここで追える。</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://www.anthropic.com/news" target="_blank" rel="noopener">Anthropic Blog</a> — 設計思想・事例記事。Skill運用事例の一次ソース。</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://zenn.dev/topics/claudecode" target="_blank" rel="noopener">Zenn: Claude Code 関連記事</a> — 日本語で「Skill 自作してみた」事例が充実。他人の3本を眺めるとヒントが増える。</li>
+      <li><span class="res-type video">Video</span> <a href="https://www.youtube.com/results?search_query=Claude+Code+skills+%E4%BD%9C%E3%82%8A%E6%96%B9" target="_blank" rel="noopener">YouTube: Claude Code skills 作り方</a> — 日本語の実演動画。発火の様子が体感できる。</li>
+      <li><span class="res-type video">Video</span> <a href="https://www.youtube.com/results?search_query=Claude+Code+custom+skill" target="_blank" rel="noopener">YouTube: Claude Code custom skill</a> — 海外エンジニアの配布・運用動画。チーム共有パターンの参考。</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>全8章の最終演習、おつかれさまでした。下のボタンで完走を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="08">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="07-combine-sub-hook.html"><span class="direction">&larr; Prev</span>組み合わせ</a>
+    <span></span>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<!-- 視覚化ライブラリ群 -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+<script>
+  window.addEventListener("load", function(){
+    // 候補10業務の評価スコア(棚卸しマトリクス)
+    var ctx1 = document.getElementById('ch8-bar-1');
+    if (ctx1 && window.Chart) {
+      new Chart(ctx1, {
+        type: 'bar',
+        data: {
+          labels: [
+            '日次スタンドアップ', 'PRレビュー前処理', '調査レポート',
+            'コミットメッセージ', '議事録整形', 'メール下書き',
+            '週報まとめ', 'バグ報告テンプレ', 'SQL整形', '資料要約'
+          ],
+          datasets: [
+            { label: '頻度', data: [10,9,6,9,7,8,5,4,3,5], backgroundColor: '#D97757', borderRadius: 4 },
+            { label: '型固定度', data: [9,9,8,8,8,7,8,7,6,5], backgroundColor: 'rgba(217,119,87,0.45)', borderRadius: 4 },
+            { label: '認知負荷', data: [6,9,9,4,7,6,5,5,4,6], backgroundColor: '#cbd5e1', borderRadius: 4 }
+          ]
+        },
+        options: {
+          plugins: { legend: { position: 'bottom' } },
+          scales: {
+            x: { stacked: true },
+            y: { stacked: true, beginAtZero: true, max: 30, title: { display: true, text: 'スコア合計(3軸)' } }
+          }
+        }
+      });
+    }
+
+    // 2週間の日次発火回数(line)
+    var ctx2 = document.getElementById('ch8-line-1');
+    if (ctx2 && window.Chart) {
+      new Chart(ctx2, {
+        type: 'line',
+        data: {
+          labels: ['D1','D2','D3','D4','D5','D6','D7','D8','D9','D10','D11','D12','D13','D14'],
+          datasets: [
+            {
+              label: '実発火回数(3Skill合算・回/日)',
+              data: [1, 2, 2, 4, 5, 1, 0, 6, 5, 5, 6, 4, 1, 0],
+              borderColor: '#D97757',
+              backgroundColor: 'rgba(217,119,87,0.2)',
+              tension: 0.3,
+              fill: true,
+              pointRadius: 4,
+              pointBackgroundColor: '#D97757'
+            },
+            {
+              label: '目標(3回/日)',
+              data: [3,3,3,3,3,3,3,3,3,3,3,3,3,3],
+              borderColor: '#16a34a',
+              borderDash: [6, 4],
+              backgroundColor: 'transparent',
+              tension: 0,
+              pointRadius: 0,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          plugins: { legend: { position: 'bottom' } },
+          scales: {
+            y: { beginAtZero: true, title: { display: true, text: '発火回数(回/日)' } },
+            x: { title: { display: true, text: '運用日(2週間)' } }
+          }
+        }
+      });
+    }
+  });
+</script>
+</body>
+</html>
