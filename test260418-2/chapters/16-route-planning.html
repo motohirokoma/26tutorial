@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%234d7c0f%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>ルート計画・地図読み・登山計画書 - MK's Solo Camp Starter</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #4d7c0f; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#4d7c0f" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Solo Camp Starter
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="../index.html#phase3" data-nav class="active"><span class="phase-name">Advanced</span><span class="phase-pct" id="pct-advanced">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.16</span>
+    ルート計画・地図読み・登山計画書
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 18 sections</text>
+    </svg>
+    <div class="progress-info">0h / 8h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-welcome.html"><span class="status-dot" data-chapter="01"></span> ソロキャンプへようこそ</a></li>
+    <li><a href="02-big3-overview.html"><span class="status-dot" data-chapter="02"></span> 装備の全体像「ビッグ3」</a></li>
+    <li><a href="03-tent-selection.html"><span class="status-dot" data-chapter="03"></span> テントの選び方</a></li>
+    <li><a href="04-sleep-system.html"><span class="status-dot" data-chapter="04"></span> 寝袋・マットの選び方</a></li>
+    <li><a href="05-campsite-selection.html"><span class="status-dot" data-chapter="05"></span> キャンプ場の選び方</a></li>
+    <li><a href="06-shopping-list.html"><span class="status-dot" data-chapter="06"></span> 買い物リスト・予算</a></li>
+  </ul>
+  <div class="section-label">Core</div>
+  <ul>
+    <li><a href="07-setup-tent-tarp.html"><span class="status-dot" data-chapter="07"></span> 設営：テント&amp;タープ</a></li>
+    <li><a href="08-fire-basics.html"><span class="status-dot" data-chapter="08"></span> 焚き火入門</a></li>
+    <li><a href="09-solo-cooking.html"><span class="status-dot" data-chapter="09"></span> ソロキャンプ料理</a></li>
+    <li><a href="10-night-sleep-warmth.html"><span class="status-dot" data-chapter="10"></span> 夜の過ごし方・快眠</a></li>
+    <li><a href="11-bugs-wildlife-weather.html"><span class="status-dot" data-chapter="11"></span> 虫・動物・天気対策</a></li>
+    <li><a href="12-teardown-lnt.html"><span class="status-dot" data-chapter="12"></span> 撤収とLeave No Trace</a></li>
+    <li><a href="13-emergency-response.html"><span class="status-dot" data-chapter="13"></span> ピンチ対応</a></li>
+  </ul>
+  <div class="section-label">Advanced</div>
+  <ul>
+    <li><a href="14-trail-mindset.html"><span class="status-dot" data-chapter="14"></span> 車→トレイルのマインドセット</a></li>
+    <li><a href="15-ul-gear.html"><span class="status-dot" data-chapter="15"></span> UL装備と軽量化</a></li>
+    <li><a href="16-route-planning.html" class="active"><span class="status-dot" data-chapter="16"></span> ルート計画・地図読み</a></li>
+    <li><a href="17-water-food-hypothermia.html"><span class="status-dot" data-chapter="17"></span> 山の水・食・低体温</a></li>
+    <li><a href="18-final-exercise.html"><span class="status-dot" data-chapter="18"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 3: Advanced &gt; Chapter 16</div>
+  <h1>ルート計画・地図読み・登山計画書</h1>
+  <p class="subtitle">YAMAP/国土地理院/エスケープルート</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 30分</span>
+    <span class="badge">Phase: Advanced</span>
+    <span class="badge">難易度: 中級</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">この章のゴール</span>
+    <p>地図アプリと紙の地形図を組み合わせて、1泊2日のソロトレイルキャンプのルートを自分の足で引けるようになる。さらに<span class="term" data-tip="登山の行程・メンバー・緊急連絡先を記した書類。警察やCompass等へ提出する">登山計画書</span>を家族と警察に提出し、エスケープルートまで設計できれば、万が一の時にあなたの生存確率は大きく上がります。</p>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#4d7c0f" fill-rule="evenodd"/></svg></span>なぜ計画書が命を救うのか</h2>
+
+  <p>オートキャンプ場では計画書は不要です。なぜなら「キャンプ場の場所」と「受付の電話番号」が家族に伝われば、救助は容易だから。しかし山のトレイルキャンプでは違います。電波は届かない、目印はない、道は分岐する。<strong>あなたが今どこにいるかを誰も知らない状態</strong>で事故が起きると、捜索範囲は「山ひとつ」規模になり、発見は数日遅れます。</p>
+
+  <p>登山計画書の本当の役割は「計画通りに行動させる」ことではなく、<strong>「下山予定時刻を過ぎて連絡がなかった時、どこから捜索を始めればいいか」を第三者に伝えること</strong>。これが<span class="term" data-tip="予定時刻を過ぎても連絡がない遭難者を関係機関が捜索すること">遭難捜索</span>のスタート地点を30分前倒しするだけで、生存率が大きく変わります。</p>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-num">3129<small>件</small></div>
+      <div class="stat-label">年間の山岳遭難件数</div>
+      <div class="stat-trend down">警察庁統計 近年平均</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">40<small>%</small></div>
+      <div class="stat-label">道迷い遭難の割合</div>
+      <div class="stat-trend down">原因別1位</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">72<small>h</small></div>
+      <div class="stat-label">生存率が急落する目安</div>
+      <div class="stat-trend up">それ以前の発見が鍵</div>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <span class="label">Tips</span>
+    <p>「計画書なんて大袈裟」と思った瞬間が、あなたが山を舐め始めたサインです。提出は3分で終わり、誰も文句を言いません。<strong>提出しないと誰も探しに来ない</strong>、それだけの話です。</p>
+  </div>
+
+  <div class="quote">
+    計画書を書くという行為そのものが、<strong>曖昧な「行ってみたい」を「再現可能な行程」に変換</strong>する。書けないということは、計画ができていないということ。
+    <cite>— 遭難対策のベテラン救助隊員の言葉</cite>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#4d7c0f" fill-rule="evenodd"/></svg></span>地図アプリ三種の使い分け</h2>
+
+  <p>日本のソロトレイルキャンパーが使う<span class="term" data-tip="GPS位置情報と地形図を組み合わせた山専用の地図アプリ">登山地図アプリ</span>は大きく3つ。それぞれの強み弱みを知り、<strong>メインを決めてサブをバックアップに使う</strong>のが定番です。</p>
+
+  <table>
+    <thead>
+      <tr><th>アプリ</th><th>強み</th><th>弱み</th><th>向いてる人</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>YAMAP</strong></td><td>ユーザー数国内最大、活動日記が豊富、SNS機能、軌跡共有が家族にわかりやすい</td><td>無料だとダウンロード地図数に制限</td><td>初めて単独行に挑む人、SNS的に記録を残したい人</td></tr>
+      <tr><td><strong>ヤマレコ</strong></td><td>山行記録のデータベースが10年分超、マニアックな山も網羅</td><td>UIがやや古め</td><td>過去のレコードを読み込んで細かく計画する人</td></tr>
+      <tr><td><strong>ジオグラフィカ</strong></td><td>オフラインで地理院地図をまるごと保存可、電池持ちが良い</td><td>SNS機能なし、硬派</td><td>バッテリー重視、純粋な地図として使いたい人</td></tr>
+    </tbody>
+  </table>
+
+  <p>実際の運用は「<strong>YAMAPで計画とログ、ジオグラフィカを非常用に入れておく</strong>」が鉄板。片方がバグっても片方で帰れます。<span class="term" data-tip="GPS信号だけで位置を測定し、通信なしで動く機能">オフラインGPS</span>が両方で動くことを出発前に確認しましょう。</p>
+
+  <details class="more-box"><summary>もっと詳しく: YAMAP有料プラン（YAMAPプレミアム）は必要?</summary><div class="more-body">
+    <p>年間5,700円ほどでダウンロード地図数無制限・みまもり機能強化・軌跡の詳細解析などが付きます。月1回以上山に入る人は元が取れます。逆に年2-3回の人は無料で十分。<strong>みまもり機能</strong>は電波圏外でも通信機をすれ違った他ユーザーが中継して家族にGPSを届ける仕組みで、単独行では値千金。初トレイルキャンプでは無料→プレミアム1ヶ月お試しで試してから判断を。</p>
+  </div></details>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#4d7c0f" fill-rule="evenodd"/></svg></span>等高線を読む：尾根・谷・鞍部</h2>
+
+  <p>アプリだけに頼ると、<strong>電池切れ・GPS誤差・地図のバグ</strong>で帰れなくなります。紙の<span class="term" data-tip="国土地理院が発行する1/25000縮尺の地形図。等高線で地形を表現する">地形図</span>を読む力は、サブウェポンとして必須です。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">等高線が作る3つの地形</div>
+    <svg viewBox="0 0 500 280" width="100%" style="max-width:500px; display:block; margin:0 auto;">
+      <!-- 尾根 Ridge -->
+      <g>
+        <path d="M 40 40 Q 80 20 120 40 Q 140 60 120 90" fill="none" stroke="#4d7c0f" stroke-width="1.5"/>
+        <path d="M 30 70 Q 80 45 130 70 Q 155 90 135 115" fill="none" stroke="#4d7c0f" stroke-width="1.5"/>
+        <path d="M 20 105 Q 80 75 140 105 Q 170 125 145 150" fill="none" stroke="#4d7c0f" stroke-width="1.5"/>
+        <path d="M 10 150 Q 80 115 150 150 Q 185 170 160 200" fill="none" stroke="#4d7c0f" stroke-width="1.5"/>
+        <path d="M 80 30 L 80 220" stroke="#dc2626" stroke-width="2" stroke-dasharray="4 3"/>
+        <text x="80" y="245" text-anchor="middle" font-size="13" font-weight="700" fill="#dc2626">尾根</text>
+        <text x="80" y="262" text-anchor="middle" font-size="10" fill="#64748b">等高線が低い方へ凸</text>
+      </g>
+      <!-- 谷 Valley -->
+      <g transform="translate(170,0)">
+        <path d="M 40 90 Q 80 110 120 90 Q 140 70 120 40" fill="none" stroke="#4d7c0f" stroke-width="1.5"/>
+        <path d="M 30 115 Q 80 140 130 115 Q 155 90 135 65" fill="none" stroke="#4d7c0f" stroke-width="1.5"/>
+        <path d="M 20 150 Q 80 180 140 150 Q 170 120 145 95" fill="none" stroke="#4d7c0f" stroke-width="1.5"/>
+        <path d="M 10 195 Q 80 225 150 195 Q 185 160 160 130" fill="none" stroke="#4d7c0f" stroke-width="1.5"/>
+        <path d="M 80 30 L 80 230" stroke="#2563eb" stroke-width="2" stroke-dasharray="4 3"/>
+        <text x="80" y="245" text-anchor="middle" font-size="13" font-weight="700" fill="#2563eb">谷</text>
+        <text x="80" y="262" text-anchor="middle" font-size="10" fill="#64748b">等高線が高い方へ凸</text>
+      </g>
+      <!-- 鞍部 Saddle -->
+      <g transform="translate(340,0)">
+        <ellipse cx="50" cy="80" rx="30" ry="35" fill="none" stroke="#4d7c0f" stroke-width="1.5"/>
+        <ellipse cx="50" cy="80" rx="20" ry="22" fill="none" stroke="#4d7c0f" stroke-width="1.5"/>
+        <ellipse cx="110" cy="80" rx="30" ry="35" fill="none" stroke="#4d7c0f" stroke-width="1.5"/>
+        <ellipse cx="110" cy="80" rx="20" ry="22" fill="none" stroke="#4d7c0f" stroke-width="1.5"/>
+        <path d="M 30 140 Q 80 160 130 140" fill="none" stroke="#4d7c0f" stroke-width="1.5"/>
+        <path d="M 20 170 Q 80 195 140 170" fill="none" stroke="#4d7c0f" stroke-width="1.5"/>
+        <circle cx="80" cy="80" r="4" fill="#d97706"/>
+        <text x="80" y="245" text-anchor="middle" font-size="13" font-weight="700" fill="#d97706">鞍部</text>
+        <text x="80" y="262" text-anchor="middle" font-size="10" fill="#64748b">2つのピークの間のくびれ</text>
+      </g>
+    </svg>
+    <div class="diagram-caption">赤=尾根(水は外へ)、青=谷(水が集まる)、橙=鞍部(乗越地点)。この3つが地形の骨格。</div>
+  </div>
+
+  <p>等高線の基本ルールは<strong>「低い方にV字で突き出ていれば尾根、高い方にV字で突き出ていれば谷」</strong>。道迷いの多くは、尾根を下るべきところで谷に吸い込まれて発生します。<span class="term" data-tip="谷は最終的に沢になり、崖や滝で下れなくなる地形が多い">谷は下るほど危険</span>という大原則を体で覚えましょう。</p>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#4d7c0f" fill-rule="evenodd"/></svg></span>
+
+  <details class="more-box"><summary>もっと詳しく: 1/25000地形図の見方(等高線間隔・計曲線)</summary><div class="more-body">
+    <p><strong>主曲線</strong>(細い線)は10m間隔、<strong>計曲線</strong>(太い線、5本目ごと)は50m間隔。等高線が密=急斜面、疎=なだらか。<span class="term" data-tip="2つの等高線の水平距離(長さ)と高低差から計算できる">傾斜角</span>はおおよそ `斜面の角度 ≒ atan(高低差/水平距離)` で、地図上で5mm間隔の10m等高線なら、現地125mで10m上がる、つまり傾斜約4.6度のかなり緩斜面と読めます。</p>
+  </div></details>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#4d7c0f" fill-rule="evenodd"/></svg></span>コースタイムと自分の歩行速度</h2>
+
+  <p>地図に書かれた<span class="term" data-tip="標準的な体力の登山者が地点間を歩くのに要する時間。目安であり絶対値ではない">コースタイム</span>は「40-50代・中程度の体力」を基準にしています。初心者・大荷物・暑い日は<strong>1.2〜1.5倍</strong>の時間を見込んでください。逆に軽装・涼しい・慣れた人なら0.8倍で終わることも。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">自分のペース係数を3回の山行で測る</div>
+    <canvas id="ch16-bar-1" height="120"></canvas>
+  </div>
+  <script>
+  window.addEventListener("load", function(){
+    var ctx = document.getElementById('ch16-bar-1');
+    if(!ctx || !window.Chart) return;
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['初回(荷物12kg)','2回目(荷物10kg)','3回目(荷物8kg、慣れ)','熟練者'],
+        datasets: [{ label: 'ペース係数 (CT比)', data: [1.5, 1.2, 1.0, 0.8], backgroundColor: '#4d7c0f', borderRadius: 6 }]
+      },
+      options: {
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true, title: { display: true, text: 'CT (コースタイム)に対する倍率' } } }
+      }
+    });
+  });
+  </script>
+
+  <p>たとえばコースタイム6時間の行程に1.3倍をかけると7時間48分。これに休憩(1時間あたり10分×6-8=70分)と昼休憩30分を足して、<strong>実働9.5時間</strong>と見積もるのが現実的です。日没2時間前に下山する安全マージンも忘れずに。</p>
+
+  <div class="info-box">
+    <span class="label">計算式</span>
+    <p><strong>実行時間 = コースタイム × ペース係数 + (休憩10分/h) + 昼休憩30分 + 迷った時の予備1時間</strong></p>
+  </div>
+
+  <div class="kv-grid">
+    <div class="kv"><div class="kv-key">標高差100mあたり</div><div class="kv-val">+15-20分</div></div>
+    <div class="kv"><div class="kv-key">大荷物(15kg+)</div><div class="kv-val">×1.3倍</div></div>
+    <div class="kv"><div class="kv-key">雨天・泥</div><div class="kv-val">×1.2倍</div></div>
+    <div class="kv"><div class="kv-key">日没前マージン</div><div class="kv-val">2時間</div></div>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#4d7c0f" fill-rule="evenodd"/></svg></span>エスケープルート：途中撤退経路</h2>
+
+  <p><span class="term" data-tip="本来のルートから、近くの車道・集落・避難小屋へ短時間で下山できる代替ルート">エスケープルート</span>は「計画の保険」。天候急変・体調不良・ケガで「目的地まで行けない」と判断した時に、最短で文明に戻れる道を事前に引いておくのがプロの流儀です。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">本道とエスケープの関係</div>
+    <pre class="mermaid">
+graph LR
+  Start(["登山口"]) --> A["分岐点A"]
+  A --> B["中継点B<br/>(水場)"]
+  B --> C["山頂C"]
+  C --> D["野営地D"]
+  D --> E["下山口E"]
+  A -. 撤退1 .-> Start
+  B -. 撤退2 .-> Escape1["沢沿い避難路<br/>→車道"]
+  C -. 撤退3 .-> Escape2["別尾根<br/>→バス停"]
+  D -. 撤退4 .-> Escape3["林道<br/>→登山口"]
+  style Escape1 fill:#fef3c7,stroke:#d97706
+  style Escape2 fill:#fef3c7,stroke:#d97706
+  style Escape3 fill:#fef3c7,stroke:#d97706
+    </pre>
+    <div class="diagram-caption">主要チェックポイントごとに撤退経路を1本ずつ用意。「どこで引き返すか」の判断材料になる。</div>
+  </div>
+
+  <p>ポイントは<strong>「計画時にこそエスケープを決めておく」</strong>こと。疲れた現地で冷静にルート選定はできません。地形図とYAMAPで「<span class="term" data-tip="幹線道路や集落、バス停など、現代社会のインフラに戻れる地点">文明リターンポイント</span>」を3箇所ほどマークしておきましょう。</p>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#4d7c0f" fill-rule="evenodd"/></svg></span>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#4d7c0f" fill-rule="evenodd"/></svg></span>登山計画書の7項目</h2>
+
+  <p>計画書は<span class="term" data-tip="登山者の氏名・日程・行程・装備・緊急連絡先を記した書類。警察やCompass等で電子提出できる">登山計画書(登山届)</span>と呼ばれ、以下7項目が最低限。複雑に考える必要はなく、Compassの入力画面に沿えば自然に全部埋まります。</p>
+
+  <div class="steps">
+    <div class="step done"><div class="step-num">1</div><div class="step-label">氏名・住所</div><div class="step-desc">本人+緊急連絡先(家族)</div></div>
+    <div class="step done"><div class="step-num">2</div><div class="step-label">日程</div><div class="step-desc">入山日・下山予定日時</div></div>
+    <div class="step done"><div class="step-num">3</div><div class="step-label">山域・ルート</div><div class="step-desc">登山口→通過点→下山口</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-label">装備</div><div class="step-desc">テント/ツエルト/ストーブの有無</div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-label">食料・水</div><div class="step-desc">予備日数分</div></div>
+    <div class="step"><div class="step-num">6</div><div class="step-label">エスケープ</div><div class="step-desc">撤退時の経路</div></div>
+    <div class="step"><div class="step-num">7</div><div class="step-label">同行者</div><div class="step-desc">ソロなら「単独」と明記</div></div>
+  </div>
+
+  <p>ポイントは<strong>「家族が読めば捜索依頼できる」</strong>レベルの具体性。「高尾山」ではなく「高尾山口駅→稲荷山コース→高尾山頂→城山→相模湖駅」と書くのが正解です。</p>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#4d7c0f" fill-rule="evenodd"/></svg></span>提出フロー：Compass→家族→警察</h2>
+
+  <p>現代の提出は<strong>Compass(コンパス)</strong>がデファクト。日本山岳ガイド協会が運営する無料サービスで、入力すると警察・家族・救助機関に同時配信される仕組みです。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">登山計画書の提出・下山報告フロー</div>
+    <pre class="mermaid">
+graph TD
+  A["計画作成<br/>(YAMAP/ヤマレコ)"] --> B["Compassに<br/>ルート転送"]
+  B --> C["家族メール<br/>(緊急連絡先)"]
+  B --> D["警察に<br/>電子提出"]
+  C --> E["入山:ポスト投函<br/>(登山口)"]
+  D --> E
+  E --> F{"下山:Compassで<br/>下山ボタン"}
+  F -- OK --> G(["家族に通知・完了"])
+  F -- "時刻超過" --> H["警察→家族に照会"]
+  H --> I["救助要請"]
+  style G fill:#dcfce7,stroke:#16a34a
+  style I fill:#fee2e2,stroke:#dc2626
+    </pre>
+    <div class="diagram-caption">Compassで提出→現地ポスト投函→下山ボタン、の3ステップ。下山ボタンの押し忘れに注意。</div>
+  </div>
+
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">Before</span>
+      <h4>家族にLINEだけ</h4>
+      <ul>
+        <li>「高尾山行ってくる」のみ</li>
+        <li>ルート不明・下山予定時刻不明</li>
+        <li>連絡途絶えても家族は何もできない</li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">After</span>
+      <h4>Compass+家族共有</h4>
+      <ul>
+        <li>詳細ルート・時刻を電子で共有</li>
+        <li>警察と自動連携、ポスト投函もバックアップ</li>
+        <li>連絡がなければ自動で警察が動ける</li>
+      </ul>
+    </div>
+  </div>
+
+  <details class="more-box"><summary>もっと詳しく: 各都道府県警察の直接提出方法</summary><div class="more-body">
+    <p>Compassに加え、各都道府県警察も独自の電子提出システムを持っています。長野県警「山岳県ながの登山安全条例」では<span class="term" data-tip="長野県指定の山域に入る際は登山計画書の提出が法的に義務付けられている">提出義務</span>がある山域があり、違反すると罰金対象。北アルプス・南アルプス・八ヶ岳などの有名山域では<strong>Compassで長野県警にもチェック</strong>を入れて自動提出するのが楽。登山口ポストへの紙投函は<strong>電波圏外でのバックアップ</strong>として今も有効で、「電子+紙」の二重提出が推奨されます。</p>
+  </div></details>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#4d7c0f" fill-rule="evenodd"/></svg></span>家族共有の3点セット</h2>
+
+  <p>家族に渡すべきは<strong>「計画書のPDF」「GPSの共有リンク(YAMAPみまもり等)」「緊急時の行動指示書」</strong>の3点。最後の行動指示書は意外と大事で、「下山予定時刻+2時間で連絡つかなかったら警察110に電話してこう言ってほしい」という台本形式がベストです。</p>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="file-text" width="20" height="20"></i>
+      <div><strong>計画書PDF</strong> — CompassのPDF出力を家族LINEに送付。冷蔵庫に印刷して貼るのも有効</div>
+    </li>
+    <li>
+      <i data-lucide="map-pin" width="20" height="20"></i>
+      <div><strong>GPS共有リンク</strong> — YAMAPみまもりやiPhone「探す」で家族に位置を見せる</div>
+    </li>
+    <li>
+      <i data-lucide="phone-call" width="20" height="20"></i>
+      <div><strong>行動指示書</strong> — 「◯時までに戻らなければ警察110→「◯県◯山で単独登山の家族が下山時刻を超過」と伝える」とテンプレ化</div>
+    </li>
+    <li>
+      <i data-lucide="shield-alert" width="20" height="20"></i>
+      <div><strong>保険証コピー</strong> — 山岳保険に入っているなら証券番号も家族が把握</div>
+    </li>
+  </ul>
+
+  <div class="info-box">
+    <span class="label">警察への伝え方</span>
+    <p>家族が警察に連絡する時は「<strong>登山届を出している</strong>」と最初に言うのが重要。これだけで県警山岳救助隊へのエスカレーションが一気に速くなります。Compassで提出していれば警察側でも既に把握しているので、「Compassに出ている◯◯です」と名前を告げるだけで話が早い。</p>
+  </div>
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>近くの低山のルートをYAMAPで1本引く</h4>
+    <p>YAMAPを使って、自宅から日帰り可能な低山(標高1000m以下)を選び、計画モードでルートを1本引いてみましょう。</p>
+    <ol>
+      <li>YAMAPアプリ/Webで「近くの山」を検索</li>
+      <li>適当な1座を選び「ルートを作成」</li>
+      <li>登山口→山頂→下山口をタップで繋ぐ</li>
+      <li>コースタイム合計と距離を確認</li>
+      <li>自分のペース係数(初心者なら1.3倍)をかけて実走時間を算出</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><strong>例: 東京近郊の高尾山(599m) 稲荷山コース往復</strong></p>
+      <table>
+        <thead><tr><th>区間</th><th>CT</th><th>距離</th></tr></thead>
+        <tbody>
+          <tr><td>高尾山口駅 → 稲荷山</td><td>40分</td><td>1.3km</td></tr>
+          <tr><td>稲荷山 → 高尾山頂</td><td>60分</td><td>2.0km</td></tr>
+          <tr><td>山頂 → 薬王院</td><td>20分</td><td>0.8km</td></tr>
+          <tr><td>薬王院 → 高尾山口駅(1号路)</td><td>80分</td><td>3.8km</td></tr>
+        </tbody>
+      </table>
+      <p><strong>CT合計: 200分(3時間20分)</strong>。初心者ペース係数1.3倍 = 4時間20分。休憩40分+昼30分+予備60分を加えて<strong>実走6時間30分</strong>と見込む。日没17:30なら、余裕を見て9:00スタート・15:30下山が安全圏。</p>
+      <pre><code>実走時間 = CT × 1.3 + 休憩 + 昼 + 予備
+       = 200分 × 1.3 + 40 + 30 + 60
+       = 260 + 130
+       = 390分 (6時間30分)</code></pre>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>Compassで登山計画書を提出する練習</h4>
+    <p>Exercise 1で引いたルートをもとに、Compassで登山計画書を作成し、実際に提出(または下書き保存)してみましょう。</p>
+    <ol>
+      <li><code>mt-compass.com</code>でアカウント登録</li>
+      <li>「計画書を作成」→山域・日程・ルート入力</li>
+      <li>緊急連絡先(家族)のメールを登録</li>
+      <li>エスケープルートを1つ以上明記</li>
+      <li>PDF出力して家族LINEに送付(実提出前の練習でOK)</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><strong>Compass計画書(高尾山の例)</strong></p>
+      <pre><code>【山域】東京都 高尾山域
+【日程】2026-04-25 (日帰り)
+【メンバー】単独(氏名/年齢/連絡先)
+【緊急連絡先】家族 000-0000-0000
+
+【行程】
+  09:00 高尾山口駅 発
+  10:00 稲荷山 通過
+  11:00 高尾山頂 (昼食30分)
+  11:30 山頂 発
+  12:50 薬王院 通過
+  14:10 高尾山口駅 下山予定
+
+【エスケープルート】
+  1. 薬王院からケーブルカー清滝駅へ(15分)
+  2. 山頂から6号路で沢沿い下山(60分)
+
+【装備】日帰りザック、行動食、水1.5L、雨具、
+       ヘッドライト、モバイルバッテリー、
+       ホイッスル、ツエルト
+【下山連絡期限】15:00(これを過ぎたら家族は警察へ)</code></pre>
+      <p>Compassに入力後、PDFをダウンロードして家族LINEへ送付。出発前に「14:10下山予定、15:00過ぎたら警察110番・Compassから届を確認させるよう伝えて」と口頭でも念押し。これだけで家族が「<strong>的確な捜索依頼者</strong>」に変わります。本番で山に入る時は<strong>必ず「提出」ボタン</strong>まで押しましょう(下書き保存のままでは届いていない)。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><a href="https://yamap.com/" target="_blank" rel="noopener">YAMAP 公式</a> <span class="res-type doc">Doc</span> 国内最大の登山地図アプリ、活動記録も豊富</li>
+      <li><a href="https://www.yamareco.com/" target="_blank" rel="noopener">ヤマレコ 公式</a> <span class="res-type doc">Doc</span> 10年分の山行記録データベース、マニアック層に強い</li>
+      <li><a href="https://maps.gsi.go.jp/" target="_blank" rel="noopener">国土地理院 地理院地図</a> <span class="res-type doc">Doc</span> 公式地形図をブラウザで閲覧・印刷</li>
+      <li><a href="https://geographica.biz/" target="_blank" rel="noopener">ジオグラフィカ</a> <span class="res-type doc">Doc</span> オフライン地形図アプリ、電池持ち重視</li>
+      <li><a href="https://www.mt-compass.com/" target="_blank" rel="noopener">Compass 登山計画書</a> <span class="res-type doc">Doc</span> 無料の電子提出プラットフォーム、警察と自動連携</li>
+      <li><a href="https://www.npa.go.jp/publications/statistics/safetylife/chiikianzen.html" target="_blank" rel="noopener">警察庁 山岳遭難統計</a> <span class="res-type doc">Doc</span> 最新の遭難件数・原因データ</li>
+      <li><a href="https://www.pref.nagano.lg.jp/kenminbunka/kenko/shizen/tozan/index.html" target="_blank" rel="noopener">長野県 登山安全条例ポータル</a> <span class="res-type doc">Doc</span> 提出義務山域と電子届出の案内</li>
+      <li><a href="https://apps.apple.com/jp/app/yamap/id867691305" target="_blank" rel="noopener">YAMAP iOSアプリ</a> <span class="res-type doc">Doc</span> App Storeダウンロード(Androidも同URL構造)</li>
+      <li><a href="https://www.yamakei-online.com/" target="_blank" rel="noopener">YAMAKEI ONLINE</a> <span class="res-type doc">Doc</span> 山と溪谷社の山岳情報メディア、地図読み連載あり</li>
+      <li><a href="https://jac.or.jp/" target="_blank" rel="noopener">公益社団法人 日本山岳会</a> <span class="res-type doc">Doc</span> 登山文化・技術情報の発信元</li>
+      <li><a href="https://www.youtube.com/results?search_query=YAMAP+%E4%BD%BF%E3%81%84%E6%96%B9" target="_blank" rel="noopener">YouTube: YAMAP使い方まとめ</a> <span class="res-type video">Video</span> 初心者向け解説動画集</li>
+      <li><a href="https://www.youtube.com/results?search_query=%E5%9C%B0%E5%9B%B3%E8%AA%AD%E3%81%BF+%E7%99%BB%E5%B1%B1" target="_blank" rel="noopener">YouTube: 地図読み・等高線入門</a> <span class="res-type video">Video</span> 尾根・谷の読み分けを動画で学ぶ</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="16">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="15-ul-gear.html"><span class="direction">&larr; Prev</span>UL装備と軽量化設計</a>
+    <a href="17-water-food-hypothermia.html"><span class="direction">Next &rarr;</span>山の水・食・低体温対策</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(77,124,15,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#4d7c0f',
+      lineColor: '#4d7c0f',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<!-- 視覚化ライブラリ群 (使う章だけ動作、未使用章はゼロコスト) -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  // Lucideアイコンを自動描画
+  if (window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>
