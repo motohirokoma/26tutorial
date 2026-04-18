@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>Git 入門：あなたのコードを守る - MK's Claude Code Tutorial - Short Edition</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code Tutorial - Short Edition
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav class="active"><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="../index.html#phase3" data-nav><span class="phase-name">Advanced</span><span class="phase-pct" id="pct-advanced">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.05</span>
+    Git 入門：あなたのコードを守る
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 11 sections</text>
+    </svg>
+    <div class="progress-info">0h / 10h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-welcome.html"><span class="status-dot" data-chapter="01"></span> ようこそ</a></li>
+    <li><a href="02-setup.html"><span class="status-dot" data-chapter="02"></span> セットアップ</a></li>
+    <li><a href="03-how-to-ask.html"><span class="status-dot" data-chapter="03"></span> お願いする魔法</a></li>
+    <li><a href="04-file-play.html"><span class="status-dot" data-chapter="04"></span> ファイルと遊ぼう</a></li>
+  </ul>
+  <div class="section-label">Core</div>
+  <ul>
+    <li><a href="05-git-basics.html" class="active"><span class="status-dot" data-chapter="05"></span> Git入門</a></li>
+    <li><a href="06-plan-mode.html"><span class="status-dot" data-chapter="06"></span> Planモード</a></li>
+    <li><a href="07-debug-buddy.html"><span class="status-dot" data-chapter="07"></span> エラーと友達に</a></li>
+    <li><a href="08-web-tools.html"><span class="status-dot" data-chapter="08"></span> Webで調べる</a></li>
+  </ul>
+  <div class="section-label">Advanced</div>
+  <ul>
+    <li><a href="09-webapp-part1.html"><span class="status-dot" data-chapter="09"></span> Webアプリ前編</a></li>
+    <li><a href="10-webapp-part2.html"><span class="status-dot" data-chapter="10"></span> Webアプリ後編+公開</a></li>
+    <li><a href="11-celebration.html"><span class="status-dot" data-chapter="11"></span> おめでとう！</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 2: Core &gt; Chapter 05</div>
+  <h1>Git 入門：あなたのコードを守る</h1>
+  <p class="subtitle">Git は難しくない。ゲームの「セーブデータ管理」だと思えば、もう怖くない。</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 60分</span>
+    <span class="badge">Phase: Core</span>
+    <span class="badge">難易度: 初級</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">ようこそ、Core フェーズへ</span>
+    <p>この章から Claude Code を「相棒」として頼る練習に入ります。まず最初にマスターしたいのが、作業を守る魔法—— <strong>Git(ギット)</strong>。難しそうな響きですが、中身は<strong>RPGゲームのセーブデータ管理</strong>です。怖くない、むしろ「やり直せる安心感」が手に入ります。焦らずに。ここで詰まっても、何度でも読み直してOKです。今日は「セーブ→書き換え→ロード」の3動作をマスターしましょう。</p>
+  </div>
+
+  <div class="info-box" style="border-left: 3px solid #D97757;">
+    <span class="label">2026年1月時点の注記</span>
+    <p>本章は <strong>2026年1月時点</strong> の Git (バージョン 2.40 以降) の挙動に基づきます。Claude Code から git コマンドを呼び出す方法や、Git 自体のデフォルトブランチ名 (<code>main</code>) は現在の仕様前提です。大きく変わった場合は <a href="https://git-scm.com/doc" target="_blank" rel="noopener">Git 公式ドキュメント</a> を確認してください。</p>
+  </div>
+
+  <!-- ===== Section 1: Git=セーブデータ管理 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Git = 「作業のセーブデータ管理」と思っていい</h2>
+
+  <p>まず結論から。<span class="term" data-tip="Git: ファイルの変更履歴を時系列で記録し、いつでも過去の状態に戻せる仕組み。2026年1月時点で世界中のエンジニアが使う標準ツール。">Git</span> は <strong>作業のバックアップを時系列で残す道具</strong> です。ゲームのセーブデータを思い出してください。ボス戦の前にセーブしておけば、負けてもロードし直してやり直せる。Git も同じ。「ここまで動いたぞ」というポイントに <span class="term" data-tip="commit (コミット): 変更を履歴に記録する操作。ゲームでいう「セーブする」。">commit(コミット)</span> を打っておくと、あとで何を壊しても、そのポイントに戻れます。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Git はゲームのセーブポイントと同じ発想</div>
+    <svg viewBox="0 0 560 260" width="100%" style="max-width:560px; display:block; margin:0 auto;">
+      <!-- Timeline axis -->
+      <line x1="40" y1="140" x2="520" y2="140" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="4 4"/>
+      <!-- Save points -->
+      <circle cx="90" cy="140" r="22" fill="#D97757" opacity="0.2" stroke="#D97757" stroke-width="2"/>
+      <text x="90" y="145" text-anchor="middle" font-size="18">💾</text>
+      <text x="90" y="185" text-anchor="middle" font-size="11" font-weight="600">commit 1</text>
+      <text x="90" y="200" text-anchor="middle" font-size="10" fill="#64748b">最初の保存</text>
+
+      <circle cx="230" cy="140" r="22" fill="#D97757" opacity="0.2" stroke="#D97757" stroke-width="2"/>
+      <text x="230" y="145" text-anchor="middle" font-size="18">💾</text>
+      <text x="230" y="185" text-anchor="middle" font-size="11" font-weight="600">commit 2</text>
+      <text x="230" y="200" text-anchor="middle" font-size="10" fill="#64748b">機能を追加</text>
+
+      <circle cx="370" cy="140" r="22" fill="#D97757" opacity="0.2" stroke="#D97757" stroke-width="2"/>
+      <text x="370" y="145" text-anchor="middle" font-size="18">💾</text>
+      <text x="370" y="185" text-anchor="middle" font-size="11" font-weight="600">commit 3</text>
+      <text x="370" y="200" text-anchor="middle" font-size="10" fill="#64748b">デザイン変更</text>
+
+      <circle cx="500" cy="140" r="26" fill="#D97757" stroke="#D97757" stroke-width="2"/>
+      <text x="500" y="146" text-anchor="middle" font-size="20">⭐</text>
+      <text x="500" y="188" text-anchor="middle" font-size="11" font-weight="700" fill="#D97757">いま</text>
+
+      <!-- Rollback arrow -->
+      <path d="M 500 90 Q 370 40 230 90" fill="none" stroke="#16a34a" stroke-width="2" marker-end="url(#arr1)"/>
+      <defs>
+        <marker id="arr1" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+        </marker>
+      </defs>
+      <text x="365" y="30" text-anchor="middle" font-size="12" font-weight="700" fill="#16a34a">失敗したら過去に戻せる</text>
+
+      <text x="280" y="235" text-anchor="middle" font-size="10" fill="#94a3b8">→ 時間の流れ</text>
+    </svg>
+    <div class="diagram-caption">コミット1つ1つがセーブデータ。いつでも戻れる安心感が最大の魅力。</div>
+  </div>
+
+  <p>ポイントは <strong>「消えない」「順番がある」「戻れる」</strong> の3つ。Word の「元に戻す (Ctrl+Z)」と似ていますが、<strong>Word の「元に戻す」はアプリを閉じたら消えます</strong>。Git のセーブは<strong>永久保存</strong>で、1ヶ月前のコミットにも戻れます。これが「<span class="term" data-tip="バージョン管理: ファイルの変更履歴を管理する仕組みのこと。Git が代表的。">バージョン管理</span>」と呼ばれる理由です。</p>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+  <p style="display:inline-block; margin-left:10px; vertical-align:middle; color:#475569;">「Git って難しそう」と身構えなくて大丈夫。<strong>セーブ・ロード</strong>ができる、それだけ。今日はこの感覚を掴めれば120点です。</p>
+
+  <!-- ===== Section 2: なぜ Git が必要か ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> なぜ Git が必要? — Git なしの悲劇 vs Git ありの平和</h2>
+
+  <p>Git なしで作業したらどうなるか、表で見てみましょう。Ch04 でファイルを操作した時、「前の状態に戻したい…」と思った瞬間、ありませんでしたか?</p>
+
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">Before (Git なし)</span>
+      <h4>ファイル名で管理する地獄</h4>
+      <ul>
+        <li><code>report.docx</code></li>
+        <li><code>report_v2.docx</code></li>
+        <li><code>report_v2_修正.docx</code></li>
+        <li><code>report_最終.docx</code></li>
+        <li><code>report_最終_本当.docx</code></li>
+        <li>どれが最新?わからない!</li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">After (Git あり)</span>
+      <h4>1ファイルで時系列の全履歴</h4>
+      <ul>
+        <li><code>report.docx</code> (だけ)</li>
+        <li>履歴は Git が全部覚えてる</li>
+        <li>「昨日の状態に戻して」と1行</li>
+        <li>「3日前のあの文章だけ戻して」も可能</li>
+        <li>フォルダがすっきり</li>
+        <li>もう迷わない</li>
+      </ul>
+    </div>
+  </div>
+
+  <p>さらに嬉しいのは、Claude Code に「ここ変えて」と頼む時の<strong>心理的安全性</strong>です。Git でセーブしてあれば、Claude が何をしようと、一瞬で元に戻せます。これが <span class="term" data-tip="rollback (ロールバック): 過去の状態に戻す操作。ゲームでいう「ロード」。">ロールバック</span> の威力。恐る恐るお願いする必要がなくなります。</p>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="shield-check" width="20" height="20"></i>
+      <div><strong>作業の保険</strong> — 壊しても戻せるから、大胆に試せる</div>
+    </li>
+    <li>
+      <i data-lucide="history" width="20" height="20"></i>
+      <div><strong>履歴の検索</strong> — 「あのコード、いつ消したっけ?」が追える</div>
+    </li>
+    <li>
+      <i data-lucide="cloud-upload" width="20" height="20"></i>
+      <div><strong>クラウド連携の入り口</strong> — GitHub にアップすれば世界に公開できる (Ch10で)</div>
+    </li>
+    <li>
+      <i data-lucide="users" width="20" height="20"></i>
+      <div><strong>共同作業の言語</strong> — プロのエンジニアは全員 Git を使っている</div>
+    </li>
+  </ul>
+
+  <!-- ===== Section 3: 最小の3コマンド ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 今日覚える「3つの呪文」だけで十分</h2>
+
+  <p>Git には何十ものコマンドがありますが、最初は<strong>3つ</strong>だけ覚えましょう。これで90%のことはできます。</p>
+
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-label">init (初期化)</div><div class="step-desc">「このフォルダを Git で管理開始」</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-label">add (準備)</div><div class="step-desc">「このファイルを次のセーブに含める」</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-label">commit (保存)</div><div class="step-desc">「セーブ実行!」</div></div>
+  </div>
+
+  <p>順番はこう。<code>init</code> → ファイルを書く/直す → <code>add</code> → <code>commit</code>。以降は2〜3を繰り返すだけ。流れを図で見てみましょう。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Git の基本フロー (init → add → commit)</div>
+    <pre class="mermaid">
+graph LR
+  A["フォルダを作る"] --> B["git init"]
+  B --> C["ファイル作成・編集"]
+  C --> D["git add ."]
+  D --> E["git commit"]
+  E --> F["セーブ完了"]
+  F -. "また編集したら" .-> C
+    </pre>
+    <div class="diagram-caption">最初だけ init。その後は編集→add→commit のループ。</div>
+  </div>
+
+  <p><span class="term" data-tip="git init: そのフォルダを Git の管理下に置く初期化コマンド。1プロジェクトで最初の1回だけ実行。">git init</span> は「このフォルダを Git 管理にする」宣言。<span class="term" data-tip="git add: 次の commit に含めるファイルを指定する。「セーブリストに追加」のイメージ。">git add</span> は「次のセーブに含める」予約。<span class="term" data-tip="git commit: 予約したファイルを履歴に保存する。セーブボタンを押す行為。">git commit</span> が「セーブ実行」。この3ステップです。</p>
+
+  <details class="more-box"><summary>もっと詳しく: なぜ add と commit が分かれているのか?</summary>
+  <div class="more-body">
+    <p>「add で予約 → commit で実行」と2段階なのは、<strong>どのファイルをセーブに含めるかを選ぶため</strong>です。例えば「HTMLだけセーブして、書きかけのメモは含めない」という柔軟な選択ができます。これを <span class="term" data-tip="staging (ステージング): commit する前にファイルを一時置き場に積む工程。舞台に上がる選手を選ぶイメージ。">ステージング</span> と呼びます。最初は全部 <code>git add .</code> (ドットは「全部」の意味) で OK。慣れたら個別選択もできます。</p>
+  </div>
+  </details>
+
+  <!-- ===== Section 4: ハンズオン ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 小さな成功：Claude に「3回 commit」を頼んでみる</h2>
+
+  <p>覚えるより、手を動かすのが一番。ここからはハンズオンです。<strong>Claude Code にお願いする</strong>形で進めます (そう、あなたは自分でコマンドを打たなくていい)。Ch03 で学んだ「お願いの魔法」を使いましょう。</p>
+
+  <div class="info-box">
+    <span class="label">準備</span>
+    <p>Claude Code を立ち上げて、適当な作業フォルダに入っていればOK。<code>cd ~/Desktop</code> などで好きな場所へ。</p>
+  </div>
+
+  <h3>ステップ 1: プロジェクトを作ってもらう</h3>
+  <p>Claude にこう頼みます (コピペOK):</p>
+
+  <pre><code>デスクトップに「my-first-git」というフォルダを作って、
+中に「hello.txt」を作り、「Hello Git!」と書いてください。
+そのあと、そのフォルダで git init してください。</code></pre>
+
+  <p>Claude が <code>mkdir</code>、<code>echo</code>、<code>git init</code> を順番に実行してくれます。終わったら「できました」と返ってきます。</p>
+
+  <h3>ステップ 2: 最初の commit</h3>
+  <pre><code>いまの状態を「最初のコミット」としてセーブしてください。
+コミットメッセージは「Initial commit」でお願いします。</code></pre>
+
+  <p>Claude は <code>git add .</code> → <code>git commit -m "Initial commit"</code> を走らせます。<span class="term" data-tip="commit message (コミットメッセージ): そのセーブで何をしたかの短いメモ。あとで履歴を読む時の見出しになる。">コミットメッセージ</span> は「未来の自分への手紙」です。</p>
+
+  <h3>ステップ 3: 書き換えて 2回目の commit</h3>
+  <pre><code>hello.txt に2行目として「今日は Git の練習日」を追加してください。
+そのあと、2つ目の commit を「Add practice note」というメッセージで作ってください。</code></pre>
+
+  <h3>ステップ 4: さらに編集して 3回目の commit</h3>
+  <pre><code>hello.txt の最後に絵文字の🎉を追加して、
+「Celebrate」というメッセージで3つ目の commit を作ってください。
+終わったら git log を見せてください。</code></pre>
+
+  <p>最後の <span class="term" data-tip="git log: これまでの commit 一覧を表示するコマンド。セーブデータの一覧画面。">git log</span> で、自分が作った3つのセーブポイントが表示されます。<strong>ここで一度、自分を褒めてください</strong>。あなたはもう Git を使えます。</p>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+  <p style="display:inline-block; margin-left:10px; vertical-align:middle; color:#475569;">できなくてもOK。エラーが出たらそのまま Claude に「さっきのエラー、どうしたらいい?」と聞けば直してくれます。Claude はエラー解読のプロです。</p>
+
+  <!-- ===== Section 5: ロールバック ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> ロード(ロールバック) — 過去のセーブに戻る</h2>
+
+  <p>セーブができたら、次は<strong>ロード</strong>。やり方はいくつもありますが、初心者に一番安全なのは <span class="term" data-tip="git restore: ファイルを過去のコミットの状態に戻す安全なコマンド。2026年1月時点の標準。">git restore</span> です。</p>
+
+  <table>
+    <thead><tr><th>やりたいこと</th><th>Claude への頼み方 (例)</th><th>実行されるコマンド</th></tr></thead>
+    <tbody>
+      <tr><td>書きかけの変更を捨てて、最後の commit の状態に戻す</td><td>「いまの変更を全部捨てて、最後の commit に戻して」</td><td><code>git restore .</code></td></tr>
+      <tr><td>特定のファイルだけ元に戻す</td><td>「hello.txt だけ最後の commit に戻して」</td><td><code>git restore hello.txt</code></td></tr>
+      <tr><td>過去の commit の内容を覗く</td><td>「2つ前の commit の中身を見せて」</td><td><code>git show HEAD~2</code></td></tr>
+      <tr><td>commit 自体を取り消したい (内容は残す)</td><td>「最後の commit を取り消して、中身は手元に戻して」</td><td><code>git reset --soft HEAD~1</code></td></tr>
+    </tbody>
+  </table>
+
+  <p>ほとんどの場合、<strong>「1つ前に戻したい」</strong> で済みます。そして戻した後にまた commit すれば、新しいセーブポイントができます。時間は常に前に進みますが、いつでも参照できる <strong>「過去の自分」</strong> がいる安心感。これが Git の本質です。</p>
+
+  <div class="info-box">
+    <span class="label">公式ドキュメント必読</span>
+    <p><code>git reset --hard</code> は <strong>破壊的コマンド</strong> です。「いまの変更も commit も、全部消して指定した時点に戻る」動きで、戻した後の変更が<strong>完全に消えます</strong>。特に commit されていない作業中のファイルはほぼ復元不可能。<br>
+    初心者のうちは <strong><code>git restore</code> か <code>git reset --soft</code> を使う</strong> と覚えてください。<code>--hard</code> を使う時は「これを実行したら消えるものを教えて」と Claude に聞いてから判断しましょう。詳しくは <a href="https://git-scm.com/docs/git-reset" target="_blank" rel="noopener">Git 公式ドキュメント: git-reset</a> を。</p>
+  </div>
+
+  <!-- ===== Section 6: commit の粒度 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> いつ commit する? — 「キリのいい所」の目安</h2>
+
+  <p>RPGで言えば、<strong>ボス戦の前・難しいイベントの前・疲れた時</strong> にセーブしますよね。Git も同じ感覚です。</p>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-num">1<small>機能</small></div>
+      <div class="stat-label">小さな機能が完成したら</div>
+      <div class="stat-trend up">合格ライン</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">30<small>min</small></div>
+      <div class="stat-label">30分に1回くらい</div>
+      <div class="stat-trend up">初心者の目安</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">⚠<small></small></div>
+      <div class="stat-label">大きな変更の直前</div>
+      <div class="stat-trend up">セーフティネット</div>
+    </div>
+  </div>
+
+  <p>「細かすぎるかな?」と思ったらもう打ってOK。<strong>commit が多すぎて困ることは滅多にない</strong>。少なすぎて「あのセーブ、取っときゃよかった…」の方が痛いです。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">commit のタイミング (Chart.js)</div>
+    <canvas id="ch5-bar-1" height="180"></canvas>
+  </div>
+  <script>
+  window.addEventListener("load", function() {
+    var ctx = document.getElementById('ch5-bar-1');
+    if (!ctx || !window.Chart) return;
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['機能完成','大変更前','作業中断','エラー前','なんとなく'],
+        datasets: [{ label: '推奨度', data: [95, 90, 80, 60, 50], backgroundColor: '#D97757', borderRadius: 6 }]
+      },
+      options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, max: 100, ticks: { callback: function(v){return v+'点';} } } } }
+    });
+  });
+  </script>
+
+  <details class="more-box"><summary>もっと詳しく: 良いコミットメッセージの書き方</summary>
+  <div class="more-body">
+    <p>コミットメッセージは<strong>「何をしたか」を50文字以内で</strong>書くのが目安。「修正」だけだとあとで自分が分からなくなります。Claude に頼めば、変更内容を見て自動で良いメッセージを書いてくれるので、これが最も楽。</p>
+    <ul>
+      <li>✅ <code>Add favorite list form (title + url)</code></li>
+      <li>✅ <code>Fix button color on mobile</code></li>
+      <li>❌ <code>修正</code> / <code>いろいろ</code> / <code>aaa</code></li>
+    </ul>
+    <p>Claude への依頼例: 「いまの変更を、内容がわかるメッセージで commit して」。</p>
+  </div>
+  </details>
+
+  <!-- ===== Section 7: .gitignore ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> セーブしたくないファイルは? — .gitignore の役割</h2>
+
+  <p>フォルダの中には「セーブに含めたくないもの」もあります。例えばメモ、パスワードを書いたファイル、OS が勝手に作る <code>.DS_Store</code> など。それを<strong>見ないふりしてもらう</strong> のが <span class="term" data-tip=".gitignore: Git に「このファイル/フォルダは無視して」と伝える設定ファイル。">.gitignore</span> です。</p>
+
+  <div class="kv-grid">
+    <div class="kv"><div class="kv-key">.DS_Store</div><div class="kv-val">Mac が勝手に作る不要ファイル</div></div>
+    <div class="kv"><div class="kv-key">node_modules/</div><div class="kv-val">ダウンロードしたライブラリ群</div></div>
+    <div class="kv"><div class="kv-key">.env</div><div class="kv-val">APIキーなどの秘密情報 (超重要)</div></div>
+    <div class="kv"><div class="kv-key">*.log</div><div class="kv-val">動作ログの類い</div></div>
+  </div>
+
+  <p>Claude に「このプロジェクトに適した .gitignore を作って」と頼むだけで、適切な内容を書いてくれます。特に <code>.env</code> のような<strong>秘密情報</strong>は絶対に commit しないように、これを最初に作る癖を付けましょう。</p>
+
+  <details class="more-box"><summary>もっと詳しく: なぜ .env を commit してはいけないのか</summary>
+  <div class="more-body">
+    <p><code>.env</code> ファイルには API キーやパスワードが書かれていることが多く、これを GitHub に push (Ch10) すると、<strong>世界中の人に秘密情報が公開される</strong>ことになります。実際に企業が大損害を受けた例が毎年発生しています。<br>
+    対策は2つ: (1) <code>.gitignore</code> に書いて最初から commit しない、(2) もし commit しちゃったら即キーを無効化。Claude Code は commit 前に秘密情報が含まれていないかを聞けば教えてくれます。</p>
+  </div>
+  </details>
+
+  <!-- ===== Section 8: Claude に頼むときのコツ ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Claude に git を頼む決まり文句</h2>
+
+  <p>「git コマンドを覚えなきゃ…」と気負わなくて大丈夫。以下のフレーズがあれば、Claude が適切なコマンドを選んで実行してくれます。これを<strong>ブックマーク</strong>しておくつもりで読んでください。</p>
+
+  <table>
+    <thead><tr><th>したいこと</th><th>Claude への一言</th></tr></thead>
+    <tbody>
+      <tr><td>Git を始める</td><td>「このフォルダを git で管理できるようにして」</td></tr>
+      <tr><td>セーブする</td><td>「いまの変更を commit して」</td></tr>
+      <tr><td>セーブする (メッセージも)</td><td>「内容がわかるメッセージで commit して」</td></tr>
+      <tr><td>状態確認</td><td>「git status を見せて」</td></tr>
+      <tr><td>履歴確認</td><td>「これまでの commit を見せて」</td></tr>
+      <tr><td>変更を捨てる</td><td>「いまの変更を全部捨てて、最後の commit に戻して」</td></tr>
+      <tr><td>特定ファイルだけ戻す</td><td>「xxx.txt を最後の commit の状態に戻して」</td></tr>
+      <tr><td>安全確認</td><td>「これを実行したら何が消える?先に教えて」</td></tr>
+    </tbody>
+  </table>
+
+  <p>最後の<strong>「先に教えて」</strong>は特に便利。破壊的な操作の前に Claude が何が起きるかを説明してくれるので、怖さがぐっと減ります。</p>
+
+  <!-- ===== Section 9: 状態確認フロー ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 迷ったら「git status」<br>— 現状確認の魔法</h2>
+
+  <p><span class="term" data-tip="git status: 今どのファイルが変更されているか、何が commit 待ちかを教えてくれるコマンド。">git status</span> は Git の<strong>「いまどこ?」マップ</strong>です。作業中に何が起きてるか分からなくなったら、まずこれ。Claude に「git status を見せて」と頼めばOK。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">ファイルがたどる3つの場所</div>
+    <pre class="mermaid">
+graph LR
+  W["作業中<br/>(編集しただけ)"] -->|"git add"| S["ステージング<br/>(次のセーブ予約)"]
+  S -->|"git commit"| R["履歴<br/>(永久保存)"]
+  R -. "git restore" .-> W
+    </pre>
+    <div class="diagram-caption">左から右へ「編集→予約→保存」。status はこの3箇所のどこに何があるかを見せる地図。</div>
+  </div>
+
+  <p>status が読めれば、Git の半分は理解したも同然。最初は Claude に解説を頼みながら読むとどんどん慣れてきます。</p>
+
+  <!-- ===== Exercises ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Exercise</h2>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>3つの commit を作ってみる</h4>
+    <p>本文の「小さな成功」セクションに沿って、<code>my-first-git</code> フォルダを作り、<strong>3回 commit を積む</strong> までを Claude に頼んで実行してください。途中で詰まったら「次のステップを教えて」と聞けばOK。</p>
+    <ol>
+      <li>Claude にフォルダ作成と <code>git init</code> を頼む</li>
+      <li><code>hello.txt</code> を作って、1回目の commit</li>
+      <li>1行追加して、2回目の commit</li>
+      <li>さらに絵文字を追加して、3回目の commit</li>
+      <li>最後に「<code>git log</code> を見せて」と頼んで、3つのセーブを確認</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>Claude へのお願いをそのまま貼るならこうなります:</p>
+      <pre><code>デスクトップに「my-first-git」というフォルダを作り、
+git init してください。
+そのあと「hello.txt」を作って「Hello Git!」と書き、
+「Initial commit」というメッセージで commit してください。
+
+次に hello.txt に2行目「今日は Git 練習日」を追加して、
+「Add practice note」で 2回目の commit をしてください。
+
+最後に hello.txt の末尾に🎉を足して、
+「Celebrate」で 3回目の commit をしてください。
+終わったら git log --oneline を見せてください。</code></pre>
+      <p>実行が成功すれば、<code>git log --oneline</code> で3行のコミット履歴が並びます。これで「セーブポイントが3つ」あるゲームと同じ状態になりました。おめでとう!</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>わざと壊して、元に戻してみる</h4>
+    <p>「ロールバックの安心感」を体感する演習。Exercise 1 の続きで、<code>hello.txt</code> を<strong>わざとぐちゃぐちゃに書き換え</strong>、その後に Claude に頼んで元に戻してもらいます。</p>
+    <ol>
+      <li>Claude に「hello.txt を全部消して、『bug』とだけ書いて」と頼む</li>
+      <li><code>git status</code> を見せてもらい、変更が検知されていることを確認</li>
+      <li>「この変更を捨てて、最後の commit の状態に戻して」と頼む</li>
+      <li>戻ったかどうか、<code>hello.txt</code> の中身を確認</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>流れは以下のようになります:</p>
+      <pre><code># 1. わざと壊す
+hello.txt を全部消して、代わりに「bug」とだけ書いてください。
+
+# 2. 状態を確認
+git status を見せてください。
+→ "modified: hello.txt" が表示される
+
+# 3. 元に戻す
+この変更を全部捨てて、最後の commit の状態に戻してください。
+→ Claude は git restore hello.txt (または git restore .) を実行
+
+# 4. 確認
+hello.txt の中身を見せてください。
+→ 3回目の commit の状態に戻っているはず</code></pre>
+      <p>この「壊す→戻る」を体験したら、Git の本当の価値が体に染み込みます。<strong>セーブしてあれば怖くない</strong>。これが Git の約束です。</p>
+      <p>⚠️ 注意: この演習は <code>git reset --hard</code> を使わずにできます。破壊的コマンドは必要になるまで使わなくて大丈夫。</p>
+    </div>
+  </details>
+
+  <!-- ===== いまのあなたは ===== -->
+  <div class="info-box" style="border-left-color: #D97757;">
+    <span class="label">いまのあなたは</span>
+    <p>Git の基本3コマンド (<code>init</code>/<code>add</code>/<code>commit</code>) を理解し、Claude Code に頼んで<strong>セーブポイントを自分で3つ積む</strong>ことができます。壊しても過去のセーブに戻せる、その安心感も体感しました。これで、以降の章で Claude に大胆にコードを書き換えてもらえる<strong>土台</strong>ができました。非エンジニアでこの感覚を持っている人は、実はそれほど多くありません。自信を持っていい領域です。次の Ch06 では、さらに強力な味方「Plan モード」で、Claude に暴走させない作法を学びます。</p>
+  </div>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span> <a href="https://git-scm.com/doc" target="_blank" rel="noopener">Git 公式ドキュメント</a> — すべての git コマンドの正式な仕様 (2026年1月時点)</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://git-scm.com/docs/git-reset" target="_blank" rel="noopener">git-reset マニュアル</a> — 破壊的コマンドの詳細。使う前に読むべし</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://git-scm.com/docs/git-restore" target="_blank" rel="noopener">git-restore マニュアル</a> — 初心者に優しい安全なロールバック手段</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式ドキュメント</a> — Claude に git を頼むときの Bash ツールの挙動</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://git-scm.com/book/ja/v2" target="_blank" rel="noopener">Pro Git (日本語版)</a> — Git を深く知りたくなったら。無料で全文読めます</li>
+      <li><span class="res-type video">Video</span> <a href="https://www.youtube.com/results?search_query=git+tutorial+beginner+japanese" target="_blank" rel="noopener">YouTube: Git 入門 (日本語)</a> — 動画で見たい人向け</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="05">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="04-file-play.html"><span class="direction">&larr; Prev</span>ファイルと遊ぼう</a>
+    <a href="06-plan-mode.html"><span class="direction">Next &rarr;</span>Planモード</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>

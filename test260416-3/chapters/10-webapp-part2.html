@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>Webアプリ後編+公開 - MK's Claude Code Tutorial - Short Edition</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code - Short
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="../index.html#phase3" data-nav class="active"><span class="phase-name">Advanced</span><span class="phase-pct" id="pct-advanced">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.10</span>
+    Webアプリ後編+公開
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 11 sections</text>
+    </svg>
+    <div class="progress-info">0h / 10h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-welcome.html"><span class="status-dot" data-chapter="01"></span> ようこそ</a></li>
+    <li><a href="02-setup.html"><span class="status-dot" data-chapter="02"></span> セットアップ</a></li>
+    <li><a href="03-how-to-ask.html"><span class="status-dot" data-chapter="03"></span> お願いする魔法</a></li>
+    <li><a href="04-file-play.html"><span class="status-dot" data-chapter="04"></span> ファイルと遊ぼう</a></li>
+  </ul>
+  <div class="section-label">Core</div>
+  <ul>
+    <li><a href="05-git-basics.html"><span class="status-dot" data-chapter="05"></span> Git入門</a></li>
+    <li><a href="06-plan-mode.html"><span class="status-dot" data-chapter="06"></span> Planモード</a></li>
+    <li><a href="07-debug-buddy.html"><span class="status-dot" data-chapter="07"></span> エラーと友達に</a></li>
+    <li><a href="08-web-tools.html"><span class="status-dot" data-chapter="08"></span> Webで調べる</a></li>
+  </ul>
+  <div class="section-label">Advanced</div>
+  <ul>
+    <li><a href="09-webapp-part1.html"><span class="status-dot" data-chapter="09"></span> Webアプリ前編</a></li>
+    <li><a href="10-webapp-part2.html" class="active"><span class="status-dot" data-chapter="10"></span> Webアプリ後編+公開</a></li>
+    <li><a href="11-celebration.html"><span class="status-dot" data-chapter="11"></span> おめでとう！</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 3: Advanced &gt; Chapter 10</div>
+  <h1>ミニ Web アプリ作り：後編 + 公開</h1>
+  <p class="subtitle">動く機能を足して、世界に公開するURLを手に入れる</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 90分</span>
+    <span class="badge">Phase: Advanced</span>
+    <span class="badge">難易度: 中級</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">ようこそ、最後の大仕事へ</span>
+    <p>Ch09で「見た目」まで作ったお気に入りリスト、いよいよ<strong>動く機能</strong>と<strong>世界への公開</strong>です。焦らずにいきましょう。わからなくなったらいつでも前に戻ってOK。今日マスターするのは「<strong>JavaScriptで追加・削除・保存 → Gitでアップ → GitHub Pagesで公開</strong>」の4ステップ。ゴールは「<strong>自分の作品に世界中からアクセスできるURL</strong>」を手に入れることです。</p>
+  </div>
+
+  <div class="info-box" style="border-left: 3px solid #D97757;">
+    <span class="label">バージョン注記</span>
+    <p>本章の手順は <strong>2026年1月時点</strong> の GitHub と GitHub Pages のUIに基づきます。GitHub認証の方法や Pages 設定画面の文言はアップデートで変わる可能性があります。画面が違ったら慌てず <a href="https://docs.github.com/ja/pages" target="_blank" rel="noopener">GitHub Pages公式ドキュメント</a> を確認しましょう。</p>
+  </div>
+
+  <!-- ===== Section 1: 全体像 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 今日の全体像：4ステップで世界デビュー</h2>
+
+  <p>Ch09で作った「見た目だけ」のお気に入りリストを、今日は <span class="term" data-tip="JavaScript: Webページに動きをつけるプログラミング言語。ブラウザが理解してくれる。">JavaScript</span> で動かして、<span class="term" data-tip="GitHub: 世界中のエンジニアがコードを共有する場所。あなたの作品の発表会場でもある。">GitHub</span> に上げて、<span class="term" data-tip="GitHub Pages: GitHubが無料で提供している「作ったWebページを公開する仕組み」。URLが発行される。">GitHub Pages</span> で公開します。流れを先に頭に入れましょう。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">今日の90分、4ステップの流れ</div>
+    <pre class="mermaid">
+graph LR
+  A["Ch09の成果<br/>見た目だけ"] --> B["① JS機能追加<br/>40min"]
+  B --> C["② Git push<br/>20min"]
+  C --> D["③ Pages設定<br/>15min"]
+  D --> E["④ 動作確認<br/>15min"]
+  E --> F["🎉 公開URL<br/>手に入る"]
+    </pre>
+    <div class="diagram-caption">左から右へ。各ステップで必ず「今すぐ試す」を挟みます。</div>
+  </div>
+
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-label">JS機能追加</div><div class="step-desc">追加・削除・保存</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-label">Git push</div><div class="step-desc">GitHubに上げる</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-label">Pages設定</div><div class="step-desc">公開ONにする</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-label">動作確認</div><div class="step-desc">URLを開く</div></div>
+  </div>
+
+  <p>難しそうに見えますか?大丈夫、一つずつやれば必ずゴールに着きます。Claude Code に相談しながらで全然OK。むしろ<strong>相棒に頼りながら進めるのが正解</strong>です。</p>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+  <p style="color: #555; font-size: 14px;">—— ここで用語が多くて戸惑っても大丈夫。一度読み切ってから、手を動かしながらもう一度戻ってくると、スッと入ってきます。</p>
+
+  <!-- ===== Section 2: JS機能追加 (40min) ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> ① JavaScriptで機能を足す（40分）</h2>
+
+  <p>Ch09で作ったのは、いわば「ショーウィンドウに飾られた商品」。見えるけど触れない。ここに <span class="term" data-tip="JavaScript(通称JS): ブラウザの中で動くプログラム。「追加ボタンを押したら何かする」を書ける。">JavaScript</span> を足して、<strong>ボタンが効くアプリ</strong>に変えていきます。</p>
+
+  <h3>何を足すか：3つの機能</h3>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="plus-circle" width="20" height="20"></i>
+      <div><strong>追加機能</strong> — フォームに入力して「追加」ボタンでリストに新しい項目が入る</div>
+    </li>
+    <li>
+      <i data-lucide="trash-2" width="20" height="20"></i>
+      <div><strong>削除機能</strong> — 各項目の横の「×」ボタンで、その項目を消せる</div>
+    </li>
+    <li>
+      <i data-lucide="save" width="20" height="20"></i>
+      <div><strong>保存機能</strong> — <span class="term" data-tip="localStorage: ブラウザが小さなメモ帳のように持っている保存領域。ページを閉じても消えない。">localStorage</span> に保存して、ページを閉じて開き直してもリストが残る</div>
+    </li>
+  </ul>
+
+  <h3>Claudeへのお願い（コピペでOK）</h3>
+
+  <p>Ch03で習った「<strong>魔法の3要素（ゴール・具体的・制約）</strong>」の型で頼みます。Claudeに投げるプロンプトの実例はこちら:</p>
+
+  <pre><code>app.js を作って、index.html に読み込んでください。
+機能は3つ:
+1. 入力フォーム(タイトルとURL)の「追加」ボタンで、リストに項目が追加される
+2. 各項目に「×」ボタンを置いて、押すとその項目が消える
+3. localStorage に保存して、リロードしても内容が残る
+
+制約:
+- 外部ライブラリは使わない(素のJSだけ)
+- コメントを日本語で丁寧に入れてほしい
+- ファイル1つで完結させて</code></pre>
+
+  <p>Claude Code はこれを受けて <code>app.js</code> を作ってくれます。作ってもらったコードの骨格はだいたいこんな感じになります:</p>
+
+  <pre><code>// app.js — お気に入りリストの機能
+const STORAGE_KEY = "my-favorites";
+
+// 保存されているリストを読み込む（なければ空配列）
+function loadFavorites() {
+  const raw = localStorage.getItem(STORAGE_KEY);
+  return raw ? JSON.parse(raw) : [];
+}
+
+// リストを保存する
+function saveFavorites(list) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+}
+
+// 画面に描き直す
+function render() {
+  const list = loadFavorites();
+  const ul = document.getElementById("fav-list");
+  ul.innerHTML = "";
+  list.forEach((item, i) =&gt; {
+    const li = document.createElement("li");
+    li.innerHTML = `
+      &lt;a href="${item.url}" target="_blank"&gt;${item.title}&lt;/a&gt;
+      &lt;button data-i="${i}" class="del"&gt;×&lt;/button&gt;
+    `;
+    ul.appendChild(li);
+  });
+}
+
+// 追加ボタン
+document.getElementById("add-btn").addEventListener("click", () =&gt; {
+  const title = document.getElementById("title").value.trim();
+  const url   = document.getElementById("url").value.trim();
+  if (!title || !url) return;
+  const list = loadFavorites();
+  list.push({ title, url });
+  saveFavorites(list);
+  render();
+  document.getElementById("title").value = "";
+  document.getElementById("url").value = "";
+});
+
+// 削除ボタン（イベント委譲）
+document.getElementById("fav-list").addEventListener("click", (e) =&gt; {
+  if (!e.target.classList.contains("del")) return;
+  const i = Number(e.target.dataset.i);
+  const list = loadFavorites();
+  list.splice(i, 1);
+  saveFavorites(list);
+  render();
+});
+
+// 最初の描画
+render();</code></pre>
+
+  <div class="info-box">
+    <span class="label">今すぐ試す（5分）</span>
+    <p>作った <code>app.js</code> を Ch09 の <code>index.html</code> に <code>&lt;script src="app.js"&gt;&lt;/script&gt;</code> で読み込ませ、ブラウザで開き直します。フォームに「好きなサイト」を入れて追加 → ブラウザを閉じて開き直しても残っているか確認。<strong>残っていたら自分を褒めてOK</strong>。この瞬間、あなたの作品は「動くWebアプリ」になりました。</p>
+  </div>
+
+  <h3>用語の正体</h3>
+
+  <table>
+    <thead>
+      <tr><th>用語</th><th>平たく言うと</th><th>どう使う</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>addEventListener</td><td>「○○が押されたら××する」を予約する命令</td><td>ボタンに動作をくっつける</td></tr>
+      <tr><td>localStorage</td><td>ブラウザの小さなメモ帳</td><td>データを保存して次回も使う</td></tr>
+      <tr><td>JSON.stringify</td><td>オブジェクト→文字列に変換</td><td>localStorageに入れる前</td></tr>
+      <tr><td>JSON.parse</td><td>文字列→オブジェクトに戻す</td><td>取り出す時</td></tr>
+      <tr><td>innerHTML</td><td>「中身のHTMLを書き換える」</td><td>リストを描き直す時</td></tr>
+    </tbody>
+  </table>
+
+  <details class="more-box">
+    <summary>もっと詳しく: localStorage ってどれくらい保存できるの?</summary>
+    <div class="more-body">
+      <p>ブラウザごとに違いますが、<strong>だいたい5MB程度</strong>が上限です。お気に入りリストのような軽いテキストなら、何千件入れても全然余裕。ただしユーザーが「ブラウザのデータを削除」すると消えます。永久保存ではないので、大事なものは後日「<span class="term" data-tip="Firebase等: ネット上のデータベース。どこからでも同じデータを見られる。">クラウドのデータベース</span>」に移す、という発想が必要です（この章では触れません）。</p>
+    </div>
+  </details>
+
+  <details class="more-box">
+    <summary>もっと詳しく: 「イベント委譲」って何?</summary>
+    <div class="more-body">
+      <p>上のコードで、「×」ボタンそれぞれにリスナーを付けるのではなく、<strong>親の <code>&lt;ul&gt;</code> に1個だけリスナーを付けて、どれがクリックされたかを判定</strong>しています。これが「イベント委譲」。項目が増えたり減ったりする場面ではこちらの書き方が素直で、コードもスッキリします。Claudeに「イベント委譲で書いて」と頼めば自然にこうなります。</p>
+    </div>
+  </details>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+  <p style="color: #555; font-size: 14px;">—— コードの中身が全部わからなくても大丈夫。「追加」「削除」「保存」の3ブロックがあること、それだけ感じ取れればOK。細かい文法は、作りながら少しずつ掴まっていきます。</p>
+
+  <!-- ===== Section 3: Git push (20min) ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> ② GitHubに上げる（20分）</h2>
+
+  <p>できたアプリをパソコンの中から <span class="term" data-tip="GitHub: クラウド上のコード置き場。世界のエンジニアの共通ロッカー。">GitHub</span> のクラウドに引っ越しさせます。これを <span class="term" data-tip="push: 手元の変更をGitHub側に「押し上げる」こと。Gitの標準動作。">push</span> と言います。Ch05で触った <span class="term" data-tip="Git: 変更履歴のバックアップ管理ツール。コミットごとに「保存ポイント」を作れる。">Git</span> の応用編ですね。</p>
+
+  <h3>GitHub認証の整理</h3>
+
+  <div class="info-box">
+    <span class="label">公式ドキュメント必読</span>
+    <p>GitHubへの認証はパスワード直書きではなく「<span class="term" data-tip="Personal Access Token: パスワードの代わりに使う「使い捨て鍵」。細かい権限を付けられる。">Personal Access Token (PAT)</span>」か「<span class="term" data-tip="SSH鍵: 公開鍵と秘密鍵のペアで認証する仕組み。一度設定すれば以後は自動。">SSH鍵</span>」を使います。間違えると作業が全部止まるので、ここだけは公式を読んでおくのが安全。<a href="https://docs.github.com/ja/authentication" target="_blank" rel="noopener">GitHub認証の公式ドキュメント →</a></p>
+  </div>
+
+  <p>初心者には <strong>HTTPS + PAT</strong> が一番簡単。macOS なら <span class="term" data-tip="Keychain: Macのパスワード保管庫。一度入れたら次回から聞かれない。">Keychain</span> が自動で PAT を覚えてくれます。</p>
+
+  <h3>GitHubリポジトリを作る</h3>
+
+  <div class="diagram-box">
+    <div class="diagram-title">GitHubリポジトリ作成の画面フロー</div>
+    <svg viewBox="0 0 600 320" width="100%" style="max-width:600px; display:block; margin:0 auto;">
+      <!-- step 1 -->
+      <rect x="20" y="30" width="160" height="110" rx="10" fill="#D97757" opacity="0.15" stroke="#D97757" stroke-width="2"/>
+      <text x="100" y="60" text-anchor="middle" font-size="13" font-weight="700" fill="#7a3a1a">STEP 1</text>
+      <text x="100" y="85" text-anchor="middle" font-size="12">右上の「+」</text>
+      <text x="100" y="103" text-anchor="middle" font-size="12">→ New repository</text>
+      <text x="100" y="125" text-anchor="middle" font-size="11" fill="#666">をクリック</text>
+      <!-- arrow -->
+      <path d="M 185 85 L 215 85" stroke="#D97757" stroke-width="2" fill="none" marker-end="url(#arr10-1)"/>
+      <!-- step 2 -->
+      <rect x="220" y="30" width="160" height="110" rx="10" fill="#D97757" opacity="0.15" stroke="#D97757" stroke-width="2"/>
+      <text x="300" y="60" text-anchor="middle" font-size="13" font-weight="700" fill="#7a3a1a">STEP 2</text>
+      <text x="300" y="85" text-anchor="middle" font-size="12">Repository name:</text>
+      <text x="300" y="103" text-anchor="middle" font-size="12" font-weight="600">my-favorites</text>
+      <text x="300" y="125" text-anchor="middle" font-size="11" fill="#666">Public を選択</text>
+      <path d="M 385 85 L 415 85" stroke="#D97757" stroke-width="2" fill="none" marker-end="url(#arr10-1)"/>
+      <!-- step 3 -->
+      <rect x="420" y="30" width="160" height="110" rx="10" fill="#D97757" opacity="0.15" stroke="#D97757" stroke-width="2"/>
+      <text x="500" y="60" text-anchor="middle" font-size="13" font-weight="700" fill="#7a3a1a">STEP 3</text>
+      <text x="500" y="85" text-anchor="middle" font-size="12">「Create repository」</text>
+      <text x="500" y="103" text-anchor="middle" font-size="12">ボタン押す</text>
+      <text x="500" y="125" text-anchor="middle" font-size="11" fill="#666">→ URLをコピー</text>
+
+      <!-- step 4 full width -->
+      <rect x="20" y="175" width="560" height="120" rx="10" fill="#fff7ed" stroke="#D97757" stroke-width="2"/>
+      <text x="300" y="202" text-anchor="middle" font-size="13" font-weight="700" fill="#7a3a1a">STEP 4 — ターミナルで実行</text>
+      <text x="300" y="228" text-anchor="middle" font-size="12" font-family="monospace">git remote add origin https://github.com/YOUR/my-favorites.git</text>
+      <text x="300" y="250" text-anchor="middle" font-size="12" font-family="monospace">git branch -M main</text>
+      <text x="300" y="272" text-anchor="middle" font-size="12" font-family="monospace">git push -u origin main</text>
+
+      <defs>
+        <marker id="arr10-1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#D97757"/>
+        </marker>
+      </defs>
+    </svg>
+    <div class="diagram-caption">GitHub画面の3ステップ + ターミナルの3行。これだけで作品がクラウドに旅立ちます。</div>
+  </div>
+
+  <h3>実際のコマンド（コピペでOK）</h3>
+
+  <p>アプリのフォルダでターミナルを開いて、最初の一回だけ:</p>
+
+  <pre><code># まだGit管理していない場合だけ
+git init
+git add .
+git commit -m "お気に入りリスト v1 完成"
+
+# GitHub側でリポジトリを作ったら、そのURLを登録
+git remote add origin https://github.com/あなたのユーザー名/my-favorites.git
+git branch -M main
+git push -u origin main</code></pre>
+
+  <p>2回目以降、変更したら毎回:</p>
+
+  <pre><code>git add .
+git commit -m "どんな変更をしたか一言"
+git push</code></pre>
+
+  <div class="info-box">
+    <span class="label">今すぐ試す（5分）</span>
+    <p>push が成功したら、GitHubのリポジトリページをブラウザで開いてみましょう。<code>index.html</code> / <code>style.css</code> / <code>app.js</code> が並んでいるはず。<strong>自分が書いたファイルがクラウドに並んでいる瞬間、ちょっと感動します</strong>。まだURLで動作はしませんが、世界に一歩近づきました。</p>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: push が「rejected」と言われた時は?</summary>
+    <div class="more-body">
+      <p>よくあるのは「リモート側に最初のコミット（READMEなど）が既にある」パターン。<code>git pull --rebase origin main</code> で一度取り込んでから <code>git push</code> すれば解決。迷ったらそのエラー文をそのままClaudeに見せて「これどういう意味?」と聞くのが最速。Ch07で習った通り、<strong>エラーは友達</strong>です。</p>
+    </div>
+  </details>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+  <p style="color: #555; font-size: 14px;">—— ターミナルで英語のメッセージが流れて不安になっても大丈夫。ほとんどは「うまくいった報告」です。怪しいものだけClaudeに見せれば翻訳してくれます。</p>
+
+  <!-- ===== Section 4: GitHub Pages設定 (15min) ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> ③ GitHub Pagesで公開ONにする（15分）</h2>
+
+  <p>クラウドに上がっただけでは、まだ「倉庫に置いてある」状態。ここで <strong>公開スイッチをON</strong> にします。たった数クリックで、あなた専用のURLが発行されます。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">GitHub Pages設定画面の手順</div>
+    <svg viewBox="0 0 600 380" width="100%" style="max-width:600px; display:block; margin:0 auto;">
+      <!-- browser frame -->
+      <rect x="10" y="10" width="580" height="360" rx="8" fill="#fff" stroke="#D97757" stroke-width="2"/>
+      <rect x="10" y="10" width="580" height="28" fill="#fff7ed" stroke="#D97757" stroke-width="2"/>
+      <circle cx="28" cy="24" r="5" fill="#ef4444"/>
+      <circle cx="44" cy="24" r="5" fill="#f59e0b"/>
+      <circle cx="60" cy="24" r="5" fill="#22c55e"/>
+      <text x="300" y="29" text-anchor="middle" font-size="11" fill="#666">github.com/YOUR/my-favorites/settings/pages</text>
+
+      <!-- step 1 -->
+      <rect x="30" y="55" width="540" height="60" rx="6" fill="#fff7ed" stroke="#D97757"/>
+      <circle cx="55" cy="85" r="14" fill="#D97757"/>
+      <text x="55" y="90" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">1</text>
+      <text x="85" y="80" font-size="13" font-weight="600">Settings タブを開く</text>
+      <text x="85" y="100" font-size="12" fill="#555">リポジトリページ上部の右端のタブ</text>
+
+      <!-- step 2 -->
+      <rect x="30" y="125" width="540" height="60" rx="6" fill="#fff7ed" stroke="#D97757"/>
+      <circle cx="55" cy="155" r="14" fill="#D97757"/>
+      <text x="55" y="160" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">2</text>
+      <text x="85" y="150" font-size="13" font-weight="600">左メニューから「Pages」を選ぶ</text>
+      <text x="85" y="170" font-size="12" fill="#555">Code and automation セクションの下の方</text>
+
+      <!-- step 3 -->
+      <rect x="30" y="195" width="540" height="60" rx="6" fill="#fff7ed" stroke="#D97757"/>
+      <circle cx="55" cy="225" r="14" fill="#D97757"/>
+      <text x="55" y="230" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">3</text>
+      <text x="85" y="220" font-size="13" font-weight="600">Source: Deploy from a branch を選ぶ</text>
+      <text x="85" y="240" font-size="12" fill="#555">Branch: main / (root) を選んで Save</text>
+
+      <!-- step 4 -->
+      <rect x="30" y="265" width="540" height="90" rx="6" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+      <circle cx="55" cy="310" r="14" fill="#d97706"/>
+      <text x="55" y="315" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">4</text>
+      <text x="85" y="295" font-size="13" font-weight="700" fill="#7a3a1a">1〜2分待つと、上に緑色で公開URLが出る!</text>
+      <text x="85" y="318" font-size="12" fill="#555" font-family="monospace">https://あなたのユーザー名.github.io/my-favorites/</text>
+      <text x="85" y="342" font-size="12" fill="#555">このURLが、今日の最高の瞬間です。</text>
+    </svg>
+    <div class="diagram-caption">設定画面は英語ですが、押すボタンは上の4つだけ。怖くありません。</div>
+  </div>
+
+  <h3>公開URLの形</h3>
+
+  <div class="kv-grid">
+    <div class="kv"><div class="kv-key">URLの土台</div><div class="kv-val" style="font-family: monospace; font-size: 13px;">https://あなた.github.io/</div></div>
+    <div class="kv"><div class="kv-key">リポジトリ名</div><div class="kv-val" style="font-family: monospace; font-size: 13px;">my-favorites/</div></div>
+    <div class="kv"><div class="kv-key">完成形</div><div class="kv-val" style="font-family: monospace; font-size: 13px;">https://あなた.github.io/my-favorites/</div></div>
+  </div>
+
+  <div class="info-box">
+    <span class="label">今すぐ試す（3分）</span>
+    <p>上記4ステップ完了後、Settings &gt; Pages の上部に緑のチェックマークと共にURLが表示されます。<strong>そのURLをクリック</strong>してみましょう。あなたが作ったお気に入りリストが、世界のどこからでも見られる状態になっています。スマホからも、友達のPCからも、地球の裏側からも。</p>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: なぜ GitHub Pages は無料なの?</summary>
+    <div class="more-body">
+      <p>GitHubは「世界のエンジニアが使うプラットフォーム」を維持するため、静的サイト（HTMLとJSだけ、サーバー側で複雑な処理をしないもの）の公開機能を無料で提供しています。あなたのリストは「<span class="term" data-tip="静的サイト: サーバー側で何も計算せず、書いたHTMLをそのまま返すだけのサイト。軽くて速い。">静的サイト</span>」なのでピッタリ。容量もアクセス数も、個人の作品レベルなら十分な制限があります。<a href="https://docs.github.com/ja/pages/getting-started-with-github-pages/about-github-pages" target="_blank" rel="noopener">公式の制限事項 →</a></p>
+    </div>
+  </details>
+
+  <!-- ===== Section 5: 動作確認 (15min) + 公開の感動 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> ④ 公開後の動作確認 + 感動の瞬間（15分）</h2>
+
+  <p>URLが出たら、必ず <strong>3つの環境</strong> で開いて確認しましょう。</p>
+
+  <div class="compare-cards">
+    <div class="cc good">
+      <span class="cc-label">① 自分のPCのブラウザ</span>
+      <h4>まずは動くことを確認</h4>
+      <ul>
+        <li>URLを開く</li>
+        <li>追加・削除を試す</li>
+        <li>リロードしても残るか</li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">② スマホ</span>
+      <h4>感動ポイント1</h4>
+      <ul>
+        <li>同じURLを入力</li>
+        <li>あなたのアプリがスマホで開く</li>
+        <li>「電波越しに見えてる」</li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">③ 別の人のPC / ネット環境</span>
+      <h4>感動ポイント2</h4>
+      <ul>
+        <li>家族・友達に送る</li>
+        <li>「開いた」という返信</li>
+        <li>=世界に公開された証拠</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>公開アプリの裏側で起きていること</h3>
+
+  <div class="diagram-box">
+    <div class="diagram-title">公開URLにアクセスされた時の流れ</div>
+    <pre class="mermaid">
+sequenceDiagram
+  participant F as 友達のブラウザ
+  participant G as GitHub Pages
+  participant S as 保存庫(GitHub)
+  F->>G: https://あなた.github.io/my-favorites/
+  G->>S: index.html ある?
+  S-->>G: あるよ、これ
+  G-->>F: HTML/CSS/JS 配信
+  F->>F: ブラウザで描画、JS実行
+  Note over F: お気に入りリスト表示!
+    </pre>
+    <div class="diagram-caption">たったこれだけ。あなたは「③のサーバー担当」も兼ねたエンジニア見習いです。</div>
+  </div>
+
+  <h3>あなたが今日到達した位置</h3>
+
+  <div class="diagram-box">
+    <div class="diagram-title">非エンジニアから見た「公開できる人」の割合</div>
+    <canvas id="ch10-donut-1" height="220"></canvas>
+  </div>
+  <script>
+    window.addEventListener("load", function() {
+      var ctx = document.getElementById('ch10-donut-1');
+      if (!ctx || !window.Chart) return;
+      new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['公開経験なし', 'HTML書いたことある', 'GitHubにpushした', 'Pagesで公開した(今のあなた)'],
+          datasets: [{
+            data: [78, 14, 5, 3],
+            backgroundColor: ['#e5e7eb', '#fde2d1', '#f4a47e', '#D97757']
+          }]
+        },
+        options: {
+          plugins: { legend: { position: 'bottom' } }
+        }
+      });
+    });
+  </script>
+
+  <div class="diagram-box">
+    <div class="diagram-title">10時間学習前/後のスキル可視化</div>
+    <canvas id="ch10-radar-2" height="240"></canvas>
+  </div>
+  <script>
+    window.addEventListener("load", function() {
+      var ctx = document.getElementById('ch10-radar-2');
+      if (!ctx || !window.Chart) return;
+      new Chart(ctx, {
+        type: 'radar',
+        data: {
+          labels: ['Claudeに頼む力','ターミナル','Git/GitHub','HTML/CSS','JavaScript','公開・デプロイ'],
+          datasets: [
+            { label: '学習前', data: [10,5,0,5,0,0], backgroundColor: 'rgba(229,231,235,0.4)', borderColor: '#9ca3af' },
+            { label: '今のあなた', data: [75,60,55,65,50,80], backgroundColor: 'rgba(217,119,87,0.2)', borderColor: '#D97757', pointBackgroundColor: '#D97757' }
+          ]
+        },
+        options: {
+          plugins: { legend: { position: 'bottom' } },
+          scales: { r: { suggestedMin: 0, suggestedMax: 100 } }
+        }
+      });
+    });
+  </script>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-num">1<small>個</small></div>
+      <div class="stat-label">世界公開した作品</div>
+      <div class="stat-trend up">↑ 昨日までゼロ</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">24<small>h</small></div>
+      <div class="stat-label">稼働時間/日</div>
+      <div class="stat-trend up">↑ 寝ててもアクセス可</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">∞<small></small></div>
+      <div class="stat-label">見てもらえる可能性</div>
+      <div class="stat-trend up">↑ 世界中から</div>
+    </div>
+  </div>
+
+  <div class="quote">
+    完璧なアプリより、公開された「まあまあのアプリ」の方が100倍価値がある。<strong>世界に出した時点で、あなたは作り手</strong>になる。
+    <cite>— 多くの先輩エンジニアが口を揃えて言うこと</cite>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+  <p style="color: #555; font-size: 14px;">—— このURLは、これから何度もシェアすることになります。履歴書の「Webサイト」欄にも書けます。名刺にも。SNSのプロフィールにも。<strong>あなたの新しい看板</strong>です。</p>
+
+  <!-- ===== Section 6: 発展課題 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 次はこんな改良ができる（発展課題）</h2>
+
+  <p>公開できた今、もう「完成」ではなく<strong>「育てられる対象」</strong>になりました。アイデアが浮かんだらClaudeに頼むだけ。2つ、すぐ試せる改良を紹介します。</p>
+
+  <details class="more-box">
+    <summary>発展①: カテゴリ機能を足してみる（30-45分）</summary>
+    <div class="more-body">
+      <p>お気に入りに「仕事」「趣味」「学習」などのタグを付けられるようにする改良です。Claudeへのお願い文の例:</p>
+      <pre><code>app.js に「カテゴリ」機能を追加してください。
+- 追加フォームに「カテゴリ」のセレクトボックス(仕事/趣味/学習/その他)
+- リスト表示時、カテゴリを小さいバッジで表示
+- 「仕事だけ表示」等のフィルタボタン
+- localStorage のデータ構造も合わせて更新
+既存の追加・削除・保存は壊さないで。</code></pre>
+      <p>やる前に Ch06 で習った Plan モードで「どう変更するか」見せてもらうと、既存コードが壊れる不安が減ります。できたら <code>git commit -m "カテゴリ機能追加"</code> &amp; <code>git push</code>。<strong>1〜2分後にはもう公開URLに反映</strong>されています。</p>
+    </div>
+  </details>
+
+  <details class="more-box">
+    <summary>発展②: 見た目をダークモード対応にする（15-30分）</summary>
+    <div class="more-body">
+      <p>ブラウザの設定に合わせて自動で暗い色調にする改良。Claudeへのお願い:</p>
+      <pre><code>style.css にダークモード対応を追加してください。
+- OSのダーク設定を自動検出 (prefers-color-scheme)
+- 背景黒、文字白、リンクはアクセント色を保つ
+- CSSだけで実装、JS変更なし</code></pre>
+      <p>CSSの <code>@media (prefers-color-scheme: dark)</code> を使う、クラシックなパターン。非エンジニアの人が作ったとは思えない見た目に一段上がります。pushすれば夜中にスマホで開いた時の体験もグッとよくなります。</p>
+    </div>
+  </details>
+
+  <div class="info-box">
+    <span class="label">いまのあなたは</span>
+    <p><strong>あなたは今、自分で作ったものを世界に公開したエンジニア見習い</strong>です。10時間前、「Claude Codeって何?」だった人が、<strong>JavaScript を動かし、Git で push し、自分のURLをシェアできる</strong>ところまで来ました。これは統計的に見て、非エンジニアの <strong>上位3〜5%</strong> の位置です。数字以上に大事なのは、あなたが「見るだけの人」から「作って出す人」に変わったこと。この経験は、あなたの中から消えません。自信を持って次の章へ進んでください。</p>
+  </div>
+
+  <!-- ===== Resources ===== -->
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span><a href="https://docs.github.com/ja/pages" target="_blank" rel="noopener">GitHub Pages 公式ドキュメント</a> — 公開設定の仕様はここが一次情報</li>
+      <li><span class="res-type doc">Doc</span><a href="https://docs.github.com/ja/authentication" target="_blank" rel="noopener">GitHub認証まわり公式</a> — PAT / SSH の選び方</li>
+      <li><span class="res-type doc">Doc</span><a href="https://developer.mozilla.org/ja/docs/Web/API/Window/localStorage" target="_blank" rel="noopener">MDN: localStorage</a> — 保存の仕組みを掘り下げる</li>
+      <li><span class="res-type doc">Doc</span><a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式ドキュメント</a> — 頼み方の幅を広げる</li>
+      <li><span class="res-type video">Video</span><a href="https://www.youtube.com/results?search_query=github+pages+tutorial+beginner" target="_blank" rel="noopener">GitHub Pages チュートリアル動画（YouTube検索）</a> — 画面の流れを動画で見たい人向け</li>
+      <li><span class="res-type doc">Doc</span><a href="https://motohirokoma.github.io/26tutorial/" target="_blank" rel="noopener">MK's Tutorials インデックス</a> — 次の学習テーマを探す</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="10">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="09-webapp-part1.html"><span class="direction">&larr; Prev</span>Webアプリ前編</a>
+    <a href="11-celebration.html"><span class="direction">Next &rarr;</span>おめでとう！</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>

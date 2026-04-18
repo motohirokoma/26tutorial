@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>Webで調べる魔法 - MK's Claude Code Tutorial - Short Edition</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code Tutorial - Short Edition
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav class="active"><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="../index.html#phase3" data-nav><span class="phase-name">Advanced</span><span class="phase-pct" id="pct-advanced">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.08</span>
+    Webで調べる魔法
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 11 sections</text>
+    </svg>
+    <div class="progress-info">0h / 10h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-welcome.html"><span class="status-dot" data-chapter="01"></span> ようこそ</a></li>
+    <li><a href="02-setup.html"><span class="status-dot" data-chapter="02"></span> セットアップ</a></li>
+    <li><a href="03-how-to-ask.html"><span class="status-dot" data-chapter="03"></span> お願いする魔法</a></li>
+    <li><a href="04-file-play.html"><span class="status-dot" data-chapter="04"></span> ファイルと遊ぼう</a></li>
+  </ul>
+  <div class="section-label">Core</div>
+  <ul>
+    <li><a href="05-git-basics.html"><span class="status-dot" data-chapter="05"></span> Git入門</a></li>
+    <li><a href="06-plan-mode.html"><span class="status-dot" data-chapter="06"></span> Planモード</a></li>
+    <li><a href="07-debug-buddy.html"><span class="status-dot" data-chapter="07"></span> エラーと友達に</a></li>
+    <li><a href="08-web-tools.html" class="active"><span class="status-dot" data-chapter="08"></span> Webで調べる</a></li>
+  </ul>
+  <div class="section-label">Advanced</div>
+  <ul>
+    <li><a href="09-webapp-part1.html"><span class="status-dot" data-chapter="09"></span> Webアプリ前編</a></li>
+    <li><a href="10-webapp-part2.html"><span class="status-dot" data-chapter="10"></span> Webアプリ後編+公開</a></li>
+    <li><a href="11-celebration.html"><span class="status-dot" data-chapter="11"></span> おめでとう！</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 2: Core &gt; Chapter 08</div>
+  <h1>Webで調べる魔法</h1>
+  <p class="subtitle">秘書に「ちょっと調べておいて」と頼む感覚で、Claudeにインターネットを往復してもらおう。</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 45min</span>
+    <span class="badge">Phase: Core</span>
+    <span class="badge">難易度: 初級</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">ようこそ</span>
+    <p>ここまでで、Claudeはあなたのパソコンの中を自由に行き来できるようになりました。この章では、ついに<strong>外の世界（インターネット）</strong>へ出る魔法を覚えます。難しい仕組みは要りません。「調べておいて」と頼むだけです。焦らずに進めましょう。</p>
+  </div>
+
+  <div class="info-box" style="border-left-color: #18181b;">
+    <span class="label">2026年1月時点の情報</span>
+    <p>この章は <span class="term" data-tip="AnthropicのAIアシスタント。ターミナルで動くツール">Claude Code</span> 2026年1月版を前提に書かれています。Web関連のツール名（WebFetch / WebSearch）は安定していますが、細かい振る舞いは今後改良される可能性があります。最新の挙動は <a href="https://docs.claude.com/en/docs/claude-code/" target="_blank" rel="noopener">公式ドキュメント</a> で確認してください。</p>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>Claudeがインターネットとつながる、ってどういうこと？</h2>
+
+  <p>これまでのClaudeは、<strong>あなたのパソコンの中</strong>だけを動き回る新入社員でした。ファイルを読んで、書いて、直して。でも「最近の天気って？」「あの本の発売日って？」には答えられませんでした。なぜなら、<span class="term" data-tip="AIが学習を止めた時点。2026年1月時点で最新モデルでも数ヶ月前">知識カットオフ</span>より後の出来事は知らないし、何より<strong>勝手にネットを見に行かない</strong>設計だからです。</p>
+
+  <p>この章で覚える2つの道具を使うと、Claudeが<strong>安全な手続きを踏んで</strong>インターネットに出かけます。イメージは「秘書にお使いを頼む」感覚。あなたが命令すると、秘書が外に出て、情報を持ち帰って、手元で要約してくれる。それだけのことです。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">あなた → Claude → インターネットの流れ</div>
+    <svg viewBox="0 0 520 220" width="100%" style="max-width:520px; display:block; margin:0 auto;">
+      <rect x="10" y="80" width="120" height="60" rx="10" fill="#f4f4f5" stroke="#18181b" stroke-width="1.5"/>
+      <text x="70" y="108" text-anchor="middle" font-size="13" font-weight="700">あなた</text>
+      <text x="70" y="126" text-anchor="middle" font-size="11" fill="#64748b">頼む人</text>
+      <rect x="200" y="80" width="120" height="60" rx="10" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="1.5"/>
+      <text x="260" y="108" text-anchor="middle" font-size="13" font-weight="700">Claude</text>
+      <text x="260" y="126" text-anchor="middle" font-size="11" fill="#64748b">秘書</text>
+      <rect x="390" y="80" width="120" height="60" rx="10" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+      <text x="450" y="108" text-anchor="middle" font-size="13" font-weight="700">インターネット</text>
+      <text x="450" y="126" text-anchor="middle" font-size="11" fill="#64748b">情報の海</text>
+      <path d="M 130 105 L 195 105" stroke="#18181b" stroke-width="2" marker-end="url(#arr1)"/>
+      <path d="M 320 105 L 385 105" stroke="#D97757" stroke-width="2" marker-end="url(#arr2)"/>
+      <path d="M 385 125 L 320 125" stroke="#2563eb" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arr3)"/>
+      <path d="M 195 125 L 130 125" stroke="#D97757" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arr4)"/>
+      <text x="162" y="96" text-anchor="middle" font-size="10" fill="#475569">①頼む</text>
+      <text x="352" y="96" text-anchor="middle" font-size="10" fill="#475569">②調べに行く</text>
+      <text x="352" y="142" text-anchor="middle" font-size="10" fill="#475569">③情報持ち帰り</text>
+      <text x="162" y="142" text-anchor="middle" font-size="10" fill="#475569">④まとめて渡す</text>
+      <defs>
+        <marker id="arr1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#18181b"/></marker>
+        <marker id="arr2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#D97757"/></marker>
+        <marker id="arr3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb"/></marker>
+        <marker id="arr4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#D97757"/></marker>
+      </defs>
+    </svg>
+    <div class="diagram-caption">あなたが頼む → Claudeが取りに行く → 要約して返す。この4ステップだけ。</div>
+  </div>
+
+  <p>道具は全部で2つ。名前だけ覚えてください。「<strong>WebFetch（ウェブフェッチ）</strong>」と「<strong>WebSearch（ウェブサーチ）</strong>」です。</p>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="download" width="20" height="20"></i>
+      <div><strong>WebFetch</strong> — URLを指定して「このページを取ってきて」と頼む魔法。ページの<span class="term" data-tip="HyperText Markup Language、Web ページの中身の書き方">HTML</span>を取得して、中身を読んでくれる。</div>
+    </li>
+    <li>
+      <i data-lucide="search" width="20" height="20"></i>
+      <div><strong>WebSearch</strong> — 検索したいキーワードを渡して「探してきて」と頼む魔法。検索エンジンを叩いて、ヒットしたページの要点を拾ってくる。</div>
+    </li>
+  </ul>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+  <p style="margin-top:-28px;">2つの違いはこの後じっくり見ます。今は「URL知ってるならFetch、探したいならSearch」くらいのぼんやり感覚でOK。ここで戸惑っても大丈夫。もう一度読めば必ず掴めます。</p>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>WebFetch — 「このページを読んでおいて」</h2>
+
+  <p>まずはシンプルな方から。<strong>WebFetch</strong>は「このURLを開いて、中身を読んで、ポイントを教えて」とお願いする魔法です。あなたが知っている特定のページ――たとえば公式ドキュメント、ニュース記事、ブログ――を要約したい時に大活躍します。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">WebFetchの実プロンプト例</div>
+    <pre><code>https://docs.claude.com/en/docs/claude-code/overview
+このページを読んで、Claude Codeで何ができるかを
+箇条書き5つでまとめて。</code></pre>
+    <div class="diagram-caption">URLをそのまま貼る → 何をしてほしいかを1行で。これだけ。</div>
+  </div>
+
+  <p>実際にやってみましょう。Claude Codeのターミナルで、上のプロンプトをそのまま打ってEnter。数秒後、ページの要点が手元に返ってきます。これが<strong>最初の「小さな成功」</strong>です。</p>
+
+  <div class="info-box">
+    <span class="label">動いた？ 自分を褒めてOK</span>
+    <p>いま、あなたはClaudeに<strong>Webページを読ませて要約させる</strong>ことができました。これはExcelの達人でも、ブラウザを30個開いて情報収集していた頃の自分でも、絶対に到達できなかった領域です。拍手。</p>
+  </div>
+
+  <h3>WebFetchが得意なこと / 苦手なこと</h3>
+
+  <table>
+    <thead>
+      <tr><th>得意</th><th>苦手</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>公式ドキュメントの要約</td>
+        <td>ログインが必要なページ</td>
+      </tr>
+      <tr>
+        <td>ブログ記事の要点抽出</td>
+        <td>JavaScriptで動的に出るコンテンツ</td>
+      </tr>
+      <tr>
+        <td>ニュース記事の翻訳・要約</td>
+        <td>PDFや画像中心のページ</td>
+      </tr>
+      <tr>
+        <td>仕様書の該当箇所を探す</td>
+        <td>有料会員限定の記事</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <details class="more-box">
+    <summary>もっと詳しく: WebFetchが裏で何をしてるか</summary>
+    <div class="more-body">
+      <p>WebFetchは裏側で3つのことをしています。</p>
+      <ol>
+        <li>指定された<span class="term" data-tip="Uniform Resource Locator、Webページの住所">URL</span>へアクセス（あなたがブラウザでページを開くのと同じ）</li>
+        <li>返ってきたHTMLから、広告やナビゲーションを除いた<strong>本文</strong>を抜き出す</li>
+        <li>その本文をClaudeが読み、あなたの指示に従って要約・翻訳・抽出する</li>
+      </ol>
+      <p>つまり「ブラウザで開いて、読み取って、まとめる」をワンコマンドでやる感じ。途中で失敗したら正直に「取れませんでした」と教えてくれます。</p>
+    </div>
+  </details>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>WebSearch — 「探してきて」</h2>
+
+  <p>もう片方の道具、<strong>WebSearch</strong>は「URLまでは知らないけど、これについて調べて」と頼む時に使います。あなたが普段Googleで検索するのと同じ感覚。違いは、<strong>結果を自分で読まなくていい</strong>こと。Claudeが複数のページを見て、まとめてくれます。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">WebSearchの実プロンプト例</div>
+    <pre><code>2026年に話題になっているAIアシスタントツールを
+WebSearchで探して、3つピックアップして特徴を教えて。</code></pre>
+    <div class="diagram-caption">キーワード + 「どうまとめてほしいか」の2点で伝わる。</div>
+  </div>
+
+  <p>ここでのコツは、<strong>「こう調べて」+「こうまとめて」</strong>の2段セットで頼むこと。単に「調べて」だと、Claudeは10個リンクを返してきて、結局あなたが読むはめになります。</p>
+
+  <h3>WebFetch と WebSearch、いつどっち？</h3>
+
+  <div class="compare-cards">
+    <div class="cc good">
+      <span class="cc-label">WebFetch</span>
+      <h4>URLを知っている時</h4>
+      <ul>
+        <li>公式ドキュメントを要約してほしい</li>
+        <li>このニュース記事の論点を教えて</li>
+        <li>このブログの手順をまとめて</li>
+      </ul>
+      <p style="margin-top:8px;"><strong>合言葉</strong>: 「このページ読んで」</p>
+    </div>
+    <div class="cc neutral">
+      <span class="cc-label">WebSearch</span>
+      <h4>キーワードしか手元にない時</h4>
+      <ul>
+        <li>〇〇のおすすめツールを3つ教えて</li>
+        <li>最近の〇〇業界のトレンドを調べて</li>
+        <li>〇〇と〇〇の違いを比較して</li>
+      </ul>
+      <p style="margin-top:8px;"><strong>合言葉</strong>: 「ちょっと探してきて」</p>
+    </div>
+  </div>
+
+  <p>この2つは対立するものではなく、<strong>コンビ</strong>で使います。実務のよくあるパターンは：</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">WebSearch → WebFetch の連続技</div>
+    <pre class="mermaid">
+graph LR
+  A["キーワードで検索"] --> B["WebSearch"]
+  B --> C["ヒットした記事のURL"]
+  C --> D["WebFetch"]
+  D --> E["気になる記事だけ精読"]
+    </pre>
+    <div class="diagram-caption">まず広く探して、良さそうな記事だけ深く読む。人間の調べ物と同じ。</div>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>「自分で検索してからまとめて」と頼む魔法</h2>
+
+  <p>ここが今日のメインです。これまでの2つを組み合わせて、Claudeに<strong>「調査員」</strong>になってもらいましょう。あなたがただ1文で依頼すれば、Claudeが<strong>検索 → 記事読み込み → 比較 → 要約</strong>まで自分で判断して進めてくれます。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">魔法のプロンプトの型</div>
+    <pre><code>【テーマ】について、自分でWebSearchして情報を集めた後、
+良さそうな記事を2〜3つWebFetchで精読して、
+【こういう形式】でまとめてほしい。</code></pre>
+    <div class="diagram-caption">「調べて」→「読んで」→「まとめて」の3段ぶち抜き指示。</div>
+  </div>
+
+  <p>例を見てみましょう。あなたが「最近人気のキャンプ道具を知りたい」と思ったら：</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">実プロンプト例（キャンプ道具調査）</div>
+    <pre><code>2026年に人気のソロキャンプ道具について、自分でWebSearchして、
+評価が高い記事を2〜3つWebFetchで読み込んだ上で、
+初心者におすすめのアイテムを5つ、
+「名前・用途・だいたいの値段・選ぶ理由」の形で表にしてまとめて。</code></pre>
+  </div>
+
+  <p>これだけで、Claudeは勝手に検索し、記事を読み、表にまとめて返してくれます。所要時間30秒。自分でやったら1時間コースです。</p>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-num">30<small>秒</small></div>
+      <div class="stat-label">Claudeの調査時間</div>
+      <div class="stat-trend up">↓ 自力の1/120</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">5<small>記事</small></div>
+      <div class="stat-label">同時に参照できる情報源</div>
+      <div class="stat-trend up">↑ 並行処理の強み</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">1<small>個</small></div>
+      <div class="stat-label">必要なプロンプト</div>
+      <div class="stat-trend up">↑ 1文で完結</div>
+    </div>
+  </div>
+
+  <h3>もっと伝わるプロンプトのコツ</h3>
+
+  <p>Ch03で習った「お願いする魔法の型」がここでも生きます。調査系のプロンプトに<strong>3つの要素</strong>を入れると、返ってくる質が跳ね上がります。</p>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="target" width="20" height="20"></i>
+      <div><strong>① ゴール</strong> — 何のために調べるか。「プレゼン資料用」「買い物の参考」「論文の下調べ」など。</div>
+    </li>
+    <li>
+      <i data-lucide="layout-grid" width="20" height="20"></i>
+      <div><strong>② 形式</strong> — どう出してほしいか。「表で」「箇条書き5つ」「3段落以内」「Markdownで」など。</div>
+    </li>
+    <li>
+      <i data-lucide="shield" width="20" height="20"></i>
+      <div><strong>③ 制約</strong> — やらなくていいこと・避けたいこと。「英語記事は除外」「2024年以降の情報のみ」「初心者向けに」など。</div>
+    </li>
+  </ul>
+
+  <details class="more-box">
+    <summary>もっと詳しく: なぜ「形式」を指定すると精度が上がるか</summary>
+    <div class="more-body">
+      <p>「表で」と言われると、Claudeは無意識に「列名は何にしよう」「この情報はどこに入れよう」と構造化しながら書きます。形式の指示は、Claudeに<strong>考える枠組み</strong>を与えるので、散漫な文章になりにくいのです。逆に「ざっくりまとめて」と言うと、文体も長さもバラバラな要約が返ってきます。</p>
+      <p>同じ理由で「箇条書き5つ」のような<strong>数の指定</strong>も効きます。「5つ」と言われたら、Claudeは5つに絞るための取捨選択をします。</p>
+    </div>
+  </details>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>注意：<span style="white-space:nowrap;">Webから来た情報との付き合い方</span></h2>
+
+  <p>便利な魔法ですが、大切な注意点が1つあります。<strong>Webに書いてあることは、必ずしも正しくない</strong>。個人ブログ、古い記事、誤情報、広告まみれのページ――Claudeは善意で取ってきますが、内容の真偽までは保証できません。</p>
+
+  <div class="info-box">
+    <span class="label">公式ドキュメント必読</span>
+    <p>医療・法律・金融・安全性に関わるテーマでは、<strong>必ず公式情報源</strong>（厚労省、法務省、公式サイト等）のURLを指定してWebFetchしましょう。WebSearchの結果だけで判断するのは危険です。詳しくは <a href="https://docs.claude.com/en/docs/claude-code/settings" target="_blank" rel="noopener">公式ドキュメント</a> のセキュリティ項を。</p>
+  </div>
+
+  <p>そこでおすすめの聞き方がもう1つ。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">「出典付き」プロンプト</div>
+    <pre><code>【テーマ】について調べてまとめた後、
+それぞれの情報の出典URLも併記して。
+情報が複数の記事で一致しているかもコメントして。</code></pre>
+    <div class="diagram-caption">出典を見れば自分で確認できる。「一致してるか」を聞けば裏取りになる。</div>
+  </div>
+
+  <p>こうすると、Claudeは「3つの記事で共通していた情報」と「1つの記事にしかなかった情報」を分けてくれたりします。人間のリサーチャーと同じ仕事を、数秒でやってくれるわけです。</p>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+  <p style="margin-top:-28px;">「情報を疑う力」は、AI時代の新しい教養です。Claudeは賢いですが、あなたが最終判断者です。肩の力を抜いて、でも鵜呑みにしないで。</p>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>使いどころのイメージを広げよう</h2>
+
+  <p>最後に、日常のいろんな場面で「Webで調べる魔法」を使う例を見てみましょう。Claudeは「これに使うもの」と決まっているわけではありません。あなたの日々の「ちょっと調べたい」をぜんぶ代行してくれます。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">あなたの1日で使える場面（Claudeの出番は何回？）</div>
+    <canvas id="ch8-bar-1" height="110"></canvas>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>場面</th><th>お願いの例</th><th>道具</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>朝のニュースチェック</td>
+        <td>「今日の主要ITニュースを3つ、各3行で」</td>
+        <td>WebSearch</td>
+      </tr>
+      <tr>
+        <td>買い物の下調べ</td>
+        <td>「在宅ワーク用イスのおすすめを予算5万円で比較」</td>
+        <td>WebSearch + WebFetch</td>
+      </tr>
+      <tr>
+        <td>旅行プラン</td>
+        <td>「京都2泊3日、お寺巡り中心のモデルコースを」</td>
+        <td>WebSearch</td>
+      </tr>
+      <tr>
+        <td>仕事の調査</td>
+        <td>「競合A社の最新プレスリリースを3件要約」</td>
+        <td>WebFetch（URL直指定）</td>
+      </tr>
+      <tr>
+        <td>学習・勉強</td>
+        <td>「○○という概念を小学生にもわかるよう解説」</td>
+        <td>WebSearch</td>
+      </tr>
+      <tr>
+        <td>レシピ検索</td>
+        <td>「冷蔵庫にキャベツと鶏肉。30分で作れる料理3つ」</td>
+        <td>WebSearch</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <details class="more-box">
+    <summary>もっと詳しく: Webに出さないほうがいい情報</summary>
+    <div class="more-body">
+      <p>Claude自身は個人情報を勝手に送信しませんが、プロンプトに書いた内容はClaudeが受け取ります。以下は<strong>プロンプトに書かない方がいい情報</strong>の目安です。</p>
+      <ul>
+        <li>クレジットカード番号、銀行の暗証番号</li>
+        <li>本名と住所の組み合わせ（個人特定につながる）</li>
+        <li>パスワード、APIキー（<span class="term" data-tip="Application Programming Interface の鍵。サービスを使う時の認証情報">APIキー</span>など）</li>
+        <li>社内の機密情報（契約書、顧客リスト）</li>
+      </ul>
+      <p>「セキュアな」情報を扱う時は、会社のポリシーと公式ドキュメントを確認しましょう。</p>
+    </div>
+  </details>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>3分間ハンズオン：今すぐ自分の「興味」を調べてもらう</h2>
+
+  <p>この章で一番大事な時間です。Claude Codeを開いて、<strong>あなた自身の興味</strong>について、Claudeに調べてもらいましょう。何でもOK。好きな音楽、行きたい国、育てたい植物、気になっている仕事――何でも。</p>
+
+  <div class="steps">
+    <div class="step done"><div class="step-num">1</div><div class="step-label">テーマを決める</div><div class="step-desc">自分がわくわくするもの1つ</div></div>
+    <div class="step done"><div class="step-num">2</div><div class="step-label">プロンプトを書く</div><div class="step-desc">「調べて+まとめて」の型で</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-label">実行</div><div class="step-desc">Enterを押す</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-label">結果を読む</div><div class="step-desc">足りなければ追加質問</div></div>
+  </div>
+
+  <div class="quote">
+    「調べる」って、自分の好奇心を手放さないってこと。Claudeはそれを全力でサポートしてくれる。
+  </div>
+
+  <p>プロンプト例のテンプレはこれ：</p>
+
+  <pre><code>【自分の興味ある話題】について、最新情報をWebSearchで調べて、
+初心者の私にわかりやすく5つのポイントにまとめて。
+できれば出典URLも付けて。</code></pre>
+
+  <p>やってみました？ 何か返ってきましたね。おめでとうございます。<strong>あなたは今日から、手元に専属のリサーチャーがいます。</strong></p>
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>今週末の予定をClaudeと相談する</h4>
+    <p>今週末に行けそうな近場のイベントやスポットを、Claudeに調べてもらってください。</p>
+    <ol>
+      <li>自分の住んでいる街または近隣の大きな駅名を決める</li>
+      <li>「今週末の〇〇エリアのイベントをWebSearchで調べて、3つおすすめを教えて」と頼む</li>
+      <li>返ってきた内容が気になったら、URLを指定して「このイベントの詳細をWebFetchで読んで」と追撃する</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>たとえば横浜住みの人なら、こう打てばOK：</p>
+      <pre><code>今週末の横浜エリアのイベントをWebSearchで調べて、
+大人2人で楽しめるものを3つ、
+場所・時間・だいたいの予算付きで教えて。</code></pre>
+      <p>追撃のプロンプト例：</p>
+      <pre><code>https://example.com/event-detail-url
+このページをWebFetchで読んで、
+必要な持ち物と混雑予想を教えて。</code></pre>
+      <p>ポイント: 1回目は<strong>WebSearchで候補出し</strong>、2回目は<strong>WebFetchで深掘り</strong>。この2段コンビが鉄板です。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>興味あるテーマで「ミニ調査レポート」を作らせる</h4>
+    <p>自分が最近気になっているテーマについて、Claudeに<strong>Markdownの調査レポート</strong>を作らせてください。これは実務でもそのまま使えるテクです。</p>
+    <ol>
+      <li>テーマを1つ決める（例：ZEV車の最新動向、在宅ワーク機器、発酵食品の健康効果など）</li>
+      <li>「WebSearchで検索 → 上位3記事をWebFetch → Markdownレポートにまとめ」をプロンプトで指示</li>
+      <li>レポートには「要約・ポイント3つ・出典URL」の3セクションを要求</li>
+      <li>出てきた結果を実際にファイル保存してみる（<code>report.md</code> など）</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>プロンプト例（発酵食品の健康効果で調査するケース）：</p>
+      <pre><code>テーマ: 発酵食品の健康効果（2026年版）
+
+以下の手順で調査して、Markdownレポートを作成して report.md に保存して：
+
+1. WebSearchで「発酵食品 健康効果 2026」などのキーワードで検索
+2. 信頼性が高そうな記事を3つ選ぶ（公的機関・大学・大手メディア優先）
+3. 選んだ3記事をそれぞれWebFetchで本文取得
+4. 以下の構成でレポート化：
+   ## 要約（3行）
+   ## 主要ポイント（箇条書き5つ）
+   ## 出典（URL + 発信元名）
+
+日本語で、初心者にもわかる言葉遣いでお願いします。</code></pre>
+      <p>このプロンプトの勘所：</p>
+      <ul>
+        <li><strong>信頼性の基準を明示</strong>（公的機関・大学・大手メディア優先）することで、個人ブログや広告記事を自動で外してくれる</li>
+        <li><strong>構成を具体的に指定</strong>することで、期待通りのレポートになる</li>
+        <li><strong>ファイル保存まで含める</strong>と、あとで読み返せる資産になる</li>
+      </ul>
+      <p>返ってきたレポートが物足りなければ、「もっと専門的に」「もっと簡単に」「グラフも作って」など、追撃のリクエストで磨いていけばOKです。</p>
+    </div>
+  </details>
+
+  <div class="info-box" style="border-left-color: #D97757;">
+    <span class="label">いまのあなたは</span>
+    <p>Claude Codeを使って、<strong>インターネットから必要な情報だけを引き出して、きれいにまとめさせる</strong>ことができるようになりました。WebFetchとWebSearchを使い分け、出典付きで調査レポートまで作れます。これは、会社で「リサーチ係」を1人雇ったのと同じくらいの戦力。自信を持っていい。全ユーザーの中でも上位に食い込む実力です。次の章からはいよいよ、自分のWebアプリ作りが始まります。深呼吸して、楽しみに進みましょう。</p>
+  </div>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.claude.com/en/docs/claude-code/overview" target="_blank" rel="noopener">Claude Code 公式ドキュメント - Overview</a></li>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.claude.com/en/docs/claude-code/settings" target="_blank" rel="noopener">Claude Code 公式 - Settings &amp; Security</a></li>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.claude.com/en/docs/build-with-claude/tool-use" target="_blank" rel="noopener">Anthropic - Tool Use（Web系ツールの仕組み）</a></li>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.claude.com/en/docs/claude-code/memory" target="_blank" rel="noopener">Claude Code - Memory &amp; Context</a></li>
+      <li><span class="res-type video">Video</span> <a href="https://www.youtube.com/results?search_query=claude+code+websearch" target="_blank" rel="noopener">YouTube - Claude Code WebSearch 実例集</a></li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="08">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="07-debug-buddy.html"><span class="direction">&larr; Prev</span>エラーと友達に</a>
+    <a href="09-webapp-part1.html"><span class="direction">Next &rarr;</span>Webアプリ前編</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<!-- 視覚化ライブラリ群 -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+<script>
+window.addEventListener("load", function(){
+  var ctx = document.getElementById('ch8-bar-1');
+  if (!ctx || !window.Chart) return;
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['朝ニュース','買い物下調べ','旅行プラン','仕事調査','学習','レシピ'],
+      datasets: [{
+        label: '週あたり使う回数（目安）',
+        data: [5, 3, 1, 8, 4, 3],
+        backgroundColor: '#D97757',
+        borderRadius: 6
+      }]
+    },
+    options: {
+      plugins: { legend: { display: false } },
+      scales: { y: { beginAtZero: true, title: { display: true, text: '回/週' } } }
+    }
+  });
+});
+</script>
+</body>
+</html>

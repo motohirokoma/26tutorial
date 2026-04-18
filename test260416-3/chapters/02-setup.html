@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>セットアップ：15分で相棒がやってくる - MK's Claude Code Tutorial - Short Edition</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code - Short
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav class="active"><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="../index.html#phase3" data-nav><span class="phase-name">Advanced</span><span class="phase-pct" id="pct-advanced">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.02</span>
+    セットアップ：15分で相棒がやってくる
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 11 sections</text>
+    </svg>
+    <div class="progress-info">0h / 10h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-welcome.html"><span class="status-dot" data-chapter="01"></span> ようこそ</a></li>
+    <li><a href="02-setup.html" class="active"><span class="status-dot" data-chapter="02"></span> セットアップ</a></li>
+    <li><a href="03-how-to-ask.html"><span class="status-dot" data-chapter="03"></span> お願いする魔法</a></li>
+    <li><a href="04-file-play.html"><span class="status-dot" data-chapter="04"></span> ファイルと遊ぼう</a></li>
+  </ul>
+  <div class="section-label">Core</div>
+  <ul>
+    <li><a href="05-git-basics.html"><span class="status-dot" data-chapter="05"></span> Git入門</a></li>
+    <li><a href="06-plan-mode.html"><span class="status-dot" data-chapter="06"></span> Planモード</a></li>
+    <li><a href="07-debug-buddy.html"><span class="status-dot" data-chapter="07"></span> エラーと友達に</a></li>
+    <li><a href="08-web-tools.html"><span class="status-dot" data-chapter="08"></span> Webで調べる</a></li>
+  </ul>
+  <div class="section-label">Advanced</div>
+  <ul>
+    <li><a href="09-webapp-part1.html"><span class="status-dot" data-chapter="09"></span> Webアプリ前編</a></li>
+    <li><a href="10-webapp-part2.html"><span class="status-dot" data-chapter="10"></span> Webアプリ後編+公開</a></li>
+    <li><a href="11-celebration.html"><span class="status-dot" data-chapter="11"></span> おめでとう！</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 1: Basics &gt; Chapter 02</div>
+  <h1>セットアップ：15分で相棒がやってくる</h1>
+  <p class="subtitle">Mac/Windows どちらでもOK。15分後にはあなたのPCでClaudeと会話できます。</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 45分</span>
+    <span class="badge">Phase: Basics</span>
+    <span class="badge">難易度: 入門</span>
+  </div>
+
+  <div class="info-box" style="border-left: 3px solid #D97757;">
+    <span class="label">ようこそ</span>
+    <p>焦らなくて大丈夫です。この章ではあなたのPCに<strong>Claude Code</strong>をお迎えします。途中で画面が真っ黒になって驚くかもしれませんが、それは「相棒を呼び出す部屋」なだけ。終わる頃には、自分のPCで「こんにちは」と会話できる状態になります。</p>
+  </div>
+
+  <div class="info-box">
+    <span class="label">2026年1月時点の情報</span>
+    <p>本章は<strong>2026年1月</strong>時点の Claude Code CLI (v2.x系) を前提にしています。インストーラや画面は細部が変わる可能性があるので、コマンドが通らない時は<a href="https://docs.claude.com/en/docs/claude-code/setup" target="_blank" rel="noopener">公式セットアップガイド</a>も参照してください。</p>
+  </div>
+
+  <!-- ===== Section 1: 全体像 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 15分の全体像 — まず地図を見よう</h2>
+
+  <p>これからやることは、たった<strong>4つのステップ</strong>だけです。いきなり手を動かす前に、地図を見て安心してから進みましょう。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">セットアップ全体フロー(15分)</div>
+    <svg viewBox="0 0 640 180" width="100%" style="max-width:640px; display:block; margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#D97757"/></marker>
+      </defs>
+      <!-- step 1 -->
+      <rect x="20" y="50" width="130" height="80" rx="12" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="2"/>
+      <text x="85" y="78" text-anchor="middle" font-size="22" font-weight="700" fill="#D97757">1</text>
+      <text x="85" y="100" text-anchor="middle" font-size="12" font-weight="600">黒い画面を開く</text>
+      <text x="85" y="118" text-anchor="middle" font-size="10" fill="#475569">ターミナル起動</text>
+      <!-- arrow -->
+      <path d="M 155 90 L 185 90" stroke="#D97757" stroke-width="2" marker-end="url(#arr2)"/>
+      <!-- step 2 -->
+      <rect x="190" y="50" width="130" height="80" rx="12" fill="#ffffff" stroke="#D97757" stroke-width="2"/>
+      <text x="255" y="78" text-anchor="middle" font-size="22" font-weight="700" fill="#D97757">2</text>
+      <text x="255" y="100" text-anchor="middle" font-size="12" font-weight="600">インストール</text>
+      <text x="255" y="118" text-anchor="middle" font-size="10" fill="#475569">1行コピペ</text>
+      <path d="M 325 90 L 355 90" stroke="#D97757" stroke-width="2" marker-end="url(#arr2)"/>
+      <!-- step 3 -->
+      <rect x="360" y="50" width="130" height="80" rx="12" fill="#ffffff" stroke="#D97757" stroke-width="2"/>
+      <text x="425" y="78" text-anchor="middle" font-size="22" font-weight="700" fill="#D97757">3</text>
+      <text x="425" y="100" text-anchor="middle" font-size="12" font-weight="600">ログイン</text>
+      <text x="425" y="118" text-anchor="middle" font-size="10" fill="#475569">ブラウザで認証</text>
+      <path d="M 495 90 L 525 90" stroke="#D97757" stroke-width="2" marker-end="url(#arr2)"/>
+      <!-- step 4 -->
+      <rect x="530" y="50" width="100" height="80" rx="12" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="2"/>
+      <text x="580" y="78" text-anchor="middle" font-size="22" font-weight="700" fill="#D97757">4</text>
+      <text x="580" y="100" text-anchor="middle" font-size="12" font-weight="600">こんにちは</text>
+      <text x="580" y="118" text-anchor="middle" font-size="10" fill="#475569">初対話</text>
+      <text x="320" y="30" text-anchor="middle" font-size="11" fill="#475569" font-style="italic">この地図を見ながら進めば迷いません</text>
+    </svg>
+    <div class="diagram-caption">どんなにPC操作に慣れていなくても、このフローに沿えば必ずゴールに着きます。</div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-num">4<small>step</small></div>
+      <div class="stat-label">全体のステップ数</div>
+      <div class="stat-trend up">↑ それだけ</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">15<small>min</small></div>
+      <div class="stat-label">標準所要時間</div>
+      <div class="stat-trend up">↑ 慣れれば5分</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">0<small>円</small></div>
+      <div class="stat-label">インストール費用</div>
+      <div class="stat-trend up">↑ CLI自体は無料</div>
+    </div>
+  </div>
+
+  <p>ここまで読んで「本当に15分で終わるの?」と疑う気持ち、よく分かります。大丈夫。途中でつまずいても、この章には「こんなエラーが出たらこう対処」のガイドが入っています。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span></p>
+
+  <!-- ===== Section 2: 黒い画面(ターミナル)超入門 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 黒い画面(ターミナル)ってなに?</h2>
+
+  <p>これから何度も出てくる「<strong>黒い画面</strong>」。正式名は<span class="term" data-tip="ターミナル：キーボードで文字を打ってPCに命令する画面。マウスでクリックするかわりに文字で命令する。">ターミナル</span>といいます。怖そうに見えますが、実は<strong>PCに文字で命令する部屋</strong>でしかありません。</p>
+
+  <p>アナロジーで言うと、普段のPC操作が「<strong>レストランでメニューを指差す</strong>」なら、黒い画面は「<strong>厨房に直接『これを作って』と伝える</strong>」感じです。慣れると直接のほうが速くて正確。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">黒い画面の中身(イメージ)</div>
+    <svg viewBox="0 0 500 240" width="100%" style="max-width:500px; display:block; margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <!-- window frame -->
+      <rect x="20" y="20" width="460" height="200" rx="10" fill="#18181b" stroke="#475569"/>
+      <!-- traffic lights -->
+      <circle cx="40" cy="40" r="6" fill="#ef4444"/>
+      <circle cx="60" cy="40" r="6" fill="#eab308"/>
+      <circle cx="80" cy="40" r="6" fill="#22c55e"/>
+      <text x="250" y="44" text-anchor="middle" font-size="11" fill="#94a3b8">Terminal — 黒い画面</text>
+      <!-- prompt lines -->
+      <text x="40" y="85" font-family="monospace" font-size="13" fill="#D97757">$</text>
+      <text x="60" y="85" font-family="monospace" font-size="13" fill="#e2e8f0">claude --version</text>
+      <text x="40" y="110" font-family="monospace" font-size="12" fill="#94a3b8">2.1.0 (Claude Code)</text>
+      <text x="40" y="145" font-family="monospace" font-size="13" fill="#D97757">$</text>
+      <text x="60" y="145" font-family="monospace" font-size="13" fill="#e2e8f0">claude</text>
+      <text x="40" y="170" font-family="monospace" font-size="12" fill="#94a3b8">&gt; こんにちは</text>
+      <text x="40" y="195" font-family="monospace" font-size="12" fill="#7dd3fc">はい、こんにちは！何をお手伝いしましょうか?</text>
+    </svg>
+    <div class="diagram-caption"><code>$</code> のあとに文字を打って Enter を押す——それだけ。</div>
+  </div>
+
+  <p>Mac と Windows で使う黒い画面の<strong>名前</strong>が違います。この章では両方を並べて案内していきます。</p>
+
+  <table>
+    <thead>
+      <tr><th>項目</th><th>Mac</th><th>Windows</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>黒い画面の名前</td><td><span class="term" data-tip="Macに最初から入っている標準のターミナルアプリ。追加インストール不要。">ターミナル</span> (Terminal)</td><td><span class="term" data-tip="Windows 10/11に最初から入っている新しい黒い画面。昔の『コマンドプロンプト』よりパワフル。">PowerShell</span> または Windows Terminal</td></tr>
+      <tr><td>標準搭載?</td><td>はい(最初から入ってる)</td><td>はい(Windows 10以降)</td></tr>
+      <tr><td>開き方</td><td>Spotlight で「ターミナル」と入力</td><td>スタートメニューで「PowerShell」と入力</td></tr>
+      <tr><td>この先やる事</td><td>コマンド貼り付け→Enter</td><td>コマンド貼り付け→Enter</td></tr>
+    </tbody>
+  </table>
+
+  <details class="more-box">
+    <summary>もっと詳しく: 「コマンドプロンプト」と「PowerShell」の違い</summary>
+    <div class="more-body">
+      <p>Windowsには2つの黒い画面があります。<strong>コマンドプロンプト</strong>(cmd.exe)は昔からある古いやつ、<strong>PowerShell</strong>は新しくて高機能な方です。このチュートリアルでは PowerShell を使います。もしスタートメニューで「Windows Terminal」が見つかればそちらのほうがモダンで快適ですが、どちらでも同じコマンドが動きます。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 3: Mac/Windows セットアップ手順 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Mac / Windows セットアップ手順</h2>
+
+  <p>ここからが本番です。<strong>自分のPCのほうだけ</strong>読んでください。Mac使いはMac欄、Windows使いはWindows欄。両方読む必要はありません。</p>
+
+  <table>
+    <thead>
+      <tr><th>手順</th><th>Mac</th><th>Windows</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>1. 黒い画面を開く</strong></td>
+        <td>Command+Space で Spotlight を開き「ターミナル」と入力→Enter</td>
+        <td>スタートボタン→「PowerShell」と入力→Enter</td>
+      </tr>
+      <tr>
+        <td><strong>2. Node.js の有無を確認</strong></td>
+        <td><code>node -v</code> と打つ</td>
+        <td><code>node -v</code> と打つ</td>
+      </tr>
+      <tr>
+        <td><strong>3. Node.js 未インストールなら</strong></td>
+        <td><a href="https://nodejs.org/" target="_blank" rel="noopener">nodejs.org</a>のLTS版をダウンロード→インストーラ実行</td>
+        <td><a href="https://nodejs.org/" target="_blank" rel="noopener">nodejs.org</a>のLTS版をダウンロード→インストーラ実行</td>
+      </tr>
+      <tr>
+        <td><strong>4. Claude Code をインストール</strong></td>
+        <td><code>npm install -g @anthropic-ai/claude-code</code></td>
+        <td><code>npm install -g @anthropic-ai/claude-code</code></td>
+      </tr>
+      <tr>
+        <td><strong>5. 動作確認</strong></td>
+        <td><code>claude --version</code></td>
+        <td><code>claude --version</code></td>
+      </tr>
+      <tr>
+        <td><strong>6. 初回ログイン</strong></td>
+        <td><code>claude</code> と打つ→ブラウザで認証</td>
+        <td><code>claude</code> と打つ→ブラウザで認証</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>気づきましたか? <strong>Node.js を入れた後は、Mac も Windows も同じコマンド</strong>で進みます。OSによる違いは「黒い画面の開き方」だけなんです。</p>
+
+  <div class="info-box">
+    <span class="label">Tips</span>
+    <p>黒い画面へコマンドを貼り付ける時は<strong>コピー後にそのままペースト</strong>。Macは Command+V、Windowsは右クリック(PowerShell)または Ctrl+V(Windows Terminal)。手打ちすると typo するので、<strong>必ずコピペ</strong>で。</p>
+  </div>
+
+  <!-- ===== Section 4: ハンズオン ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 手を動かしてみよう(小さな成功)</h2>
+
+  <p>さあ、実際にやってみましょう。一つずつ、自分のペースで。</p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-label">黒い画面を開く</div>
+      <div class="step-desc">Mac:ターミナル / Win:PowerShell</div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-label">Node.js 確認</div>
+      <div class="step-desc"><code>node -v</code> で数字が出る</div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-label">Claude Code 導入</div>
+      <div class="step-desc"><code>npm install -g @anthropic-ai/claude-code</code></div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-label">バージョン確認</div>
+      <div class="step-desc"><code>claude --version</code></div>
+    </div>
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-label">こんにちは</div>
+      <div class="step-desc"><code>claude</code> → 「こんにちは」</div>
+    </div>
+  </div>
+
+  <h3>ステップ1-2: Node.js の確認</h3>
+  <p>黒い画面で次を打ってください。<code>v20.18.0</code> のように<span class="term" data-tip="バージョン番号：ソフトの版数。数字が大きいほど新しい。">バージョン番号</span>が返ってきたらOK。</p>
+  <pre><code>node -v</code></pre>
+
+  <p>もし <code>command not found</code> や <code>認識されていません</code> と出たら、<span class="term" data-tip="Node.js：Claude Codeを動かすための土台となるソフト。公式サイトからLTS(長期サポート)版を落とす。">Node.js</span> がまだ入っていないサインです。<a href="https://nodejs.org/" target="_blank" rel="noopener">nodejs.org</a> で LTS 版(左側の緑)をダウンロードして、インストーラの指示通り「次へ」を押していけば5分で終わります。</p>
+
+  <h3>ステップ3: Claude Code を迎え入れる</h3>
+  <p>Node.js が確認できたら、Claude Code 本体を入れます。この1行だけ:</p>
+  <pre><code>npm install -g @anthropic-ai/claude-code</code></pre>
+
+  <p><span class="term" data-tip="npm：Node.jsに付属する『ソフトの自動インストール係』。『npm install』でネットから取ってきてPCに入れてくれる。">npm</span> がお弁当を宅配する感じで、<span class="term" data-tip="CLI：Command Line Interface。黒い画面で文字コマンドから操作する道具の総称。">CLI</span> を運んできてくれます。30秒〜2分くらい待ちます。最後に <code>added 42 packages</code> みたいな表示が出たら成功です。</p>
+
+  <h3>ステップ4: バージョン確認 = 小さな成功1</h3>
+  <pre><code>claude --version</code></pre>
+
+  <p><code>2.1.0 (Claude Code)</code> のように数字が返ってきたら、<strong>おめでとうございます! あなたのPCに相棒が住み始めました</strong>。自分を褒めていい瞬間です。</p>
+
+  <div class="info-box" style="border-left: 3px solid #D97757;">
+    <span class="label">ここまでで一度深呼吸</span>
+    <p>ここまで来たあなたは、もう「黒い画面でソフトを入れられる人」です。日本の大人の中でも、自分のPCに開発者向けのCLIを入れた経験がある人は多くありません。小さな一歩ですが、確実に一歩です。</p>
+  </div>
+
+  <!-- ===== Section 5: 認証(公式必読) ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 認証：Claudeにあなたを覚えてもらう</h2>
+
+  <p>初めて <code>claude</code> と打つと、「どのアカウントで使う?」と聞かれます。これを<strong>認証</strong>といいます。アナロジーで言えば、ビルに入るときの<strong>入館証の発行</strong>です。</p>
+
+  <div class="info-box">
+    <span class="label">公式ドキュメント必読</span>
+    <p>認証(認可)まわりは<strong>セキュリティの根幹</strong>です。誤った扱いでアカウント情報が漏れると金銭的被害が出ることもあります。<strong>API key(文字列)を他人やSNSに貼らない</strong>、<strong>公開リポジトリにコミットしない</strong>——この2点だけは厳守してください。詳しくは公式を。<a href="https://docs.claude.com/en/docs/claude-code/settings#authentication" target="_blank" rel="noopener">Claude Code 認証の公式ドキュメント →</a></p>
+  </div>
+
+  <h3>認証の選択肢</h3>
+
+  <table>
+    <thead>
+      <tr><th>方式</th><th>向いてる人</th><th>手順</th><th>メモ</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Claude Max / Pro サブスク</strong></td>
+        <td>月額で使い放題にしたい人</td>
+        <td><code>claude</code> → ブラウザで claude.ai にログイン</td>
+        <td>推奨。このチュートリアルはこれ前提</td>
+      </tr>
+      <tr>
+        <td><strong>Anthropic API key</strong></td>
+        <td>従量課金で使いたい人・会社貸与のキー</td>
+        <td>環境変数 <code>ANTHROPIC_API_KEY</code> を設定</td>
+        <td>使った分だけ請求。キーは他人に絶対見せない</td>
+      </tr>
+      <tr>
+        <td><strong>Bedrock / Vertex 経由</strong></td>
+        <td>AWS/GCP で社内契約済みの会社員</td>
+        <td>管理者に設定値をもらう</td>
+        <td>非エンジニアなら基本スルーでOK</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>ステップ6: 実際にログインする</h3>
+
+  <p>黒い画面で次を打ちます:</p>
+  <pre><code>claude</code></pre>
+
+  <p>初回だけ「Open this URL in your browser」のようなメッセージが出ます。URLをコピーしてブラウザに貼ると、Anthropic のログイン画面が開きます。普段 <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a> で使っているのと<strong>同じアカウントでログイン</strong>してください。</p>
+
+  <p>ブラウザで「Allow(許可)」を押すと、黒い画面に戻って認証完了のマークが出ます。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span></p>
+
+  <details class="more-box">
+    <summary>もっと詳しく: API key 方式を選ぶ場合</summary>
+    <div class="more-body">
+      <p><a href="https://console.anthropic.com/" target="_blank" rel="noopener">Anthropic Console</a> で API key を発行できます。発行した <code>sk-ant-...</code> で始まる文字列を、環境変数 <code>ANTHROPIC_API_KEY</code> に設定します。</p>
+      <p>Macなら <code>~/.zshrc</code> に次の1行:</p>
+      <pre><code>export ANTHROPIC_API_KEY="sk-ant-xxxxx"</code></pre>
+      <p>Windows(PowerShell)なら:</p>
+      <pre><code>setx ANTHROPIC_API_KEY "sk-ant-xxxxx"</code></pre>
+      <p><strong>このキーは絶対に他人に見せないでください</strong>。GitHub に誤ってアップしてしまうと数分で悪用される事例も報告されています。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 6: はじめての対話 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> はじめての対話：「こんにちは」</h2>
+
+  <p>認証が終わったら、<code>claude</code> と打って、画面が対話モードに切り替わるのを待ちます。<code>&gt;</code> や <code>│</code> のような<span class="term" data-tip="プロンプト：入力を待っているサインのマーク。『どうぞ打ってください』の合図。">プロンプト</span>が出たら、そのまま日本語で話しかけましょう。</p>
+
+  <pre><code>&gt; こんにちは</code></pre>
+
+  <p>Enter を押すと、数秒待って返事が返ってきます。</p>
+
+  <div class="quote">
+    「はい、こんにちは！今日は何をお手伝いしましょうか?」
+    <cite>— あなたのPCの中のClaude</cite>
+  </div>
+
+  <p>この瞬間、<strong>あなたと相棒の関係が始まりました</strong>。ここが本当のゴール。</p>
+
+  <h3>使い終わる時</h3>
+  <p>対話を終えるには <code>/exit</code> と打つか、Ctrl+C を2回押します。また呼び出したい時は <code>claude</code> と打てばOK。</p>
+
+  <div class="compare-cards">
+    <div class="cc good">
+      <span class="cc-label">うまくいった時</span>
+      <h4>画面に「こんにちは」の返事</h4>
+      <ul>
+        <li>数秒以内に返事</li>
+        <li>日本語でスムーズに会話できる</li>
+        <li><code>/exit</code>で終了できる</li>
+      </ul>
+    </div>
+    <div class="cc bad">
+      <span class="cc-label">もしエラーが出ても</span>
+      <h4>大丈夫、焦らない</h4>
+      <ul>
+        <li>次章で「エラーと友達に」なる</li>
+        <li>よくあるパターンは下の表を参照</li>
+        <li>深呼吸→もう一度試す</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== Section 7: よくあるエラー ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> よくあるつまずきと対処</h2>
+
+  <p>エラーが出てもパニックにならなくて大丈夫。ほとんどは「よくあるやつ」です。下のフローチャートで自分の症状を探してみてください。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">エラー診断フロー</div>
+    <pre class="mermaid">
+graph TD
+  Start([エラーが出た]) --> Q1{"どこで出た?"}
+  Q1 -- "node -v" --> A1["Node.js 未インストール<br/>nodejs.org から LTS 版"]
+  Q1 -- "npm install" --> Q2{"権限エラー?"}
+  Q2 -- "Yes" --> A2["Mac: sudo を付ける<br/>Win: 管理者で PowerShell"]
+  Q2 -- "No" --> A3["ネット接続を確認<br/>再度 npm install"]
+  Q1 -- "claude --version" --> A4["PATH を通し直す<br/>新しい黒い画面を開く"]
+  Q1 -- "ログイン画面" --> A5["ブラウザで claude.ai に<br/>先にログインしてから再試行"]
+    </pre>
+    <div class="diagram-caption">自分の症状を左上から辿れば対処法に着く。</div>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>症状</th><th>原因の多いパターン</th><th>対処</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>command not found: claude</code></td><td>インストール直後は反映されていない</td><td>黒い画面を一度閉じて開き直す</td></tr>
+      <tr><td><code>EACCES: permission denied</code></td><td>Macで権限不足</td><td>先頭に <code>sudo</code> を付けて再実行</td></tr>
+      <tr><td><code>実行ポリシー</code>エラー(Win)</td><td>PowerShell のセキュリティ設定</td><td>管理者で PowerShell を開き直す</td></tr>
+      <tr><td>ブラウザが開かない</td><td>既定ブラウザ未設定</td><td>URLを手動でコピペしてブラウザに貼る</td></tr>
+      <tr><td>日本語が文字化け(Win)</td><td>PowerShell の文字コード</td><td>Windows Terminal (新しい方)を使う</td></tr>
+    </tbody>
+  </table>
+
+  <p>ここで戸惑っても大丈夫。次の<strong>Ch07「エラーと友達になる」</strong>で、<strong>エラーメッセージをClaude自身に読ませて直してもらう</strong>方法を学びます。今は「出ることもある」ことだけ知っておけばOKです。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span></p>
+
+  <!-- ===== Section 8: ちょっと一息 データを見る ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> ちょっと一息：あなたの立ち位置</h2>
+
+  <p>ここまで来たあなたが、他の人に比べてどのくらい前にいるのか、データで見てみましょう。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">10時間コースの進捗(Ch02終了時点)</div>
+    <canvas id="ch2-donut-1" height="220"></canvas>
+  </div>
+
+  <div class="diagram-box">
+    <div class="diagram-title">セットアップ方式別・初回成功までの時間(目安)</div>
+    <canvas id="ch2-bar-1" height="180"></canvas>
+  </div>
+
+  <div class="kv-grid">
+    <div class="kv"><div class="kv-key">ここまでの所要時間</div><div class="kv-val">約75分</div></div>
+    <div class="kv"><div class="kv-key">10h コース中の進捗</div><div class="kv-val">12.5%</div></div>
+    <div class="kv"><div class="kv-key">次の章まで</div><div class="kv-val">Ch03 お願いする魔法</div></div>
+    <div class="kv"><div class="kv-key">いまできること</div><div class="kv-val">ClaudeとPCで会話</div></div>
+  </div>
+
+  <!-- ===== Exercises ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Exercise — やってみよう</h2>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>「こんにちは」の往復をしてみる</h4>
+    <p>Claude Code を起動して、日本語で「こんにちは」と話しかけ、返事をもらいましょう。そしてそのあと、もう一つだけ質問を続けてみます。</p>
+    <ol>
+      <li>黒い画面を開く</li>
+      <li><code>claude</code> と打ってEnter</li>
+      <li>「こんにちは」と入力→返事を受け取る</li>
+      <li>続けて「今日の天気に合う一言を教えて」などと話しかけてみる</li>
+      <li><code>/exit</code> で終了</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>こんな流れになれば成功です:</p>
+      <pre><code>$ claude
+&gt; こんにちは
+こんにちは！何をお手伝いしましょうか?
+
+&gt; 今日の天気に合う一言を教えて
+晴れやかな気分で新しい一歩を踏み出す日ですね。
+
+&gt; /exit</code></pre>
+      <p>返事の内容は毎回違うのでOK。<strong>返事が返ってくる事実</strong>が成功の証です。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>認証状態と設定を確認してみる</h4>
+    <p>Claude Code がどのアカウントで動いているかを確認しましょう。他のOSに移った時に役立ちます。</p>
+    <ol>
+      <li>黒い画面で <code>claude --version</code> を打つ</li>
+      <li>次に <code>claude</code> を起動し、対話モードで <code>/status</code> と打つ</li>
+      <li>表示されたアカウント/モデル名をメモする</li>
+      <li><code>/exit</code> で終了</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><code>/status</code> を打つと、現在のアカウント・使用モデル・作業ディレクトリなどが一覧表示されます。</p>
+      <pre><code>&gt; /status
+Account:  your-email@example.com
+Model:    claude-sonnet-4-7
+Working:  /Users/you/
+Auth:     OAuth (Max)</code></pre>
+      <p>ここで <code>Auth: OAuth (Max)</code> や <code>Auth: API key</code> が見えれば、認証は正しく通っています。もし <code>Not authenticated</code> と出たら、もう一度 <code>claude</code> を起動してログインをやり直してください。</p>
+    </div>
+  </details>
+
+  <!-- ===== いまのあなたは ===== -->
+  <div class="info-box" style="border-left-color: #D97757;">
+    <span class="label">いまのあなたは</span>
+    <p>自分のPCに Claude Code をインストールし、認証を通して、日本語で対話できる状態にまで到達しました。これで「AIを自分のPCに常駐させて使える人」の仲間入りです。日本の大人全体で見ても上位数%に入る位置。焦らず、この感覚を味わってください。次の章では、その相棒に「伝わるお願いの仕方」を学びます。</p>
+  </div>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.claude.com/en/docs/claude-code/setup" target="_blank" rel="noopener">Claude Code — 公式セットアップガイド</a></li>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.claude.com/en/docs/claude-code/settings" target="_blank" rel="noopener">Claude Code — 設定と認証(公式)</a></li>
+      <li><span class="res-type doc">Doc</span> <a href="https://nodejs.org/en/download" target="_blank" rel="noopener">Node.js 公式ダウンロードページ</a></li>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.claude.com/en/docs/claude-code/cli-reference" target="_blank" rel="noopener">Claude Code CLI コマンドリファレンス</a></li>
+      <li><span class="res-type video">Video</span> <a href="https://www.youtube.com/results?search_query=claude+code+setup+mac+windows" target="_blank" rel="noopener">YouTube: Claude Code セットアップ実演動画</a></li>
+      <li><span class="res-type doc">Doc</span> <a href="https://console.anthropic.com/" target="_blank" rel="noopener">Anthropic Console — API key 管理</a></li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="02">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="01-welcome.html"><span class="direction">&larr; Prev</span>ようこそ</a>
+    <a href="03-how-to-ask.html"><span class="direction">Next &rarr;</span>お願いする魔法</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+<script>
+  window.addEventListener("load", function(){
+    var ctx1 = document.getElementById('ch2-donut-1');
+    if (ctx1 && window.Chart) {
+      new Chart(ctx1, {
+        type: 'doughnut',
+        data: {
+          labels: ['Ch01 終了','Ch02 終了(いま)','残り 9章'],
+          datasets: [{
+            data: [5, 7.5, 87.5],
+            backgroundColor: ['rgba(217,119,87,0.35)','#D97757','#f4f4f5'],
+            borderWidth: 0
+          }]
+        },
+        options: { plugins: { legend: { position: 'bottom' } } }
+      });
+    }
+    var ctx2 = document.getElementById('ch2-bar-1');
+    if (ctx2 && window.Chart) {
+      new Chart(ctx2, {
+        type: 'bar',
+        data: {
+          labels: ['Max サブスク','API key','Bedrock/Vertex'],
+          datasets: [{
+            label: '初回認証までの時間(分)',
+            data: [3, 8, 20],
+            backgroundColor: ['#D97757','rgba(217,119,87,0.5)','#cbd5e1'],
+            borderRadius: 6
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          plugins: { legend: { display: false } },
+          scales: { x: { beginAtZero: true, title: { display: true, text: '分' } } }
+        }
+      });
+    }
+  });
+</script>
+</body>
+</html>

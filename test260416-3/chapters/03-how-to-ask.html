@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>お願いする魔法の型 - MK's Claude Code Tutorial - Short Edition</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code - Short
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav class="active"><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="../index.html#phase3" data-nav><span class="phase-name">Advanced</span><span class="phase-pct" id="pct-advanced">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.03</span>
+    お願いする魔法の型
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 11 sections</text>
+    </svg>
+    <div class="progress-info">0h / 10h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-welcome.html"><span class="status-dot" data-chapter="01"></span> ようこそ</a></li>
+    <li><a href="02-setup.html"><span class="status-dot" data-chapter="02"></span> セットアップ</a></li>
+    <li><a href="03-how-to-ask.html" class="active"><span class="status-dot" data-chapter="03"></span> お願いする魔法</a></li>
+    <li><a href="04-file-play.html"><span class="status-dot" data-chapter="04"></span> ファイルと遊ぼう</a></li>
+  </ul>
+  <div class="section-label">Core</div>
+  <ul>
+    <li><a href="05-git-basics.html"><span class="status-dot" data-chapter="05"></span> Git入門</a></li>
+    <li><a href="06-plan-mode.html"><span class="status-dot" data-chapter="06"></span> Planモード</a></li>
+    <li><a href="07-debug-buddy.html"><span class="status-dot" data-chapter="07"></span> エラーと友達に</a></li>
+    <li><a href="08-web-tools.html"><span class="status-dot" data-chapter="08"></span> Webで調べる</a></li>
+  </ul>
+  <div class="section-label">Advanced</div>
+  <ul>
+    <li><a href="09-webapp-part1.html"><span class="status-dot" data-chapter="09"></span> Webアプリ前編</a></li>
+    <li><a href="10-webapp-part2.html"><span class="status-dot" data-chapter="10"></span> Webアプリ後編+公開</a></li>
+    <li><a href="11-celebration.html"><span class="status-dot" data-chapter="11"></span> おめでとう！</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 1: Basics &gt; Chapter 03</div>
+  <h1>お願いする魔法の型</h1>
+  <p class="subtitle">曖昧なお願いが、Claudeに"ちゃんと伝わる言葉"に変わる45分</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 45min</span>
+    <span class="badge">Phase: Basics</span>
+    <span class="badge">難易度: 入門</span>
+  </div>
+
+  <p>ようこそ。この章ではたった3つの要素でClaudeへのお願いが劇的に伝わるようになります。難しい技術は一切出てきません。焦らずに、わからなくなったら前の章に戻ってOK。今日はこれをマスターすれば、あなたのClaudeはグンと働き者になります。</p>
+
+  <div class="info-box" style="border-left-color: #D97757;">
+    <span class="label">2026年1月時点の情報</span>
+    <p>この章の内容は <span class="term" data-tip="Anthropic社が作ったAIアシスタント。コードを書いたりファイルを編集したりできる">Claude Code</span> v2系を前提に書かれています。UIの細部は時期により変わることがあります。</p>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>なぜ「お願いの仕方」でこんなに差が出るのか</h2>
+
+  <p>上司に「あれ、いい感じにやっといて」と頼まれたら困りませんか。友達に「おいしいお店教えて」と言われても「ジャンルは？予算は？」と聞き返したくなるはず。Claudeも同じです。<strong>曖昧な指示では曖昧な結果しか返ってきません</strong>。</p>
+
+  <p>でも安心してください。人間と違って、Claudeは「確認の手間を惜しむ」タイプではありません。こちらが具体的に伝えれば、その具体さに応えてくれる律儀な<span class="term" data-tip="Claude Codeがあなたの代わりに作業してくれる時の気持ちのこと。怒ったり手を抜いたりしない、頼れる同僚のイメージ">相棒</span>です。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">同じお願い、伝え方で結果が変わる</div>
+    <svg viewBox="0 0 460 220" width="100%" style="max-width:460px; display:block; margin:0 auto;">
+      <rect x="20" y="30" width="180" height="160" fill="#fee2e2" stroke="#dc2626" rx="10"/>
+      <text x="110" y="55" text-anchor="middle" font-size="13" font-weight="700" fill="#b91c1c">曖昧なお願い</text>
+      <text x="110" y="85" text-anchor="middle" font-size="11" fill="#7f1d1d">「いい感じに」</text>
+      <text x="110" y="105" text-anchor="middle" font-size="11" fill="#7f1d1d">「よろしく」</text>
+      <text x="110" y="125" text-anchor="middle" font-size="11" fill="#7f1d1d">「ちゃんとして」</text>
+      <text x="110" y="160" text-anchor="middle" font-size="11" font-weight="600" fill="#b91c1c">→ 期待と違う結果</text>
+      <text x="110" y="178" text-anchor="middle" font-size="11" fill="#b91c1c">→ やり直し…</text>
+      <rect x="260" y="30" width="180" height="160" fill="#dcfce7" stroke="#16a34a" rx="10"/>
+      <text x="350" y="55" text-anchor="middle" font-size="13" font-weight="700" fill="#15803d">魔法の3要素</text>
+      <text x="350" y="85" text-anchor="middle" font-size="11" fill="#14532d">ゴール(何を)</text>
+      <text x="350" y="105" text-anchor="middle" font-size="11" fill="#14532d">具体的(どう)</text>
+      <text x="350" y="125" text-anchor="middle" font-size="11" fill="#14532d">制約(やらない事)</text>
+      <text x="350" y="160" text-anchor="middle" font-size="11" font-weight="600" fill="#15803d">→ 一発で欲しい物</text>
+      <text x="350" y="178" text-anchor="middle" font-size="11" fill="#15803d">→ 時間も短縮</text>
+      <path d="M 205 110 L 255 110" stroke="#D97757" stroke-width="2" marker-end="url(#arr1)"/>
+      <defs><marker id="arr1" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#D97757"/></marker></defs>
+    </svg>
+    <div class="diagram-caption">伝え方1つで、返ってくる答えの質が別物になる。</div>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>魔法の3要素：ゴール・具体的・制約</h2>
+
+  <p>これから先、Claudeにお願いするときはこの3つだけ意識してください。名前は大げさですが、中身はとても単純です。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">魔法の3要素（相棒に伝える3つの顔）</div>
+    <svg viewBox="0 0 420 280" width="100%" style="max-width:420px; display:block; margin:0 auto;">
+      <circle cx="140" cy="110" r="85" fill="#D97757" opacity="0.25" stroke="#D97757" stroke-width="2"/>
+      <circle cx="280" cy="110" r="85" fill="#60a5fa" opacity="0.25" stroke="#2563eb" stroke-width="2"/>
+      <circle cx="210" cy="195" r="85" fill="#fbbf24" opacity="0.25" stroke="#d97706" stroke-width="2"/>
+      <text x="90" y="70" text-anchor="middle" font-size="13" font-weight="700" fill="#b45309">ゴール</text>
+      <text x="90" y="88" text-anchor="middle" font-size="10" fill="#78350f">何を達成したいか</text>
+      <text x="330" y="70" text-anchor="middle" font-size="13" font-weight="700" fill="#1d4ed8">具体的</text>
+      <text x="330" y="88" text-anchor="middle" font-size="10" fill="#1e3a8a">どうやって/どの形で</text>
+      <text x="210" y="252" text-anchor="middle" font-size="13" font-weight="700" fill="#b45309">制約</text>
+      <text x="210" y="270" text-anchor="middle" font-size="10" fill="#78350f">やってほしくない事</text>
+      <text x="210" y="140" text-anchor="middle" font-size="14" font-weight="700" fill="#18181b">伝わるお願い</text>
+    </svg>
+    <div class="diagram-caption">3つが重なった中央に「一発で伝わるお願い」がある。</div>
+  </div>
+
+  <p>それぞれをもう少し掘り下げてみましょう。人間相手でも全く同じ発想です。</p>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="target" width="20" height="20"></i>
+      <div><strong>ゴール</strong> — 最終的に何が手元にあればうれしいか。「買い物メモをMarkdownで整理してほしい」「エラーの原因を日本語で3行で説明してほしい」のような着地点。</div>
+    </li>
+    <li>
+      <i data-lucide="ruler" width="20" height="20"></i>
+      <div><strong>具体的</strong> — 形式・例・個数・場所など。「<span class="term" data-tip="文章をきれいに書くための簡単な書き方のこと。# で見出し、- でリストになる">Markdown</span>で」「3つ」「このファイルを直接」など。</div>
+    </li>
+    <li>
+      <i data-lucide="shield" width="20" height="20"></i>
+      <div><strong>制約</strong> — やってほしくないことや触ってほしくない範囲。「既存の文章は消さないで」「ファイル名は変えないで」など。</div>
+    </li>
+  </ul>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+  <p>ここで「3つも覚えるの？」と戸惑っても大丈夫。後のBefore/Afterを見れば「あ、こういうことか」と必ず掴めます。覚えるというより<strong>"思い出すチェックリスト"</strong>だと思ってください。</p>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>Before / After：3つの例で体感しよう</h2>
+
+  <p>ここからが本番です。日常で起こりそうなお願いを、Before（よくやりがち）→ After（魔法の型）で並べます。読むだけでコツが身につきます。</p>
+
+  <h3>例1：買い物メモを整理したい</h3>
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">Before</span>
+      <h4>曖昧な頼み方</h4>
+      <ul>
+        <li>「買い物メモ整えて」</li>
+        <li>→ Claudeは何を整える？並び替え？書式？迷う</li>
+        <li>結果：意図と違う整理に</li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">After</span>
+      <h4>魔法の3要素入り</h4>
+      <ul>
+        <li><strong>ゴール</strong>：memo.txt をカテゴリ別に並べ直す</li>
+        <li><strong>具体的</strong>：食品/日用品/その他で分け、箇条書きに</li>
+        <li><strong>制約</strong>：元の商品名は変えない</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>例2：日記ファイルに今日の分を追加したい</h3>
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">Before</span>
+      <h4>曖昧な頼み方</h4>
+      <ul>
+        <li>「今日のこと書いといて」</li>
+        <li>→ 何を？どこに？どんな口調で？</li>
+        <li>結果：見当違いな文章が生成</li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">After</span>
+      <h4>魔法の3要素入り</h4>
+      <ul>
+        <li><strong>ゴール</strong>：diary.md に本日分を追加</li>
+        <li><strong>具体的</strong>：日付・天気・出来事3つ、100字以内、です・ます調</li>
+        <li><strong>制約</strong>：過去の日記は一切変更しない</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>例3：TODOリストから終わったものを消したい</h3>
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">Before</span>
+      <h4>曖昧な頼み方</h4>
+      <ul>
+        <li>「TODO片付けて」</li>
+        <li>→ 全部消す？実行する？どれが完了？</li>
+        <li>結果：大事な項目まで消されるリスク</li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">After</span>
+      <h4>魔法の3要素入り</h4>
+      <ul>
+        <li><strong>ゴール</strong>：todo.md から「[x]」付きの行を削除</li>
+        <li><strong>具体的</strong>：削除後の残り行数も報告してほしい</li>
+        <li><strong>制約</strong>：「[ ]」の未完了行は絶対に触らない</li>
+      </ul>
+    </div>
+  </div>
+
+  <p>どれも大したことは言っていません。<strong>「ゴール」「具体的に」「触らない場所」</strong>の3つが入っているかチェックするだけ。これだけで返ってくる結果の精度が一気に上がります。</p>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>「誰」に頼む気持ちで書くか</h2>
+
+  <p>ここは少し抽象的ですが、効果絶大なのでお付き合いください。Claudeにお願いする時、頭の中で<strong>「誰にお願いしているつもりか」</strong>を切り替えると言葉の温度が自然に整います。</p>
+
+  <table>
+    <thead>
+      <tr><th>イメージ</th><th>向いている場面</th><th>言葉づかいの例</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>初日の新入社員</td><td>前提がまだ共有されていない作業</td><td>「このフォルダにある memo.txt を開いて…」</td></tr>
+      <tr><td>優秀な同僚</td><td>一般的な作業・すぐ取りかかれる依頼</td><td>「〇〇を3つリストアップして」</td></tr>
+      <tr><td>信頼できる友達</td><td>雑談・相談・アイデア出し</td><td>「これ、もっと良くするアイデアない？」</td></tr>
+      <tr><td>慎重な技術者</td><td>ファイル削除・設定変更など危険作業</td><td>「実行前に必ず内容を見せて確認させて」</td></tr>
+    </tbody>
+  </table>
+
+  <p>どのモードでも共通なのは、<strong>「相手は人間で、見えない前提はゼロ」と考えること</strong>です。初日の新入社員に渡すつもりで情報を添えると、ほぼ外しません。</p>
+
+  <div class="quote">
+    うまく頼める人は、AIにも仕事でも強い。<strong>頼み方は一生の武器</strong>になる。
+    <cite>— 言い古された真理</cite>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>「やらなくていいこと」を伝える勇気</h2>
+
+  <p>初心者が見落としがちなのがここ。「何をするか」だけでなく<strong>「何をしなくていいか」</strong>を伝えると、Claudeの暴走が激減します。</p>
+
+  <p>人間でも同じです。「このチラシ作って」と頼むと、相手は気をきかせて<span class="term" data-tip="誰かが頼まれていないのに勝手に加えてしまうこと。時に歓迎されるが、時に迷惑">勝手に</span>ロゴの位置を変えたり、フォントを変えたり…。Claudeもたまに「ついでにこっちも直しました！」と言ってきます。その"親切"が裏目に出る前に、範囲を区切りましょう。</p>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-num">3<small>語</small></div>
+      <div class="stat-label">"触らないで"</div>
+      <div class="stat-trend up">↑ 事故激減</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">1<small>行</small></div>
+      <div class="stat-label">"ここだけ"</div>
+      <div class="stat-trend up">↑ 精度UP</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">0<small>件</small></div>
+      <div class="stat-label">余計な変更</div>
+      <div class="stat-trend up">↑ 安心感</div>
+    </div>
+  </div>
+
+  <p>具体的には、こんなフレーズを最後に添えるだけです。</p>
+
+  <pre><code># やらないことを明示する魔法のフレーズ
+
+- ○○のファイルだけを対象にして。他は触らないで
+- コメント行は残したまま、コード部分だけ修正して
+- 実行する前に、何を変えるかを先に教えて
+- 新しいファイルは作らないで、既存のファイルを直して</code></pre>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+  <p>最初は全部の要素を入れるのは難しく感じるかもしれません。でも大丈夫、慣れです。3日やれば自然に出てくるようになります。まずは1つだけでも意識してみてください。</p>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>お願いの流れを図で見る</h2>
+
+  <p>頭の中で「3要素あるかな？」とチェックする時、こんな<span class="term" data-tip="手順の流れ図。上から下、左から右に読む">フロー</span>を思い浮かべてください。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">お願いする前のセルフチェック</div>
+    <pre class="mermaid">
+graph TD
+  Start(["お願いしたい事"]) --> Q1{"ゴールは書いた?"}
+  Q1 -- "No" --> A1["何が欲しいか1行で書く"]
+  Q1 -- "Yes" --> Q2{"具体的か?"}
+  A1 --> Q2
+  Q2 -- "No" --> A2["数字/形式/例を足す"]
+  Q2 -- "Yes" --> Q3{"触らない場所は?"}
+  A2 --> Q3
+  Q3 -- "No" --> A3["やらないで欲しい事を1行足す"]
+  Q3 -- "Yes" --> Done(["送信OK"])
+  A3 --> Done
+    </pre>
+    <div class="diagram-caption">慣れれば無意識に、数秒で回せるようになる。</div>
+  </div>
+
+  <p>さらに、章の中で伝えた「書き方の効果」を感覚的に数字で眺めると、やる気が出ます。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">お願いの質と「一発OK率」の体感</div>
+    <canvas id="ch3-bar-1" height="120"></canvas>
+    <div class="diagram-caption">3要素が揃うほど、やり直しが減って時間も気持ちもラクになる。</div>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>まとめ：コピペで使える魔法のテンプレ</h2>
+
+  <p>最後に、今日からすぐ使えるテンプレートを置いておきます。コピペしてあなたの言葉を入れるだけ。</p>
+
+  <pre><code># お願いテンプレ v1
+
+【ゴール】{何を・何のために}
+【具体的に】{ファイル名・個数・形式・例}
+【制約】{触らないで欲しい場所・やらないで欲しい事}
+【確認】{実行前に見せて / 途中で質問OK}</code></pre>
+
+  <details class="more-box">
+    <summary>もっと詳しく：テンプレを短くしてもいい？</summary>
+    <div class="more-body">
+      <p>もちろん短くてOKです。慣れてきたら3要素が自然と文章に溶け込みます。たとえば「<em>memo.txt をカテゴリ別に並べ直して。元の商品名は変えないで</em>」の1文で「ゴール+具体的+制約」全部入りです。テンプレはあくまで<strong>最初の補助輪</strong>と思ってください。</p>
+    </div>
+  </details>
+
+  <details class="more-box">
+    <summary>もっと詳しく：英語と日本語、どちらが正確？</summary>
+    <div class="more-body">
+      <p>2026年1月時点のClaudeは日本語でもかなり自然に理解します。<strong>まずは日本語で書いて問題ありません</strong>。専門用語（関数名・エラーメッセージ）は原文そのまま混ぜると確実です。慣れてきたら英語で短く書く練習もアリですが、最初は気にしなくてOK。</p>
+    </div>
+  </details>
+
+  <details class="more-box">
+    <summary>もっと詳しく：長すぎるお願いは逆効果？</summary>
+    <div class="more-body">
+      <p>長くても大丈夫ですが、<strong>冗長な前置きや感情表現</strong>は薄められます。「お世話になっております、いつもありがとうございます…」は不要。代わりに<em>制約と具体例</em>に文字数を回すと精度が上がります。</p>
+    </div>
+  </details>
+
+  <!-- 小さな成功 -->
+  <div class="info-box">
+    <span class="label">小さな成功を積もう</span>
+    <p>この章を読んだ直後に、Claude Codeを起動して <strong>「memo.txt を作って、好きな果物を5つ箇条書きで。タイトル行は 'Fruits' とする」</strong> と打ってみてください。3要素入りの短いお願いで、一発で欲しいものが返ってくる体験ができます。</p>
+  </div>
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>曖昧なお願いを3要素に書き直す</h4>
+    <p>次の曖昧なお願いを、ゴール・具体的・制約の3要素に分けて書き直してください。</p>
+    <ol>
+      <li>元のお願い：「買い物リスト、きれいにして」</li>
+      <li>ファイルは <code>shopping.txt</code>、牛乳・卵・パン・りんごがバラバラに並んでいる状態</li>
+      <li>3要素入りのお願い文を1つ書く</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>例：</p>
+      <pre><code>shopping.txt を開いて、食品カテゴリ別に箇条書きで整理してください。
+「乳製品 / 穀類 / 果物」の3カテゴリに分け、各カテゴリを見出し行にしてください。
+元の商品名は変更せず、並び替えだけを行ってください。</code></pre>
+      <p>ポイント：
+      <strong>ゴール</strong>＝カテゴリ別の整理、
+      <strong>具体的</strong>＝3カテゴリ名と箇条書き形式、
+      <strong>制約</strong>＝商品名は変更しない。「お願いテンプレv1」そのままの順番で揃っています。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>自分の日常依頼をテンプレ化する</h4>
+    <p>あなたが最近、誰か（人・AI）にしたお願いを1つ思い出してください。それを魔法の3要素に分解し、さらに「やらなくていいこと」を1つ追加してみましょう。</p>
+    <ol>
+      <li>最近したお願いを1文で書き出す</li>
+      <li>ゴール・具体的・制約に分解</li>
+      <li>「触らないで欲しい範囲」を1行追加</li>
+      <li>Claude Codeに実際に送ってみる</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>たとえば「日記を書き足したい」という日常ニーズなら：</p>
+      <pre><code>【ゴール】diary.md に 2026-04-18 の日記を追加
+【具体的】見出しは ## 2026-04-18、本文は天気・出来事3つ・感想を100字以内
+【制約】過去の日付のエントリは一切編集しない
+【確認】追加する文面を先に見せてほしい</code></pre>
+      <p>ポイントは <strong>「過去のエントリは編集しない」</strong> という制約を明示していること。これだけでうっかり事故がぐっと減ります。自分の環境で実行し、期待通りに追加されたかチェックしましょう。</p>
+    </div>
+  </details>
+
+  <!-- いまのあなたは -->
+  <div class="info-box" style="border-left-color: #D97757;">
+    <span class="label">いまのあなたは</span>
+    <p>Claudeに「ゴール・具体的・制約」の3要素でお願いできるようになりました。さらに「やらなくていいこと」を言葉にできます。これはプロンプトエンジニアリングの土台そのもの。多くの人が曖昧に頼んで損をしている中、あなたはもう<strong>一段上の頼み方</strong>を手に入れました。自信を持って次の章に進んでいいです。</p>
+  </div>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span><a href="https://docs.claude.com/en/docs/claude-code/overview" target="_blank" rel="noopener">Claude Code 公式ドキュメント</a> — 最新の機能概要と使い方</li>
+      <li><span class="res-type doc">Doc</span><a href="https://docs.claude.com/en/docs/build-with-claude/prompt-engineering/overview" target="_blank" rel="noopener">Prompt Engineering Overview</a> — お願いの基礎を深掘り</li>
+      <li><span class="res-type doc">Doc</span><a href="https://docs.claude.com/en/docs/build-with-claude/prompt-engineering/be-clear-and-direct" target="_blank" rel="noopener">Be Clear and Direct</a> — 曖昧さを減らすコツ集</li>
+      <li><span class="res-type doc">Doc</span><a href="https://docs.claude.com/en/docs/build-with-claude/prompt-engineering/use-examples" target="_blank" rel="noopener">Use Examples (Multishot)</a> — 具体例の効果的な添え方</li>
+      <li><span class="res-type video">Video</span><a href="https://www.youtube.com/results?search_query=claude+code+prompt+tips" target="_blank" rel="noopener">Claude Code Prompt Tips（検索）</a> — 実演系の動画でコツを体感</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="03">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="02-setup.html"><span class="direction">&larr; Prev</span>セットアップ</a>
+    <a href="04-file-play.html"><span class="direction">Next &rarr;</span>ファイルと遊ぼう</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<!-- 視覚化ライブラリ群 -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+<script>
+window.addEventListener("load", function(){
+  var ctx = document.getElementById('ch3-bar-1');
+  if(!ctx || !window.Chart) return;
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['曖昧なまま', 'ゴールのみ', 'ゴール+具体的', '3要素+やらない事'],
+      datasets: [{
+        label: '一発OK率(体感%)',
+        data: [20, 45, 70, 92],
+        backgroundColor: ['#fca5a5', '#fcd34d', '#93c5fd', '#D97757'],
+        borderRadius: 6
+      }]
+    },
+    options: {
+      plugins: { legend: { display: false } },
+      scales: { y: { beginAtZero: true, max: 100, ticks: { callback: function(v){ return v + '%'; } } } }
+    }
+  });
+});
+</script>
+</body>
+</html>

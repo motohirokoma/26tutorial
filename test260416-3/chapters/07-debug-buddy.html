@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>エラーと友達になる - MK's Claude Code Tutorial - Short Edition</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code Tutorial - Short Edition
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav class="active"><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="../index.html#phase3" data-nav><span class="phase-name">Advanced</span><span class="phase-pct" id="pct-advanced">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.07</span>
+    エラーと友達になる
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 11 sections</text>
+    </svg>
+    <div class="progress-info">0h / 10h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-welcome.html"><span class="status-dot" data-chapter="01"></span> ようこそ</a></li>
+    <li><a href="02-setup.html"><span class="status-dot" data-chapter="02"></span> セットアップ</a></li>
+    <li><a href="03-how-to-ask.html"><span class="status-dot" data-chapter="03"></span> お願いする魔法</a></li>
+    <li><a href="04-file-play.html"><span class="status-dot" data-chapter="04"></span> ファイルと遊ぼう</a></li>
+  </ul>
+  <div class="section-label">Core</div>
+  <ul>
+    <li><a href="05-git-basics.html"><span class="status-dot" data-chapter="05"></span> Git入門</a></li>
+    <li><a href="06-plan-mode.html"><span class="status-dot" data-chapter="06"></span> Planモード</a></li>
+    <li><a href="07-debug-buddy.html" class="active"><span class="status-dot" data-chapter="07"></span> エラーと友達に</a></li>
+    <li><a href="08-web-tools.html"><span class="status-dot" data-chapter="08"></span> Webで調べる</a></li>
+  </ul>
+  <div class="section-label">Advanced</div>
+  <ul>
+    <li><a href="09-webapp-part1.html"><span class="status-dot" data-chapter="09"></span> Webアプリ前編</a></li>
+    <li><a href="10-webapp-part2.html"><span class="status-dot" data-chapter="10"></span> Webアプリ後編+公開</a></li>
+    <li><a href="11-celebration.html"><span class="status-dot" data-chapter="11"></span> おめでとう！</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 2: Core &gt; Chapter 07</div>
+  <h1>エラーと友達になる</h1>
+  <p class="subtitle">エラーは「失敗」じゃない。「ヒントをくれる親切な先生」です。</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 60分</span>
+    <span class="badge">Phase: Core</span>
+    <span class="badge">難易度: 初級</span>
+  </div>
+
+  <!-- ===== ようこそ ===== -->
+  <div class="info-box" style="border-left-color: #D97757;">
+    <span class="label">ようこそ、Ch07 へ</span>
+    <p>焦らなくて大丈夫。今日のテーマは「赤い文字が出てきても深呼吸できるあなた」になること。エラーは怖くないし、実はあなたの<strong>一番の味方</strong>です。60分で「エラー文の読み方」と「Claudeへの頼み方」を身につけて、一人で立ち止まらない自分に変わりましょう。</p>
+  </div>
+
+  <div class="info-box" style="border-left: 3px solid #D97757;">
+    <span class="label">2026年1月時点の情報</span>
+    <p>本章は <strong>2026年1月時点</strong> の Claude Code (CLI版) の挙動に基づきます。エラーメッセージの書式やコマンドの細部は進化し続けるので、画面と本章がピッタリ一致しなくても問題ありません。「読み方のコツ」は長期間変わりません。</p>
+  </div>
+
+  <!-- ===== Section 1: エラーは怖くない ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> エラーは「失敗」ではなく「ヒント」</h2>
+
+  <p>まず、一番大事なことをお伝えします。<strong>エラーが出たからといって、あなたが失敗したわけではありません</strong>。エラーは「ここで何かが噛み合わなかったよ、一緒に探そう」という<span class="term" data-tip="コンピューターやツールが、問題の場所と内容を教えてくれるメッセージ。赤や黄色で表示されることが多い。">エラーメッセージ</span>からの合図です。</p>
+
+  <p>考えてみてください。もしコンピューターが何も言わずに黙って止まったら、どう直せばいいかさっぱり分かりませんよね。エラーメッセージは、<strong>親切な先生が「ここを見てごらん」と付箋を貼ってくれている</strong>状態なんです。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">エラーに対する2つの心のあり方</div>
+    <svg viewBox="0 0 520 260" width="100%" style="max-width:520px; display:block; margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <!-- bad mindset -->
+      <rect x="20" y="30" width="220" height="200" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+      <text x="130" y="60" text-anchor="middle" font-size="14" font-weight="700" fill="#b91c1c">NG: 失敗だと思う</text>
+      <text x="130" y="90"  text-anchor="middle" font-size="11" fill="#475569">「私がダメなのかも」</text>
+      <text x="130" y="110" text-anchor="middle" font-size="11" fill="#475569">「もうやめたい」</text>
+      <text x="130" y="130" text-anchor="middle" font-size="11" fill="#475569">赤文字を閉じてしまう</text>
+      <text x="130" y="155" text-anchor="middle" font-size="11" fill="#475569">情報ゼロで詰む</text>
+      <text x="130" y="195" text-anchor="middle" font-size="22">😵</text>
+      <!-- good mindset -->
+      <rect x="280" y="30" width="220" height="200" rx="12" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="2"/>
+      <text x="390" y="60" text-anchor="middle" font-size="14" font-weight="700" fill="#D97757">OK: ヒントだと思う</text>
+      <text x="390" y="90"  text-anchor="middle" font-size="11" fill="#334155">「どこが違うのかな?」</text>
+      <text x="390" y="110" text-anchor="middle" font-size="11" fill="#334155">赤文字をゆっくり読む</text>
+      <text x="390" y="130" text-anchor="middle" font-size="11" fill="#334155">Claudeに見せる</text>
+      <text x="390" y="155" text-anchor="middle" font-size="11" fill="#334155">一緒に犯人を探す</text>
+      <text x="390" y="195" text-anchor="middle" font-size="22">🔍</text>
+    </svg>
+    <div class="diagram-caption">左の気持ちで閉じたら終わり。右の気持ちなら必ず前に進める。</div>
+  </div>
+
+  <div class="quote">
+    エラーが出ない人なんて、上級者にもいません。<strong>毎日エラーと会話してる人が「できる人」</strong>と呼ばれるだけです。
+    <cite>— MK</cite>
+  </div>
+
+  <p><span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>ここまでで「あ、自分だけじゃないんだ」と感じてもらえたら十分です。もう一度読んで掴みきれなくても大丈夫。次に進みましょう。</p>
+
+  <!-- ===== Section 2: 探偵モード ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> エラーが出たら「探偵モード」に切り替え</h2>
+
+  <p>エラーが出たときの合言葉は「深呼吸して、一緒に探偵する」です。あなたは今日からシャーロック・ホームズ。エラーメッセージは<strong>犯行現場に残された手がかり</strong>。Claudeは<strong>あなたの相棒ワトソン</strong>です。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">探偵の3つ道具</div>
+    <svg viewBox="0 0 540 220" width="100%" style="max-width:540px; display:block; margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <!-- magnifier detective icon -->
+      <circle cx="90" cy="110" r="60" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="2"/>
+      <circle cx="80" cy="100" r="28" fill="none" stroke="#D97757" stroke-width="3"/>
+      <line x1="100" y1="120" x2="125" y2="145" stroke="#D97757" stroke-width="4" stroke-linecap="round"/>
+      <text x="90" y="195" text-anchor="middle" font-size="12" font-weight="700">1. 虫眼鏡</text>
+      <text x="90" y="212" text-anchor="middle" font-size="10" fill="#64748b">(よく読む)</text>
+      <!-- notebook -->
+      <rect x="210" y="60" width="90" height="110" rx="6" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+      <line x1="225" y1="85"  x2="285" y2="85"  stroke="#a16207" stroke-width="1.5"/>
+      <line x1="225" y1="105" x2="285" y2="105" stroke="#a16207" stroke-width="1.5"/>
+      <line x1="225" y1="125" x2="285" y2="125" stroke="#a16207" stroke-width="1.5"/>
+      <line x1="225" y1="145" x2="270" y2="145" stroke="#a16207" stroke-width="1.5"/>
+      <text x="255" y="195" text-anchor="middle" font-size="12" font-weight="700">2. メモ帳</text>
+      <text x="255" y="212" text-anchor="middle" font-size="10" fill="#64748b">(丸ごとコピー)</text>
+      <!-- partner -->
+      <circle cx="420" cy="90" r="22" fill="#D97757"/>
+      <rect x="395" y="115" width="50" height="55" rx="8" fill="#D97757"/>
+      <text x="420" y="96" text-anchor="middle" font-size="14" font-weight="700" fill="white">C</text>
+      <text x="420" y="195" text-anchor="middle" font-size="12" font-weight="700">3. 相棒Claude</text>
+      <text x="420" y="212" text-anchor="middle" font-size="10" fill="#64748b">(一緒に考える)</text>
+    </svg>
+    <div class="diagram-caption">どれが欠けてもダメ。3つそろえば、ほとんどのエラーは解ける。</div>
+  </div>
+
+  <p>探偵として一番やってはいけないのは、現場を見ずに犯人を決めつけることです。プログラミングも同じ。<strong>エラーを読まずに「たぶんここだろう」と直すと、余計にこじれます</strong>。まずは読む。それだけで半分解決。</p>
+
+  <!-- ===== Section 3: エラー文の読み方 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> エラー文の読み方 — 3つのポイント</h2>
+
+  <p>エラー文は英語で長く、一見「宇宙語」に見えます。でも<strong>見る場所は3つだけ</strong>。それ以外は最初は読み飛ばしてOKです。</p>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="map-pin" width="20" height="20"></i>
+      <div><strong>① どこで?</strong> — ファイル名と行番号。「どの現場で起きたか」が最初に書かれている。例: <code>app.js:14</code> → appという<span class="term" data-tip="ファイル: コンピュータ上の1つの書類。コードや文章が入っている。">ファイル</span>の14行目。</div>
+    </li>
+    <li>
+      <i data-lucide="alert-triangle" width="20" height="20"></i>
+      <div><strong>② 何が?</strong> — 英単語2-3個のキーワード。例: <code>SyntaxError</code>(書き方が違う)、<code>not defined</code>(名前が見つからない)。この<strong>短いフレーズだけ</strong>を覚えて検索すればOK。</div>
+    </li>
+    <li>
+      <i data-lucide="arrow-down-wide-narrow" width="20" height="20"></i>
+      <div><strong>③ なぜ?</strong> — エラー文の最後の一行が一番情報が濃いことが多い。上から順に読まず、<strong>下から読む</strong>のもアリ。</div>
+    </li>
+  </ul>
+
+  <div class="diagram-box">
+    <div class="diagram-title">エラー文を3つのパートに分解する</div>
+    <svg viewBox="0 0 560 260" width="100%" style="max-width:560px; display:block; margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <!-- background console -->
+      <rect x="20" y="20" width="520" height="220" rx="10" fill="#1e293b"/>
+      <!-- line1 with labels -->
+      <text x="40" y="60" font-family="monospace" font-size="13" fill="#fbbf24">app.js:14</text>
+      <text x="120" y="60" font-family="monospace" font-size="13" fill="#f87171">SyntaxError</text>
+      <text x="220" y="60" font-family="monospace" font-size="13" fill="#e2e8f0">: Unexpected token '}'</text>
+      <!-- arrows and labels -->
+      <line x1="70" y1="75"  x2="70" y2="105" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="3,3"/>
+      <line x1="160" y1="75" x2="160" y2="135" stroke="#f87171" stroke-width="1.5" stroke-dasharray="3,3"/>
+      <line x1="310" y1="75" x2="310" y2="165" stroke="#e2e8f0" stroke-width="1.5" stroke-dasharray="3,3"/>
+      <rect x="30" y="105" width="90" height="28" rx="5" fill="#fbbf24"/>
+      <text x="75" y="124" text-anchor="middle" font-size="11" font-weight="700" fill="#1e293b">① どこで?</text>
+      <rect x="115" y="135" width="100" height="28" rx="5" fill="#f87171"/>
+      <text x="165" y="154" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">② 何が?</text>
+      <rect x="265" y="165" width="100" height="28" rx="5" fill="#e2e8f0"/>
+      <text x="315" y="184" text-anchor="middle" font-size="11" font-weight="700" fill="#1e293b">③ なぜ?</text>
+      <!-- translation box -->
+      <rect x="30" y="205" width="500" height="25" rx="5" fill="rgba(217,119,87,0.3)" stroke="#D97757"/>
+      <text x="40" y="222" font-size="11" fill="#fff">訳: appファイルの14行目、書き方エラー。「}」が想定外の場所にある</text>
+    </svg>
+    <div class="diagram-caption">どんなに長いエラーでも、この3ブロックで見れば怖くない。</div>
+  </div>
+
+  <h3>よく見るエラーキーワード早見表</h3>
+
+  <table>
+    <thead>
+      <tr><th>英語キーワード</th><th>日本語でざっくり</th><th>何が悪い?</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>SyntaxError</code></td><td>書き方の間違い</td><td>カッコ、セミコロン、スペルなどの文法ミス</td></tr>
+      <tr><td><code>ReferenceError</code> / <code>not defined</code></td><td>名前が見つからない</td><td>タイプミス or まだ作ってない変数・関数を使った</td></tr>
+      <tr><td><code>TypeError</code></td><td>型(タイプ)が違う</td><td>数字に文字を足そうとした、など</td></tr>
+      <tr><td><code>Permission denied</code></td><td>権限がない</td><td>そのファイル・フォルダは触れない設定</td></tr>
+      <tr><td><code>No such file or directory</code></td><td>そのファイルが無い</td><td>ファイル名のタイプミス、or 場所が違う</td></tr>
+      <tr><td><code>command not found</code></td><td>そのコマンドが無い</td><td>ツール未インストール、or コマンドのスペル違い</td></tr>
+    </tbody>
+  </table>
+
+  <details class="more-box">
+    <summary>もっと詳しく: エラー文の「スタックトレース」って何?</summary>
+    <div class="more-body">
+      <p>エラー文の下にズラッと並ぶ <code>at xxx.js:10</code> のような行を<span class="term" data-tip="スタックトレース: エラーが起きるまでの「通り道」の記録。最上段が事件現場、下段はその上流。">スタックトレース</span>と言います。最上段が「事件の現場」、下段は「どこから呼ばれて事件現場にたどり着いたか」の順路です。</p>
+      <p>初心者は<strong>最上段だけ見ればOK</strong>です。下段の「あなたが書いたファイル名」が出てきたら、そこも見る。ライブラリの内部ファイル名(<code>node_modules/...</code>)は基本スルーで大丈夫。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 4: Claudeへの頼み方 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Claudeへの頼み方 — 「直して」より「なぜ?」</h2>
+
+  <p>さあ、ワトソン(Claude)の登場です。エラーをClaudeに見せる時、やりがちな失敗があります。</p>
+
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">NG</span>
+      <h4>「直して」だけ頼む</h4>
+      <ul>
+        <li>エラー文をコピーせず「動かない」だけ伝える</li>
+        <li>「とりあえず直して」と丸投げ</li>
+        <li>結果: 推測で直され、また違うエラーが出る</li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">OK</span>
+      <h4>「なぜ?」から始める</h4>
+      <ul>
+        <li>エラー文を<strong>丸ごと</strong>コピペで見せる</li>
+        <li>「なぜ起きたか説明して」とまず聞く</li>
+        <li>納得してから「直して」と頼む</li>
+      </ul>
+    </div>
+  </div>
+
+  <p>なぜ「なぜ?」から聞くのか? それは、<strong>あなた自身が賢くなるため</strong>です。Claudeがパッと直しただけでは、次に似たエラーが出ても自分では気づけません。でも「なぜ起きたか」を1度理解すると、次回は自分で気づけるようになる。これが<strong>上達の本道</strong>です。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">エラー → 対処フロー</div>
+    <pre class="mermaid">
+graph TD
+  Start(["エラーが出た"]) --> Breath["深呼吸する"]
+  Breath --> Read["エラー文を3ブロックで読む"]
+  Read --> Understand{"意味が<br/>わかった?"}
+  Understand -- "はい" --> Try["自分で直してみる"]
+  Understand -- "いいえ" --> CopyAll["エラー文を丸ごとコピー"]
+  CopyAll --> AskWhy["Claudeに「なぜ?」と聞く"]
+  AskWhy --> Learn["説明を読んで理解"]
+  Learn --> AskFix["「では直して」と頼む"]
+  Try --> Done(["解決"])
+  AskFix --> Done
+    </pre>
+    <div class="diagram-caption">慣れると「深呼吸 → 読む → 聞く」が自然になる。</div>
+  </div>
+
+  <h3>魔法の頼みフレーズ集</h3>
+
+  <p>そのままコピペして使える、Claudeへの頼み方テンプレです。</p>
+
+<pre><code># 型1: なぜ? を聞く
+下のエラーが出ました。なぜこのエラーが起きたのか、初心者にもわかる言葉で説明してください。まだ直さなくていいです。
+
+---エラー全文---
+(ここにコピペ)
+---
+
+# 型2: 直す前に選択肢を聞く
+このエラーの直し方を、簡単な順に2-3個教えてください。それぞれのメリットとデメリットも。
+
+# 型3: 理解してから直す
+ありがとう、原因はわかりました。では、私のコードを実際に直してください。
+</code></pre>
+
+  <div class="info-box">
+    <span class="label">Tips: エラーを「全部」見せる</span>
+    <p>エラー文の途中で切ったり要約したりせず、<strong>赤い文字の塊を全部</strong>コピペしましょう。Claudeは情報が多いほど正確に答えられます。「長すぎるかな」は気にしなくてOK。</p>
+  </div>
+
+  <p><span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>ここ、すごく大事なところです。「なぜ?」→「じゃあ直して」の2段階。いきなり掴めなくても、実際にエラーが出た時に思い出せばOK。体で覚えるタイプのコツなので。</p>
+
+  <!-- ===== Section 5: よくあるエラーの正体 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> よくあるエラー Top 3 とその正体</h2>
+
+  <p>初学者が高確率で出会うエラー3兄弟です。「また君か」と思えるようになれば、怖さ半減です。</p>
+
+  <h3>① タイプミス族(9割がこれ)</h3>
+
+  <p>ファイル名のスペル違い、<span class="term" data-tip="変数: データに名前をつけて後で使えるようにする仕組み。箱にラベルを貼るイメージ。">変数</span>名のタイプミス、カッコの閉じ忘れ。<strong>初心者〜上級者まで全員やらかす</strong>ミスです。恥ずかしがらなくて大丈夫。</p>
+
+  <ul class="icon-list">
+    <li><i data-lucide="type" width="20" height="20"></i><div><code>userNmae</code> ← Name の綴り違い</div></li>
+    <li><i data-lucide="brackets" width="20" height="20"></i><div><code>{ } ( ) [ ]</code> の閉じ忘れ、逆順</div></li>
+    <li><i data-lucide="case-sensitive" width="20" height="20"></i><div><code>GetUser</code> と <code>getUser</code> は別モノ(大文字小文字)</div></li>
+  </ul>
+
+  <h3>② 場所ちがい族</h3>
+
+  <p><span class="term" data-tip="ターミナル: コンピュータに文字で命令を出すアプリ。黒い画面でコマンドを打つ場所。">ターミナル</span>で今いる<span class="term" data-tip="フォルダ: ファイルをまとめる入れ物。ディレクトリとも言う。">フォルダ</span>と、操作したいファイルがある場所が違う。<code>No such file or directory</code> の正体はだいたいこれ。</p>
+
+<pre><code>$ cat memo.txt
+cat: memo.txt: No such file or directory
+
+# 対処: いま自分がどこにいるか確認
+$ pwd
+/Users/you/Desktop
+# memo.txt は Documents にあった → cd で移動 or パス指定
+</code></pre>
+
+  <h3>③ 権限・準備不足族</h3>
+
+  <p><code>Permission denied</code> や <code>command not found</code> は、<strong>あなたのせい</strong>ではありません。「そのコマンドをまだインストールしていない」「管理者権限が要る」など環境の話。Claudeに相談すれば「足りないものはこれです」と教えてくれます。</p>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-num">90<small>%</small></div>
+      <div class="stat-label">タイプミス族の占有率</div>
+      <div class="stat-trend up">↑ 慣れで減る</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">3<small>つ</small></div>
+      <div class="stat-label">読むべき場所</div>
+      <div class="stat-trend up">↑ それ以外はスルー可</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">深呼吸</div>
+      <div class="stat-label">最初にやること</div>
+      <div class="stat-trend up">↑ 本当に効く</div>
+    </div>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: 「急に動かなくなった」時のチェックリスト</summary>
+    <div class="more-body">
+      <p>昨日まで動いていたのに今日はエラー、というパターンも多いです。その時のチェック順:</p>
+      <ol>
+        <li><strong>何か変更した?</strong> — 直近の <code>git diff</code>(前章でやりました)を見る</li>
+        <li><strong>場所は合ってる?</strong> — <code>pwd</code> で今のフォルダ確認</li>
+        <li><strong>何かインストール/更新した?</strong> — OS更新、npm更新など</li>
+        <li><strong>再起動してみた?</strong> — ターミナルを1回閉じて開き直す。これで直ることも</li>
+      </ol>
+      <p>それでも分からなければ、エラー文とこの4点の答えをまとめてClaudeに伝えるのが最速です。</p>
+    </div>
+  </details>
+
+  <details class="more-box">
+    <summary>もっと詳しく: 「警告(Warning)」と「エラー(Error)」の違い</summary>
+    <div class="more-body">
+      <p>黄色い文字で出る<strong>Warning(警告)</strong>は、「動くけど注意してね」のメッセージ。止まってはいません。一方<strong>Error(エラー)</strong>は「ここで止まった」のメッセージ。まず止まっているErrorから対処し、Warningは後回しでOK。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 6: 小さな成功 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 小さな成功 — わざとエラーを出して、直してもらう</h2>
+
+  <p>理論だけでは身につきません。<strong>わざとエラーを出してみる</strong>のが今日の小さな成功です。安全で、しかも一気にコツを掴めます。</p>
+
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-label">準備</div><div class="step-desc">適当な作業フォルダでClaude Code起動</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-label">わざと失敗</div><div class="step-desc">存在しないファイルを開けと頼む</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-label">読む</div><div class="step-desc">赤いメッセージを3ブロックで分解</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-label">聞く</div><div class="step-desc">「なぜ?」とClaudeに尋ねる</div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-label">直す</div><div class="step-desc">理解してから修正してもらう</div></div>
+  </div>
+
+  <h3>具体的な手順</h3>
+
+<pre><code># ステップ2: わざと失敗させる
+> kaimonomemo-exist-shinai.txt の中身を読んで
+
+# → Claude Code は実際にファイルを探し、
+#   No such file or directory のエラーを出す
+
+# ステップ4: なぜ? と聞く
+> いま出たエラーの意味を、初心者にもわかる言葉で説明してください
+
+# ステップ5: 理解後に直す
+> では、kaimono.txt という名前で新しく空のファイルを作ってください
+</code></pre>
+
+  <p>うまく動いたら、自分を褒めてください。<strong>あなたは今日、エラーを味方にする第一歩を踏み出しました</strong>。</p>
+
+  <!-- ===== Section 7: マインドセット可視化 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 成長の実感 — 回を重ねるごとに早くなる</h2>
+
+  <p>同じエラーと何度か出会うと、見た瞬間に対処できるようになります。これが<strong>成長</strong>です。下のグラフは、同じエラーに2回目・3回目と出会った時の「解決までの時間」のイメージ。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">同じエラーに出会うたびに、解決が早くなる</div>
+    <canvas id="ch7-line-1" height="180"></canvas>
+  </div>
+  <script>
+  window.addEventListener("load", function() {
+    var ctx = document.getElementById('ch7-line-1');
+    if (!ctx || !window.Chart) return;
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['1回目', '2回目', '3回目', '4回目', '5回目'],
+        datasets: [{
+          label: '解決までの時間(分)',
+          data: [30, 15, 8, 4, 2],
+          borderColor: '#D97757',
+          backgroundColor: 'rgba(217,119,87,0.15)',
+          tension: 0.3,
+          fill: true,
+          pointBackgroundColor: '#D97757',
+          pointRadius: 5
+        }]
+      },
+      options: {
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true, title: { display: true, text: '分' } } }
+      }
+    });
+  });
+  </script>
+
+  <div class="diagram-box">
+    <div class="diagram-title">エラー対処の「気分」もラクになっていく</div>
+    <canvas id="ch7-bar-2" height="150"></canvas>
+  </div>
+  <script>
+  window.addEventListener("load", function() {
+    var ctx = document.getElementById('ch7-bar-2');
+    if (!ctx || !window.Chart) return;
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['ビクビク', '冷静', 'ちょっと楽しい'],
+        datasets: [{
+          label: '比率',
+          data: [10, 60, 30],
+          backgroundColor: ['#cbd5e1', 'rgba(217,119,87,0.5)', '#D97757'],
+          borderRadius: 8
+        }]
+      },
+      options: {
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true, max: 100, title: { display: true, text: '%' } } }
+      }
+    });
+  });
+  </script>
+
+  <p>3ヶ月後、あなたはエラーを見つけて<strong>「お、また会ったね」</strong>と言えるようになります。嘘ではなく、本当にそうなります。</p>
+
+  <!-- ===== Exercises ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 練習してみよう</h2>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>わざとタイプミス族を召喚する</h4>
+    <p>安全にエラーと仲良くなる練習です。Claude Codeで次を試してください。</p>
+    <ol>
+      <li>適当な作業フォルダに移動してClaude Codeを起動</li>
+      <li>次のように頼む: 「<code>sonzai-shinai-file.txt</code> の中身を読み上げて」</li>
+      <li>出てきた赤いメッセージを、<strong>①どこで ②何が ③なぜ</strong> の3つに分けて自分の言葉で書き出す</li>
+      <li>そのエラー全文をClaudeに貼って「なぜ起きたか、初心者にもわかる言葉で説明して」と頼む</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>典型的なエラーは次のようなものです:</p>
+      <pre><code>Error: ENOENT: no such file or directory, open 'sonzai-shinai-file.txt'</code></pre>
+      <p><strong>3分解の答え:</strong></p>
+      <ul>
+        <li>①どこで: <code>sonzai-shinai-file.txt</code> を開こうとしたところ</li>
+        <li>②何が: <code>ENOENT</code> / <code>no such file or directory</code>(そのファイルが無い)</li>
+        <li>③なぜ: 指定したファイルが現在のフォルダに存在しないから</li>
+      </ul>
+      <p><strong>Claudeの返答(例):</strong></p>
+      <blockquote>「そのファイル名のファイルが、いま作業しているフォルダに存在しないからです。ファイル名のタイプミス、または別のフォルダにある可能性があります。」</blockquote>
+      <p>ポイント: ここで「直して」と頼まず、<strong>まず納得</strong>できれば大成功です。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>わざとコードにバグを仕込む</h4>
+    <p>実際の開発で一番よくある「書いたコードが動かない」体験です。</p>
+    <ol>
+      <li>Claudeに「簡単な挨拶を表示するHTMLファイル <code>hello.html</code> を作って」と頼む</li>
+      <li>できたファイルをエディタで開き、<strong>わざと</strong> <code>&lt;body&gt;</code> の <code>&gt;</code> を削る(<code>&lt;body</code> にしてしまう)</li>
+      <li>ブラウザで開いてみる → 表示が崩れる</li>
+      <li>「このHTMLの表示が崩れています。コードの中身はこれです: (貼る)。<strong>なぜ</strong> 崩れているか、初心者にもわかる言葉で説明してください。まだ直さなくていいです」と頼む</li>
+      <li>説明を読んで納得したら「では直してください」と頼む</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><strong>期待されるClaudeの説明:</strong></p>
+      <blockquote>「<code>&lt;body</code> の後ろの <code>&gt;</code> が抜けているので、<span class="term" data-tip="タグ: HTMLで「ここから見出し」「ここが本文」などを表す目印。&lt;...&gt; の形。">タグ</span>が閉じていません。ブラウザは「ここからがbody」と認識できず、それ以降のコード全体を本文テキストとして表示してしまいます。」</blockquote>
+      <p><strong>直し方:</strong></p>
+      <pre><code>&lt;!-- Before --&gt;
+&lt;body
+  &lt;h1&gt;こんにちは&lt;/h1&gt;
+&lt;/body&gt;
+
+&lt;!-- After --&gt;
+&lt;body&gt;
+  &lt;h1&gt;こんにちは&lt;/h1&gt;
+&lt;/body&gt;</code></pre>
+      <p><strong>学べること:</strong> タグの書き方ミスは、エラーメッセージとして赤字で出るより、「表示がおかしい」という形で現れることも多いです。その時も「なぜ?」→「じゃあ直して」の順は同じ。自分のコードを丸ごと見せて「なぜ崩れている?」と聞けば、Claudeは的確に答えてくれます。</p>
+    </div>
+  </details>
+
+  <!-- ===== いまのあなたは ===== -->
+  <div class="info-box" style="border-left-color: #D97757;">
+    <span class="label">いまのあなたは</span>
+    <p>エラーメッセージを見て固まらず、<strong>「①どこで ②何が ③なぜ」の3ブロックで分解して読める</strong>ようになりました。さらに、Claudeに「<strong>直して</strong>」ではなく「<strong>なぜ?</strong>」から聞ける。これが一生モノのスキルです。プログラミング未経験者の9割はエラーで挫折しますが、あなたはもう挫折しない側。エラーは先生であり、相棒。自信を持っていいですよ。</p>
+  </div>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式ドキュメント</a> — エラーが出た時の基本の流れ</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Errors" target="_blank" rel="noopener">MDN: JavaScript エラーリファレンス</a> — よく出るエラーの日本語解説</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://developer.mozilla.org/ja/docs/Glossary/Syntax_error" target="_blank" rel="noopener">MDN: SyntaxError とは</a> — 書き方エラーの仕組み</li>
+      <li><span class="res-type video">Video</span> <a href="https://www.youtube.com/results?search_query=debugging+for+beginners" target="_blank" rel="noopener">YouTube: "debugging for beginners"</a> — 探偵のように進めるデバッグ動画</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://stackoverflow.com/" target="_blank" rel="noopener">Stack Overflow</a> — 世界中の先輩が同じエラーで悩んでた記録。英語で検索すると答えが即見つかる</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.anthropic.com/" target="_blank" rel="noopener">Anthropic ドキュメント</a> — Claudeの挙動全般</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="07">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="06-plan-mode.html"><span class="direction">&larr; Prev</span>Planモード</a>
+    <a href="08-web-tools.html"><span class="direction">Next &rarr;</span>Webで調べる</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>

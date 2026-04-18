@@ -1,51 +1,6 @@
-/**
- * Tutorial Progress Tracking (ES Module)
- *
- * Stores chapter completion + streak in localStorage for instant UI,
- * and syncs to Firestore (tutorials/test260416-3/users/{uid}) when signed in.
- * Merges local and cloud state on sign-in (union of completions, max streak).
- *
- * Placeholders replaced per tutorial:
- *   test260416-3            — tutorial slug (Firestore path segment)
- *   [
-  { id: '01', title: 'Claude Codeって何?', hours: 0.75, phase: 'basics' },
-  { id: '02', title: 'インストールと初回起動', hours: 1, phase: 'basics' },
-  { id: '03', title: '基本コマンドと会話の流れ', hours: 1, phase: 'basics' },
-  { id: '04', title: 'プロンプト設計の基本', hours: 1.25, phase: 'basics' },
-  { id: '05', title: 'ファイル操作', hours: 1, phase: 'core' },
-  { id: '06', title: 'Gitとちょっと連携', hours: 1, phase: 'core' },
-  { id: '07', title: 'エラー・困ったときの対処', hours: 1, phase: 'core' },
-  { id: '08', title: '実践: 自己紹介Webページ', hours: 1, phase: 'practice' },
-  { id: '09', title: '実践: ミニWebアプリ', hours: 1.5, phase: 'practice' },
-  { id: '10', title: '最終演習', hours: 0.5, phase: 'practice' },
-]  — CHAPTERS const body
- *   10     — TOTAL_HOURS const value
- *   {
-  '01': '01-what-is-claude-code.html',
-  '02': '02-installation.html',
-  '03': '03-basic-commands.html',
-  '04': '04-prompt-design.html',
-  '05': '05-file-operations.html',
-  '06': '06-git.html',
-  '07': '07-troubleshooting.html',
-  '08': '08-web-page.html',
-  '09': '09-web-app.html',
-  '10': '10-final-project.html',
-}   — CHAPTER_FILES const body
- *   test260416-3-tutorial-progress     — localStorage key prefix (must be unique per tutorial)
- *   test260416-3-tutorial-streak      — localStorage key for streak
- */
 import {
-  auth,
-  db,
-  provider,
-  signInWithPopup,
-  signOut,
-  onAuthStateChanged,
-  doc,
-  setDoc,
-  onSnapshot,
-  serverTimestamp,
+  auth, db, provider, signInWithPopup, signOut, onAuthStateChanged,
+  doc, setDoc, onSnapshot, serverTimestamp,
 } from './firebase-config.js';
 
 const STORAGE_KEY = 'test260416-3-tutorial-progress';
@@ -53,386 +8,143 @@ const STREAK_KEY = 'test260416-3-tutorial-streak';
 const TUTORIAL_SLUG = 'test260416-3';
 
 const CHAPTERS = [
-  { id: '01', title: 'Claude Codeって何?', hours: 0.75, phase: 'basics' },
-  { id: '02', title: 'インストールと初回起動', hours: 1, phase: 'basics' },
-  { id: '03', title: '基本コマンドと会話の流れ', hours: 1, phase: 'basics' },
-  { id: '04', title: 'プロンプト設計の基本', hours: 1.25, phase: 'basics' },
-  { id: '05', title: 'ファイル操作', hours: 1, phase: 'core' },
-  { id: '06', title: 'Gitとちょっと連携', hours: 1, phase: 'core' },
-  { id: '07', title: 'エラー・困ったときの対処', hours: 1, phase: 'core' },
-  { id: '08', title: '実践: 自己紹介Webページ', hours: 1, phase: 'practice' },
-  { id: '09', title: '実践: ミニWebアプリ', hours: 1.5, phase: 'practice' },
-  { id: '10', title: '最終演習', hours: 0.5, phase: 'practice' },
+  { id: '01', title: 'ようこそ！Claude Code って何?', hours: 0.5, phase: 'basics' },
+  { id: '02', title: 'セットアップ：15分で相棒がやってくる', hours: 0.75, phase: 'basics' },
+  { id: '03', title: 'お願いする魔法の型', hours: 0.75, phase: 'basics' },
+  { id: '04', title: 'ファイルと遊ぼう', hours: 1.0, phase: 'basics' },
+  { id: '05', title: 'Git 入門：あなたのコードを守る', hours: 1.0, phase: 'core' },
+  { id: '06', title: 'Plan モード：勝手に暴走させない', hours: 0.75, phase: 'core' },
+  { id: '07', title: 'エラーと友達になる', hours: 1.0, phase: 'core' },
+  { id: '08', title: 'Web で調べる魔法', hours: 0.75, phase: 'core' },
+  { id: '09', title: 'ミニ Web アプリ作り：前編', hours: 1.5, phase: 'advanced' },
+  { id: '10', title: 'ミニ Web アプリ作り：後編 + 公開', hours: 1.5, phase: 'advanced' },
+  { id: '11', title: 'おめでとう！次の一歩', hours: 0.5, phase: 'advanced' },
 ];
 
 const TOTAL_HOURS = 10;
 
 const CHAPTER_FILES = {
-  '01': '01-what-is-claude-code.html',
-  '02': '02-installation.html',
-  '03': '03-basic-commands.html',
-  '04': '04-prompt-design.html',
-  '05': '05-file-operations.html',
-  '06': '06-git.html',
-  '07': '07-troubleshooting.html',
-  '08': '08-web-page.html',
-  '09': '09-web-app.html',
-  '10': '10-final-project.html',
+  '01': '01-welcome.html',
+  '02': '02-setup.html',
+  '03': '03-how-to-ask.html',
+  '04': '04-file-play.html',
+  '05': '05-git-basics.html',
+  '06': '06-plan-mode.html',
+  '07': '07-debug-buddy.html',
+  '08': '08-web-tools.html',
+  '09': '09-webapp-part1.html',
+  '10': '10-webapp-part2.html',
+  '11': '11-celebration.html',
 };
 
-let currentUser = null;
-let cloudUnsub = null;
-let applyingRemote = false;
-let firstSnapshotForUser = true;
+let currentUser = null, cloudUnsub = null, applyingRemote = false, firstSnapshotForUser = true;
 
-// ---- Local storage ----
+function getProgress(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||{}}catch(e){return {}}}
+function saveProgress(d){localStorage.setItem(STORAGE_KEY,JSON.stringify(d))}
+function getStreak(){try{return JSON.parse(localStorage.getItem(STREAK_KEY))||{count:0,lastDate:null}}catch(e){return{count:0,lastDate:null}}}
+function saveStreak(s){localStorage.setItem(STREAK_KEY,JSON.stringify(s))}
+function userDocRef(uid){return doc(db,'tutorials',TUTORIAL_SLUG,'users',uid)}
 
-function getProgress() {
-  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
-  catch (e) { return {}; }
-}
-function saveProgress(data) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-}
-function getStreak() {
-  try { return JSON.parse(localStorage.getItem(STREAK_KEY)) || { count: 0, lastDate: null }; }
-  catch (e) { return { count: 0, lastDate: null }; }
-}
-function saveStreak(streak) {
-  localStorage.setItem(STREAK_KEY, JSON.stringify(streak));
+async function pushToCloud(){
+  if(!currentUser||applyingRemote)return;
+  try{await setDoc(userDocRef(currentUser.uid),{progress:getProgress(),streak:getStreak(),updatedAt:serverTimestamp()})}
+  catch(e){console.error('Firestore push failed:',e)}
 }
 
-// ---- Cloud sync ----
+function mergeProgress(local,cloud){const m={...cloud};for(const k in local){if(!m[k]||new Date(local[k])<new Date(m[k]))m[k]=local[k]}return m}
+function mergeStreak(local,cloud){if(!cloud)return local;if(!local||!local.lastDate)return cloud;if(cloud.lastDate>local.lastDate)return cloud;if(local.lastDate>cloud.lastDate)return local;return{count:Math.max(local.count,cloud.count),lastDate:local.lastDate}}
 
-function userDocRef(uid) {
-  return doc(db, 'tutorials', TUTORIAL_SLUG, 'users', uid);
-}
-
-async function pushToCloud() {
-  if (!currentUser || applyingRemote) return;
-  try {
-    await setDoc(userDocRef(currentUser.uid), {
-      progress: getProgress(),
-      streak: getStreak(),
-      updatedAt: serverTimestamp(),
-    });
-  } catch (e) {
-    console.error('Firestore push failed:', e);
-  }
-}
-
-function mergeProgress(local, cloud) {
-  const merged = { ...cloud };
-  for (const k in local) {
-    if (!merged[k] || new Date(local[k]) < new Date(merged[k])) {
-      merged[k] = local[k];
-    }
-  }
-  return merged;
-}
-
-function mergeStreak(local, cloud) {
-  if (!cloud) return local;
-  if (!local || !local.lastDate) return cloud;
-  if (cloud.lastDate > local.lastDate) return cloud;
-  if (local.lastDate > cloud.lastDate) return local;
-  return { count: Math.max(local.count, cloud.count), lastDate: local.lastDate };
-}
-
-function subscribeToCloud(uid) {
+function subscribeToCloud(uid){
   firstSnapshotForUser = true;
-  cloudUnsub = onSnapshot(userDocRef(uid), (snap) => {
-    if (snap.metadata && snap.metadata.hasPendingWrites) return;
-
-    const cloud = snap.exists() ? snap.data() : null;
-
-    if (firstSnapshotForUser) {
-      firstSnapshotForUser = false;
-
-      const localProgress = getProgress();
-      const localStreak = getStreak();
-      const mergedProgress = cloud ? mergeProgress(localProgress, cloud.progress || {}) : localProgress;
-      const mergedStreak = cloud ? mergeStreak(localStreak, cloud.streak) : localStreak;
-
-      applyingRemote = true;
-      saveProgress(mergedProgress);
-      saveStreak(mergedStreak);
-      updateAllUI();
-      applyingRemote = false;
-
-      const cloudProgress = (cloud && cloud.progress) || {};
-      const localHasExtra = Object.keys(mergedProgress).some(k => !cloudProgress[k]);
-      if (!snap.exists() || localHasExtra) {
-        setDoc(userDocRef(uid), {
-          progress: mergedProgress,
-          streak: mergedStreak,
-          updatedAt: serverTimestamp(),
-        }).catch(e => console.error('Initial sync push failed:', e));
+  cloudUnsub = onSnapshot(userDocRef(uid),(snap)=>{
+    if(snap.metadata&&snap.metadata.hasPendingWrites)return;
+    const cloud = snap.exists()?snap.data():null;
+    if(firstSnapshotForUser){
+      firstSnapshotForUser=false;
+      const lp=getProgress(),ls=getStreak();
+      const mp=cloud?mergeProgress(lp,cloud.progress||{}):lp;
+      const ms=cloud?mergeStreak(ls,cloud.streak):ls;
+      applyingRemote=true; saveProgress(mp); saveStreak(ms); updateAllUI(); applyingRemote=false;
+      const cp=(cloud&&cloud.progress)||{};
+      const lhe=Object.keys(mp).some(k=>!cp[k]);
+      if(!snap.exists()||lhe){
+        setDoc(userDocRef(uid),{progress:mp,streak:ms,updatedAt:serverTimestamp()}).catch(e=>console.error('Initial sync push failed:',e));
       }
     } else {
-      applyingRemote = true;
-      saveProgress((cloud && cloud.progress) || {});
-      saveStreak((cloud && cloud.streak) || { count: 0, lastDate: null });
-      updateAllUI();
-      applyingRemote = false;
+      applyingRemote=true; saveProgress((cloud&&cloud.progress)||{}); saveStreak((cloud&&cloud.streak)||{count:0,lastDate:null}); updateAllUI(); applyingRemote=false;
     }
-  }, (err) => {
-    console.error('Firestore subscription error:', err);
+  },(err)=>console.error('Firestore subscription error:',err));
+}
+
+function toggleComplete(chId){
+  const d=getProgress();
+  if(d[chId])delete d[chId]; else {d[chId]=new Date().toISOString(); updateStreak();}
+  saveProgress(d); updateAllUI(); pushToCloud();
+}
+
+function updateStreak(){
+  const s=getStreak(), today=new Date().toISOString().slice(0,10);
+  if(s.lastDate===today)return;
+  const y=new Date(Date.now()-86400000).toISOString().slice(0,10);
+  if(s.lastDate===y)s.count++; else s.count=1;
+  s.lastDate=today; saveStreak(s);
+}
+
+function getStats(){
+  const d=getProgress(); let dc=0,dh=0;
+  CHAPTERS.forEach(c=>{if(d[c.id]){dc++; dh+=c.hours}});
+  return{doneCount:dc,totalCount:CHAPTERS.length,doneHours:dh,totalHours:TOTAL_HOURS,percentage:Math.round((dc/CHAPTERS.length)*100)};
+}
+
+function getPhaseStats(){
+  const d=getProgress(),ph={};
+  CHAPTERS.forEach(c=>{if(!ph[c.phase])ph[c.phase]={done:0,total:0}; ph[c.phase].total++; if(d[c.id])ph[c.phase].done++});
+  const r={}; for(const p in ph) r[p]=ph[p].total>0?Math.round((ph[p].done/ph[p].total)*100):0;
+  return r;
+}
+
+function getNextChapter(){const d=getProgress(); for(let i=0;i<CHAPTERS.length;i++)if(!d[CHAPTERS[i].id])return CHAPTERS[i]; return null}
+
+function updateAllUI(){
+  const d=getProgress(),s=getStats(),ps=getPhaseStats(),nc=getNextChapter(),st=getStreak();
+  document.querySelectorAll('.status-dot[data-chapter]').forEach(dot=>{const id=dot.getAttribute('data-chapter'); dot.classList.toggle('done',!!d[id])});
+  const rf=document.querySelector('.ring-fill');
+  if(rf){const c=2*Math.PI*18, f=(s.percentage/100)*c; rf.setAttribute('stroke-dasharray',f.toFixed(1)+' '+(c-f).toFixed(1)); rf.setAttribute('stroke-dashoffset','0');}
+  const rp=document.querySelector('.ring-pct'); if(rp)rp.textContent=s.percentage+'%';
+  const rs=document.querySelector('.ring-sub'); if(rs)rs.textContent=s.doneCount+' / '+s.totalCount+' sections';
+  const pi=document.querySelector('.progress-info'); if(pi)pi.textContent=s.doneHours.toFixed(1)+'h / '+s.totalHours+'h completed';
+  const btn=document.querySelector('.btn-complete');
+  if(btn){const cc=btn.getAttribute('data-chapter'); if(cc){const done=!!d[cc]; btn.classList.toggle('is-done',done); btn.textContent=done?'\u2713 Completed':'\u2610 Mark as Complete';}}
+  document.querySelectorAll('.chapter-link[data-chapter]').forEach(link=>{const id=link.getAttribute('data-chapter'),cb=link.querySelector('.ch-checkbox');
+    if(cb){if(d[id]){link.classList.add('completed'); cb.innerHTML='<span class="check-icon">&#10003;</span>';} else {link.classList.remove('completed'); cb.innerHTML='';}}
   });
+  const ib=document.querySelector('.index-progress-fill'); if(ib)ib.style.width=s.percentage+'%';
+  const ic=document.querySelector('.index-progress-count'); if(ic)ic.textContent=s.doneCount+' / '+s.totalCount+' sections completed';
+  const it=document.querySelector('.index-progress-time'); if(it)it.textContent=s.doneHours.toFixed(1)+'h / '+s.totalHours+'h';
+  document.querySelectorAll('[id^="pct-"]').forEach(el=>{const pk=el.id.replace('pct-',''),p=ps[pk]; if(p!==undefined){el.textContent=p+'%'; el.classList.toggle('has-progress',p>0);}});
+  const nb=document.getElementById('next-btn');
+  if(nb){if(nc){const inCh=window.location.pathname.indexOf('/chapters/')!==-1; nb.href=(inCh?'':'chapters/')+CHAPTER_FILES[nc.id]; nb.innerHTML='<span class="next-label">Next:</span> '+nc.title+' &rarr;';} else {nb.removeAttribute('href'); nb.innerHTML='&#127881; Complete!'; nb.style.color='#D97757';}}
+  const se=document.getElementById('streak'),sc=document.getElementById('streak-count');
+  if(se&&sc){se.classList.toggle('active',st.count>0); sc.textContent=st.count+(st.count===1?' day':' days');}
+  const gb=document.getElementById('global-bar'); if(gb)gb.style.width=s.percentage+'%';
 }
 
-// ---- Actions ----
+function updateAuthUI(u){const sb=document.getElementById('sign-in-btn'),ub=document.getElementById('auth-user'),av=document.getElementById('auth-avatar'),nm=document.getElementById('auth-name'),sy=document.getElementById('sync-badge');
+  if(u){if(sb)sb.style.display='none'; if(ub)ub.style.display='flex'; if(av&&u.photoURL)av.src=u.photoURL; if(nm)nm.textContent=u.displayName||u.email||'Signed in'; if(sy){sy.style.display='inline-flex'; sy.title='Cloud sync on';}}
+  else {if(sb)sb.style.display='inline-flex'; if(ub)ub.style.display='none'; if(sy)sy.style.display='none';}}
+async function handleSignIn(){try{await signInWithPopup(auth,provider)}catch(e){console.error(e); alert('サインインに失敗しました: '+e.message)}}
+async function handleSignOut(){try{if(cloudUnsub){cloudUnsub(); cloudUnsub=null;} await signOut(auth)}catch(e){console.error(e)}}
 
-function toggleComplete(chapterId) {
-  const data = getProgress();
-  if (data[chapterId]) {
-    delete data[chapterId];
-  } else {
-    data[chapterId] = new Date().toISOString();
-    updateStreak();
-  }
-  saveProgress(data);
-  updateAllUI();
-  pushToCloud();
-}
-
-function updateStreak() {
-  const streak = getStreak();
-  const today = new Date().toISOString().slice(0, 10);
-  if (streak.lastDate === today) return;
-
-  const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
-  if (streak.lastDate === yesterday) {
-    streak.count++;
-  } else {
-    streak.count = 1;
-  }
-  streak.lastDate = today;
-  saveStreak(streak);
-}
-
-// ---- Stats ----
-
-function getStats() {
-  const data = getProgress();
-  let doneCount = 0, doneHours = 0;
-  CHAPTERS.forEach(ch => {
-    if (data[ch.id]) { doneCount++; doneHours += ch.hours; }
-  });
-  return {
-    doneCount, totalCount: CHAPTERS.length, doneHours, totalHours: TOTAL_HOURS,
-    percentage: Math.round((doneCount / CHAPTERS.length) * 100),
-  };
-}
-
-function getPhaseStats() {
-  const data = getProgress();
-  const phases = {};
-  CHAPTERS.forEach(ch => {
-    if (!phases[ch.phase]) phases[ch.phase] = { done: 0, total: 0 };
-    phases[ch.phase].total++;
-    if (data[ch.id]) phases[ch.phase].done++;
-  });
-  const result = {};
-  for (const p in phases) {
-    result[p] = phases[p].total > 0 ? Math.round((phases[p].done / phases[p].total) * 100) : 0;
-  }
-  return result;
-}
-
-function getNextChapter() {
-  const data = getProgress();
-  for (let i = 0; i < CHAPTERS.length; i++) {
-    if (!data[CHAPTERS[i].id]) return CHAPTERS[i];
-  }
-  return null;
-}
-
-// ---- UI Update ----
-
-function updateAllUI() {
-  const data = getProgress();
-  const stats = getStats();
-  const phaseStats = getPhaseStats();
-  const nextCh = getNextChapter();
-  const streak = getStreak();
-
-  document.querySelectorAll('.status-dot[data-chapter]').forEach(dot => {
-    const chId = dot.getAttribute('data-chapter');
-    dot.classList.toggle('done', !!data[chId]);
-  });
-
-  const ringFill = document.querySelector('.ring-fill');
-  if (ringFill) {
-    const circ = 2 * Math.PI * 18;
-    const filled = (stats.percentage / 100) * circ;
-    ringFill.setAttribute('stroke-dasharray', filled.toFixed(1) + ' ' + (circ - filled).toFixed(1));
-    ringFill.setAttribute('stroke-dashoffset', '0');
-  }
-  const ringPct = document.querySelector('.ring-pct');
-  if (ringPct) ringPct.textContent = stats.percentage + '%';
-  const ringSub = document.querySelector('.ring-sub');
-  if (ringSub) ringSub.textContent = stats.doneCount + ' / ' + stats.totalCount + ' sections';
-  const progressInfo = document.querySelector('.progress-info');
-  if (progressInfo) progressInfo.textContent = stats.doneHours + 'h / ' + stats.totalHours + 'h completed';
-
-  const btn = document.querySelector('.btn-complete');
-  if (btn) {
-    const curCh = btn.getAttribute('data-chapter');
-    if (curCh) {
-      const isDone = !!data[curCh];
-      btn.classList.toggle('is-done', isDone);
-      btn.textContent = isDone ? '\u2713 Completed' : '\u2610 Mark as Complete';
-    }
-  }
-
-  document.querySelectorAll('.chapter-link[data-chapter]').forEach(link => {
-    const chId = link.getAttribute('data-chapter');
-    const cb = link.querySelector('.ch-checkbox');
-    if (cb) {
-      if (data[chId]) {
-        link.classList.add('completed');
-        cb.innerHTML = '<span class="check-icon">&#10003;</span>';
-      } else {
-        link.classList.remove('completed');
-        cb.innerHTML = '';
-      }
-    }
-  });
-
-  const indexBar = document.querySelector('.index-progress-fill');
-  if (indexBar) indexBar.style.width = stats.percentage + '%';
-  const indexCount = document.querySelector('.index-progress-count');
-  if (indexCount) indexCount.textContent = stats.doneCount + ' / ' + stats.totalCount + ' sections completed';
-  const indexTime = document.querySelector('.index-progress-time');
-  if (indexTime) indexTime.textContent = stats.doneHours + 'h / ' + stats.totalHours + 'h';
-
-  // Phase percentage elements: each phase badge has id="pct-{phase}" (e.g., pct-basics).
-  document.querySelectorAll('[id^="pct-"]').forEach(el => {
-    const phaseKey = el.id.replace('pct-', '');
-    const pct = phaseStats[phaseKey];
-    if (pct !== undefined) {
-      el.textContent = pct + '%';
-      el.classList.toggle('has-progress', pct > 0);
-    }
-  });
-
-  const nextBtn = document.getElementById('next-btn');
-  if (nextBtn) {
-    if (nextCh) {
-      const isInChaptersDir = window.location.pathname.indexOf('/chapters/') !== -1;
-      const prefix = isInChaptersDir ? '' : 'chapters/';
-      nextBtn.href = prefix + CHAPTER_FILES[nextCh.id];
-      nextBtn.innerHTML = '<span class="next-label">Next:</span> ' + nextCh.title + ' &rarr;';
-    } else {
-      nextBtn.removeAttribute('href');
-      nextBtn.innerHTML = '&#127881; Complete!';
-      nextBtn.style.color = '#16a34a';
-    }
-  }
-
-  const streakEl = document.getElementById('streak');
-  const streakCount = document.getElementById('streak-count');
-  if (streakEl && streakCount) {
-    streakEl.classList.toggle('active', streak.count > 0);
-    streakCount.textContent = streak.count + (streak.count === 1 ? ' day' : ' days');
-  }
-
-  const globalBar = document.getElementById('global-bar');
-  if (globalBar) globalBar.style.width = stats.percentage + '%';
-}
-
-// ---- Auth UI ----
-
-function updateAuthUI(user) {
-  const signInBtn = document.getElementById('sign-in-btn');
-  const userBox = document.getElementById('auth-user');
-  const avatar = document.getElementById('auth-avatar');
-  const name = document.getElementById('auth-name');
-  const syncBadge = document.getElementById('sync-badge');
-
-  if (user) {
-    if (signInBtn) signInBtn.style.display = 'none';
-    if (userBox) userBox.style.display = 'flex';
-    if (avatar && user.photoURL) avatar.src = user.photoURL;
-    if (name) name.textContent = user.displayName || user.email || 'Signed in';
-    if (syncBadge) { syncBadge.style.display = 'inline-flex'; syncBadge.title = 'Cloud sync on'; }
-  } else {
-    if (signInBtn) signInBtn.style.display = 'inline-flex';
-    if (userBox) userBox.style.display = 'none';
-    if (syncBadge) syncBadge.style.display = 'none';
-  }
-}
-
-async function handleSignIn() {
-  try {
-    await signInWithPopup(auth, provider);
-  } catch (e) {
-    console.error('Sign-in failed:', e);
-    alert('サインインに失敗しました: ' + e.message);
-  }
-}
-
-async function handleSignOut() {
-  try {
-    if (cloudUnsub) { cloudUnsub(); cloudUnsub = null; }
-    await signOut(auth);
-  } catch (e) {
-    console.error('Sign-out failed:', e);
-  }
-}
-
-// ---- Init ----
-
-document.addEventListener('DOMContentLoaded', () => {
-  const streak = getStreak();
-  const today = new Date().toISOString().slice(0, 10);
-  if (streak.lastDate && streak.lastDate !== today) {
-    const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
-    if (streak.lastDate !== yesterday) {
-      saveStreak({ count: 0, lastDate: null });
-    }
-  }
-
-  const btn = document.querySelector('.btn-complete');
-  if (btn) {
-    btn.addEventListener('click', function () {
-      const chId = this.getAttribute('data-chapter');
-      if (chId) toggleComplete(chId);
-    });
-  }
-
-  document.querySelectorAll('.ch-checkbox[data-chapter]').forEach(cb => {
-    cb.addEventListener('click', function (e) {
-      e.preventDefault();
-      e.stopPropagation();
-      toggleComplete(this.getAttribute('data-chapter'));
-    });
-  });
-
-  const signInBtn = document.getElementById('sign-in-btn');
-  if (signInBtn) signInBtn.addEventListener('click', handleSignIn);
-  const signOutBtn = document.getElementById('sign-out-btn');
-  if (signOutBtn) signOutBtn.addEventListener('click', handleSignOut);
-
-  onAuthStateChanged(auth, (user) => {
-    currentUser = user;
-    updateAuthUI(user);
-    if (cloudUnsub) { cloudUnsub(); cloudUnsub = null; }
-    if (user) {
-      subscribeToCloud(user.uid);
-    }
-  });
-
+document.addEventListener('DOMContentLoaded',()=>{
+  const s=getStreak(),t=new Date().toISOString().slice(0,10);
+  if(s.lastDate&&s.lastDate!==t){const y=new Date(Date.now()-86400000).toISOString().slice(0,10); if(s.lastDate!==y)saveStreak({count:0,lastDate:null});}
+  const btn=document.querySelector('.btn-complete');
+  if(btn)btn.addEventListener('click',function(){const id=this.getAttribute('data-chapter'); if(id)toggleComplete(id);});
+  document.querySelectorAll('.ch-checkbox[data-chapter]').forEach(cb=>cb.addEventListener('click',function(e){e.preventDefault(); e.stopPropagation(); toggleComplete(this.getAttribute('data-chapter'));}));
+  const si=document.getElementById('sign-in-btn'); if(si)si.addEventListener('click',handleSignIn);
+  const so=document.getElementById('sign-out-btn'); if(so)so.addEventListener('click',handleSignOut);
+  onAuthStateChanged(auth,(u)=>{currentUser=u; updateAuthUI(u); if(cloudUnsub){cloudUnsub(); cloudUnsub=null;} if(u)subscribeToCloud(u.uid);});
   updateAllUI();
 });
 
-window.tutorialProgress = {
-  getStats, getPhaseStats, getNextChapter, getStreak, getProgress,
-  reset() {
-    localStorage.removeItem(STORAGE_KEY);
-    localStorage.removeItem(STREAK_KEY);
-    updateAllUI();
-    if (currentUser) pushToCloud();
-  },
-};
+window.tutorialProgress={getStats,getPhaseStats,getNextChapter,getStreak,getProgress,reset(){localStorage.removeItem(STORAGE_KEY); localStorage.removeItem(STREAK_KEY); updateAllUI(); if(currentUser)pushToCloud();}};

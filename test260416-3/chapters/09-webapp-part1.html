@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>Webアプリ前編 - MK's Claude Code Tutorial - Short Edition</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code - Short
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="../index.html#phase3" data-nav class="active"><span class="phase-name">Advanced</span><span class="phase-pct" id="pct-advanced">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.09</span>
+    ミニ Web アプリ作り：前編
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 11 sections</text>
+    </svg>
+    <div class="progress-info">0h / 10h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-welcome.html"><span class="status-dot" data-chapter="01"></span> ようこそ</a></li>
+    <li><a href="02-setup.html"><span class="status-dot" data-chapter="02"></span> セットアップ</a></li>
+    <li><a href="03-how-to-ask.html"><span class="status-dot" data-chapter="03"></span> お願いする魔法</a></li>
+    <li><a href="04-file-play.html"><span class="status-dot" data-chapter="04"></span> ファイルと遊ぼう</a></li>
+  </ul>
+  <div class="section-label">Core</div>
+  <ul>
+    <li><a href="05-git-basics.html"><span class="status-dot" data-chapter="05"></span> Git入門</a></li>
+    <li><a href="06-plan-mode.html"><span class="status-dot" data-chapter="06"></span> Planモード</a></li>
+    <li><a href="07-debug-buddy.html"><span class="status-dot" data-chapter="07"></span> エラーと友達に</a></li>
+    <li><a href="08-web-tools.html"><span class="status-dot" data-chapter="08"></span> Webで調べる</a></li>
+  </ul>
+  <div class="section-label">Advanced</div>
+  <ul>
+    <li><a href="09-webapp-part1.html" class="active"><span class="status-dot" data-chapter="09"></span> Webアプリ前編</a></li>
+    <li><a href="10-webapp-part2.html"><span class="status-dot" data-chapter="10"></span> Webアプリ後編+公開</a></li>
+    <li><a href="11-celebration.html"><span class="status-dot" data-chapter="11"></span> おめでとう！</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 3: Advanced &gt; Chapter 09</div>
+  <h1>ミニ Web アプリ作り：前編</h1>
+  <p class="subtitle">「お気に入りリスト」の骨と見た目を、あなたの色で組み立てる90分</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 90分</span>
+    <span class="badge">Phase: Advanced</span>
+    <span class="badge">難易度: 初級</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">ようこそ、作り手の側へ</span>
+    <p>ここからはついに<strong>あなたの作品</strong>を作ります。題材は「お気に入りリスト」——好きなサイトをタイトルと <span class="term" data-tip="URL: ウェブページの住所。https://... の文字列。">URL</span> で並べて、後から見返せる小さな <span class="term" data-tip="Web アプリ: ブラウザで動くアプリケーション。インストール不要で開ける。">Web アプリ</span>。焦らずに、1ステップずつ。詰まったら戻ってOK。今日のゴールは「ブラウザで自分の作品が動いて見える」、それだけです。</p>
+  </div>
+
+  <div class="info-box" style="border-left: 3px solid #D97757;">
+    <span class="label">2026年1月時点の情報</span>
+    <p>本章の手順は <strong>2026年1月時点</strong> の <span class="term" data-tip="HTML: Web ページの骨組みを記述する言語。">HTML</span> / <span class="term" data-tip="CSS: 見た目(色・余白・配置)を整える言語。">CSS</span> の標準に基づきます。<span class="term" data-tip="ブラウザ: Chrome、Safari、Edge、Firefox などウェブを閲覧するソフト。">ブラウザ</span> は Chrome/Safari/Edge の最新版であれば同じ結果になります。Claude Code に頼む書き方も同時点の仕様です。</p>
+  </div>
+
+  <!-- ===================== Section 1: 設計 ===================== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> ステップ1：設計する(10分)</h2>
+
+  <p>いきなりコードを書き始めると迷子になります。まず<strong>何を作るか、どんな画面か</strong>を絵で描きます。設計といっても、<strong>紙1枚分のラフ</strong>でじゅうぶん。Claude Code に頼むときも、この絵があるだけで精度が跳ね上がります。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">完成イメージのラフスケッチ</div>
+    <svg id="ch9-rough-1" width="100%" height="280" viewBox="0 0 500 280" style="max-width:520px; display:block; margin:0 auto;"></svg>
+    <div class="diagram-caption">上に入力欄、真ん中に「追加」ボタン、下に登録済みのカードが並ぶ。これだけの構造。</div>
+  </div>
+
+  <script>
+  window.addEventListener("load", function() {
+    var svg = document.getElementById('ch9-rough-1');
+    if (!svg || !window.rough) return;
+    var r = rough.svg(svg);
+    svg.appendChild(r.rectangle(20, 20, 460, 240, { stroke: '#475569', strokeWidth: 1.5, roughness: 1.2 }));
+    svg.appendChild(r.rectangle(40, 45, 420, 30, { fill: 'rgba(217,119,87,0.15)', fillStyle: 'hachure', stroke: '#D97757', strokeWidth: 1.5 }));
+    svg.appendChild(r.rectangle(40, 85, 260, 28, { stroke: '#94a3b8', strokeWidth: 1.5 }));
+    svg.appendChild(r.rectangle(310, 85, 150, 28, { stroke: '#94a3b8', strokeWidth: 1.5 }));
+    svg.appendChild(r.rectangle(370, 120, 90, 26, { fill: '#D97757', fillStyle: 'solid', stroke: '#D97757' }));
+    svg.appendChild(r.rectangle(40, 160, 420, 40, { fill: '#fafafa', fillStyle: 'solid', stroke: '#cbd5e1' }));
+    svg.appendChild(r.rectangle(40, 210, 420, 40, { fill: '#fafafa', fillStyle: 'solid', stroke: '#cbd5e1' }));
+    var addText = function(x, y, t, size, weight, color) {
+      var el = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      el.setAttribute('x', x); el.setAttribute('y', y);
+      el.setAttribute('text-anchor', 'middle');
+      el.setAttribute('font-size', size);
+      el.setAttribute('font-weight', weight || 500);
+      if (color) el.setAttribute('fill', color);
+      el.textContent = t;
+      svg.appendChild(el);
+    };
+    addText(250, 65, 'お気に入りリスト', 14, 700);
+    addText(170, 103, 'タイトル(例: Claude 公式)', 11, 500, '#64748b');
+    addText(385, 103, 'URL(https://...)', 11, 500, '#64748b');
+    addText(415, 138, '+ 追加', 12, 700, '#fff');
+    addText(120, 184, 'Claude Code 公式ドキュメント', 12, 600);
+    addText(400, 184, '× 削除', 11, 500, '#dc2626');
+    addText(120, 234, 'MK Tutorials', 12, 600);
+    addText(400, 234, '× 削除', 11, 500, '#dc2626');
+  });
+  </script>
+
+  <p>この絵を見て、画面を3ブロックに分けます。<strong>(1) 見出し → (2) 入力フォーム → (3) リスト表示</strong>。たったこれだけ。順番に作ります。</p>
+
+  <h3>使う技術</h3>
+  <div class="kv-grid">
+    <div class="kv"><div class="kv-key">HTML</div><div class="kv-val">骨組み(要素の配置)</div></div>
+    <div class="kv"><div class="kv-key">CSS</div><div class="kv-val">見た目(色・余白・形)</div></div>
+    <div class="kv"><div class="kv-key">JavaScript</div><div class="kv-val">動き(Ch10で追加)</div></div>
+    <div class="kv"><div class="kv-key">保存場所</div><div class="kv-val">localStorage(Ch10で)</div></div>
+  </div>
+
+  <p>前編(Ch09)では <strong>HTML と CSS</strong> だけ扱います。つまり、今日作るのは<strong>動かないけど綺麗な画面</strong>。押しても何も起きないボタン、並んでいるだけの <span class="term" data-tip="ダミーデータ: 仮のテスト用データ。本物を入れる前にレイアウト確認に使う。">ダミー</span> カード——それで充分。動かす部分は後編で <span class="term" data-tip="JavaScript: ブラウザで動きを付ける言語。ボタンを押したら何か起こる、を実現する。">JavaScript</span> を追加します。</p>
+
+  <div class="info-box">
+    <span class="label">なぜ静的から作るか</span>
+    <p>いきなり「動く」状態を目指すと、見た目と動きの<strong>どちらがバグってるか</strong>がわからなくなります。まず見た目を固めて、次に動きを乗せる。これは <span class="term" data-tip="プロのエンジニア: 職業としてソフトウェアを作っている人。">プロのエンジニア</span> でも踏むのと同じ順序です。</p>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+  <p>ここまで来れた自分を褒めましょう。設計書が描けただけで、もう「作る人」の仲間入りです。</p>
+
+  <div class="steps">
+    <div class="step done"><div class="step-num">1</div><div class="step-label">設計</div><div class="step-desc">紙1枚の絵を描く</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-label">HTML骨格</div><div class="step-desc">要素を並べる</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-label">CSS装飾</div><div class="step-desc">見た目を整える</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-label">確認</div><div class="step-desc">ブラウザで開く</div></div>
+  </div>
+
+  <!-- ===================== Section 2: HTML骨格 ===================== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> ステップ2：HTML 骨格(30分)</h2>
+
+  <p>まずフォルダと <span class="term" data-tip="ファイル: PCに保存される書類の単位。index.html は Web ページの本体ファイル。">ファイル</span> を作ります。Claude Code に頼みましょう。<span class="term" data-tip="terminal: 黒い画面で文字コマンドを打つところ。Claude と会話する場所でもある。">terminal</span> で Claude に話しかけます。</p>
+
+<pre><code>favorites フォルダを Desktop に作って、その中に index.html と style.css を作ってください。
+中身はまだ空でOKです。</code></pre>
+
+  <p>「作ってください」と言うだけで完了です。Claude は <span class="term" data-tip="mkdir: フォルダを作るコマンド。make directory の略。">mkdir</span> と <span class="term" data-tip="touch: 空のファイルを作るコマンド。">touch</span> でフォルダとファイルを用意してくれます。</p>
+
+  <h3>HTML の「箱」の考え方</h3>
+  <p>HTML は <strong>タグ</strong> という <code>&lt;...&gt;</code> の記号で囲んだ箱が入れ子になった構造です。箱の外側が大きな箱、中に小さな箱が並ぶ——それだけ。絵で見るとこうなります。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">HTMLの入れ子構造(あなたのアプリ)</div>
+    <svg viewBox="0 0 480 300" width="100%" style="max-width:520px; display:block; margin:0 auto;">
+      <rect x="10" y="10" width="460" height="280" fill="none" stroke="#475569" stroke-width="2" rx="6"/>
+      <text x="30" y="30" font-size="12" font-weight="700" fill="#475569">&lt;html&gt;</text>
+      <rect x="30" y="40" width="420" height="60" fill="rgba(217,119,87,0.08)" stroke="#D97757" stroke-width="1.5" rx="4"/>
+      <text x="45" y="58" font-size="11" font-weight="700" fill="#D97757">&lt;head&gt; ← タイトルや読み込み設定</text>
+      <text x="60" y="78" font-size="11">&lt;title&gt;お気に入りリスト&lt;/title&gt;</text>
+      <text x="60" y="93" font-size="11">&lt;link rel="stylesheet" href="style.css"&gt;</text>
+      <rect x="30" y="110" width="420" height="170" fill="rgba(217,119,87,0.04)" stroke="#D97757" stroke-width="1.5" rx="4"/>
+      <text x="45" y="128" font-size="11" font-weight="700" fill="#D97757">&lt;body&gt; ← 画面に見える中身</text>
+      <rect x="50" y="138" width="380" height="28" fill="#fff" stroke="#94a3b8" rx="3"/>
+      <text x="60" y="156" font-size="11">&lt;h1&gt;見出し&lt;/h1&gt;</text>
+      <rect x="50" y="172" width="380" height="40" fill="#fff" stroke="#94a3b8" rx="3"/>
+      <text x="60" y="189" font-size="11">&lt;form&gt; 入力欄 + ボタン &lt;/form&gt;</text>
+      <text x="60" y="204" font-size="10" fill="#64748b">(タイトル input、URL input、追加 button)</text>
+      <rect x="50" y="218" width="380" height="56" fill="#fff" stroke="#94a3b8" rx="3"/>
+      <text x="60" y="235" font-size="11">&lt;ul&gt; リスト &lt;/ul&gt;</text>
+      <text x="60" y="252" font-size="10" fill="#64748b">(&lt;li&gt; カード1、&lt;li&gt; カード2、…)</text>
+      <text x="60" y="268" font-size="10" fill="#64748b">↑ ここに追加されたお気に入りが並ぶ</text>
+    </svg>
+    <div class="diagram-caption">大箱&lt;html&gt; の中に &lt;head&gt;(設定)と &lt;body&gt;(中身)。body の中にさらに小箱が並ぶ。</div>
+  </div>
+
+  <h3>index.html の中身を頼む</h3>
+  <p>Claude に次の依頼をします。<strong>設計の絵どおり</strong>に書いてもらいましょう。</p>
+
+<pre><code>favorites/index.html に、以下の構造のHTMLを書いてください。
+
+- 日本語(lang="ja")、UTF-8
+- title は「お気に入りリスト」
+- style.css を読み込む
+- body 内には:
+  - h1 で「お気に入りリスト」見出し
+  - form 要素に、タイトル用 input(id=title)と URL 用 input(id=url)、追加ボタン
+  - ul 要素(id=list)、中に li を2-3個ダミーで入れておく
+  - 各 li はタイトル(a タグでリンク)と「削除」ボタンを持つ
+
+初心者が読めるよう、コメントも日本語で入れてください。</code></pre>
+
+  <p>Claude が書いたものは、だいたい次のようになります。<strong>自分で手打ちする必要はありません</strong>。読んで「あ、たしかに絵と同じだ」と感じられれば OK。</p>
+
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="ja"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;お気に入りリスト&lt;/title&gt;
+  &lt;link rel="stylesheet" href="style.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;!-- 見出し --&gt;
+  &lt;header&gt;
+    &lt;h1&gt;お気に入りリスト&lt;/h1&gt;
+    &lt;p class="subtitle"&gt;好きなサイトを集めよう&lt;/p&gt;
+  &lt;/header&gt;
+
+  &lt;!-- 入力フォーム --&gt;
+  &lt;form id="add-form"&gt;
+    &lt;input id="title" type="text" placeholder="タイトル(例: Claude 公式)" required&gt;
+    &lt;input id="url"   type="url"  placeholder="https://..." required&gt;
+    &lt;button type="submit"&gt;+ 追加&lt;/button&gt;
+  &lt;/form&gt;
+
+  &lt;!-- リスト表示 --&gt;
+  &lt;ul id="list"&gt;
+    &lt;li&gt;
+      &lt;a href="https://docs.claude.com/" target="_blank"&gt;Claude 公式ドキュメント&lt;/a&gt;
+      &lt;button class="del"&gt;削除&lt;/button&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;a href="https://motohirokoma.github.io/" target="_blank"&gt;MK Tutorials&lt;/a&gt;
+      &lt;button class="del"&gt;削除&lt;/button&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+  <div class="info-box">
+    <span class="label">今すぐ試す(1分)</span>
+    <p>ファインダーで <code>favorites</code> フォルダを開き、<code>index.html</code> を<strong>ダブルクリック</strong>。ブラウザが開いて、見た目はひどいけど <strong>見出し・入力欄・リスト</strong> が全部並んでいるはず。ここで一度深呼吸して、自分を褒めましょう。<strong>あなたの最初の Web ページ</strong>が動いています。</p>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+  <p>ここで戸惑っても大丈夫。タグが何に対応するか、上の図をもう一度見れば必ず掴めます。</p>
+
+  <h3>主要タグの意味(完全版でなくOK)</h3>
+  <ul class="icon-list">
+    <li><i data-lucide="layout" width="20" height="20"></i><div><strong>&lt;header&gt; / &lt;h1&gt;</strong> — ページの一番上の見出しブロック。雑誌の表紙みたいなもの。</div></li>
+    <li><i data-lucide="edit-3" width="20" height="20"></i><div><strong>&lt;form&gt; / &lt;input&gt; / &lt;button&gt;</strong> — 入力欄と送信ボタン。窓口の紙ととペンのセット。</div></li>
+    <li><i data-lucide="list" width="20" height="20"></i><div><strong>&lt;ul&gt; / &lt;li&gt;</strong> — 箇条書きの枠と、その中の1項目。買い物リストの紙と1行ずつのメモ。</div></li>
+    <li><i data-lucide="link" width="20" height="20"></i><div><strong>&lt;a href="..."&gt;</strong> — クリックできるリンク。他ページへの扉。</div></li>
+    <li><i data-lucide="hash" width="20" height="20"></i><div><strong>id / class</strong> — 要素に付ける名札。後で CSS や JS が「この子だよ」と指さすのに使う。</div></li>
+  </ul>
+
+  <details class="more-box">
+    <summary>もっと詳しく：id と class の違い</summary>
+    <div class="more-body">
+      <p><code>id</code> は「ページに1つしかない名前」、<code>class</code> は「同じ仲間のグループ名」です。社員番号(=id)と部署名(=class)の関係に近い。ボタン全部に <code>class="del"</code> を付けておけば、後で「del の仲間に色を付けて」と一括で指示できます。</p>
+      <p>ルール違反しても画面は出ますが、同じ id を2つ付けると JavaScript で指定したときに1つしか拾えません。迷ったら <strong>id は1人だけ、class は複数OK</strong> と覚えましょう。</p>
+    </div>
+  </details>
+
+  <!-- ===================== Section 3: CSS装飾 ===================== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> ステップ3：CSS で見た目を整える(30分)</h2>
+
+  <p>HTML は<strong>骨組み</strong>、CSS は<strong>着せる服</strong>。同じ骨にどんな服を着せるかで、まったく違う印象になります。あなたの好きな色で、あなたの作品に服を着せましょう。</p>
+
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">Before</span>
+      <h4>CSSなし(スッピン)</h4>
+      <ul>
+        <li>文字は左寄せで詰まってる</li>
+        <li>ボタンは灰色の箱</li>
+        <li>リストは「・」が付いた素の箇条書き</li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">After</span>
+      <h4>CSSで整える</h4>
+      <ul>
+        <li>中央揃え、余白でゆったり</li>
+        <li>ボタンはあなたの色で丸角</li>
+        <li>各カードは白背景+影で浮く</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>好きな色を決める</h3>
+  <p>最初に「テーマ色」を1つ決めます。<strong>あなたが好きな色</strong>を選んでください。カラーコードの例を置いておきます。悩んだら <code>#D97757</code>(オレンジ)でもOKです。</p>
+
+  <table>
+    <thead><tr><th>色の名前</th><th>カラーコード</th><th>雰囲気</th></tr></thead>
+    <tbody>
+      <tr><td>Claude オレンジ</td><td><code>#D97757</code></td><td>温かい・親しみ</td></tr>
+      <tr><td>シャープ青</td><td><code>#2563eb</code></td><td>知的・信頼</td></tr>
+      <tr><td>森の緑</td><td><code>#16a34a</code></td><td>落ち着き・成長</td></tr>
+      <tr><td>ローズピンク</td><td><code>#ec4899</code></td><td>明るい・可愛い</td></tr>
+      <tr><td>ラベンダー紫</td><td><code>#7c3aed</code></td><td>創造的・個性</td></tr>
+      <tr><td>墨黒</td><td><code>#18181b</code></td><td>ミニマル・大人</td></tr>
+    </tbody>
+  </table>
+
+  <h3>style.css の中身を頼む</h3>
+  <p>Claude に次のように頼みます。<strong>自分の好きな色をそのまま入れてください</strong>。</p>
+
+<pre><code>favorites/style.css に、次のCSSを書いてください。
+テーマ色は #D97757(私の好きな色に変えてOK)。
+
+- body はフォント sans-serif、背景は #fafafa、max-width 600px で中央寄せ、余白たっぷり
+- h1 は中央揃え、色は #18181b
+- .subtitle は淡いグレー、中央揃え
+- form は横並び(flex)、input は広め、gap 8px
+- input は丸角(border-radius 8px)、padding 10px、枠は淡いグレー
+- submit ボタンはテーマ色の背景、白文字、丸角、hover で少し濃く
+- ul は list-style なし、padding 0
+- 各 li は白背景、padding 12px 16px、border-radius 10px、影をほんのり、下に8px余白
+- li の中は flex で左右に分ける(タイトルは左、削除ボタンは右)
+- a は色 #18181b、underline なし、hover で下線
+- .del ボタンは透明背景、赤文字、hover で薄い赤背景
+- レスポンシブ：幅が狭い画面で form は縦並びになるように</code></pre>
+
+  <p>Claude が書いてくれる CSS の例(読んで雰囲気を掴めばOK):</p>
+
+<pre><code>/* ベース設定 */
+body {
+  font-family: -apple-system, "Helvetica Neue", sans-serif;
+  background: #fafafa;
+  color: #18181b;
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 0 20px;
+  line-height: 1.6;
+}
+
+/* 見出し */
+h1 { text-align: center; margin-bottom: 4px; }
+.subtitle { text-align: center; color: #64748b; margin-bottom: 32px; }
+
+/* 入力フォーム */
+#add-form {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+#add-form input {
+  flex: 1 1 180px;
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 14px;
+}
+#add-form button {
+  background: #D97757;    /* ← ここがあなたの色 */
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+#add-form button:hover { background: #b8603f; }
+
+/* リスト */
+#list { list-style: none; padding: 0; }
+#list li {
+  background: white;
+  padding: 12px 16px;
+  border-radius: 10px;
+  margin-bottom: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#list li a { color: #18181b; text-decoration: none; }
+#list li a:hover { text-decoration: underline; }
+
+/* 削除ボタン */
+.del {
+  background: transparent;
+  color: #dc2626;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+.del:hover { background: #fee2e2; }</code></pre>
+
+  <div class="info-box">
+    <span class="label">今すぐ試す(1分)</span>
+    <p>ブラウザで開いている <code>index.html</code> のタブに戻って、<strong>リロード</strong>(Mac: Cmd+R / Windows: Ctrl+R)。さっきの「スッピン」が、あなたの色をまとって生まれ変わっているはず。ここで声に出して「やった」と言ってOK。<strong>作品は少しずつあなたの顔になっていきます</strong>。</p>
+  </div>
+
+  <h3>CSSの3つの基本概念</h3>
+
+  <div class="diagram-box">
+    <div class="diagram-title">CSSが何をしているか(ボックスモデル)</div>
+    <svg viewBox="0 0 420 240" width="100%" style="max-width:440px; display:block; margin:0 auto;">
+      <rect x="10" y="10" width="400" height="220" fill="rgba(217,119,87,0.05)" stroke="#D97757" stroke-dasharray="4 4"/>
+      <text x="20" y="28" font-size="11" font-weight="600" fill="#D97757">margin(外側の余白)</text>
+      <rect x="50" y="40" width="320" height="170" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="1.5"/>
+      <text x="60" y="58" font-size="11" font-weight="600" fill="#b8603f">border(枠線)</text>
+      <rect x="80" y="68" width="260" height="130" fill="#fff8f3" stroke="#fbbf24" stroke-dasharray="3 3"/>
+      <text x="90" y="86" font-size="11" font-weight="600" fill="#b45309">padding(内側の余白)</text>
+      <rect x="120" y="100" width="180" height="70" fill="#fff" stroke="#475569"/>
+      <text x="210" y="140" text-anchor="middle" font-size="13" font-weight="700">中身</text>
+      <text x="210" y="158" text-anchor="middle" font-size="10" fill="#64748b">(テキストや画像)</text>
+    </svg>
+    <div class="diagram-caption">中身の周りに padding(内余白)→ border(枠)→ margin(外余白)。この4層は CSS の超基本。</div>
+  </div>
+
+  <ul class="icon-list">
+    <li><i data-lucide="maximize" width="20" height="20"></i><div><strong>色とフォント</strong> — <code>color</code> で文字色、<code>background</code> で背景色、<code>font-family</code> で書体。</div></li>
+    <li><i data-lucide="box" width="20" height="20"></i><div><strong>余白と枠</strong> — <code>padding</code>(内)、<code>margin</code>(外)、<code>border</code>(枠)、<code>border-radius</code>(角の丸み)。</div></li>
+    <li><i data-lucide="layout-grid" width="20" height="20"></i><div><strong>並べ方</strong> — <code>display: flex</code> で横並び、<code>gap</code> で要素間の距離、<code>justify-content</code> で左右の寄せ方。</div></li>
+  </ul>
+
+  <details class="more-box">
+    <summary>もっと詳しく：flex の意味</summary>
+    <div class="more-body">
+      <p><code>display: flex</code> を親要素に付けると、中の子要素が<strong>横一列</strong>に並びます。各子要素に <code>flex: 1</code> を付ければ、空いた幅を分け合って広がります。<code>gap: 8px</code> で要素の間に8pxの隙間。昔は table や float で四苦八苦していたレイアウトが、flex のおかげで3行で終わる時代になりました。</p>
+    </div>
+  </details>
+
+  <details class="more-box">
+    <summary>もっと詳しく：CSS カラーコードって何？</summary>
+    <div class="more-body">
+      <p><code>#D97757</code> のような <code>#</code> で始まる6桁は <span class="term" data-tip="16進数: 0-9 と a-f で数字を表す書き方。光の強さを2桁ずつ表現。">16進数</span> カラーコードです。最初の2桁が赤、次が緑、最後が青(RGB)。<code>#000000</code> が真っ黒、<code>#ffffff</code> が真っ白。直感的に数字が読めなくてOK。<a href="https://coolors.co/" target="_blank" rel="noopener">coolors.co</a> のようなサイトで気に入った色を選んでコピペするのが一番早いです。</p>
+    </div>
+  </details>
+
+  <!-- ===================== Section 4: ローカル確認 ===================== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> ステップ4：ブラウザで確認しながら整える(20分)</h2>
+
+  <p>ここからは<strong>見ながら直す</strong>楽しい20分。ブラウザで開いたままにして、CSS を少し変えてはリロード、を何度も繰り返します。<span class="term" data-tip="DevTools: ブラウザに内蔵された開発ツール。要素をクリックして中身を確認できる。">DevTools</span> を使うと、変更せずにその場で色やサイズを試せます。</p>
+
+  <div class="steps">
+    <div class="step done"><div class="step-num">1</div><div class="step-label">開く</div><div class="step-desc">index.html ダブルクリック</div></div>
+    <div class="step done"><div class="step-num">2</div><div class="step-label">直す</div><div class="step-desc">CSS を保存</div></div>
+    <div class="step done"><div class="step-num">3</div><div class="step-label">リロード</div><div class="step-desc">Cmd+R / Ctrl+R</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-label">褒める</div><div class="step-desc">声に出して「いいね」</div></div>
+  </div>
+
+  <h3>あなたの好きなサイトを2-3個、ダミーに入れる</h3>
+  <p>最高に楽しい作業です。index.html の <code>&lt;ul id="list"&gt;</code> の中のダミー<code>&lt;li&gt;</code>を、<strong>本当にあなたが好きなサイト</strong>に書き換えましょう。Claudeに頼んでもいいし、自分で書き換えても。</p>
+
+<pre><code>favorites/index.html のリスト(ul#list)のダミー項目を、
+以下のサイトで上書きしてください：
+
+- タイトル: {好きなサイト名1}、URL: {URL1}
+- タイトル: {好きなサイト名2}、URL: {URL2}
+- タイトル: {好きなサイト名3}、URL: {URL3}</code></pre>
+
+  <div class="quote">
+    作品というのは、<strong>作者の好きなものが見える窓</strong>。
+    <cite>— 小さな作品を作るすべての人へ</cite>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+  <p>ここまで来れた自分を心から褒めよう。<strong>自分の好きなサイトが、自分のデザインで、自分の画面に並んでいる</strong>——これがいま、あなたの手の中で起きています。</p>
+
+  <h3>どこを褒めるか：今日の進捗チャート</h3>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Ch09 の時間配分(90分の使い方)</div>
+    <canvas id="ch9-donut-1" height="220"></canvas>
+  </div>
+
+  <h3>ありがちな詰まりポイント</h3>
+
+  <table>
+    <thead><tr><th>症状</th><th>原因</th><th>直し方</th></tr></thead>
+    <tbody>
+      <tr><td>CSS が反映されない</td><td>キャッシュが古い</td><td>スーパーリロード(Cmd+Shift+R / Ctrl+F5)</td></tr>
+      <tr><td>スタイルが全く効かない</td><td>link href のパス違い</td><td>style.css が index.html と同じフォルダにあるか確認</td></tr>
+      <tr><td>文字化けする</td><td>charset 未指定</td><td><code>&lt;meta charset="UTF-8"&gt;</code> を head に入れる</td></tr>
+      <tr><td>リンクが同じタブで開く</td><td>target="_blank" なし</td><td>&lt;a&gt; に <code>target="_blank"</code> を追加</td></tr>
+      <tr><td>画面がズレて見づらい</td><td>viewport 未指定</td><td><code>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</code></td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-box">
+    <span class="label">困ったらClaudeに画面を見せる</span>
+    <p>Claude Code に <code>ブラウザで見たら見た目が崩れる。index.html と style.css を読んで原因を教えて</code> と頼むと、ファイルを読んで原因を教えてくれます。<strong>エラーは友達(Ch07の精神)</strong>——焦らず一緒に探偵しましょう。</p>
+  </div>
+
+  <!-- ===================== Section 5: 完成を味わう ===================== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 完成を味わう(5分)</h2>
+
+  <p>この章で到達したことを図で確認します。「動かないけど見た目はバッチリ」状態——これが今日のゴールでした。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">今日できるようになったこと vs 明日やること</div>
+    <canvas id="ch9-bar-1" height="180"></canvas>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-num">2<small>枚</small></div>
+      <div class="stat-label">今日書いたファイル</div>
+      <div class="stat-trend up">↑ index.html + style.css</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">3<small>つ</small></div>
+      <div class="stat-label">使えるようになった武器</div>
+      <div class="stat-trend up">↑ HTML / CSS / 設計</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">1<small>個</small></div>
+      <div class="stat-label">世界に1つのWeb画面</div>
+      <div class="stat-trend up">↑ あなたの色・好み</div>
+    </div>
+  </div>
+
+  <h3>次章(Ch10)の予告</h3>
+  <ul class="icon-list">
+    <li><i data-lucide="zap" width="20" height="20"></i><div><strong>JavaScript を追加</strong> — ボタンを押したら本当に追加・削除されるようになる</div></li>
+    <li><i data-lucide="database" width="20" height="20"></i><div><strong>localStorage で保存</strong> — ブラウザを閉じても消えない</div></li>
+    <li><i data-lucide="globe" width="20" height="20"></i><div><strong>GitHub Pages で公開</strong> — 世界中からアクセスできる URL が手に入る</div></li>
+  </ul>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-date">Ch09 完了</div>
+      <div class="tl-title">見た目ができた</div>
+      <div class="tl-body">HTML+CSSであなたの色のお気に入り画面。ダミーデータで並びを確認。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">Ch10</div>
+      <div class="tl-title">動きと公開</div>
+      <div class="tl-body">JavaScriptで動くように。GitHub Pagesで全世界に公開。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">Ch11</div>
+      <div class="tl-title">振り返りと次の一歩</div>
+      <div class="tl-body">10時間でここまで来たあなたへ、次に楽しいこと。</div>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <span class="label">困ったらここへ戻る</span>
+    <p>このあと Ch10 に進んで迷ったら、いつでもこの章に戻ってOKです。<strong>骨組みと見た目が分かっていれば、動きは乗せるだけ</strong>。今日の理解はちゃんと次に繋がります。</p>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+  <p>Ch08 で世界を調べる方法を学び、Ch09 で世界に出す作品の骨格を作れた——<strong>これはとても大きな一歩</strong>です。</p>
+
+  <!-- ===================== 発展課題 ===================== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 余裕があれば：発展課題</h2>
+
+  <p>「今日はもう十分」という方はスキップしてOK。手が止められなくなった方向けの、もう一歩の楽しみです。</p>
+
+  <details class="more-box">
+    <summary>発展課題1：アイコン(絵文字)を追加してみよう</summary>
+    <div class="more-body">
+      <p>各お気に入りカードの先頭に絵文字アイコンを付けると、一気に可愛くなります。</p>
+<pre><code>&lt;li&gt;
+  &lt;span class="icon"&gt;📘&lt;/span&gt;
+  &lt;a href="https://docs.claude.com/"&gt;Claude 公式ドキュメント&lt;/a&gt;
+  &lt;button class="del"&gt;削除&lt;/button&gt;
+&lt;/li&gt;</code></pre>
+      <p>CSS で <code>.icon { margin-right: 8px; font-size: 18px; }</code> を追加すれば、サイトのジャンルごとに 📘 / 🎵 / 🎬 / 🍜 / 🎮 など絵文字を変えて並べられます。<strong>完全に自分専用のコレクション</strong>になります。</p>
+    </div>
+  </details>
+
+  <details class="more-box">
+    <summary>発展課題2：カードに hover アニメーションを付けよう</summary>
+    <div class="more-body">
+      <p>マウスを乗せたときにカードがふわっと浮くアニメを付けると、クリックしたくなる見た目になります。</p>
+<pre><code>#list li {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+#list li:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}</code></pre>
+      <p><code>transition</code> が「2つの状態の間を滑らかに繋ぐ」指示。<code>:hover</code> 時だけ <code>translateY(-2px)</code> で2px上に動かして、影を濃くする。<strong>CSSだけでちゃんとしたUIの動き</strong>が作れます。</p>
+    </div>
+  </details>
+
+  <!-- ===================== いまのあなたは ===================== -->
+  <div class="info-box" style="border-left-color: #D97757;">
+    <span class="label">いまのあなたは</span>
+    <p><strong>HTML で骨組みを作り、CSS で自分の好きな見た目に整える</strong>ことができるようになりました。Claude Code に具体的な設計を渡して、動くファイルを作ってもらえるようにもなりました。あなたの手元には <strong>あなたの色をまとった、世界に1つのWeb画面</strong>があります。これは <span class="term" data-tip="Web 制作入門者: HTML/CSS の基本を触ったことがある人。">Web 制作入門者</span> として、もう立派な一歩目。明日(Ch10)はこれに「動き」と「公開」を乗せて、世界中からアクセスできるURLに変えます。自信を持って次へ。</p>
+  </div>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式ドキュメント</a> — ファイル作成・編集の依頼の書き方</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://developer.mozilla.org/ja/docs/Web/HTML" target="_blank" rel="noopener">MDN: HTML 入門</a> — HTML要素のリファレンス(初心者向けチュートリアルあり)</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://developer.mozilla.org/ja/docs/Web/CSS" target="_blank" rel="noopener">MDN: CSS 入門</a> — CSS プロパティの辞書的リファレンス</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://coolors.co/" target="_blank" rel="noopener">Coolors</a> — 配色パレット生成。好きな色を探すのに最適</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://css-tricks.com/snippets/css/a-guide-to-flexbox/" target="_blank" rel="noopener">A Complete Guide to Flexbox</a> — flex レイアウトの決定版ガイド</li>
+      <li><span class="res-type video">Video</span> <a href="https://www.youtube.com/results?search_query=HTML+CSS+%E5%85%A5%E9%96%80+%E6%97%A5%E6%9C%AC%E8%AA%9E" target="_blank" rel="noopener">HTML/CSS 入門 日本語動画</a> — 手元で動かす動画で復習</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="09">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="08-web-tools.html"><span class="direction">&larr; Prev</span>Webで調べる魔法</a>
+    <a href="10-webapp-part2.html"><span class="direction">Next &rarr;</span>Webアプリ後編+公開</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+
+<!-- Chart.js: 時間配分ドーナツ -->
+<script>
+window.addEventListener("load", function() {
+  var ctxDonut = document.getElementById('ch9-donut-1');
+  if (ctxDonut && window.Chart) {
+    new Chart(ctxDonut, {
+      type: 'doughnut',
+      data: {
+        labels: ['設計(10分)', 'HTML骨格(30分)', 'CSS装飾(30分)', 'ローカル確認(20分)'],
+        datasets: [{
+          data: [10, 30, 30, 20],
+          backgroundColor: ['rgba(217,119,87,0.35)', '#D97757', '#60a5fa', '#cbd5e1']
+        }]
+      },
+      options: { plugins: { legend: { position: 'bottom' } } }
+    });
+  }
+
+  var ctxBar = document.getElementById('ch9-bar-1');
+  if (ctxBar && window.Chart) {
+    new Chart(ctxBar, {
+      type: 'bar',
+      data: {
+        labels: ['HTML骨格', 'CSS装飾', '自分の好きな色', 'ダミーデータ表示', '追加/削除の動き', 'ブラウザに保存', '世界に公開'],
+        datasets: [
+          {
+            label: '今日(Ch09)できる',
+            data: [100, 100, 100, 100, 0, 0, 0],
+            backgroundColor: '#D97757',
+            borderRadius: 6
+          },
+          {
+            label: '明日(Ch10)追加',
+            data: [0, 0, 0, 0, 100, 100, 100],
+            backgroundColor: 'rgba(217,119,87,0.25)',
+            borderRadius: 6
+          }
+        ]
+      },
+      options: {
+        indexAxis: 'y',
+        plugins: { legend: { position: 'bottom' } },
+        scales: {
+          x: { stacked: true, max: 100, ticks: { display: false } },
+          y: { stacked: true }
+        }
+      }
+    });
+  }
+});
+</script>
+</body>
+</html>

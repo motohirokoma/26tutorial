@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>ファイルと遊ぼう - MK's Claude Code Tutorial - Short Edition</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code - Short
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav class="active"><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="../index.html#phase3" data-nav><span class="phase-name">Advanced</span><span class="phase-pct" id="pct-advanced">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.04</span>
+    ファイルと遊ぼう
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 11 sections</text>
+    </svg>
+    <div class="progress-info">0h / 10h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-welcome.html"><span class="status-dot" data-chapter="01"></span> ようこそ</a></li>
+    <li><a href="02-setup.html"><span class="status-dot" data-chapter="02"></span> セットアップ</a></li>
+    <li><a href="03-how-to-ask.html"><span class="status-dot" data-chapter="03"></span> お願いする魔法</a></li>
+    <li><a href="04-file-play.html" class="active"><span class="status-dot" data-chapter="04"></span> ファイルと遊ぼう</a></li>
+  </ul>
+  <div class="section-label">Core</div>
+  <ul>
+    <li><a href="05-git-basics.html"><span class="status-dot" data-chapter="05"></span> Git入門</a></li>
+    <li><a href="06-plan-mode.html"><span class="status-dot" data-chapter="06"></span> Planモード</a></li>
+    <li><a href="07-debug-buddy.html"><span class="status-dot" data-chapter="07"></span> エラーと友達に</a></li>
+    <li><a href="08-web-tools.html"><span class="status-dot" data-chapter="08"></span> Webで調べる</a></li>
+  </ul>
+  <div class="section-label">Advanced</div>
+  <ul>
+    <li><a href="09-webapp-part1.html"><span class="status-dot" data-chapter="09"></span> Webアプリ前編</a></li>
+    <li><a href="10-webapp-part2.html"><span class="status-dot" data-chapter="10"></span> Webアプリ後編+公開</a></li>
+    <li><a href="11-celebration.html"><span class="status-dot" data-chapter="11"></span> おめでとう！</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 1: Basics &gt; Chapter 04</div>
+  <h1>ファイルと遊ぼう</h1>
+  <p class="subtitle">最初の魔法を体験する時間。見せる・作る・直すを、自分のメモで。</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 60分</span>
+    <span class="badge">Phase: Basics</span>
+    <span class="badge">難易度: 入門</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">ようこそ、この章へ</span>
+    <p>ここからは<strong>本当の魔法が始まる</strong>時間です。いままでの章は「準備」と「言い方」でした。今日はついに、<strong>自分のメモを Claude に渡して、整理してもらう</strong>。できた瞬間、ちょっと鳥肌が立つかもしれません。焦らず、詰まったら戻ってOK。60分かけてゆっくりいきましょう。今日できるようになるのは「<strong>見せる・作る・直す</strong>」の3つです。</p>
+  </div>
+
+  <div class="info-box" style="border-left: 3px solid #D97757;">
+    <span class="label">2026年1月時点の情報</span>
+    <p>本章の内容は <strong>2026年1月時点</strong>の Claude Code の挙動に基づきます。ファイル操作まわりの <span class="term" data-tip="Read/Write/Edit: Claude がファイルを読む・書く・直す時に内部で呼ぶツール。2026年1月時点の名前。">Read/Write/Edit ツール</span>の振る舞いは進化するので、コマンドが通らない時は<a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">公式ドキュメント</a>も覗いてみてください。</p>
+  </div>
+
+  <!-- ===== Section 1: 3つの魔法 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> まずは全体像：3つの魔法</h2>
+
+  <p>Claude Code が<span class="term" data-tip="ファイル: パソコンの中に保存されてる文書やメモ。日記.txt や kaimono.md など名前が付いてるもの全部。">ファイル</span>にできることは、ざっくり <strong>3つ</strong>しかありません。覚えるのはこれだけ。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Claudeの3つの魔法</div>
+    <svg viewBox="0 0 520 200" width="100%" style="max-width:520px; display:block; margin:0 auto;">
+      <rect x="20"  y="40" width="140" height="110" rx="14" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="2"/>
+      <rect x="190" y="40" width="140" height="110" rx="14" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="2"/>
+      <rect x="360" y="40" width="140" height="110" rx="14" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="2"/>
+      <text x="90"  y="80"  text-anchor="middle" font-size="32">👀</text>
+      <text x="260" y="80"  text-anchor="middle" font-size="32">✍️</text>
+      <text x="430" y="80"  text-anchor="middle" font-size="32">🔧</text>
+      <text x="90"  y="115" text-anchor="middle" font-size="15" font-weight="700">見せる</text>
+      <text x="260" y="115" text-anchor="middle" font-size="15" font-weight="700">作る</text>
+      <text x="430" y="115" text-anchor="middle" font-size="15" font-weight="700">直す</text>
+      <text x="90"  y="138" text-anchor="middle" font-size="11" fill="#64748b">Read</text>
+      <text x="260" y="138" text-anchor="middle" font-size="11" fill="#64748b">Write</text>
+      <text x="430" y="138" text-anchor="middle" font-size="11" fill="#64748b">Edit</text>
+      <text x="90"  y="25"  text-anchor="middle" font-size="11" fill="#475569">あなたのファイルを読む</text>
+      <text x="260" y="25"  text-anchor="middle" font-size="11" fill="#475569">新しく書き出す</text>
+      <text x="430" y="25"  text-anchor="middle" font-size="11" fill="#475569">一部を書き換える</text>
+      <text x="170" y="100" text-anchor="middle" font-size="18" fill="#D97757">→</text>
+      <text x="340" y="100" text-anchor="middle" font-size="18" fill="#D97757">→</text>
+      <text x="260" y="180" text-anchor="middle" font-size="11" fill="#64748b">この3つで、あなたのメモの99%は扱える</text>
+    </svg>
+    <div class="diagram-caption">この3つだけで、あなたの日記もTODOも整理できます。</div>
+  </div>
+
+  <p>英語の名前(<span class="term" data-tip="Read (リード): 読むの意味。ファイルの中身を Claude に見せる時、裏側でこの道具が動く。">Read</span> / <span class="term" data-tip="Write (ライト): 書くの意味。新しいファイルを0から作ってくれる道具。">Write</span> / <span class="term" data-tip="Edit (エディット): 直すの意味。既存のファイルの一部分だけ書き換える道具。">Edit</span>)を覚えなくて大丈夫です。あなたは日本語で「読んで」「書いて」「直して」と言うだけ。Claude が裏で勝手に使い分けてくれます。</p>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+  <p style="margin-top:-8px; color:#64748b; font-size:14px;">英単語が出てきて身構えた人、大丈夫です。名前は全部忘れてOK。日本語で話しかければ Claude が察してくれます。</p>
+
+  <h3>この3つを見分ける単純な基準</h3>
+
+  <table>
+    <thead>
+      <tr><th>状況</th><th>頼む言葉</th><th>裏で動く道具</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>書いてあるメモを Claude に把握してほしい</td><td>「〇〇.txt を読んで」</td><td>Read</td></tr>
+      <tr><td>新しいメモを1から作ってほしい</td><td>「〇〇.md を作って」</td><td>Write</td></tr>
+      <tr><td>既存のメモの一部を変えてほしい</td><td>「〇〇の『A』を『B』に直して」</td><td>Edit</td></tr>
+      <tr><td>全部書き直してほしい</td><td>「〇〇を書き直して」</td><td>Write(上書き)</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ===== Section 2: 準備 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 準備：遊び場フォルダを1つ作る</h2>
+
+  <p>何を試すにも、まず<strong>遊び場</strong>が必要です。デスクトップに <code>claude-asobi</code> というフォルダを1つ作って、そこで全部遊びます。ここなら壊しても平気。</p>
+
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-label">ターミナルを開く</div><div class="step-desc">Mac: Command+Space → 「terminal」<br/>Win: スタート → 「PowerShell」</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-label">デスクトップに移動</div><div class="step-desc"><code>cd ~/Desktop</code> と打つ</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-label">遊び場を作る</div><div class="step-desc"><code>mkdir claude-asobi</code></div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-label">中に入る</div><div class="step-desc"><code>cd claude-asobi</code></div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-label">Claudeを起動</div><div class="step-desc"><code>claude</code> と打ってEnter</div></div>
+  </div>
+
+  <div class="info-box">
+    <span class="label">一度に全部やる</span>
+    <p>慣れてる人は <code>cd ~/Desktop &amp;&amp; mkdir claude-asobi &amp;&amp; cd claude-asobi &amp;&amp; claude</code> と繋げてもOK。でも最初は1行ずつで大丈夫です。</p>
+  </div>
+
+  <p>Claude が立ち上がって <code>&gt;</code> プロンプトが出ていれば準備完了です。ここから<strong>日本語で話しかけるだけ</strong>の世界が始まります。</p>
+
+  <!-- ===== Section 3: 見せる ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 魔法その1：「作る」— 日記をお願いしてみる</h2>
+
+  <p>順番を変えます。<strong>まず「作る」からやります</strong>。中身がないと見せられないし、直せないから。ここは一番ワクワクするところ。</p>
+
+  <div class="info-box" style="border-left-color: #D97757;">
+    <span class="label">今すぐ試す ①：日記を書いてもらう</span>
+    <p>Claudeに以下のように頼んでみてください。コピペでOK。</p>
+    <pre><code>diary-2026-04-18.md というファイルを作って。
+中身は今日の日記のテンプレート。
+項目は「今日の出来事」「感じたこと」「明日やること」の3つで、
+それぞれに空の箇条書きを2つずつ入れて。</code></pre>
+    <p>Enterを押すと、Claude が「このファイルを作ります」と確認してきます。<strong>Yes</strong> を選ぶと……<br/>デスクトップの <code>claude-asobi</code> フォルダを見てください。<strong>さっき頼んだファイルが本当にある</strong>。感動してOKです。</p>
+  </div>
+
+  <p>できたファイルの中身はだいたいこんな感じになってるはず。</p>
+
+  <pre><code># 日記 2026-04-18
+
+## 今日の出来事
+-
+-
+
+## 感じたこと
+-
+-
+
+## 明日やること
+-
+- </code></pre>
+
+  <p>これが<span class="term" data-tip="Markdown (マークダウン): 見出しに # を付けたり、箇条書きに - を付けたりする、シンプルなメモの書き方。拡張子は .md。">Markdown</span>という書式です。難しくない。<code>#</code>が見出し、<code>-</code>が箇条書き、それだけ。</p>
+
+  <h3>今日の日記を埋めてもらう</h3>
+
+  <p>空のテンプレートができたので、次は<strong>中身を話して埋めてもらう</strong>番です。</p>
+
+  <div class="info-box" style="border-left-color: #D97757;">
+    <span class="label">今すぐ試す ②：話した内容を日記に変換</span>
+    <p>こんな雰囲気で頼んでみてください。自分の1日で中身を置き換えて。</p>
+    <pre><code>diary-2026-04-18.md を開いて、以下を元に中身を埋めて。
+
+- 朝、コーヒーをこぼした
+- 新しい本を買った(タイトル: 夜のピクニック)
+- 友達とラーメン食べた、おいしかった
+- 仕事のプレゼンが思ったよりうまくいった
+
+明日やることは:
+- 銀行に行く
+- 本の続きを読む
+
+「感じたこと」は3つ、ポジティブなトーンで書いて。</code></pre>
+    <p>Claude が「こう書き換えますがいいですか」と差分を見せてきます。Yesで確定。ファイルを開き直すと、<strong>あなたが話しただけの内容が、ちゃんとした日記になっている</strong>はずです。</p>
+  </div>
+
+  <p>いま起きたことを整理します。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">あなたが話した瞬間、ファイルができる</div>
+    <pre class="mermaid">
+graph LR
+  A["あなたの話し言葉"] --> B["Claudeが解釈"]
+  B --> C["Markdownで整形"]
+  C --> D["ファイル保存"]
+  D --> E["デスクトップに出現"]
+    </pre>
+    <div class="diagram-caption">話す → 整う → 保存される。この流れを体に馴染ませることが、この章のゴール。</div>
+  </div>
+
+  <!-- ===== Section 4: 見せる ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 魔法その2：「見せる」— 既存のメモを整理してもらう</h2>
+
+  <p>次は「見せる」。あなたがすでに持ってるぐちゃぐちゃのメモを Claude に渡して、<strong>整理してもらう</strong>体験です。これが一番実用的。</p>
+
+  <h3>散らかったメモを用意する</h3>
+
+  <p>まず練習用にぐちゃぐちゃメモを作ります。Claude に頼んでも良いし、自分で手打ちしてもOK。</p>
+
+  <div class="info-box" style="border-left-color: #D97757;">
+    <span class="label">今すぐ試す ③：練習用の散らかったメモ</span>
+    <p>こう頼んでみて。</p>
+    <pre><code>kaimono.txt を作って。中身は、こんな感じの
+散らかった買い物メモにして(わざと雑に):
+
+たまご！！きのう切れた
+牛乳2本(特売)
+あとトマト、できればミニトマト
+パン食パンじゃなくてバゲット
+お肉…鶏むねでいい
+じゃがいも
+きのう頼まれたビール6本
+あ、洗剤も</code></pre>
+  </div>
+
+  <p>できたら、整理のお願いです。</p>
+
+  <div class="info-box" style="border-left-color: #D97757;">
+    <span class="label">今すぐ試す ④：整理してもらう</span>
+    <pre><code>kaimono.txt を読んで。
+これを kaimono-seiri.md として、以下の形で整理して保存して:
+
+- 「野菜」「肉・卵・乳製品」「パン・穀物」「その他」でカテゴリ分け
+- 各項目の横に必要な数量を書く(書いてなければ「1」)
+- メモにあった「特売」「頼まれた」などのコメントは括弧で残す
+- 見出しは h2 (##)、箇条書きは -</code></pre>
+  </div>
+
+  <p>Claudeが作る結果はこんな感じ。</p>
+
+  <pre><code># 買い物メモ(整理版)
+
+## 野菜
+- トマト 1 (できればミニトマト)
+- じゃがいも 1
+
+## 肉・卵・乳製品
+- たまご 1 (昨日切れた)
+- 牛乳 2 (特売)
+- 鶏むね 1
+
+## パン・穀物
+- バゲット 1
+
+## その他
+- ビール 6 (頼まれ物)
+- 洗剤 1</code></pre>
+
+  <p>あなたが5秒で書いた殴り書きが、きちんとしたリストに<strong>一瞬で化けた</strong>。これが「見せる + 作る」の合わせ技です。</p>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+  <p style="margin-top:-8px; color:#64748b; font-size:14px;">できた瞬間、嬉しいよ。本当に。この感動は、1回目のいまだけのもの。しみじみ味わってください。</p>
+
+  <details class="more-box"><summary>もっと詳しく：なぜ .md と .txt を使い分ける？</summary>
+  <div class="more-body">
+    <p><code>.txt</code>は<strong>ただの文字</strong>、<code>.md</code>は<strong>整形されうる文字</strong>。<code>.md</code>にすると GitHub やエディタで見出しや太字が自動で綺麗に表示されます。迷ったら<strong>成果物は .md、メモ書きは .txt</strong>で覚えればOK。</p>
+  </div>
+  </details>
+
+  <!-- ===== Section 5: 直す ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 魔法その3：「直す」— TODOリストで差分を体験</h2>
+
+  <p>最後は「直す」。すでにあるファイルの<strong>一部分だけ</strong>を書き換えます。ここで Claude は差分(Before/After)を必ず見せてくれるので、<strong>勝手に変えられる怖さ</strong>がありません。</p>
+
+  <h3>TODOリストを作る</h3>
+
+  <div class="info-box" style="border-left-color: #D97757;">
+    <span class="label">今すぐ試す ⑤：TODOの下ごしらえ</span>
+    <pre><code>todo.md を作って。今週のタスクとして:
+- [ ] 銀行に行く
+- [ ] 歯医者の予約を取る
+- [ ] 本の続きを読む
+- [ ] プレゼン資料を仕上げる
+- [ ] 母の日のプレゼントを探す</code></pre>
+  </div>
+
+  <p>次に、<strong>一部だけ書き換える</strong>お願い。ここが「Edit」の真骨頂。</p>
+
+  <div class="info-box" style="border-left-color: #D97757;">
+    <span class="label">今すぐ試す ⑥：3つをまとめて直す</span>
+    <pre><code>todo.md を直して:
+- 「銀行に行く」は完了にして
+- 「歯医者の予約を取る」を「歯医者の予約(15時希望)」に変更
+- 最後に「- [ ] 冷蔵庫の掃除」を追加</code></pre>
+  </div>
+
+  <p>Claude は実行する前に、必ず<strong>Before/After</strong>を見せてきます。こういう画面です。</p>
+
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">Before</span>
+      <h4>変更前のtodo.md</h4>
+      <ul>
+        <li>[ ] 銀行に行く</li>
+        <li>[ ] 歯医者の予約を取る</li>
+        <li>[ ] 本の続きを読む</li>
+        <li>[ ] プレゼン資料を仕上げる</li>
+        <li>[ ] 母の日のプレゼントを探す</li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">After</span>
+      <h4>Claudeの提案</h4>
+      <ul>
+        <li><strong>[x] 銀行に行く</strong></li>
+        <li><strong>[ ] 歯医者の予約(15時希望)</strong></li>
+        <li>[ ] 本の続きを読む</li>
+        <li>[ ] プレゼン資料を仕上げる</li>
+        <li>[ ] 母の日のプレゼントを探す</li>
+        <li><strong>[ ] 冷蔵庫の掃除</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <p>この画面が出たら<strong>よく見て、いいなら Yes</strong>、違うなら No。<strong>No と言えば絶対に変わらない</strong>ので、安心して試してください。</p>
+
+  <div class="info-box">
+    <span class="label">公式ドキュメント必読</span>
+    <p>Claude にファイルを触らせる時は、<strong>確認プロンプトで必ず中身を読む癖</strong>を付けてください。特に初期設定では <code>auto-accept</code> (自動承認)を ON にしないのが安全。大事なファイルを触る時は必ず目視確認してから Yes を押しましょう。詳しくは <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">公式ドキュメント</a> を参照。</p>
+  </div>
+
+  <!-- ===== Section 6: 応用パターン ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> よく使う5つの頼み方パターン</h2>
+
+  <p>ここまで体験した「見せる・作る・直す」の組み合わせで、日常の8割は回ります。便利な<strong>定型パターン</strong>を紹介します。</p>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="file-plus" width="20" height="20"></i>
+      <div><strong>作る系：「〇〇.md を作って。中身は〜」</strong> — とにかく0から。テンプレ、メモ、下書き全部。</div>
+    </li>
+    <li>
+      <i data-lucide="eye" width="20" height="20"></i>
+      <div><strong>見せる系：「〇〇.txt を読んで要約して」</strong> — 長い文章を3行で、10行で、と指定可能。</div>
+    </li>
+    <li>
+      <i data-lucide="edit-3" width="20" height="20"></i>
+      <div><strong>直す系：「〇〇の『A』を『B』に変えて」</strong> — 「全部のA」なら「すべて」と明記。</div>
+    </li>
+    <li>
+      <i data-lucide="repeat" width="20" height="20"></i>
+      <div><strong>変換系：「〇〇を箇条書きにして表に直して」</strong> — 形式変換はClaudeの得意分野。</div>
+    </li>
+    <li>
+      <i data-lucide="sparkles" width="20" height="20"></i>
+      <div><strong>整える系：「〇〇を読みやすく整形して」</strong> — 見出し・改行・太字を任せる。</div>
+    </li>
+  </ul>
+
+  <h3>よくあるつまずきと解決</h3>
+
+  <table>
+    <thead>
+      <tr><th>つまずき</th><th>原因</th><th>解決</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>「ファイルが見つかりません」と言われる</td><td>別のフォルダで起動している</td><td><code>pwd</code> で現在地確認 → 正しい場所で <code>claude</code> を再起動</td></tr>
+      <tr><td>Yesを押したのに変わってない</td><td>別の場所に作成されている</td><td>「どこに作ったか教えて」と聞く</td></tr>
+      <tr><td>思ったのと違う内容になった</td><td>指示が曖昧</td><td>Ch03の「魔法の3要素」に戻って具体化</td></tr>
+      <tr><td>上書きされて前の内容が消えた</td><td>Write(上書き)を頼んだ</td><td>次のCh05 Git で<strong>完全予防</strong>できます</td></tr>
+    </tbody>
+  </table>
+
+  <details class="more-box"><summary>もっと詳しく：Read/Write/Edit の挙動の違い</summary>
+  <div class="more-body">
+    <p><strong>Read</strong>は読むだけでファイルは変わりません。<strong>Write</strong>は<u>全上書き</u>なので、既存ファイルがあっても中身が完全に置き換わる。<strong>Edit</strong>は「この文字列を、この文字列に」という<u>差分置換</u>で、それ以外の箇所は触らない。安全なのはEdit。不安な時は「Editで直して」と明示すれば確実です。</p>
+  </div>
+  </details>
+
+  <details class="more-box"><summary>もっと詳しく：複数ファイルを一気に頼む</summary>
+  <div class="more-body">
+    <p>「<code>memo1.md</code>, <code>memo2.md</code>, <code>memo3.md</code> の3つを読んで、共通してる話題を1つにまとめて <code>summary.md</code> にして」のようなお願いも可能。Claude は順番にRead → 頭の中で統合 → Writeを1回、という流れで動きます。数が多い(10個以上)時は効率が落ちるので、そういう時はCh06のPlanモードに相談しましょう。</p>
+  </div>
+  </details>
+
+  <!-- ===== Section 7: 達成度 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> あなたはいま、どこにいるのか</h2>
+
+  <p>ここまでで Claude Code の<strong>本当に使う機能の半分以上</strong>が手に馴染みました。残りは Git やPlanモードといった「便利オプション」で、ファイル操作の上に乗っかってくるもの。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Claude Code 機能使用頻度のイメージ</div>
+    <canvas id="ch4-donut-1" height="200"></canvas>
+    <div class="diagram-caption">「見せる・作る・直す」が実務の6割以上を占める。</div>
+  </div>
+  <script>
+  window.addEventListener("load", function() {
+    var el = document.getElementById('ch4-donut-1');
+    if (!el || !window.Chart) return;
+    new Chart(el, {
+      type: 'doughnut',
+      data: {
+        labels: ['ファイル操作(本章)','会話・質問','Git操作','Web/検索','その他'],
+        datasets: [{ data: [62, 18, 10, 6, 4], backgroundColor: ['#D97757','#f5b99c','#cbd5e1','#e2e8f0','#f1f5f9'] }]
+      },
+      options: { plugins: { legend: { position: 'bottom' } } }
+    });
+  });
+  </script>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-num">3<small>個</small></div>
+      <div class="stat-label">習得した魔法</div>
+      <div class="stat-trend up">↑ 見せる・作る・直す</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">6<small>+</small></div>
+      <div class="stat-label">今日作ったファイル</div>
+      <div class="stat-trend up">↑ 全部デスクトップにある</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">60<small>%</small></div>
+      <div class="stat-label">実務カバー率</div>
+      <div class="stat-trend up">↑ ここから加速</div>
+    </div>
+  </div>
+
+  <!-- ===================== Exercises ===================== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Exercise：手を動かす2問</h2>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>自分の「今日のひとこと日記」を作る</h4>
+    <p>自分の今日(1日)を、Claudeに日記として書かせてみよう。</p>
+    <ol>
+      <li>遊び場フォルダで <code>claude</code> を起動</li>
+      <li><code>today.md</code> を作ってもらう</li>
+      <li>起きた出来事3つと、感じたこと1つを話す</li>
+      <li>「ポジティブなトーンで整えて」と指示</li>
+      <li>できたファイルをデスクトップで開いて確認</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答(プロンプト例)を見る</summary>
+    <div class="answer-body">
+      <p>プロンプトはこう投げます(自分の1日で置き換えてください)。</p>
+      <pre><code>today.md というファイルを作って。
+中身は今日の一日を振り返る日記。
+見出しは h1 で「2026-04-18 の記録」。
+
+今日あったこと:
+- 電車で席を譲ってもらった
+- 会議で新しい企画が通った
+- 夜ごはんにラーメンを食べた
+
+感じたこと: 人に恵まれてる日だった。
+
+これをポジティブなトーンで、ちょっと詩的に整えて書いて。
+最後に「明日への一言」を1行だけ添えて。</code></pre>
+      <p>コツは「<strong>素材</strong>」と「<strong>整え方</strong>」を分けて渡すこと。Claudeは素材をくれれば、トーンも長さも自在に操ってくれます。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>散らかったメモをカテゴリ付きの整理メモに化かす</h4>
+    <p>自分のスマホのメモアプリから<strong>本物のぐちゃぐちゃメモ</strong>を1つ持ってきて、整理してもらおう。</p>
+    <ol>
+      <li>スマホのメモから好きな1枚を選んで、テキストをコピー</li>
+      <li>Claudeに <code>memo-raw.txt</code> として貼り付けて保存してもらう</li>
+      <li>「このメモを読んで、適切なカテゴリを<strong>自分で決めて</strong>分類し、<code>memo-seiri.md</code> に保存して」と頼む</li>
+      <li>さらに、分類のロジック(なぜそう分けたか)を<code>memo-seiri.md</code>の末尾にコメントで残してもらう</li>
+      <li>納得いかない分類があったらEditで直す</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答(考え方と例)を見る</summary>
+    <div class="answer-body">
+      <p>プロンプトの型はこう。</p>
+      <pre><code>memo-raw.txt を読んで。
+このメモを整理して memo-seiri.md に保存して。
+
+要件:
+- カテゴリはあなたが妥当だと思うもので3〜5個に分類
+- 各カテゴリは h2 (##) で見出し
+- アイテムは箇条書き
+- ファイル末尾に「---」で区切ったあと、
+  「## 分類の考え方」として、なぜこう分けたかを3行で説明
+
+不明な項目は「その他」に入れず、一番近いカテゴリに寄せて。</code></pre>
+      <p>ポイント2つ:</p>
+      <ul>
+        <li><strong>カテゴリを Claude に任せる</strong> — 自分で決めると思考が固まる。任せると「なるほどこう分けるのか」という学びが起きる。</li>
+        <li><strong>分類の理由を書かせる</strong> — 後から見直すときに「なぜこう分けたか」が残ってると、自分もメンテできる。</li>
+      </ul>
+      <p>修正したくなったら遠慮なく「『読書』カテゴリを『学び』にまとめて」のように Edit で追い込む。Editの提案を見ながら自分の思考が整理されていく感覚、そこに気づけたら完璧です。</p>
+    </div>
+  </details>
+
+  <div class="info-box" style="border-left-color: #D97757;">
+    <span class="label">いまのあなたは</span>
+    <p>Claudeに<strong>自分のメモを渡して整理してもらえる人</strong>になりました。日記・買い物メモ・TODOリスト、ぜんぶ日本語で話しかければ化けてくれる。これは非エンジニアの人口で言えば<strong>上位10%</strong>くらいの位置。プログラミング経験ゼロから始めたあなたが、もう<strong>ファイル操作という本丸</strong>に触れたんです。ここで1回、胸を張ってOK。次の章は Git という「保存ポイント」の話。もっと安心して触れるようになります。</p>
+  </div>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式ドキュメント</a> — ファイル操作ツール(Read/Write/Edit)の詳細</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://www.markdownguide.org/basic-syntax/" target="_blank" rel="noopener">Markdown Basic Syntax</a> — 見出し・箇条書き・太字の書き方リファレンス</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.claude.com/en/docs/claude-code/settings" target="_blank" rel="noopener">Claude Code Settings</a> — auto-accept など安全設定の確認</li>
+      <li><span class="res-type video">Video</span> <a href="https://www.youtube.com/results?search_query=claude+code+file+editing" target="_blank" rel="noopener">YouTube: Claude Code でのファイル編集デモ集</a> — 実演を見て理解を補強</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://www.anthropic.com/claude-code" target="_blank" rel="noopener">Claude Code 製品ページ</a> — できることの全体像</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="04">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="03-how-to-ask.html"><span class="direction">&larr; Prev</span>お願いする魔法</a>
+    <a href="05-git-basics.html"><span class="direction">Next &rarr;</span>Git入門</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<!-- 視覚化ライブラリ群 -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>
