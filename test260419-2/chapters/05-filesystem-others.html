@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>実践：Filesystem・他MCP - MK's Claude Code Tutorial - MCP Guide</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code - MCP
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav class="active"><span class="phase-name">Practice</span><span class="phase-pct" id="pct-practice">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.05</span>
+    実践：Filesystem・他MCP
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 8 sections</text>
+    </svg>
+    <div class="progress-info">0h / 4h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-mcp-overview.html"><span class="status-dot" data-chapter="01"></span> MCPとは</a></li>
+    <li><a href="02-mcp-config.html"><span class="status-dot" data-chapter="02"></span> Claude CodeにMCPを追加</a></li>
+    <li><a href="03-official-servers.html"><span class="status-dot" data-chapter="03"></span> 公式MCPサーバー一覧</a></li>
+  </ul>
+  <div class="section-label">Practice</div>
+  <ul>
+    <li><a href="04-github-mcp.html"><span class="status-dot" data-chapter="04"></span> 実践：GitHub MCP</a></li>
+    <li class="active"><a href="05-filesystem-others.html" class="active"><span class="status-dot" data-chapter="05"></span> 実践：Filesystem・他MCP</a></li>
+    <li><a href="06-custom-mcp.html"><span class="status-dot" data-chapter="06"></span> カスタムMCPサーバー入門</a></li>
+    <li><a href="07-troubleshoot.html"><span class="status-dot" data-chapter="07"></span> MCPのトラブルシュート</a></li>
+    <li><a href="08-final-exercise.html"><span class="status-dot" data-chapter="08"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 2: Practice &gt; Chapter 05</div>
+  <h1>実践：Filesystem・他MCP</h1>
+  <p class="subtitle">外部ツリーを扱う / DB / Slack / スクレイピング などの実用例</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 30分</span>
+    <span class="badge">Phase: Practice</span>
+    <span class="badge">難易度: 中級</span>
+  </div>
+
+  <p>Ch04でGitHub MCPを主戦場にした。今度はそれ以外の<strong>日常よく使う4ジャンル</strong> — <span class="term" data-tip="任意のディレクトリをMCP経由でClaude Codeに読ませる公式サーバー。作業dir外の~/Documents等にアクセスできる">Filesystem MCP</span>、<span class="term" data-tip="PostgreSQL等DBに読取専用で接続しスキーマ検査・SELECTを許可するMCPサーバー群">DB系MCP</span>、<span class="term" data-tip="Slackのメッセージ送受信・チャンネル要約をClaude Codeから操作できるMCPサーバー">Slack MCP</span>、<span class="term" data-tip="HTTPページを取得してMarkdownに変換するfetch系と、ヘッドレスブラウザで実DOM・スクショを取るPuppeteer系の総称">Fetch/Puppeteer MCP</span> — を駆け足でまわす。Ch03のカタログに出てきたサーバー群を、<strong>実際にどう動かすか</strong>に焦点を絞った実践章だ。</p>
+
+  <div class="info-box"><span class="label">前提</span><p>Ch02の <code>.mcp.json</code> 基礎と、Ch04のシェル実行フロー(<code>claude mcp list</code> / トークン管理)がわかっていること。本章は「繋ぎ方」より「使いどころ」の比率が高い。</p></div>
+
+  <svg class="anim-svg" viewBox="0 0 200 100" width="100%" style="max-width:260px; display:block; margin:16px auto;">
+    <path d="M 10,80 L 50,40 L 90,60 L 130,25 L 170,55 L 190,70" fill="none" stroke="#D97757" stroke-width="3"/>
+  </svg>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>4つのMCPをどう位置づけるか</h2>
+
+  <p>ひとまず本章で扱う4ジャンルを、「アクセス先」と「副作用の重さ」で整理する。Claude Codeの<strong>ツール呼び出し承認UI</strong>でどれだけ慎重にならないといけないか、の肌感になる。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">4ジャンルの位置関係</div>
+    <svg viewBox="0 0 480 300" width="100%" style="max-width:480px; display:block; margin:0 auto;">
+      <line x1="40" y1="260" x2="460" y2="260" stroke="#a1a1aa" stroke-width="1.5"/>
+      <line x1="40" y1="260" x2="40" y2="30" stroke="#a1a1aa" stroke-width="1.5"/>
+      <text x="460" y="280" font-size="11" fill="#52525b" text-anchor="end">副作用 大 →</text>
+      <text x="20" y="30" font-size="11" fill="#52525b">↑ ローカル</text>
+      <text x="20" y="260" font-size="11" fill="#52525b">↓ ネット</text>
+      <circle cx="110" cy="80" r="38" fill="rgba(217,119,87,0.18)" stroke="#D97757" stroke-width="2"/>
+      <text x="110" y="78" font-size="12" font-weight="700" text-anchor="middle">Filesystem</text>
+      <text x="110" y="94" font-size="10" text-anchor="middle" fill="#52525b">読/書</text>
+      <circle cx="240" cy="120" r="38" fill="rgba(217,119,87,0.3)" stroke="#D97757" stroke-width="2"/>
+      <text x="240" y="118" font-size="12" font-weight="700" text-anchor="middle">DB</text>
+      <text x="240" y="134" font-size="10" text-anchor="middle" fill="#52525b">読取推奨</text>
+      <circle cx="360" cy="170" r="38" fill="rgba(217,119,87,0.45)" stroke="#D97757" stroke-width="2"/>
+      <text x="360" y="168" font-size="12" font-weight="700" text-anchor="middle">Slack</text>
+      <text x="360" y="184" font-size="10" text-anchor="middle" fill="#52525b">投稿重い</text>
+      <circle cx="200" cy="220" r="38" fill="rgba(217,119,87,0.22)" stroke="#D97757" stroke-width="2"/>
+      <text x="200" y="218" font-size="12" font-weight="700" text-anchor="middle">Fetch</text>
+      <text x="200" y="234" font-size="10" text-anchor="middle" fill="#52525b">読取のみ</text>
+      <circle cx="400" cy="240" r="38" fill="rgba(217,119,87,0.35)" stroke="#D97757" stroke-width="2"/>
+      <text x="400" y="238" font-size="12" font-weight="700" text-anchor="middle">Puppeteer</text>
+      <text x="400" y="254" font-size="10" text-anchor="middle" fill="#52525b">DOM操作</text>
+    </svg>
+    <div class="diagram-caption">右下ほど外界への影響が大きい。右下サーバーは承認設定を厳しめに。</div>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>ジャンル</th><th>代表サーバー</th><th>主な用途</th><th>副作用</th><th>推奨スコープ</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Filesystem</strong></td><td><code>@modelcontextprotocol/server-filesystem</code></td><td>作業dir外のファイル読み書き</td><td>中(書込可)</td><td>user</td></tr>
+      <tr><td>DB (Postgres)</td><td><code>@modelcontextprotocol/server-postgres</code></td><td>スキーマ検査・SELECT実行</td><td>小(読取のみ)</td><td>project</td></tr>
+      <tr><td>Slack</td><td><code>@modelcontextprotocol/server-slack</code></td><td>要約・投稿・チャンネル検索</td><td>大(投稿は戻せない)</td><td>project</td></tr>
+      <tr><td>Fetch</td><td><code>@modelcontextprotocol/server-fetch</code></td><td>URLをMarkdownとして取得</td><td>小</td><td>user</td></tr>
+      <tr><td>Puppeteer</td><td><code>@modelcontextprotocol/server-puppeteer</code></td><td>JS描画ページ・スクショ</td><td>中</td><td>project</td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-box"><span class="label">2026年1月時点</span><p>本章のサーバー名・パッケージ名は2026年1月時点のもの。公式サーバー集は <a href="https://github.com/modelcontextprotocol/servers" target="_blank" rel="noopener">modelcontextprotocol/servers</a> が一次情報。パッケージ名は変わることがあるので<strong>都度README確認</strong>を。</p></div>
+
+  <details class="more-box"><summary>もっと詳しく: 「公式」「準公式」「サードパーティ」の見分け方</summary><div class="more-body"><p>同じ名前のMCPサーバーが複数あることがある(例: <code>slack-mcp</code> と <code>server-slack</code>)。判断基準は (1) GitHub organization が <code>modelcontextprotocol</code> か、(2) <code>@modelcontextprotocol/</code> スコープのnpm/PyPIパッケージか、(3) <code>awesome-mcp-servers</code> リポジトリで Official タグが付いているか、の3点。<strong>自社コード・DBに触れるものは公式 or 自分で監査できるOSSだけ</strong>に絞るのが安全。</p></div></details>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>Filesystem MCP: 作業dir外のファイルを扱う</h2>
+
+  <p>Claude Codeには組み込みのRead/Edit/Writeがあるが、それらは<strong>起動時の作業ディレクトリ配下</strong>しか扱えない。「<code>~/Documents</code> の資料を要約したい」「別リポの設定を覗きたい」といった場面で詰まる。<span class="term" data-tip="ファイル操作を許可する対象ディレクトリをMCPサーバー起動時引数で明示するモデル。許可外は触れない">ルート許可モデル</span>で安全にこれを解放するのがFilesystem MCPだ。</p>
+
+  <p>設定は1行追加するだけ。引数に渡したパスだけが<strong>読み書き可能な領域</strong>になる。</p>
+
+  <pre><code>// ~/.claude/.mcp.json  (user scope)
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/Users/koma/Documents",
+        "/Users/koma/Desktop/claude"
+      ]
+    }
+  }
+}</code></pre>
+
+  <p>引数のパス<strong>以外には絶対にアクセスできない</strong>。Claude Codeの組み込みRead/Writeとは独立したツールセット(<code>filesystem__read_file</code>, <code>filesystem__write_file</code>, <code>filesystem__list_directory</code>, <code>filesystem__search_files</code>など)が生える。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">組み込みツール vs Filesystem MCPの守備範囲</div>
+    <pre class="mermaid">
+graph LR
+  U["あなた"] --> CC["Claude Code"]
+  CC --> Builtin["組み込み Read/Write"]
+  CC --> FSMCP["filesystem MCP"]
+  Builtin --> WD["作業ディレクトリ内<br/>/cwd 配下のみ"]
+  FSMCP --> R1["~/Documents"]
+  FSMCP --> R2["~/Desktop/claude"]
+  FSMCP -.禁止.-> X["/etc /root 等"]
+    </pre>
+    <div class="diagram-caption">組み込みはcwd、MCPは明示許可したパス。2系統が共存する。</div>
+  </div>
+
+  <h3>できること・できないこと</h3>
+
+  <ul class="icon-list">
+    <li><i data-lucide="folder-open" width="20" height="20"></i><div><strong>read_file / list_directory</strong> — 許可パス配下のファイル閲覧・ディレクトリ走査</div></li>
+    <li><i data-lucide="search" width="20" height="20"></i><div><strong>search_files</strong> — ファイル名の部分一致検索(中身検索ではない点に注意)</div></li>
+    <li><i data-lucide="edit-3" width="20" height="20"></i><div><strong>write_file / edit_file</strong> — 書込も可能。要・承認UI</div></li>
+    <li><i data-lucide="move" width="20" height="20"></i><div><strong>move_file</strong> — 名前変更・ディレクトリ移動</div></li>
+    <li><i data-lucide="shield-off" width="20" height="20"></i><div><strong>できない</strong> — 許可外パス、シンボリックリンクの外、プロセス実行</div></li>
+  </ul>
+
+  <div class="info-box"><span class="label">Tips</span><p>引数には<strong>絶対パス</strong>を渡す。<code>~</code> は展開されないのでフルパス化が必須(<code>/Users/yourname/Documents</code>)。Windowsは <code>C:\\Users\\...</code> でバックスラッシュ2個。</p></div>
+
+  <details class="more-box"><summary>もっと詳しく: なぜ「組み込みで十分」にしないのか</summary><div class="more-body"><p>Claude Codeの組み込みRead/Writeを全ディレクトリに開放すると、プロジェクトのcwd外にうっかり書き込んでしまう事故が起きる。MCP経由にしておくと (1) 許可パスがJSON1箇所に集中する、(2) ツール名が <code>filesystem__*</code> と明示されるので承認時に「あ、外ディレクトリ触ろうとしてる」と気づきやすい、(3) 別プロジェクトで設定を使い回せる、という3つのメリットが出る。<strong>明示性はMCPの最大の価値</strong>。</p></div></details>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>DB系MCP: スキーマ検査と安全なクエリ</h2>
+
+  <p>DBに生で <code>psql</code> を叩かせるのはリスクが高い。DB系MCPは<strong>読取専用 + スキーマ自動取得</strong>を前提にしたインターフェイスを提供する。代表はPostgres公式サーバー。</p>
+
+  <pre><code>// .mcp.json  (project scope)
+{
+  "mcpServers": {
+    "postgres": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-postgres",
+        "postgresql://readonly:PASS@localhost:5432/myapp"
+      ]
+    }
+  }
+}</code></pre>
+
+  <p>起動すると<code>postgres__query</code>(SELECTのみ)と<code>postgres__list_tables</code>が生える。Claude Codeは初手で<strong>スキーマを自動で読んでから</strong>クエリを組み立てるので、テーブル名をこちらから教える手間がない。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">DB MCPの典型ワークフロー</div>
+    <pre class="mermaid">
+sequenceDiagram
+  participant U as あなた
+  participant C as Claude Code
+  participant M as Postgres MCP
+  participant D as DB
+  U->>C: "先月の売上Top10を"
+  C->>M: list_tables
+  M->>D: information_schema問合せ
+  D-->>M: tables
+  M-->>C: スキーマ返却
+  C->>M: query(SELECT ...)
+  M->>D: 読取SQL
+  D-->>M: rows
+  M-->>C: 結果
+  C-->>U: 整形して回答
+    </pre>
+    <div class="diagram-caption">「スキーマ取得→適切なSELECT」が自動で走る。ユーザーはSQLを1行も書かない。</div>
+  </div>
+
+  <div class="info-box"><span class="label">安全設計</span><p>DB接続は<strong>専用のreadonlyロール</strong>を作って渡す(<code>CREATE ROLE readonly LOGIN PASSWORD '...'; GRANT SELECT ON ALL TABLES IN SCHEMA public TO readonly;</code>)。書込権限のあるroleを渡さないのが鉄則。</p></div>
+
+  <ul class="icon-list">
+    <li><i data-lucide="database" width="20" height="20"></i><div><strong>探索</strong> — 「このテーブルのカラム構成は?」で即答える</div></li>
+    <li><i data-lucide="bar-chart-2" width="20" height="20"></i><div><strong>集計</strong> — 「月次のアクティブユーザー推移」をSQL書かずに</div></li>
+    <li><i data-lucide="alert-triangle" width="20" height="20"></i><div><strong>差分調査</strong> — 「本番と開発でテーブル定義が違う箇所」を2接続で比較</div></li>
+  </ul>
+
+  <details class="more-box"><summary>もっと詳しく: Postgres以外の選択肢</summary><div class="more-body"><p>2026年1月時点、公式or準公式MCPが存在する主なDB: PostgreSQL(公式)、SQLite(公式)、MySQL(サードパーティ複数)、BigQuery(サードパーティ)、Snowflake(サードパーティ)。MongoDB/Redis もコミュニティ実装あり。<strong>サードパーティは必ず監査</strong>してから使う。自社DB接続情報が外部に漏れるリスクに注意。</p></div></details>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>Slack MCP: チャンネル要約と投稿</h2>
+
+  <p>Slack MCPは<span class="term" data-tip="Slack管理画面で作成するOAuthアプリのアクセストークン。Bot Token(xoxb-) と User Token(xoxp-) がある">Bot Token</span>を使ってチャンネル読書きする。要約用途なら<code>channels:history</code>/<code>channels:read</code>だけのBotで十分で、投稿を許すなら<code>chat:write</code>を追加する。</p>
+
+  <pre><code>// .mcp.json
+{
+  "mcpServers": {
+    "slack": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-slack"],
+      "env": {
+        "SLACK_BOT_TOKEN": "xoxb-********",
+        "SLACK_TEAM_ID": "T0123456"
+      }
+    }
+  }
+}</code></pre>
+
+  <p>主な提供ツール: <code>slack__list_channels</code>, <code>slack__post_message</code>, <code>slack__reply_to_thread</code>, <code>slack__get_channel_history</code>, <code>slack__add_reaction</code>, <code>slack__get_users</code>。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Slack MCPの権限カテゴリ別 OAuth Scope</div>
+    <canvas id="ch5-bar-1" height="200"></canvas>
+  </div>
+  <script>
+  window.addEventListener("load", function(){
+    var ctx = document.getElementById('ch5-bar-1');
+    if(!ctx || !window.Chart) return;
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['読取(history)','投稿(chat:write)','リアクション','ユーザー情報','DM'],
+        datasets: [{ label: '必要スコープ数', data: [2, 1, 1, 1, 2], backgroundColor: '#D97757', borderRadius: 6 }]
+      },
+      options: { indexAxis: 'y', plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true } } }
+    });
+  });
+  </script>
+
+  <div class="compare-cards">
+    <div class="cc good">
+      <span class="cc-label">向いてる使い方</span>
+      <h4>要約・検索</h4>
+      <ul><li>「#general の昨日の議論」要約</li><li>特定キーワードを含む投稿探し</li><li>週次振り返り用の抽出</li></ul>
+    </div>
+    <div class="cc neutral">
+      <span class="cc-label">要注意</span>
+      <h4>投稿・DM</h4>
+      <ul><li>誤爆リスクが高い</li><li>毎回確認必須</li><li>テスト用チャンネルから</li></ul>
+    </div>
+    <div class="cc bad">
+      <span class="cc-label">避ける</span>
+      <h4>削除・編集</h4>
+      <ul><li>Slackの本来UIでやるべき</li><li>取り消せない副作用</li><li>監査ログに痕跡が残る</li></ul>
+    </div>
+  </div>
+
+  <div class="info-box"><span class="label">注意</span><p>投稿系ツールは <code>permissionMode: "askOnce"</code> や Claude Code の<strong>deny設定</strong>で事故を防ぐ。「一度許可したら同セッション中はスキップ」は投稿では<strong>オフにしておく</strong>のが安全。</p></div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>Fetch / Puppeteer MCP: Webを読む</h2>
+
+  <p>Web情報を扱うMCPは2系統。<span class="term" data-tip="指定URLをHTTP GETしMarkdownに変換する軽量MCP。静的HTMLに強い">Fetch系</span>は軽量HTTPクライアント、<span class="term" data-tip="Chromiumヘッドレスブラウザを操作してJavaScript描画後のDOM取得・スクリーンショット・フォーム操作ができるMCPサーバー">Puppeteer系</span>はフルブラウザ。<strong>用途で使い分ける</strong>。</p>
+
+  <table>
+    <thead>
+      <tr><th>用途</th><th>Fetch</th><th>Puppeteer</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>静的HTMLの取得</td><td><strong>◎</strong>(軽量・速い)</td><td>○(オーバースペック)</td></tr>
+      <tr><td>SPA/JS描画ページ</td><td>×(空のHTMLが返る)</td><td><strong>◎</strong></td></tr>
+      <tr><td>スクリーンショット</td><td>×</td><td><strong>◎</strong></td></tr>
+      <tr><td>フォーム送信・クリック</td><td>×</td><td><strong>◎</strong></td></tr>
+      <tr><td>起動コスト</td><td>数百ms</td><td>数秒(Chromium起動)</td></tr>
+    </tbody>
+  </table>
+
+  <pre><code>// 両方いれる場合
+{
+  "mcpServers": {
+    "fetch": {
+      "command": "uvx",
+      "args": ["mcp-server-fetch"]
+    },
+    "puppeteer": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-puppeteer"]
+    }
+  }
+}</code></pre>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Fetch vs Puppeteer 使い分けツリー</div>
+    <pre class="mermaid">
+graph TD
+  Q["Webから情報が欲しい"] --> A{"JSで描画される?"}
+  A -- No --> F["Fetch MCP"]
+  A -- Yes --> B{"スクショ or クリック必要?"}
+  B -- No --> F
+  B -- Yes --> P["Puppeteer MCP"]
+  F --> OK1["Markdown化された本文取得"]
+  P --> OK2["DOM・画像・操作結果"]
+    </pre>
+    <div class="diagram-caption">「まずFetchを試す、ダメならPuppeteer」の順序がコスト最小。</div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat"><div class="stat-num">~300<small>ms</small></div><div class="stat-label">Fetch 1回平均</div><div class="stat-trend up">↑ 軽量</div></div>
+    <div class="stat"><div class="stat-num">~3<small>s</small></div><div class="stat-label">Puppeteer初回起動</div><div class="stat-trend down">↓ 重い</div></div>
+    <div class="stat"><div class="stat-num">1.2<small>MB</small></div><div class="stat-label">スクショ平均サイズ</div><div class="stat-trend">→ 文脈圧迫注意</div></div>
+  </div>
+
+  <div class="info-box"><span class="label">落とし穴</span><p>スクリーンショットはbase64で大きい。<strong>Claude Codeのコンテキストを一気に食う</strong>。全画面ではなく要素指定スクショ(<code>screenshot(selector)</code>)で絞るか、ファイル保存して後で参照させる運用が賢い。</p></div>
+
+  <details class="more-box"><summary>もっと詳しく: robots.txt と利用規約</summary><div class="more-body"><p>MCPだからといってスクレイピングの倫理が緩むわけではない。<strong>robots.txt の尊重</strong>、<strong>利用規約の確認</strong>、<strong>API があるならAPIを優先</strong>、<strong>過剰リクエストの回避</strong>は通常のクローラーと同じ。FetchやPuppeteerで大量に叩くと、サービス側から見ればDoS攻撃と区別がつかない。レート制御は呼び出し元(あなたとClaude Code)の責任。</p></div></details>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>各MCPの実行時間ざっくり比較</h2>
+
+  <p>MCPごとに1回の呼び出しコスト感が違う。「ここは遅い」を頭に入れておくと、ワークフロー設計が変わる。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">1回の典型的な応答時間 (ms)</div>
+    <canvas id="ch5-bar-2" height="200"></canvas>
+  </div>
+  <script>
+  window.addEventListener("load", function(){
+    var ctx = document.getElementById('ch5-bar-2');
+    if(!ctx || !window.Chart) return;
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Filesystem','Postgres','Slack','Fetch','Puppeteer'],
+        datasets: [{ label: '応答時間(ms)', data: [20, 80, 400, 300, 2800], backgroundColor: '#D97757', borderRadius: 6 }]
+      },
+      options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, title: { display: true, text: 'ms' } } } }
+    });
+  });
+  </script>
+
+  <div class="kv-grid">
+    <div class="kv"><div class="kv-key">Filesystem</div><div class="kv-val">~20ms (ローカル)</div></div>
+    <div class="kv"><div class="kv-key">Postgres</div><div class="kv-val">~80ms (LAN)</div></div>
+    <div class="kv"><div class="kv-key">Slack API</div><div class="kv-val">~400ms</div></div>
+    <div class="kv"><div class="kv-key">Fetch</div><div class="kv-val">~300ms</div></div>
+    <div class="kv"><div class="kv-key">Puppeteer</div><div class="kv-val">~2800ms (初回)</div></div>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>ハンズオン: ~/Documents を要約する</h2>
+
+  <p>ここからは手を動かす。Filesystem MCPで <code>~/Documents</code> にアクセスし、ファイル構造と主要ドキュメントを要約させる。Claude Codeがインストール済みで、Node.js 18+ がある前提。</p>
+
+  <ul class="icon-list">
+    <li><i data-lucide="check-square" width="20" height="20"></i><div><strong>手順1</strong>: <code>~/.claude/.mcp.json</code> に filesystem サーバーを1つ追加(本章の設定例をそのまま使ってOK、ただし<strong>パスは自分の環境に書き換え</strong>)</div></li>
+    <li><i data-lucide="terminal" width="20" height="20"></i><div><strong>手順2</strong>: シェルで <code>claude mcp list</code> を実行し、<code>filesystem: running</code> が出ることを確認</div></li>
+    <li><i data-lucide="message-circle" width="20" height="20"></i><div><strong>手順3</strong>: Claude Codeで <code>~/Documents</code> の直下ファイル・フォルダを一覧させる(プロンプト: 「filesystem MCPで<code>~/Documents</code>のトップを<code>list_directory</code>し、主要ディレクトリを3行で要約して」)</div></li>
+    <li><i data-lucide="file-text" width="20" height="20"></i><div><strong>手順4</strong>: 次に「サイズの大きい.mdファイルTop3を<code>search_files</code>で見つけ、それぞれ<code>read_file</code>して200字で要約」を投げる</div></li>
+    <li><i data-lucide="shield" width="20" height="20"></i><div><strong>手順5</strong>: 最後に「<code>~/Documents</code>外のファイルを読もうとしてみて」と指示し、<strong>拒否されること</strong>を確認(安全境界のチェック)</div></li>
+  </ul>
+
+  <div class="info-box"><span class="label">想定つまづき</span><p>(1) <code>~</code>が展開されない → フルパス記述、(2) <code>claude mcp list</code>でエラー → npxのキャッシュクリア <code>npx clear-npx-cache</code>、(3) 大量ファイルで遅い → <code>list_directory</code>は深さ1固定、再帰は自分で指示。</p></div>
+
+  <pre><code># 動作確認コマンド例
+claude mcp list
+# -&gt; filesystem: running
+
+# Claude Codeセッション内でのプロンプト例
+&gt; filesystem MCPで ~/Documents のトップレベルを list_directory して、
+  サブディレクトリを用途別に3行で要約して</code></pre>
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>~/Documents のファイル構造を要約する</h4>
+    <p>上のハンズオンをそのまま実行し、手順5(拒否確認)までやりきる。</p>
+    <ol>
+      <li>自分の環境用に<code>.mcp.json</code>を書いて保存する</li>
+      <li><code>claude mcp list</code>で<code>running</code>を確認</li>
+      <li>Claude Codeで「<code>~/Documents</code>配下の主要ディレクトリTop5を役割別に要約」させる</li>
+      <li>「<code>/etc/passwd</code>を読んで」と投げて<strong>拒否される</strong>ことを確認</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>想定される応答の形(例):</p>
+      <pre><code>~/Documents 配下の主なサブディレクトリ:
+- work/        : 業務関連PDF・Word中心(計 412 files)
+- personal/    : 個人メモ・Markdown(計 87 files)
+- screenshots/ : 画像中心・サイズ大(計 1.2GB)
+- archive/     : 古い資料・zip多数(計 340 files)
+- receipts/    : 領収書PDF・年別(計 210 files)</code></pre>
+      <p>手順5で<code>/etc/passwd</code>を指示した際の期待応答: <strong>「filesystem MCPの許可パス外のためアクセスできません」</strong>。これが出ればルート許可モデルが正しく効いている。</p>
+      <p>チェックポイント: (a) 応答が具体的ファイル数を含む、(b) ディレクトリ役割を人間が読める日本語で分類、(c) 禁止パスは明確に拒否。この3つが揃えばOK。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>Fetch MCPで技術ブログ記事をMarkdown化する</h4>
+    <p>Fetchを足して、Web記事→要約のフローを組む。</p>
+    <ol>
+      <li><code>.mcp.json</code>に <code>mcp-server-fetch</code> を追加(<code>uvx</code>必須。未導入なら <code>pip install uv</code>)</li>
+      <li>好きな技術ブログ記事のURLを1つ用意</li>
+      <li>Claude Codeで「このURLをfetchしてMarkdownで取得→300字で要約→<code>~/Documents/notes/</code>に<code>YYYYMMDD-title.md</code>として保存」を指示</li>
+      <li>filesystem MCPの書込承認UIが出ることを確認し、保存される</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>完成する<code>.mcp.json</code>(抜粋):</p>
+      <pre><code>{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem",
+               "/Users/you/Documents"]
+    },
+    "fetch": {
+      "command": "uvx",
+      "args": ["mcp-server-fetch"]
+    }
+  }
+}</code></pre>
+      <p>期待されるClaude Codeの動き:</p>
+      <ol>
+        <li><code>fetch__fetch(url)</code> → Markdown本文を受け取る</li>
+        <li>内部で300字に要約</li>
+        <li><code>filesystem__write_file("/Users/you/Documents/notes/20260118-xxx.md", content)</code> をツール呼び出し</li>
+        <li><strong>書込承認UIが表示</strong> → ユーザーがYes → 保存完了</li>
+      </ol>
+      <p>応用ポイント: Fetchが返すのは<strong>サイト側のHTML→Markdown変換</strong>。JSで後から生成される内容は取れないので、SPA記事なら<code>puppeteer</code>に切り替える判断ができれば◎。この「Fetchで試す→ダメならPuppeteer」の分岐を自力で回せれば本章の目的達成だ。</p>
+    </div>
+  </details>
+
+  <div class="info-box"><span class="label">本章の記述について</span><p>ここに書いたサーバー名・パッケージパス・設定キーは<strong>2026年1月時点</strong>の <a href="https://github.com/modelcontextprotocol/servers" target="_blank" rel="noopener">modelcontextprotocol/servers</a> を基準にしている。MCP仕様・公式サーバー一覧は進化中なので、実装前に必ず <a href="https://modelcontextprotocol.io" target="_blank" rel="noopener">modelcontextprotocol.io</a> と <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code公式ドキュメント</a> を参照のこと。</p></div>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span><a href="https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem" target="_blank" rel="noopener">server-filesystem — 公式README</a> / 引数仕様・提供ツール一覧</li>
+      <li><span class="res-type doc">Doc</span><a href="https://github.com/modelcontextprotocol/servers/tree/main/src/postgres" target="_blank" rel="noopener">server-postgres — 公式README</a> / 接続URL・readonly運用例</li>
+      <li><span class="res-type doc">Doc</span><a href="https://github.com/modelcontextprotocol/servers/tree/main/src/slack" target="_blank" rel="noopener">server-slack — 公式README</a> / Bot Tokenスコープ一覧</li>
+      <li><span class="res-type doc">Doc</span><a href="https://github.com/modelcontextprotocol/servers/tree/main/src/fetch" target="_blank" rel="noopener">server-fetch — 公式README</a> / HTML→Markdown変換の挙動</li>
+      <li><span class="res-type doc">Doc</span><a href="https://github.com/modelcontextprotocol/servers/tree/main/src/puppeteer" target="_blank" rel="noopener">server-puppeteer — 公式README</a> / スクショ・クリック等の操作API</li>
+      <li><span class="res-type doc">Doc</span><a href="https://modelcontextprotocol.io" target="_blank" rel="noopener">Model Context Protocol 公式サイト</a> / 仕様・最新アナウンス</li>
+      <li><span class="res-type doc">Doc</span><a href="https://docs.claude.com/en/docs/claude-code/mcp" target="_blank" rel="noopener">Claude Code Docs: MCP</a> / Claude Code側からの利用ガイド</li>
+      <li><span class="res-type doc">Doc</span><a href="https://github.com/punkpeye/awesome-mcp-servers" target="_blank" rel="noopener">awesome-mcp-servers</a> / サードパーティMCPの総覧</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="05">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="04-github-mcp.html"><span class="direction">&larr; Prev</span>実践：GitHub MCP</a>
+    <a href="06-custom-mcp.html"><span class="direction">Next &rarr;</span>カスタムMCPサーバー入門</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>

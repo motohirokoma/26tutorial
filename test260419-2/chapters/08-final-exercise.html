@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>最終演習：主戦場ツールをMCP化 - MK's Claude Code Tutorial - MCP Guide</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code - MCP
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav class="active"><span class="phase-name">Practice</span><span class="phase-pct" id="pct-practice">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.08</span>
+    最終演習：主戦場ツールをMCP化
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 8 sections</text>
+    </svg>
+    <div class="progress-info">0h / 4h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-mcp-overview.html"><span class="status-dot" data-chapter="01"></span> MCPとは</a></li>
+    <li><a href="02-mcp-config.html"><span class="status-dot" data-chapter="02"></span> Claude CodeにMCPを追加</a></li>
+    <li><a href="03-official-servers.html"><span class="status-dot" data-chapter="03"></span> 公式MCPサーバー一覧</a></li>
+  </ul>
+  <div class="section-label">Practice</div>
+  <ul>
+    <li><a href="04-github-mcp.html"><span class="status-dot" data-chapter="04"></span> 実践：GitHub MCP</a></li>
+    <li><a href="05-filesystem-others.html"><span class="status-dot" data-chapter="05"></span> 実践：Filesystem・他MCP</a></li>
+    <li><a href="06-custom-mcp.html"><span class="status-dot" data-chapter="06"></span> カスタムMCPサーバー入門</a></li>
+    <li><a href="07-troubleshoot.html"><span class="status-dot" data-chapter="07"></span> MCPのトラブルシュート</a></li>
+    <li><a href="08-final-exercise.html" class="active"><span class="status-dot" data-chapter="08"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 2: Practice &gt; Chapter 08</div>
+  <h1>最終演習：主戦場ツールをMCP化</h1>
+  <p class="subtitle">自分の業務ツールを1つ選び、Claude Codeから操作できるようにする統合課題</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 25分</span>
+    <span class="badge">Phase: Practice</span>
+    <span class="badge">難易度: 応用</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">本章の前提</span>
+    <p>本章の記述は <strong>2026年1月時点</strong>。MCPサーバー公式カタログ・SDK APIは進化が早いので、着手前に <a href="https://modelcontextprotocol.io" target="_blank" rel="noopener">modelcontextprotocol.io</a> と <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code公式ドキュメント</a> を必ず最新版で確認してください。</p>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- Section 1: 7章の学びをここに束ねる -->
+  <!-- ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 7章の学びをここに束ねる</h2>
+
+  <p>ここまでの7章で、<span class="term" data-tip="Model Context Protocol。AIと外部ツールの連携を標準化したプロトコル。">MCP</span>の思想(Ch01)、<code>.mcp.json</code>と<span class="term" data-tip="user/project/localの3スコープ。権限の範囲を決める。">スコープ</span>(Ch02)、公式サーバーカタログ(Ch03)、GitHub(Ch04)・Filesystem/他(Ch05)の実践、カスタムサーバー自作(Ch06)、そして<span class="term" data-tip="繋がらない・権限エラー・ログ読み方などの問題解決術。">トラブルシュート</span>(Ch07)を順に積んできました。この最終章では、そのすべてを <strong>1つの「自分の主戦場」</strong>に向けて統合します。</p>
+
+  <p>目標は <strong>「日常で使う業務ツールのうち1つを選び、Claude Code から操作できるようにする」</strong>こと。公式サーバーがあればそれを繋ぎ、なければカスタムMCPを自作します。設計→認証→実装→動作確認まで一気通貫で通す演習です。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span></p>
+
+  <div class="info-box">
+    <span class="label">Tips</span>
+    <p>この演習の肝は「完璧なMCPサーバーを作る」ことではなく、<strong>「自分の手のツールにClaudeが届く」という成功体験を1つ作る</strong>ことです。最初のユースケースは3つで十分。まず動かして、そこから育てましょう。</p>
+  </div>
+
+  <!-- 7章の知識が1枚の設計書のどこに効くか SVG -->
+  <div class="diagram-box">
+    <div class="diagram-title">7章の知識があなたの主戦場MCP化のどこに効くか</div>
+    <svg viewBox="0 0 720 340" width="100%" style="max-width:720px; display:block; margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0" y="0" width="720" height="340" rx="12" fill="#fafafa" stroke="#e4e4e7"/>
+      <text x="360" y="28" text-anchor="middle" font-size="13" font-weight="700" fill="#18181b">7章の知識を束ねて主戦場ツール1つをMCP化する</text>
+
+      <!-- 設計 -->
+      <rect x="30" y="55" width="200" height="115" rx="8" fill="rgba(217,119,87,0.15)" stroke="#D97757"/>
+      <text x="130" y="78" text-anchor="middle" font-size="12" font-weight="700" fill="#D97757">設計(DESIGN)</text>
+      <text x="130" y="98" text-anchor="middle" font-size="10" fill="#52525b">Ch01 MCP概念・Tools/Res</text>
+      <text x="130" y="114" text-anchor="middle" font-size="10" fill="#52525b">Ch03 公式サーバー有無</text>
+      <text x="130" y="130" text-anchor="middle" font-size="10" fill="#52525b">Ch06 自作 or 既製か判定</text>
+      <text x="130" y="146" text-anchor="middle" font-size="10" fill="#52525b">ツール3つの優先順位</text>
+      <text x="130" y="162" text-anchor="middle" font-size="10" fill="#52525b">inputSchema 設計</text>
+
+      <!-- 接続 -->
+      <rect x="260" y="55" width="200" height="115" rx="8" fill="rgba(217,119,87,0.15)" stroke="#D97757"/>
+      <text x="360" y="78" text-anchor="middle" font-size="12" font-weight="700" fill="#D97757">接続(CONNECT)</text>
+      <text x="360" y="98" text-anchor="middle" font-size="10" fill="#52525b">Ch02 .mcp.json・スコープ</text>
+      <text x="360" y="114" text-anchor="middle" font-size="10" fill="#52525b">Ch02 stdio / http 選択</text>
+      <text x="360" y="130" text-anchor="middle" font-size="10" fill="#52525b">Ch04 認証(token/env)</text>
+      <text x="360" y="146" text-anchor="middle" font-size="10" fill="#52525b">claude mcp add で登録</text>
+      <text x="360" y="162" text-anchor="middle" font-size="10" fill="#52525b">最小権限スコープ</text>
+
+      <!-- 運用 -->
+      <rect x="490" y="55" width="200" height="115" rx="8" fill="rgba(217,119,87,0.15)" stroke="#D97757"/>
+      <text x="590" y="78" text-anchor="middle" font-size="12" font-weight="700" fill="#D97757">運用(OPS)</text>
+      <text x="590" y="98" text-anchor="middle" font-size="10" fill="#52525b">Ch04/05 ユースケース実行</text>
+      <text x="590" y="114" text-anchor="middle" font-size="10" fill="#52525b">Ch07 mcp list で確認</text>
+      <text x="590" y="130" text-anchor="middle" font-size="10" fill="#52525b">Ch07 ログ・エラー追跡</text>
+      <text x="590" y="146" text-anchor="middle" font-size="10" fill="#52525b">改善サイクル(3→5→N)</text>
+      <text x="590" y="162" text-anchor="middle" font-size="10" fill="#52525b">チーム共有/README化</text>
+
+      <!-- 矢印 -->
+      <line x1="130" y1="175" x2="360" y2="235" stroke="#D97757" stroke-width="1.5"/>
+      <line x1="360" y1="175" x2="360" y2="235" stroke="#D97757" stroke-width="1.5"/>
+      <line x1="590" y1="175" x2="360" y2="235" stroke="#D97757" stroke-width="1.5"/>
+
+      <!-- 成果 -->
+      <rect x="180" y="235" width="360" height="85" rx="8" fill="#ffffff" stroke="#18181b" stroke-width="1.5"/>
+      <text x="360" y="258" text-anchor="middle" font-size="13" font-weight="700" fill="#18181b">あなたの主戦場MCP v0.1</text>
+      <text x="360" y="278" text-anchor="middle" font-size="10" fill="#52525b">ツール名・3つのユースケース・認証・起動手順</text>
+      <text x="360" y="294" text-anchor="middle" font-size="10" fill="#52525b">.mcp.json 定義 / README / 動作確認ログ</text>
+      <text x="360" y="310" text-anchor="middle" font-size="10" fill="#52525b">Claude Code から実際に呼び出せる状態</text>
+    </svg>
+    <div class="diagram-caption">1つの設計書の中に、学んできた全ての知識が並ぶ。</div>
+  </div>
+
+  <h3>今回の演習の進め方</h3>
+
+  <div class="steps">
+    <div class="step done"><div class="step-num">1</div><div class="step-label">ケース設定</div><div class="step-desc">前提条件を読む</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-label">自分で試設計</div><div class="step-desc">ツール・3ユースケース</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-label">ヒント5段</div><div class="step-desc">選定→認証まで</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-label">模範解答</div><div class="step-desc">Obsidian MCP 例</div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-label">応用</div><div class="step-desc">2つ目/チーム共有</div></div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- Section 2: 問題提示 -->
+  <!-- ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 問題: 主戦場ツールをMCP化する設計書を書く</h2>
+
+  <p>以下の前提条件で、<strong>ゼロから1つの設計書</strong>を作ってください。テキストファイルでもObsidianノートでも構いません。</p>
+
+  <h3>前提条件</h3>
+
+  <table>
+    <thead>
+      <tr><th>項目</th><th>内容</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>対象</td><td>あなたが <strong>週5日以上触るツール</strong> を1つ選ぶ(Notion / Obsidian / Jira / Linear / Figma / 社内Wiki / Airtable など)</td></tr>
+      <tr><td>接続方式</td><td>stdio transport を基本に(ローカル完結でCh07の障害切り分けが楽)</td></tr>
+      <tr><td>実装</td><td>公式MCPサーバーがあればそれを採用、無ければ <span class="term" data-tip="TypeScriptまたはPythonのMCP SDK。Ch06で学んだひな型を土台にする。">MCP SDK</span> で自作</td></tr>
+      <tr><td>初期ユースケース</td><td><strong>3つ</strong>(read系1 + write系1 + 集計/検索系1 が理想)</td></tr>
+      <tr><td><span class="term" data-tip="アクセストークン・APIキーなど、ツール固有の認証情報。環境変数で渡すのが基本。">認証</span></td><td>APIキー/トークンは環境変数経由、<code>.mcp.json</code>に直書きしない</td></tr>
+      <tr><td>スコープ</td><td>project スコープ(チーム共有前提)または user スコープ(個人PCのみ)</td></tr>
+      <tr><td>成果物</td><td><code>.mcp.json</code> / サーバー実装ファイル / README / 動作確認ログ の4点</td></tr>
+      <tr><td>検証</td><td>Claude Code で <strong>3ユースケースすべて</strong>が手動で1回ずつ成功</td></tr>
+    </tbody>
+  </table>
+
+  <h3>求めるアウトプット (5点セット)</h3>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="target" width="20" height="20"></i>
+      <div><strong>ツール選定と理由</strong> — なぜそのツールか(使用頻度・自動化余地・認証の入手しやすさ)</div>
+    </li>
+    <li>
+      <i data-lucide="search" width="20" height="20"></i>
+      <div><strong>公式サーバー調査結果</strong> — <a href="https://github.com/modelcontextprotocol/servers" target="_blank" rel="noopener">servers</a> / <a href="https://github.com/punkpeye/awesome-mcp-servers" target="_blank" rel="noopener">awesome-mcp-servers</a> を見て採用判断</div>
+    </li>
+    <li>
+      <i data-lucide="settings" width="20" height="20"></i>
+      <div><strong>3つのユースケース定義</strong> — name / description / inputSchema(Ch06) の簡易書き出し</div>
+    </li>
+    <li>
+      <i data-lucide="key" width="20" height="20"></i>
+      <div><strong>認証と権限設計</strong> — 最小権限スコープ・環境変数名・取得手順(Ch02/Ch04)</div>
+    </li>
+    <li>
+      <i data-lucide="check-circle" width="20" height="20"></i>
+      <div><strong>動作確認ログ</strong> — <code>claude mcp list</code>の結果+3ユースケース実行のスクリーンショット/抜粋</div>
+    </li>
+  </ul>
+
+  <!-- ライフイベント風タイムライン: 設計→運用の大流れ -->
+  <h3>設計から運用開始までの流れ</h3>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-date">D-0(0分)</div>
+      <div class="tl-title">ツール選定</div>
+      <div class="tl-body">1週間の作業ログから最頻使用ツールTop3を洗い出し、その中から1つに絞る。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">D-0(5分)</div>
+      <div class="tl-title">公式サーバー調査</div>
+      <div class="tl-body">modelcontextprotocol/servers と awesome-mcp-servers を「ツール名」でgrep。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">D-0(10分)</div>
+      <div class="tl-title">設計(自作パス)</div>
+      <div class="tl-body">公式がなければ3ユースケースを決め、Ch06のひな型に追加する関数3つのシグネチャを書く。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">D-0(15分)</div>
+      <div class="tl-title">認証準備</div>
+      <div class="tl-body">APIキーを発行 / Personal Access Token 取得。環境変数に格納、<code>.mcp.json</code>は<code>${ENV_VAR}</code>で参照。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">D-0(20分)</div>
+      <div class="tl-title">登録と動作確認</div>
+      <div class="tl-body"><code>claude mcp add</code> → <code>claude mcp list</code> → Claude Codeで3ユースケース実行。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">D+1以降</div>
+      <div class="tl-title">育てる</div>
+      <div class="tl-body">READMEにユースケースを追記、5つ→10個にツールを増やし、チームに配布する。</div>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <span class="label">Note</span>
+    <p>「MCP化するほどのツールか?」と迷ったら、<strong>「Claudeが使えたら毎朝30分浮くか」</strong>で判定してください。Yesなら投資する価値あり。NoならTop3の別ツールに対象を変えます。</p>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- Section 3: 段階ヒント (5つ) -->
+  <!-- ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 段階ヒント (行き詰まったら開く)</h2>
+
+  <p>いきなり全部開くと「答え写し」になります。まず自分で1回設計してみて、詰まった項目だけ開いてください。</p>
+
+  <details class="more-box">
+    <summary>もっと詳しく: ヒント1 — ツール選定の4基準 (Ch01 / Ch03)</summary>
+    <div class="more-body">
+      <p>「週5以上触る」だけでは選べない時の追加基準:</p>
+      <ol>
+        <li><strong>使用頻度</strong> — 1日3回以上触る(低頻度ならROIが出ない)</li>
+        <li><strong>APIの存在と品質</strong> — 公式REST/GraphQL APIがあり、rate limitが緩い</li>
+        <li><strong>自動化余地</strong> — 「検索・集計・転記」など定型操作がある(新規創作寄りは向かない)</li>
+        <li><strong>認証の入手しやすさ</strong> — 自分の権限で token/API keyを発行できる</li>
+      </ol>
+      <p>候補例と評価(1=低、5=高):</p>
+      <table>
+        <thead><tr><th>ツール</th><th>頻度</th><th>API</th><th>自動化余地</th><th>認証</th><th>MCP適性</th></tr></thead>
+        <tbody>
+          <tr><td>Obsidian (ローカルVault)</td><td>5</td><td>ファイルI/O</td><td>5</td><td>不要</td><td>★★★★★</td></tr>
+          <tr><td>Notion</td><td>5</td><td>REST公式</td><td>4</td><td>Integration Token</td><td>★★★★★</td></tr>
+          <tr><td>Jira</td><td>5</td><td>REST公式</td><td>4</td><td>API Token</td><td>★★★★</td></tr>
+          <tr><td>Linear</td><td>5</td><td>GraphQL</td><td>5</td><td>API Key</td><td>★★★★★</td></tr>
+          <tr><td>Figma</td><td>3</td><td>REST(read寄り)</td><td>3</td><td>Personal Token</td><td>★★★</td></tr>
+          <tr><td>社内独自Web</td><td>5</td><td>なし/不安定</td><td>2</td><td>社内SSO</td><td>★★</td></tr>
+        </tbody>
+      </table>
+      <div class="info-box">
+        <span class="label">Tips</span>
+        <p>最初の一台は <strong>Obsidianローカル</strong>か <strong>Linear</strong>が最適です。Obsidianは認証不要・Linearは公式GraphQLが秀逸。Notionも定番ですが、database schemaが複雑なので2台目以降が無難です。</p>
+      </div>
+    </div>
+  </details>
+
+  <details class="more-box">
+    <summary>もっと詳しく: ヒント2 — 公式/準公式サーバー調査の手順 (Ch03)</summary>
+    <div class="more-body">
+      <p>調査順序(上から優先度高):</p>
+      <div class="steps">
+        <div class="step done"><div class="step-num">1</div><div class="step-label">公式</div><div class="step-desc">modelcontextprotocol/servers</div></div>
+        <div class="step done"><div class="step-num">2</div><div class="step-label">awesome</div><div class="step-desc">punkpeye/awesome-mcp-servers</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-label">GitHub検索</div><div class="step-desc">"ツール名 mcp-server"</div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-label">npm/pypi</div><div class="step-desc">package.json 確認</div></div>
+        <div class="step"><div class="step-num">5</div><div class="step-label">自作判断</div><div class="step-desc">Ch06ひな型へ</div></div>
+      </div>
+      <p>採用判断の3チェック:</p>
+      <ul>
+        <li><strong>最終更新日</strong> — 6ヶ月以内なら採用候補、1年超は古い仕様の可能性</li>
+        <li><strong>使っている transport</strong> — stdio優先。http-only はローカル検証が面倒</li>
+        <li><strong>Stars/Issues数と閉鎖率</strong> — 活発にメンテされているか</li>
+      </ul>
+      <pre><code># GitHub APIで直接検索する例
+gh search repos "notion mcp-server" --sort=updated --limit=10</code></pre>
+      <p>2026年1月時点の参考: Obsidian用MCPは複数の非公式実装あり(品質差大)、Notion公式はまだ「準公式」扱いでコミュニティ版の方が完成度が高いケースあり — 必ず都度確認してください。</p>
+    </div>
+  </details>
+
+  <details class="more-box">
+    <summary>もっと詳しく: ヒント3 — 公式がない時のカスタム設計 (Ch06)</summary>
+    <div class="more-body">
+      <p>Ch06の最小ひな型を土台に、<strong>3つのツール関数</strong>を足す構成が最短です。</p>
+      <p>設計テンプレート(1ツールあたり):</p>
+      <pre><code>- name: 英数ケバブケース (例 "obsidian_search_notes")
+- description: 1行で「何をする/何が返る」
+- inputSchema:
+    type: object
+    properties:
+      query:       { type: string, description: "検索文字列" }
+      vault_path:  { type: string, description: "Vaultのルートパス" }
+      max_results: { type: integer, default: 10 }
+    required: [query, vault_path]</code></pre>
+      <p>3ツールの型(推奨):</p>
+      <table>
+        <thead><tr><th>種類</th><th>例(Obsidian)</th><th>例(Linear)</th><th>例(Notion)</th></tr></thead>
+        <tbody>
+          <tr><td>Read</td><td>search_notes</td><td>list_issues</td><td>query_database</td></tr>
+          <tr><td>Write</td><td>append_daily_note</td><td>create_issue</td><td>append_page_block</td></tr>
+          <tr><td>集計/要約</td><td>tag_overview</td><td>sprint_summary</td><td>page_stats</td></tr>
+        </tbody>
+      </table>
+      <div class="info-box">
+        <span class="label">Warning</span>
+        <p>write系ツールには <strong>必ず "dry_run" パラメータ</strong>を入れてください。Claudeが誤って本番に書き込む事故を防ぎます。初期はdefault: trueにしておくくらいが安全です(Ch07)。</p>
+      </div>
+    </div>
+  </details>
+
+  <details class="more-box">
+    <summary>もっと詳しく: ヒント4 — 認証の準備と渡し方 (Ch02 / Ch04)</summary>
+    <div class="more-body">
+      <p>認証情報は <strong>3重に分離</strong>して管理:</p>
+      <ol>
+        <li><strong>発行元で最小権限</strong> — Linearなら read + issue:write だけ、Notionなら特定DBのみ共有</li>
+        <li><strong>OSの秘密領域</strong> — macOS Keychain / 1Password CLI / <code>.env</code>(gitignore)</li>
+        <li><strong>子プロセス環境変数として渡す</strong> — <code>.mcp.json</code>の<code>env</code>で<code>${VAR}</code>参照</li>
+      </ol>
+      <p>NGパターンとOKパターン:</p>
+      <div class="compare-cards">
+        <div class="cc bad">
+          <span class="cc-label">Bad</span>
+          <h4>直書き(絶対ダメ)</h4>
+<pre><code>{
+  "mcpServers": {
+    "linear": {
+      "command": "node",
+      "args": ["./server.js"],
+      "env": { "LINEAR_API_KEY": "lin_api_xxxxxxxx" }
+    }
+  }
+}</code></pre>
+          <p>gitにcommitされた瞬間終了。履歴からも消せない。</p>
+        </div>
+        <div class="cc good">
+          <span class="cc-label">Good</span>
+          <h4>環境変数参照</h4>
+<pre><code>{
+  "mcpServers": {
+    "linear": {
+      "command": "node",
+      "args": ["./server.js"],
+      "env": { "LINEAR_API_KEY": "${LINEAR_API_KEY}" }
+    }
+  }
+}</code></pre>
+          <p>シェルで<code>export LINEAR_API_KEY=...</code>してから<code>claude</code>を起動。</p>
+        </div>
+      </div>
+      <p>最小権限を図解(Linear):</p>
+      <div class="diagram-box">
+        <div class="diagram-title">Linear API Key の権限スコープ</div>
+        <canvas id="ch8-donut-1" height="200"></canvas>
+        <div class="diagram-caption">最初は read + issue:write だけで十分。admin系は与えない。</div>
+      </div>
+    </div>
+  </details>
+
+  <details class="more-box">
+    <summary>もっと詳しく: ヒント5 — 初期3ユースケースの決め方</summary>
+    <div class="more-body">
+      <p>「何でもできるMCP」を作るのは失敗の元。<strong>最初は3つに絞る</strong>。選ぶ基準:</p>
+      <ol>
+        <li><strong>毎日やる読み取り</strong> 1つ(朝一で状況把握する系)</li>
+        <li><strong>週1〜数回やる書き込み</strong> 1つ(定型テンプレで追記する系)</li>
+        <li><strong>月1でやる集計/棚卸し</strong> 1つ(普段面倒だが価値があるもの)</li>
+      </ol>
+      <p>Obsidianでの例:</p>
+      <div class="kv-grid">
+        <div class="kv"><div class="kv-key">Read(毎日)</div><div class="kv-val">search_notes(キーワード検索)</div></div>
+        <div class="kv"><div class="kv-key">Write(週2)</div><div class="kv-val">append_daily_note(Dailyに追記)</div></div>
+        <div class="kv"><div class="kv-key">集計(月1)</div><div class="kv-val">tag_overview(タグごとのノート数)</div></div>
+      </div>
+      <p>Linear での例:</p>
+      <div class="kv-grid">
+        <div class="kv"><div class="kv-key">Read(毎日)</div><div class="kv-val">list_issues(自分のアサイン一覧)</div></div>
+        <div class="kv"><div class="kv-key">Write(週2)</div><div class="kv-val">create_issue(定型テンプレで起票)</div></div>
+        <div class="kv"><div class="kv-key">集計(スプリント末)</div><div class="kv-val">sprint_summary(完了率・遅延)</div></div>
+      </div>
+      <div class="info-box">
+        <span class="label">Insight</span>
+        <p>「3つ絞り」はただの制約ではなく、<strong>MCPサーバーを「育てる対象」にするための設計原則</strong>。最初から10個あるサーバーはメンテされず、3個のサーバーは1ヶ月後に5個に成長します。</p>
+      </div>
+    </div>
+  </details>
+
+  <!-- ============================================================ -->
+  <!-- Section 4: 模範解答 -->
+  <!-- ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 模範解答: Obsidian Vault MCP(カスタム自作)</h2>
+
+  <p>自分で設計してみましたか? ここから下は <strong>「Obsidian Vault操作カスタムMCP」</strong>を採用したモデル解答です。公式サーバーも複数ありますが、あえて <strong>自作</strong>することで Ch06 の知識を全部使い切る形にしています。</p>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+
+      <h3>1. ツール選定と理由</h3>
+
+      <div class="kv-grid">
+        <div class="kv"><div class="kv-key">対象ツール</div><div class="kv-val">Obsidian(ローカルVault、Markdown)</div></div>
+        <div class="kv"><div class="kv-key">使用頻度</div><div class="kv-val">毎日 10回以上(Daily Note + メモ検索)</div></div>
+        <div class="kv"><div class="kv-key">APIの存在</div><div class="kv-val">ファイルI/Oのみ(プラグイン経由でHTTPも可)</div></div>
+        <div class="kv"><div class="kv-key">認証</div><div class="kv-val">不要(ローカルファイル)</div></div>
+        <div class="kv"><div class="kv-key">自動化余地</div><div class="kv-val">検索/追記/集計すべて高い</div></div>
+        <div class="kv"><div class="kv-key">公式サーバー有無</div><div class="kv-val">非公式が複数(REST APIプラグイン依存)</div></div>
+        <div class="kv"><div class="kv-key">自作判断</div><div class="kv-val">Vaultパスだけで動く自前版を採用(依存最小)</div></div>
+      </div>
+
+      <!-- ベースウェイト的な時間内訳 -->
+      <div class="diagram-box">
+        <div class="diagram-title">この25分演習の時間配分(モデル)</div>
+        <canvas id="ch8-bar-1" height="180"></canvas>
+        <div class="diagram-caption">設計と動作確認に最も時間を使う。実装自体は15分程度で済む。</div>
+      </div>
+
+      <h3>2. 3ユースケース定義</h3>
+
+      <table>
+        <thead>
+          <tr><th>#</th><th>name</th><th>description</th><th>key inputs</th><th>型</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td><code>search_notes</code></td><td>Vault内のMarkdownをキーワード検索しファイル名+抜粋を返す</td><td>query, max_results</td><td>Read</td></tr>
+          <tr><td>2</td><td><code>append_daily_note</code></td><td>今日のDaily Noteにテキストを追記する(なければ作成)</td><td>text, timestamp, dry_run</td><td>Write</td></tr>
+          <tr><td>3</td><td><code>tag_overview</code></td><td>全ノートからタグを収集しタグ別の件数を集計</td><td>top_n</td><td>集計</td></tr>
+        </tbody>
+      </table>
+
+      <h3>3. サーバー実装(TypeScript・最小構成)</h3>
+
+      <pre><code>// obsidian-mcp/src/server.ts (Ch06のひな型を拡張)
+import { Server } from "@modelcontextprotocol/sdk/server/index.js";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import {
+  ListToolsRequestSchema,
+  CallToolRequestSchema,
+} from "@modelcontextprotocol/sdk/types.js";
+import fs from "node:fs/promises";
+import path from "node:path";
+
+const VAULT = process.env.OBSIDIAN_VAULT_PATH!;
+if (!VAULT) throw new Error("OBSIDIAN_VAULT_PATH is required");
+
+const server = new Server(
+  { name: "obsidian-mcp", version: "0.1.0" },
+  { capabilities: { tools: {} } }
+);
+
+server.setRequestHandler(ListToolsRequestSchema, async () => ({
+  tools: [
+    {
+      name: "search_notes",
+      description: "Vault内のMarkdownをキーワード検索する",
+      inputSchema: {
+        type: "object",
+        properties: {
+          query: { type: "string" },
+          max_results: { type: "integer", default: 10 },
+        },
+        required: ["query"],
+      },
+    },
+    {
+      name: "append_daily_note",
+      description: "今日のDaily Noteにテキストを追記する",
+      inputSchema: {
+        type: "object",
+        properties: {
+          text: { type: "string" },
+          dry_run: { type: "boolean", default: true },
+        },
+        required: ["text"],
+      },
+    },
+    {
+      name: "tag_overview",
+      description: "Vault全体のタグ別件数を集計",
+      inputSchema: {
+        type: "object",
+        properties: { top_n: { type: "integer", default: 20 } },
+      },
+    },
+  ],
+}));
+
+async function walk(dir: string): Promise&lt;string[]&gt; {
+  const out: string[] = [];
+  for (const e of await fs.readdir(dir, { withFileTypes: true })) {
+    const p = path.join(dir, e.name);
+    if (e.isDirectory()) out.push(...(await walk(p)));
+    else if (e.name.endsWith(".md")) out.push(p);
+  }
+  return out;
+}
+
+server.setRequestHandler(CallToolRequestSchema, async (req) => {
+  const { name, arguments: args } = req.params;
+  if (name === "search_notes") {
+    const files = await walk(VAULT);
+    const q = String(args.query).toLowerCase();
+    const hits: { file: string; excerpt: string }[] = [];
+    for (const f of files) {
+      const body = await fs.readFile(f, "utf8");
+      const i = body.toLowerCase().indexOf(q);
+      if (i &gt;= 0) hits.push({ file: path.relative(VAULT, f), excerpt: body.slice(Math.max(0, i - 40), i + 80) });
+      if (hits.length &gt;= (args.max_results ?? 10)) break;
+    }
+    return { content: [{ type: "text", text: JSON.stringify(hits, null, 2) }] };
+  }
+  if (name === "append_daily_note") {
+    const today = new Date().toISOString().slice(0, 10);
+    const fp = path.join(VAULT, "Daily", `${today}.md`);
+    const line = `\n- ${new Date().toLocaleTimeString()} ${args.text}\n`;
+    if (args.dry_run !== false) {
+      return { content: [{ type: "text", text: `[dry_run] would append to ${fp}:\n${line}` }] };
+    }
+    await fs.mkdir(path.dirname(fp), { recursive: true });
+    await fs.appendFile(fp, line);
+    return { content: [{ type: "text", text: `appended to ${fp}` }] };
+  }
+  if (name === "tag_overview") {
+    const files = await walk(VAULT);
+    const counts = new Map&lt;string, number&gt;();
+    for (const f of files) {
+      const body = await fs.readFile(f, "utf8");
+      for (const m of body.matchAll(/(?:^|\s)#([\w\/-]+)/g)) {
+        counts.set(m[1], (counts.get(m[1]) ?? 0) + 1);
+      }
+    }
+    const top = [...counts.entries()].sort((a, b) =&gt; b[1] - a[1]).slice(0, args.top_n ?? 20);
+    return { content: [{ type: "text", text: JSON.stringify(Object.fromEntries(top), null, 2) }] };
+  }
+  throw new Error(`unknown tool: ${name}`);
+});
+
+const transport = new StdioServerTransport();
+await server.connect(transport);
+</code></pre>
+
+      <h3>4. <code>.mcp.json</code>(project スコープ)</h3>
+
+      <pre><code>{
+  "mcpServers": {
+    "obsidian": {
+      "command": "node",
+      "args": ["./obsidian-mcp/dist/server.js"],
+      "env": {
+        "OBSIDIAN_VAULT_PATH": "${OBSIDIAN_VAULT_PATH}"
+      }
+    }
+  }
+}</code></pre>
+
+      <p>シェルで事前に <code>export OBSIDIAN_VAULT_PATH=~/Documents/MyVault</code>。<strong>APIキー不要だがパスも環境変数化</strong>しておくことで、チームメンバーが各自のVaultに差し替えやすくなります。</p>
+
+      <h3>5. 登録と動作確認</h3>
+
+      <pre><code># ビルド
+$ cd obsidian-mcp &amp;&amp; npm i &amp;&amp; npx tsc
+
+# 登録(projectスコープに入れる場合は.mcp.jsonを置くだけ)
+$ cd ..
+$ claude mcp list
+obsidian: node ./obsidian-mcp/dist/server.js  [stdio, connected]
+
+# Claude Codeで呼び出し(実プロンプト例)
+$ claude
+&gt; search_notes で "Claude Code" を含むノートを5件出して
+&gt; 今日のDaily Noteに「Ch08 演習完了」を追記(dry_runでまず確認)
+&gt; tag_overview でタグTop10を見せて</code></pre>
+
+      <div class="info-box">
+        <span class="label">Tips</span>
+        <p>最初の動作確認では <code>dry_run=true</code> で <strong>書き込み系を空打ち</strong>しましょう。パスが間違っていても被害ゼロ。期待通りならdry_runをfalseに、という二段構えはCh07のトラブル回避にそのまま効きます。</p>
+      </div>
+
+      <h3>6. 実行フロー(シーケンス)</h3>
+
+      <div class="diagram-box">
+        <div class="diagram-title">Claude Code → Obsidian MCP の往復</div>
+        <pre class="mermaid">
+sequenceDiagram
+  participant U as あなた
+  participant C as Claude Code
+  participant M as obsidian-mcp
+  participant V as Vault (FS)
+  U->>C: "Claude Codeを含むノートを5件"
+  C->>M: tools/call search_notes
+  M->>V: walk + readFile
+  V-->>M: md files
+  M-->>C: JSON(5件 file+excerpt)
+  C-->>U: 整形して表示
+        </pre>
+        <div class="diagram-caption">Claudeはツール呼び出しの判断だけ。ファイルI/OはMCPサーバー側に閉じる。</div>
+      </div>
+
+      <h3>7. 運用の型(ユースケース育成フロー)</h3>
+
+      <div class="diagram-box">
+        <div class="diagram-title">3→5→10 と育てる判断フロー</div>
+        <pre class="mermaid">
+graph TD
+  A["3ツール v0.1 稼働中"] --> B{"2週間使って<br/>不足を感じたか?"}
+  B -- "Yes" --> C["頻度3回以上の<br/>追加候補を1つ選ぶ"]
+  B -- "No" --> D["現状維持・READMEを整備"]
+  C --> E{"既存ツールの<br/>拡張で足りるか?"}
+  E -- "Yes" --> F["inputSchemaに<br/>パラメータ追加"]
+  E -- "No" --> G["新規ツール関数を追加"]
+  F --> H["v0.2 リリース"]
+  G --> H
+  H --> B
+        </pre>
+        <div class="diagram-caption">2週間運用→1追加、のリズムが最も破綻しない。</div>
+      </div>
+
+      <h3>8. 考え方の解説</h3>
+
+      <p>このモデル解答の肝は <strong>3つの設計判断</strong>です。</p>
+
+      <ol>
+        <li><strong>あえて「Obsidianローカル」を選ぶ</strong> — 認証ゼロ・完全ローカル完結で、Ch07のトラブル切り分けが最も楽。初めての自作MCPで環境要因の障害を踏まない。</li>
+        <li><strong>3ツール絞り+dry_run既定</strong> — 書き込み系の事故を構造的に防ぎつつ、育てる余白を残す。「完璧を作らない」設計。</li>
+        <li><strong>パスも環境変数化</strong> — チームに配る時に.mcp.jsonの編集不要、各自のVaultに向くだけで動く。project スコープ運用との相性が最高。</li>
+      </ol>
+
+      <div class="info-box">
+        <span class="label">Warning</span>
+        <p>本モデルは <strong>Vaultに秘密情報を書いていない</strong>前提です。社外秘を含むVaultでは、search_notesの<code>excerpt</code>長を短くする・特定タグ(<code>#private</code>)を含むファイルは除外する等の <strong>リダクション</strong>を実装してください(Ch07のセキュリティ注意)。</p>
+      </div>
+
+      <p>この設計書が描けたなら、あなたは「他人が作ったMCPを繋ぐ人」から「<strong>自分の仕事に合わせてMCPを設計できる人</strong>」に変わっています。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span></p>
+
+    </div>
+  </details>
+
+  <!-- ============================================================ -->
+  <!-- Section 5: 応用課題 -->
+  <!-- ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 応用課題: 条件を変えて計画を拡張する</h2>
+
+  <p>モデルが解けたら、次は「条件を変えたら何がどう変わるか」を体感しましょう。2つ目のツールを加えたり、チームに配布するだけで、設計は別物になります。</p>
+
+  <div class="exercise-box">
+    <div class="exercise-label">応用 1</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>2つ目のツールを追加する(Linear or Notion)</h4>
+    <p>Obsidian MCP が1週間安定して動いたら、<strong>2つ目</strong>として Linear か Notion を追加してください。今度は公式/準公式サーバーを採用してOK。</p>
+    <ol>
+      <li>Obsidian(自作) + Linear(既製)の <code>.mcp.json</code> がどう変わるか書く</li>
+      <li>authトークンの環境変数名と取得手順をREADMEに追記</li>
+      <li>新たに「2ツール横断のユースケース」を1つ定義(例: LinearのissueをObsidian Dailyに転記)</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>主な変更点:</p>
+      <ul>
+        <li><strong>.mcp.json:</strong> <code>mcpServers</code> の中に <code>linear</code> エントリを追加(stdio or http)。Obsidianと並列に走る</li>
+        <li><strong>環境変数:</strong> <code>LINEAR_API_KEY</code> を追加。shell rc か direnv で自動export</li>
+        <li><strong>横断UC:</strong> 「今日のLinearアサインをObsidian Dailyに<em>dry_runなしで</em>追記」。Claudeが<code>list_issues</code>→<code>append_daily_note</code>を連続で呼ぶ</li>
+      </ul>
+      <pre><code>{
+  "mcpServers": {
+    "obsidian": {
+      "command": "node",
+      "args": ["./obsidian-mcp/dist/server.js"],
+      "env": { "OBSIDIAN_VAULT_PATH": "${OBSIDIAN_VAULT_PATH}" }
+    },
+    "linear": {
+      "command": "npx",
+      "args": ["-y", "@some-org/linear-mcp-server"],
+      "env": { "LINEAR_API_KEY": "${LINEAR_API_KEY}" }
+    }
+  }
+}</code></pre>
+      <div class="info-box">
+        <span class="label">Insight</span>
+        <p>2台目から真価が出ます。単体のMCPは「便利ツール」、<strong>2台以上のMCPが連携した時は「ワークフロー自動化」</strong>に進化します。横断UCを1つ定義できた時点で、あなたの環境は「Claude Code 常駐開発基盤」になっています。</p>
+      </div>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">応用 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>MCPサーバーをチームで共有する</h4>
+    <p>自作Obsidian MCPを、同僚3人に配布することを想定して設計し直してください。</p>
+    <ol>
+      <li>配布形式(gitリポ / npm private / zip)をどう選ぶか、判断基準</li>
+      <li>READMEに必ず書くべき項目を最低5つ列挙</li>
+      <li>「他人のPCで動かない」トラブルの切り分け順序(Ch07の応用)</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <h4>(1) 配布形式の選び方</h4>
+      <ul>
+        <li><strong>gitリポ(社内GitHub):</strong> 最も楽。projectスコープの <code>.mcp.json</code> も一緒に commit できる。初手はこれ</li>
+        <li><strong>npm private registry:</strong> 複数プロジェクト横断で使うなら。バージョン管理が効く</li>
+        <li><strong>zip配布:</strong> 非エンジニアや閉鎖環境だけ。自動更新できないので最終手段</li>
+      </ul>
+      <h4>(2) README必須5項目</h4>
+      <ol>
+        <li><strong>前提環境</strong>(Node.jsのバージョン、OS、Claude Codeバージョン)</li>
+        <li><strong>インストール手順</strong>(<code>git clone</code> → <code>npm i</code> → <code>npx tsc</code>)</li>
+        <li><strong>環境変数の一覧と取得方法</strong>(<code>OBSIDIAN_VAULT_PATH</code> など)</li>
+        <li><strong>.mcp.jsonへの追加例</strong>(コピペ可能な形)</li>
+        <li><strong>動作確認手順</strong>(<code>claude mcp list</code> で <code>connected</code> が出る画面)</li>
+      </ol>
+      <h4>(3) 他人のPCで動かない時の切り分け順序</h4>
+      <div class="steps">
+        <div class="step done"><div class="step-num">1</div><div class="step-label">mcp list</div><div class="step-desc">登録自体できているか</div></div>
+        <div class="step done"><div class="step-num">2</div><div class="step-label">env確認</div><div class="step-desc">printenv で変数セット</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-label">手動起動</div><div class="step-desc">node dist/server.js を直接</div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-label">ログ</div><div class="step-desc">Claude Code側のログ確認</div></div>
+        <div class="step"><div class="step-num">5</div><div class="step-label">最小再現</div><div class="step-desc">Ch06のechoツールだけで疎通</div></div>
+      </div>
+      <div class="info-box">
+        <span class="label">Tips</span>
+        <p>チーム共有の鍵は <strong>「10分で各自のPCで動く」</strong>READMEを書くこと。動かなかったら即サポート、の運用を1週間やれば、自然と定着します(Ch07のトラブルシュートをドキュメント側に前倒しするイメージ)。</p>
+      </div>
+    </div>
+  </details>
+
+  <!-- ============================================================ -->
+  <!-- Section 6: 修了のことば -->
+  <!-- ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 修了のことば</h2>
+
+  <p>おつかれさまでした。8章・4時間の旅を終え、この演習で <strong>自分の主戦場ツールをMCP化する設計書</strong>まで書き上げたあなたは、もう「MCPは面白そうだけど自分の仕事に落とし込めない」側の人ではありません。思想・設定・公式カタログ・実践・自作・トラブルシュート・そして自分の環境への統合、すべて地続きで扱えるようになっています。</p>
+
+  <div class="quote">
+    モデルは、君の仕事を勝手にはやってくれない。<strong>MCPで手を伸ばした範囲</strong>だけが、君のAIが触れる世界になる。
+    <cite>— 本チュートリアルの総括</cite>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-num">8<small>章</small></div>
+      <div class="stat-label">学んだトピック</div>
+      <div class="stat-trend up">完了</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">3<small>→N</small></div>
+      <div class="stat-label">設計できるツール数</div>
+      <div class="stat-trend up">育つ</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">1<small>個</small></div>
+      <div class="stat-label">稼働したMCP(v0.1)</div>
+      <div class="stat-trend up">稼働中</div>
+    </div>
+  </div>
+
+  <p>この設計書は、作って終わりではありません。<strong>実際に2週間使い、育て直す</strong>のが本当のスタートです。最初に気づいた「使われないツール・足りないパラメータ・write時の事故」を全て記録して、次のバージョンに持ち越す。3回やれば、自分専用のMCP運用テンプレートが完成します。</p>
+
+  <p>本章の記述はすべて <strong>2026年1月時点</strong>です。MCP仕様・公式サーバー・SDKは半年で景色が変わるので、<a href="https://modelcontextprotocol.io" target="_blank" rel="noopener">modelcontextprotocol.io</a> と <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code公式ドキュメント</a> を <strong>月1でチェックする習慣</strong>を持ち帰ってください。</p>
+
+  <p>あなたのClaude Codeが、あなたの主戦場で静かに動き続けますように。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span></p>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span> <a href="https://modelcontextprotocol.io" target="_blank" rel="noopener">MCP 公式ドキュメント</a> — 仕様・設計思想の一次情報源。月1で更新チェック推奨。</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式ドキュメント</a> — <code>claude mcp</code> サブコマンドの最新仕様と.mcp.json構文。</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://github.com/modelcontextprotocol/servers" target="_blank" rel="noopener">modelcontextprotocol/servers</a> — 公式サーバー集。まずはここで自分のツール名を検索。</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://github.com/punkpeye/awesome-mcp-servers" target="_blank" rel="noopener">awesome-mcp-servers</a> — コミュニティ製含む網羅リスト。準公式・非公式の実装はここから。</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://github.com/modelcontextprotocol/typescript-sdk" target="_blank" rel="noopener">MCP TypeScript SDK</a> — 模範解答のobsidian-mcpはこのSDK上に構築。API referenceも。</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://github.com/modelcontextprotocol/python-sdk" target="_blank" rel="noopener">MCP Python SDK</a> — PythonでMCP自作したい場合はこちら。用途はTSと同等。</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://github.com/modelcontextprotocol" target="_blank" rel="noopener">MCP GitHub organization</a> — 仕様・リファレンス実装・議論のすべてが集まる本体。Issuesを眺めるだけで学びあり。</li>
+      <li><span class="res-type video">Video</span> <a href="https://www.youtube.com/results?search_query=Claude+Code+MCP+tutorial" target="_blank" rel="noopener">YouTube: Claude Code MCP tutorial</a> — 画面付きで設定と自作を追いたい時。2026年以降の新しい動画を優先。</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>全8章の最終演習、おつかれさまでした。下のボタンで完走を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="08">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="07-troubleshoot.html"><span class="direction">&larr; Prev</span>MCPのトラブルシュート</a>
+    <span></span>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<!-- 視覚化ライブラリ群 -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+<script>
+  window.addEventListener("load", function(){
+    // Linear API権限スコープ(ドーナツ)
+    var ctx1 = document.getElementById('ch8-donut-1');
+    if (ctx1 && window.Chart) {
+      new Chart(ctx1, {
+        type: 'doughnut',
+        data: {
+          labels: ['read (使用)', 'issue:write (使用)', 'admin (不要)', 'team:write (不要)'],
+          datasets: [{
+            data: [45, 25, 20, 10],
+            backgroundColor: ['#D97757', 'rgba(217,119,87,0.5)', '#d4d4d8', '#a3a3a3']
+          }]
+        },
+        options: {
+          plugins: { legend: { position: 'bottom' } }
+        }
+      });
+    }
+
+    // 25分の時間配分(棒)
+    var ctx2 = document.getElementById('ch8-bar-1');
+    if (ctx2 && window.Chart) {
+      new Chart(ctx2, {
+        type: 'bar',
+        data: {
+          labels: ['ツール選定', '公式調査', '設計', '認証準備', '実装', '動作確認'],
+          datasets: [{
+            label: '時間(分)',
+            data: [2, 3, 5, 3, 7, 5],
+            backgroundColor: '#D97757',
+            borderRadius: 6
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          plugins: { legend: { display: false } },
+          scales: { x: { beginAtZero: true, title: { display: true, text: '分' } } }
+        }
+      });
+    }
+  });
+</script>
+</body>
+</html>

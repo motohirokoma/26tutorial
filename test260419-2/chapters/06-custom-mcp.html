@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>カスタムMCPサーバー入門 - MK's Claude Code - MCP</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code - MCP
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav class="active"><span class="phase-name">Practice</span><span class="phase-pct" id="pct-practice">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.06</span>
+    カスタムMCPサーバー入門
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 8 sections</text>
+    </svg>
+    <div class="progress-info">0h / 4h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-mcp-overview.html"><span class="status-dot" data-chapter="01"></span> MCPとは</a></li>
+    <li><a href="02-mcp-config.html"><span class="status-dot" data-chapter="02"></span> Claude CodeにMCPを追加</a></li>
+    <li><a href="03-official-servers.html"><span class="status-dot" data-chapter="03"></span> 公式MCPサーバー一覧</a></li>
+  </ul>
+  <div class="section-label">Practice</div>
+  <ul>
+    <li><a href="04-github-mcp.html"><span class="status-dot" data-chapter="04"></span> 実践：GitHub MCP</a></li>
+    <li><a href="05-filesystem-others.html"><span class="status-dot" data-chapter="05"></span> 実践：Filesystem・他MCP</a></li>
+    <li><a href="06-custom-mcp.html" class="active"><span class="status-dot" data-chapter="06"></span> カスタムMCPサーバー入門</a></li>
+    <li><a href="07-troubleshoot.html"><span class="status-dot" data-chapter="07"></span> MCPのトラブルシュート</a></li>
+    <li><a href="08-final-exercise.html"><span class="status-dot" data-chapter="08"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 2: Practice &gt; Chapter 06</div>
+  <h1>カスタムMCPサーバー入門</h1>
+  <p class="subtitle">最小構成で自作、TypeScript/Pythonひな型</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 40分</span>
+    <span class="badge">Phase: Practice</span>
+    <span class="badge">難易度: 中級</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">この章のゴール</span>
+    <p>公式MCPサーバーに無い機能は<strong>自分で作れる</strong>。この章では<span class="term" data-tip="Model Context Protocol の公式SDK。TypeScript版とPython版が提供されている">MCP SDK</span>を使い、<strong>echoツールだけの最小サーバー</strong>を TypeScript / Python の両方で実装し、Claude Codeに登録して動かします。完了すると「自作MCPをClaude Codeから呼ぶ」感覚が身につきます。</p>
+  </div>
+
+  <div class="info-box">
+    <span class="label">本章の前提(2026年1月時点)</span>
+    <p>記述は<strong>2026年1月時点</strong>のMCP SDKバージョン(TypeScript SDK 1.x / Python SDK 1.x)に基づきます。APIは安定してきていますが、最新の仕様は必ず <a href="https://modelcontextprotocol.io" target="_blank" rel="noopener">modelcontextprotocol.io</a> と各SDKのREADMEで確認してください。</p>
+  </div>
+
+  <!-- ===== Section 1: なぜ自作するか ===== -->
+  <h2 data-section="06-01">
+    <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+    なぜ自作するのか ― 公式では届かない場所
+  </h2>
+
+  <p>Ch03〜05で公式MCPサーバー(GitHub / Filesystem / Slack など)を一通り触りました。多くの業務はこれで回ります。しかし<strong>「自分たちの社内ツール」「独自ワークフロー」「ニッチなSaaS」</strong>は公式カタログに存在しません。ここで登場するのが<span class="term" data-tip="自作のMCPサーバー。独自APIやDBなど、公式サーバーが対応していない対象にClaude Codeから橋をかける">カスタムMCPサーバー</span>です。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">公式MCPで届く範囲 vs カスタムMCPで届く範囲</div>
+    <svg viewBox="0 0 440 260" width="100%" style="max-width:440px; display:block; margin:0 auto;">
+      <circle cx="170" cy="130" r="100" fill="rgba(217,119,87,0.25)" stroke="#D97757" stroke-width="2"/>
+      <circle cx="280" cy="130" r="100" fill="rgba(217,119,87,0.12)" stroke="#D97757" stroke-width="2" stroke-dasharray="6 4"/>
+      <text x="110" y="80" text-anchor="middle" font-size="12" font-weight="700" fill="#b45309">公式MCP</text>
+      <text x="110" y="98" text-anchor="middle" font-size="10" fill="#64748b">GitHub/FS/Slack/...</text>
+      <text x="340" y="80" text-anchor="middle" font-size="12" font-weight="700" fill="#b45309">カスタムMCP</text>
+      <text x="340" y="98" text-anchor="middle" font-size="10" fill="#64748b">社内API/独自DB/自作</text>
+      <text x="225" y="135" text-anchor="middle" font-size="12" font-weight="700">共通</text>
+      <text x="225" y="152" text-anchor="middle" font-size="10" fill="#64748b">どちらもstdioで</text>
+      <text x="225" y="165" text-anchor="middle" font-size="10" fill="#64748b">Claude Codeに接続</text>
+      <text x="220" y="30" text-anchor="middle" font-size="13" font-weight="700" fill="#b45309">届かない領域は自作で拡張できる</text>
+    </svg>
+    <div class="diagram-caption">公式は幅広い定番ツール、カスタムは「自分たちの業務」に特化したツールを埋める。</div>
+  </div>
+
+  <h3>自作を選ぶ典型シーン</h3>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="building-2" width="20" height="20"></i>
+      <div><strong>社内ツール連携</strong> — 社内勤怠API、独自CRM、オンプレのチケット管理など、公式MCPがあり得ないもの。</div>
+    </li>
+    <li>
+      <i data-lucide="workflow" width="20" height="20"></i>
+      <div><strong>独自ワークフローの集約</strong> — 「このボタン1つで Jira+Slack+GitHub を同時に動かす」のような合成操作を、MCPツール1個として包む。</div>
+    </li>
+    <li>
+      <i data-lucide="database" width="20" height="20"></i>
+      <div><strong>独自DB・独自ファイル形式</strong> — Obsidian Vault、自分用Notion代替、社内Wiki等。スキーマを知っているのは自分だけなので、専用ツールを書くのが最速。</div>
+    </li>
+    <li>
+      <i data-lucide="shield-check" width="20" height="20"></i>
+      <div><strong>安全な抽象化</strong> — 「危険な操作は絶対にさせない」ラッパ。たとえばDBのSELECTだけ通す。公式MCPが広すぎる時の安全策。</div>
+    </li>
+  </ul>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+  <p>逆に<strong>公式で済むなら自作しない</strong>のが原則です。メンテコストはゼロではないので、「公式サーバーに欲しい機能があるか → 足りない部分だけ薄く自作する」が賢い判断。自作したMCPが負担になってくると、Claude Code環境自体の安定性も落ちます。</p>
+
+  <!-- ===== Section 2: SDKの全体像 ===== -->
+  <h2 data-section="06-02">
+    <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+    MCP SDK ― TypeScript / Python の2択
+  </h2>
+
+  <p>MCPサーバーは<strong>任意の言語</strong>で書けますが、2026年1月時点で公式SDKが提供されているのは<strong>TypeScript / Python / Kotlin / Java / Swift / C#</strong>など。中でも日常のツール作成で最も使われているのが TypeScript と Python です。この章ではこの2つを扱います。</p>
+
+  <table>
+    <thead>
+      <tr><th>観点</th><th>TypeScript SDK</th><th>Python SDK</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>パッケージ</td><td><code>@modelcontextprotocol/sdk</code></td><td><code>mcp</code></td></tr>
+      <tr><td>実行方法</td><td><code>node dist/server.js</code> もしくは <code>tsx server.ts</code></td><td><code>python server.py</code></td></tr>
+      <tr><td>型付け</td><td>静的型 + Zodスキーマでランタイム検証</td><td>Pydantic または dataclass</td></tr>
+      <tr><td>向いてる人</td><td>Webエンジニア、Node環境に慣れている</td><td>データ系/スクリプト系、軽量</td></tr>
+      <tr><td>配布</td><td>npx で即実行可能(`npx my-mcp`)</td><td>uvx または pipxで同様</td></tr>
+      <tr><td>公式Repo</td><td><a href="https://github.com/modelcontextprotocol/typescript-sdk" target="_blank" rel="noopener">typescript-sdk</a></td><td><a href="https://github.com/modelcontextprotocol/python-sdk" target="_blank" rel="noopener">python-sdk</a></td></tr>
+    </tbody>
+  </table>
+
+  <p>基本思想はどちらも同じ: <strong>「MCPサーバーを作る = ツール関数を登録し、stdioでMCPメッセージを送受信する」</strong>。違いは文法と型システムだけ。好みの方を選べばOKです。</p>
+
+  <h3>MCPサーバー内部の3パーツ</h3>
+
+  <div class="diagram-box">
+    <div class="diagram-title">サーバーの内部構造</div>
+    <pre class="mermaid">
+graph LR
+  A["Claude Code<br/>(MCP Client)"] <-->|"stdio<br/>JSON-RPC"| B["Server Instance<br/>(SDK)"]
+  B --> C["Tool Registry<br/>name/desc/schema"]
+  B --> D["Tool Handlers<br/>実際の処理"]
+  C --> E["tools/list"]
+  D --> F["tools/call"]
+    </pre>
+    <div class="diagram-caption">Clientが tools/list でカタログを取り、tools/call で実行依頼を投げる。SDKはこの往復を隠蔽してくれる。</div>
+  </div>
+
+  <!-- ===== Section 3: 最小構成とツールschema ===== -->
+  <h2 data-section="06-03">
+    <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+    最小構成とツールSchema ― 核は3フィールド
+  </h2>
+
+  <p>MCPサーバーが提供する1個の<strong>ツール</strong>は、<span class="term" data-tip="ツールを他人(特にLLM)に説明するための定義。nameで識別、descriptionで意味を、inputSchemaで引数型を伝える">ツールSchema</span>という定義で表されます。核となるフィールドはたった3つ。</p>
+
+  <div class="kv-grid">
+    <div class="kv"><div class="kv-key">name</div><div class="kv-val">ツールの識別子 (例: <code>echo</code>)。半角英数字と記号のみ。</div></div>
+    <div class="kv"><div class="kv-key">description</div><div class="kv-val">LLMが「いつ使うべきか」を判断する文。丁寧に書くほど正確に呼ばれる。</div></div>
+    <div class="kv"><div class="kv-key">inputSchema</div><div class="kv-val"><span class="term" data-tip="JSONデータの構造(フィールド名・型・必須など)を宣言的に定義するメタ言語。MCPではこれでツールの引数を表現する">JSON Schema</span>形式での引数定義。型・必須フィールド・説明を含む。</div></div>
+  </div>
+
+  <h3>echoツールのSchema(具体例)</h3>
+
+<pre><code>{
+  "name": "echo",
+  "description": "Echo back the provided text. Useful for testing MCP connectivity.",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "text": {
+        "type": "string",
+        "description": "The text to echo back."
+      }
+    },
+    "required": ["text"]
+  }
+}</code></pre>
+
+  <div class="info-box">
+    <span class="label">description の書き方は精度に直結</span>
+    <p>descriptionは<strong>LLMだけが読む</strong>短い説明書。「何をするか」「いつ使うべきか」「いつ使わないべきか」を英語で具体的に書くと誤呼び出しが減ります。日本語でも動きますが、ツール選択の精度は英語が一段高めです(モデルの学習偏り)。</p>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: inputSchemaで使える型と制約</summary>
+    <div class="more-body">
+      <p>MCPの<code>inputSchema</code>は<strong>JSON Schema Draft 2020-12</strong>互換。よく使う要素:</p>
+      <ul>
+        <li><code>type</code>: <code>string</code> / <code>number</code> / <code>integer</code> / <code>boolean</code> / <code>array</code> / <code>object</code></li>
+        <li><code>enum</code>: 許可する値リスト (例: <code>"enum": ["low", "medium", "high"]</code>)</li>
+        <li><code>minimum</code> / <code>maximum</code>: 数値の範囲</li>
+        <li><code>pattern</code>: 文字列の正規表現</li>
+        <li><code>items</code>: 配列の要素型</li>
+        <li><code>required</code>: 必須フィールドの配列</li>
+      </ul>
+      <p>ここを厳しく書くほど、LLMが間違った引数を渡す事故が減ります。特に<code>enum</code>は強力 ― モデルが勝手に新しい値を作り出すのを防ぎます。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 4: stdioとプロトコル ===== -->
+  <h2 data-section="06-04">
+    <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+    stdio通信の基本 ― 1行1メッセージ
+  </h2>
+
+  <p>MCPの最もポピュラーなトランスポートが<span class="term" data-tip="Standard Input / Output。親プロセス(Claude Code)が子プロセス(MCPサーバー)を起動し、stdin/stdoutでメッセージを往復させる方式">stdio</span>。仕組みは驚くほどシンプルで、<strong>Claude CodeがサーバープロセスをspawnしてstdinにJSONを書き、stdoutから1行ずつJSONを読む</strong>だけです。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">stdio通信のライフサイクル</div>
+    <pre class="mermaid">
+sequenceDiagram
+  participant C as Claude Code
+  participant S as MCP Server (子プロセス)
+  C->>S: spawn (node/python を起動)
+  C->>S: stdin ← initialize
+  S-->>C: stdout → server info
+  C->>S: stdin ← tools/list
+  S-->>C: stdout → [echo]
+  Note over C,S: ここから通常稼働
+  C->>S: stdin ← tools/call echo {"text":"hi"}
+  S-->>C: stdout → "hi"
+  C->>S: 終了シグナル
+  S-->>C: プロセス終了
+    </pre>
+    <div class="diagram-caption">初期化 → ツール列挙 → 呼び出し の3段階。いずれも1行のJSON-RPCメッセージ。</div>
+  </div>
+
+  <div class="info-box">
+    <span class="label">絶対守るルール: stdoutは汚さない</span>
+    <p>stdioサーバーでは <strong>stdoutはプロトコル通信専用</strong>。<code>console.log</code> / <code>print</code> でstdoutに書き込むと<strong>JSONが壊れて即死</strong>します。デバッグ出力は必ず<strong>stderr</strong>(<code>console.error</code> / <code>sys.stderr</code>)へ。SDKはstderrを汚してもOKに設計されています。</p>
+  </div>
+
+  <h3>http transport はいつ使う?</h3>
+
+  <table>
+    <thead>
+      <tr><th>項目</th><th>stdio</th><th>http (SSE)</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>接続モデル</td><td>子プロセス起動</td><td>既存Webサーバーに接続</td></tr>
+      <tr><td>認証</td><td>不要(ローカル実行)</td><td>OAuth / Bearer Token 必要</td></tr>
+      <tr><td>スケール</td><td>1クライアント = 1プロセス</td><td>複数クライアント共有可</td></tr>
+      <tr><td>向いてるケース</td><td>ローカル/個人ツール</td><td>チーム共有・SaaS化</td></tr>
+      <tr><td>この章で扱う</td><td><strong>◎(主役)</strong></td><td>Ch07以降で軽く触れる</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ===== Section 5: TypeScriptでechoサーバー ===== -->
+  <h2 data-section="06-05">
+    <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+    ハンズオン①: TypeScriptでechoサーバー
+  </h2>
+
+  <p>ではハンズオンに入ります。まずは<strong>TypeScript SDK</strong>で<code>echo</code>ツール1個だけのサーバーを作ります。30分で動くところまで行きます。</p>
+
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-label">プロジェクト初期化</div><div class="step-desc">npm init + SDK導入</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-label">server.ts 実装</div><div class="step-desc">SDKでツール登録</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-label">ビルド&amp;実行確認</div><div class="step-desc">手動でJSONを流して動作検証</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-label">Claude Codeに登録</div><div class="step-desc">.mcp.jsonに書いて再起動</div></div>
+  </div>
+
+  <h3>Step 1: プロジェクト初期化</h3>
+
+<pre><code>mkdir mcp-echo-ts && cd mcp-echo-ts
+npm init -y
+npm install @modelcontextprotocol/sdk zod
+npm install -D typescript tsx @types/node
+npx tsc --init --target es2022 --module node16 --moduleResolution node16 --outDir dist --rootDir src</code></pre>
+
+  <p><code>zod</code>は引数のランタイム検証用。SDK内部でもZodを使っているので親和性抜群です。</p>
+
+  <h3>Step 2: <code>src/server.ts</code> を書く</h3>
+
+<pre><code>// src/server.ts
+import { Server } from "@modelcontextprotocol/sdk/server/index.js";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import {
+  CallToolRequestSchema,
+  ListToolsRequestSchema,
+} from "@modelcontextprotocol/sdk/types.js";
+
+// 1. サーバーインスタンス
+const server = new Server(
+  { name: "mcp-echo-ts", version: "0.1.0" },
+  { capabilities: { tools: {} } }
+);
+
+// 2. ツールのカタログを返すハンドラ
+server.setRequestHandler(ListToolsRequestSchema, async () => {
+  return {
+    tools: [
+      {
+        name: "echo",
+        description:
+          "Echo back the provided text. Useful for testing MCP connectivity.",
+        inputSchema: {
+          type: "object",
+          properties: {
+            text: {
+              type: "string",
+              description: "The text to echo back.",
+            },
+          },
+          required: ["text"],
+        },
+      },
+    ],
+  };
+});
+
+// 3. ツール呼び出しハンドラ
+server.setRequestHandler(CallToolRequestSchema, async (request) => {
+  const { name, arguments: args } = request.params;
+  if (name === "echo") {
+    const text = String(args?.text ?? "");
+    // ※ stdoutは絶対に汚さない。ログはstderrへ
+    console.error(`[echo] received: ${text}`);
+    return {
+      content: [{ type: "text", text: `echo: ${text}` }],
+    };
+  }
+  throw new Error(`Unknown tool: ${name}`);
+});
+
+// 4. stdioトランスポートで起動
+const transport = new StdioServerTransport();
+await server.connect(transport);
+console.error("mcp-echo-ts running on stdio");
+</code></pre>
+
+  <h3>Step 3: 手動動作確認</h3>
+
+<pre><code># tsxで直接実行できる(ビルド不要)
+npx tsx src/server.ts
+
+# 別のターミナルから動作確認する場合は、Inspector(後述)がおすすめ
+# Inspector不使用の簡易テスト: サーバーを起動したターミナルに直接JSONを貼る
+# (Ctrl+D で終了)</code></pre>
+
+  <p>起動すると stderr に <code>mcp-echo-ts running on stdio</code> と出ます。何も出ないまま入力待ちになれば成功。</p>
+
+  <h3>Step 4: Claude Codeに登録</h3>
+
+  <p>プロジェクトのルートに<code>.mcp.json</code>を作成 (user scopeなら<code>~/.claude/mcp.json</code>)。</p>
+
+<pre><code>{
+  "mcpServers": {
+    "echo-ts": {
+      "command": "npx",
+      "args": ["tsx", "/absolute/path/to/mcp-echo-ts/src/server.ts"]
+    }
+  }
+}</code></pre>
+
+  <p>保存後、Claude Codeを再起動。<code>claude mcp list</code> で <code>echo-ts</code> が出れば成功。Claude Codeに「<strong>echoツールを使って "hello from MK" を返して</strong>」と頼むと、実行して結果が返ってきます。</p>
+
+  <!-- ===== Section 6: Pythonでechoサーバー ===== -->
+  <h2 data-section="06-06">
+    <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+    ハンズオン②: Pythonでechoサーバー
+  </h2>
+
+  <p>同じ<code>echo</code>ツールをPython SDKで作ります。TypeScript版が動いているなら、こちらは15分で終わります。</p>
+
+  <h3>Step 1: セットアップ</h3>
+
+<pre><code>mkdir mcp-echo-py && cd mcp-echo-py
+python -m venv .venv
+source .venv/bin/activate     # Windowsは .venv\Scripts\activate
+pip install "mcp[cli]"</code></pre>
+
+  <p><code>mcp[cli]</code>はサーバー本体 + Inspector等の開発補助CLIをまとめてインストールします。</p>
+
+  <h3>Step 2: <code>server.py</code> を書く</h3>
+
+<pre><code># server.py
+import sys
+from mcp.server.fastmcp import FastMCP
+
+# FastMCP は低ボイラープレートのハイレベルAPI
+mcp = FastMCP("mcp-echo-py")
+
+@mcp.tool()
+def echo(text: str) -> str:
+    """Echo back the provided text. Useful for testing MCP connectivity.
+
+    Args:
+        text: The text to echo back.
+    """
+    # ※ stdoutは絶対に汚さない。ログはstderrへ
+    print(f"[echo] received: {text}", file=sys.stderr)
+    return f"echo: {text}"
+
+if __name__ == "__main__":
+    # stdioトランスポートで起動
+    mcp.run()
+</code></pre>
+
+  <p>注目ポイント: Pythonでは<strong>docstringが description に、型ヒントが inputSchema に自動変換</strong>されます。TypeScript版で20行だったコードが数行になりました。</p>
+
+  <h3>Step 3: 動作確認とClaude Code登録</h3>
+
+<pre><code># 直接起動テスト
+python server.py
+# → stderrに起動メッセージ、stdinで待機
+
+# Inspectorで対話的にテスト(後述)
+npx @modelcontextprotocol/inspector python server.py</code></pre>
+
+  <p><code>.mcp.json</code>の例:</p>
+
+<pre><code>{
+  "mcpServers": {
+    "echo-py": {
+      "command": "/absolute/path/to/mcp-echo-py/.venv/bin/python",
+      "args": ["/absolute/path/to/mcp-echo-py/server.py"]
+    }
+  }
+}</code></pre>
+
+  <div class="info-box">
+    <span class="label">venvのPythonパスが肝</span>
+    <p><code>command</code>には<strong>venv内のpython絶対パス</strong>を指定。システムのpythonを指すと<code>mcp</code>パッケージが見つからずサーバーが落ちます。Ch07の「トラブルシュート」でもこのパターンを扱います。</p>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+  <p>TypeScript版とPython版を<strong>両方試す</strong>のを強くおすすめします。同じ概念が違うシンタックスで見えると、「MCPの本質はstdioで動くJSON-RPCサーバー」という構造感がはっきり身につきます。</p>
+
+  <!-- ===== Section 7: デバッグとInspector ===== -->
+  <h2 data-section="06-07">
+    <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+    デバッグ戦略 ― 3つの武器
+  </h2>
+
+  <p>MCPサーバーは子プロセスなのでデバッグしにくい印象がありますが、実は武器が揃っています。</p>
+
+  <div class="compare-cards">
+    <div class="cc good">
+      <span class="cc-label">武器①</span>
+      <h4>MCP Inspector</h4>
+      <ul>
+        <li><code>npx @modelcontextprotocol/inspector ...</code></li>
+        <li>GUIでツール一覧・呼び出しが可能</li>
+        <li>Claude Code不要でテストできる</li>
+      </ul>
+    </div>
+    <div class="cc neutral">
+      <span class="cc-label">武器②</span>
+      <h4>stderr ログ</h4>
+      <ul>
+        <li><code>console.error</code> / <code>print(file=sys.stderr)</code></li>
+        <li>Claude Code起動ログに混ざって見える</li>
+        <li>本番運用中でも消さない</li>
+      </ul>
+    </div>
+    <div class="cc bad">
+      <span class="cc-label">武器③</span>
+      <h4>手動JSON-RPC</h4>
+      <ul>
+        <li>サーバー起動 → stdinに直接JSONを貼る</li>
+        <li>プロトコルレベルで疑うとき用</li>
+        <li>最終手段、でも本質が見える</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>MCP Inspector の使い方</h3>
+
+<pre><code># TypeScript版サーバーをInspectorで開く
+npx @modelcontextprotocol/inspector npx tsx src/server.ts
+
+# Python版
+npx @modelcontextprotocol/inspector python server.py</code></pre>
+
+  <p>ブラウザが開き、左側にツール一覧、右側にリクエスト/レスポンスのログが出ます。<strong>Claude Codeに繋ぐ前に必ず Inspector でツールが見えることを確認</strong>すれば、原因切り分けが爆速になります。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">デバッグ時の問題→武器 対応表</div>
+    <canvas id="ch6-bar-1" height="180"></canvas>
+  </div>
+
+  <h3>よくあるハマりどころ</h3>
+
+  <ol>
+    <li><strong>stdoutに<code>console.log</code>が残っている</strong> — サーバーが突然死する。<code>console.error</code>に置換。</li>
+    <li><strong>絶対パスではなく相対パス</strong> — Claude Codeはcwdが違う。<code>.mcp.json</code>の<code>args</code>は必ず絶対パス。</li>
+    <li><strong>venvのPythonを使っていない</strong> — <code>ModuleNotFoundError: mcp</code>。絶対パスでvenv内pythonを指す。</li>
+    <li><strong>SDKバージョン不一致</strong> — TypeScript SDK 1.x系 と 0.x系はAPIが違う。<code>package.json</code>を確認。</li>
+    <li><strong>再起動忘れ</strong> — <code>.mcp.json</code>を変えたらClaude Code自体を再起動。</li>
+  </ol>
+
+  <!-- ===== Section 8: まとめとPhase 3 での拡張 ===== -->
+  <h2 data-section="06-08">
+    <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+    この章のまとめ
+  </h2>
+
+  <div class="steps">
+    <div class="step done"><div class="step-num">1</div><div class="step-label">自作の意味</div><div class="step-desc">公式で届かない所を埋める</div></div>
+    <div class="step done"><div class="step-num">2</div><div class="step-label">SDKは2択</div><div class="step-desc">TS / Python、思想は同じ</div></div>
+    <div class="step done"><div class="step-num">3</div><div class="step-label">核は3フィールド</div><div class="step-desc">name / description / inputSchema</div></div>
+    <div class="step done"><div class="step-num">4</div><div class="step-label">stdioが基本</div><div class="step-desc">stdoutは絶対汚さない</div></div>
+    <div class="step done"><div class="step-num">5</div><div class="step-label">Inspectorで検証</div><div class="step-desc">Claude Code接続前に単体確認</div></div>
+  </div>
+
+  <div class="quote">
+    MCPサーバーを作るのは難しくない。難しいのは「どのツールを作るべきか」を決めることだ。
+    <cite>— カスタムMCPを5個作ったエンジニアの実感</cite>
+  </div>
+
+  <p>この章で最小サーバーが動くようになりました。次のCh07では「繋がらない」「権限エラー」など、実際の運用で遭遇するトラブルの診断手順を扱います。最終章Ch08では、<strong>自分の主戦場ツールをMCP化する</strong>統合課題に挑戦します。</p>
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>echoサーバーを動かす(どちらか片方)</h4>
+    <p>Ch06本文のハンズオン①または②の手順を、あなたの環境で実際に実行してください。</p>
+    <ol>
+      <li>TypeScript版かPython版のどちらかを選ぶ(好みで)</li>
+      <li>本文の手順通りにセットアップ・実装</li>
+      <li>MCP Inspector で echoツールが見えることを確認</li>
+      <li><code>.mcp.json</code>に登録してClaude Codeを再起動</li>
+      <li>Claude Codeに「echoツールで "MCP自作成功" を返して」と頼む</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>期待される最終状態:</p>
+      <ul>
+        <li><code>claude mcp list</code> に自作サーバー名が出る</li>
+        <li>Claude Codeで「echoツールで X を返して」と頼むと、<code>echo: X</code> が返る</li>
+        <li>stderr(Claude Codeの起動ログ)に<code>[echo] received: X</code>が出る</li>
+      </ul>
+      <p>もし動かない場合の確認順:</p>
+      <ol>
+        <li><strong>Inspector単体で動くか</strong> ― 動かないならサーバー側コードのバグ</li>
+        <li><strong><code>.mcp.json</code>のcommand/argsが絶対パスか</strong> ― 相対パスは落ちる</li>
+        <li><strong>Claude Codeを完全に再起動したか</strong> ― キャッシュが残る</li>
+        <li><strong>stdout汚染がないか</strong> ― <code>console.log</code> / 生の<code>print</code>を探して<code>console.error</code> / <code>print(..., file=sys.stderr)</code>に</li>
+      </ol>
+      <p>この順で切り分ければ、ほとんどの初回トラブルは10分以内に解決します。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>独自ツールを1つ追加する</h4>
+    <p>echoサーバーに<strong>自分の独自ツールを1つ</strong>追加してください。題材は何でもOKですが、以下のどれかをおすすめします。</p>
+    <ol>
+      <li><strong>random_quote</strong>: 引数なし、ランダムに名言を1つ返す</li>
+      <li><strong>word_count</strong>: <code>text: string</code>を受け取り、単語数と文字数を返す</li>
+      <li><strong>now</strong>: <code>timezone: string</code>を受け取り、その地域の現在時刻を返す</li>
+      <li><strong>独自アイデア</strong>: 自分が日常で「あったら便利」と思う関数</li>
+    </ol>
+    <p>追加後、Inspectorで新ツールが見えること、Claude Codeから呼べることを確認してください。</p>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><strong>Python版で <code>word_count</code> を追加する例:</strong></p>
+<pre><code># server.py に追記
+@mcp.tool()
+def word_count(text: str) -> dict:
+    """Count words and characters in the provided text.
+
+    Args:
+        text: The text to analyze.
+    """
+    words = len(text.split())
+    chars = len(text)
+    chars_no_space = len(text.replace(" ", ""))
+    return {
+        "words": words,
+        "chars": chars,
+        "chars_no_space": chars_no_space,
+    }</code></pre>
+      <p>Python版は型ヒント + docstringだけでSchema自動生成。returnはdictやstrなら自動でテキスト化されます。</p>
+      <p><strong>TypeScript版で <code>word_count</code> を追加する例:</strong></p>
+<pre><code>// ListToolsRequestSchema のtools配列に追加
+{
+  name: "word_count",
+  description: "Count words and characters in the provided text.",
+  inputSchema: {
+    type: "object",
+    properties: {
+      text: { type: "string", description: "The text to analyze." },
+    },
+    required: ["text"],
+  },
+},
+
+// CallToolRequestSchema ハンドラに分岐追加
+if (name === "word_count") {
+  const text = String(args?.text ?? "");
+  const result = {
+    words: text.split(/\s+/).filter(Boolean).length,
+    chars: text.length,
+    chars_no_space: text.replace(/\s/g, "").length,
+  };
+  return {
+    content: [{ type: "text", text: JSON.stringify(result) }],
+  };
+}</code></pre>
+      <p><strong>確認ポイント:</strong></p>
+      <ul>
+        <li>Inspector の左ツール一覧に2個(echoとword_count)出る</li>
+        <li>descriptionが英語で具体的 ― LLMは「テキストの単語数を数える時に使うツール」と正確に判断できる</li>
+        <li>Claude Codeに「この段落の単語数をword_countで数えて」と頼むと、適切に引数がセットされて呼ばれる</li>
+      </ul>
+      <p><strong>発展:</strong> 独自ツールが動いたら、Ch08(最終演習)で「自分の主戦場ツール」をMCP化する題材として、同じ形式でどんどんツールを足していけます。MCPサーバーの本質は「<strong>ツール関数を並べるだけ</strong>」であることが、このExerciseで腑に落ちるはずです。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span><a href="https://github.com/modelcontextprotocol/typescript-sdk" target="_blank" rel="noopener">MCP TypeScript SDK (公式リポジトリ)</a></li>
+      <li><span class="res-type doc">Doc</span><a href="https://github.com/modelcontextprotocol/python-sdk" target="_blank" rel="noopener">MCP Python SDK (公式リポジトリ)</a></li>
+      <li><span class="res-type doc">Doc</span><a href="https://modelcontextprotocol.io/docs/concepts/tools" target="_blank" rel="noopener">MCP公式: Tools の仕様 (name / description / inputSchema)</a></li>
+      <li><span class="res-type doc">Doc</span><a href="https://modelcontextprotocol.io/docs/concepts/transports" target="_blank" rel="noopener">MCP公式: Transports (stdio / http)</a></li>
+      <li><span class="res-type doc">Doc</span><a href="https://github.com/modelcontextprotocol/inspector" target="_blank" rel="noopener">MCP Inspector (デバッグ用GUI)</a></li>
+      <li><span class="res-type doc">Doc</span><a href="https://github.com/modelcontextprotocol/servers" target="_blank" rel="noopener">公式サーバー集 (実装リファレンスとして)</a></li>
+      <li><span class="res-type doc">Doc</span><a href="https://json-schema.org/understanding-json-schema/" target="_blank" rel="noopener">Understanding JSON Schema (inputSchemaの書き方)</a></li>
+      <li><span class="res-type video">Video</span><a href="https://www.youtube.com/results?search_query=build+mcp+server+tutorial" target="_blank" rel="noopener">YouTube検索: "build MCP server tutorial"</a></li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="06">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="05-filesystem-others.html"><span class="direction">&larr; Prev</span>実践：Filesystem・他MCP</a>
+    <a href="07-troubleshoot.html"><span class="direction">Next &rarr;</span>MCPのトラブルシュート</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+<script>
+  window.addEventListener("load", function(){
+    var ctx1 = document.getElementById('ch6-bar-1');
+    if (ctx1 && window.Chart) {
+      new Chart(ctx1, {
+        type: 'bar',
+        data: {
+          labels: ['ツールが出ない', '引数が変', '突然死', '起動しない', 'Claude側で呼ばれない'],
+          datasets: [
+            {
+              label: 'Inspector',
+              data: [95, 90, 60, 70, 20],
+              backgroundColor: '#D97757',
+              borderRadius: 6
+            },
+            {
+              label: 'stderrログ',
+              data: [40, 80, 90, 50, 30],
+              backgroundColor: 'rgba(217,119,87,0.45)',
+              borderRadius: 6
+            },
+            {
+              label: '手動JSON-RPC',
+              data: [60, 60, 85, 90, 10],
+              backgroundColor: 'rgba(217,119,87,0.2)',
+              borderRadius: 6
+            }
+          ]
+        },
+        options: {
+          indexAxis: 'y',
+          plugins: {
+            legend: { position: 'bottom' },
+            title: { display: true, text: '武器別の対応力(スコア 0-100)' }
+          },
+          scales: {
+            x: { beginAtZero: true, max: 100 }
+          }
+        }
+      });
+    }
+  });
+</script>
+</body>
+</html>

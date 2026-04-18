@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>MCPとは - MK's Claude Code Tutorial - MCP Guide</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code - MCP
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav class="active"><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Practice</span><span class="phase-pct" id="pct-practice">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.01</span>
+    MCPとは
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 8 sections</text>
+    </svg>
+    <div class="progress-info">0h / 4h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-mcp-overview.html" class="active"><span class="status-dot" data-chapter="01"></span> MCPとは</a></li>
+    <li><a href="02-mcp-config.html"><span class="status-dot" data-chapter="02"></span> Claude CodeにMCPを追加</a></li>
+    <li><a href="03-official-servers.html"><span class="status-dot" data-chapter="03"></span> 公式MCPサーバー一覧</a></li>
+  </ul>
+  <div class="section-label">Practice</div>
+  <ul>
+    <li><a href="04-github-mcp.html"><span class="status-dot" data-chapter="04"></span> 実践：GitHub MCP</a></li>
+    <li><a href="05-filesystem-others.html"><span class="status-dot" data-chapter="05"></span> 実践：Filesystem・他MCP</a></li>
+    <li><a href="06-custom-mcp.html"><span class="status-dot" data-chapter="06"></span> カスタムMCPサーバー入門</a></li>
+    <li><a href="07-troubleshoot.html"><span class="status-dot" data-chapter="07"></span> MCPのトラブルシュート</a></li>
+    <li><a href="08-final-exercise.html"><span class="status-dot" data-chapter="08"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 1: Basics &gt; Chapter 01</div>
+  <h1>MCPとは</h1>
+  <p class="subtitle">Model Context Protocol の思想と全体像</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 25分</span>
+    <span class="badge">Phase: Basics</span>
+    <span class="badge">難易度: 入門</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">この章のゴール</span>
+    <p><strong>MCP (Model Context Protocol)</strong> が何を解決するプロトコルなのかを、自分の言葉で説明できるようになること。「N×M問題」「3概念(Tools / Resources / Prompts)」「Client-Serverアーキテクチャ」の3本柱を押さえて、Ch02以降の設定ファイル操作が「なぜその形なのか」腑に落ちる状態にします。本章の記述は<strong>2026年1月時点</strong>の情報に基づきます。MCP仕様や公式サーバー一覧は変化が速いので、実作業前に <a href="https://modelcontextprotocol.io" target="_blank" rel="noopener">modelcontextprotocol.io</a> と <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code docs</a> を確認する習慣を付けましょう。</p>
+  </div>
+
+  <!-- ===== Section 1: MCPとは何か ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> MCP (Model Context Protocol) とは</h2>
+
+  <p><span class="term" data-tip="Model Context Protocol: AIアシスタント(LLM)と外部ツール/データソースの橋渡しを標準化するために Anthropic が2024年末に公開したオープンプロトコル">MCP (Model Context Protocol)</span> は、<strong>AIアシスタントが外部のツールやデータに接続する方法を標準化するオープンプロトコル</strong>です。Anthropicが2024年11月に仕様を公開し、2026年1月時点ではClaude Code・Claude Desktop・Zed・Cursor などの主要AIクライアントが対応しています。</p>
+
+  <p>ざっくり言えば、MCPは「<strong>AIのUSB-C端子</strong>」です。どのノートPCでも同じUSB-Cケーブルで周辺機器が繋がるように、どのAIクライアントでも同じMCPサーバーに繋げば、Slack / GitHub / Postgres / ローカルファイル などを操作できる——その共通規格を目指しています。</p>
+
+  <div class="quote">
+    MCP is an open protocol that standardizes how applications provide context to LLMs. Think of MCP like a USB-C port for AI applications.
+    <cite>— Model Context Protocol 公式サイト (modelcontextprotocol.io)</cite>
+  </div>
+
+  <h3>MCP登場前後で何が変わったか</h3>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="plug" width="20" height="20"></i>
+      <div><strong>統合方法の統一</strong> — 「このLLM用 × このツール用」の個別実装が不要に。1つ書けばどこでも繋がる。</div>
+    </li>
+    <li>
+      <i data-lucide="shield-check" width="20" height="20"></i>
+      <div><strong>ユーザ承認のフロー標準化</strong> — どのツール呼び出しにどんな権限が要るか、クライアント側で一貫して扱える。</div>
+    </li>
+    <li>
+      <i data-lucide="server" width="20" height="20"></i>
+      <div><strong>ローカル実行が基本</strong> — サーバーは自分のマシンで動き、データは外部クラウドを経由せずに扱える(stdio transport)。</div>
+    </li>
+    <li>
+      <i data-lucide="git-branch" width="20" height="20"></i>
+      <div><strong>エコシステムの爆発的増加</strong> — 2026年1月時点で公式 + コミュニティ合計 1,500 以上のMCPサーバーが公開されている。</div>
+    </li>
+  </ul>
+
+  <p>この章では、「なぜこの規格が必要だったのか(N×M問題)」「どういう構造になっているのか(3概念 + アーキテクチャ)」「似た技術とどう違うのか」を順に見ていきます。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span></p>
+
+  <!-- ===== Section 2: N×M問題 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> なぜ必要か:N×Mの統合問題</h2>
+
+  <p>MCPを理解する一番の近道は、「<strong>もしMCPが無かったら、今どれだけの個別実装が必要になるか</strong>」を想像することです。</p>
+
+  <p><span class="term" data-tip="N×M問題: N個のAIクライアント(LLM) × M個の外部ツールを組み合わせるとき、個別統合だとNM本のコネクタが必要になる統合コスト問題">N×M問題</span>とは、ソフトウェア統合でよく出てくる古典的課題です。N個の消費者(AIクライアント)と M個の提供者(ツール)を結びつけるとき、<strong>個別にコネクタを書くと N × M 本のコードが必要</strong>になります。中間にプロトコル層を1つ挟むと、必要なのは N + M 本に激減する——これがMCPの存在意義です。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Before MCP: N×M 本の個別コネクタ</div>
+    <svg viewBox="0 0 500 280" width="100%" style="max-width:500px; display:block; margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <!-- 左側: クライアント(N=3) -->
+      <rect x="20" y="40" width="110" height="40" rx="6" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="2"/>
+      <text x="75" y="65" text-anchor="middle" font-size="12" font-weight="600">Claude</text>
+      <rect x="20" y="120" width="110" height="40" rx="6" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="2"/>
+      <text x="75" y="145" text-anchor="middle" font-size="12" font-weight="600">ChatGPT</text>
+      <rect x="20" y="200" width="110" height="40" rx="6" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="2"/>
+      <text x="75" y="225" text-anchor="middle" font-size="12" font-weight="600">Cursor</text>
+      <!-- 右側: ツール(M=4) -->
+      <rect x="370" y="20" width="110" height="36" rx="6" fill="#f1f5f9" stroke="#64748b" stroke-width="1.5"/>
+      <text x="425" y="42" text-anchor="middle" font-size="12">GitHub</text>
+      <rect x="370" y="80" width="110" height="36" rx="6" fill="#f1f5f9" stroke="#64748b" stroke-width="1.5"/>
+      <text x="425" y="102" text-anchor="middle" font-size="12">Slack</text>
+      <rect x="370" y="140" width="110" height="36" rx="6" fill="#f1f5f9" stroke="#64748b" stroke-width="1.5"/>
+      <text x="425" y="162" text-anchor="middle" font-size="12">Postgres</text>
+      <rect x="370" y="200" width="110" height="36" rx="6" fill="#f1f5f9" stroke="#64748b" stroke-width="1.5"/>
+      <text x="425" y="222" text-anchor="middle" font-size="12">Filesystem</text>
+      <!-- 3x4 = 12本の線 -->
+      <g stroke="#cbd5e1" stroke-width="1" fill="none">
+        <line x1="130" y1="60" x2="370" y2="38"/>
+        <line x1="130" y1="60" x2="370" y2="98"/>
+        <line x1="130" y1="60" x2="370" y2="158"/>
+        <line x1="130" y1="60" x2="370" y2="218"/>
+        <line x1="130" y1="140" x2="370" y2="38"/>
+        <line x1="130" y1="140" x2="370" y2="98"/>
+        <line x1="130" y1="140" x2="370" y2="158"/>
+        <line x1="130" y1="140" x2="370" y2="218"/>
+        <line x1="130" y1="220" x2="370" y2="38"/>
+        <line x1="130" y1="220" x2="370" y2="98"/>
+        <line x1="130" y1="220" x2="370" y2="158"/>
+        <line x1="130" y1="220" x2="370" y2="218"/>
+      </g>
+      <text x="250" y="270" text-anchor="middle" font-size="13" font-weight="700" fill="#b91c1c">3 × 4 = 12本の個別コネクタ</text>
+    </svg>
+    <div class="diagram-caption">クライアントが増えるとコネクタは掛け算で増殖する。新しいツール1つ足すだけで N 本追加。</div>
+  </div>
+
+  <div class="diagram-box">
+    <div class="diagram-title">After MCP: N + M 本で済む</div>
+    <svg viewBox="0 0 500 280" width="100%" style="max-width:500px; display:block; margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <!-- 左側: クライアント -->
+      <rect x="20" y="40" width="100" height="36" rx="6" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="2"/>
+      <text x="70" y="62" text-anchor="middle" font-size="12" font-weight="600">Claude</text>
+      <rect x="20" y="120" width="100" height="36" rx="6" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="2"/>
+      <text x="70" y="142" text-anchor="middle" font-size="12" font-weight="600">ChatGPT</text>
+      <rect x="20" y="200" width="100" height="36" rx="6" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="2"/>
+      <text x="70" y="222" text-anchor="middle" font-size="12" font-weight="600">Cursor</text>
+      <!-- 中央: MCP バス -->
+      <rect x="180" y="30" width="140" height="220" rx="10" fill="#D97757" opacity="0.9"/>
+      <text x="250" y="130" text-anchor="middle" font-size="16" font-weight="700" fill="white">MCP</text>
+      <text x="250" y="155" text-anchor="middle" font-size="11" fill="white">(共通プロトコル)</text>
+      <!-- 右側: ツール -->
+      <rect x="380" y="20" width="100" height="36" rx="6" fill="#f1f5f9" stroke="#64748b" stroke-width="1.5"/>
+      <text x="430" y="42" text-anchor="middle" font-size="12">GitHub</text>
+      <rect x="380" y="80" width="100" height="36" rx="6" fill="#f1f5f9" stroke="#64748b" stroke-width="1.5"/>
+      <text x="430" y="102" text-anchor="middle" font-size="12">Slack</text>
+      <rect x="380" y="140" width="100" height="36" rx="6" fill="#f1f5f9" stroke="#64748b" stroke-width="1.5"/>
+      <text x="430" y="162" text-anchor="middle" font-size="12">Postgres</text>
+      <rect x="380" y="200" width="100" height="36" rx="6" fill="#f1f5f9" stroke="#64748b" stroke-width="1.5"/>
+      <text x="430" y="222" text-anchor="middle" font-size="12">Filesystem</text>
+      <!-- 左側 3本 + 右側 4本 -->
+      <g stroke="#D97757" stroke-width="2" fill="none">
+        <line x1="120" y1="58" x2="180" y2="58"/>
+        <line x1="120" y1="138" x2="180" y2="138"/>
+        <line x1="120" y1="218" x2="180" y2="218"/>
+        <line x1="320" y1="38" x2="380" y2="38"/>
+        <line x1="320" y1="98" x2="380" y2="98"/>
+        <line x1="320" y1="158" x2="380" y2="158"/>
+        <line x1="320" y1="218" x2="380" y2="218"/>
+      </g>
+      <text x="250" y="270" text-anchor="middle" font-size="13" font-weight="700" fill="#15803d">3 + 4 = 7本(N+M)</text>
+    </svg>
+    <div class="diagram-caption">MCPというバスを1つ挟むだけで、追加コストが乗算から加算に変わる。</div>
+  </div>
+
+  <h3>数字で見るスケーラビリティ</h3>
+
+  <div class="diagram-box">
+    <div class="diagram-title">クライアント × ツール数と必要コネクタ数</div>
+    <canvas id="ch1-line-1" height="200"></canvas>
+    <div class="diagram-caption">個別実装(青)は二次関数的に、MCP経由(橙)は線形に増える。10x10 なら 100 vs 20。</div>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: N×M問題はソフトウェア業界の「お決まり」</summary>
+    <div class="more-body">
+      <p>似た構造の問題は歴史上何度も現れています。たとえば <span class="term" data-tip="ODBC: Open Database Connectivity。アプリとDBの間を標準化したMicrosoft主導の規格(1992)">ODBC</span> はアプリとデータベースの N×M を解き、<span class="term" data-tip="LSP: Language Server Protocol。エディタと言語処理系の間を標準化したMicrosoft主導の規格(2016)">LSP (Language Server Protocol)</span> はエディタと言語処理系の N×M を解きました。MCPは<strong>その系譜の最新版</strong>と言えます。</p>
+      <p>面白いのは、LSPの設計者が MCP 仕様の参考文献として繰り返し引用されていることです。JSON-RPC の使い方、capabilities のネゴシエーション、stdio transport などは LSP とよく似ています。LSPを触ったことがあれば、MCPのRFCも驚くほど早く読めます。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 3: 3つの概念 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> MCPの3つの概念:Tools / Resources / Prompts</h2>
+
+  <p>MCPサーバーがクライアントに提供できる能力は、<strong>Tools / Resources / Prompts</strong> の3種類に整理されています。この3つの違いを最初に押さえておくと、Ch02以降で公式サーバーのドキュメントを読むのが格段に楽になります。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">3概念の関係:誰が主語か</div>
+    <svg viewBox="0 0 500 240" width="100%" style="max-width:500px; display:block; margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <!-- 3つの箱 -->
+      <rect x="20" y="40" width="140" height="160" rx="10" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="2"/>
+      <text x="90" y="72" text-anchor="middle" font-size="14" font-weight="700" fill="#D97757">Tools</text>
+      <text x="90" y="95" text-anchor="middle" font-size="11" fill="#475569">モデルが呼ぶ</text>
+      <text x="90" y="125" text-anchor="middle" font-size="10" fill="#475569">AI が判断して</text>
+      <text x="90" y="140" text-anchor="middle" font-size="10" fill="#475569">実行するアクション</text>
+      <text x="90" y="175" text-anchor="middle" font-size="10" fill="#475569">例: issue作成</text>
+      <text x="90" y="190" text-anchor="middle" font-size="10" fill="#475569">     SQL実行</text>
+
+      <rect x="180" y="40" width="140" height="160" rx="10" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+      <text x="250" y="72" text-anchor="middle" font-size="14" font-weight="700" fill="#1d4ed8">Resources</text>
+      <text x="250" y="95" text-anchor="middle" font-size="11" fill="#475569">アプリが引く</text>
+      <text x="250" y="125" text-anchor="middle" font-size="10" fill="#475569">クライアントや</text>
+      <text x="250" y="140" text-anchor="middle" font-size="10" fill="#475569">ユーザが選ぶデータ</text>
+      <text x="250" y="175" text-anchor="middle" font-size="10" fill="#475569">例: ファイル内容</text>
+      <text x="250" y="190" text-anchor="middle" font-size="10" fill="#475569">     DBスキーマ</text>
+
+      <rect x="340" y="40" width="140" height="160" rx="10" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+      <text x="410" y="72" text-anchor="middle" font-size="14" font-weight="700" fill="#b45309">Prompts</text>
+      <text x="410" y="95" text-anchor="middle" font-size="11" fill="#475569">ユーザが選ぶ</text>
+      <text x="410" y="125" text-anchor="middle" font-size="10" fill="#475569">テンプレート化された</text>
+      <text x="410" y="140" text-anchor="middle" font-size="10" fill="#475569">プロンプト一式</text>
+      <text x="410" y="175" text-anchor="middle" font-size="10" fill="#475569">例: /review-pr</text>
+      <text x="410" y="190" text-anchor="middle" font-size="10" fill="#475569">     /refactor</text>
+      <text x="250" y="225" text-anchor="middle" font-size="11" fill="#64748b" font-style="italic">主語が違う = 権限と UX が違う</text>
+    </svg>
+    <div class="diagram-caption">Toolsは「AIが判断して呼ぶ」、Resourcesは「参照用データ」、Promptsは「ユーザ起点のテンプレ」。</div>
+  </div>
+
+  <h3>それぞれの役割と具体例</h3>
+
+  <table>
+    <thead>
+      <tr><th>概念</th><th>主語(誰が発火)</th><th>何ができる</th><th>GitHub MCPでの例</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Tools</strong></td><td>モデル(AI)</td><td>外部に作用する操作。引数を渡して実行し、結果を返す</td><td><code>create_issue</code>, <code>merge_pr</code>, <code>search_code</code></td></tr>
+      <tr><td><strong>Resources</strong></td><td>アプリ / ユーザ</td><td>読み取り専用の文脈データをAIに渡す</td><td>ファイル内容、repo の README、issue の本文</td></tr>
+      <tr><td><strong>Prompts</strong></td><td>ユーザ</td><td>プリセット化されたプロンプトテンプレート(スラッシュコマンドとして見えることが多い)</td><td><code>/review-diff</code>, <code>/release-notes</code></td></tr>
+    </tbody>
+  </table>
+
+  <h3>Tools (一番よく使う) の中身をもう少し</h3>
+
+  <p>大半のMCPサーバーが主に公開するのは <strong>Tools</strong> です。各ツールは <code>name</code> / <code>description</code> / <code>inputSchema</code> (JSON Schema) の3点セットで宣言され、Claude Codeはこれを見て「今このツールを呼ぶべきか」を判断します。</p>
+
+  <p>たとえば GitHub MCPサーバーが <span class="term" data-tip="list_issues: GitHub MCPが提供するツールの一例。指定リポジトリのissue一覧を返す。open/closed などのフィルタを引数で渡せる">list_issues</span> ツールを宣言すると、Claude Codeからは以下のように見えます。</p>
+
+  <pre><code>{
+  "name": "list_issues",
+  "description": "List issues in a GitHub repository",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "owner":  { "type": "string" },
+      "repo":   { "type": "string" },
+      "state":  { "type": "string", "enum": ["open","closed","all"] }
+    },
+    "required": ["owner", "repo"]
+  }
+}</code></pre>
+
+  <p>この宣言だけで、Claude Code は「ユーザが『最近のopen issue見せて』と言ったらこのツールを呼ぼう」と自律的に判断できるようになります。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span></p>
+
+  <div class="info-box">
+    <span class="label">2026年1月時点のTips</span>
+    <p>公式ドキュメント上、Resources と Prompts はオプショナルです。実際のコミュニティサーバーの多くは <strong>Tools のみ実装</strong>しており、Resources/Prompts までサポートするのは公式リファレンス実装が中心です。Ch06 でカスタムサーバーを書く際も、まずはTools 1個から始めるのが定石です。</p>
+  </div>
+
+  <!-- ===== Section 4: アーキテクチャ ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> アーキテクチャ:Client ⇔ Server の対話</h2>
+
+  <p>MCPは <strong>Client-Server アーキテクチャ</strong> です。<span class="term" data-tip="Host: MCPクライアントを内包するAIアプリ本体。Claude Code・Claude Desktop・Cursor 等">Host</span>(Claude Code等のAIアプリ)が <span class="term" data-tip="Client: Host内部でMCPプロトコルを喋るコンポーネント。サーバーとの接続管理を担当">Client</span> を介して <span class="term" data-tip="Server: 個別ツールとの接続を提供するプロセス。通常は stdio か HTTP で起動する独立プロセス">Server</span> と通信します。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Host / Client / Server の関係</div>
+    <pre class="mermaid">
+graph LR
+  User["👤 ユーザ"] --> Host["Host<br/>(Claude Code)"]
+  Host --> C1["Client A"]
+  Host --> C2["Client B"]
+  Host --> C3["Client C"]
+  C1 -->|JSON-RPC| S1["Server<br/>GitHub MCP"]
+  C2 -->|JSON-RPC| S2["Server<br/>Filesystem MCP"]
+  C3 -->|JSON-RPC| S3["Server<br/>自作MCP"]
+  S1 --> API1["GitHub API"]
+  S2 --> FS["ローカルFS"]
+  S3 --> Biz["社内システム"]
+    </pre>
+    <div class="diagram-caption">Host 1つにつき複数のClient/Serverペア。各サーバーは独立プロセスで、stdio か HTTP で喋る。</div>
+  </div>
+
+  <h3>通信フロー(stdio transportの場合)</h3>
+
+  <div class="diagram-box">
+    <div class="diagram-title">起動から初回ツール呼び出しまで</div>
+    <pre class="mermaid">
+sequenceDiagram
+  participant H as Host (Claude Code)
+  participant C as Client
+  participant S as Server (MCPサーバー)
+  H->>S: プロセス起動 (stdio)
+  C->>S: initialize (capabilities交換)
+  S-->>C: initialize result
+  C->>S: tools/list
+  S-->>C: ツール一覧を返す
+  Note over H,S: ここまで接続確立
+  H->>C: ユーザがClaude Codeに質問
+  C->>S: tools/call (list_issues, {owner,repo})
+  S-->>C: JSON結果
+  C-->>H: AIに結果を渡す
+    </pre>
+    <div class="diagram-caption">起動時にcapabilityをネゴシエーションし、その後は必要な時だけtools/callで呼び出す。</div>
+  </div>
+
+  <h3>Transport(通信方式)は主に2種類</h3>
+
+  <table>
+    <thead>
+      <tr><th>Transport</th><th>用途</th><th>典型例</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>stdio</strong></td><td>ローカル実行。標準入出力で JSON-RPC をやりとり</td><td>自作MCPサーバー、Filesystem、ローカルのGit操作</td></tr>
+      <tr><td><strong>HTTP (Streamable)</strong></td><td>リモートサーバー。HTTPでJSON-RPC + SSEでストリーミング</td><td>SaaS提供のMCPエンドポイント、社内リモートサーバー</td></tr>
+    </tbody>
+  </table>
+
+  <details class="more-box">
+    <summary>もっと詳しく: SSE transport は非推奨へ</summary>
+    <div class="more-body">
+      <p>MCPの初期仕様には HTTP + SSE(Server-Sent Events)ベースの transport もありましたが、2025年のspec更新で <strong>Streamable HTTP</strong> に統合・再設計されました。2026年1月時点では、新規サーバーは <code>stdio</code> か <code>http</code>(Streamable) を選ぶのが推奨で、旧SSE単独のサーバーを見かけたら更新検討のサインです。最新動向は <a href="https://modelcontextprotocol.io/specification" target="_blank" rel="noopener">MCP specification</a> を確認してください。</p>
+    </div>
+  </details>
+
+  <h3>ちょっと動かしてみる:最小のハンズオン</h3>
+
+  <p>Ch02 で詳しく扱いますが、イメージを先に掴むためにコマンドだけ先出しします。Claude Code のインストール済みであれば、<strong>1コマンドで公式Filesystemサーバーを追加</strong>できます(コピペで試せます)。</p>
+
+  <pre><code># 公式 Filesystem MCPサーバーを user scope で追加
+claude mcp add filesystem -s user \
+  -- npx -y @modelcontextprotocol/server-filesystem /Users/you/Documents
+
+# 登録済みサーバーを確認
+claude mcp list
+
+# 出力例:
+# filesystem: npx -y @modelcontextprotocol/server-filesystem /Users/you/Documents (stdio)
+#   Status: ✓ Connected
+#   Tools:  read_file, write_file, list_directory, ...</code></pre>
+
+  <p>このあと Claude Code を起動して「~/Documents の中にあるMarkdownファイル一覧を出して」と頼むと、モデルが <code>list_directory</code> ツールを自律的に呼び出し、結果を整形して返します。「<strong>AI が自分で外部ツールを呼ぶ</strong>」という体験を、最短5分で味わえます。</p>
+
+  <div class="info-box">
+    <span class="label">注意</span>
+    <p>Filesystemサーバーに渡すパスは、<strong>AIが読み書きしてよい範囲</strong>です。<code>/</code> や <code>$HOME</code> をそのまま渡さないでください。最初は <code>~/Documents/mcp-test</code> のような専用ディレクトリを切るのが安全です。セキュリティ詳細は Ch07 で扱います。</p>
+  </div>
+
+  <!-- ===== Section 5: 他の連携手段との比較 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 他の連携手段との比較</h2>
+
+  <p>「外部ツールにAIを繋ぐ」手段は MCP 以外にも複数あります。Claude Codeユーザが実務で出会う選択肢を整理しておきましょう。</p>
+
+  <table>
+    <thead>
+      <tr><th>方式</th><th>何をする</th><th>強み</th><th>弱み</th><th>使いどころ</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>MCP</strong></td>
+        <td>AIクライアント&lt;-&gt;ツールを標準プロトコルで接続</td>
+        <td>共通規格、ローカル実行、再利用性高</td>
+        <td>サーバーを別途用意する必要あり</td>
+        <td>永続的に使うツール連携、複数クライアントで使い回したい時</td>
+      </tr>
+      <tr>
+        <td><strong>Function Calling (API)</strong></td>
+        <td>Claude API等で関数定義をモデルに渡す</td>
+        <td>自分のアプリ内で完結、柔軟</td>
+        <td>アプリごとに実装、クライアント横断で再利用不可</td>
+        <td>自作のAI組み込みアプリを書く時</td>
+      </tr>
+      <tr>
+        <td><strong>Claude Code 内蔵ツール</strong></td>
+        <td><span class="term" data-tip="Claude Code内蔵ツール: Read/Edit/Bash/Grep など、Claude Codeに最初から組み込まれているツール群">Read / Edit / Bash / Grep 等</span></td>
+        <td>設定不要、即使える、権限モデルが統一</td>
+        <td>拡張できない、カスタムなし</td>
+        <td>ファイル編集・シェル実行など汎用タスク</td>
+      </tr>
+      <tr>
+        <td><strong>独自API連携</strong></td>
+        <td>シェルスクリプト+curlでREST呼び出し</td>
+        <td>最速で試せる、依存ゼロ</td>
+        <td>認証・エラー処理を毎回書く、再利用困難</td>
+        <td>一度きりのスクリプト、PoC</td>
+      </tr>
+      <tr>
+        <td><strong>Subagent / Hooks</strong></td>
+        <td>Claude Codeの拡張機構でイベント発火</td>
+        <td>Claude Code固有の挙動拡張に強い</td>
+        <td>他クライアントでは使えない</td>
+        <td>プロンプト前後の自動処理、特定タスクの専門エージェント化</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>同じタスク「GitHubのissueを一覧する」を4方式で書くと</h3>
+
+  <div class="compare-cards">
+    <div class="cc good">
+      <span class="cc-label">MCP方式</span>
+      <h4>再利用性 ◎</h4>
+      <ul>
+        <li>GitHub MCPサーバーを追加</li>
+        <li>「open issueを見せて」と自然文</li>
+        <li>Cursorや他クライアントでも同じサーバーで動く</li>
+      </ul>
+    </div>
+    <div class="cc neutral">
+      <span class="cc-label">内蔵Bash</span>
+      <h4>即席 ◎</h4>
+      <ul>
+        <li><code>gh issue list --state open</code></li>
+        <li>1回きりなら最速</li>
+        <li>毎回コマンド文を指示する必要あり</li>
+      </ul>
+    </div>
+    <div class="cc bad">
+      <span class="cc-label">独自API + curl</span>
+      <h4>学習コスト高</h4>
+      <ul>
+        <li>認証ヘッダ、pagination、rate limit を自前で</li>
+        <li>成功しても再利用が効かない</li>
+        <li>長期運用には向かない</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>判断フロー:MCP か、それ以外か</h3>
+
+  <div class="diagram-box">
+    <div class="diagram-title">「その連携、MCPでやる?」判定フロー</div>
+    <pre class="mermaid">
+graph TD
+  Q1{"使うのは1回だけ?"}
+  Q1 -->|"Yes"| Bash["内蔵Bash + gh/curl で十分"]
+  Q1 -->|"No"| Q2{"複数クライアント<br/>で使い回す?"}
+  Q2 -->|"Yes"| MCP["MCPサーバーを採用"]
+  Q2 -->|"No"| Q3{"Claude Code固有<br/>の前後処理が要る?"}
+  Q3 -->|"Yes"| Hooks["Subagent / Hooks"]
+  Q3 -->|"No"| MCP2["MCPで統一が無難"]
+    </pre>
+    <div class="diagram-caption">「使用頻度 × 横展開の要否」で決める。長く使うならMCPが後悔しない。</div>
+  </div>
+
+  <!-- ===== Section 6: ロードマップ ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 本チュートリアルのロードマップ</h2>
+
+  <p>全8章・約4時間で、「MCPを読める / 追加できる / 使える / 自作できる」の4段階を登り切ります。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">学習の流れ:今ここから自作まで</div>
+    <canvas id="ch1-donut-1" height="220"></canvas>
+    <div class="diagram-caption">Basics(理解・追加・一覧)→ Practice(公式活用・自作・運用)。時間配分のイメージ。</div>
+  </div>
+
+  <div class="steps">
+    <div class="step done"><div class="step-num">1</div><div class="step-label">Ch01 概念</div><div class="step-desc">いまここ</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-label">Ch02 追加</div><div class="step-desc">.mcp.json を書く</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-label">Ch03 カタログ</div><div class="step-desc">公式サーバー一覧</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-label">Ch04-05 実戦</div><div class="step-desc">GitHub / FS / DB</div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-label">Ch06 自作</div><div class="step-desc">最小MCPサーバー</div></div>
+    <div class="step"><div class="step-num">6</div><div class="step-label">Ch07-08 運用</div><div class="step-desc">トラブル / 統合課題</div></div>
+  </div>
+
+  <h3>学習ペース目安</h3>
+
+  <div class="progress-row">
+    <div class="progress-head"><span>Basics (Ch01-03)</span><span>約1.5h</span></div>
+    <div class="progress-track"><div class="progress-fill" style="width:37%"></div></div>
+  </div>
+  <div class="progress-row">
+    <div class="progress-head"><span>Practice (Ch04-08)</span><span>約2.5h</span></div>
+    <div class="progress-track"><div class="progress-fill" style="width:63%"></div></div>
+  </div>
+
+  <p>では次章で、実際に <code>.mcp.json</code> を書いて Claude Code にサーバーを追加していきましょう。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span></p>
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>N×M問題を自分のケースで描く</h4>
+    <p>あなたが今使っている(あるいは使いたい)AIクライアントと外部ツールを列挙し、本章で見た「個別実装」と「MCP経由」の両方の図を描いてみましょう。紙でも、テキストでもOKです。</p>
+    <ol>
+      <li>自分が触っているAIクライアントを2-3個書き出す(例: Claude Code, ChatGPT, Cursor)</li>
+      <li>日常的に使いたい外部ツールを3-5個書き出す(例: GitHub, Slack, Notion, Google Drive, Postgres)</li>
+      <li>個別実装だと何本のコネクタが必要か、MCP経由だと何本になるかを計算する</li>
+      <li>削減率を「N+M / N×M」として出す</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>例: Mさんのケース(クライアント3、ツール5)</p>
+      <pre><code>クライアント: Claude Code / Cursor / Claude Desktop  (N=3)
+ツール:       GitHub / Slack / Notion / Postgres / Filesystem  (M=5)
+
+個別実装: 3 × 5 = 15本のコネクタ
+MCP経由:  3 + 5 = 8本(各クライアントが1つMCPクライアントを持ち、
+                     各ツール1つがMCPサーバーを持つ)
+
+削減率: 8 / 15 ≒ 53%  (つまり約半分)
+
+さらに、ツールをもう1つ追加したら:
+  個別実装は +3本(クライアント数分)
+  MCP経由は  +1本 のみ</code></pre>
+      <p><strong>ポイント:</strong> 数字で書くと「なぜこの規格が産業標準になろうとしているのか」が腑に落ちます。ツール数が増えるほどMCPの効果は非線形に伸びます。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>最小のMCPサーバーを発見して、やりとりを観察する</h4>
+    <p>実際に Filesystem MCPサーバーを追加して、Claude Code が「どのツール」を「どの引数で」呼んだかを観察してみましょう。Ch02 先取りの準備運動です。</p>
+    <ol>
+      <li>専用テストディレクトリを作る: <code>mkdir -p ~/Documents/mcp-test && echo "hello" &gt; ~/Documents/mcp-test/hi.md</code></li>
+      <li>公式Filesystemサーバーを追加: <code>claude mcp add fs-test -s user -- npx -y @modelcontextprotocol/server-filesystem ~/Documents/mcp-test</code></li>
+      <li><code>claude mcp list</code> で Status が <code>✓ Connected</code> になることを確認</li>
+      <li>Claude Codeを起動して「~/Documents/mcp-test にあるファイルを一覧して、各ファイルの内容を要約して」と依頼</li>
+      <li>どのツール(<code>list_directory</code> / <code>read_file</code> 等)が何回呼ばれたかを、Claude Codeの出力で確認</li>
+      <li>終わったら <code>claude mcp remove fs-test -s user</code> で片付ける</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>想定される観察結果:</p>
+      <pre><code># 期待されるClaude Codeの動き
+1. list_directory({ path: "/Users/you/Documents/mcp-test" })
+     → ["hi.md"] を取得
+2. read_file({ path: "/Users/you/Documents/mcp-test/hi.md" })
+     → "hello" を取得
+3. モデルが結果を整形して「hi.md があり、内容は "hello" です」と回答
+
+# claude mcp list の出力例
+fs-test: npx -y @modelcontextprotocol/server-filesystem /Users/you/Documents/mcp-test (stdio)
+  Status: ✓ Connected
+  Tools:  read_file, write_file, list_directory, move_file, search_files, ...</code></pre>
+      <p><strong>解説:</strong> MCPサーバーが公開するツールは起動時に Claude Code が tools/list で問い合わせて一覧化しています。自然文での質問を、モデルが <strong>自律的に適切なツールコール列</strong>に翻訳しているのが確認できれば、MCPの本質は掴めています。</p>
+      <p><strong>補足:</strong> もし Status が Connected にならない場合は、Node.js が入っているか(<code>node -v</code>)、npx が動くかを確認してください。Ch07 でトラブルシュートを扱います。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span> <a href="https://modelcontextprotocol.io" target="_blank" rel="noopener">Model Context Protocol 公式サイト</a> — MCPの仕様・チュートリアル・SDK一覧の一次情報源。まずここを読む</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式ドキュメント</a> — <code>claude mcp</code> CLIや設定ファイルのリファレンス。実作業はここを見ながら</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://github.com/modelcontextprotocol" target="_blank" rel="noopener">MCP GitHub Organization</a> — プロトコル仕様・SDK・公式サーバー集の全リポジトリが集約</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://github.com/modelcontextprotocol/servers" target="_blank" rel="noopener">公式MCPサーバー集 (modelcontextprotocol/servers)</a> — Filesystem / Fetch / Git / 他、リファレンス実装の宝庫。ソース読むと構造が分かる</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://github.com/punkpeye/awesome-mcp-servers" target="_blank" rel="noopener">awesome-mcp-servers</a> — コミュニティ製サーバーの包括的リスト。2026年1月時点で1,500+件</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://modelcontextprotocol.io/specification" target="_blank" rel="noopener">MCP Specification</a> — JSON-RPCメッセージ形式・capabilities・transport の正式仕様。Ch06で自作する前に眺めておく価値あり</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="01">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <span></span>
+    <a href="02-mcp-config.html"><span class="direction">Next &rarr;</span>Claude CodeにMCPを追加</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+
+<!-- Chart.js: スケーラビリティ比較 + ロードマップ配分 -->
+<script>
+window.addEventListener("load", function(){
+  var ctxLine = document.getElementById('ch1-line-1');
+  if (ctxLine && window.Chart) {
+    new Chart(ctxLine, {
+      type: 'line',
+      data: {
+        labels: ['2×2', '3×3', '5×5', '7×7', '10×10', '15×15'],
+        datasets: [
+          {
+            label: '個別実装(N×M)',
+            data: [4, 9, 25, 49, 100, 225],
+            borderColor: '#64748b',
+            backgroundColor: 'rgba(100,116,139,0.1)',
+            tension: 0.2,
+            fill: false
+          },
+          {
+            label: 'MCP経由(N+M)',
+            data: [4, 6, 10, 14, 20, 30],
+            borderColor: '#D97757',
+            backgroundColor: 'rgba(217,119,87,0.2)',
+            tension: 0.2,
+            fill: true
+          }
+        ]
+      },
+      options: {
+        plugins: { legend: { position: 'bottom' } },
+        scales: {
+          y: { beginAtZero: true, title: { display: true, text: '必要コネクタ数' } }
+        }
+      }
+    });
+  }
+
+  var ctxDonut = document.getElementById('ch1-donut-1');
+  if (ctxDonut && window.Chart) {
+    new Chart(ctxDonut, {
+      type: 'doughnut',
+      data: {
+        labels: ['Ch01 概念 (25min)', 'Ch02 追加 (40min)', 'Ch03 カタログ (30min)', 'Ch04-05 実戦 (70min)', 'Ch06 自作 (40min)', 'Ch07-08 運用 (45min)'],
+        datasets: [{
+          data: [25, 40, 30, 70, 40, 45],
+          backgroundColor: ['#D97757', 'rgba(217,119,87,0.75)', 'rgba(217,119,87,0.55)', '#60a5fa', '#cbd5e1', '#94a3b8']
+        }]
+      },
+      options: {
+        plugins: { legend: { position: 'bottom' } }
+      }
+    });
+  }
+});
+</script>
+</body>
+</html>

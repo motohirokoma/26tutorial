@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>実践：GitHub MCP - MK's Claude Code Tutorial - MCP Guide</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code - MCP
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav class="active"><span class="phase-name">Practice</span><span class="phase-pct" id="pct-practice">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.04</span>
+    実践：GitHub MCP
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 8 sections</text>
+    </svg>
+    <div class="progress-info">0h / 4h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-mcp-overview.html"><span class="status-dot" data-chapter="01"></span> MCPとは</a></li>
+    <li><a href="02-mcp-config.html"><span class="status-dot" data-chapter="02"></span> Claude CodeにMCPを追加</a></li>
+    <li><a href="03-official-servers.html"><span class="status-dot" data-chapter="03"></span> 公式MCPサーバー一覧</a></li>
+  </ul>
+  <div class="section-label">Practice</div>
+  <ul>
+    <li><a href="04-github-mcp.html" class="active"><span class="status-dot" data-chapter="04"></span> 実践：GitHub MCP</a></li>
+    <li><a href="05-filesystem-others.html"><span class="status-dot" data-chapter="05"></span> 実践：Filesystem・他MCP</a></li>
+    <li><a href="06-custom-mcp.html"><span class="status-dot" data-chapter="06"></span> カスタムMCPサーバー入門</a></li>
+    <li><a href="07-troubleshoot.html"><span class="status-dot" data-chapter="07"></span> MCPのトラブルシュート</a></li>
+    <li><a href="08-final-exercise.html"><span class="status-dot" data-chapter="08"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 2: Practice &gt; Chapter 04</div>
+  <h1>実践：GitHub MCP</h1>
+  <p class="subtitle">Issue/PR/Actions をClaude Codeから操作する</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 40分</span>
+    <span class="badge">Phase: Practice</span>
+    <span class="badge">難易度: 中級</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">この章のゴール</span>
+    <p>GitHub MCP サーバーを Claude Code に追加し、<strong>Issue 一覧・PR レビュー・Release notes 生成</strong>などを自然言語で実行できる状態を作ります。認証(<span class="term" data-tip="Personal Access Token。GitHubが発行する、ユーザー権限を限定的に付与できる文字列トークン">PAT</span>)のセットアップから、実用シナリオ3つ、権限管理のベストプラクティスまでを一気通貫で体験。最後のハンズオンでは<strong>自分のリポジトリの issue を取得して分類させる</strong>ところまで到達します。</p>
+  </div>
+
+  <div class="info-box" style="border-color:#D97757;">
+    <span class="label">2026年1月時点</span>
+    <p>本章の記述は<strong>2026年1月時点</strong>の GitHub MCP サーバー(公式: <code>github-mcp-server</code>)の仕様に基づきます。MCP 仕様・サーバー実装は変化が速いので、コマンドや設定で迷ったら必ず <a href="https://github.com/modelcontextprotocol/servers" target="_blank" rel="noopener">modelcontextprotocol/servers</a> と <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">docs.claude.com/en/docs/claude-code</a> の最新ドキュメントを参照してください。</p>
+  </div>
+
+  <!-- ===== Section 1: GitHub MCPの全体像 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> GitHub MCP サーバーの全体像</h2>
+
+  <p>GitHub MCP サーバーは、Claude Code から GitHub の <span class="term" data-tip="REST API + GraphQL API。GitHub がリポジトリ・Issue・PR・Actionsなどを操作するために公開している HTTP API">GitHub API</span> を「ツール」として呼び出せるようにする中継サーバーです。Claude Code は自然言語の依頼を受け、必要に応じてこのサーバーの tool を呼び出し、結果を要約してユーザーに返します。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Claude Code ⇔ GitHub MCP ⇔ GitHub の3層構造</div>
+    <pre class="mermaid">
+graph LR
+  A["あなた<br/>(自然言語)"] --> B["Claude Code<br/>(MCPクライアント)"]
+  B -->|"tool call"| C["github-mcp-server<br/>(stdio / http)"]
+  C -->|"REST/GraphQL"| D["GitHub API"]
+  D -->|"JSON"| C
+  C -->|"tool result"| B
+  B --> A
+    </pre>
+    <div class="diagram-caption">Claude Code はコードを書く以外にも、この図の B の役割で「どの tool を呼ぶか」を判断する。GitHub API に直接アクセスするのはあなたの PC 上で動くローカルな MCP サーバー。</div>
+  </div>
+
+  <h3>できること/できないこと</h3>
+
+  <div class="compare-cards">
+    <div class="cc good">
+      <span class="cc-label">できる</span>
+      <h4>自然言語で GitHub を操作</h4>
+      <ul>
+        <li><strong>Issue</strong>: 一覧、作成、コメント、ラベル付け、クローズ</li>
+        <li><strong>PR</strong>: 一覧、diff取得、コメント、レビュー投稿、マージ</li>
+        <li><strong>Actions</strong>: workflow 一覧、run 状態、log 取得、再実行</li>
+        <li><strong>repo検索</strong>: コード検索、commit検索、ユーザー検索</li>
+        <li><strong>ファイル操作</strong>: 読み取り、作成、更新(コミット経由)</li>
+      </ul>
+    </div>
+    <div class="cc neutral">
+      <span class="cc-label">できない / 要注意</span>
+      <h4>境界と制約</h4>
+      <ul>
+        <li>大量一括削除など<strong>破壊的操作</strong>は API 側で制限あり</li>
+        <li>Organization 管理(SSO 設定等)は<strong>scope 不足で失敗</strong>しがち</li>
+        <li>Private repo は PAT の <code>repo</code> scope が必須</li>
+        <li>GitHub Enterprise Server は<strong>別途 endpoint 設定</strong>が必要</li>
+        <li>API <span class="term" data-tip="Rate Limit。単位時間あたりのAPIリクエスト上限。認証ユーザーは5000req/h、未認証は60req/h">レート制限</span>に到達すると一時停止</li>
+      </ul>
+    </div>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: なぜ Claude Code から直接 curl しないのか</summary>
+    <div class="more-body">
+      <p>Claude Code は内蔵の <code>Bash</code> ツール経由で <code>curl</code> を叩けば、理論上 GitHub API を直接呼べる。しかしそれには毎回「URL とヘッダーを文字列で組み立てる」必要があり、<strong>エラー処理・ページネーション・パース</strong>を毎回モデルが再発明することになる。MCP サーバーは「<strong>tool 名 + 引数の JSON</strong>」というスキーマを提供するので、モデルは正しい形で呼びやすく、失敗時のリトライも構造化される。これが MCP の最大の価値。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 2: セットアップ(PAT + mcp.json) ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> セットアップ：PAT 発行と .mcp.json</h2>
+
+  <p>GitHub MCP サーバーを使うには2つだけ用意します: <strong>(1) PAT(認証用トークン)</strong> と <strong>(2) <code>.mcp.json</code> の設定</strong>。ここが最初の山ですが、一度やれば以降は使い回せます。</p>
+
+  <h3>Step 1: PAT を発行する</h3>
+
+  <p>GitHub の <span class="term" data-tip="Settings &gt; Developer settings &gt; Personal access tokens &gt; Fine-grained tokens。2022年以降の推奨方式で、リポ単位・scope単位で権限を絞れる">Fine-grained PAT</span> を推奨。古い Classic PAT より安全に scope を絞れます。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">PAT 発行の4ステップ</div>
+    <pre class="mermaid">
+graph TD
+  S1["1. GitHub &gt; Settings &gt; Developer settings"] --> S2["2. Personal access tokens &gt; Fine-grained tokens"]
+  S2 --> S3["3. Repository access = 対象リポのみ選択"]
+  S3 --> S4["4. Permissions = Issues/Pull requests/Contents等だけ付与"]
+  S4 --> S5["ghp_... を安全にコピーして保管"]
+    </pre>
+    <div class="diagram-caption">「Public repositories (read-only)」プリセットから始めて、必要な書き込み権限だけ追加するのが安全。</div>
+  </div>
+
+  <div class="info-box">
+    <span class="label">最低限付与する Permissions(シナリオ別)</span>
+    <p><strong>読み取り専用で試す</strong>: Contents=Read, Issues=Read, Pull requests=Read, Metadata=Read<br>
+    <strong>Issue/PRにコメントも書く</strong>: 上記 + Issues=Read &amp; Write, Pull requests=Read &amp; Write<br>
+    <strong>Actions を触る</strong>: 上記 + Actions=Read(必要なら Write)<br>
+    最初は<strong>すべて Read から</strong>始めて、困ったら Write を足す。</p>
+  </div>
+
+  <h3>Step 2: <code>.mcp.json</code> に登録</h3>
+
+  <p>プロジェクトルートに <code>.mcp.json</code> を作成し、以下を記述します。<code>GITHUB_PERSONAL_ACCESS_TOKEN</code> は環境変数から読むのが鉄則(<strong>JSONに直書きしない</strong>)。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">.mcp.json 最小構成(2026年1月時点)</div>
+    <pre><code>{
+  "mcpServers": {
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${env:GITHUB_TOKEN}"
+      }
+    }
+  }
+}</code></pre>
+    <div class="diagram-caption">シェルに <code>export GITHUB_TOKEN=ghp_xxxxx</code> を書いておけば、MCP 起動時に展開される。macOS なら <code>~/.zshrc</code> に。</div>
+  </div>
+
+  <h3>Step 3: CLI で登録＆起動確認</h3>
+
+  <p><code>.mcp.json</code> を手書きする代わりに、<code>claude mcp add</code> でも登録できます。両方覚えておくと便利。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">セットアップの実コマンド</div>
+    <pre><code># 1) 環境変数に PAT を登録(.zshrcに追記)
+echo 'export GITHUB_TOKEN=ghp_xxxxxxxxxxxxxxxxxxxx' &gt;&gt; ~/.zshrc
+source ~/.zshrc
+
+# 2) プロジェクトに GitHub MCP を追加(project scope)
+claude mcp add github \
+  --scope project \
+  --env GITHUB_PERSONAL_ACCESS_TOKEN=\${GITHUB_TOKEN} \
+  -- npx -y @modelcontextprotocol/server-github
+
+# 3) 登録の確認
+claude mcp list
+# =&gt; github   stdio   running
+
+# 4) Claude Code 起動 → "/mcp" で tool 一覧を確認
+claude
+&gt; /mcp</code></pre>
+    <div class="diagram-caption"><code>/mcp</code> スラッシュコマンドで、認識された tool 一覧と接続状態が見える。赤マークが付いたら Ch07「トラブルシュート」を参照。</div>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section 3: 提供される tool 一覧 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 提供される tool 一覧とカテゴリ</h2>
+
+  <p>GitHub MCP サーバーは2026年1月時点で概ね<strong>40+ の tool</strong> を提供します。全部を覚える必要はなく、「どのカテゴリに何があるか」だけ押さえれば十分。モデルは自動的に正しい tool を選びます。</p>
+
+  <table>
+    <thead>
+      <tr><th>カテゴリ</th><th>代表的な tool</th><th>典型用途</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Issue</strong></td><td><code>list_issues</code>, <code>create_issue</code>, <code>update_issue</code>, <code>add_issue_comment</code></td><td>棚卸し、優先度付け、担当割</td></tr>
+      <tr><td><strong>Pull Request</strong></td><td><code>list_pull_requests</code>, <code>get_pull_request_diff</code>, <code>create_pr_review</code>, <code>merge_pull_request</code></td><td>レビュー、マージ、差分確認</td></tr>
+      <tr><td><strong>Actions</strong></td><td><code>list_workflow_runs</code>, <code>get_workflow_run_logs</code>, <code>rerun_workflow_run</code></td><td>CI失敗調査、再実行</td></tr>
+      <tr><td><strong>Repo</strong></td><td><code>search_repositories</code>, <code>get_file_contents</code>, <code>create_or_update_file</code></td><td>コード検索、ファイル編集</td></tr>
+      <tr><td><strong>Search</strong></td><td><code>search_code</code>, <code>search_issues</code>, <code>search_users</code></td><td>横断検索、ユーザー発見</td></tr>
+      <tr><td><strong>Release</strong></td><td><code>list_releases</code>, <code>create_release</code>, <code>get_commit</code></td><td>Release notes 生成</td></tr>
+    </tbody>
+  </table>
+
+  <div class="diagram-box">
+    <div class="diagram-title">tool カテゴリの「重さ」分布(Claude Code 使用頻度の体感)</div>
+    <canvas id="ch4-bar-1" height="180"></canvas>
+    <div class="diagram-caption">Issue と PR 周りの tool が圧倒的に使われる。最初はこの2カテゴリだけ触れれば9割カバーできる。</div>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: tool 名を覚える必要はある?</summary>
+    <div class="more-body">
+      <p>結論: <strong>覚えなくていい</strong>。Claude Code は「このリポのopen issueを出して」と自然言語で書けば、<code>list_issues(state="open")</code> を自動的に選んでくれる。ただし<strong>曖昧な依頼</strong>(例「PRを良い感じにして」)は判断に迷うので、用途を書いた具体的なプロンプトのほうが成功率が上がる。「どの tool を使うべきか」をあなたが知っていると、プロンプトを書きやすくなるのが副次効果。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 4: 実用シナリオ1 Issue棚卸し ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 実用シナリオ1: Issue 棚卸し</h2>
+
+  <p>3ヶ月放置されている open issue が30件…という状況、ありますよね。Claude Code に<strong>ラベル/古さ/本文</strong>から優先度を推定させて、一覧を整理します。</p>
+
+  <h3>プロンプト例</h3>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Claude Code への依頼プロンプト</div>
+    <pre><code>@github motohirokoma/my-app リポジトリの open な issue を全部取得し、
+以下の観点でマークダウンの表に整理してください。
+
+- 列: #番号 / タイトル / labels / 作成日(相対) / 優先度推定 / 推奨アクション
+- 優先度は P1(本番影響) / P2(機能改善) / P3(軽微) の3段階
+- 推奨アクションは "今すぐ対応" / "次スプリント" / "triage不要(close候補)"
+- bug ラベルと stale(90日以上更新なし) を優先的にP1/close候補に振り分け
+- 最後に「今週やるべきTOP3」を箇条書きで
+
+レポート作成後、分類結果を元の issue にコメントとして書き込むのは
+まだしないでください(確認後に指示します)。</code></pre>
+    <div class="diagram-caption">「まだしないで」の一行が重要。破壊的アクション(コメント・クローズ)は<strong>必ず確認ステップを挟む</strong>。</div>
+  </div>
+
+  <h3>期待される動作</h3>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Issue 棚卸しの処理フロー</div>
+    <pre class="mermaid">
+sequenceDiagram
+  participant U as あなた
+  participant C as Claude Code
+  participant M as github MCP
+  participant G as GitHub
+  U->>C: 棚卸しプロンプト
+  C->>M: list_issues(state=open, per_page=100)
+  M->>G: GET /repos/:owner/:repo/issues
+  G-->>M: JSON (30 issues)
+  M-->>C: tool result
+  C->>C: 分類推論 (ラベル/日付/本文)
+  C-->>U: Markdown表 + TOP3
+    </pre>
+    <div class="diagram-caption">1回の <code>list_issues</code> 呼び出しで済むケースが多い。30件超のリポは自動でページネーションが走る。</div>
+  </div>
+
+  <div class="info-box">
+    <span class="label">Tips: ページネーションを意識する</span>
+    <p>issue 数が100件超のリポでは、Claude Code が自動で <code>page=1,2,3...</code> と取りに行きます。遅いと感じたら<strong>プロンプトで「最新30件だけ」と絞る</strong>のが手。API レート(5000req/h)を無駄に消費しないコツでもあります。</p>
+  </div>
+
+  <!-- ===== Section 5: 実用シナリオ2 PR自動レビュー ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 実用シナリオ2: PR 自動レビュー</h2>
+
+  <p>チームメンバーが出した PR に<strong>一次レビュー(typo/命名/テスト漏れ)</strong>を入れる作業は自動化の恩恵が大きい領域。Claude Code は diff を読んで、具体的な行番号にコメント案を作ってくれます。</p>
+
+  <h3>プロンプト例(diff 取得 → レビュー生成)</h3>
+
+  <div class="diagram-box">
+    <div class="diagram-title">PR レビュープロンプト</div>
+    <pre><code>@github motohirokoma/my-app の PR #142 を以下の手順でレビューして。
+
+1. get_pull_request_diff で差分を取得
+2. 以下の観点でチェック:
+   - 命名規則(camelCase / kebab-case の統一)
+   - null安全性(option型の扱い漏れ)
+   - テスト: 追加・変更された関数に対する test ケースが足りているか
+   - ドキュメントコメント(JSDoc/docstring)の有無
+   - 明らかな typo
+
+3. 見つかった指摘を以下のフォーマットで出力:
+   [ファイル名:行番号] 重要度(must/should/nit) 指摘内容 提案コード
+
+4. 「このPRをLGTMにできるか」を最後に yes/no で判断
+
+ただし GitHub への実コメント投稿はまだしないこと。
+出力を私が確認してからコメント投稿を指示します。</code></pre>
+    <div class="diagram-caption">must/should/nit の3段階は、GitHub文化でよく使われる重要度ラベル。モデルに判断基準を渡すと指摘がぶれにくい。</div>
+  </div>
+
+  <h3>レビューコメントを実際に投稿する</h3>
+
+  <p>出力を確認したら、続けて次のプロンプトで投稿できます。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">レビュー投稿のプロンプト</div>
+    <pre><code>先ほどの指摘のうち、must と should だけを PR #142 に
+create_pr_review(event="COMMENT") で投稿してください。
+
+- 各指摘は行コメント(review comment)として当該ファイル・行に紐づける
+- 全体コメントには「Claude Code 一次レビュー。最終判断は人間が行ってください」と明記
+- event は APPROVE ではなく COMMENT に(自動承認しない)</code></pre>
+    <div class="diagram-caption"><code>event=APPROVE</code> を自動で発行しないのが最重要ポイント。AIは一次レビュー止まり、<strong>承認は必ず人間</strong>。</div>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section 6: 実用シナリオ3 Release notes ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 実用シナリオ3: Release notes 生成</h2>
+
+  <p>前回リリースから今日までに merged された PR を集め、<span class="term" data-tip="リリースノート。そのバージョンで何が変わったかを利用者向けに要約した文書。Keep a Changelog 形式が有名">Release notes</span> のドラフトを作る作業も数分で終わります。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Release notes 生成プロンプト</div>
+    <pre><code>@github motohirokoma/my-app の v1.3.0 に向けた Release notes ドラフトを作って。
+
+1. list_releases で前回タグ(v1.2.0)の公開日を取得
+2. list_pull_requests で state=closed &amp; merged=true を
+   v1.2.0以降のものだけ取得(base=main)
+3. PR のラベル・タイトル・本文から Keep a Changelog 形式で分類:
+   - Added / Changed / Deprecated / Removed / Fixed / Security
+4. 各項目は「- PR #番号 タイトル (@author)」の行で
+5. 最後に「Breaking changes」サマリを別段落で
+
+出力は Markdown で。create_release はまだ呼ばないで、
+ドラフトを私に見せるだけで止めてください。</code></pre>
+    <div class="diagram-caption">Keep a Changelog 形式を明示すると、モデルの出力が安定する。あとは人間が微調整して公開するだけ。</div>
+  </div>
+
+  <h3>リリースごとのPR件数トレンド(例)</h3>
+
+  <div class="diagram-box">
+    <div class="diagram-title">直近6リリースのmerged PR数(架空のデータ)</div>
+    <canvas id="ch4-bar-2" height="160"></canvas>
+    <div class="diagram-caption">Claude Code でこういうグラフ化も「list_releases + list_pull_requests の結果を CSV にして」と頼めば出してくれる。</div>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: GitHub 自動生成Release notesとの違い</summary>
+    <div class="more-body">
+      <p>GitHub には標準で「<strong>Generate release notes</strong>」ボタンがあり、labelベースで自動分類してくれる。ではなぜ MCP 経由で作るのか? 答えは<strong>カスタム分類</strong>。「Breaking changesだけ強調」「日本語で要約」「社内向け補足を追加」などの要件を、プロンプトで自由に指定できる。チーム固有のフォーマット(例: 「影響範囲」列を足す)にも即対応できるのがMCPの強み。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 7: 権限管理ベストプラクティス ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 権限管理のベストプラクティス</h2>
+
+  <p>GitHub MCP は強力なぶん、<strong>PAT が漏れたら即時にリポジトリへ書き込まれる</strong>リスクがあります。<span class="term" data-tip="Principle of Least Privilege。ソフトウェアやアカウントに必要最小限の権限だけ与える設計原則。セキュリティの基本">最小権限原則</span>を徹底しましょう。</p>
+
+  <h3>PAT設計の5原則</h3>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="shield" width="20" height="20"></i>
+      <div><strong>(1) Fine-grained PAT を使う</strong> — Classic PATは全リポ・全scopeを横断できて危険。必ず Fine-grained で対象リポを絞る。</div>
+    </li>
+    <li>
+      <i data-lucide="clock" width="20" height="20"></i>
+      <div><strong>(2) 有効期限を短く</strong> — 最長でも90日。常用でも30日ごとに更新する運用が安全。</div>
+    </li>
+    <li>
+      <i data-lucide="key" width="20" height="20"></i>
+      <div><strong>(3) 環境変数で注入</strong> — <code>.mcp.json</code> や git 管理下に PAT を書かない。<code>${env:GITHUB_TOKEN}</code> で参照。</div>
+    </li>
+    <li>
+      <i data-lucide="users" width="20" height="20"></i>
+      <div><strong>(4) 用途別に複数トークン</strong> — 「読み取り専用PAT」と「書き込み可能PAT」を分ける。破壊的操作のときだけ書き込みPATに切り替える運用も有効。</div>
+    </li>
+    <li>
+      <i data-lucide="git-branch" width="20" height="20"></i>
+      <div><strong>(5) リポ側で branch protection</strong> — main へのforce pushを禁じ、PR経由必須に。MCP 経由で事故っても被害が限定される。</div>
+    </li>
+  </ul>
+
+  <div class="diagram-box">
+    <div class="diagram-title">PAT 権限マトリクス(最小構成 → 段階的に広げる)</div>
+    <canvas id="ch4-bar-3" height="180"></canvas>
+    <div class="diagram-caption">左から「読むだけ」→「コメントも書く」→「PR マージまで」と段階的に権限を広げる。Organization 管理が必要になったら、そこは<strong>別の管理者用PAT</strong>に分離すべき。</div>
+  </div>
+
+  <div class="info-box">
+    <span class="label">Tips: PAT 漏洩に気づいたら</span>
+    <p>GitHub の <strong>Settings &gt; Developer settings &gt; Personal access tokens</strong> から即座に revoke(失効)できます。<code>git log</code> に誤って commit した場合は <code>git filter-repo</code> で履歴から消した上で revoke し、<strong>必ず新PATを発行</strong>。GitHubは漏れたトークンを検知すると自動でrevoke することもあります(secret scanning)。</p>
+  </div>
+
+  <h3>権限ミスのよくあるパターン</h3>
+
+  <table>
+    <thead>
+      <tr><th>症状</th><th>原因</th><th>対処</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>403 Forbidden</code></td><td>scopeが足りない / Fine-grainedで対象リポ未選択</td><td>PAT編集画面で必要な permission を Read/Write に</td></tr>
+      <tr><td><code>404 Not Found</code></td><td>private リポなのに <code>repo</code> scopeなし(Classic) / repo未選択(Fine)</td><td>リポ選択 or scope追加</td></tr>
+      <tr><td><code>401 Unauthorized</code></td><td>PAT期限切れ / 環境変数未設定</td><td>PAT再発行、<code>echo $GITHUB_TOKEN</code>で確認</td></tr>
+      <tr><td>tool呼べるが sensitive操作だけ失敗</td><td>org側で SAML SSO未認証 / IP制限</td><td>PAT画面で "Configure SSO" を実行</td></tr>
+    </tbody>
+  </table>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section 8: ハンズオン ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> ハンズオン: 自リポの Issue を分類する</h2>
+
+  <p>ここまでの内容を、あなた自身のリポジトリで実行します。所要15分。</p>
+
+  <h3>準備</h3>
+
+  <div class="diagram-box">
+    <div class="diagram-title">ハンズオンの前提チェックリスト</div>
+    <pre><code># 前提 1: 自分の GitHub リポジトリ(open issueが5件以上あるもの)
+#         なければ本記事のコメント欄用に新規リポを作ってもOK
+
+# 前提 2: Fine-grained PAT を発行済み
+#         - Repository: 対象の1リポだけ選択
+#         - Permissions: Contents=Read, Issues=Read, Metadata=Read
+
+# 前提 3: 環境変数にPATを登録
+export GITHUB_TOKEN=ghp_xxxxxxxxxxxxxxxxxxxx
+
+# 前提 4: Claude Code に GitHub MCP を登録
+claude mcp add github \
+  --scope project \
+  --env GITHUB_PERSONAL_ACCESS_TOKEN=\${GITHUB_TOKEN} \
+  -- npx -y @modelcontextprotocol/server-github
+
+# 前提 5: 確認
+claude mcp list | grep github</code></pre>
+    <div class="diagram-caption">grepで github が出ればOK。出ない場合は Ch02 の設定確認に戻る。</div>
+  </div>
+
+  <h3>実行プロンプト(コピペ可)</h3>
+
+  <div class="diagram-box">
+    <div class="diagram-title">ハンズオン本体プロンプト</div>
+    <pre><code>@github &lt;あなたのGitHubユーザー名&gt;/&lt;リポ名&gt; の open issue を
+すべて取得し、以下の4カテゴリに分類してください。
+
+カテゴリ:
+  A) Bug (実害が出ている不具合)
+  B) Feature (機能追加・改善要望)
+  C) Docs (ドキュメント・コメント改善)
+  D) Chore (依存更新・リファクタ等、利用者影響なし)
+
+出力:
+  1) カテゴリごとの件数サマリ(表)
+  2) 各カテゴリの一覧(#番号 タイトル 作成日)
+  3) 「今週やるなら」TOP3とその理由
+  4) 分類できなかった issue があれば「要トリアージ」として別枠に
+
+制約:
+  - issue への書き込み(コメント・ラベル付け・close)はしない
+  - 最新50件だけで良い</code></pre>
+    <div class="diagram-caption">&lt; &gt; の部分を自分のユーザー名とリポ名に置き換えて実行。最後の<strong>「書き込みしない」</strong>が安全ネット。</div>
+  </div>
+
+  <h3>成功基準</h3>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-num">4</div>
+      <div class="stat-label">カテゴリで分類済み</div>
+      <div class="stat-trend up">必須</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">TOP3</div>
+      <div class="stat-label">優先タスクが提示</div>
+      <div class="stat-trend up">必須</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">0</div>
+      <div class="stat-label">勝手にcloseしていない</div>
+      <div class="stat-trend up">必須</div>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <span class="label">うまくいかない時のチェック</span>
+    <p><strong>「tool github/list_issues is not available」</strong>と出る: <code>claude mcp list</code> でgithubが running か確認 / PAT の環境変数が展開されているか <code>echo $GITHUB_TOKEN</code> で確認。<br><strong>「403」</strong>: PAT の permissions で Issues=Read が付いているか、対象リポが repository access で選ばれているか確認。</p>
+  </div>
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>安全なPATを自分用に設計する</h4>
+    <p>あなたが今日 MCP 用の Fine-grained PAT を発行するとしたら、以下を書き出してみましょう。</p>
+    <ol>
+      <li>対象 Repository(1つ、または少数)</li>
+      <li>必要な Permissions(Read/Write の別)</li>
+      <li>有効期限(日数)</li>
+      <li>環境変数名(例: <code>GITHUB_MCP_TOKEN</code>)</li>
+      <li>保管場所(<code>~/.zshrc</code> / password manager / CI secret 等)</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>回答例(読み取り中心で始める設計):</p>
+      <ul>
+        <li>Repository: <code>motohirokoma/my-app</code> の1つだけ</li>
+        <li>Permissions: Contents=Read, Issues=Read &amp; Write, Pull requests=Read &amp; Write, Metadata=Read, Actions=Read</li>
+        <li>有効期限: 60日</li>
+        <li>環境変数名: <code>GITHUB_MCP_TOKEN</code>(普段のgit用PATと別名)</li>
+        <li>保管場所: <code>~/.zshrc</code> に <code>export</code>、物理バックアップは1Password に保管</li>
+      </ul>
+      <p>ポイントは「<strong>普段のgit CLIと別トークンにする</strong>」こと。MCP用が漏れても普段の開発用に影響が出ない。もう一段進むなら、書き込み用をさらに別PAT(短期)にして「普段は読み取りPAT、必要な時だけ書き込みPATに切り替え」運用が理想。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>PR ワンストップレビューのプロンプトを設計する</h4>
+    <p>「PR番号を渡すと、(1)diff取得→(2)一次レビュー→(3)指摘のMarkdown出力→(4)確認後にコメント投稿」を一本で回すプロンプトを設計してください。以下の要件を満たすこと。</p>
+    <ol>
+      <li>自動承認(APPROVE)は絶対にしない</li>
+      <li>指摘は must/should/nit の3段階に分ける</li>
+      <li>投稿前に人間の確認ステップを必ず挟む</li>
+      <li>レビュー本文に「AIによる一次レビュー」と明記する</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>回答例プロンプト:</p>
+      <pre><code>@github motohirokoma/my-app の PR #{番号} を以下の手順でレビューして。
+
+Step 1: get_pull_request_diff で差分取得
+Step 2: 以下の観点でレビュー(指摘は must/should/nit に分類)
+  - 命名統一 / null安全性 / テスト不足 / ドキュメント / typo / セキュリティ
+Step 3: [ファイル:行] 重要度 内容 の Markdown表で出力
+Step 4: 私が "OK" と返すまで GitHub への書き込みはしない
+Step 5: OK後、create_pr_review(event="COMMENT") で投稿
+  - 本文冒頭に "[Claude Code 一次レビュー] 最終判断は人間が行います" を明記
+  - event は APPROVE/REQUEST_CHANGES ではなく必ず COMMENT</code></pre>
+      <p>ポイント: (a) Step4 の human-in-the-loop、(b) event=COMMENT 固定、(c) 本文の明示的な AI表記。特に(c)は<strong>レビュイー(PR作成者)への誠実さ</strong>として重要。自動レビューに混乱させられないように、AI生成であることを明記する文化を持ち込む。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span> <a href="https://github.com/modelcontextprotocol/servers" target="_blank" rel="noopener">modelcontextprotocol/servers (公式リポ)</a> — GitHub MCP サーバーを含む全公式サーバーの総本山</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://github.com/modelcontextprotocol/servers/tree/main/src/github" target="_blank" rel="noopener">server-github のソースと README</a> — tool 一覧と内部実装、最新パラメータはここ</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://github.com/punkpeye/awesome-mcp-servers" target="_blank" rel="noopener">awesome-mcp-servers</a> — 公式/非公式含むMCPサーバー集、GitHub連携の派生実装も</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens" target="_blank" rel="noopener">GitHub: Managing your personal access tokens</a> — PAT 発行・permissions の公式ドキュメント</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式ドキュメント</a> — <code>claude mcp add</code> / <code>.mcp.json</code> の最新仕様</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://modelcontextprotocol.io" target="_blank" rel="noopener">Model Context Protocol 公式サイト</a> — MCP 仕様・コンセプトの最終リファレンス</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.github.com/en/rest" target="_blank" rel="noopener">GitHub REST API ドキュメント</a> — 裏で呼ばれているAPIの定義、パラメータ確認用</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="04">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="03-official-servers.html"><span class="direction">&larr; Prev</span>公式MCPサーバー一覧</a>
+    <a href="05-filesystem-others.html"><span class="direction">Next &rarr;</span>実践：Filesystem・他MCP</a>
+  </div>
+</main>
+
+<script>
+window.addEventListener("load", function(){
+  // Bar 1: tool カテゴリ使用頻度
+  var ctx1 = document.getElementById('ch4-bar-1');
+  if (ctx1 && window.Chart) {
+    new Chart(ctx1, {
+      type: 'bar',
+      data: {
+        labels: ['Issue','Pull Request','Actions','Repo','Search','Release'],
+        datasets: [{
+          label: '使用頻度(体感%)',
+          data: [35, 30, 10, 12, 8, 5],
+          backgroundColor: ['#D97757','#D97757','rgba(217,119,87,0.6)','rgba(217,119,87,0.5)','rgba(217,119,87,0.4)','rgba(217,119,87,0.3)'],
+          borderRadius: 6
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        plugins: { legend: { display: false } },
+        scales: { x: { beginAtZero: true, title: { display: true, text: '%(合計100)' } } }
+      }
+    });
+  }
+
+  // Bar 2: リリース別 merged PR 数
+  var ctx2 = document.getElementById('ch4-bar-2');
+  if (ctx2 && window.Chart) {
+    new Chart(ctx2, {
+      type: 'bar',
+      data: {
+        labels: ['v1.0.0','v1.0.1','v1.1.0','v1.1.1','v1.2.0','v1.3.0'],
+        datasets: [{
+          label: 'merged PR 数',
+          data: [42, 8, 35, 11, 28, 19],
+          backgroundColor: '#D97757',
+          borderRadius: 6
+        }]
+      },
+      options: {
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { beginAtZero: true, title: { display: true, text: 'PR 数' } }
+        }
+      }
+    });
+  }
+
+  // Bar 3: PAT 権限マトリクス
+  var ctx3 = document.getElementById('ch4-bar-3');
+  if (ctx3 && window.Chart) {
+    new Chart(ctx3, {
+      type: 'bar',
+      data: {
+        labels: ['Contents','Issues','Pull requests','Actions','Metadata','Administration'],
+        datasets: [
+          { label: '読み取り専用PAT',   data: [1, 1, 1, 0, 1, 0], backgroundColor: 'rgba(217,119,87,0.3)', borderRadius: 4 },
+          { label: 'コメント可能PAT', data: [1, 2, 2, 0, 1, 0], backgroundColor: 'rgba(217,119,87,0.6)', borderRadius: 4 },
+          { label: 'マージ可能PAT',     data: [2, 2, 2, 1, 1, 0], backgroundColor: '#D97757',             borderRadius: 4 }
+        ]
+      },
+      options: {
+        plugins: {
+          legend: { position: 'bottom' },
+          tooltip: {
+            callbacks: {
+              label: function(c){
+                var m = ['なし','Read','Read&Write'];
+                return c.dataset.label + ': ' + m[c.raw];
+              }
+            }
+          }
+        },
+        scales: {
+          y: { beginAtZero: true, max: 2, ticks: { stepSize: 1, callback: function(v){ return ['なし','Read','R&W'][v]; } } }
+        }
+      }
+    });
+  }
+});
+</script>
+
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>

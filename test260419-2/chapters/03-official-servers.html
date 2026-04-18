@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>公式MCPサーバー一覧 - MK's Claude Code Tutorial - MCP Guide</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code - MCP
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav class="active"><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Practice</span><span class="phase-pct" id="pct-practice">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.03</span>
+    公式MCPサーバー一覧
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 8 sections</text>
+    </svg>
+    <div class="progress-info">0h / 4h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-mcp-overview.html"><span class="status-dot" data-chapter="01"></span> MCPとは</a></li>
+    <li><a href="02-mcp-config.html"><span class="status-dot" data-chapter="02"></span> Claude CodeにMCPを追加</a></li>
+    <li><a href="03-official-servers.html" class="active"><span class="status-dot" data-chapter="03"></span> 公式MCPサーバー一覧</a></li>
+  </ul>
+  <div class="section-label">Practice</div>
+  <ul>
+    <li><a href="04-github-mcp.html"><span class="status-dot" data-chapter="04"></span> 実践：GitHub MCP</a></li>
+    <li><a href="05-filesystem-others.html"><span class="status-dot" data-chapter="05"></span> 実践：Filesystem・他MCP</a></li>
+    <li><a href="06-custom-mcp.html"><span class="status-dot" data-chapter="06"></span> カスタムMCPサーバー入門</a></li>
+    <li><a href="07-troubleshoot.html"><span class="status-dot" data-chapter="07"></span> MCPのトラブルシュート</a></li>
+    <li><a href="08-final-exercise.html"><span class="status-dot" data-chapter="08"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 1: Basics &gt; Chapter 03</div>
+  <h1>公式MCPサーバー一覧</h1>
+  <p class="subtitle">GitHub/Filesystem/Slack/Notion他の定番カタログと用途</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 30分</span>
+    <span class="badge">Phase: Basics</span>
+    <span class="badge">難易度: 初級</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">この章のゴール</span>
+    <p>MCPの仕組みが分かったら、次は「**実際に何を繋げるか**」です。本章では<span class="term" data-tip="Anthropic公式組織(modelcontextprotocol org)が管理するリファレンス実装のMCPサーバー">公式MCPサーバー</span>と、<span class="term" data-tip="サービスベンダー自身が公開する一次配布のMCPサーバー。AnthropicではないがOfficial扱い">準公式サーバー</span>・<span class="term" data-tip="コミュニティが自主的に開発・公開しているMCPサーバー。品質はまちまち">コミュニティサーバー</span>を**用途別カタログ**として一望し、自分の業務に連携できそうなサーバーを2つ選べる状態を目指します。Ch04以降の実践の「下ごしらえ」です。</p>
+  </div>
+
+  <div class="info-box">
+    <span class="label">2026年1月時点の情報</span>
+    <p>本章の記述は**2026年1月時点**のものです。MCPエコシステムは拡大途中で、サーバー一覧は毎月のように増えます。最新情報は <a href="https://github.com/modelcontextprotocol/servers" target="_blank" rel="noopener">modelcontextprotocol/servers</a> と <a href="https://github.com/punkpeye/awesome-mcp-servers" target="_blank" rel="noopener">awesome-mcp-servers</a> を都度チェックしてください。</p>
+  </div>
+
+  <!-- ===== Section 1: 3つの階層 ===== -->
+  <h2 data-section="03-01">
+    <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+    MCPサーバーの3階層 ― Official / Partner / Community
+  </h2>
+
+  <p>MCPサーバーは「誰が作ったか」で<strong>3つの階層</strong>に分けられます。階層が変わると**信頼性・更新頻度・サポート窓口**がガラッと変わるので、最初に頭に入れておくと選定がぐっと楽になります。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">MCPサーバーの信頼性ピラミッド</div>
+    <svg viewBox="0 0 560 300" width="100%" style="max-width:560px; display:block; margin:0 auto;">
+      <!-- 頂点: Official -->
+      <polygon points="280,30 350,100 210,100" fill="#D97757" stroke="#b45c3a" stroke-width="2"/>
+      <text x="280" y="70" text-anchor="middle" font-size="13" font-weight="800" fill="white">Official</text>
+      <text x="280" y="88" text-anchor="middle" font-size="10" fill="white">Anthropic / MCP Org</text>
+
+      <!-- Partner / 準公式 -->
+      <polygon points="210,100 350,100 410,180 150,180" fill="rgba(217,119,87,0.55)" stroke="#b45c3a" stroke-width="1.5"/>
+      <text x="280" y="135" text-anchor="middle" font-size="13" font-weight="700" fill="white">Partner / 準公式</text>
+      <text x="280" y="155" text-anchor="middle" font-size="10" fill="white">GitHub / Notion / Slack 公式配布</text>
+
+      <!-- Community -->
+      <polygon points="150,180 410,180 490,270 70,270" fill="rgba(217,119,87,0.2)" stroke="#b45c3a" stroke-width="1.5"/>
+      <text x="280" y="220" text-anchor="middle" font-size="14" font-weight="800" fill="#7a3d24">Community</text>
+      <text x="280" y="240" text-anchor="middle" font-size="11" fill="#7a3d24">awesome-mcp-servers / 個人リポジトリ</text>
+      <text x="280" y="258" text-anchor="middle" font-size="10" fill="#7a3d24">数千本 / 玉石混交</text>
+
+      <!-- Right Legend -->
+      <text x="500" y="55" font-size="10" fill="#64748b">↑ 信頼度高</text>
+      <text x="500" y="265" font-size="10" fill="#64748b">↓ 要自己確認</text>
+      <line x1="510" y1="65" x2="510" y2="255" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4 4"/>
+    </svg>
+    <div class="diagram-caption">上層ほど「壊れにくい・サポートあり」。下層ほど「種類は豊富・保証なし」。</div>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+  <p>業務で使うなら原則<strong>Official または Partner</strong>から選ぶのが鉄則。Communityサーバーは**便利だがトークンをそのまま渡せば全権限を握られる**可能性があるので、コードを読んで判断できる人以外は手を出さない方が安全です。</p>
+
+  <table>
+    <thead>
+      <tr><th>階層</th><th>管理者</th><th>信頼性</th><th>更新頻度</th><th>業務利用</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Official (公式)</strong></td><td>Anthropic / <span class="term" data-tip="modelcontextprotocol という GitHub org。MCP仕様とリファレンス実装を管理">MCP org</span></td><td>◎ 最高</td><td>週〜月</td><td>◎ 推奨</td></tr>
+      <tr><td><strong>Partner (準公式)</strong></td><td>サービスベンダー自身 (GitHub社/Notion社/Slack社等)</td><td>○ 高い</td><td>月〜四半期</td><td>○ 推奨</td></tr>
+      <tr><td><strong>Community (コミュニティ)</strong></td><td>個人・OSS貢献者</td><td>△ コード確認必須</td><td>ピンキリ</td><td>△ 非機微な用途のみ</td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-box">
+    <span class="label">注意: 「公式」の定義ブレ</span>
+    <p>ネット上で「公式MCPサーバー」と書かれていても、**Anthropic公式**とは限りません。サービスベンダー自身が配布する Partner も「公式」と自称します。本章では**Anthropic / MCP org製のみOfficial**、**ベンダー自社配布はPartner**、**それ以外はCommunity**と区別して扱います。</p>
+  </div>
+
+  <!-- ===== Section 2: サーバーカタログ大表 ===== -->
+  <h2 data-section="03-02">
+    <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+    定番MCPサーバー カタログ(用途別全リスト)
+  </h2>
+
+  <p>以下が2026年1月時点で**業務で使われる頻度が高い定番MCPサーバー**の一覧です。すべて<strong>GitHubリポジトリへの直リンク付き</strong>。気になるものは今すぐクリックしてREADMEを眺めてみるのが、章の最後のハンズオンの下ごしらえになります。</p>
+
+  <table>
+    <thead>
+      <tr><th>分野</th><th>サーバー</th><th>主な機能</th><th>階層</th><th>リンク</th></tr>
+    </thead>
+    <tbody>
+      <tr><td rowspan="2"><strong>ファイル</strong></td><td>Filesystem</td><td>ローカルディレクトリの読み書き・検索</td><td>Official</td><td><a href="https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem" target="_blank" rel="noopener">servers/filesystem</a></td></tr>
+      <tr><td>Google Drive</td><td>Drive上のファイル検索・取得</td><td>Official</td><td><a href="https://github.com/modelcontextprotocol/servers-archived/tree/main/src/gdrive" target="_blank" rel="noopener">servers-archived/gdrive</a></td></tr>
+      <tr><td rowspan="2"><strong>開発</strong></td><td>GitHub</td><td>Issue/PR/Actions/Repo操作</td><td>Partner (GitHub社)</td><td><a href="https://github.com/github/github-mcp-server" target="_blank" rel="noopener">github/github-mcp-server</a></td></tr>
+      <tr><td>Git</td><td>ローカルGitリポジトリ操作(log/diff/commit)</td><td>Official</td><td><a href="https://github.com/modelcontextprotocol/servers/tree/main/src/git" target="_blank" rel="noopener">servers/git</a></td></tr>
+      <tr><td rowspan="2"><strong>DB</strong></td><td>Postgres</td><td>スキーマ検査・読み取り専用クエリ</td><td>Official</td><td><a href="https://github.com/modelcontextprotocol/servers-archived/tree/main/src/postgres" target="_blank" rel="noopener">servers-archived/postgres</a></td></tr>
+      <tr><td>SQLite</td><td>ローカルSQLite DBへの問い合わせ</td><td>Official</td><td><a href="https://github.com/modelcontextprotocol/servers-archived/tree/main/src/sqlite" target="_blank" rel="noopener">servers-archived/sqlite</a></td></tr>
+      <tr><td rowspan="3"><strong>コラボ</strong></td><td>Slack</td><td>メッセージ送受信・チャンネル検索</td><td>Partner/Community</td><td><a href="https://github.com/modelcontextprotocol/servers-archived/tree/main/src/slack" target="_blank" rel="noopener">servers-archived/slack</a></td></tr>
+      <tr><td>Notion</td><td>ページ検索・作成・ブロック更新</td><td>Partner (Notion社)</td><td><a href="https://github.com/makenotion/notion-mcp-server" target="_blank" rel="noopener">makenotion/notion-mcp-server</a></td></tr>
+      <tr><td>Linear</td><td>Issue管理(作成/更新/検索)</td><td>Partner (Linear社)</td><td><a href="https://github.com/modelcontextprotocol/servers" target="_blank" rel="noopener">servers (list)</a></td></tr>
+      <tr><td rowspan="2"><strong>Web</strong></td><td>Fetch</td><td>URL取得→Markdown化</td><td>Official</td><td><a href="https://github.com/modelcontextprotocol/servers/tree/main/src/fetch" target="_blank" rel="noopener">servers/fetch</a></td></tr>
+      <tr><td>Puppeteer</td><td>ヘッドレスブラウザ操作・スクショ</td><td>Community</td><td><a href="https://github.com/modelcontextprotocol/servers-archived/tree/main/src/puppeteer" target="_blank" rel="noopener">servers-archived/puppeteer</a></td></tr>
+      <tr><td rowspan="2"><strong>思考</strong></td><td>Sequential Thinking</td><td>多段思考・ステップ分解支援</td><td>Official</td><td><a href="https://github.com/modelcontextprotocol/servers/tree/main/src/sequentialthinking" target="_blank" rel="noopener">servers/sequentialthinking</a></td></tr>
+      <tr><td>Memory</td><td>会話を跨ぐナレッジグラフ記憶</td><td>Official</td><td><a href="https://github.com/modelcontextprotocol/servers/tree/main/src/memory" target="_blank" rel="noopener">servers/memory</a></td></tr>
+      <tr><td rowspan="2"><strong>検索</strong></td><td>Brave Search</td><td>Web検索API</td><td>Partner (Brave社)</td><td><a href="https://github.com/modelcontextprotocol/servers-archived/tree/main/src/brave-search" target="_blank" rel="noopener">servers-archived/brave-search</a></td></tr>
+      <tr><td>Tavily</td><td>AI特化のWeb検索</td><td>Partner (Tavily社)</td><td><a href="https://github.com/tavily-ai/tavily-mcp" target="_blank" rel="noopener">tavily-ai/tavily-mcp</a></td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-box">
+    <span class="label">`servers-archived` について</span>
+    <p>Anthropicは2025年に一部のリファレンス実装を**`servers-archived`** へ移管しました。動作はしますが、**メンテナンスはコミュニティ・Partnerに委譲**されています。本番運用ではPartner版(存在する場合)を優先しましょう。</p>
+  </div>
+
+  <!-- ===== Section 3: 何ができる / できない ===== -->
+  <h2 data-section="03-03">
+    <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+    主要サーバーの「できる / できない」
+  </h2>
+
+  <p>サーバー名だけ見ても「何を任せられるか」はイメージしづらいので、5つの定番について<strong>できること / できないこと</strong>を明示しておきます。「できない」を知ることが選定のショートカットです。</p>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="folder-tree" width="20" height="20"></i>
+      <div><strong>Filesystem</strong> — <em>できる:</em> 許可パス配下のread/write/list/search/move。 <em>できない:</em> 許可外パス・シンボリックリンクを辿った外部アクセス・chmod等の権限操作。</div>
+    </li>
+    <li>
+      <i data-lucide="github" width="20" height="20"></i>
+      <div><strong>GitHub</strong> — <em>できる:</em> Issue/PR/Actions/Repo/検索/レビュー投稿。 <em>できない:</em> Billing操作・Enterprise admin操作・<span class="term" data-tip="Personal Access Token。GitHubがユーザー単位で発行する認証トークン">PAT</span>権限外のリポアクセス。</div>
+    </li>
+    <li>
+      <i data-lucide="message-square" width="20" height="20"></i>
+      <div><strong>Slack</strong> — <em>できる:</em> チャンネル一覧・メッセージ送受信・スレッド取得。 <em>できない:</em> ユーザー作成・ワークスペース設定変更・DMの全履歴取得(権限次第)。</div>
+    </li>
+    <li>
+      <i data-lucide="database" width="20" height="20"></i>
+      <div><strong>Postgres</strong> — <em>できる:</em> スキーマ検査・<strong>読み取り専用</strong>クエリ。 <em>できない:</em> INSERT/UPDATE/DELETE(既定では無効)・DDL。</div>
+    </li>
+    <li>
+      <i data-lucide="globe" width="20" height="20"></i>
+      <div><strong>Fetch</strong> — <em>できる:</em> 公開URLのGET→HTML→Markdown化。 <em>できない:</em> POSTフォーム送信・Cookie認証セッション維持・JSが必要なページの完全レンダリング(その場合はPuppeteerへ)。</div>
+    </li>
+    <li>
+      <i data-lucide="book" width="20" height="20"></i>
+      <div><strong>Notion</strong> — <em>できる:</em> ページ検索・作成・ブロック追加/更新・DB検索。 <em>できない:</em> ワークスペース管理・権限共有の一括変更・未公開のInternal API。</div>
+    </li>
+  </ul>
+
+  <details class="more-box">
+    <summary>もっと詳しく: Postgresが「読み取り専用」になっている理由</summary>
+    <div class="more-body">
+      <p>公式Postgres MCPサーバーは**明示的に`readOnly`トランザクションでクエリを実行**します。理由は単純で、LLMにDELETE文を打たせて本番DBを飛ばす事故を防ぐため。Claude Codeが「テーブルを綺麗にしますね」と善意でTRUNCATEを走らせる可能性がゼロでない以上、最初から書き込み口を塞いでおく設計になっています。書き込みたい場合は**専用の別MCPサーバー(例: 書き込み許可を明示した社内ラッパー)を自作**するか、Claude Codeに<span class="term" data-tip="Claude Codeがツールを呼ぶたび人間に承認を求めるモード。--permission-mode または設定で切替">承認モード</span>を強制して1クエリずつ目視確認する運用に寄せるのが現実解です。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 4: 選び方フロー ===== -->
+  <h2 data-section="03-04">
+    <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+    選び方 ― 主戦場別の推奨セット
+  </h2>
+
+  <p>「全部入れる」は間違い。MCPサーバーは**使うほど起動時間が伸び、プロンプトのツール説明スペースも食います**。自分の主戦場に応じて3〜5本に絞るのが定石です。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">選び方フローチャート</div>
+    <pre class="mermaid">
+graph TD
+  A["自分の業務は?"] --> B{"主戦場は?"}
+  B -- "コード開発" --> C["GitHub + Filesystem + Git"]
+  B -- "ドキュメント執筆" --> D["Notion + Filesystem + Fetch"]
+  B -- "データ分析" --> E["Postgres + Filesystem + Fetch"]
+  B -- "チーム連携" --> F["Slack + Linear + GitHub"]
+  B -- "Webリサーチ" --> G["Fetch + Brave Search + Memory"]
+  C --> H["最初は3本で開始"]
+  D --> H
+  E --> H
+  F --> H
+  G --> H
+  H --> I["使用感を見て<br/>1-2本追加/削除"]
+    </pre>
+    <div class="diagram-caption">最小セットで始めて、運用しながら増減する。</div>
+  </div>
+
+  <p>なぜ「少なめ」が正しいのか? Claude Codeは起動時に<strong>全MCPサーバーのツール定義</strong>をコンテキストに載せます。10本も繋ぐと、それだけで数千トークンを食い、Claudeが迷う原因にもなります。**3本で足りるなら3本**が答え。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">MCPサーバー数とツール定義トークンの関係(目安)</div>
+    <canvas id="ch3-bar-1" height="180"></canvas>
+  </div>
+
+  <div class="compare-cards">
+    <div class="cc good">
+      <span class="cc-label">推奨</span>
+      <h4>厳選3-5本</h4>
+      <ul>
+        <li>起動が速い</li>
+        <li>Claudeが迷わない</li>
+        <li>セキュリティ面を把握しやすい</li>
+        <li>主戦場に集中できる</li>
+      </ul>
+    </div>
+    <div class="cc neutral">
+      <span class="cc-label">OK</span>
+      <h4>状況に応じて6-8本</h4>
+      <ul>
+        <li>複数プロジェクトを横断する人向け</li>
+        <li>project/userスコープで分けて管理</li>
+        <li>使わないときは削除できる</li>
+      </ul>
+    </div>
+    <div class="cc bad">
+      <span class="cc-label">危険</span>
+      <h4>10本超</h4>
+      <ul>
+        <li>ツール定義だけで数千トークン</li>
+        <li>Claudeがどれを使うか迷う</li>
+        <li>起動時のクラッシュ率UP</li>
+        <li>セキュリティ監査が困難</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== Section 5: セキュリティスコープ ===== -->
+  <h2 data-section="03-05">
+    <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+    セキュリティスコープ ― 「最小権限」を貫く
+  </h2>
+
+  <p>MCPサーバーを入れる=<strong>AIに鍵を渡す</strong>です。便利の裏側で、鍵を広く渡すほど事故の爆発半径も広がります。原則は常に<span class="term" data-tip="システムやアカウントに与える権限を業務遂行に必要な最小限に絞る原則。情報セキュリティの基本">最小権限原則(Principle of Least Privilege)</span>。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">権限のレイヤー(どこで絞るか)</div>
+    <svg viewBox="0 0 600 240" width="100%" style="max-width:600px; display:block; margin:0 auto;">
+      <!-- Layer 1: Token scope -->
+      <rect x="40" y="30" width="520" height="45" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="1.5" rx="6"/>
+      <text x="60" y="58" font-size="13" font-weight="700" fill="#7a3d24">① トークンのスコープ</text>
+      <text x="300" y="58" font-size="11" fill="#64748b">GitHub PATなら repo:read のみ / Slackなら channels:history のみ</text>
+
+      <!-- Layer 2: Server scope -->
+      <rect x="60" y="85" width="480" height="45" fill="rgba(217,119,87,0.3)" stroke="#D97757" stroke-width="1.5" rx="6"/>
+      <text x="80" y="113" font-size="13" font-weight="700" fill="#7a3d24">② MCPサーバー引数</text>
+      <text x="310" y="113" font-size="11" fill="#475569">Filesystemの許可パスを ~/projects だけに絞る</text>
+
+      <!-- Layer 3: Claude Code scope -->
+      <rect x="80" y="140" width="440" height="45" fill="rgba(217,119,87,0.5)" stroke="#D97757" stroke-width="1.5" rx="6"/>
+      <text x="100" y="168" font-size="13" font-weight="700" fill="white">③ Claude Codeの承認モード</text>
+      <text x="320" y="168" font-size="11" fill="white">危険ツールは1呼び出しずつ承認</text>
+
+      <!-- Layer 4: Monitoring -->
+      <rect x="100" y="195" width="400" height="35" fill="#D97757" stroke="#b45c3a" stroke-width="1.5" rx="6"/>
+      <text x="120" y="218" font-size="13" font-weight="700" fill="white">④ 監査ログ</text>
+      <text x="320" y="218" font-size="11" fill="white">呼び出された操作を後から確認</text>
+    </svg>
+    <div class="diagram-caption">4層すべてで絞る。1層だけに頼らない。</div>
+  </div>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="key" width="20" height="20"></i>
+      <div><strong>トークンは用途専用で発行</strong> — GitHub PATは「claude-code-read-only」のような名前で、必要な<span class="term" data-tip="GitHub PATで付与する権限セット。repo, workflow, admin:orgなどの粒度">スコープ</span>だけ付ける。</div>
+    </li>
+    <li>
+      <i data-lucide="folder-lock" width="20" height="20"></i>
+      <div><strong>Filesystemは許可パスを限定</strong> — `~/` や `/` を指定しない。`~/projects/my-app` のような具体パスに。</div>
+    </li>
+    <li>
+      <i data-lucide="shield-check" width="20" height="20"></i>
+      <div><strong>Communityサーバーはコードを読む</strong> — `stdio` で起動するコマンドの中身を確認。<span class="term" data-tip="不明なコードが任意の外部通信を行ったり秘密情報を漏洩させるリスク">サプライチェーン攻撃</span>を避ける。</div>
+    </li>
+    <li>
+      <i data-lucide="eye" width="20" height="20"></i>
+      <div><strong>本番DBへの接続は避ける</strong> — 読み取り専用レプリカか、開発用スナップショットDBに向ける。</div>
+    </li>
+    <li>
+      <i data-lucide="clock" width="20" height="20"></i>
+      <div><strong>トークンは期限付き</strong> — 90日などで切れる設定に。漏洩時の被害期間を限定する。</div>
+    </li>
+  </ul>
+
+  <div class="info-box">
+    <span class="label">実話系の警告: "便利"と"事故"は隣り合わせ</span>
+    <p>2025年にコミュニティで報告された事例として、**ローカルで動かしていた自作MCPサーバーが環境変数経由でAPIキーをログに吐き続けていた**、**Filesystem サーバーを`/`で起動して`.ssh/id_rsa`までClaudeが読める状態だった**、といった事故が複数あります。「ちょっと試す」の瞬間に鍵が漏れるのがMCPの怖さ。<strong>最小権限 × 監査ログ × 短命トークン</strong>の3点セットを常に意識しましょう。</p>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+  <p>「業務情報を扱うClaude Codeに、業務ツールを繋げる」この組み合わせはMCPの本領発揮ですが、同時に**情シスや上長との事前合意**を得る作業を忘れないでください。許可の取り方自体が業務スキルの1つです。</p>
+
+  <!-- ===== Section 6: リスト系情報源 ===== -->
+  <h2 data-section="03-06">
+    <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+    awesome-mcp 系リスト ― 新しいサーバーの探し方
+  </h2>
+
+  <p>カタログに載っていないサーバーを探したい時は、**コミュニティ有志のまとめリポジトリ**が最強の入り口です。情報源を3つ押さえておけば、「これのMCPサーバーないかな?」をほぼ1分で確認できます。</p>
+
+  <div class="kv-grid">
+    <div class="kv"><div class="kv-key">awesome-mcp-servers (punkpeye)</div><div class="kv-val"><a href="https://github.com/punkpeye/awesome-mcp-servers" target="_blank" rel="noopener">★10k+</a></div></div>
+    <div class="kv"><div class="kv-key">mcpservers.org</div><div class="kv-val"><a href="https://mcpservers.org/" target="_blank" rel="noopener">カテゴリ検索</a></div></div>
+    <div class="kv"><div class="kv-key">MCP公式 Registry</div><div class="kv-val"><a href="https://registry.modelcontextprotocol.io/" target="_blank" rel="noopener">公式索引</a></div></div>
+    <div class="kv"><div class="kv-key">Smithery</div><div class="kv-val"><a href="https://smithery.ai/" target="_blank" rel="noopener">ワンクリック配布</a></div></div>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: 「信頼できるサーバー」の見抜き方</summary>
+    <div class="more-body">
+      <p>GitHubリポジトリを開いたら、次の5点をチェック:</p>
+      <ol>
+        <li><strong>Star数</strong> — 100未満ならまだ実験段階。業務用途なら500+を目安に</li>
+        <li><strong>最終コミット日</strong> — 3ヶ月以上更新がないと仕様追従が怪しい</li>
+        <li><strong>Issueの回答率</strong> — メンテナが反応しているか</li>
+        <li><strong>認証の実装</strong> — トークンを環境変数で受け取るか、ハードコードしていないか</li>
+        <li><strong>依存関係</strong> — `package.json` / `pyproject.toml` の依存が多すぎないか。少ないほど攻撃面が狭い</li>
+      </ol>
+      <p>この5点で大半のコミュニティサーバーは選別できます。「有名なCEOが作った」「Twitterでバズった」は信頼性の指標として**最弱**なので鵜呑みにしないでください。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 7: ハンズオン ===== -->
+  <h2 data-section="03-07">
+    <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+    ハンズオン ― 自分の業務に関連しそうなサーバーを2つ選ぶ
+  </h2>
+
+  <p>ここまで読んだら、あとは**手を動かすだけ**。以下のステップで、自分の業務に直結するMCPサーバーを2つピックアップしてみましょう。Ch04以降の実践パートで実際にそれを動かします。</p>
+
+  <div class="steps">
+    <div class="step done"><div class="step-num">1</div><div class="step-label">主戦場を1つ決める</div><div class="step-desc">コード / ドキュメント / データ / 連絡</div></div>
+    <div class="step done"><div class="step-num">2</div><div class="step-label">カタログから2本仮選定</div><div class="step-desc">本章Section 2の表を参照</div></div>
+    <div class="step done"><div class="step-num">3</div><div class="step-label">READMEを3分読む</div><div class="step-desc">何ができる/できないを確認</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-label">Ch04以降で追加</div><div class="step-desc">.mcp.jsonに書いて動かす</div></div>
+  </div>
+
+  <p>Claude Code の `.mcp.json` に追加する時の**テンプレート**を以下に置きます。2つ選んだサーバー名に置き換えてコピペしてみてください。</p>
+
+  <pre><code>{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/Users/YOUR_NAME/projects"
+      ]
+    },
+    "github": {
+      "command": "docker",
+      "args": [
+        "run", "-i", "--rm",
+        "-e", "GITHUB_PERSONAL_ACCESS_TOKEN",
+        "ghcr.io/github/github-mcp-server"
+      ],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "ghp_xxx..."
+      }
+    }
+  }
+}
+</code></pre>
+
+  <div class="info-box">
+    <span class="label">次章への橋渡し</span>
+    <p>選んだ2つはメモしておきましょう。Ch04では**GitHub MCP**を徹底的に使い倒します。Ch05では**Filesystem/Postgres/Slack/Fetch**を実案件で動かします。自分が選んだサーバーがそこに含まれていれば、学習が二度楽しくなります。</p>
+  </div>
+
+  <div class="quote">
+    MCPは「何と繋ぐか」ですべてが決まる。ツールの数ではなく、自分の業務にどれだけ深く刺さるかが価値。
+    <cite>— Anthropicエンジニアリングブログより意訳</cite>
+  </div>
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>あなたの業務に関連するMCPサーバーを2つ選ぶ</h4>
+    <p>本章Section 2のカタログ表を見ながら、以下を紙かテキストエディタに書き出してください。</p>
+    <ol>
+      <li>自分の「主戦場」を1つ書く(例: バックエンド開発 / SaaS運用 / ライティング / データ分析)</li>
+      <li>カタログから該当する**分野**を特定し、MCPサーバーを2つピックアップ</li>
+      <li>それぞれについて、GitHubリポジトリのREADMEを開いて、「できること」を3つずつ書き出す</li>
+      <li>それぞれの「階層」(Official/Partner/Community)をメモ</li>
+      <li>繋ぎたい順で番号を振る(Ch04・Ch05での優先順位になる)</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><strong>解答例(主戦場: バックエンド開発):</strong></p>
+      <pre><code>主戦場: Python/TypeScriptのバックエンド開発
+
+サーバー1: GitHub (Partner, github社公式)
+  できること:
+    - Issueの一覧・作成・更新
+    - PR の差分取得・レビューコメント投稿
+    - GitHub Actions のworkflow run 状態確認
+  繋ぎたい優先度: ①(最優先)
+
+サーバー2: Postgres (Official, servers-archived)
+  できること:
+    - スキーマ情報の取得(テーブル/カラム一覧)
+    - 読み取り専用SELECTクエリ
+    - EXPLAIN による実行計画確認
+  繋ぎたい優先度: ②</code></pre>
+      <p><strong>ポイント</strong>: "できること"は抽象論ではなく**READMEに実際に書かれたツール名**を転記するのがコツ。Ch04・Ch05でそのまま使えるメモになる。「両方Officialから選ぶ」よりも、Partner/Officialを組み合わせて**主戦場の幅をカバー**する方が学習効率が高い。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>セキュリティスコープ設計</h4>
+    <p>Exercise 1で選んだ2つのサーバーに対して、<strong>最小権限原則</strong>を満たすスコープ設計を詳細に書いてください。以下の観点を含めること。</p>
+    <ol>
+      <li>トークン/APIキーのスコープ(例: GitHub PATならどのscopeか)</li>
+      <li>MCPサーバー引数での制限(例: 許可パス、接続先DB)</li>
+      <li>機微情報に触れるリスク(何が漏れたら一番まずいか)</li>
+      <li>そのリスクを抑える3つの対策</li>
+      <li>漏洩時の初動(どうやって検知し、どう止めるか)</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><strong>解答例(GitHub + Postgres):</strong></p>
+      <pre><code>【GitHub MCP】
+1) PATスコープ: repo:read, issue:write のみ
+   (admin:org / workflow:write は付けない)
+2) サーバー引数: 環境変数で PAT を注入、
+   .mcp.json に直書きしない(env 分離)
+3) 漏洩リスク: private repoコードの流出、
+   機密Issueの内容漏洩
+4) 対策:
+   - PATに90日の有効期限を設定
+   - GitHubの Fine-grained PAT を使い
+     対象リポジトリを限定
+   - Claude Codeで承認モードを有効化し
+     書き込み系ツールは都度確認
+5) 漏洩時初動:
+   - GitHub Settings > PAT で即revoke
+   - git log で直近のアクセスを確認
+   - 必要なら該当リポの全commitを
+     audit logで確認
+
+【Postgres MCP】
+1) DB接続情報: read_only ロールのユーザで接続、
+   対象schemaも public のみに絞る
+2) サーバー引数: 接続先は**ステージングDB**、
+   本番DBには絶対に向けない
+3) 漏洩リスク: 顧客個人情報(PII)の流出
+4) 対策:
+   - 本番データはマスク済みスナップショットのみ
+   - SSH tunnel経由で直接接続は避ける
+   - クエリログをアプリ側で収集
+5) 漏洩時初動:
+   - DBユーザを即DROP USER
+   - 接続ログから流出範囲を特定
+   - セキュリティ担当に即エスカレ</code></pre>
+      <p><strong>判断の軸</strong>: ①鍵の権限を「業務に必要な最小」に絞る ②鍵の生存期間を短く ③何かあった時の「止め方」を事前に決めておく。③を書けるかが**プロとアマの境界線**。運用開始前にRunbookとしてドキュメント化しておくと、実際の事故時に慌てずに済む。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span><a href="https://github.com/modelcontextprotocol/servers" target="_blank" rel="noopener">modelcontextprotocol/servers — Anthropic公式リファレンス実装集</a></li>
+      <li><span class="res-type doc">Doc</span><a href="https://github.com/punkpeye/awesome-mcp-servers" target="_blank" rel="noopener">awesome-mcp-servers — コミュニティ最大のまとめリポジトリ</a></li>
+      <li><span class="res-type doc">Doc</span><a href="https://github.com/github/github-mcp-server" target="_blank" rel="noopener">GitHub MCP Server — GitHub社公式配布</a></li>
+      <li><span class="res-type doc">Doc</span><a href="https://github.com/makenotion/notion-mcp-server" target="_blank" rel="noopener">Notion MCP Server — Notion社公式配布</a></li>
+      <li><span class="res-type doc">Doc</span><a href="https://registry.modelcontextprotocol.io/" target="_blank" rel="noopener">MCP公式Registry — 公式索引サイト</a></li>
+      <li><span class="res-type doc">Doc</span><a href="https://modelcontextprotocol.io/" target="_blank" rel="noopener">MCP 公式ドキュメント</a></li>
+      <li><span class="res-type doc">Doc</span><a href="https://docs.claude.com/en/docs/claude-code/mcp" target="_blank" rel="noopener">Claude Code — MCP設定ドキュメント</a></li>
+      <li><span class="res-type video">Video</span><a href="https://www.youtube.com/results?search_query=Claude+Code+MCP+servers+tutorial" target="_blank" rel="noopener">YouTube: Claude Code MCP servers tutorial</a></li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="03">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="02-mcp-config.html"><span class="direction">&larr; Prev</span>Claude CodeにMCPを追加</a>
+    <a href="04-github-mcp.html"><span class="direction">Next &rarr;</span>実践：GitHub MCP</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+<script>
+  window.addEventListener("load", function(){
+    // MCPサーバー数 vs ツール定義トークン
+    var ctx1 = document.getElementById('ch3-bar-1');
+    if (ctx1 && window.Chart) {
+      new Chart(ctx1, {
+        type: 'bar',
+        data: {
+          labels: ['1本', '3本', '5本', '8本', '12本', '20本'],
+          datasets: [{
+            label: 'ツール定義の概算トークン数',
+            data: [400, 1200, 2200, 3800, 6500, 11000],
+            backgroundColor: ['rgba(217,119,87,0.35)', 'rgba(217,119,87,0.5)', '#D97757', '#D97757', 'rgba(217,119,87,0.85)', 'rgba(180,92,58,0.95)'],
+            borderRadius: 6
+          }]
+        },
+        options: {
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: function(ctx) {
+                  return '約 ' + ctx.parsed.y.toLocaleString() + ' tokens';
+                }
+              }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                callback: function(v){ return (v/1000) + 'k'; }
+              }
+            }
+          }
+        }
+      });
+    }
+  });
+</script>
+</body>
+</html>

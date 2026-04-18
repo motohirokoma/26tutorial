@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>Claude CodeにMCPを追加 - MK's Claude Code Tutorial - MCP Guide</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code - MCP
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav class="active"><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Practice</span><span class="phase-pct" id="pct-practice">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.02</span>
+    Claude CodeにMCPを追加
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 8 sections</text>
+    </svg>
+    <div class="progress-info">0h / 4h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-mcp-overview.html"><span class="status-dot" data-chapter="01"></span> MCPとは</a></li>
+    <li><a href="02-mcp-config.html" class="active"><span class="status-dot" data-chapter="02"></span> Claude CodeにMCPを追加</a></li>
+    <li><a href="03-official-servers.html"><span class="status-dot" data-chapter="03"></span> 公式MCPサーバー一覧</a></li>
+  </ul>
+  <div class="section-label">Practice</div>
+  <ul>
+    <li><a href="04-github-mcp.html"><span class="status-dot" data-chapter="04"></span> 実践：GitHub MCP</a></li>
+    <li><a href="05-filesystem-others.html"><span class="status-dot" data-chapter="05"></span> 実践：Filesystem・他MCP</a></li>
+    <li><a href="06-custom-mcp.html"><span class="status-dot" data-chapter="06"></span> カスタムMCPサーバー入門</a></li>
+    <li><a href="07-troubleshoot.html"><span class="status-dot" data-chapter="07"></span> MCPのトラブルシュート</a></li>
+    <li><a href="08-final-exercise.html"><span class="status-dot" data-chapter="08"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 1: Basics &gt; Chapter 02</div>
+  <h1>Claude CodeにMCPを追加</h1>
+  <p class="subtitle">.mcp.jsonの書き方、スコープ(user/project/local)、認証</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 40分</span>
+    <span class="badge">Phase: Basics</span>
+    <span class="badge">難易度: 初級</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">この章のゴール</span>
+    <p>Ch01でMCPの概念を掴んだあなたは、次に「実際にClaude Codeへサーバーを接続する」フェーズに入ります。本章では <span class="term" data-tip="Claude CodeがMCPサーバー構成を読み取るJSONファイル。プロジェクトルートやユーザー設定に配置">.mcp.json</span> の構造、<span class="term" data-tip="user / project / local の3段階。どこから見えるかと誰に共有されるかを制御">スコープ</span>、<span class="term" data-tip="標準入出力を使うローカルプロセス通信方式。MCPで最も一般的">stdio transport</span> と <span class="term" data-tip="HTTP(+SSE)でリモートMCPサーバーに接続する方式。2025年以降主流化">http transport</span> の違い、認証トークンの扱い、そして <code>claude mcp</code> CLIを使った実地操作までを身につけます。最終ハンズオンでは filesystem サーバーを自分のマシンに追加します。</p>
+  </div>
+
+  <div class="info-box">
+    <span class="label">本章の記述時点</span>
+    <p>以下の内容は<strong>2026年1月時点</strong>のMCP仕様とClaude Code CLI挙動に基づきます。MCP仕様・公式サーバー・CLIコマンドは頻繁に更新されるため、最新情報は <a href="https://modelcontextprotocol.io" target="_blank" rel="noopener">modelcontextprotocol.io</a> と <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">docs.claude.com/claude-code</a> を参照してください。</p>
+  </div>
+
+  <!-- ===== Section 1: .mcp.json の全体像 ===== -->
+  <h2 data-section="02-01">
+    <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+    .mcp.json の全体像
+  </h2>
+
+  <p>MCPサーバーをClaude Codeに認識させる方法はいくつかありますが、根幹となるのは<strong>JSONファイルにサーバー定義を書く</strong>ことです。Claude Codeは起動時に複数の場所からJSON設定を読み込み、マージして使います。まずは最小形を見てみましょう。</p>
+
+  <pre><code>{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/Users/koma/Desktop"]
+    }
+  }
+}</code></pre>
+
+  <p>わずか数行ですが、これがMCP設定の<strong>原子単位</strong>です。キー <code>mcpServers</code> の下に、任意の名前(ここでは <code>filesystem</code>)を付けたサーバー定義が1つ以上並びます。各サーバー定義は「どう起動するか」を記述するオブジェクトです。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">.mcp.json の構造(stdio transport の場合)</div>
+    <svg class="anim-svg" viewBox="0 0 660 340" width="100%" style="max-width:660px; display:block; margin:0 auto;">
+      <rect x="20" y="20" width="620" height="300" fill="rgba(217,119,87,0.06)" stroke="#D97757" stroke-width="1.5" rx="8"/>
+      <text x="40" y="50" font-size="14" font-weight="700" fill="#1a1a1a">{</text>
+      <text x="60" y="80" font-size="13" fill="#1a1a1a">"mcpServers":</text>
+      <text x="220" y="80" font-size="13" fill="#64748b">← サーバー一覧のルート</text>
+      <rect x="80" y="95" width="540" height="200" fill="rgba(217,119,87,0.12)" stroke="#D97757" stroke-width="1.5" rx="6"/>
+      <text x="100" y="120" font-size="13" font-weight="700" fill="#D97757">"filesystem":</text>
+      <text x="260" y="120" font-size="12" fill="#64748b">← サーバー名(任意ID)</text>
+      <text x="120" y="150" font-size="12" fill="#1a1a1a">"command":</text>
+      <text x="210" y="150" font-size="12" fill="#16a34a">"npx"</text>
+      <text x="300" y="150" font-size="11" fill="#64748b">← 実行するコマンド</text>
+      <text x="120" y="180" font-size="12" fill="#1a1a1a">"args":</text>
+      <text x="180" y="180" font-size="12" fill="#16a34a">["-y", "@modelcontextprotocol/server-filesystem", "/Users/..."]</text>
+      <text x="120" y="210" font-size="12" fill="#1a1a1a">"env":</text>
+      <text x="180" y="210" font-size="12" fill="#16a34a">{ "API_KEY": "..." }</text>
+      <text x="340" y="210" font-size="11" fill="#64748b">← 環境変数(optional)</text>
+      <text x="120" y="240" font-size="12" fill="#1a1a1a">"transport":</text>
+      <text x="220" y="240" font-size="12" fill="#16a34a">"stdio"</text>
+      <text x="300" y="240" font-size="11" fill="#64748b">← 省略時 stdio</text>
+      <text x="120" y="270" font-size="11" fill="#94a3b8">(optional: timeout / disabled)</text>
+      <text x="40" y="315" font-size="14" font-weight="700" fill="#1a1a1a">}</text>
+    </svg>
+    <div class="diagram-caption">最小構成は command + args の2キー。env と transport は必要に応じて追加。</div>
+  </div>
+
+  <p>フィールドは以下の通りです:</p>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="terminal" width="20" height="20"></i>
+      <div><strong>command</strong> — サーバープロセスを起動する実行コマンド。<code>npx</code> / <code>node</code> / <code>python</code> / <code>uv</code> / 自作バイナリパスなど。</div>
+    </li>
+    <li>
+      <i data-lucide="list" width="20" height="20"></i>
+      <div><strong>args</strong> — <code>command</code>に渡す引数の配列。パッケージ名・フラグ・対象ディレクトリパスなど。</div>
+    </li>
+    <li>
+      <i data-lucide="key" width="20" height="20"></i>
+      <div><strong>env</strong> — サーバープロセスに渡す環境変数(トークンやAPIキーなど)。省略可。</div>
+    </li>
+    <li>
+      <i data-lucide="plug" width="20" height="20"></i>
+      <div><strong>transport</strong> — <code>"stdio"</code>(デフォルト)か <code>"http"</code>。http時は別構造になる(次節)。</div>
+    </li>
+    <li>
+      <i data-lucide="toggle-right" width="20" height="20"></i>
+      <div><strong>disabled</strong> / <strong>timeout</strong> — 一時無効化や起動タイムアウト秒数(optional)。</div>
+    </li>
+  </ul>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+  <p><strong>初心者の落とし穴</strong>: JSON末尾のカンマ。サーバーを2つ以上並べるとき「最後のオブジェクトの後にカンマを付けない」というJSON構文を忘れがちです。Claude Codeは起動時に「Invalid JSON at line X」と出て静かに失敗します。不安ならエディタで <code>.mcp.json</code> を開き、赤い波線が出ていないか確認してから保存しましょう。</p>
+
+  <!-- ===== Section 2: スコープ(user/project/local) ===== -->
+  <h2 data-section="02-02">
+    <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+    スコープ — user / project / local
+  </h2>
+
+  <p>MCP設定を「どのファイルに書くか」で、<strong>適用範囲と共有相手</strong>が変わります。Claude Codeは3つのスコープを提供します。</p>
+
+  <div class="compare-cards">
+    <div class="cc good">
+      <span class="cc-label">① user</span>
+      <h4>ユーザー全体</h4>
+      <ul>
+        <li><code>~/.claude.json</code>(ホーム)</li>
+        <li>全プロジェクトで使える</li>
+        <li>自分のマシンでだけ有効</li>
+        <li>git共有されない</li>
+      </ul>
+    </div>
+    <div class="cc neutral">
+      <span class="cc-label">② project</span>
+      <h4>プロジェクト共有</h4>
+      <ul>
+        <li><code>&lt;repo&gt;/.mcp.json</code></li>
+        <li>そのプロジェクトでだけ有効</li>
+        <li>リポジトリにコミットしてチーム共有</li>
+        <li>トークンは書かない(envで渡す)</li>
+      </ul>
+    </div>
+    <div class="cc bad">
+      <span class="cc-label">③ local</span>
+      <h4>プロジェクト×自分だけ</h4>
+      <ul>
+        <li><code>&lt;repo&gt;/.claude/settings.local.json</code></li>
+        <li>そのプロジェクトだけ・自分だけ</li>
+        <li><code>.gitignore</code>対象(共有されない)</li>
+        <li>個人トークンはここ</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="diagram-box">
+    <div class="diagram-title">3スコープの読み込み順とマージ</div>
+    <pre class="mermaid">
+graph LR
+  U["user scope<br/>~/.claude.json"] --> M["Claude Code<br/>マージ後の構成"]
+  P["project scope<br/>.mcp.json"] --> M
+  L["local scope<br/>.claude/settings.local.json"] --> M
+  M --> R["実際に起動される<br/>MCPサーバー群"]
+    </pre>
+    <div class="diagram-caption">同名のサーバーが複数スコープに存在する場合、local &gt; project &gt; user の優先順で上書き。</div>
+  </div>
+
+  <h3>具体的なファイル配置例</h3>
+
+  <pre><code># ~/.claude.json           ← user scope (全プロジェクトで常時有効)
+{
+  "mcpServers": {
+    "filesystem-desktop": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/Users/koma/Desktop"]
+    }
+  }
+}
+
+# ~/myrepo/.mcp.json       ← project scope (チーム共有・git管理)
+{
+  "mcpServers": {
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": { "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_PAT}" }
+    }
+  }
+}
+
+# ~/myrepo/.claude/settings.local.json  ← local scope (自分のトークン)
+{
+  "env": {
+    "GITHUB_PAT": "ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+  }
+}</code></pre>
+
+  <div class="info-box">
+    <span class="label">スコープ選択の原則</span>
+    <p><strong>どこでも使うサーバー → user</strong>(例: 自分のDesktopを読むfilesystem)。<strong>チームで共有するサーバー定義 → project</strong>(例: このリポで使うGitHub MCP)。<strong>個人のトークン・認証情報 → local</strong>。プロジェクトの <code>.mcp.json</code> に生のトークンを書いて <code>git push</code> するのは<em>最悪の事故パターン</em>です。必ずlocal scopeかシェルの環境変数経由で渡しましょう。</p>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: 環境変数参照 <code>${VAR}</code> 記法</summary>
+    <div class="more-body">
+      <p><code>.mcp.json</code> の文字列値では <code>${VAR_NAME}</code> という形でシェル環境変数を参照できます。これにより「JSON本体に秘密を書かず、シェル or local scopeで注入する」という分離が可能になります。例:</p>
+      <pre><code>"env": {
+  "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_PAT}",
+  "SLACK_BOT_TOKEN": "${SLACK_TOKEN:-}"
+}</code></pre>
+      <p><code>${VAR:-default}</code> の書式でデフォルト値も指定できます(シェルのパラメータ展開と同じ)。チーム配布時は「このrepoを使うには <code>GITHUB_PAT</code> を設定してください」とREADMEに書くだけで済みます。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 3: stdio vs http ===== -->
+  <h2 data-section="02-03">
+    <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+    stdio と http — 2つのトランスポート
+  </h2>
+
+  <p>MCPサーバーとClaude Codeの<strong>通信路</strong>には大きく2種類があります。どちらを使うかは「サーバーをローカルで起動するのか/リモートに立てるのか」で決まります。</p>
+
+  <table>
+    <thead>
+      <tr><th>項目</th><th>stdio transport</th><th>http transport</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>通信方式</strong></td><td>標準入出力(stdin/stdout)</td><td>HTTP POST + SSE</td></tr>
+      <tr><td><strong>サーバーの場所</strong></td><td>ローカルプロセス(都度起動)</td><td>ローカル or リモートURL</td></tr>
+      <tr><td><strong>認証</strong></td><td>環境変数で渡す</td><td>Bearer token / OAuth</td></tr>
+      <tr><td><strong>起動/終了</strong></td><td>Claude Codeが自動管理</td><td>常駐サービス側で管理</td></tr>
+      <tr><td><strong>向いている用途</strong></td><td>個人ツール・ローカル操作・CLI系サーバー</td><td>SaaS連携・社内共有・マネージド</td></tr>
+      <tr><td><strong>設定の難易度</strong></td><td>低(command+args)</td><td>中(URL+認証設計)</td></tr>
+    </tbody>
+  </table>
+
+  <div class="diagram-box">
+    <div class="diagram-title">stdio と http の通信フロー</div>
+    <svg viewBox="0 0 680 320" width="100%" style="max-width:680px; display:block; margin:0 auto;">
+      <!-- stdio -->
+      <text x="160" y="30" text-anchor="middle" font-size="14" font-weight="700" fill="#D97757">stdio transport</text>
+      <rect x="40" y="50" width="110" height="60" fill="rgba(217,119,87,0.2)" stroke="#D97757" stroke-width="2" rx="6"/>
+      <text x="95" y="78" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1a1a">Claude Code</text>
+      <text x="95" y="95" text-anchor="middle" font-size="10" fill="#64748b">(親プロセス)</text>
+      <rect x="210" y="50" width="110" height="60" fill="rgba(217,119,87,0.35)" stroke="#D97757" stroke-width="2" rx="6"/>
+      <text x="265" y="78" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1a1a">MCP Server</text>
+      <text x="265" y="95" text-anchor="middle" font-size="10" fill="#64748b">(子プロセス)</text>
+      <line x1="150" y1="75" x2="210" y2="75" stroke="#D97757" stroke-width="2"/>
+      <text x="180" y="70" text-anchor="middle" font-size="10" fill="#64748b">stdin</text>
+      <line x1="210" y1="90" x2="150" y2="90" stroke="#D97757" stroke-width="2"/>
+      <text x="180" y="105" text-anchor="middle" font-size="10" fill="#64748b">stdout</text>
+      <text x="160" y="140" text-anchor="middle" font-size="10" fill="#64748b">起動時にspawn / 終了時にkill</text>
+
+      <!-- http -->
+      <text x="500" y="30" text-anchor="middle" font-size="14" font-weight="700" fill="#D97757">http transport</text>
+      <rect x="380" y="50" width="110" height="60" fill="rgba(217,119,87,0.2)" stroke="#D97757" stroke-width="2" rx="6"/>
+      <text x="435" y="78" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1a1a">Claude Code</text>
+      <text x="435" y="95" text-anchor="middle" font-size="10" fill="#64748b">(HTTPクライアント)</text>
+      <rect x="550" y="50" width="110" height="60" fill="rgba(217,119,87,0.35)" stroke="#D97757" stroke-width="2" rx="6"/>
+      <text x="605" y="78" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1a1a">Remote Server</text>
+      <text x="605" y="95" text-anchor="middle" font-size="10" fill="#64748b">(常駐URL)</text>
+      <line x1="490" y1="75" x2="550" y2="75" stroke="#D97757" stroke-width="2"/>
+      <text x="520" y="70" text-anchor="middle" font-size="10" fill="#64748b">POST /mcp</text>
+      <line x1="550" y1="90" x2="490" y2="90" stroke="#D97757" stroke-width="2"/>
+      <text x="520" y="105" text-anchor="middle" font-size="10" fill="#64748b">SSE stream</text>
+      <text x="500" y="140" text-anchor="middle" font-size="10" fill="#64748b">Bearer認証で都度接続</text>
+
+      <!-- 共通パケット例 -->
+      <rect x="100" y="180" width="480" height="110" fill="rgba(217,119,87,0.08)" stroke="#D97757" stroke-width="1" stroke-dasharray="4 4" rx="6"/>
+      <text x="340" y="205" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1a1a">両者のメッセージは同じ JSON-RPC 2.0 形式</text>
+      <text x="120" y="230" font-size="11" font-family="monospace" fill="#1a1a1a">{"jsonrpc":"2.0","id":1,"method":"tools/call",</text>
+      <text x="120" y="250" font-size="11" font-family="monospace" fill="#1a1a1a">  "params":{"name":"read_file","arguments":{"path":"..."}}}</text>
+      <text x="340" y="275" text-anchor="middle" font-size="11" fill="#64748b">transport層が違うだけで、やり取りのスキーマは共通</text>
+    </svg>
+    <div class="diagram-caption">stdioは「サーバーをClaude Codeが起動する」、httpは「既に立っているサーバーに接続する」。</div>
+  </div>
+
+  <p>http transport の設定例は次のようになります:</p>
+
+  <pre><code>{
+  "mcpServers": {
+    "my-remote-api": {
+      "transport": "http",
+      "url": "https://mcp.example.com/api",
+      "headers": {
+        "Authorization": "Bearer ${MY_REMOTE_TOKEN}"
+      }
+    }
+  }
+}</code></pre>
+
+  <p><code>command</code>/<code>args</code>の代わりに <code>url</code> と <code>headers</code> を指定します。2026年1月時点では <strong>stdioが圧倒的多数派</strong> ですが、Cloudflare Workers MCPやリモートSaaSの浸透により、<span class="term" data-tip="HTTP経由で稼働するリモートMCPサーバー。クラウドサービスが自社用MCPを提供する流れが加速">Remote MCP</span>は急増しています。</p>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+  <p><strong>初学者向けの選び方</strong>: 迷ったら<strong>stdio</strong>を選びましょう。本章でも以降の章でも、特記なき限り stdio で進めます。httpはOAuth対応サーバーや企業SaaSと連携する時に登場しますが、Ch04〜05の範囲では不要です。</p>
+
+  <!-- ===== Section 4: サーバー追加の具体例 ===== -->
+  <h2 data-section="02-04">
+    <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+    具体的なサーバー追加例(stdio)
+  </h2>
+
+  <p>代表的なMCPサーバーを <code>.mcp.json</code> に追加する実例を見ていきます。以下はすべて <strong>2026年1月時点で動作する</strong> 設定です(パッケージ名の変更があれば公式READMEを優先)。</p>
+
+  <h3>例1: filesystem — ローカルファイルを読み書き</h3>
+
+  <pre><code>{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/Users/koma/Documents",
+        "/Users/koma/Desktop/claude"
+      ]
+    }
+  }
+}</code></pre>
+
+  <p><code>args</code>の末尾に<strong>読み書きを許可するディレクトリ</strong>を複数指定できます。指定外のパスへのアクセスはサーバー側で拒否されるため、サンドボックスとして機能します。</p>
+
+  <h3>例2: github — Issue/PR操作</h3>
+
+  <pre><code>{
+  "mcpServers": {
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_PAT}"
+      }
+    }
+  }
+}</code></pre>
+
+  <p>GitHub Personal Access Token(PAT) が必要です。<code>repo</code> / <code>read:org</code> など必要最小のscopeだけ付与しましょう(詳細はCh04)。</p>
+
+  <h3>例3: fetch — URLを取得して要約</h3>
+
+  <pre><code>{
+  "mcpServers": {
+    "fetch": {
+      "command": "uvx",
+      "args": ["mcp-server-fetch"]
+    }
+  }
+}</code></pre>
+
+  <p>Python製のMCPサーバーは <code>uvx</code>(<a href="https://github.com/astral-sh/uv" target="_blank" rel="noopener">uv</a> の実行専用コマンド) で動かすのがデフォルトです。<code>pip</code>インストール不要で都度ダウンロードして起動します。</p>
+
+  <h3>例4: 複数サーバーを同時登録</h3>
+
+  <pre><code>{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/Users/koma/Desktop"]
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": { "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_PAT}" }
+    },
+    "fetch": {
+      "command": "uvx",
+      "args": ["mcp-server-fetch"]
+    }
+  }
+}</code></pre>
+
+  <p>キー名(サーバーID)は<strong>任意の英小文字+ハイフン</strong>。Claude Code上では <code>@filesystem</code> / <code>@github</code> のように参照されるので、自分が覚えやすい名前を付けましょう。</p>
+
+  <details class="more-box">
+    <summary>もっと詳しく: npx -y の意味と挙動</summary>
+    <div class="more-body">
+      <p><code>npx -y &lt;package&gt;</code> は「このnpmパッケージを<strong>グローバルインストールせずに都度ダウンロードして実行</strong>し、確認プロンプトをスキップする」という意味です。<code>-y</code> がないと初回実行時に「このパッケージを取得していい?(y/N)」とstdinで聞かれ、Claude Codeからは応答できずハングします。<strong>必ず <code>-y</code> を付ける</strong>のが鉄則。なお毎回ネットから取得するわけではなく、npxがローカルにキャッシュします。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 5: 認証(token/env) ===== -->
+  <h2 data-section="02-05">
+    <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+    認証 — token をどこに置くか
+  </h2>
+
+  <p>GitHub / Slack / Notion / DB系など、<strong>認証が必要なMCPサーバー</strong>は多数あります。原則は「<strong>生のトークンを <code>.mcp.json</code>(project scope) に書かない</strong>」ことです。代わりに以下3つの手段のどれかを使います。</p>
+
+  <ol>
+    <li><strong>シェル環境変数</strong>: <code>~/.zshrc</code> や <code>~/.bashrc</code> に <code>export GITHUB_PAT=ghp_...</code> と書き、<code>.mcp.json</code>では <code>${GITHUB_PAT}</code> で参照。</li>
+    <li><strong>local scope</strong>: <code>.claude/settings.local.json</code> の <code>env</code> に書く。<code>.gitignore</code> されるので共有されない。</li>
+    <li><strong>OS keychain連携</strong>: 対応サーバーなら OS keyring から取得(例: <code>op run</code> で1Password注入)。</li>
+  </ol>
+
+  <div class="diagram-box">
+    <div class="diagram-title">トークン漏洩リスクの比較</div>
+    <canvas id="ch2-bar-1" height="200"></canvas>
+  </div>
+
+  <div class="info-box">
+    <span class="label">警告: 生トークンpushの事故</span>
+    <p><code>.mcp.json</code>(project scope) に <code>"GITHUB_PERSONAL_ACCESS_TOKEN": "ghp_xxxxx"</code> と直書きしてコミットし、GitHubにpushするとGitHub側が自動検知して<strong>トークンを即時revoke</strong>します(secret scanning)。しかし検知まで数秒〜数分あり、その間にbot/攻撃者が読み取って悪用する事例が報告されています。revoke通知メールが来た時点で「すでに使われた可能性」を疑い、即ログ監査を実施してください。</p>
+  </div>
+
+  <h3>OAuth系サーバー(http transport)</h3>
+
+  <p>Notion / Linear / Atlassian などの新しめのMCPサーバーは、tokenではなく<strong>OAuth 2.0</strong>で認証します。この場合 <code>.mcp.json</code> には <code>url</code> だけ書き、Claude Code起動時にブラウザが開いて認可フローが走ります。</p>
+
+  <pre><code>{
+  "mcpServers": {
+    "notion": {
+      "transport": "http",
+      "url": "https://mcp.notion.com/mcp"
+    }
+  }
+}</code></pre>
+
+  <p>認可後のトークンはClaude Code本体が OS keychain に保存するため、JSONには一切秘密が残りません。OAuth対応はRemote MCPの強み。</p>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+  <p><strong>実務ルール</strong>: 「PATは3ヶ月ごとに再発行」「リポジトリscopeは最小」「チーム共有にはOAuth or machine userを使う」の3つを守れば、多くの事故は防げます。PATのローテーションは面倒ですが、流出した時の被害規模を考えると安い保険です。</p>
+
+  <!-- ===== Section 6: claude mcp CLI ===== -->
+  <h2 data-section="02-06">
+    <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+    claude mcp CLI — 手でJSONを触らずに管理
+  </h2>
+
+  <p>Claude Code CLI には <strong><code>claude mcp</code></strong> サブコマンド群があり、<code>.mcp.json</code>を直接編集せずにサーバーを追加・一覧・削除できます。初心者は<em>こちらから入る</em>のが楽です。</p>
+
+  <h3>add — サーバー追加</h3>
+
+  <pre><code># 基本形 (user scope に追加)
+claude mcp add filesystem -s user -- npx -y @modelcontextprotocol/server-filesystem /Users/koma/Desktop
+
+# project scope に追加(repo の .mcp.json に書き込む)
+claude mcp add github -s project -e GITHUB_PERSONAL_ACCESS_TOKEN=${GITHUB_PAT} \
+  -- npx -y @modelcontextprotocol/server-github
+
+# http transport のサーバーを追加
+claude mcp add notion -s user --transport http --url https://mcp.notion.com/mcp</code></pre>
+
+  <p><code>--</code> 以降が実行コマンド+引数。<code>-s</code> でスコープ(<code>user</code>/<code>project</code>/<code>local</code>)、<code>-e</code> で環境変数、<code>--transport</code> でトランスポート種別を指定します。</p>
+
+  <h3>list — 登録一覧</h3>
+
+  <pre><code>$ claude mcp list
+filesystem   stdio  npx -y @modelcontextprotocol/server-filesystem /Users/koma/Desktop    [user]    ✔ connected
+github       stdio  npx -y @modelcontextprotocol/server-github                            [project] ✔ connected
+notion       http   https://mcp.notion.com/mcp                                             [user]    ✔ connected
+fetch        stdio  uvx mcp-server-fetch                                                   [user]    ✘ failed (exit 127)</code></pre>
+
+  <p>接続状態がひと目で分かります。<code>✘ failed</code> のサーバーがあれば、<code>claude mcp get &lt;name&gt;</code> で詳細・stderrログを確認できます。</p>
+
+  <h3>remove — 削除</h3>
+
+  <pre><code>claude mcp remove fetch -s user</code></pre>
+
+  <p>スコープを明示しないと「どのスコープから消すか曖昧」なエラーになります。必ず <code>-s</code> を付けましょう。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">claude mcp CLI 主要コマンド</div>
+    <pre class="mermaid">
+graph TD
+  A["claude mcp"] --> B["add &lt;name&gt; -s scope -- cmd args"]
+  A --> C["list"]
+  A --> D["get &lt;name&gt;"]
+  A --> E["remove &lt;name&gt; -s scope"]
+  A --> F["reset-project-choices"]
+  B --> G["適切なJSONに<br/>自動書き込み"]
+  C --> H["全スコープを横断表示<br/>接続状態付き"]
+  D --> I["設定詳細 +<br/>stderr ログ"]
+    </pre>
+    <div class="diagram-caption">JSONを手書きせずに済むので初期セットアップはCLI推奨。設定の可搬性確認にはJSONを直接読む。</div>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: CLI追加後に <code>.mcp.json</code> を確認</summary>
+    <div class="more-body">
+      <p><code>claude mcp add</code> は実体として「指定スコープのJSONファイルに <code>mcpServers</code> エントリを追記する」だけです。追加後に以下で確認できます:</p>
+      <pre><code># user scope
+cat ~/.claude.json | jq '.mcpServers'
+
+# project scope
+cat ./.mcp.json | jq '.'
+
+# local scope
+cat ./.claude/settings.local.json | jq '.mcpServers'</code></pre>
+      <p>「CLIで作ったJSON」を読むことで、逆にJSON手書きのお手本になります。最初の数回はCLI→JSON確認→理解、の流れがおすすめです。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 7: ハンズオン ===== -->
+  <h2 data-section="02-07">
+    <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+    ハンズオン — filesystem サーバーを追加して動かす
+  </h2>
+
+  <p>座学はここまで。実際に filesystem MCPサーバーを自分のマシンに追加し、Claude Codeから使えることを確認します。所要約10分。</p>
+
+  <div class="steps">
+    <div class="step done">
+      <div class="step-num">1</div>
+      <div class="step-label">事前確認</div>
+      <div class="step-desc">Node.js + npm + Claude Code CLI</div>
+    </div>
+    <div class="step done">
+      <div class="step-num">2</div>
+      <div class="step-label">add 実行</div>
+      <div class="step-desc">claude mcp add でuser scopeに登録</div>
+    </div>
+    <div class="step done">
+      <div class="step-num">3</div>
+      <div class="step-label">list 確認</div>
+      <div class="step-desc">✔ connected を確認</div>
+    </div>
+    <div class="step done">
+      <div class="step-num">4</div>
+      <div class="step-label">Claude Code起動</div>
+      <div class="step-desc">実際にファイルを読んでもらう</div>
+    </div>
+  </div>
+
+  <h3>Step 1: 事前確認</h3>
+
+  <pre><code>$ node --version    # v18 以上が必要
+v20.11.0
+$ npm --version
+10.2.4
+$ claude --version
+claude-code 1.x.x</code></pre>
+
+  <p>古いバージョンなら <a href="https://nodejs.org" target="_blank" rel="noopener">nodejs.org</a> から更新、Claude Codeも <code>npm install -g @anthropic-ai/claude-code</code> で最新に。</p>
+
+  <h3>Step 2: filesystem サーバーを user scope に追加</h3>
+
+  <p>以下のコマンドで、自分のDesktopとDocumentsを読めるfilesystemサーバーを登録します(パスは自分の環境に合わせて変更):</p>
+
+  <pre><code>claude mcp add filesystem -s user -- \
+  npx -y @modelcontextprotocol/server-filesystem \
+  /Users/koma/Desktop \
+  /Users/koma/Documents</code></pre>
+
+  <p>Windowsなら <code>C:\Users\koma\Desktop</code> のように、macOS/Linuxなら <code>/Users/...</code> や <code>/home/...</code> の絶対パスを指定します。</p>
+
+  <h3>Step 3: 登録確認</h3>
+
+  <pre><code>$ claude mcp list
+filesystem   stdio  npx -y @modelcontextprotocol/server-filesystem ...   [user]   ✔ connected</code></pre>
+
+  <p><code>✔ connected</code> が出れば成功です。失敗時は <code>claude mcp get filesystem</code> でエラーログを確認。よくある原因は「指定パスが存在しない」「node未インストール」です。</p>
+
+  <h3>Step 4: Claude Codeから使う</h3>
+
+  <pre><code>$ claude
+&gt; Desktopにあるファイル一覧を教えて
+
+[Claude Code は filesystem MCP の list_directory ツールを呼び出し、
+  /Users/koma/Desktop の中身を列挙します]</code></pre>
+
+  <p>Claude Codeが <code>filesystem</code> サーバーの <code>list_directory</code> や <code>read_file</code> ツールを自動で呼び、結果を返してくれれば完了です。「Desktopに <code>test.txt</code> を作って"hello MCP"と書いて」などの指示も通ります。</p>
+
+  <div class="info-box">
+    <span class="label">うまく動かないときの初動チェックリスト</span>
+    <ol>
+      <li><code>claude mcp list</code> で<code>✔ connected</code>か</li>
+      <li><code>claude mcp get filesystem</code> でstderrにエラーが出ていないか</li>
+      <li>指定したディレクトリが実際に存在するか(<code>ls /Users/koma/Desktop</code>)</li>
+      <li><code>npx -y @modelcontextprotocol/server-filesystem --help</code> が単体で動くか</li>
+      <li>Claude Code を再起動して再接続</li>
+    </ol>
+    <p>詳しくはCh07「MCPのトラブルシュート」で扱います。</p>
+  </div>
+
+  <!-- ===== Section 8: まとめ ===== -->
+  <h2 data-section="02-08">
+    <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+    この章のまとめ
+  </h2>
+
+  <div class="diagram-box">
+    <div class="diagram-title">スコープ別の「書く項目」分布(推奨)</div>
+    <canvas id="ch2-donut-1" height="220"></canvas>
+  </div>
+
+  <p>要点は4つに集約されます:</p>
+
+  <ul>
+    <li><strong>.mcp.json</strong> の最小形は <code>command</code> + <code>args</code> の2フィールド。</li>
+    <li>スコープは <strong>user / project / local</strong> の3段階。秘密は必ず project scope の<strong>外</strong>。</li>
+    <li><strong>stdio</strong> がデフォルト、<strong>http</strong> はリモート/OAuth用。迷ったら stdio。</li>
+    <li><strong>claude mcp</strong> CLI(add/list/remove)を使うとJSON編集ミスを避けられる。</li>
+  </ul>
+
+  <div class="quote">
+    MCP設定でハマったら、まず <code>claude mcp list</code>。それで9割のミスは見える。
+    <cite>— Claude Code公式ドキュメントの実質的な鉄則</cite>
+  </div>
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>自分用の .mcp.json を組み立てる</h4>
+    <p>次の要件を満たすuser scope設定(<code>~/.claude.json</code>)のJSONを書き、実際に <code>claude mcp list</code> で3つとも <code>✔ connected</code> になるまで調整してください。</p>
+    <ol>
+      <li>filesystem: 自分のDesktopと、任意の作業ディレクトリ2つを許可</li>
+      <li>fetch: Python版(<code>uvx mcp-server-fetch</code>)</li>
+      <li>github: PAT環境変数経由(<code>${GITHUB_PAT}</code>で参照)</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><strong><code>~/.claude.json</code>(抜粋)</strong>:</p>
+      <pre><code>{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/Users/koma/Desktop",
+        "/Users/koma/Desktop/claude"
+      ]
+    },
+    "fetch": {
+      "command": "uvx",
+      "args": ["mcp-server-fetch"]
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_PAT}"
+      }
+    }
+  }
+}</code></pre>
+      <p><strong>事前準備</strong>: <code>~/.zshrc</code> に <code>export GITHUB_PAT=ghp_xxxx</code> を追加し、<code>source ~/.zshrc</code>。<code>uv</code>を未インストールなら <code>curl -LsSf https://astral.sh/uv/install.sh | sh</code>。</p>
+      <p><strong>確認コマンド</strong>:</p>
+      <pre><code>claude mcp list
+# → 3つとも ✔ connected を確認
+# → failed があれば claude mcp get &lt;name&gt; でログを読む</code></pre>
+      <p><strong>ポイント</strong>: JSON末尾カンマ禁止・絶対パス指定・<code>-y</code>忘れずに。fetch失敗時はuv導入・github失敗時はPAT有効性を疑う順序で切り分ける。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>スコープを使い分けてチーム配布を設計する</h4>
+    <p>あなたは5人チームのテックリード。チーム全員が使うプロジェクトでGitHub MCPを導入したい。ただし個人PATは人それぞれ。以下をどう設計するか、3つのファイル配置と内容を説明してください。</p>
+    <ol>
+      <li>リポジトリにコミットする <code>.mcp.json</code>(project scope)</li>
+      <li>各メンバーが自分で作る <code>.claude/settings.local.json</code>(local scope)</li>
+      <li>READMEに書くべきセットアップ指示</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><strong>①リポジトリ <code>./.mcp.json</code>(commit対象)</strong>:</p>
+      <pre><code>{
+  "mcpServers": {
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_PAT}"
+      }
+    }
+  }
+}</code></pre>
+      <p>トークン本体は書かず、環境変数参照のみ。これによりJSONはチーム共通資産として安全にコミットできる。</p>
+      <p><strong>② 各メンバーの <code>./.claude/settings.local.json</code>(<code>.gitignore</code>済み)</strong>:</p>
+      <pre><code>{
+  "env": {
+    "GITHUB_PAT": "ghp_メンバー個人のトークンをここに"
+  }
+}</code></pre>
+      <p>local scopeはgit管理対象外なので、各自が自分のPATをここに書く。誤commitを防ぐため <code>.gitignore</code> に <code>.claude/settings.local.json</code> が入っていることを確認。</p>
+      <p><strong>③ README.md のセットアップ節</strong>:</p>
+      <pre><code>## MCP Setup
+1. GitHubで Personal Access Token を発行(scope: repo, read:org, read:user)
+2. `.claude/settings.local.json` を作成し、GITHUB_PAT を設定
+   (テンプレ: .claude/settings.local.example.json)
+3. `claude mcp list` で github ✔ connected を確認
+4. トラブル時は `claude mcp get github` でエラー確認</code></pre>
+      <p><strong>判断の軸</strong>: 「チームで共有する定義」→ project、「個人ごとに違う秘密」→ local、「全部のプロジェクトで使う個人ツール」→ user。この三分法を守るだけで、PATがGitHubに流出する事故は防げる。応用として、企業利用なら<strong>machine user</strong>のOAuth + Remote MCPに移行する手もある(個人PATを完全排除)。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span><a href="https://docs.claude.com/en/docs/claude-code/mcp" target="_blank" rel="noopener">Claude Code 公式ドキュメント: MCP設定ガイド</a></li>
+      <li><span class="res-type doc">Doc</span><a href="https://modelcontextprotocol.io/docs/concepts/transports" target="_blank" rel="noopener">MCP公式: Transports(stdio / http)</a></li>
+      <li><span class="res-type doc">Doc</span><a href="https://github.com/modelcontextprotocol/servers" target="_blank" rel="noopener">公式サーバーリポジトリ: filesystem/github/fetch 他のREADME</a></li>
+      <li><span class="res-type doc">Doc</span><a href="https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem" target="_blank" rel="noopener">server-filesystem の詳細README</a></li>
+      <li><span class="res-type doc">Doc</span><a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens" target="_blank" rel="noopener">GitHub: Personal Access Token 管理</a></li>
+      <li><span class="res-type doc">Doc</span><a href="https://docs.astral.sh/uv/" target="_blank" rel="noopener">uv(Python版MCPサーバー実行に必須)</a></li>
+      <li><span class="res-type video">Video</span><a href="https://www.youtube.com/results?search_query=Claude+Code+MCP+setup" target="_blank" rel="noopener">YouTube検索: 「Claude Code MCP setup」</a></li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="02">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="01-mcp-overview.html"><span class="direction">&larr; Prev</span>MCPとは</a>
+    <a href="03-official-servers.html"><span class="direction">Next &rarr;</span>公式MCPサーバー一覧</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<!-- 視覚化ライブラリ群 (使う章だけ動作、未使用章はゼロコスト) -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+<script>
+  window.addEventListener("load", function(){
+    // トークン漏洩リスク比較バー
+    var ctx1 = document.getElementById('ch2-bar-1');
+    if (ctx1 && window.Chart) {
+      new Chart(ctx1, {
+        type: 'bar',
+        data: {
+          labels: ['project .mcp.json 直書き', 'local settings.local.json', 'シェル環境変数', 'OS Keychain / OAuth'],
+          datasets: [{
+            label: '漏洩リスク(100=最大)',
+            data: [95, 25, 30, 5],
+            backgroundColor: [
+              '#D97757',
+              'rgba(217,119,87,0.55)',
+              'rgba(217,119,87,0.4)',
+              'rgba(217,119,87,0.2)'
+            ],
+            borderRadius: 6
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: function(ctx){ return 'リスク: ' + ctx.parsed.x; }
+              }
+            }
+          },
+          scales: {
+            x: { beginAtZero: true, max: 100 }
+          }
+        }
+      });
+    }
+
+    // スコープ別 書く項目分布
+    var ctx2 = document.getElementById('ch2-donut-1');
+    if (ctx2 && window.Chart) {
+      new Chart(ctx2, {
+        type: 'doughnut',
+        data: {
+          labels: [
+            'user: 個人ツール定義',
+            'project: チーム共有サーバー定義',
+            'local: 個人トークン・秘密',
+            'シェル/Keychain: 機密ストア'
+          ],
+          datasets: [{
+            data: [35, 30, 25, 10],
+            backgroundColor: [
+              '#D97757',
+              'rgba(217,119,87,0.65)',
+              'rgba(217,119,87,0.4)',
+              'rgba(217,119,87,0.2)'
+            ],
+            borderColor: '#ffffff',
+            borderWidth: 2
+          }]
+        },
+        options: {
+          plugins: {
+            legend: { position: 'bottom' },
+            tooltip: {
+              callbacks: {
+                label: function(ctx) {
+                  return ctx.label + ' (' + ctx.parsed + '%)';
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+  });
+</script>
+</body>
+</html>
