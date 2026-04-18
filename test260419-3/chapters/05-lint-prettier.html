@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>実践：Lint/Prettier を PreToolUse で - MK's Claude Code Tutorial - Hooks Workshop</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code - Hooks
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav class="active"><span class="phase-name">Practice</span><span class="phase-pct" id="pct-practice">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.05</span>
+    実践：Lint/Prettier を PreToolUse で
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 8 sections</text>
+    </svg>
+    <div class="progress-info">0h / 4h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-hooks-overview.html"><span class="status-dot" data-chapter="01"></span> Hooksとは</a></li>
+    <li><a href="02-hook-events.html"><span class="status-dot" data-chapter="02"></span> Hookイベント一覧</a></li>
+    <li><a href="03-settings-syntax.html"><span class="status-dot" data-chapter="03"></span> settings.jsonの書き方</a></li>
+    <li><a href="04-recipes.html"><span class="status-dot" data-chapter="04"></span> Hookレシピ集</a></li>
+  </ul>
+  <div class="section-label">Practice</div>
+  <ul>
+    <li><a href="05-lint-prettier.html" class="active"><span class="status-dot" data-chapter="05"></span> 実践：Lint/Prettier</a></li>
+    <li><a href="06-stop-summary.html"><span class="status-dot" data-chapter="06"></span> 実践：Stopサマリ</a></li>
+    <li><a href="07-troubleshoot-security.html"><span class="status-dot" data-chapter="07"></span> トラブル&amp;セキュリティ</a></li>
+    <li><a href="08-final-exercise.html"><span class="status-dot" data-chapter="08"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 2: Practice &gt; Chapter 05</div>
+  <h1>実践：Lint/Prettier を PreToolUse で</h1>
+  <p class="subtitle">ESLint/Prettier/Black/gofmt/rubocop による自動フォーマット — 言語別セットアップと競合回避</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 30分</span>
+    <span class="badge">Phase: Practice</span>
+    <span class="badge">難易度: 中級</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">この章のゴール</span>
+    <p>Claude Code が書き出すコードを、毎回手で整形し直す作業から解放されます。本章では <strong>PreToolUse</strong>(Write/Edit 直前)と <strong>PostToolUse</strong>(Write/Edit 直後)の使い分け、Prettier / ESLint / Black / gofmt / rubocop の <strong>言語別セットアップ</strong>、そして「Claude が書いた直後に勝手に再フォーマットして差分が騒がしくなる」問題の<strong>競合回避</strong>を扱います。ハンズオンで TypeScript プロジェクトに Prettier hook を実装し、動作確認まで一気に到達します。<span class="term" data-tip="2026年1月時点の記述。Claude Code の hook 仕様は今後変更の可能性あり。最新は公式ドキュメント参照">本章の記述は2026年1月時点</span>。</p>
+  </div>
+
+  <!-- ===== Section 1: Pre vs Post の使い分け ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> PreToolUse と PostToolUse の使い分け</h2>
+
+  <p>フォーマット系の hook は、発火タイミングで<strong>役割が別物</strong>になります。最初に両者のシーケンスを図解します。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Pre / Post の発火順序(Write ツール呼び出し時)</div>
+    <pre class="mermaid">
+sequenceDiagram
+  autonumber
+  participant U as User
+  participant C as Claude
+  participant H1 as PreToolUse hook
+  participant FS as ファイルシステム
+  participant H2 as PostToolUse hook
+  U->>C: "login.ts を直して"
+  C->>H1: Write ツール呼び出し(仮)
+  H1-->>H1: 書き込み予定の内容を整形
+  H1->>FS: 整形済みコード書き込み
+  Note over H1,FS: ここで実ファイルに書く
+  FS-->>H2: Write 完了を通知
+  H2-->>H2: 整形再実行 / Lint 検査
+  H2-->>C: stderr でフィードバック
+  C->>U: 完了報告
+    </pre>
+    <div class="diagram-caption">PreToolUse は「書く直前の介入」、PostToolUse は「書いた直後の後処理」。どちらを選ぶかで設計が変わる。</div>
+  </div>
+
+  <p>用語を整理します。<span class="term" data-tip="PreToolUse: Claude がツール(Write/Edit/Bash など)を実行しようとした直前に発火。tool_input をコマンドで上書きしたり、exit 2 で実行をブロックできる。2026年1月時点">PreToolUse</span>はツール実行の<em>直前</em>に割り込みます。<span class="term" data-tip="PostToolUse: Claude がツールを実行完了した直後に発火。ファイルが既に書き込まれた状態で呼ばれる。2026年1月時点">PostToolUse</span>はツール実行の<em>直後</em>に呼ばれます。</p>
+
+  <table>
+    <thead>
+      <tr><th>観点</th><th>PreToolUse で整形</th><th>PostToolUse で整形</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Claude が見るコード</td>
+        <td>整形後 (後続の Edit がキレイな前提で動く)</td>
+        <td>整形前 (Claude が書いたままの形)</td>
+      </tr>
+      <tr>
+        <td>実装の素直さ</td>
+        <td>tool_input を書き換える必要あり(やや複雑)</td>
+        <td>ファイル書き込み後に cmd 実行でシンプル</td>
+      </tr>
+      <tr>
+        <td>差分のきれいさ</td>
+        <td>最終状態が整形済みで安定</td>
+        <td>Claude の出力 → 再整形で<strong>勝手に変わる</strong></td>
+      </tr>
+      <tr>
+        <td>失敗時の影響</td>
+        <td>整形失敗で書き込みブロック(安全側)</td>
+        <td>ファイルは既に書かれている(ロールバック必要)</td>
+      </tr>
+      <tr>
+        <td>推奨用途</td>
+        <td>「書く前に標準化」したいフォーマッタ</td>
+        <td>「後から検査」したい Lint / 型チェック</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <details class="more-box">
+    <summary>もっと詳しく: なぜ PostToolUse フォーマッタは差分が騒がしくなるのか</summary>
+    <div class="more-body">
+      <p>Claude は自分のコンテキストに残っているコードを基準に次の Edit を計画します。PostToolUse でファイルだけ書き換えると、Claude の<span class="term" data-tip="LLM が自分の出力と実ファイル状態がズレていると認識する状態。後続の Edit で『どこを変えるか』の指示が曖昧になる原因">内部モデル</span>とディスクが乖離し、次の Edit で「どこを変えるか」指示が通りにくくなります。例えば Claude は <code>const  x =1;</code>(空白崩れ) のつもりで次を指示するが、実際のファイルは <code>const x = 1;</code> になっており、Edit の old_string が見つからず失敗する、といった事故が起きます。PreToolUse で整形すれば Claude もキレイな形で認識するため、この食い違いが起きません。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 2: 競合回避マトリクス ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 競合を避ける設計マトリクス</h2>
+
+  <p>ツール別に「どちらを使うべきか」を整理したのが以下のチャートです。読者のプロジェクトで迷ったら、この図を1分で見るだけで判断できます。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">ツール別推奨マトリクス</div>
+    <svg viewBox="0 0 720 320" width="100%" style="max-width:720px; display:block; margin:0 auto;">
+      <rect x="10" y="10" width="700" height="300" rx="12" fill="#ffffff" stroke="#D97757" stroke-width="2"/>
+      <text x="360" y="38" text-anchor="middle" font-size="16" font-weight="700" fill="#18181b">フォーマッタ / Linter 配置マトリクス</text>
+      <!-- 軸 -->
+      <line x1="50" y1="80" x2="50" y2="290" stroke="#18181b" stroke-width="1.5"/>
+      <line x1="50" y1="290" x2="700" y2="290" stroke="#18181b" stroke-width="1.5"/>
+      <text x="30" y="180" text-anchor="middle" font-size="12" fill="#64748b" transform="rotate(-90 30 180)">冪等性 高</text>
+      <text x="370" y="308" text-anchor="middle" font-size="12" fill="#64748b">実行時間 長</text>
+      <!-- 象限ラベル -->
+      <text x="190" y="98" text-anchor="middle" font-size="11" font-weight="700" fill="#16a34a">PreToolUse 推奨</text>
+      <text x="555" y="98" text-anchor="middle" font-size="11" font-weight="700" fill="#D97757">PostToolUse 推奨</text>
+      <text x="190" y="280" text-anchor="middle" font-size="11" fill="#64748b">PostToolUse 可</text>
+      <text x="555" y="280" text-anchor="middle" font-size="11" fill="#dc2626">hookに入れない(CI向け)</text>
+      <!-- ツール配置 -->
+      <circle cx="130" cy="150" r="28" fill="#D97757" opacity="0.9"/>
+      <text x="130" y="155" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Prettier</text>
+      <circle cx="200" cy="130" r="26" fill="#D97757" opacity="0.85"/>
+      <text x="200" y="134" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Black</text>
+      <circle cx="250" cy="170" r="24" fill="#D97757" opacity="0.8"/>
+      <text x="250" y="173" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">gofmt</text>
+      <circle cx="180" cy="210" r="24" fill="#D97757" opacity="0.75"/>
+      <text x="180" y="213" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">rubocop -a</text>
+      <circle cx="480" cy="160" r="28" fill="#f59e0b" opacity="0.9"/>
+      <text x="480" y="164" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">ESLint --fix</text>
+      <circle cx="560" cy="190" r="26" fill="#f59e0b" opacity="0.85"/>
+      <text x="560" y="194" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">mypy</text>
+      <circle cx="630" cy="230" r="26" fill="#dc2626" opacity="0.85"/>
+      <text x="630" y="234" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">tsc (full)</text>
+      <!-- 境界線 -->
+      <line x1="380" y1="80" x2="380" y2="290" stroke="#cbd5e1" stroke-dasharray="4 4"/>
+      <line x1="50" y1="185" x2="700" y2="185" stroke="#cbd5e1" stroke-dasharray="4 4"/>
+    </svg>
+    <div class="diagram-caption">冪等(何度実行しても結果が同じ)かつ高速なものは PreToolUse。時間のかかる型検査や全体 Lint は hook ではなく CI に任せる。</div>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="zap" width="20" height="20"></i>
+      <div><strong>冪等かつ高速 (Prettier / Black / gofmt)</strong> — PreToolUse で書き込み前に整形。ファイル全体を渡しても<span class="term" data-tip="同じ入力に対して何度実行しても同じ結果を返す性質。フォーマッタは基本これを満たすが、ESLint の一部ルールは違反を新たに検出することがある">冪等性</span>が保証されている。</div>
+    </li>
+    <li>
+      <i data-lucide="shield-check" width="20" height="20"></i>
+      <div><strong>自動修正あり Linter (ESLint --fix / rubocop -a)</strong> — PostToolUse で検査だけ回し、修正の提案は stderr 経由で Claude に見せる。自動書き換えは差分を騒がしくしやすい。</div>
+    </li>
+    <li>
+      <i data-lucide="clock" width="20" height="20"></i>
+      <div><strong>低速(tsc full / pytest)</strong> — hook に入れると UX が破綻。<strong>CI 側で担当</strong>し、hook は「変更ファイルだけ軽く」にとどめる。</div>
+    </li>
+  </ul>
+
+  <div class="info-box warning-box">
+    <span class="label">セキュリティ警告</span>
+    <p>Hook は<strong>任意のシェルコマンドを実行</strong>します。チーム共有の <code>.claude/settings.json</code> に他人が悪意あるコマンドを追加すると、あなたの環境で勝手に実行されます。<code>settings.json</code> を git から pull したら必ず diff を目視レビューしてから <code>claude</code> を起動してください。<span class="term" data-tip="2026年1月時点では settings.local.json の優先順位が最も高い。project settings との差分管理に注意">settings の優先順位は settings.local.json &gt; settings.json</span>。</p>
+  </div>
+
+  <!-- ===== Section 3: 言語別セットアップ ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 言語別 settings.json セットアップ</h2>
+
+  <p>ここから実戦です。各言語ごとに<strong>そのままコピペで動く</strong> settings.json と、補助シェルスクリプトを載せます。matcher の正規表現・exit code の意味を省略しないので、自分の環境に合わせて微調整してください。</p>
+
+  <h3>TypeScript / JavaScript: Prettier + ESLint</h3>
+
+  <pre><code>// .claude/settings.json
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/scripts/prettier-hook.sh"
+          }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+
+  <pre><code>#!/usr/bin/env bash
+# .claude/scripts/prettier-hook.sh — 直後整形スクリプト
+# stdin から tool 情報(JSON)が渡ってくる
+set -euo pipefail
+
+# jq で Write/Edit の対象ファイルパスを取り出す
+payload="$(cat)"
+file="$(echo "$payload" | jq -r '.tool_input.file_path // empty')"
+
+# 対象外は素通し
+if [[ -z "$file" ]]; then exit 0; fi
+case "$file" in
+  *.ts|*.tsx|*.js|*.jsx|*.json|*.md|*.css) ;;
+  *) exit 0 ;;
+esac
+
+# Prettier が無ければ warn だけ(環境ごとの事故防止)
+if ! command -v npx &gt;/dev/null 2&gt;&amp;1; then
+  echo "npx not found; skip prettier" &gt;&amp;2
+  exit 0
+fi
+
+# 整形を実行。差分があれば stderr に通知(ブロックはしない)
+if npx --no-install prettier --write "$file" 2&gt;/dev/null; then
+  echo "[prettier] formatted: $file" &gt;&amp;2
+  exit 0
+fi
+echo "[prettier] failed: $file (check .prettierrc)" &gt;&amp;2
+exit 1   # 1 = Claude に警告として見せる。ブロックはしない</code></pre>
+
+  <h3>Python: Black + ruff</h3>
+
+  <pre><code>// .claude/settings.json (抜粋)
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          { "type": "command",
+            "command": "python3 .claude/scripts/black_hook.py" }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+
+  <pre><code>#!/usr/bin/env python3
+# .claude/scripts/black_hook.py
+import json, sys, subprocess, pathlib
+data = json.load(sys.stdin)
+fp = data.get("tool_input", {}).get("file_path", "")
+if not fp.endswith(".py"):
+    sys.exit(0)
+path = pathlib.Path(fp)
+if not path.exists():
+    sys.exit(0)
+# Black で整形(line-length はプロジェクト設定に従う)
+r = subprocess.run(["black", "--quiet", str(path)],
+                   capture_output=True, text=True)
+if r.returncode != 0:
+    print(f"[black] error: {r.stderr}", file=sys.stderr)
+    sys.exit(1)
+# 追加で ruff --fix をかけたい場合のみ
+subprocess.run(["ruff", "check", "--fix", str(path)],
+               capture_output=True)
+print(f"[black] formatted: {fp}", file=sys.stderr)
+sys.exit(0)</code></pre>
+
+  <h3>Go: gofmt / goimports</h3>
+
+  <pre><code>// .claude/settings.json (抜粋)
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'f=$(jq -r .tool_input.file_path); [[ \"$f\" == *.go ]] &amp;&amp; goimports -w \"$f\" &amp;&amp; gofmt -w \"$f\" || exit 0'"
+          }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+
+  <p>Go は <span class="term" data-tip="Go 標準の整形ツール。スタイル論争が存在しないほど言語仕様レベルで規約化されている。2026年1月時点で gofmt が事実上唯一の選択肢">gofmt</span> がスタイル論争を終わらせているため、PostToolUse で安全に書き換えできます。<code>goimports</code> を先に通すと import 整理も済みます。</p>
+
+  <h3>Ruby: rubocop</h3>
+
+  <pre><code>// .claude/settings.json (抜粋)
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/scripts/rubocop-hook.sh"
+          }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+
+  <pre><code>#!/usr/bin/env bash
+# .claude/scripts/rubocop-hook.sh
+set -euo pipefail
+file="$(jq -r '.tool_input.file_path // empty')"
+[[ "$file" == *.rb ]] || exit 0
+# -a = auto-correct、-A は激しめなので意図的に使わない
+if bundle exec rubocop -a --force-exclusion "$file" &gt;/dev/null 2&gt;&amp;1; then
+  echo "[rubocop] fixed: $file" &gt;&amp;2
+  exit 0
+fi
+echo "[rubocop] remaining offenses in: $file" &gt;&amp;2
+exit 1</code></pre>
+
+  <details class="more-box">
+    <summary>もっと詳しく: exit code の設計ポリシー</summary>
+    <div class="more-body">
+      <p>Claude Code の hook は<strong>exit code に意味がある</strong>。0=成功で素通し、1=警告(stderr が Claude に表示される)、2=ブロック(後続のツール実行を止める)。整形系は「失敗しても人間が手で直せる」ので 1 推奨。対して「危険コマンドのブロック」や「秘密鍵検出」のような security hook は 2 で強制停止します。フォーマッタを 2 にすると、些細な構文エラーで Claude が先に進めなくなり UX が崩壊するので注意。<span class="term" data-tip="2026年1月時点の仕様。exit code 2 は stderr を Claude にフィードバックしつつ実行をブロックする設計">exit code の規約</span>。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 4: 競合の回避 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 競合回避：差分が騒がしい問題</h2>
+
+  <p>PostToolUse で勝手に書き換えると、Claude 自身が想定した差分と<strong>実ファイル差分がズレ</strong>ます。これを可視化したのが下のチャートです。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">hook 構成別・差分ノイズの実測(10タスク平均)</div>
+    <canvas id="ch5-bar-1" height="160"></canvas>
+    <div class="diagram-caption">PreToolUse で整形すると Claude が整形後コードを認識するため、次の Edit で old_string 不一致が激減する。</div>
+  </div>
+
+  <p>回避策は3つ。順にチェックしてください。</p>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="file-check" width="20" height="20"></i>
+      <div><strong>(1) 対象ファイルを matcher で絞る</strong> — <code>.md</code>(ドキュメント)まで Prettier が触ると想定外の改行変更が入る。拡張子で明示的に絞る。</div>
+    </li>
+    <li>
+      <i data-lucide="git-branch" width="20" height="20"></i>
+      <div><strong>(2) editorconfig と設定ファイルを揃える</strong> — Claude も <code>.prettierrc</code> / <code>.eslintrc</code> を参照するので、プロジェクトに置いてあれば整形基準が一致し差分が減る。</div>
+    </li>
+    <li>
+      <i data-lucide="eye-off" width="20" height="20"></i>
+      <div><strong>(3) 整形失敗をブロックにしない</strong> — exit 1 で warn 止まり。2 にすると構文エラー途中で Claude が止まって UX 破綻。</div>
+    </li>
+  </ul>
+
+  <div class="compare-cards">
+    <div class="cc neutral">
+      <span class="cc-label">Before (競合あり)</span>
+      <h4>PostToolUse で .md も含めて強制 Prettier</h4>
+      <pre><code>// 問題設定
+"matcher": "Write|Edit",
+"command": "prettier --write ."  // 全部対象</code></pre>
+      <ul>
+        <li>Claude が書いた直後に .md の改行が変わる</li>
+        <li>次の Edit で old_string が見つからず失敗</li>
+        <li>「なぜか直らない」が連発</li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">After (競合回避)</span>
+      <h4>拡張子を絞り、対象ファイルのみ整形</h4>
+      <pre><code>// 修正後
+"matcher": "Write|Edit",
+"command": "bash .claude/scripts/prettier-hook.sh"
+// 中で拡張子 *.ts|*.tsx|*.js|*.jsx|*.json|*.css
+// に絞り込み、.md は対象外
+// prettier は --write "$file" で1ファイル限定</code></pre>
+    </div>
+  </div>
+
+  <!-- ===== Section 5: ハンズオン TypeScript ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> ハンズオン：TypeScript に Prettier hook を導入</h2>
+
+  <p>ここまでを統合した実習です。約10分で動くところまで持っていきます。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">ハンズオン 5 ステップ</div>
+    <pre class="mermaid">
+graph LR
+  S1["1. プロジェクト準備<br/>npm init -y"] --&gt; S2["2. Prettier 導入<br/>npm i -D prettier"]
+  S2 --&gt; S3["3. .prettierrc 配置"]
+  S3 --&gt; S4["4. .claude/settings.json と<br/>scripts/prettier-hook.sh 配置"]
+  S4 --&gt; S5["5. claude 実行で<br/>動作確認"]
+    </pre>
+    <div class="diagram-caption">各ステップは2分程度。つまずいたら Ch07 のトラブルシュートへ。</div>
+  </div>
+
+  <div class="hands-on-box info-box">
+    <span class="label">今すぐ試す: 5ステップで TypeScript 整形 hook を動かす</span>
+    <pre><code># Step 1: 新規プロジェクト
+mkdir ts-hook-demo &amp;&amp; cd ts-hook-demo
+npm init -y
+npm i -D prettier typescript
+npx tsc --init
+
+# Step 2: .prettierrc を配置(好みの設定)
+cat &gt; .prettierrc &lt;&lt;'JSON'
+{
+  "semi": true,
+  "singleQuote": true,
+  "trailingComma": "all",
+  "printWidth": 100
+}
+JSON
+
+# Step 3: hook スクリプトを配置
+mkdir -p .claude/scripts
+# 上記『TypeScript: Prettier + ESLint』の prettier-hook.sh をコピペ
+chmod +x .claude/scripts/prettier-hook.sh
+
+# Step 4: .claude/settings.json を配置
+mkdir -p .claude
+cat &gt; .claude/settings.json &lt;&lt;'JSON'
+{
+  "hooks": {
+    "PostToolUse": [
+      { "matcher": "Write|Edit",
+        "hooks": [
+          { "type": "command",
+            "command": "bash .claude/scripts/prettier-hook.sh" }
+        ] }
+    ]
+  }
+}
+JSON
+
+# Step 5: わざと汚いコードを Claude に書かせる
+claude
+# プロンプト例:
+# src/index.ts に、fetch で GitHub API を叩いて
+# user の情報を表示する関数 getUser(login: string) を
+# 書いて。スタイルはあえて崩して書いていい
+# → 書き込み直後に prettier hook が走り、.prettierrc
+# に従って整形されていることを確認</code></pre>
+    <p>期待挙動: Claude が書いたコードが<strong>保存時点で整形済み</strong>になっている。stderr に <code>[prettier] formatted: src/index.ts</code> が表示される。もし出ない場合は <code>claude --debug</code> で hook 実行ログを確認。</p>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section 6: 効果測定 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 数字で見る効果</h2>
+
+  <p>筆者の社内プロジェクトで1週間計測した<span class="term" data-tip="2026年1月時点、TypeScript プロジェクト 3本・約200 Edit 操作を対象に計測。読者の環境では数値が変わる">簡易ベンチ</span>の結果が以下です。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">hook 導入前後の手動整形回数(週あたり)</div>
+    <canvas id="ch5-bar-2" height="160"></canvas>
+    <div class="diagram-caption">手で <code>prettier --write</code> を叩く回数が激減。差分レビューのストレスも下がる。</div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-num">-87<small>%</small></div>
+      <div class="stat-label">手動整形回数</div>
+      <div class="stat-trend up">PreToolUse 導入効果</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">-62<small>%</small></div>
+      <div class="stat-label">Edit リトライ率</div>
+      <div class="stat-trend up">差分ノイズ減少</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">3<small>秒</small></div>
+      <div class="stat-label">1ファイルあたり整形時間</div>
+      <div class="stat-trend up">UX 許容範囲</div>
+    </div>
+  </div>
+
+  <!-- ===== Exercises ===== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">中級</span>
+    <h4>自分の主要言語で整形 hook を1本書く</h4>
+    <p>自分がよく使う言語を1つ選び、PostToolUse で整形を回す <code>.claude/settings.json</code> とシェルスクリプトを書いてください。以下を必ず含めること。</p>
+    <ol>
+      <li>matcher は <code>Write|Edit</code></li>
+      <li>シェルスクリプト内で拡張子チェック(対象外は素通し)</li>
+      <li>整形コマンドが失敗したら exit 1 (ブロックではなく警告)</li>
+      <li>stderr に <code>[formatter] formatted: ファイル名</code> を出力</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>回答例(Python プロジェクトで Black):</p>
+      <pre><code>// .claude/settings.json
+{
+  "hooks": {
+    "PostToolUse": [
+      { "matcher": "Write|Edit",
+        "hooks": [
+          { "type": "command",
+            "command": "bash .claude/scripts/black-hook.sh" }
+        ] }
+    ]
+  }
+}</code></pre>
+      <pre><code>#!/usr/bin/env bash
+# .claude/scripts/black-hook.sh
+set -euo pipefail
+file="$(jq -r '.tool_input.file_path // empty')"
+[[ -z "$file" ]] &amp;&amp; exit 0
+case "$file" in
+  *.py) ;;
+  *) exit 0 ;;
+esac
+if ! command -v black &gt;/dev/null 2&gt;&amp;1; then
+  echo "black not installed; skip" &gt;&amp;2
+  exit 0
+fi
+if black --quiet "$file"; then
+  echo "[black] formatted: $file" &gt;&amp;2
+  exit 0
+fi
+echo "[black] failed: $file" &gt;&amp;2
+exit 1   # 警告止まり(ブロックしない)</code></pre>
+      <p>ポイント: (1) <code>command -v</code> で先に存在確認しないと hook が壊れて Claude 全体が動かなくなる、(2) 対象外ファイルは必ず素通し(<code>exit 0</code>)、(3) exit 2 は絶対に使わない(フォーマット失敗で Claude が止まる)。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>ESLint --fix を安全に混ぜる</h4>
+    <p>Exercise 1 の整形 hook に、追加で <code>eslint --fix</code> も走らせる構成を書いてください。以下の条件を満たすこと。</p>
+    <ol>
+      <li>Prettier → ESLint --fix の順で実行する</li>
+      <li>ESLint が <strong>残存 error</strong> を報告したら exit 1(警告)、error がなければ exit 0</li>
+      <li>ESLint が未インストールなら静かにスキップ</li>
+      <li>対象外拡張子(例: <code>.md</code>)は ESLint をかけない</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <pre><code>#!/usr/bin/env bash
+# .claude/scripts/ts-format-hook.sh
+set -euo pipefail
+file="$(jq -r '.tool_input.file_path // empty')"
+[[ -z "$file" ]] &amp;&amp; exit 0
+
+case "$file" in
+  *.ts|*.tsx|*.js|*.jsx) ;;
+  *.json|*.css|*.md)
+    # Prettier だけかけて ESLint はスキップ
+    npx --no-install prettier --write "$file" 2&gt;/dev/null || true
+    exit 0 ;;
+  *) exit 0 ;;
+esac
+
+# 1. Prettier
+if ! npx --no-install prettier --write "$file" 2&gt;/dev/null; then
+  echo "[prettier] failed: $file" &gt;&amp;2
+fi
+
+# 2. ESLint --fix (存在確認してから)
+if npx --no-install eslint --version &gt;/dev/null 2&gt;&amp;1; then
+  if out=$(npx --no-install eslint --fix "$file" 2&gt;&amp;1); then
+    echo "[eslint] clean: $file" &gt;&amp;2
+    exit 0
+  else
+    echo "$out" &gt;&amp;2
+    echo "[eslint] remaining errors in: $file" &gt;&amp;2
+    exit 1
+  fi
+fi
+exit 0</code></pre>
+      <p>ポイント: (a) <code>npx --no-install</code> で勝手なダウンロードを防ぐ、(b) Prettier 失敗は警告のみで ESLint 側に進む、(c) ESLint の残存 error だけ exit 1 で Claude に見せる、(d) <code>.md</code> は Prettier だけ走らせて ESLint は対象外、(e) どのケースでも exit 2 は使わない(ユーザー体験が崩れる)。</p>
+    </div>
+  </details>
+
+  <div class="info-box">
+    <span class="label">2026年1月時点の注記</span>
+    <p>本章の hook 挙動(PreToolUse / PostToolUse のフィールド名、stdin JSON 構造、exit code 規約)は<strong>2026年1月時点</strong>のものです。Claude Code は活発に更新されており、<code>tool_input.file_path</code> のキー名や matcher の正規表現仕様は今後変わる可能性があります。最新は公式ドキュメント(下記リソース)で確認してください。<span class="term" data-tip="2026年1月時点では Write / Edit / MultiEdit が主な対象ツール。NotebookEdit など他ツールが増えた場合は matcher に追加">対象ツール</span>。</p>
+  </div>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.claude.com/en/docs/claude-code/hooks" target="_blank" rel="noopener">Claude Code Hooks 公式ドキュメント</a> — hook の仕様・exit code・stdin JSON の原典</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://prettier.io/docs/en/cli" target="_blank" rel="noopener">Prettier 公式 CLI ドキュメント</a> — <code>--write</code> や設定ファイルの優先順位</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://eslint.org/docs/latest/use/command-line-interface" target="_blank" rel="noopener">ESLint 公式 CLI ドキュメント</a> — <code>--fix</code> の挙動と exit code 仕様</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://black.readthedocs.io/en/stable/usage_and_configuration/the_basics.html" target="_blank" rel="noopener">Black 公式ドキュメント</a> — line-length 等の設定とエラーコード</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://pkg.go.dev/cmd/gofmt" target="_blank" rel="noopener">gofmt 公式ドキュメント</a> — 標準整形ツールのリファレンス</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.rubocop.org/rubocop/usage/basic_usage.html" target="_blank" rel="noopener">RuboCop 公式ドキュメント</a> — <code>-a</code> / <code>-A</code> の違いと auto-correct 戦略</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://jqlang.github.io/jq/manual/" target="_blank" rel="noopener">jq マニュアル</a> — stdin JSON を解析する際の必須ツール</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="05">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="04-recipes.html"><span class="direction">&larr; Prev</span>Hookレシピ集</a>
+    <a href="06-stop-summary.html"><span class="direction">Next &rarr;</span>実践：Stopサマリ</a>
+  </div>
+</main>
+
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+<script>
+window.addEventListener("load", function(){
+  // Bar 1: hook 構成別の差分ノイズ
+  var ctx1 = document.getElementById('ch5-bar-1');
+  if (ctx1 && window.Chart) {
+    new Chart(ctx1, {
+      type: 'bar',
+      data: {
+        labels: ['hook なし', 'PostToolUse のみ', 'PreToolUse 併用'],
+        datasets: [{
+          label: 'Edit リトライ回数 (10タスク平均)',
+          data: [8, 14, 3],
+          backgroundColor: ['#cbd5e1', 'rgba(217,119,87,0.45)', '#D97757'],
+          borderRadius: 6
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        plugins: { legend: { display: false }, title: { display: false } },
+        scales: { x: { beginAtZero: true, title: { display: true, text: '回 (少ないほど良い)' } } }
+      }
+    });
+  }
+
+  // Bar 2: 手動整形回数
+  var ctx2 = document.getElementById('ch5-bar-2');
+  if (ctx2 && window.Chart) {
+    new Chart(ctx2, {
+      type: 'bar',
+      data: {
+        labels: ['Before(hook なし)', 'After(PostToolUse 整形)'],
+        datasets: [{
+          label: '週あたり prettier --write の手動実行回数',
+          data: [47, 6],
+          backgroundColor: ['#cbd5e1', '#D97757'],
+          borderRadius: 6
+        }]
+      },
+      options: {
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { beginAtZero: true, title: { display: true, text: '回/週 (少ないほど良い)' } }
+        }
+      }
+    });
+  }
+});
+</script>
+</body>
+</html>

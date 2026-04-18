@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>Hookイベント一覧 - MK's Claude Code Tutorial - Hooks Workshop</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code - Hooks
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav class="active"><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Practice</span><span class="phase-pct" id="pct-practice">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.02</span>
+    Hookイベント一覧
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 8 sections</text>
+    </svg>
+    <div class="progress-info">0h / 4h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-hooks-overview.html"><span class="status-dot" data-chapter="01"></span> Hooksとは</a></li>
+    <li><a href="02-hook-events.html" class="active"><span class="status-dot" data-chapter="02"></span> Hookイベント一覧</a></li>
+    <li><a href="03-settings-syntax.html"><span class="status-dot" data-chapter="03"></span> settings.jsonの書き方</a></li>
+    <li><a href="04-recipes.html"><span class="status-dot" data-chapter="04"></span> Hookレシピ集</a></li>
+  </ul>
+  <div class="section-label">Practice</div>
+  <ul>
+    <li><a href="05-lint-prettier.html"><span class="status-dot" data-chapter="05"></span> 実践：Lint/Prettier</a></li>
+    <li><a href="06-stop-summary.html"><span class="status-dot" data-chapter="06"></span> 実践：Stopサマリ</a></li>
+    <li><a href="07-troubleshoot-security.html"><span class="status-dot" data-chapter="07"></span> トラブル&amp;セキュリティ</a></li>
+    <li><a href="08-final-exercise.html"><span class="status-dot" data-chapter="08"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 1: Basics &gt; Chapter 02</div>
+  <h1>Hookイベント一覧</h1>
+  <p class="subtitle">Pre/PostToolUse・Stop・UserPromptSubmit・SessionStart 等、発火タイミングと入出力を完全把握</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 35分</span>
+    <span class="badge">Phase: Basics</span>
+    <span class="badge">難易度: 初級</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">この章のゴール</span>
+    <p>Ch01で「Hookとは何か」を掴んだ今、Claude Code が発火してくれる<strong>イベントの全種類</strong>を1つずつ押さえます。主要な6イベント(<span class="term" data-tip="Claude がツール(Write/Edit/Bash等)を実行する直前に発火。exit 2 でブロック可能">PreToolUse</span> / <span class="term" data-tip="ツール実行が完了した直後に発火。成功/失敗結果に応じた後処理に使う">PostToolUse</span> / <span class="term" data-tip="Claudeがメイン応答を完了しようとする時に発火。作業終了時の通知・サマリに最適">Stop</span> / <span class="term" data-tip="ユーザーが入力を送信した直後、モデルが読む前に発火。PIIマスク・履歴記録に使う">UserPromptSubmit</span> / <span class="term" data-tip="Claude Codeセッション開始時に1回だけ発火。git pull や環境情報の注入に使う">SessionStart</span> / <span class="term" data-tip="セッション終了時に1回だけ発火。ログのflush・通知に使う">SessionEnd</span>)について、<strong>いつ発火するか・何が stdin で渡ってくるか・どう出力するか</strong>を体系的に整理。最後に最小の PreToolUse Hook を実際に仕込んで発火を確認します。2026年1月時点の仕様に基づきます。</p>
+  </div>
+
+  <div class="info-box">
+    <span class="label">2026年1月時点の注記</span>
+    <p>本章の記述は<strong>2026年1月時点の Claude Code Hooks 仕様</strong>に基づきます。新しいイベント(例: <code>Notification</code>, <code>PreCompact</code>)が追加されたり stdin JSON のフィールドが増える可能性があるため、最新は<a href="https://docs.claude.com/en/docs/claude-code/hooks" target="_blank" rel="noopener">公式 Hooks ドキュメント</a>で必ず確認してください。</p>
+  </div>
+
+  <div class="info-box">
+    <span class="label">セキュリティ警告</span>
+    <p>Hook は Claude Code が自動で<strong>任意のシェルコマンドを実行する仕組み</strong>です。他人の <code>settings.json</code> をコピペする前に、その中で何が実行されるか必ず目を通してください。<code>rm -rf</code> / <code>curl | sh</code> / 秘密情報の echo などが紛れ込んでいても、発火時にあなたのマシンで実行されます。本章でも繰り返し注意します。</p>
+  </div>
+
+  <!-- ===== Section 1: 主要6イベントの全体像 ===== -->
+  <h2 data-section="02-01">
+    <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+    主要6イベントの全体像 ― セッション寿命の中での位置取り
+  </h2>
+
+  <p>Claude Code の<span class="term" data-tip="Claude Codeの1回の起動〜終了までの単位。設定ファイル読込・会話状態・コンテキスト全てがこの中に閉じる">セッション</span>は「開始 → ユーザ入力 → モデル応答(ツール連打) → 完了 → 終了」のライフサイクルをぐるぐる回ります。Hook は<strong>その各節目に割って入る<span class="term" data-tip="プログラム実行の途中に外部コードを差し込む仕組み。Git hooks / React hooks と同じ系譜の用語">フック</span></strong>です。まずは全体像を1枚の図で押さえましょう。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">6つの主要イベントの発火位置</div>
+    <svg viewBox="0 0 720 320" width="100%" style="max-width:720px; display:block; margin:0 auto;">
+      <!-- タイムライン軸 -->
+      <line x1="40" y1="160" x2="680" y2="160" stroke="#475569" stroke-width="2"/>
+      <polygon points="680,160 672,155 672,165" fill="#475569"/>
+      <text x="360" y="305" text-anchor="middle" font-size="11" fill="#64748b">時間の流れ →</text>
+
+      <!-- SessionStart -->
+      <circle cx="80" cy="160" r="10" fill="#D97757" stroke="#b55a3d" stroke-width="2"/>
+      <line x1="80" y1="160" x2="80" y2="60" stroke="#D97757" stroke-width="1.5" stroke-dasharray="3 3"/>
+      <rect x="20" y="30" width="120" height="30" rx="6" fill="rgba(217,119,87,0.25)" stroke="#D97757"/>
+      <text x="80" y="50" text-anchor="middle" font-size="11" font-weight="700" fill="#8a3d20">SessionStart</text>
+
+      <!-- UserPromptSubmit -->
+      <circle cx="200" cy="160" r="10" fill="#D97757" stroke="#b55a3d" stroke-width="2"/>
+      <line x1="200" y1="160" x2="200" y2="220" stroke="#D97757" stroke-width="1.5" stroke-dasharray="3 3"/>
+      <rect x="130" y="220" width="140" height="30" rx="6" fill="rgba(217,119,87,0.25)" stroke="#D97757"/>
+      <text x="200" y="240" text-anchor="middle" font-size="11" font-weight="700" fill="#8a3d20">UserPromptSubmit</text>
+
+      <!-- PreToolUse -->
+      <circle cx="340" cy="160" r="10" fill="#D97757" stroke="#b55a3d" stroke-width="2"/>
+      <line x1="340" y1="160" x2="340" y2="60" stroke="#D97757" stroke-width="1.5" stroke-dasharray="3 3"/>
+      <rect x="280" y="30" width="120" height="30" rx="6" fill="rgba(217,119,87,0.25)" stroke="#D97757"/>
+      <text x="340" y="50" text-anchor="middle" font-size="11" font-weight="700" fill="#8a3d20">PreToolUse</text>
+
+      <!-- ツール実行(中間点) -->
+      <rect x="395" y="145" width="90" height="30" rx="4" fill="#fef3c7" stroke="#d97706"/>
+      <text x="440" y="165" text-anchor="middle" font-size="11" font-weight="600" fill="#a16207">Tool 実行</text>
+
+      <!-- PostToolUse -->
+      <circle cx="500" cy="160" r="10" fill="#D97757" stroke="#b55a3d" stroke-width="2"/>
+      <line x1="500" y1="160" x2="500" y2="220" stroke="#D97757" stroke-width="1.5" stroke-dasharray="3 3"/>
+      <rect x="440" y="220" width="120" height="30" rx="6" fill="rgba(217,119,87,0.25)" stroke="#D97757"/>
+      <text x="500" y="240" text-anchor="middle" font-size="11" font-weight="700" fill="#8a3d20">PostToolUse</text>
+
+      <!-- Stop -->
+      <circle cx="600" cy="160" r="10" fill="#D97757" stroke="#b55a3d" stroke-width="2"/>
+      <line x1="600" y1="160" x2="600" y2="60" stroke="#D97757" stroke-width="1.5" stroke-dasharray="3 3"/>
+      <rect x="555" y="30" width="90" height="30" rx="6" fill="rgba(217,119,87,0.25)" stroke="#D97757"/>
+      <text x="600" y="50" text-anchor="middle" font-size="11" font-weight="700" fill="#8a3d20">Stop</text>
+
+      <!-- SessionEnd -->
+      <circle cx="660" cy="160" r="10" fill="#D97757" stroke="#b55a3d" stroke-width="2"/>
+      <line x1="660" y1="160" x2="660" y2="220" stroke="#D97757" stroke-width="1.5" stroke-dasharray="3 3"/>
+      <rect x="600" y="220" width="120" height="30" rx="6" fill="rgba(217,119,87,0.25)" stroke="#D97757"/>
+      <text x="660" y="240" text-anchor="middle" font-size="11" font-weight="700" fill="#8a3d20">SessionEnd</text>
+
+      <!-- セクション色帯 -->
+      <text x="360" y="100" text-anchor="middle" font-size="11" fill="#64748b">(ツール実行の中でPre→Post がループする)</text>
+      <text x="360" y="285" text-anchor="middle" font-size="11" fill="#64748b">入力前後/完了前後の「節目」にだけ Hook がある</text>
+    </svg>
+    <div class="diagram-caption">セッションを横軸にして6イベントを置くと、それぞれの立ち位置が一目で掴める。</div>
+  </div>
+
+  <p>特に重要なのが、<strong>PreToolUse と PostToolUse は1セッション中に何度でも発火する</strong>こと。Claude がツールを10回使えば、それぞれ Pre/Post が10回ずつ呼ばれます。一方 SessionStart/SessionEnd はセッションにつき1回、Stop はモデルが応答を完了する度に1回(<span class="term" data-tip="ユーザが追加プロンプトを送って続く場合、次の応答完了時にまた Stop が発火する">継続対話なら複数回</span>)発火します。</p>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+  <p>6つとも覚える必要はありません。<strong>最初は PreToolUse / PostToolUse / Stop の3つ</strong>で9割の用途は賄えます。残り3つは「ユーザ入力の段階で何かしたい」「セッション境界で何かしたい」と思った時に引っ張り出せば十分。</p>
+
+  <!-- ===== Section 2: 全イベント一覧テーブル ===== -->
+  <h2 data-section="02-02">
+    <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+    全イベント一覧 ― 発火タイミング・入出力・頻度を1枚で
+  </h2>
+
+  <p>ここまでの6つに加え、環境により使える補助イベントも含めた完全表を置いておきます。現場で迷ったらここに戻ってきてください。</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>イベント名</th>
+        <th>発火タイミング</th>
+        <th>1セッション頻度</th>
+        <th>stdin に入るもの</th>
+        <th>ブロック可否</th>
+        <th>典型ユースケース</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>PreToolUse</code></td>
+        <td>ツール実行の<strong>直前</strong></td>
+        <td>ツール回数分(多い)</td>
+        <td>tool_name / tool_input(JSON)</td>
+        <td><strong>可</strong>(exit 2)</td>
+        <td>フォーマット・危険コマンドブロック・Lint前処理</td>
+      </tr>
+      <tr>
+        <td><code>PostToolUse</code></td>
+        <td>ツール実行の<strong>直後</strong></td>
+        <td>ツール回数分(多い)</td>
+        <td>tool_name / tool_input / tool_response</td>
+        <td>不可(結果は既に出ている)</td>
+        <td>書き出し後の自動整形・通知音・ログ記録</td>
+      </tr>
+      <tr>
+        <td><code>UserPromptSubmit</code></td>
+        <td>ユーザ入力送信<strong>直後</strong>、モデル読取前</td>
+        <td>ユーザ発話数分</td>
+        <td>prompt(ユーザ入力そのもの)</td>
+        <td><strong>可</strong>(exit 2)</td>
+        <td>PIIマスク・プロンプト強化・入力ログ</td>
+      </tr>
+      <tr>
+        <td><code>Stop</code></td>
+        <td>モデルがメイン応答を<strong>完了直前</strong></td>
+        <td>応答完了のたび</td>
+        <td>stop_hook_active 等</td>
+        <td>可(Claudeに継続を強制できる)</td>
+        <td>完了通知・サマリ保存・git status表示</td>
+      </tr>
+      <tr>
+        <td><code>SubagentStop</code></td>
+        <td>Subagent(Agentツール)終了直前</td>
+        <td>Subagent数分</td>
+        <td>stop_hook_active 等</td>
+        <td>可</td>
+        <td>Subagent結果の永続化</td>
+      </tr>
+      <tr>
+        <td><code>SessionStart</code></td>
+        <td>Claude Code起動時(1回)</td>
+        <td>1回</td>
+        <td>source(startup/resume/clear)</td>
+        <td>不可</td>
+        <td>git pull / 環境情報の注入 / バージョン確認</td>
+      </tr>
+      <tr>
+        <td><code>SessionEnd</code></td>
+        <td>セッション終了時(1回)</td>
+        <td>1回</td>
+        <td>reason(clear/logout/exit)</td>
+        <td>不可(既に終了処理中)</td>
+        <td>ログのflush・最終通知・使用料計算</td>
+      </tr>
+      <tr>
+        <td><code>Notification</code></td>
+        <td>Claude が通知を上げる時(承認待ち等)</td>
+        <td>通知発生時</td>
+        <td>message</td>
+        <td>不可</td>
+        <td>OS通知への転送・Slack通知</td>
+      </tr>
+      <tr>
+        <td><code>PreCompact</code></td>
+        <td>コンテキスト圧縮の<strong>直前</strong></td>
+        <td>圧縮発生時</td>
+        <td>trigger(manual/auto)</td>
+        <td>不可</td>
+        <td>会話履歴のバックアップ</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="info-box">
+    <span class="label">2026年1月時点の覚え方</span>
+    <p><strong>「Pre は阻止、Post は観測、Stop は締め、Session は境界」</strong>。この4語で8割迷わなくなります。exit code 2 でブロックできるのは Pre 系(PreToolUse / UserPromptSubmit)だけ、という対称性も合わせて覚えると強力。</p>
+  </div>
+
+  <!-- ===== Section 3: 発火シーケンス詳解 ===== -->
+  <h2 data-section="02-03">
+    <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+    発火シーケンス ― 1ターンの中で何が起きるか
+  </h2>
+
+  <p>表だけでは頭に残りにくいので、「ユーザが1発指示 → Claudeがファイル編集1回 → 完了」という最小ターンを<strong>シーケンス図</strong>で追いましょう。各イベントの厳密な位置関係が見えます。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">1ターンの発火シーケンス(編集タスクの例)</div>
+    <pre class="mermaid">
+sequenceDiagram
+  participant U as User
+  participant CC as Claude Code
+  participant H as Hook(shell)
+  participant M as Model
+  participant T as Tool(Edit)
+
+  Note over CC: セッション開始
+  CC->>H: SessionStart 発火
+  H-->>CC: "git pull 実行" 等
+
+  U->>CC: "auth.ts を修正して"
+  CC->>H: UserPromptSubmit 発火
+  H-->>CC: "PIIマスク済み prompt"
+  CC->>M: 強化された prompt を送信
+  M-->>CC: "Edit ツール呼ぶ" 判断
+
+  CC->>H: PreToolUse 発火(tool_name=Edit)
+  H-->>CC: exit 0(通過) または exit 2(ブロック)
+  CC->>T: Edit を実行
+  T-->>CC: 編集結果
+  CC->>H: PostToolUse 発火(tool_response 付き)
+  H-->>CC: ログ記録完了
+
+  M-->>CC: "応答完了" 判断
+  CC->>H: Stop 発火
+  H-->>CC: "git diff 表示・Slack通知"
+  CC-->>U: 最終応答
+
+  Note over CC: セッション終了
+  CC->>H: SessionEnd 発火
+    </pre>
+    <div class="diagram-caption">1往復の会話で Hook は最低6回呼ばれる。ツール数が増えれば Pre/Post の数も線形に増える。</div>
+  </div>
+
+  <p>注目すべきは<strong>Hook が毎回同期的にブロック</strong>すること。Claude Code は Hook の終了を待ってから次に進みます。つまり PreToolUse Hook が5秒かかるコマンドを仕込むと、ツール実行のたびに5秒待たされる。<strong>Hook は速くあれ</strong>が鉄則です(通常は100ms以内、長くても数秒)。</p>
+
+  <details class="more-box">
+    <summary>もっと詳しく: なぜ同期ブロックなのか / 非同期にしたい時は?</summary>
+    <div class="more-body">
+      <p>Hook が同期的なのは「<strong>Claude の次のアクションに影響を与えられる</strong>」という価値があるから。PreToolUse が遅延なしで走り、exit 2 を返せば、Claude はそのツールを使わずに方針を立て直せる。これを非同期にすると、すでに危険コマンドが実行された後に止めても手遅れです。</p>
+      <p>どうしても重い処理を Hook でやりたい時の逃し方:</p>
+      <ul>
+        <li><strong>バックグラウンド化</strong>: <code>nohup heavy-task.sh &amp;</code> で投げて Hook 自体は即時 exit 0</li>
+        <li><strong>条件早期return</strong>: 最初に「対象ファイルか?」を判定して、対象外なら即 exit 0</li>
+        <li><strong>キャッシュ</strong>: 同じ引数なら前回結果を使う(jq で stdin ハッシュ化)</li>
+      </ul>
+      <p>実運用では「Hook は判定だけ、重い処理は別ワーカーに投げる」設計が安定します。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 4: 入力コンテキスト(stdin) ===== -->
+  <h2 data-section="02-04">
+    <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+    入力コンテキスト ― stdin に何が流れてくるか
+  </h2>
+
+  <p>Hook として起動されたシェルコマンドは、<strong><span class="term" data-tip="standard input。プロセスが起動時に受け取る入力ストリーム。Claude Code はここに JSON を流し込む">標準入力(stdin)</span>に JSON が流し込まれる</strong>という約束になっています。イベントごとに形は違いますが、「<code>hook_event_name</code>」「<code>session_id</code>」「<span class="term" data-tip="そのセッションの会話ログがJSONLで書き込まれているファイルのパス。Hook内で読んで解析できる">transcript_path</span>」は共通で入ります。残りはイベント固有フィールド。</p>
+
+  <h3>PreToolUse の stdin 例</h3>
+
+  <pre><code>{
+  "hook_event_name": "PreToolUse",
+  "session_id": "a1b2c3d4-....",
+  "transcript_path": "/Users/you/.claude/projects/xxx/transcript.jsonl",
+  "cwd": "/Users/you/repo",
+  "tool_name": "Edit",
+  "tool_input": {
+    "file_path": "/Users/you/repo/src/auth.ts",
+    "old_string": "password",
+    "new_string": "passwd"
+  }
+}</code></pre>
+
+  <h3>PostToolUse の stdin 例(tool_response が追加)</h3>
+
+  <pre><code>{
+  "hook_event_name": "PostToolUse",
+  "session_id": "a1b2c3d4-....",
+  "tool_name": "Edit",
+  "tool_input": { "file_path": "...", "old_string": "...", "new_string": "..." },
+  "tool_response": {
+    "success": true,
+    "filePath": "/Users/you/repo/src/auth.ts"
+  }
+}</code></pre>
+
+  <h3>UserPromptSubmit の stdin 例</h3>
+
+  <pre><code>{
+  "hook_event_name": "UserPromptSubmit",
+  "session_id": "a1b2c3d4-....",
+  "prompt": "APIキー sk-xxxx を使って叩いて"
+}</code></pre>
+
+  <h3>SessionStart の stdin 例</h3>
+
+  <pre><code>{
+  "hook_event_name": "SessionStart",
+  "session_id": "a1b2c3d4-....",
+  "source": "startup"
+}</code></pre>
+
+  <div class="info-box">
+    <span class="label">stdin を読むのは jq が最速</span>
+    <p>シェルスクリプトで JSON を捌くなら <a href="https://jqlang.org/" target="_blank" rel="noopener">jq</a> が事実上の標準。<code>tool_name=$(jq -r '.tool_name')</code> で一発取り出し。Python/Node派なら <code>python3 -c 'import sys,json;d=json.load(sys.stdin);...'</code> 等でもOK。<strong>Hook内で他のコマンドに渡す値は必ずクォート</strong>(空白・改行混入でバグる)。</p>
+  </div>
+
+  <div class="kv-grid">
+    <div class="kv"><div class="kv-key">共通フィールド</div><div class="kv-val">hook_event_name / session_id / transcript_path / cwd</div></div>
+    <div class="kv"><div class="kv-key">Pre/Post 固有</div><div class="kv-val">tool_name / tool_input / tool_response(Postのみ)</div></div>
+    <div class="kv"><div class="kv-key">UserPromptSubmit</div><div class="kv-val">prompt(ユーザ入力テキスト)</div></div>
+    <div class="kv"><div class="kv-key">SessionStart</div><div class="kv-val">source(startup / resume / clear)</div></div>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: 環境変数 $CLAUDE_PROJECT_DIR も使える</summary>
+    <div class="more-body">
+      <p>stdin の JSON 以外に、Hook 実行時の<strong>環境変数</strong>でも情報が降ってきます。代表例が <code>$CLAUDE_PROJECT_DIR</code>(Claude Code がそのプロジェクトのルートと認識しているディレクトリの絶対パス)。<code>settings.json</code> の <code>command</code> 内から <code>$CLAUDE_PROJECT_DIR/scripts/my-hook.sh</code> と書いておけば、どこから Claude Code を起動してもプロジェクト基点でスクリプトが呼べます。</p>
+      <p>他にも <code>$CLAUDE_HOOK_EVENT</code>(hook_event_name と同値、stdin を読まずに早期分岐したい時に便利)などが利用可能。全リストは公式ドキュメントで確認してください(2026年1月時点で追加中の機能)。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 5: 出力方法(stderr / exit code) ===== -->
+  <h2 data-section="02-05">
+    <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+    出力方法 ― stderr と exit code でClaudeに話しかける
+  </h2>
+
+  <p>Hook から Claude Code に結果を返す主要な手段は2つ: <strong><span class="term" data-tip="プロセス終了時に返す整数値。0=成功、2=Claude Codeでは『ブロック』の特別な意味を持つ">exit code</span></strong> と <strong><span class="term" data-tip="standard error。プロセスのエラー出力ストリーム。Claude Codeはここの内容を『Claudeへのフィードバック』として扱う">stderr</span> の文字列</strong>です。<span class="term" data-tip="standard output。プロセスの通常出力。Hookでは主にログ・ユーザ向けメッセージに使う">stdout</span> は通常ログ(人間向け)に使い、<span class="term" data-tip="正確には stdout に JSON を書いて decision フィールドで制御する『高度な API』もあるが、ここでは最もシンプルな stderr + exit code 方式を紹介">Claudeの挙動を変える方法</span>は exit code と stderr 経由が基本です。</p>
+
+  <div class="compare-cards">
+    <div class="cc neutral">
+      <span class="cc-label">exit 0</span>
+      <h4>通常終了(通過)</h4>
+      <ul>
+        <li>Claude は何も気にせず処理続行</li>
+        <li>stdout/stderr は UI/ログに記録</li>
+        <li>ユーザにも Claude にも影響なし</li>
+        <li><strong>大半の Hook はこれ</strong></li>
+      </ul>
+    </div>
+    <div class="cc bad">
+      <span class="cc-label">exit 2</span>
+      <h4>ブロック(Pre系で有効)</h4>
+      <ul>
+        <li>Claude に「このツール実行は拒否された」と伝わる</li>
+        <li>stderr の内容が Claude にフィードバックされる</li>
+        <li>Claude は代替案を考え直す</li>
+        <li><strong>危険コマンド阻止・フォーマット強制</strong></li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">exit 1 他</span>
+      <h4>警告・失敗(ブロックはしない)</h4>
+      <ul>
+        <li>Claude には直接影響しない</li>
+        <li>ユーザに stderr が見える</li>
+        <li>Hook の内部エラー扱い</li>
+        <li><strong>デバッグ出力に</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>典型コード: exit 2 でブロック</h3>
+
+  <pre><code>#!/usr/bin/env bash
+# block-rm-rf.sh — Bash ツールで rm -rf / 系を阻止
+
+set -euo pipefail
+CMD=$(jq -r '.tool_input.command // ""')
+
+if echo "$CMD" | grep -qE 'rm\s+-rf?\s+/'; then
+  echo "[block] 危険コマンド検出: $CMD" &gt;&amp;2
+  exit 2   # Claude にブロック通知
+fi
+
+exit 0</code></pre>
+
+  <h3>典型コード: stderr で警告だけ(ブロックしない)</h3>
+
+  <pre><code>#!/usr/bin/env bash
+# warn-large-file.sh — 1MB超のファイル編集時に警告
+
+FILE=$(jq -r '.tool_input.file_path // ""')
+[ -z "$FILE" ] &amp;&amp; exit 0
+
+SIZE=$(wc -c &lt; "$FILE" 2&gt;/dev/null || echo 0)
+if [ "$SIZE" -gt 1048576 ]; then
+  echo "[warn] 1MB超のファイルを編集中: $FILE" &gt;&amp;2
+fi
+
+exit 0</code></pre>
+
+  <div class="info-box">
+    <span class="label">セキュリティ警告(再掲)</span>
+    <p>exit 2 でブロックできる=それだけ権限がある、ということ。逆に言えば、<strong>信頼できないHookを入れると Claude の挙動を勝手に改変できる</strong>。他人のdotfilesから <code>settings.json</code> をコピーする時は、<code>command</code> 欄のスクリプト中身を必ず目視レビューしてください。</p>
+  </div>
+
+  <!-- ===== Section 6: イベント→使い道マッピング ===== -->
+  <h2 data-section="02-06">
+    <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+    イベント→使い道 ― 「何をしたいか」から引ける逆引き
+  </h2>
+
+  <p>現場で先に決まるのは「何を自動化したいか」の方です。その要求から「どのイベントに仕掛けるか」を即座に選べるよう、逆引きマップを用意しました。</p>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="shield-check" width="20" height="20"></i>
+      <div><strong>危険コマンドをブロックしたい</strong> → <code>PreToolUse</code>(Bashツールを matcher で絞る)+ exit 2</div>
+    </li>
+    <li>
+      <i data-lucide="align-left" width="20" height="20"></i>
+      <div><strong>Write/Edit後にPrettier で整形したい</strong> → <code>PostToolUse</code>(Write|Edit を matcher)</div>
+    </li>
+    <li>
+      <i data-lucide="bell" width="20" height="20"></i>
+      <div><strong>作業完了を通知したい</strong> → <code>Stop</code> + macOS <code>osascript</code> / Slack Webhook</div>
+    </li>
+    <li>
+      <i data-lucide="eye-off" width="20" height="20"></i>
+      <div><strong>ユーザ入力のPIIを隠したい</strong> → <code>UserPromptSubmit</code>(正規表現置換)</div>
+    </li>
+    <li>
+      <i data-lucide="git-branch" width="20" height="20"></i>
+      <div><strong>セッション冒頭で git pull したい</strong> → <code>SessionStart</code>(source=startup 時のみ)</div>
+    </li>
+    <li>
+      <i data-lucide="save" width="20" height="20"></i>
+      <div><strong>会話履歴をバックアップしたい</strong> → <code>PreCompact</code>(圧縮前に transcript_path をコピー)</div>
+    </li>
+    <li>
+      <i data-lucide="bar-chart-2" width="20" height="20"></i>
+      <div><strong>作業ログを jsonl に蓄積したい</strong> → <code>PostToolUse</code> or <code>Stop</code> で append</div>
+    </li>
+  </ul>
+
+  <h3>どのイベントが一番よく使われるか</h3>
+
+  <p>筆者が運用している複数の <code>settings.json</code> を集計すると、PreToolUse と PostToolUse で全Hookの7-8割を占めます。「ツール実行前後」が最も旨味が大きいから当然の結果。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">実運用での Hook イベント採用率(MK集計・2026/1時点)</div>
+    <canvas id="ch2-bar-1" height="180"></canvas>
+  </div>
+
+  <!-- ===== Section 7: matcher との組み合わせ ===== -->
+  <h2 data-section="02-07">
+    <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+    matcher との組み合わせ ― 「全Edit」か「特定拡張子だけ」か
+  </h2>
+
+  <p>PreToolUse / PostToolUse は <span class="term" data-tip="settings.jsonでHook対象のツール名を絞り込むフィールド。正規表現で記述する。Ch03で完全解説">matcher</span>(<span class="term" data-tip="regular expression。文字列のパターンマッチ記法。Edit|Write のように | で複数候補を表現できる">正規表現</span>)でツール名を絞れます。<strong>matcher を書かないと全ツールで発火</strong>するので、ログが暴走しがち。目的のツールだけに絞るのが作法です。</p>
+
+  <table>
+    <thead>
+      <tr><th>matcher 正規表現</th><th>マッチするツール</th><th>典型用途</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>"Edit"</code></td><td>Edit のみ</td><td>既存ファイルの差分編集だけを見張る</td></tr>
+      <tr><td><code>"Write|Edit"</code></td><td>Write と Edit</td><td>ファイル書き込み全般を整形対象に</td></tr>
+      <tr><td><code>"Bash"</code></td><td>Bash</td><td>シェル実行を監査・ブロック</td></tr>
+      <tr><td><code>".*"</code> または省略</td><td>全ツール</td><td>全ツールログ(デバッグ用・本番は重い)</td></tr>
+      <tr><td><code>"WebFetch|WebSearch"</code></td><td>外部通信ツール</td><td>外部アクセスの監査</td></tr>
+    </tbody>
+  </table>
+
+  <p>ここまで来ると「matcher の書き方」「イベントとの組み合わせ」でほぼ任意の自動化が設計できます。次の章(Ch03)で <code>settings.json</code> の完全な書式を学べば、自作 Hook を丸ごと書けるようになります。本章ではその一歩手前、<strong>最小の Hook を1本だけ動かして発火を目視確認</strong>するところまでやりましょう。</p>
+
+  <!-- ===== Section 8: ハンズオン ===== -->
+  <h2 data-section="02-08">
+    <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+    ハンズオン ― 最小 PreToolUse Hook を仕込んで発火確認
+  </h2>
+
+  <p>実際に自分のマシンで動かしてみます。<strong>「Edit ツールが呼ばれるたびに、ファイルパスをログに残す」</strong>だけの超シンプル Hook。ブロックはせず、ただ発火したことを観測します。</p>
+
+  <div class="steps">
+    <div class="step done">
+      <div class="step-num">1</div>
+      <div class="step-label">設定ファイルを開く</div>
+      <div class="step-desc">~/.claude/settings.json</div>
+    </div>
+    <div class="step done">
+      <div class="step-num">2</div>
+      <div class="step-label">hooks 節を追加</div>
+      <div class="step-desc">PreToolUse / Edit</div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-label">Claude Code で Edit を依頼</div>
+      <div class="step-desc">どんなファイルでもOK</div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-label">ログファイルを確認</div>
+      <div class="step-desc">/tmp/hook-ch02.log に追記されてる?</div>
+    </div>
+  </div>
+
+  <h3>Step 2: 貼り付ける settings.json(そのままコピペ可)</h3>
+
+  <pre><code>{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '\"[\\(.hook_event_name)] \\(.tool_name) -&gt; \\(.tool_input.file_path // \"(no file)\")\"' &gt;&gt; /tmp/hook-ch02.log; exit 0"
+          }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+
+  <p>このスクリプトは stdin の JSON を <code>jq</code> で整形して <code>/tmp/hook-ch02.log</code> に append し、exit 0 で終了します。Claude の挙動には一切影響せず、純粋に観測のみ。</p>
+
+  <h3>Step 3: 試す指示(Claude Code 内で)</h3>
+
+  <pre><code>何でもいいので手元のテキストファイル(例: /tmp/test.txt)を
+作って、Edit ツールで「hello」から「hi」に書き換えてください。</code></pre>
+
+  <h3>Step 4: ログを見る</h3>
+
+  <pre><code>$ cat /tmp/hook-ch02.log
+[PreToolUse] Edit -&gt; /tmp/test.txt</code></pre>
+
+  <div class="info-box">
+    <span class="label">発火しなかった時のチェックリスト</span>
+    <p>(1) <code>settings.json</code> の JSON 構文が有効か(<code>jq . &lt; ~/.claude/settings.json</code> で検証)<br>(2) Claude Code を<strong>再起動したか</strong>(settings.json は起動時に読むので編集後は再起動)<br>(3) <code>matcher</code> の綴りは <code>Edit</code> で合っているか(大文字小文字厳密)<br>(4) <code>jq</code> が PATH にあるか(<code>which jq</code>)<br>詳しい診断は Ch07(トラブルシュート)で扱います。</p>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: Bash の &lt;,&gt;,&amp; エスケープに注意</summary>
+    <div class="more-body">
+      <p>JSON 内で <code>command</code> に長いシェル式を書く時、<code>&gt;&gt;</code>(append)や <code>&lt;</code>(入力リダイレクト)は<strong>JSON文字列としてそのまま</strong>書けますが、HTMLドキュメントにコピペして貼るときは HTML 実体参照(<code>&amp;gt;</code> 等)に誤変換されがち。エディタに貼る時は必ずプレーンテキスト貼り付けを使い、<code>&gt;</code> <code>&lt;</code> <code>&amp;</code> が生のまま入っているか確認してください。</p>
+      <p>また、シェルの特殊文字(<code>$</code>, <code>`</code>, <code>\</code>, <code>"</code>)を command に書く時は JSON エスケープ(<code>\\</code> や <code>\"</code>)が必要。長くなるなら<strong>外部スクリプトファイルに切り出して <code>"command": "/path/to/my-hook.sh"</code></strong>と参照する形の方が圧倒的にラク。これはCh03で詳しく扱います。</p>
+    </div>
+  </details>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+  <p>これで<strong>「Hook イベントは本当に発火する」</strong>という事実を自分の目で確認できました。抽象的な仕組みが身体感覚に落ちた瞬間から、Hookは急に身近なツールになります。この感覚を持ったままCh03に進めば <code>settings.json</code> の文法はスッと入ってきます。</p>
+
+  <!-- ===== Section 9: まとめ ===== -->
+  <h2 data-section="02-09">
+    <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+    この章のまとめ
+  </h2>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-num">6</div>
+      <div class="stat-label">主要イベント数</div>
+      <div class="stat-trend up">Pre/Post/Stop/UserPromptSubmit/Session×2</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">2</div>
+      <div class="stat-label">ブロック可能イベント</div>
+      <div class="stat-trend up">PreToolUse / UserPromptSubmit</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">2</div>
+      <div class="stat-label">Claudeへの返し方</div>
+      <div class="stat-trend up">exit code / stderr</div>
+    </div>
+  </div>
+
+  <div class="quote">
+    Pre は阻止、Post は観測、Stop は締め、Session は境界。<strong>4語でHookイベントの8割が頭に収まる</strong>。
+    <cite>— 本章の核心</cite>
+  </div>
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>ハンズオンを自分の環境で動かして観察</h4>
+    <p>本章のハンズオン(PreToolUse + Edit のログ記録)をそのままコピーして動かし、以下を確認してください。</p>
+    <ol>
+      <li><code>/tmp/hook-ch02.log</code> に1行追記されているか</li>
+      <li>matcher を <code>"Edit"</code> から <code>"Write|Edit"</code> に変更し、Writeツール実行時にも発火するか試す</li>
+      <li>さらに matcher を <code>"Bash"</code> に変更して、Claude に <code>ls</code> を実行してもらうと <code>tool_input.file_path</code> は <code>(no file)</code> になる。この挙動の理由を考察してください(ヒント: tool_input のキーはツールごとに違う)</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><strong>期待される観察結果</strong>:</p>
+      <ul>
+        <li>1: ログには <code>[PreToolUse] Edit -&gt; /tmp/test.txt</code> の形で1行。Edit が複数回呼ばれれば複数行</li>
+        <li>2: matcher を <code>"Write|Edit"</code> にすると、両方のツールで発火。Write の場合は <code>tool_input.file_path</code> が Edit と同じように入るので <code>-&gt;</code> の後ろにパスが出る</li>
+        <li>3: Bash ツールの <code>tool_input</code> は <code>{ "command": "ls", "description": "..." }</code> という形で <strong><code>file_path</code> フィールドを持たない</strong>。jq の <code>.tool_input.file_path // "(no file)"</code> は null 時のデフォルト値なので <code>(no file)</code> になる。Bash をログに残すなら <code>.tool_input.command</code> を参照する方が適切</li>
+      </ul>
+      <p><strong>改善したBash用ログHook</strong>:</p>
+      <pre><code>{
+  "matcher": "Bash",
+  "hooks": [{
+    "type": "command",
+    "command": "jq -r '\"[\\(.hook_event_name)] Bash: \\(.tool_input.command)\"' &gt;&gt; /tmp/hook-ch02-bash.log; exit 0"
+  }]
+}</code></pre>
+      <p>このように<strong>ツールごとに tool_input の構造が違う</strong>ことを理解すると、matcher と jq パスの選び方が自然に身につきます。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>PreToolUse で「rm -rf /」をブロックする Hook を書く</h4>
+    <p>本章の「典型コード: exit 2 でブロック」を参考に、<strong>Bash ツールで <code>rm -rf /</code> 系のコマンドを実行しようとした時だけ阻止する</strong> Hook を仕上げてください。</p>
+    <ol>
+      <li>スクリプトファイルを <code>~/.claude/hooks/block-rm-rf.sh</code> として作成し、実行権限(<code>chmod +x</code>)を付与</li>
+      <li><code>~/.claude/settings.json</code> の <code>PreToolUse</code> に matcher <code>"Bash"</code> で登録</li>
+      <li>Claude Code で「<code>rm -rf /tmp/test</code> を実行してください」と言った時と、「<code>rm -rf /</code> を実行してください」と言った時の挙動の違いを観察</li>
+      <li>(応用) <code>/tmp/</code> 配下はブロック対象から外す除外ルールを追加</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><strong>Step 1: <code>~/.claude/hooks/block-rm-rf.sh</code></strong></p>
+      <pre><code>#!/usr/bin/env bash
+# block-rm-rf.sh — rm -rf / 系を検出してブロック
+# 2026/01 時点の PreToolUse stdin 仕様に基づく
+
+set -euo pipefail
+
+CMD=$(jq -r '.tool_input.command // ""')
+
+# /tmp 配下なら許可(応用)
+if echo "$CMD" | grep -qE 'rm\s+-[rRf]+\s+/tmp(/|$)'; then
+  exit 0
+fi
+
+# ルート・ホーム・重要ディレクトリ直下を狙う rm -rf を阻止
+if echo "$CMD" | grep -qE 'rm\s+-[rRf]+\s+(/|~|\$HOME|/etc|/usr|/var)(\s|$|/)'; then
+  echo "[BLOCK] 危険な rm -rf を阻止しました: $CMD" &gt;&amp;2
+  echo "必要なら削除対象を具体パスに絞り込んでください。" &gt;&amp;2
+  exit 2
+fi
+
+exit 0</code></pre>
+
+      <p><strong>Step 2: <code>~/.claude/settings.json</code></strong></p>
+      <pre><code>{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          { "type": "command", "command": "~/.claude/hooks/block-rm-rf.sh" }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+
+      <p><strong>Step 3: 実行して観察</strong></p>
+      <ul>
+        <li><code>rm -rf /tmp/test</code> → 許可ルールに該当、exit 0 で通過、Claude はそのまま実行</li>
+        <li><code>rm -rf /</code> → ブロックルールに該当、exit 2 で阻止。<strong>stderr の内容が Claude にフィードバック</strong>され、Claude が「代替方法を考えます」と路線変更してくれる</li>
+      </ul>
+
+      <p><strong>セキュリティ上の注意</strong>:</p>
+      <ul>
+        <li>このHookは<strong>完璧ではありません</strong>。<code>rm -rf /home/...</code> やシンボリックリンク、環境変数展開(<code>rm -rf "$UNSET_VAR/"</code>)等は別途検出が必要</li>
+        <li>真の防御は Claude Code の <code>permissions</code> 設定(deny リスト)と組み合わせること。Hook だけで全てを守らない</li>
+        <li>他人のHookをコピペする時は <code>command</code> 欄のスクリプト内容を必ず自分の目で確認(本章で繰り返し警告している通り)</li>
+      </ul>
+
+      <p>この演習が終わると、「PreToolUse + matcher + exit 2」の三点セットで<strong>Claude Codeの挙動を自在に制御できる</strong>実感が掴めます。Ch03では <code>settings.json</code> の構造を、Ch04では10種のレシピを学んで、この力を現場で使える武器に仕上げていきます。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span><a href="https://docs.claude.com/en/docs/claude-code/hooks" target="_blank" rel="noopener">Claude Code Hooks 公式ドキュメント: イベントとstdin形式の最新仕様はここが正本</a></li>
+      <li><span class="res-type doc">Doc</span><a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式ドキュメント: ツール一覧・設定の全体像</a></li>
+      <li><span class="res-type doc">Doc</span><a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener">Claude Code GitHub リポジトリ: Issueで最新仕様変更の議論を追える</a></li>
+      <li><span class="res-type doc">Doc</span><a href="https://jqlang.org/" target="_blank" rel="noopener">jq 公式: Hook内でstdin JSONを捌く事実上の標準</a></li>
+      <li><span class="res-type doc">Doc</span><a href="https://www.gnu.org/software/bash/manual/bash.html" target="_blank" rel="noopener">Bash Reference Manual: exit code と stderr 周りの挙動確認に</a></li>
+      <li><span class="res-type video">Video</span><a href="https://www.youtube.com/results?search_query=Claude+Code+hooks" target="_blank" rel="noopener">YouTube 検索: 「Claude Code hooks」の実演動画</a></li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="02">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="01-hooks-overview.html"><span class="direction">&larr; Prev</span>Hooksとは</a>
+    <a href="03-settings-syntax.html"><span class="direction">Next &rarr;</span>settings.jsonの書き方</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<!-- 視覚化ライブラリ群 -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+<script>
+  window.addEventListener("load", function(){
+    // Hook イベント採用率(体感値)
+    var ctx1 = document.getElementById('ch2-bar-1');
+    if (ctx1 && window.Chart) {
+      new Chart(ctx1, {
+        type: 'bar',
+        data: {
+          labels: [
+            'PostToolUse',
+            'PreToolUse',
+            'Stop',
+            'UserPromptSubmit',
+            'SessionStart',
+            'SessionEnd',
+            'Notification',
+            'PreCompact'
+          ],
+          datasets: [{
+            label: '採用率(%)',
+            data: [42, 35, 12, 5, 3, 1, 1, 1],
+            backgroundColor: [
+              '#D97757',
+              '#D97757',
+              'rgba(217,119,87,0.7)',
+              'rgba(217,119,87,0.55)',
+              'rgba(217,119,87,0.4)',
+              'rgba(217,119,87,0.3)',
+              'rgba(217,119,87,0.25)',
+              'rgba(217,119,87,0.2)'
+            ],
+            borderRadius: 6
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: function(ctx) { return '採用率: ' + ctx.parsed.x + '%'; }
+              }
+            }
+          },
+          scales: {
+            x: {
+              beginAtZero: true,
+              max: 50,
+              ticks: { callback: function(v){ return v + '%'; } },
+              title: { display: true, text: '採用率(MK集計・2026/01)' }
+            }
+          }
+        }
+      });
+    }
+  });
+</script>
+</body>
+</html>

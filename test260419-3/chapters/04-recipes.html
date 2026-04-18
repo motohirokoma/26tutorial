@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>Hookレシピ集 - MK's Claude Code Tutorial - Hooks Workshop</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code - Hooks
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav class="active"><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Practice</span><span class="phase-pct" id="pct-practice">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.04</span>
+    Hookレシピ集
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 8 sections</text>
+    </svg>
+    <div class="progress-info">0h / 4h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-hooks-overview.html"><span class="status-dot" data-chapter="01"></span> Hooksとは</a></li>
+    <li><a href="02-hook-events.html"><span class="status-dot" data-chapter="02"></span> Hookイベント一覧</a></li>
+    <li><a href="03-settings-syntax.html"><span class="status-dot" data-chapter="03"></span> settings.jsonの書き方</a></li>
+    <li><a href="04-recipes.html" class="active"><span class="status-dot" data-chapter="04"></span> Hookレシピ集</a></li>
+  </ul>
+  <div class="section-label">Practice</div>
+  <ul>
+    <li><a href="05-lint-prettier.html"><span class="status-dot" data-chapter="05"></span> 実践：Lint/Prettier</a></li>
+    <li><a href="06-stop-summary.html"><span class="status-dot" data-chapter="06"></span> 実践：Stopサマリ</a></li>
+    <li><a href="07-troubleshoot-security.html"><span class="status-dot" data-chapter="07"></span> トラブル&amp;セキュリティ</a></li>
+    <li><a href="08-final-exercise.html"><span class="status-dot" data-chapter="08"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 1: Basics &gt; Chapter 04</div>
+  <h1>Hookレシピ集</h1>
+  <p class="subtitle">フォーマット/テスト/通知/ブロック — 10のすぐ使える例</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 40分</span>
+    <span class="badge">Phase: Basics</span>
+    <span class="badge">難易度: 中級</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">この章のゴール</span>
+    <p>Ch01-03で学んだ理屈を<strong>実働する10個のレシピ</strong>に落とし込みます。各レシピは「いつ発火するか」「settings.jsonスニペット」「シェルスクリプト実体」の3点セットで提示。<strong>コピペして10分で1つ動かせる</strong>粒度に揃えました。最後にハンズオンで3つ選んで自環境に導入します。<em>本章の記述は2026年1月時点の情報です。Hookは任意のシェルコマンドを実行する機能なので、他人が配布するスニペットは必ず中身を読んでから入れてください。</em></p>
+  </div>
+
+  <div class="prereq-link-box">
+    <p><strong>前提</strong>: <a href="03-settings-syntax.html">Ch03 settings.jsonの書き方</a>でmatcher・command・exit codeの基本を理解していること。未読なら先に戻ってください。</p>
+  </div>
+
+  <!-- ===== Section 1: 10レシピの全体像 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 10レシピの全体像: どのイベントに何を仕込むか</h2>
+
+  <p>まずは10個のレシピを<span class="term" data-tip="Hookが発火するタイミング。PreToolUse・PostToolUse・Stop・UserPromptSubmit・SessionStart等">イベント</span>×目的のマトリクスで俯瞰します。どれから導入するか決める判断材料に。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">10レシピのイベント分布(色=目的カテゴリ)</div>
+    <canvas id="ch4-bar-1" height="200"></canvas>
+    <div class="diagram-caption">PreToolUseで「やる前に止める/整える」、PostToolUseで「やった後に検査/通知」、Stopで「終わりに集約」というのが基本構図。</div>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>#</th><th>レシピ</th><th>イベント</th><th>目的</th><th>難度</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>Edit前にPrettier</td><td>PreToolUse</td><td>整形</td><td>初級</td></tr>
+      <tr><td>2</td><td>Write後にESLint</td><td>PostToolUse</td><td>検査</td><td>初級</td></tr>
+      <tr><td>3</td><td>危険Bashコマンドをブロック</td><td>PreToolUse</td><td>防御</td><td>中級</td></tr>
+      <tr><td>4</td><td>Stop時にgit status表示</td><td>Stop</td><td>集約</td><td>初級</td></tr>
+      <tr><td>5</td><td>PreTool で注意喚起</td><td>PreToolUse</td><td>通知</td><td>初級</td></tr>
+      <tr><td>6</td><td>UserPromptSubmitでPIIマスク</td><td>UserPromptSubmit</td><td>防御</td><td>中級</td></tr>
+      <tr><td>7</td><td>PostToolUseで通知音</td><td>PostToolUse</td><td>通知</td><td>初級</td></tr>
+      <tr><td>8</td><td>SessionStartでgit pull</td><td>SessionStart</td><td>同期</td><td>初級</td></tr>
+      <tr><td>9</td><td>Stop時にSlack通知</td><td>Stop</td><td>通知</td><td>中級</td></tr>
+      <tr><td>10</td><td>Stop時サマリをjsonl保存</td><td>Stop</td><td>記録</td><td>中級</td></tr>
+    </tbody>
+  </table>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Recipe 1 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> レシピ1: Edit前にPrettier(PreToolUse)</h2>
+
+  <p>ClaudeがEdit/Writeで書き換えようとする<strong>直前</strong>に、対象ファイルをPrettierで整形します。Claudeは整形済みの状態をベースに書き換えるので、<span class="term" data-tip="差分のノイズ。関係ない整形差分が混ざって本質的変更が見えにくくなる状態">差分ノイズ</span>が劇的に減ります。</p>
+
+  <h3>settings.json</h3>
+  <pre><code>{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          { "type": "command", "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/prettier-pre.sh" }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+
+  <h3>.claude/hooks/prettier-pre.sh</h3>
+  <pre><code>#!/usr/bin/env bash
+# Edit/Write対象ファイルをPrettierで事前整形
+set -euo pipefail
+INPUT=$(cat)
+FILE=$(echo "$INPUT" | jq -r '.tool_input.file_path // empty')
+[ -z "$FILE" ] &amp;&amp; exit 0
+[ ! -f "$FILE" ] &amp;&amp; exit 0
+case "$FILE" in
+  *.js|*.jsx|*.ts|*.tsx|*.json|*.css|*.md)
+    npx --no-install prettier --write "$FILE" 2&gt;/dev/null || true
+    echo "prettier: formatted $FILE" &gt;&amp;2
+    ;;
+esac
+exit 0</code></pre>
+
+  <!-- ===== Recipe 2 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> レシピ2: Write後にESLint(PostToolUse)</h2>
+
+  <p>Write/Editが完了した直後に<span class="term" data-tip="JavaScript/TypeScript向け静的解析ツール">ESLint</span>を走らせ、構文/ルール違反があればClaudeに<strong>stderr経由でフィードバック</strong>します。Claudeはその内容を読んで自動修正を試みます。</p>
+
+  <h3>settings.json</h3>
+  <pre><code>{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          { "type": "command", "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/eslint-post.sh" }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+
+  <h3>.claude/hooks/eslint-post.sh</h3>
+  <pre><code>#!/usr/bin/env bash
+# Write/Edit後のファイルをESLintで検査し、違反はstderr→Claudeへ返す
+set -uo pipefail
+INPUT=$(cat)
+FILE=$(echo "$INPUT" | jq -r '.tool_input.file_path // empty')
+[ -z "$FILE" ] &amp;&amp; exit 0
+case "$FILE" in
+  *.js|*.jsx|*.ts|*.tsx) ;;
+  *) exit 0 ;;
+esac
+OUTPUT=$(npx --no-install eslint --no-color "$FILE" 2&gt;&amp;1 || true)
+if [ -n "$OUTPUT" ]; then
+  echo "[eslint] $FILE に問題があります:" &gt;&amp;2
+  echo "$OUTPUT" &gt;&amp;2
+fi
+exit 0</code></pre>
+
+  <!-- ===== Recipe 3 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> レシピ3: Bash実行前に危険コマンドをブロック(PreToolUse)</h2>
+
+  <p>Bashツールの実行<strong>直前</strong>にコマンド文字列を検査し、<span class="term" data-tip="削除や破壊を伴うコマンド。rm -rf・format・chmod 777・:(){:|:&amp;};: 等">危険コマンド</span>パターンに一致したら<strong>exit 2</strong>でブロックします。これがHookの防御機能の真骨頂。</p>
+
+  <div class="info-box">
+    <span class="label">警告: exit code 2 の意味</span>
+    <p>PreToolUseフックが<strong>exit code 2</strong>で終了すると、Claude Codeはそのツール呼び出しを<strong>実行せずに停止</strong>し、stderrの内容をClaudeに返します。exit 1は単なる警告(継続)なので混同しないこと。2026年1月時点の仕様。</p>
+  </div>
+
+  <h3>settings.json</h3>
+  <pre><code>{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          { "type": "command", "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/bash-guard.sh" }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+
+  <h3>.claude/hooks/bash-guard.sh</h3>
+  <pre><code>#!/usr/bin/env bash
+# 危険Bashコマンドをブロック(exit 2)
+set -uo pipefail
+INPUT=$(cat)
+CMD=$(echo "$INPUT" | jq -r '.tool_input.command // empty')
+
+# 危険パターン(必要に応じて追加)
+PATTERNS=(
+  'rm[[:space:]]+-rf?[[:space:]]+/($|[[:space:]])'
+  'rm[[:space:]]+-rf?[[:space:]]+\$HOME'
+  'rm[[:space:]]+-rf?[[:space:]]+~'
+  'chmod[[:space:]]+-R?[[:space:]]*777'
+  'mkfs\.'
+  'dd[[:space:]]+if=.*of=/dev/'
+  ':\(\)\{.*\}:'
+  'curl[[:space:]]+.*\|[[:space:]]*(sh|bash)'
+  'wget[[:space:]]+.*\|[[:space:]]*(sh|bash)'
+)
+
+for p in "${PATTERNS[@]}"; do
+  if [[ "$CMD" =~ $p ]]; then
+    echo "[bash-guard] 危険コマンドを検出しました: $CMD" &gt;&amp;2
+    echo "[bash-guard] パターン: $p" &gt;&amp;2
+    echo "[bash-guard] 実行を中止しました。必要ならユーザーが手動実行してください。" &gt;&amp;2
+    exit 2
+  fi
+done
+exit 0</code></pre>
+
+  <!-- ===== Recipe 4 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> レシピ4: Stop時にgit status表示(Stop)</h2>
+
+  <p>Claudeの応答が終わるタイミング(Stop)で<code>git status</code>と<code>git diff --stat</code>を表示します。「結局どのファイルが変わったのか」を毎回確認せずに済みます。</p>
+
+  <h3>settings.json</h3>
+  <pre><code>{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          { "type": "command", "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/stop-gitstatus.sh" }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+
+  <h3>.claude/hooks/stop-gitstatus.sh</h3>
+  <pre><code>#!/usr/bin/env bash
+# Stop時にgit status / git diff --stat を表示
+set -uo pipefail
+cd "$CLAUDE_PROJECT_DIR" 2&gt;/dev/null || exit 0
+[ ! -d .git ] &amp;&amp; exit 0
+echo "" &gt;&amp;2
+echo "===== git status =====" &gt;&amp;2
+git status -s 2&gt;&amp;2 || true
+echo "" &gt;&amp;2
+echo "===== git diff --stat =====" &gt;&amp;2
+git diff --stat 2&gt;&amp;2 || true
+echo "" &gt;&amp;2
+exit 0</code></pre>
+
+  <!-- ===== Recipe 5 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> レシピ5: PreToolUse で注意喚起(ログ出力)</h2>
+
+  <p>ブロックはしないが<strong>実行を可視化したい</strong>ツール(Write・Bash等)について、実行直前にコマンド内容をログ記録します。後から「Claudeは何をしたのか」を監査できます。</p>
+
+  <h3>settings.json</h3>
+  <pre><code>{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|Write|Edit",
+        "hooks": [
+          { "type": "command", "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/audit-log.sh" }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+
+  <h3>.claude/hooks/audit-log.sh</h3>
+  <pre><code>#!/usr/bin/env bash
+# 実行ツール内容を監査ログに記録
+set -uo pipefail
+INPUT=$(cat)
+LOG_DIR="$CLAUDE_PROJECT_DIR/.claude/audit"
+mkdir -p "$LOG_DIR"
+LOG_FILE="$LOG_DIR/$(date +%Y-%m-%d).log"
+TS=$(date +"%Y-%m-%dT%H:%M:%S%z")
+TOOL=$(echo "$INPUT" | jq -r '.tool_name // "?"')
+SUMMARY=$(echo "$INPUT" | jq -c '.tool_input | {file_path, command}' 2&gt;/dev/null || echo '{}')
+echo "{\"ts\":\"$TS\",\"tool\":\"$TOOL\",\"input\":$SUMMARY}" &gt;&gt; "$LOG_FILE"
+exit 0</code></pre>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Recipe 6 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> レシピ6: UserPromptSubmitでPIIマスク</h2>
+
+  <p>ユーザーが入力したプロンプトをClaudeへ渡す前に検査し、メール/電話番号/クレカ等の<span class="term" data-tip="Personally Identifiable Information。個人を特定できる情報">PII</span>らしき文字列を<code>[REDACTED]</code>にマスクします。<strong>stdout</strong>に加工済みプロンプトを出力するとClaudeはそれを見ます。</p>
+
+  <h3>settings.json</h3>
+  <pre><code>{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          { "type": "command", "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/pii-mask.sh" }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+
+  <h3>.claude/hooks/pii-mask.sh</h3>
+  <pre><code>#!/usr/bin/env bash
+# PIIらしき文字列をマスクしてstdoutに返す
+set -uo pipefail
+INPUT=$(cat)
+PROMPT=$(echo "$INPUT" | jq -r '.prompt // empty')
+MASKED=$(echo "$PROMPT" \
+  | sed -E 's/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/[EMAIL_REDACTED]/g' \
+  | sed -E 's/\b0[0-9]{1,4}-[0-9]{1,4}-[0-9]{3,4}\b/[PHONE_REDACTED]/g' \
+  | sed -E 's/\b[0-9]{4}[[:space:]-]?[0-9]{4}[[:space:]-]?[0-9]{4}[[:space:]-]?[0-9]{4}\b/[CARD_REDACTED]/g')
+# 加工済みをstdoutに(Claudeはこれを見る)
+jq -n --arg p "$MASKED" '{prompt: $p}'
+exit 0</code></pre>
+
+  <div class="info-box">
+    <span class="label">注意: マスクは万能ではない</span>
+    <p>正規表現によるマスクは<strong>完全性を保証しません</strong>。住所・氏名・社内ID等はパターン化が難しく漏れがち。機密業務では「そもそも機密を入力しない」を第一線に、マスクは第二線の保険と考えてください。</p>
+  </div>
+
+  <!-- ===== Recipe 7 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> レシピ7: PostToolUseで通知音(macOS)</h2>
+
+  <p>長時間タスク後に「終わった」と気づきたいとき、PostToolUseで<code>afplay</code>を鳴らします。Write・Edit・Bashなど重い処理の直後に短い音を鳴らす使い方が人気。</p>
+
+  <h3>settings.json</h3>
+  <pre><code>{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          { "type": "command", "command": "afplay /System/Library/Sounds/Pop.aiff &amp;" }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+
+  <h3>シンプル版(スクリプト不要)</h3>
+  <p>上記のようにcommandに1行埋め込めばスクリプトファイル不要。<code>&amp;</code>でバックグラウンド実行にしておけば、鳴り終わりを待たずに処理が進みます。</p>
+
+  <h3>Linuxの場合</h3>
+  <pre><code>{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          { "type": "command", "command": "paplay /usr/share/sounds/freedesktop/stereo/complete.oga &amp;" }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+
+  <!-- ===== Recipe 8 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> レシピ8: SessionStartでgit pull</h2>
+
+  <p>Claude Codeを起動した瞬間(SessionStart)に<code>git pull</code>を実行し、常に最新リモートから作業を開始します。チーム開発で古いブランチで作業してしまう事故が減ります。</p>
+
+  <h3>settings.json</h3>
+  <pre><code>{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          { "type": "command", "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/session-pull.sh" }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+
+  <h3>.claude/hooks/session-pull.sh</h3>
+  <pre><code>#!/usr/bin/env bash
+# セッション開始時にgit pull(mainブランチ限定)
+set -uo pipefail
+cd "$CLAUDE_PROJECT_DIR" 2&gt;/dev/null || exit 0
+[ ! -d .git ] &amp;&amp; exit 0
+BRANCH=$(git symbolic-ref --short HEAD 2&gt;/dev/null || echo "")
+case "$BRANCH" in
+  main|master|develop)
+    echo "[session-start] git pull on $BRANCH" &gt;&amp;2
+    git pull --ff-only 2&gt;&amp;2 || echo "[session-start] pull失敗: 手動確認してください" &gt;&amp;2
+    ;;
+  *)
+    echo "[session-start] ブランチ $BRANCH: pullをスキップ" &gt;&amp;2
+    ;;
+esac
+exit 0</code></pre>
+
+  <div class="info-box">
+    <span class="label">注意: 強制pullは禁物</span>
+    <p><code>git pull --ff-only</code>にしているのは<strong>マージコミットを勝手に作らない</strong>ため。未コミット変更があると失敗しますが、それは意図通り(壊れる前に止まる方が良い)。</p>
+  </div>
+
+  <!-- ===== Recipe 9 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> レシピ9: Stop時にSlack通知</h2>
+
+  <p>長時間作業が終わったらSlackに「終わったよ」と通知。<span class="term" data-tip="Slackの受信用URL。POSTするとチャンネルにメッセージが届く">Slack Incoming Webhook</span>のURLを環境変数で持たせる運用が安全です。</p>
+
+  <h3>settings.json</h3>
+  <pre><code>{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          { "type": "command", "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/stop-slack.sh" }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+
+  <h3>.claude/hooks/stop-slack.sh</h3>
+  <pre><code>#!/usr/bin/env bash
+# Claude作業終了をSlackに通知
+set -uo pipefail
+[ -z "${SLACK_WEBHOOK_URL:-}" ] &amp;&amp; exit 0
+cd "$CLAUDE_PROJECT_DIR" 2&gt;/dev/null || true
+CHANGED=$(git diff --stat 2&gt;/dev/null | tail -1 || echo "変更なし")
+HOST=$(hostname -s)
+PAYLOAD=$(jq -n \
+  --arg text ":white_check_mark: Claude Code 作業終了 @ *$HOST*" \
+  --arg changed "$CHANGED" \
+  '{text: $text, blocks: [
+    {type:"section", text:{type:"mrkdwn", text: $text}},
+    {type:"context", elements:[{type:"mrkdwn", text: $changed}]}
+  ]}')
+curl -sS -X POST -H 'Content-Type: application/json' \
+  --data "$PAYLOAD" "$SLACK_WEBHOOK_URL" &gt;/dev/null || true
+exit 0</code></pre>
+
+  <div class="info-box">
+    <span class="label">Webhook URLの管理</span>
+    <p>SlackのWebhook URLは<strong>シェルのrcファイル</strong>(~/.zshrc等)に<code>export SLACK_WEBHOOK_URL=...</code>で入れ、<code>settings.json</code>やリポジトリにはコミットしないこと。Claude Codeは親シェルの環境変数を引き継ぎます。</p>
+  </div>
+
+  <!-- ===== Recipe 10 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> レシピ10: Stop時にサマリをjsonl保存</h2>
+
+  <p>Stop時に<strong>1行JSON(<span class="term" data-tip="JSON Lines。1行1JSONの追記型ログ形式">jsonl</span>)</strong>として作業サマリを蓄積。あとから「先月何をやったか」を<code>jq</code>で集計できます。</p>
+
+  <h3>settings.json</h3>
+  <pre><code>{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          { "type": "command", "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/stop-jsonl.sh" }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+
+  <h3>.claude/hooks/stop-jsonl.sh</h3>
+  <pre><code>#!/usr/bin/env bash
+# Stop時に1行JSONでサマリを追記
+set -uo pipefail
+cd "$CLAUDE_PROJECT_DIR" 2&gt;/dev/null || exit 0
+LOG_DIR="$CLAUDE_PROJECT_DIR/.claude/sessions"
+mkdir -p "$LOG_DIR"
+LOG_FILE="$LOG_DIR/$(date +%Y-%m).jsonl"
+FILES_CHANGED=$(git diff --name-only 2&gt;/dev/null | wc -l | tr -d ' ')
+LINES_ADDED=$(git diff --numstat 2&gt;/dev/null | awk '{s+=$1} END {print s+0}')
+LINES_REMOVED=$(git diff --numstat 2&gt;/dev/null | awk '{s+=$2} END {print s+0}')
+BRANCH=$(git symbolic-ref --short HEAD 2&gt;/dev/null || echo "?")
+jq -nc \
+  --arg ts "$(date +%Y-%m-%dT%H:%M:%S%z)" \
+  --arg branch "$BRANCH" \
+  --argjson files "${FILES_CHANGED:-0}" \
+  --argjson add "${LINES_ADDED:-0}" \
+  --argjson rm "${LINES_REMOVED:-0}" \
+  '{ts: $ts, branch: $branch, files_changed: $files, lines_added: $add, lines_removed: $rm}' \
+  &gt;&gt; "$LOG_FILE"
+exit 0</code></pre>
+
+  <h3>集計例</h3>
+  <pre><code># 今月のファイル変更数合計
+jq -s 'map(.files_changed) | add' .claude/sessions/$(date +%Y-%m).jsonl
+
+# ブランチ別の作業回数
+jq -r .branch .claude/sessions/*.jsonl | sort | uniq -c | sort -rn</code></pre>
+
+  <!-- ===== Section: 組み合わせ例 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 組み合わせ例: レシピをまとめた実用settings.json</h2>
+
+  <p>個別レシピを組み合わせて「定番セット」を作りましょう。以下は<strong>Web開発者向け標準構成</strong>の例です。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">「Web開発者向け標準セット」の発火シーケンス</div>
+    <pre class="mermaid">
+sequenceDiagram
+  participant U as User
+  participant C as Claude
+  participant H as Hooks
+  participant F as File/Shell
+  U-&gt;&gt;C: プロンプト送信
+  C-&gt;&gt;H: UserPromptSubmit発火
+  H--&gt;&gt;C: PIIマスク済み入力
+  C-&gt;&gt;H: PreToolUse(Bash)発火
+  H--&gt;&gt;C: 危険コマンド検査
+  C-&gt;&gt;H: PreToolUse(Edit)発火
+  H-&gt;&gt;F: Prettier整形
+  C-&gt;&gt;F: Edit適用
+  C-&gt;&gt;H: PostToolUse(Edit)発火
+  H--&gt;&gt;C: ESLint結果
+  C-&gt;&gt;U: 応答終了
+  C-&gt;&gt;H: Stop発火
+  H-&gt;&gt;F: git status + jsonl保存 + Slack
+    </pre>
+    <div class="diagram-caption">6種類のHookが1セッション中で整然と発火する。各段の責務が分離しているので、後から追加/削除しやすい。</div>
+  </div>
+
+  <h3>settings.json(組み合わせ版)</h3>
+  <pre><code>{
+  "hooks": {
+    "UserPromptSubmit": [
+      { "hooks": [{ "type": "command", "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/pii-mask.sh" }] }
+    ],
+    "SessionStart": [
+      { "hooks": [{ "type": "command", "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/session-pull.sh" }] }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [{ "type": "command", "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/bash-guard.sh" }]
+      },
+      {
+        "matcher": "Edit|Write",
+        "hooks": [{ "type": "command", "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/prettier-pre.sh" }]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [{ "type": "command", "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/eslint-post.sh" }]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          { "type": "command", "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/stop-gitstatus.sh" },
+          { "type": "command", "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/stop-jsonl.sh" },
+          { "type": "command", "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/stop-slack.sh" }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+
+  <div class="compare-cards">
+    <div class="cc good">
+      <span class="cc-label">導入効果(実測感覚)</span>
+      <h4>メリット</h4>
+      <ul>
+        <li>整形差分ノイズが激減(PR差分が本質的変更だけに)</li>
+        <li>危険コマンド事故の未然防止</li>
+        <li>長時間作業の完了を見逃さない</li>
+        <li>jsonlログで自分の生産性が数値化できる</li>
+      </ul>
+    </div>
+    <div class="cc neutral">
+      <span class="cc-label">注意点</span>
+      <h4>トレードオフ</h4>
+      <ul>
+        <li>Hookが増えるほど1操作の待ち時間が伸びる</li>
+        <li>スクリプトの不具合で作業が止まるリスク</li>
+        <li>誰かの書いたhookを入れる前に必ずレビュー</li>
+        <li>シェル/コマンド依存(OS間移植性に注意)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== Section: パフォーマンス視覚化 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Hookの実行コスト比較(ms単位で積み上がる)</h2>
+
+  <p>Hookはツール呼び出し毎に発火するため、<strong>1個あたり100ms程度でも10個重なれば1秒</strong>の体感遅延になります。各レシピの典型実行時間を計測した目安は以下。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">各レシピの実行時間目安(中央値・ミリ秒)</div>
+    <canvas id="ch4-bar-2" height="200"></canvas>
+    <div class="diagram-caption">ESLintとSlack通知は重め。重い処理は<code>&amp;</code>でバックグラウンド化するか、matcherで対象ファイルを絞ることで体感を改善できる。</div>
+  </div>
+
+  <h3>実行順とフロー</h3>
+  <div class="diagram-box">
+    <div class="diagram-title">PreToolUse → ツール実行 → PostToolUse の流れ</div>
+    <pre class="mermaid">
+graph LR
+  A["ユーザー入力"] --&gt; B["UserPromptSubmit<br/>(PIIマスク等)"]
+  B --&gt; C["Claude思考"]
+  C --&gt; D{"ツール呼ぶ?"}
+  D -- Yes --&gt; E["PreToolUse発火<br/>(整形/ガード)"]
+  E --&gt; F{"exit 2?"}
+  F -- Yes --&gt; X["ブロック(ツール未実行)"]
+  F -- No --&gt; G["ツール実行"]
+  G --&gt; H["PostToolUse発火<br/>(Lint/通知音)"]
+  H --&gt; C
+  D -- No --&gt; I["応答生成"]
+  I --&gt; J["Stop発火<br/>(git status/Slack/jsonl)"]
+    </pre>
+    <div class="diagram-caption">Stopは応答が完全に終わったタイミングで1回だけ発火。複数のhooks配列はすべて順次実行される。</div>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: hooks配列内の実行順序</summary>
+    <div class="more-body">
+      <p>1つのイベント/matcherに対して複数の<code>hooks</code>を並べた場合、<strong>配列の上から順に直列実行</strong>されます。前のhookが<code>exit 2</code>で失敗すると後続のhookは実行されないため、「ガード系は先に・通知系は後に」という順序を意識すると安全。</p>
+      <p>並列にしたい場合は各commandの末尾に<code>&amp;</code>を付ければバックグラウンド化できますが、stderrの順序が崩れるので通知系にだけ使うのが無難です。</p>
+    </div>
+  </details>
+
+  <details class="more-box">
+    <summary>もっと詳しく: matcher正規表現のコツ</summary>
+    <div class="more-body">
+      <p>matcherは<strong>ツール名の正規表現</strong>です。<code>"Edit|Write"</code>で両方マッチ、<code>".*"</code>や空文字で全マッチ。<code>"Bash"</code>のように完全一致っぽく書いても実際はregexなので、意図せず<code>MyBash</code>にもマッチしてしまう可能性あり(現時点の実装では心配不要ですが、将来的に増える可能性を考えて<code>"^Bash$"</code>と書く流派もあります)。</p>
+      <p>matcherはイベント単位で複数書けるので、「Bash用のガード」と「Edit用のフォーマット」を別ブロックに分ける設計が保守しやすいです。</p>
+    </div>
+  </details>
+
+  <details class="more-box">
+    <summary>もっと詳しく: セキュリティチェックリスト(hook導入前)</summary>
+    <div class="more-body">
+      <ol>
+        <li>コマンドの中身を1行ずつ読む(他人のsnippetは必ず)</li>
+        <li><code>rm</code>・<code>curl | sh</code>・環境変数エクスポートを含むならアラート</li>
+        <li>書き込み先のパスが相対ではなく<code>$CLAUDE_PROJECT_DIR</code>配下か</li>
+        <li>Webhook URLやトークンをハードコードしていないか</li>
+        <li>失敗時に<code>set -e</code>で全体を止めるべきか<code>|| true</code>で黙って流すべきか判断する</li>
+      </ol>
+    </div>
+  </details>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section: ハンズオン ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> ハンズオン: 3つ選んで自環境に導入する</h2>
+
+  <p>10レシピ全部は一気に多すぎるので、<strong>3つだけ</strong>選んで入れるのがおすすめです。以下の「初学者向け推奨3点セット」から始めると失敗しにくい。</p>
+
+  <div class="hands-on-box info-box">
+    <span class="label">今すぐ試す: 推奨3点セット導入</span>
+    <ol>
+      <li><strong>レシピ4</strong>(Stop時git status) — 作業の終わりにファイル変更一覧を出す、副作用ゼロ</li>
+      <li><strong>レシピ7</strong>(PostToolUse通知音) — 終わりに気づける、1行で完結</li>
+      <li><strong>レシピ3</strong>(Bash危険コマンドブロック) — rm -rf系の事故防止、効果絶大</li>
+    </ol>
+    <p>この3つなら<strong>10分で導入</strong>でき、追加の外部サービス(Slack・PII辞書等)も不要です。</p>
+  </div>
+
+  <h3>手順</h3>
+  <ul class="icon-list">
+    <li><i data-lucide="folder-plus" width="20" height="20"></i><div><strong>1. ディレクトリ作成</strong> — <code>mkdir -p .claude/hooks</code> をプロジェクトルートで。</div></li>
+    <li><i data-lucide="file-plus" width="20" height="20"></i><div><strong>2. スクリプト配置</strong> — 上記レシピ3/4のシェルスクリプトを<code>.claude/hooks/</code>に配置。<code>chmod +x</code>を忘れずに。</div></li>
+    <li><i data-lucide="settings" width="20" height="20"></i><div><strong>3. settings.json編集</strong> — <code>.claude/settings.json</code>にレシピ3・4・7の設定をマージ。</div></li>
+    <li><i data-lucide="play-circle" width="20" height="20"></i><div><strong>4. 動作確認</strong> — Claudeに「適当なファイルを作って」と依頼→PostToolUseの音+Stopのgit statusが出ることを確認。</div></li>
+    <li><i data-lucide="shield-check" width="20" height="20"></i><div><strong>5. ブロックテスト</strong> — Claudeに「<code>rm -rf /tmp/test</code>を実行して」と依頼。bash-guardがブロックすれば成功。</div></li>
+  </ul>
+
+  <h3>3点セット統合版 settings.json</h3>
+  <pre><code>{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          { "type": "command", "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/bash-guard.sh" }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash|Write|Edit",
+        "hooks": [
+          { "type": "command", "command": "afplay /System/Library/Sounds/Pop.aiff &amp;" }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          { "type": "command", "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/stop-gitstatus.sh" }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">初級</span>
+    <h4>レシピの分類</h4>
+    <p>以下6つのシナリオについて、使うべきイベント(PreToolUse/PostToolUse/Stop/UserPromptSubmit/SessionStart)を答えてください。</p>
+    <ol>
+      <li>A: 「書き込み前にコードをフォーマットしたい」</li>
+      <li>B: 「作業が終わったらSlackに通知したい」</li>
+      <li>C: 「プロンプトに社内URLが含まれたらマスクしたい」</li>
+      <li>D: 「Claude起動時に最新リモートをpullしたい」</li>
+      <li>E: 「書き込み後にユニットテストを流したい」</li>
+      <li>F: 「Claudeがrm -rfを実行しようとしたら止めたい」</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <ul>
+        <li><strong>A → PreToolUse</strong>: Write/Edit直前なのでPre。matcherは"Edit|Write"。</li>
+        <li><strong>B → Stop</strong>: 全作業終了のタイミング。1回だけ発火。</li>
+        <li><strong>C → UserPromptSubmit</strong>: Claudeに渡る前に加工する必要がある。</li>
+        <li><strong>D → SessionStart</strong>: Claude Code起動時に1回のみ。</li>
+        <li><strong>E → PostToolUse</strong>: Write/Edit後なのでPost。ただしテストが長いと体感遅延が大きいのでStopに移す選択肢もあり。</li>
+        <li><strong>F → PreToolUse (matcher: Bash)</strong>: 実行前に止める必要があるのでPre+exit 2。</li>
+      </ul>
+      <p>「前に止めるか後で検査するか」「全体の終わりか各ツール単位か」という軸で判別できれば十分。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>自分のプロジェクトで3レシピを動かす</h4>
+    <p>以下の5項目を実施し、実際にHookが発火した証拠(スクショor貼り付けテキスト)を残してください。</p>
+    <ol>
+      <li>プロジェクトを1つ選ぶ(Git管理下・書き込み可能)</li>
+      <li>10レシピから3つを選び、理由(目的)を1行で書く</li>
+      <li><code>.claude/hooks/</code>にスクリプトを配置して<code>chmod +x</code></li>
+      <li><code>.claude/settings.json</code>にHook設定をマージ</li>
+      <li>Claudeに適当な作業を依頼し、3つのHookが発火することを確認</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>回答例: <strong>MK(筆者)の学習サイトリポジトリで導入</strong></p>
+      <ul>
+        <li>選定: レシピ1(Prettier)、レシピ4(Stop時git status)、レシピ10(jsonlログ)</li>
+        <li>理由: 「HTML/CSS差分ノイズ排除」「作業終わりの可視化」「毎日の作業量記録」</li>
+        <li>確認: Claudeに「index.htmlを少し編集して」と依頼→PreToolUseでPrettierが動いた痕跡(stderrログ)→Stopでgit statusが出る→<code>.claude/sessions/2026-01.jsonl</code>に1行追記</li>
+      </ul>
+      <p>気づき: <strong>afplay の通知音を入れると会議中に鳴って困る</strong>。平日昼は音を消すよう<code>test $(date +%H) -ge 18</code>のガードをかけた。「自分の環境に合わせて微調整する」がHook活用の本質。</p>
+      <p>もう一つの落とし穴: <strong>chmod +xを忘れると静かに失敗する</strong>。実行権限エラーはデフォルトでは表示されにくいので、発火しないときはまず<code>ls -l .claude/hooks/</code>を確認すること。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.claude.com/en/docs/claude-code/hooks" target="_blank" rel="noopener">Claude Code Hooks 公式ドキュメント</a> — イベント・入出力仕様の一次情報</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式</a> — settings.jsonの他パラメータ全般</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener">Claude Code GitHub</a> — Issues/Discussionsでレシピを検索</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://prettier.io/docs/en/" target="_blank" rel="noopener">Prettier 公式</a> — レシピ1/組み合わせ例の前提</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://eslint.org/docs/latest/" target="_blank" rel="noopener">ESLint 公式</a> — レシピ2の前提</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://jqlang.github.io/jq/manual/" target="_blank" rel="noopener">jq マニュアル</a> — stdin JSONの加工で多用</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://api.slack.com/messaging/webhooks" target="_blank" rel="noopener">Slack Incoming Webhooks</a> — レシピ9の通知基盤</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="04">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="03-settings-syntax.html"><span class="direction">&larr; Prev</span>settings.jsonの書き方</a>
+    <a href="05-lint-prettier.html"><span class="direction">Next &rarr;</span>実践：Lint/Prettier</a>
+  </div>
+</main>
+
+<script>
+window.addEventListener("load", function(){
+  // Bar 1: 10レシピのイベント分布
+  var ctx1 = document.getElementById('ch4-bar-1');
+  if (ctx1 && window.Chart) {
+    new Chart(ctx1, {
+      type: 'bar',
+      data: {
+        labels: ['PreToolUse', 'PostToolUse', 'Stop', 'UserPromptSubmit', 'SessionStart'],
+        datasets: [
+          {
+            label: '整形/検査',
+            data: [1, 1, 0, 0, 0],
+            backgroundColor: 'rgba(217,119,87,0.75)',
+            borderColor: '#D97757',
+            borderWidth: 1
+          },
+          {
+            label: '防御/ブロック',
+            data: [1, 0, 0, 1, 0],
+            backgroundColor: 'rgba(161,98,7,0.7)',
+            borderColor: '#a16207',
+            borderWidth: 1
+          },
+          {
+            label: '通知/記録',
+            data: [1, 1, 3, 0, 0],
+            backgroundColor: 'rgba(100,116,139,0.65)',
+            borderColor: '#64748b',
+            borderWidth: 1
+          },
+          {
+            label: '同期',
+            data: [0, 0, 0, 0, 1],
+            backgroundColor: 'rgba(71,85,105,0.6)',
+            borderColor: '#475569',
+            borderWidth: 1
+          }
+        ]
+      },
+      options: {
+        plugins: { legend: { position: 'bottom' } },
+        responsive: true,
+        scales: {
+          x: { stacked: true, title: { display: true, text: 'イベント' } },
+          y: { stacked: true, beginAtZero: true, title: { display: true, text: 'レシピ数' } }
+        }
+      }
+    });
+  }
+
+  // Bar 2: 各レシピの実行時間目安
+  var ctx2 = document.getElementById('ch4-bar-2');
+  if (ctx2 && window.Chart) {
+    new Chart(ctx2, {
+      type: 'bar',
+      data: {
+        labels: ['1 Prettier', '2 ESLint', '3 bash-guard', '4 git status', '5 audit log', '6 PII mask', '7 通知音', '8 git pull', '9 Slack', '10 jsonl'],
+        datasets: [
+          {
+            label: '実行時間 (ms)',
+            data: [180, 900, 15, 80, 20, 40, 10, 600, 350, 60],
+            backgroundColor: 'rgba(217,119,87,0.6)',
+            borderColor: '#D97757',
+            borderWidth: 1
+          }
+        ]
+      },
+      options: {
+        plugins: { legend: { display: false } },
+        indexAxis: 'y',
+        responsive: true,
+        scales: {
+          x: { beginAtZero: true, title: { display: true, text: 'ミリ秒(中央値の目安・2026年1月時点)' } }
+        }
+      }
+    });
+  }
+});
+</script>
+
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>

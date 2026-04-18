@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>実践：Stop時にサマリ/通知 - MK's Claude Code Tutorial - Hooks Workshop</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code - Hooks
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav class="active"><span class="phase-name">Practice</span><span class="phase-pct" id="pct-practice">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.06</span>
+    実践：Stop時にサマリ/通知
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 8 sections</text>
+    </svg>
+    <div class="progress-info">0h / 4h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-hooks-overview.html"><span class="status-dot" data-chapter="01"></span> Hooksとは</a></li>
+    <li><a href="02-hook-events.html"><span class="status-dot" data-chapter="02"></span> Hookイベント一覧</a></li>
+    <li><a href="03-settings-syntax.html"><span class="status-dot" data-chapter="03"></span> settings.jsonの書き方</a></li>
+    <li><a href="04-recipes.html"><span class="status-dot" data-chapter="04"></span> Hookレシピ集</a></li>
+  </ul>
+  <div class="section-label">Practice</div>
+  <ul>
+    <li><a href="05-lint-prettier.html"><span class="status-dot" data-chapter="05"></span> 実践：Lint/Prettier</a></li>
+    <li><a href="06-stop-summary.html" class="active"><span class="status-dot" data-chapter="06"></span> 実践：Stopサマリ</a></li>
+    <li><a href="07-troubleshoot-security.html"><span class="status-dot" data-chapter="07"></span> トラブル&amp;セキュリティ</a></li>
+    <li><a href="08-final-exercise.html"><span class="status-dot" data-chapter="08"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 2: Practice &gt; Chapter 06</div>
+  <h1>実践：Stop時にサマリ/通知</h1>
+  <p class="subtitle">作業終了時のログ集約・Slack/macOS通知</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 30分</span>
+    <span class="badge">Phase: Practice</span>
+    <span class="badge">難易度: 中級</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">この章のゴール</span>
+    <p>長時間の Claude Code 作業が終わった時、<strong>PCの前に戻って気付く</strong> のでは遅い。本章では <span class="term" data-tip="Stop = Claude Codeが応答を完了した時に発火するHookイベント">Stopイベント</span> を使って、作業終了時に「何が変わったか(<code>git diff --stat</code>)」を取得し、<strong>macOS通知 / Slack Webhook / ブラウザ通知</strong> の3経路で自分に届ける仕組みを構築する。さらに <span class="term" data-tip="JSON Lines形式。1行1JSONで追記ログ向き">jsonl</span> に作業履歴を貯めて、後から振り返れるようにする。本章の記述は <span class="term" data-tip="2026年1月時点の記述。最新は公式ドキュメント参照">2026年1月時点</span> の情報です。</p>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>なぜ「終わった通知」が要るのか</h2>
+
+  <p>Claude Code に「この機能を実装して、テストも通して、リファクタしてPR本文も書いておいて」と投げると、複数ターンにわたって10〜30分沈黙することがあります。あなたはその間に別ウィンドウでドキュメントを読み、Slackで雑談し、気付けば30分経って「…あ、Claude何してたっけ」となる。<strong>戻ってくるタイミングを失う</strong> のが生産性最大の敵です。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Stop通知なし vs あり</div>
+    <svg viewBox="0 0 720 300" width="100%" style="max-width:720px; display:block; margin:0 auto;">
+      <defs>
+        <marker id="ch6-arr-1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#D97757"/>
+        </marker>
+      </defs>
+      <text x="360" y="20" text-anchor="middle" font-size="13" font-weight="700" fill="#64748b">時間軸(分) →</text>
+      <line x1="40" y1="40" x2="680" y2="40" stroke="#cbd5e1" stroke-width="1"/>
+      <text x="40" y="36" font-size="10" fill="#64748b">0</text>
+      <text x="360" y="36" font-size="10" fill="#64748b">15</text>
+      <text x="680" y="36" font-size="10" fill="#64748b">30</text>
+      <text x="30" y="75" font-size="11" fill="#dc2626" font-weight="700">Before</text>
+      <rect x="40"  y="60" width="320" height="30" fill="rgba(217,119,87,0.35)" stroke="#D97757"/>
+      <text x="200" y="80" text-anchor="middle" font-size="11" font-weight="600">Claude 作業中</text>
+      <rect x="360" y="60" width="220" height="30" fill="#fee2e2" stroke="#dc2626"/>
+      <text x="470" y="80" text-anchor="middle" font-size="11" font-weight="700" fill="#b91c1c">完了してるのに気付かない放置</text>
+      <rect x="580" y="60" width="100" height="30" fill="#dcfce7" stroke="#16a34a"/>
+      <text x="630" y="80" text-anchor="middle" font-size="11" font-weight="600">やっと気付く</text>
+      <text x="30" y="175" font-size="11" fill="#16a34a" font-weight="700">After</text>
+      <rect x="40"  y="160" width="320" height="30" fill="rgba(217,119,87,0.35)" stroke="#D97757"/>
+      <text x="200" y="180" text-anchor="middle" font-size="11" font-weight="600">Claude 作業中</text>
+      <circle cx="365" cy="175" r="10" fill="#D97757"/>
+      <text x="365" y="179" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">!</text>
+      <line x1="365" y1="130" x2="365" y2="160" stroke="#D97757" stroke-width="2" marker-end="url(#ch6-arr-1)"/>
+      <text x="365" y="123" text-anchor="middle" font-size="11" font-weight="700" fill="#D97757">Stop Hook 発火</text>
+      <rect x="380" y="160" width="300" height="30" fill="#dcfce7" stroke="#16a34a"/>
+      <text x="530" y="180" text-anchor="middle" font-size="11" font-weight="600">即レビュー(壁時計時間の節約)</text>
+      <text x="30" y="230" font-size="11" fill="#64748b">節約効果:</text>
+      <rect x="40"  y="245" width="60"  height="20" fill="#cbd5e1"/>
+      <text x="70"  y="259" text-anchor="middle" font-size="10">1回</text>
+      <rect x="100" y="245" width="100" height="20" fill="rgba(217,119,87,0.25)"/>
+      <text x="150" y="259" text-anchor="middle" font-size="10">×10回/日</text>
+      <rect x="200" y="245" width="200" height="20" fill="#D97757"/>
+      <text x="300" y="260" text-anchor="middle" font-size="10" fill="#fff" font-weight="700">= 1日あたり 50-150分の可処分時間</text>
+    </svg>
+    <div class="diagram-caption">放置時間の合計は想像以上。通知1本で1日2時間近く戻ってくる。</div>
+  </div>
+
+  <p>Stopイベントは「Claudeが応答を終えた瞬間」に発火します。ここで <code>git diff --stat</code> や変更ファイル一覧を集めて、Slackに流せば、別の場所にいても「終わったよ」が届く。これが本章で組む仕組みです。</p>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>Stopイベントの発火タイミングと入力</h2>
+
+  <p>Stopは <span class="term" data-tip="Claude Codeのメイン応答サイクルが1回完了した時。ユーザが次の発話を入力できる状態に戻った瞬間">メインAgentの応答完了時</span> に1回だけ発火します。<span class="term" data-tip="SubagentがStopした時にだけ発火するイベント。メインのStopとは別物">SubagentStop</span> と混同しないこと。Subagentが5つ並列で回って5回発火するのは SubagentStop の仕事で、Stop は最上位Agentのみ。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">1セッションのイベント発火順</div>
+    <pre class="mermaid">
+sequenceDiagram
+  participant U as あなた
+  participant C as Claude Code
+  participant H as Stop Hook
+  U->>C: 「〜を実装して」
+  C->>C: Edit / Bash / Read (複数ツール実行)
+  C-->>U: 応答完了
+  C->>H: Stop イベント発火
+  H->>H: git diff --stat 取得
+  H->>H: Slack Webhook POST
+  H-->>U: 通知が届く
+    </pre>
+    <div class="diagram-caption">応答完了 → Stop発火 → スクリプト実行 → 通知 の順。数秒で全部終わる。</div>
+  </div>
+
+  <p>Hookコマンドの <code>stdin</code> には JSON が渡されます。中身は <code>session_id</code>、<code>transcript_path</code>、<code>cwd</code>、<code>hook_event_name</code> などです。<code>stop_hook_active</code> フラグもあり、これが <code>true</code> なら「既にStop Hook経由で再起動している」ことを示すので、<strong>無限ループ防止</strong> に使います。</p>
+
+<pre><code>{
+  "session_id": "abc123...",
+  "transcript_path": "/Users/you/.claude/projects/.../abc123.jsonl",
+  "cwd": "/Users/you/work/my-project",
+  "hook_event_name": "Stop",
+  "stop_hook_active": false
+}</code></pre>
+
+  <div class="info-box">
+    <span class="label">セキュリティ警告</span>
+    <p>Hookは <strong>任意のシェルコマンドを自動実行する仕組み</strong> です。stdin で渡される <code>cwd</code> や <code>transcript_path</code> をそのままシェル展開に使うと<span class="term" data-tip="ユーザ入力や外部データをエスケープせずにシェルに渡すと任意コマンド実行の穴になる">コマンドインジェクション</span>の穴になります。必ずJSONパース → 変数代入 → クオート済みで使う(下の実装例はすべてこのパターン)。</p>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>サマリ取得: git diff --stat + α</h2>
+
+  <p>「終わった」だけでなく「<strong>何が終わったか</strong>」を一緒に通知するのが本当に役立つ仕組み。<code>git diff --stat</code> を中核に、以下の4点セットを集めます:</p>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="file-diff" width="20" height="20"></i>
+      <div><strong>変更統計</strong> — <code>git diff --stat HEAD</code> で <code>foo.ts | 12 ++++--</code> の一覧</div>
+    </li>
+    <li>
+      <i data-lucide="list-checks" width="20" height="20"></i>
+      <div><strong>ファイル数と行数</strong> — <code>git diff --shortstat HEAD</code> で <code>3 files changed, 42 insertions(+), 8 deletions(-)</code></div>
+    </li>
+    <li>
+      <i data-lucide="file-question" width="20" height="20"></i>
+      <div><strong>未追跡ファイル</strong> — <code>git ls-files --others --exclude-standard</code> で新規作成ファイル</div>
+    </li>
+    <li>
+      <i data-lucide="timer" width="20" height="20"></i>
+      <div><strong>作業時間</strong> — Stopイベントのタイムスタンプから推定(jsonlログと突合)</div>
+    </li>
+  </ul>
+
+  <p>まずサマリだけ生成するスクリプトを作ります。<code>~/.claude/hooks/stop-summary.sh</code> に保存:</p>
+
+<pre><code>#!/usr/bin/env bash
+# ~/.claude/hooks/stop-summary.sh
+# Stopイベントで呼ばれる。stdinのJSONからcwdを抜いて差分サマリを作る。
+set -euo pipefail
+
+# stdinのJSONをパース (jq必須)
+INPUT="$(cat)"
+CWD="$(echo "$INPUT" | jq -r '.cwd // empty')"
+SESSION="$(echo "$INPUT" | jq -r '.session_id // "unknown"')"
+
+# cwd が git リポジトリでなければ静かに終了
+[ -z "$CWD" ] && exit 0
+cd "$CWD" || exit 0
+git rev-parse --git-dir &gt;/dev/null 2&gt;&amp;1 || exit 0
+
+# サマリ組み立て
+SHORT="$(git diff --shortstat HEAD 2&gt;/dev/null || echo 'no changes')"
+STAT="$(git diff --stat HEAD 2&gt;/dev/null | head -20 || true)"
+UNTRACKED="$(git ls-files --others --exclude-standard | head -10 || true)"
+BRANCH="$(git rev-parse --abbrev-ref HEAD 2&gt;/dev/null || echo '?')"
+
+# 標準出力に結果を返す (通知スクリプトがこれを受け取る)
+cat &lt;&lt;EOF
+[$BRANCH] $SHORT
+--- changed ---
+$STAT
+--- untracked ---
+$UNTRACKED
+EOF</code></pre>
+
+  <p>このスクリプトを <code>chmod +x</code> で実行可能にして、<code>~/.claude/settings.json</code> の Hooks セクションに登録します:</p>
+
+<pre><code>{
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/stop-summary.sh | tee -a ~/.claude/logs/stop.log"
+          }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+
+  <p><code>matcher</code> は Stop には不要(tool名でマッチングする PreToolUse/PostToolUse と違い、Stop はイベント自体が1種類)。<code>tee -a</code> で <code>~/.claude/logs/stop.log</code> に追記しつつ Claude Code 側にも表示、という両立が効きます。</p>
+
+  <details class="more-box">
+    <summary>もっと詳しく: 巨大差分で通知が長くなりすぎる時</summary>
+    <div class="more-body">
+      <p>リファクタで50ファイル変えたりすると、<code>git diff --stat</code> の出力も長くなります。Slackやトースト通知では 1500文字を超えると読みにくいので、以下で丸める:</p>
+      <ol>
+        <li><code>git diff --stat | head -20</code> で上位20行に制限(上の例で実装済み)</li>
+        <li><code>--shortstat</code> だけを通知本文にし、詳細は添付またはリンクに</li>
+        <li>ファイル数が20以上なら本文に「他N件」と要約だけ書く分岐を足す</li>
+      </ol>
+      <p>MKの運用では <strong>本文は <code>shortstat</code> 1行 + 変更ファイルTOP5</strong> で、詳細は後述の <code>jsonl</code> ログに全部貯める、という切り分けが最も読みやすいです。</p>
+    </div>
+  </details>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>通知手段3種の比較</h2>
+
+  <p>通知をどこに飛ばすか、は環境とスタイルで選びます。本章では macOS通知 / Slack Webhook / ブラウザ通知 の3経路を扱います。全部組み合わせても良いし、1本だけでも良い。</p>
+
+  <table>
+    <thead>
+      <tr><th>手段</th><th>到達性</th><th>リッチ度</th><th>導入コスト</th><th>うるささ</th><th>向いている人</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>macOS <code>osascript</code></td><td>PCの前にいれば確実</td><td>文字+音</td><td>0分(標準搭載)</td><td>中(通知センター)</td><td>1台で作業/Mac利用者</td></tr>
+      <tr><td>Slack Webhook</td><td>スマホ・他端末でも届く</td><td>Block Kit でリッチ</td><td>5分(Webhook URL取得)</td><td>低(専用channelで隔離可)</td><td>離席が多い/チーム共有したい</td></tr>
+      <tr><td>ブラウザ通知</td><td>ブラウザ開いてる時のみ</td><td>タイトル+本文+アイコン</td><td>10分(ローカル受信用ページ)</td><td>中</td><td>ブラウザ中心で作業する人</td></tr>
+      <tr><td>Linux <code>notify-send</code></td><td>PCの前にいれば確実</td><td>文字+アイコン</td><td>0-5分</td><td>中</td><td>Linux利用者(参考)</td></tr>
+      <tr><td>メール/SMTP</td><td>確実だが遅延あり</td><td>HTML可</td><td>15分+</td><td>低(後読み)</td><td>非同期レビュー派(参考)</td></tr>
+    </tbody>
+  </table>
+
+  <h3>手段1: macOS osascript</h3>
+
+  <p>Macの標準通知。<code>osascript</code> は macOS にデフォルト搭載なので <strong>追加インストール0</strong>。音も鳴らせる。</p>
+
+<pre><code>#!/usr/bin/env bash
+# ~/.claude/hooks/notify-mac.sh
+set -euo pipefail
+SUMMARY="$(~/.claude/hooks/stop-summary.sh)"
+TITLE="Claude Code 完了"
+# ダブルクオート内のダブルクオートをエスケープ
+SAFE="$(printf '%s' "$SUMMARY" | sed 's/"/\\"/g' | head -c 200)"
+osascript -e "display notification \"$SAFE\" with title \"$TITLE\" sound name \"Glass\""</code></pre>
+
+  <p>音は <code>Glass / Hero / Ping / Pop / Purr / Sosumi / Submarine</code> 等を指定可能。うるさければ <code>sound name</code> を外せば無音通知になります。</p>
+
+  <h3>手段2: Slack Incoming Webhook</h3>
+
+  <p>スマホに届くのが最大の利点。席を立っていても「終わった」が分かる。<strong>手順</strong>: Slack の Admin画面 → Apps → <code>Incoming Webhooks</code> を追加 → 投稿先channelを選ぶ → URL発行。URLは漏洩すると誰でも投稿できるので <code>~/.zshrc</code> や <code>.env</code> に環境変数で退避し、絶対にGitに入れない。</p>
+
+<pre><code>#!/usr/bin/env bash
+# ~/.claude/hooks/notify-slack.sh
+set -euo pipefail
+
+: "${SLACK_WEBHOOK_URL:?SLACK_WEBHOOK_URL not set}"
+
+SUMMARY="$(~/.claude/hooks/stop-summary.sh)"
+# JSONエスケープを jq に任せる
+PAYLOAD="$(jq -n --arg text "$SUMMARY" '{
+  text: "Claude Code 作業完了",
+  blocks: [
+    { "type": "header", "text": { "type": "plain_text", "text": "✅ Claude Code 完了" } },
+    { "type": "section", "text": { "type": "mrkdwn", "text": "```\($text)```" } }
+  ]
+}')"
+
+curl -sS -X POST -H 'Content-Type: application/json' \
+  --data "$PAYLOAD" "$SLACK_WEBHOOK_URL" &gt; /dev/null</code></pre>
+
+  <p>settings.json 側は環境変数 <code>SLACK_WEBHOOK_URL</code> を参照します。Hook実行環境は <strong>ログインシェルの初期化ファイルを読まない</strong> 場合があるので、コマンド内で明示的に source するのが安全:</p>
+
+<pre><code>{
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "source ~/.claude/env && ~/.claude/hooks/notify-slack.sh"
+          }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+
+  <p><code>~/.claude/env</code> に <code>export SLACK_WEBHOOK_URL="https://hooks.slack.com/services/XXX/YYY/ZZZ"</code> の1行を書いて <code>chmod 600</code> しておくのがMKの運用。</p>
+
+  <h3>手段3: ブラウザ通知</h3>
+
+  <p>ブラウザが開いている時に <code>Notification API</code> で通知を出す。ローカルにWebSocketサーバを立てる方式と、ポーリングで <code>localhost</code> からJSONを取りに行く方式があり、ここではシンプルに <strong>ファイル更新 → ブラウザ拡張でtoast</strong> の構成を推奨。詳細実装は長くなるので <a href="https://developer.mozilla.org/en-US/docs/Web/API/Notification" target="_blank" rel="noopener">MDN Notification API</a> を参照してください。</p>
+
+  <div class="compare-cards">
+    <div class="cc good">
+      <span class="cc-label">Slack推し</span>
+      <h4>離席・別端末・チーム共有に強い</h4>
+      <ul>
+        <li>スマホ/iPadでも受信できる</li>
+        <li>専用channelで履歴が溜まる</li>
+        <li>Block Kitでサマリを構造化できる</li>
+      </ul>
+    </div>
+    <div class="cc bad">
+      <span class="cc-label">Slack注意点</span>
+      <h4>Webhook URL漏洩に注意</h4>
+      <ul>
+        <li>URLはGit/Qiita等に絶対入れない</li>
+        <li>通知が多いとchannelが荒れる</li>
+        <li>オフラインだと遅延して届く</li>
+      </ul>
+    </div>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>jsonl で作業履歴を貯める</h2>
+
+  <p>通知は「今」届けば価値があるが、<strong>履歴は蓄積すると別の価値</strong> が生まれます。1週間溜めると「自分は何に時間使っているか」が見える。jsonl(1行1JSON)形式なら <code>jq</code> で切り刻めて集計にも便利。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Stop → jsonl追記 → 後日集計の流れ</div>
+    <pre class="mermaid">
+graph LR
+  S["Stop イベント"] --> G["git diff --stat"]
+  G --> J["JSON1行化"]
+  J --> F["~/.claude/logs/sessions.jsonl"]
+  F --> Q["jq で集計"]
+  Q --> R1["週次ダッシュボード"]
+  Q --> R2["ファイル別頻度"]
+  Q --> R3["セッション時間分布"]
+    </pre>
+    <div class="diagram-caption">リアルタイム通知と別経路で永続ログを作ると振り返りに効く。</div>
+  </div>
+
+  <p>jsonl追記スクリプト:</p>
+
+<pre><code>#!/usr/bin/env bash
+# ~/.claude/hooks/log-session.sh
+set -euo pipefail
+
+INPUT="$(cat)"
+CWD="$(echo "$INPUT" | jq -r '.cwd // empty')"
+SESSION="$(echo "$INPUT" | jq -r '.session_id // "unknown"')"
+NOW="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+
+# サマリ集計 (git repoなら)
+FILES=0
+INS=0
+DEL=0
+BRANCH=""
+if cd "$CWD" 2&gt;/dev/null &amp;&amp; git rev-parse --git-dir &gt;/dev/null 2&gt;&amp;1; then
+  BRANCH="$(git rev-parse --abbrev-ref HEAD 2&gt;/dev/null || echo '')"
+  STATS="$(git diff --shortstat HEAD 2&gt;/dev/null || echo '')"
+  FILES="$(echo "$STATS" | grep -oE '[0-9]+ files? changed' | grep -oE '[0-9]+' || echo 0)"
+  INS="$(echo "$STATS" | grep -oE '[0-9]+ insertion' | grep -oE '[0-9]+' || echo 0)"
+  DEL="$(echo "$STATS" | grep -oE '[0-9]+ deletion' | grep -oE '[0-9]+' || echo 0)"
+fi
+
+# 1行JSONとして追記
+mkdir -p ~/.claude/logs
+jq -nc \
+  --arg ts "$NOW" --arg session "$SESSION" --arg cwd "$CWD" \
+  --arg branch "$BRANCH" --argjson files "${FILES:-0}" \
+  --argjson ins "${INS:-0}" --argjson del "${DEL:-0}" \
+  '{ts:$ts, session:$session, cwd:$cwd, branch:$branch, files:$files, insertions:$ins, deletions:$del}' \
+  &gt;&gt; ~/.claude/logs/sessions.jsonl</code></pre>
+
+  <p>settings.json で Stop に複数Hook登録するとチェーンできます:</p>
+
+<pre><code>{
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          { "type": "command", "command": "~/.claude/hooks/log-session.sh" },
+          { "type": "command", "command": "source ~/.claude/env &amp;&amp; ~/.claude/hooks/notify-slack.sh" }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+
+  <p>この順にすると「記録が先、通知が後」。記録は必ず残り、通知失敗しても履歴は保全される。1週間後の集計はこうやります:</p>
+
+<pre><code># 今日の合計変更行数
+jq -s 'map(select(.ts | startswith("2026-04-18"))) | map(.insertions + .deletions) | add' ~/.claude/logs/sessions.jsonl
+
+# セッション数 TOP プロジェクト
+jq -s 'group_by(.cwd) | map({cwd:.[0].cwd, count:length}) | sort_by(-.count) | .[:5]' ~/.claude/logs/sessions.jsonl</code></pre>
+
+  <div class="diagram-box">
+    <div class="diagram-title">1週間のjsonlから見えたもの(MKの実データ例)</div>
+    <canvas id="ch6-bar-1" height="180"></canvas>
+    <div class="diagram-caption">Claude Codeでの変更行数を曜日別に集計。火/木に集中、土日は少なめ。</div>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>ハンズオン手順</h2>
+
+  <p>ここまでの仕組みを自PCに組み込みます。所要10-15分。</p>
+
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-label">依存確認</div><div class="step-desc"><code>jq</code>/<code>curl</code>/<code>git</code></div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-label">Webhook取得</div><div class="step-desc">Slack管理画面から</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-label">環境変数退避</div><div class="step-desc"><code>~/.claude/env</code></div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-label">スクリプト配置</div><div class="step-desc">3本を <code>chmod +x</code></div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-label">settings登録</div><div class="step-desc">Stop Hook追加</div></div>
+    <div class="step"><div class="step-num">6</div><div class="step-label">動作確認</div><div class="step-desc">Claude Codeで1発実行</div></div>
+  </div>
+
+  <div class="info-box">
+    <span class="label">セキュリティ再確認</span>
+    <p>Hookは <strong>任意コマンドを自動実行</strong> します。本章のスクリプトは全て公開コードを元にしていますが、自分で追記する場合は必ず <code>set -euo pipefail</code> を入れ、stdin由来の値は必ずjqでパースしてから変数経由で使うこと。<code>eval</code> や裸の <code>$VAR</code> 展開は禁止です。Webhook URLは<strong>絶対にGitにコミットしない</strong>。</p>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: 通知が多すぎて逆に邪魔になる時</summary>
+    <div class="more-body">
+      <p>Claude Code を1日10回以上使う人は、<strong>全部のStopで通知が飛ぶとうるさい</strong>。以下の条件で抑制する実装が有用:</p>
+      <ol>
+        <li><strong>作業時間しきい値</strong>: セッション開始→Stopが5分未満なら通知しない(<code>sessions.jsonl</code>を引いて判定)</li>
+        <li><strong>変更が無ければ通知しない</strong>: <code>git diff --shortstat</code> が空なら早期exit</li>
+        <li><strong>時間帯制限</strong>: 深夜/休日はmacOS通知のみ、Slackには飛ばさない</li>
+        <li><strong>プロジェクト限定</strong>: <code>cwd</code> が特定のディレクトリ配下の時だけ通知</li>
+      </ol>
+      <p>MKは「5分以上 かつ 変更あり」で抑えると、1日5-7本に落ち着いて丁度よくなりました。</p>
+    </div>
+  </details>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>macOS通知のみでStop Hookを1本仕込む</h4>
+    <p>Slackはまだ設定しない前提で、最小構成の「作業完了トースト通知」を動かします。</p>
+    <ol>
+      <li><code>~/.claude/hooks/notify-mac.sh</code> を本章のサンプル通り作成して <code>chmod +x</code></li>
+      <li><code>~/.claude/settings.json</code> の <code>hooks.Stop</code> に1エントリ追加</li>
+      <li>Claude Code で適当なディレクトリに <code>cd</code> し「helloと出力して」と依頼</li>
+      <li>応答完了後、macOSの右上に通知が出ることを確認</li>
+      <li>出ない場合はシステム設定 → 通知 → スクリプトエディタ の通知許可を確認</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><code>~/.claude/settings.json</code> に以下を追加(既存ファイルがあればマージ):</p>
+<pre><code>{
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          { "type": "command", "command": "~/.claude/hooks/notify-mac.sh" }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+      <p>これだけで動きます。確認のコツは<strong>最初は通知スクリプトの中身を <code>osascript -e 'display notification "test" with title "hi"'</code> に単純化</strong> してmacOS側の権限問題を切り分けること。いきなり <code>stop-summary.sh</code> を噛ますと、git非リポジトリで早期exitして「動かない」ように見えることがあります。確認が取れたら本番の <code>notify-mac.sh</code> に戻す、が安全な順序です。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>Slack通知 + jsonl記録 + 抑制ロジックを全部乗せる</h4>
+    <p>実運用に耐えるフル構成を自PCに構築します。所要15分。</p>
+    <ol>
+      <li>Slack管理画面で Incoming Webhook を取得し <code>~/.claude/env</code> に退避(<code>chmod 600</code>)</li>
+      <li>本章の <code>stop-summary.sh</code> / <code>notify-slack.sh</code> / <code>log-session.sh</code> を配置</li>
+      <li><code>notify-slack.sh</code> の冒頭に「変更0ならexit 0」の分岐を追加</li>
+      <li>settings.json の Stop に <code>log-session.sh</code> → <code>notify-slack.sh</code> の順で2つチェーン</li>
+      <li>適当なリポジトリで軽い編集依頼を出し、Slackに通知が届くこと・<code>sessions.jsonl</code> に1行追加されることを確認</li>
+      <li>同じリポジトリで「出力だけの指示」(ファイル変更なし)を出し、Slack通知が出ないことを確認</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>抑制ロジック入り <code>notify-slack.sh</code> の冒頭はこう書きます:</p>
+<pre><code>#!/usr/bin/env bash
+set -euo pipefail
+: "${SLACK_WEBHOOK_URL:?SLACK_WEBHOOK_URL not set}"
+
+# 変更が無ければ通知しない (stop-summary.shの出力で判定)
+SUMMARY="$(~/.claude/hooks/stop-summary.sh)"
+if echo "$SUMMARY" | grep -q 'no changes'; then
+  exit 0
+fi
+
+# 本文を200文字で丸める(Slack可読性)
+SHORT="$(printf '%s' "$SUMMARY" | head -c 1500)"
+PAYLOAD="$(jq -n --arg text "$SHORT" '{
+  text: "Claude Code 作業完了",
+  blocks: [
+    { "type": "header", "text": { "type": "plain_text", "text": "✅ Claude Code 完了" } },
+    { "type": "section", "text": { "type": "mrkdwn", "text": "```\($text)```" } }
+  ]
+}')"
+curl -sS -X POST -H 'Content-Type: application/json' \
+  --data "$PAYLOAD" "$SLACK_WEBHOOK_URL" &gt; /dev/null</code></pre>
+      <p>settings.json の完成形:</p>
+<pre><code>{
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          { "type": "command", "command": "~/.claude/hooks/log-session.sh" },
+          { "type": "command", "command": "source ~/.claude/env &amp;&amp; ~/.claude/hooks/notify-slack.sh" }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+      <p>検証ポイントは3つ: (1) jsonl は「変更なし」でも追記される(履歴の欠損防止) (2) Slack は「変更なし」時に飛ばない (3) Webhook URL は <code>env</code> ファイル側に退避されて <code>settings.json</code> には残らない。これでチームに <code>settings.json</code> を共有しても事故りません。<strong>1週間運用すると <code>sessions.jsonl</code> が 30-50行</strong> 溜まり、冒頭の <code>jq</code> ワンライナーで自分の働き方が数字で見えてきます。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><a href="https://docs.claude.com/en/docs/claude-code/hooks" target="_blank" rel="noopener">Claude Code Hooks 公式ドキュメント</a> <span class="res-type doc">Doc</span> Stop / SubagentStop の入力スキーマと最新仕様</li>
+      <li><a href="https://api.slack.com/messaging/webhooks" target="_blank" rel="noopener">Slack: Sending messages using Incoming Webhooks</a> <span class="res-type doc">Doc</span> Webhook URL発行手順と payload 仕様</li>
+      <li><a href="https://api.slack.com/block-kit" target="_blank" rel="noopener">Slack Block Kit</a> <span class="res-type doc">Doc</span> リッチな通知レイアウト構築</li>
+      <li><a href="https://jqlang.github.io/jq/manual/" target="_blank" rel="noopener">jq Manual</a> <span class="res-type doc">Doc</span> jsonl 集計ワンライナーに必須</li>
+      <li><a href="https://developer.apple.com/library/archive/documentation/LanguagesUtilities/Conceptual/MacAutomationScriptingGuide/DisplayNotifications.html" target="_blank" rel="noopener">Apple: Display Notifications (osascript)</a> <span class="res-type doc">Doc</span> macOS通知の公式仕様</li>
+      <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Notification" target="_blank" rel="noopener">MDN: Notification API</a> <span class="res-type doc">Doc</span> ブラウザ通知の実装リファレンス</li>
+      <li><a href="https://www.youtube.com/results?search_query=Claude+Code+hooks+slack" target="_blank" rel="noopener">YouTube: Claude Code hooks Slack</a> <span class="res-type video">Video</span> Stop Hook + Slack 通知の動画デモ集</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="06">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="05-lint-prettier.html"><span class="direction">&larr; Prev</span>実践：Lint/Prettier</a>
+    <a href="07-troubleshoot-security.html"><span class="direction">Next &rarr;</span>トラブル&amp;セキュリティ</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<!-- 視覚化ライブラリ群 -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+<script>
+  window.addEventListener("load", function() {
+    var ctx = document.getElementById('ch6-bar-1');
+    if (!ctx || !window.Chart) return;
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['月','火','水','木','金','土','日'],
+        datasets: [{
+          label: '変更行数 (insertions + deletions)',
+          data: [240, 680, 420, 590, 380, 90, 60],
+          backgroundColor: ['rgba(217,119,87,0.55)','#D97757','rgba(217,119,87,0.55)','#D97757','rgba(217,119,87,0.55)','#cbd5e1','#cbd5e1'],
+          borderRadius: 6
+        }, {
+          label: 'セッション数',
+          data: [3, 7, 5, 6, 4, 1, 1],
+          backgroundColor: 'rgba(24,24,27,0.2)',
+          borderRadius: 6,
+          yAxisID: 'y1'
+        }]
+      },
+      options: {
+        plugins: { legend: { position: 'bottom' } },
+        scales: {
+          y:  { beginAtZero: true, position: 'left',  title: { display: true, text: '行数' } },
+          y1: { beginAtZero: true, position: 'right', grid: { drawOnChartArea: false }, title: { display: true, text: 'セッション数' } }
+        }
+      }
+    });
+  });
+</script>
+</body>
+</html>

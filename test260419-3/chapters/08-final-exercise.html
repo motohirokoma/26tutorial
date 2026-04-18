@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>最終演習：頻出作業3つをHook化 - MK's Claude Code Tutorial - Hooks Workshop</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code - Hooks
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav class="active"><span class="phase-name">Practice</span><span class="phase-pct" id="pct-practice">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.08</span>
+    最終演習：頻出作業3つをHook化
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 8 sections</text>
+    </svg>
+    <div class="progress-info">0h / 4h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-hooks-overview.html"><span class="status-dot" data-chapter="01"></span> Hooksとは</a></li>
+    <li><a href="02-hook-events.html"><span class="status-dot" data-chapter="02"></span> Hookイベント一覧</a></li>
+    <li><a href="03-settings-syntax.html"><span class="status-dot" data-chapter="03"></span> settings.jsonの書き方</a></li>
+    <li><a href="04-recipes.html"><span class="status-dot" data-chapter="04"></span> Hookレシピ集</a></li>
+  </ul>
+  <div class="section-label">Practice</div>
+  <ul>
+    <li><a href="05-lint-prettier.html"><span class="status-dot" data-chapter="05"></span> 実践：Lint/Prettier</a></li>
+    <li><a href="06-stop-summary.html"><span class="status-dot" data-chapter="06"></span> 実践：Stopサマリ</a></li>
+    <li><a href="07-troubleshoot-security.html"><span class="status-dot" data-chapter="07"></span> トラブル&amp;セキュリティ</a></li>
+    <li><a href="08-final-exercise.html" class="active"><span class="status-dot" data-chapter="08"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 2: Practice &gt; Chapter 08</div>
+  <h1>最終演習：頻出作業3つをHook化</h1>
+  <p class="subtitle">手で繰り返している作業から3つ選んで自動化 — 7章の総仕上げ</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 30分</span>
+    <span class="badge">Phase: Practice</span>
+    <span class="badge">難易度: 応用</span>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- Section 1: 7章の学びを「自分の手作業」に落とす -->
+  <!-- ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 7章の学びを「自分の手作業」に落とす</h2>
+
+  <p>ここまで、Hook の概念・イベント・settings.json 構文・レシピ集・Lint/Prettier 自動化・Stop サマリ・トラブルとセキュリティを学んできました。知識は使わなければ腐ります。この最終章では <strong>「手で繰り返している作業を3つ Hook 化し、効果を数値で測定できている」</strong>状態まで持っていきます。</p>
+
+  <p>目標は <strong>「1週間以内に3つの Hook を自分の settings.json に常駐させ、Before/After の手間削減を記録している」</strong>こと。抽出 → settings.json 実装 → 動作検証 → 測定までを1枚の設計書にまとめるのが本演習のゴールです。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span></p>
+
+  <div class="info-box">
+    <span class="label">Tips</span>
+    <p>完璧な3つを選ぶ必要はありません。<strong>まず5分で10個書き出し</strong>、その中から「頻度が高い × 定型化できる × <span class="term" data-tip="Hookのコマンドは任意のシェルを実行する。誤ったコマンドで開発環境を破壊するリスクがあるため、副作用の小さいものから始めるべき。">副作用が小さい</span>」の3軸で3つに絞ります。完璧より「まず動かす」が正解です。</p>
+  </div>
+
+  <!-- 7章が最終演習のどこに効くか SVG -->
+  <div class="diagram-box">
+    <div class="diagram-title">7章の知識が「3つHook化」のどこに効くか</div>
+    <svg viewBox="0 0 720 340" width="100%" style="max-width:720px; display:block; margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0" y="0" width="720" height="340" rx="12" fill="#fafafa" stroke="#e4e4e7"/>
+      <text x="360" y="28" text-anchor="middle" font-size="13" font-weight="700" fill="#18181b">7章分の知識が1つの settings.json に収束する</text>
+
+      <!-- 基礎 -->
+      <rect x="30" y="55" width="200" height="115" rx="8" fill="rgba(217,119,87,0.15)" stroke="#D97757"/>
+      <text x="130" y="78" text-anchor="middle" font-size="12" font-weight="700" fill="#D97757">概念・構文(CONCEPT)</text>
+      <text x="130" y="98" text-anchor="middle" font-size="10" fill="#52525b">Ch01 なぜ Hook か</text>
+      <text x="130" y="114" text-anchor="middle" font-size="10" fill="#52525b">Ch02 イベントの選定</text>
+      <text x="130" y="130" text-anchor="middle" font-size="10" fill="#52525b">Ch03 settings.json 構文</text>
+      <text x="130" y="146" text-anchor="middle" font-size="10" fill="#52525b">Ch04 レシピの型を知る</text>
+      <text x="130" y="162" text-anchor="middle" font-size="10" fill="#52525b">→ 作業の見つけ方に効く</text>
+
+      <!-- 実装 -->
+      <rect x="260" y="55" width="200" height="115" rx="8" fill="rgba(217,119,87,0.15)" stroke="#D97757"/>
+      <text x="360" y="78" text-anchor="middle" font-size="12" font-weight="700" fill="#D97757">実装(IMPLEMENT)</text>
+      <text x="360" y="98" text-anchor="middle" font-size="10" fill="#52525b">Ch05 PreToolUse で整形</text>
+      <text x="360" y="114" text-anchor="middle" font-size="10" fill="#52525b">Ch06 Stop で通知/ログ</text>
+      <text x="360" y="130" text-anchor="middle" font-size="10" fill="#52525b">matcher の書き方</text>
+      <text x="360" y="146" text-anchor="middle" font-size="10" fill="#52525b">stdin/exit code の扱い</text>
+      <text x="360" y="162" text-anchor="middle" font-size="10" fill="#52525b">→ Hook 実装に効く</text>
+
+      <!-- 運用 -->
+      <rect x="490" y="55" width="200" height="115" rx="8" fill="rgba(217,119,87,0.15)" stroke="#D97757"/>
+      <text x="590" y="78" text-anchor="middle" font-size="12" font-weight="700" fill="#D97757">運用(OPERATE)</text>
+      <text x="590" y="98" text-anchor="middle" font-size="10" fill="#52525b">Ch07 トラブル切り分け</text>
+      <text x="590" y="114" text-anchor="middle" font-size="10" fill="#52525b">セキュリティレビュー</text>
+      <text x="590" y="130" text-anchor="middle" font-size="10" fill="#52525b">--debug での検証</text>
+      <text x="590" y="146" text-anchor="middle" font-size="10" fill="#52525b">失敗時の切り戻し</text>
+      <text x="590" y="162" text-anchor="middle" font-size="10" fill="#52525b">→ テスト/安全確認に効く</text>
+
+      <!-- 矢印 -->
+      <line x1="130" y1="175" x2="360" y2="235" stroke="#D97757" stroke-width="1.5"/>
+      <line x1="360" y1="175" x2="360" y2="235" stroke="#D97757" stroke-width="1.5"/>
+      <line x1="590" y1="175" x2="360" y2="235" stroke="#D97757" stroke-width="1.5"/>
+
+      <!-- 成果物 -->
+      <rect x="180" y="235" width="360" height="85" rx="8" fill="#ffffff" stroke="#18181b" stroke-width="1.5"/>
+      <text x="360" y="258" text-anchor="middle" font-size="13" font-weight="700" fill="#18181b">あなたの settings.json(Hook 3つ)</text>
+      <text x="360" y="278" text-anchor="middle" font-size="10" fill="#52525b">抽出した3作業 / matcher / command / 測定値</text>
+      <text x="360" y="294" text-anchor="middle" font-size="10" fill="#52525b">セキュリティ確認済み / 切り戻し手順つき</text>
+      <text x="360" y="310" text-anchor="middle" font-size="10" fill="#52525b">本章の記述は2026年1月時点の情報に基づく</text>
+    </svg>
+    <div class="diagram-caption">CONCEPT × IMPLEMENT × OPERATE の3軸を束ねたものが、あなた専用の settings.json になる。</div>
+  </div>
+
+  <h3>今回の演習の進め方</h3>
+
+  <div class="steps">
+    <div class="step done"><div class="step-num">1</div><div class="step-label">棚卸し</div><div class="step-desc">手作業10個列挙</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-label">候補3つ抽出</div><div class="step-desc">頻度×定型度×安全性</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-label">Hook実装</div><div class="step-desc">settings.json記述</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-label">検証</div><div class="step-desc">--debugで発火確認</div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-label">測定</div><div class="step-desc">工数/頻度/ミス削減</div></div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- Section 2: 問題提示 -->
+  <!-- ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 問題: 頻出作業3つをHook化する</h2>
+
+  <p>以下の前提条件で、<strong>1枚のHook運用設計書</strong>を作ってください。フォーマットはスプレッドシート・Notion・Markdown、何でも構いませんが、最終成果物は必ず <code>settings.json</code> に落ちている必要があります。</p>
+
+  <h3>前提条件</h3>
+
+  <table>
+    <thead>
+      <tr><th>項目</th><th>内容</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>対象者</td><td>Claude Code を1週間以上使い、Ch01〜07を読み終えた人</td></tr>
+      <tr><td>期間</td><td>設計30分 + 運用1週間(実運用で検証)</td></tr>
+      <tr><td>個数</td><td><span class="term" data-tip="最初は多すぎないことが大事。3つが設計・検証・切り戻しを同時に回せる上限。">3つ</span>(欲張らない)</td></tr>
+      <tr><td>選定基準</td><td>週3回以上発生 / 1回1分以上の工数 / コマンドが決まっている</td></tr>
+      <tr><td>イベント</td><td>PreToolUse / PostToolUse / Stop / UserPromptSubmit / SessionStart のいずれか</td></tr>
+      <tr><td><span class="term" data-tip="settings.json の hooks.{event}.matcher フィールドに書く正規表現。tool 名にマッチしたときだけコマンドを起動する。">matcher</span></td><td>ツール名の正規表現で絞り込む(例: <code>^(Edit|Write)$</code>)</td></tr>
+      <tr><td>測定指標</td><td>削減工数(秒/回) / 発火回数(週) / ミス検出数 の3つを最低限記録</td></tr>
+      <tr><td>検証環境</td><td>Claude Code CLI (<span class="term" data-tip="2026年1月時点の記述。最新は公式ドキュメント参照。hooks セクションの仕様は変更される可能性あり。">2026年1月時点</span>)</td></tr>
+      <tr><td>セキュリティ</td><td><code>rm</code> / <code>curl</code> / <code>eval</code> を含む Hook は自分で精査してから採用</td></tr>
+    </tbody>
+  </table>
+
+  <h3>求めるアウトプット (5点セット)</h3>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="clipboard-list" width="20" height="20"></i>
+      <div><strong>棚卸しマトリクス</strong> — 手作業10個を頻度×定型度×安全性で評価し、スコア上位3つを採用</div>
+    </li>
+    <li>
+      <i data-lucide="target" width="20" height="20"></i>
+      <div><strong>3つのHookカード</strong> — 名前・目的・<span class="term" data-tip="Hookが起動するタイミング。PreToolUse(ツール実行前)、PostToolUse(実行後)、Stop(作業終了時)など。">イベント</span>・matcher・command を1枚で</div>
+    </li>
+    <li>
+      <i data-lucide="file-code" width="20" height="20"></i>
+      <div><strong>settings.json スニペット</strong> — コピペで動く粒度。自PCの <code>~/.claude/settings.json</code> に書ける完成形</div>
+    </li>
+    <li>
+      <i data-lucide="shield-check" width="20" height="20"></i>
+      <div><strong>セキュリティチェックリスト</strong> — 破壊的操作・秘密情報リーク・<span class="term" data-tip="環境変数やコマンド置換を通じて攻撃者が任意コマンドを埋め込む脆弱性。Hookのcommand文字列に信頼できない値を展開するのは厳禁。">注入リスク</span>の3点を潰したことを確認</div>
+    </li>
+    <li>
+      <i data-lucide="activity" width="20" height="20"></i>
+      <div><strong>測定指標と1週間ログ</strong> — 発火回数/削減工数/失敗回数を数字で。Before/After の差分を出す</div>
+    </li>
+  </ul>
+
+  <!-- タイムライン: 設計→実行→測定 -->
+  <h3>演習のタイムライン(1週間運用)</h3>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-date">D-0</div>
+      <div class="tl-title">棚卸し・候補抽出</div>
+      <div class="tl-body">5分で手作業10個を列挙。頻度×定型度×安全性で評価し、3つに絞る。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">D-1</div>
+      <div class="tl-title">Hook 実装 + 検証</div>
+      <div class="tl-body">settings.json にスニペット追加。<code>claude --debug</code> で発火をログ確認、失敗は matcher と PATH を先に疑う。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">D-2 〜 D-7</div>
+      <div class="tl-title">実運用・記録</div>
+      <div class="tl-body">日常業務で走らせる。1日1行で「発火回数/削減秒/違和感」をメモ。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">D-7</div>
+      <div class="tl-title">測定・振り返り</div>
+      <div class="tl-body">Before/After 比較。邪魔になっている1つを特定し、matcher を絞るか削除するか判断。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">D-8 〜</div>
+      <div class="tl-title">次の3つの計画</div>
+      <div class="tl-body">応用課題: 計測データを踏まえ、チーム共有Hookパック or CI/CDとの住み分けを設計。</div>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <span class="label">Note</span>
+    <p>「3つ全部うまく行く」ことを目指さないで構いません。3つのうち<strong>1つが残れば成功</strong>、2つ残れば合格、3つ残れば上出来。<strong>邪魔になる1つを見つけて外す</strong>のが、この演習の大きな収穫です。Hook は消すコストが低いので、迷ったらまず入れてみる姿勢で問題ありません。</p>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- Section 3: 段階ヒント (5つ) -->
+  <!-- ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 段階ヒント (行き詰まったら開く)</h2>
+
+  <p>いきなり全部開くと「答え写し」になります。まず自分で1つ書いてみて、詰まったヒントだけ開いてください。5つのヒントは <strong>作業の見つけ方 → イベント選定 → matcher 設計 → テスト方法 → セキュリティ確認</strong> の順に対応しています。</p>
+
+  <details class="more-box">
+    <summary>もっと詳しく: ヒント1 — 繰り返し作業の見つけ方 (Ch01 / Ch04)</summary>
+    <div class="more-body">
+      <p>Hook 化の<strong>良い候補</strong>には5つのシグナルがあります:</p>
+      <ul>
+        <li><strong>週3回以上発生する</strong> — たまにしかないなら手でやったほうが学習コストが安い</li>
+        <li><strong>コマンドが1行で書ける</strong> — <code>prettier --write</code> / <code>pytest -q</code> / <code>osascript -e ...</code> など</li>
+        <li><strong>Claude に毎回頼んでいる</strong> — 「フォーマットして」「テストして」と何度も指示している作業</li>
+        <li><strong>入出力が決まっている</strong> — 入力はツール名とパス、出力は成功/失敗だけで良い</li>
+        <li><strong>失敗しても切り戻せる</strong> — 書き換えた後に Git で差分を戻せる範囲</li>
+      </ul>
+      <p>逆に<strong>悪い候補</strong>は: ①対話的な判断が必要 / ②パラメータが毎回変わる / ③実行に30秒以上かかる(Claude の応答が詰まる) / ④失敗が高コスト(本番DB への書き込み等)。これらは <strong>Slash Command / CI/CD</strong> に任せるのが正解です。</p>
+      <div class="info-box">
+        <span class="label">Tips</span>
+        <p>候補が10個出ない人は、<strong>直近5セッションの会話ログ</strong>を見返すのがお勧め。「これフォーマットして」「テスト通して」「コミットメッセージ考えて」のような同じ依頼が必ず何個か見つかります。それが Hook 化の種です。</p>
+      </div>
+    </div>
+  </details>
+
+  <details class="more-box">
+    <summary>もっと詳しく: ヒント2 — イベントの選び方 (Ch02)</summary>
+    <div class="more-body">
+      <p>主要5イベントの使い分け(Ch02の復習):</p>
+      <table>
+        <thead><tr><th>イベント</th><th>発火タイミング</th><th>ブロック可否</th><th>典型的な用途</th></tr></thead>
+        <tbody>
+          <tr><td>PreToolUse</td><td>ツール実行の直前</td><td>exit 2 で可</td><td>危険コマンドの拒否 / Write前の整形</td></tr>
+          <tr><td>PostToolUse</td><td>ツール実行の直後</td><td>不可</td><td>書き出し後の Prettier / Lint / テスト</td></tr>
+          <tr><td>Stop</td><td>Claudeが応答を終えた時</td><td>不可</td><td>通知 / git status / jsonl ログ</td></tr>
+          <tr><td>UserPromptSubmit</td><td>ユーザ入力送信直後</td><td>exit 2 で可</td><td>PII マスク / 禁止語検知</td></tr>
+          <tr><td>SessionStart</td><td>セッション開始時</td><td>不可</td><td>git pull / 環境変数ロード / 初期通知</td></tr>
+        </tbody>
+      </table>
+      <p>迷ったら <strong>「書き出しの前か後か」</strong>で切り分け。<strong>前に整形したい → PreToolUse</strong>(Claude に整形済みを見せる)、<strong>後で検証したい → PostToolUse</strong>(書き出された実体を検証)。<strong>作業終了時の通知 → Stop</strong> の3択でほぼ回ります。</p>
+    </div>
+  </details>
+
+  <details class="more-box">
+    <summary>もっと詳しく: ヒント3 — matcher の設計(Ch03)</summary>
+    <div class="more-body">
+      <p>matcher は <strong>tool 名を正規表現でマッチする</strong>フィールド。書き方のコツ:</p>
+      <ul>
+        <li><strong>複数ツールに同じ処理 → 交替</strong>: <code>"matcher": "^(Edit|Write|MultiEdit)$"</code></li>
+        <li><strong>全ツール対象 → 空文字または省略</strong>: <code>"matcher": ""</code>(PreToolUse全般に発火)</li>
+        <li><strong>Bash のみ → 完全一致</strong>: <code>"matcher": "^Bash$"</code></li>
+        <li><strong>MCP ツール名の接頭辞マッチ → 部分正規表現</strong>: <code>"matcher": "^mcp__playwright__"</code></li>
+      </ul>
+      <p>よくあるミス: <code>"Edit"</code> と書いて Edit / MultiEdit / Write を全部拾うつもりが、<strong>完全一致にならず</strong> "Edit" を<strong>含む</strong>ツール名にまで発火して想定外の動作をするケース。<strong>必ず <code>^</code> と <code>$</code> で囲む</strong>のを習慣化するとハマりません。</p>
+      <pre><code>{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "^(Edit|Write|MultiEdit)$",
+        "hooks": [
+          { "type": "command", "command": "prettier --write \"$CLAUDE_PROJECT_DIR\"" }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+      <p>環境変数 <code>$CLAUDE_PROJECT_DIR</code> はプロジェクトルートを指す。Hook 内から相対パスを使うと呼び出し元の <span class="term" data-tip="現在の作業ディレクトリ(current working directory)。Hookは呼び出し時点のcwdから起動されるため、プロジェクト外で動作することがある。">cwd</span> に依存して壊れやすいので、明示するのが安全です。</p>
+    </div>
+  </details>
+
+  <details class="more-box">
+    <summary>もっと詳しく: ヒント4 — テスト方法(Ch07)</summary>
+    <div class="more-body">
+      <p>Hook の動作確認は <strong>3段階</strong>で進めると迷いません:</p>
+      <ol>
+        <li><strong>コマンド単体で動くか</strong> — まず対象コマンドをシェルに貼って動かす。「Prettier に PATH 通ってないので動かない」などの大半はここで潰れる。</li>
+        <li><strong><code>claude --debug</code> で発火するか</strong> — デバッグモードで Hook 呼び出しのログが出る。<span class="term" data-tip="Claude Code の実行ログに Hook の発火・標準出力・exit code が表示されるフラグ。動かない時の最初の一手。">--debug</span> でログ確認が最速の切り分け。</li>
+        <li><strong>実ワークフローで1日触るか</strong> — 小さい PR や手元ブランチで実運用。本番ブランチでいきなり試さない。</li>
+      </ol>
+      <p>それでも動かない場合の典型原因:</p>
+      <div class="kv-grid">
+        <div class="kv"><div class="kv-key">PATH問題</div><div class="kv-val">Hook はログインシェルと異なる環境で動くため <code>/usr/local/bin</code> 等が通っていない</div></div>
+        <div class="kv"><div class="kv-key">matcher誤り</div><div class="kv-val"><code>^</code>/<code>$</code>忘れ、大文字小文字ミス、ツール名の認識違い</div></div>
+        <div class="kv"><div class="kv-key">stdin未読</div><div class="kv-val">Hook に渡る JSON を <code>jq</code> で取り出す処理を忘れる</div></div>
+        <div class="kv"><div class="kv-key">exit code</div><div class="kv-val">ブロックしたいのに exit 1 にしている(ブロックは exit 2)</div></div>
+      </div>
+    </div>
+  </details>
+
+  <details class="more-box">
+    <summary>もっと詳しく: ヒント5 — セキュリティ確認(Ch07)</summary>
+    <div class="more-body">
+      <p>Hook は <strong>任意のシェルコマンドを自動実行する</strong>仕組みです。ゆえに自分で書いた3つでも、採用前に以下の5点チェックを通してください:</p>
+      <ol>
+        <li><strong>破壊的操作が含まれていないか</strong> — <code>rm -rf</code> / <code>git reset --hard</code> / <code>DROP TABLE</code> 等は絶対にNG。「そんなわけない」と思ったHookでも1度は目検する。</li>
+        <li><strong>秘密情報がログに出ていないか</strong> — API Key、<code>.env</code>、認証トークンを stderr/stdout に流していないか。<code>set -x</code> のトレース出力も注意。</li>
+        <li><strong>外部通信は必要最低限か</strong> — <code>curl</code> で外部に POST する Hook は URL を一度ドメインで確認。Slack 通知なら webhook URL を環境変数化する。</li>
+        <li><strong>文字列展開で注入されないか</strong> — ファイル名や Claude の出力を <code>eval</code> したり、そのまま <code>bash -c "..."</code> に渡さない。<strong>必ず変数にクオート</strong>する。</li>
+        <li><strong>他人由来の Hook は精査してから採用</strong> — チームで共有された settings.json、ブログで拾ったレシピは <strong>必ず中身を読んでから</strong>入れる。Hook は「Skillと違ってシェルに直結」している。</li>
+      </ol>
+      <div class="info-box">
+        <span class="label">Warning</span>
+        <p>特に危険なのは <strong>Stop イベントの curl + eval パターン</strong>(外部から取得した内容を実行)。これは <span class="term" data-tip="Remote Code Execution。遠隔からの任意コード実行。Hookは既にローカルで任意コードを動かせるため、外部入力を実行に繋げると「どこからでも自分のマシンが乗っ取られる」等価の脆弱性になる。">RCE</span> に直結します。便利そうに見えても使わない勇気が肝心です。</p>
+      </div>
+    </div>
+  </details>
+
+  <!-- ============================================================ -->
+  <!-- Section 4: 模範解答 -->
+  <!-- ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 模範解答: 3つの具体例(Prettier / pre-commitテスト / Stop通知)</h2>
+
+  <p>自分で書いてみましたか? ここから下は、MK 本人が2026年1月時点で実際に常駐させている <strong>Prettier 自動化 / コミット前テスト / Stop 時 macOS 通知</strong> の3つの Hook 運用設計書です。まず自分の3つを書き上げてから、答え合わせとしてどうぞ。</p>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+
+      <h3>1. 棚卸しマトリクス</h3>
+
+      <p>MK の場合、棚卸しで出てきた10候補を、頻度(週何回)・定型度(コマンドの固定度)・安全性(副作用の小ささ)の3軸で10段階評価しました。採用は合計スコア上位3つです。</p>
+
+      <div class="diagram-box">
+        <div class="diagram-title">候補10作業の評価スコア(棚卸しマトリクス)</div>
+        <canvas id="ch8-bar-1" height="220"></canvas>
+        <div class="diagram-caption">上位3つ(Prettier自動化・pre-commitテスト・Stop通知)を採用。下位は Slash Command / CI/CD に回す。</div>
+      </div>
+
+      <h3>2. 採用した3つの Hook</h3>
+
+      <div class="compare-cards">
+        <div class="cc good">
+          <span class="cc-label">#1</span>
+          <h4>Prettier 自動化</h4>
+          <ul>
+            <li>目的: 書き出し直後の整形</li>
+            <li>イベント: PostToolUse</li>
+            <li>matcher: <code>^(Edit|Write|MultiEdit)$</code></li>
+            <li>頻度: 日20-40回</li>
+            <li>短縮: 3秒/回 → 0秒</li>
+          </ul>
+        </div>
+        <div class="cc good">
+          <span class="cc-label">#2</span>
+          <h4>コミット前テスト</h4>
+          <ul>
+            <li>目的: <code>git commit</code> 前の安全ネット</li>
+            <li>イベント: PreToolUse</li>
+            <li>matcher: <code>^Bash$</code> + git commit検出</li>
+            <li>頻度: 日5-8回</li>
+            <li>ブロック: テスト失敗で exit 2</li>
+          </ul>
+        </div>
+        <div class="cc good">
+          <span class="cc-label">#3</span>
+          <h4>Stop 時 macOS 通知</h4>
+          <ul>
+            <li>目的: 長時間作業の終了気付き</li>
+            <li>イベント: Stop</li>
+            <li>matcher: 空(全セッション)</li>
+            <li>頻度: 日10-15回</li>
+            <li>効果: 放置ロスが月3時間減</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>3. settings.json 完全版</h3>
+
+      <p><code>~/.claude/settings.json</code> に以下を追加(既存の <code>hooks</code> があればマージ):</p>
+
+      <pre><code>{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "^(Edit|Write|MultiEdit)$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd \"$CLAUDE_PROJECT_DIR\" && npx --no-install prettier --write --log-level=warn \"$(jq -r '.tool_input.file_path // empty')\" 2>&1 || true"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "^Bash$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/pre-commit-test.sh"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/stop-notify.sh"
+          }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+
+      <h4>#1 Prettier自動化 のポイント</h4>
+      <ul>
+        <li><code>jq</code> で Hook の stdin JSON から <code>tool_input.file_path</code> を取り出し、対象ファイルだけ整形。全プロジェクト整形は重すぎるので避ける。</li>
+        <li><code>--no-install</code> で Prettier 未導入プロジェクトでは黙ってスキップ。<code>|| true</code> で失敗しても Claude の処理を止めない。</li>
+        <li><code>--log-level=warn</code> で余計な stdout を出さない(Claude の応答欄が騒がしくなる原因)。</li>
+      </ul>
+
+      <h4>#2 コミット前テストの実体(pre-commit-test.sh)</h4>
+      <pre><code>#!/usr/bin/env bash
+set -euo pipefail
+
+# stdin から tool_input.command を取り出す
+INPUT=$(cat)
+CMD=$(echo "$INPUT" | jq -r '.tool_input.command // ""')
+
+# git commit を含む場合だけ発火
+if [[ "$CMD" == *"git commit"* ]]; then
+  cd "$CLAUDE_PROJECT_DIR"
+  if [ -f "package.json" ] &amp;&amp; jq -e '.scripts.test' package.json &gt; /dev/null; then
+    echo "[hook] pre-commit test running..." &gt;&amp;2
+    if ! npm test --silent; then
+      echo "[hook] tests failed, blocking commit" &gt;&amp;2
+      exit 2  # Claudeにブロックを伝える
+    fi
+  fi
+fi
+exit 0
+</code></pre>
+
+      <h4>#3 Stop 通知の実体(stop-notify.sh)</h4>
+      <pre><code>#!/usr/bin/env bash
+set -euo pipefail
+
+INPUT=$(cat)
+# 直近のユーザプロンプト(最初の40文字)を取得
+LAST_PROMPT=$(echo "$INPUT" | jq -r '.last_user_message // "Claude finished"' | head -c 40)
+
+# macOS通知 (osascript)
+osascript -e "display notification \"$LAST_PROMPT\" with title \"Claude Code\" sound name \"Glass\""
+
+# git status を軽くログ
+cd "$CLAUDE_PROJECT_DIR" 2&gt;/dev/null || exit 0
+CHANGED=$(git status --porcelain 2&gt;/dev/null | wc -l | tr -d ' ')
+echo "[hook] stop: $CHANGED changed files" &gt;&amp;2
+</code></pre>
+
+      <h3>4. 実行フロー図</h3>
+
+      <div class="diagram-box">
+        <div class="diagram-title">3つの Hook がワークフローのどこで発火するか</div>
+        <pre class="mermaid">
+graph TD
+  Start["SessionStart"] --> Prompt["ユーザ入力"]
+  Prompt --> Claude["Claude思考"]
+  Claude --> Tool["ツール呼び出し"]
+  Tool --> PreBash{"Bash?"}
+  PreBash -->|Yes| H2["Hook #2<br/>pre-commit-test.sh<br/>(PreToolUse)"]
+  PreBash -->|No| Exec["ツール実行"]
+  H2 -->|exit 0| Exec
+  H2 -->|exit 2| Blocked["ブロック通知"]
+  Exec --> PostEdit{"Edit/Write?"}
+  PostEdit -->|Yes| H1["Hook #1<br/>Prettier<br/>(PostToolUse)"]
+  PostEdit -->|No| Next["次のステップ"]
+  H1 --> Next
+  Next --> Claude
+  Next --> Stop["応答終了"]
+  Stop --> H3["Hook #3<br/>Stop通知<br/>(Stop)"]
+  H3 --> End["ユーザ待機"]
+        </pre>
+        <div class="diagram-caption">PreToolUse→PostToolUse→Stop の3ポイントにそれぞれ1つずつ Hook が挟まる。重複・干渉なし。</div>
+      </div>
+
+      <h3>5. 測定結果(1週間の実測値)</h3>
+
+      <div class="stats-grid">
+        <div class="stat">
+          <div class="stat-num">127<small>回</small></div>
+          <div class="stat-label">週の発火総数(3Hook合計)</div>
+          <div class="stat-trend up">↑ Prettier87 / commit12 / Stop28</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">48<small>分</small></div>
+          <div class="stat-label">週の削減工数(実測)</div>
+          <div class="stat-trend up">↑ 整形手作業+放置ロス換算</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">3<small>件</small></div>
+          <div class="stat-label">Hook で防げたミス</div>
+          <div class="stat-trend up">↑ 壊れたテストでのcommitを阻止</div>
+        </div>
+      </div>
+
+      <!-- 1週間の発火推移 -->
+      <div class="diagram-box">
+        <div class="diagram-title">1週間の Hook 発火回数推移(日次・3Hook合算)</div>
+        <canvas id="ch8-line-1" height="180"></canvas>
+        <div class="diagram-caption">D1は発火が少なく、D3以降で安定。週末(D6/D7)は作業量減で自然に減る。Prettier が最多で全体の7割。</div>
+      </div>
+
+      <h3>考え方の解説</h3>
+
+      <p>この3つに絞った理由は <strong>3つの設計判断</strong>です。</p>
+
+      <ol>
+        <li><strong>イベントを3種に分散させる</strong> — PreToolUse / PostToolUse / Stop を1つずつ取ることで、<strong>Hook 同士が干渉しない</strong>。複数のPostToolUseを積みすぎると発火順と副作用で詰まる。</li>
+        <li><strong>「守り」と「攻め」のバランス</strong> — Prettier は攻め(自動整形で時間節約)、pre-commit は守り(失敗の阻止)、Stop 通知は体験改善。<strong>違う性質を混ぜる</strong>と相乗効果が出る。</li>
+        <li><strong>切り戻しが1行で済む</strong> — どれも settings.json の該当ブロックを削れば即無効化。Git hooks と違い commit に絡まないので、<strong>実験コストが極小</strong>。</li>
+      </ol>
+
+      <div class="info-box">
+        <span class="label">Insight</span>
+        <p>MK 自身の1週間で一番効いたのは、実は <strong>Stop 通知</strong>でした。削減工数では Prettier に負けますが、<strong>長時間作業の放置ロス</strong>(Claudeが終わってるのに気づかない)が圧倒的に減った。<strong>体感の改善 &gt; 数字の改善</strong>という良い例です。</p>
+      </div>
+
+      <p>この3つを自分の settings.json に常駐させられる人は、もう「Hook を知っている」側ではなく「<strong>Hook で自分の開発環境を設計できる</strong>」側の人間です。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span></p>
+
+    </div>
+  </details>
+
+  <!-- ============================================================ -->
+  <!-- Section 5: 応用課題 -->
+  <!-- ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 応用課題: チーム共有Hookパック / CI/CDとの使い分け</h2>
+
+  <p>自分の3つが1週間動いたら、次は <strong>チームでの共有と CI/CD との住み分け</strong>を設計するフェーズです。個人最適と組織最適は別物。ここで差が出ます。</p>
+
+  <div class="exercise-box">
+    <div class="exercise-label">応用 1</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>チーム共有Hookパックを設計する</h4>
+    <p>自分の3つを、<strong>チームに配布可能な形</strong>にパッケージ化してください。最終アウトプットは「チーム用 settings.json テンプレ + README + セキュリティレビュー済み証跡」です。</p>
+    <ol>
+      <li>プロジェクトルート直下 <code>.claude/settings.json</code> に置き、<span class="term" data-tip="ユーザ個別の settings.json を上書きしたい時に使う、チーム共有用のプロジェクトスコープ。team で Git に commit する想定。">project scope</span> で配布</li>
+      <li>シェルスクリプト本体は <code>scripts/claude-hooks/</code> にまとめ、Git管理</li>
+      <li>README に「何を自動化するか/副作用/無効化手順」を明記</li>
+      <li>セキュリティレビューを1人以上にしてもらい、ログ化</li>
+    </ol>
+  </div>
+
+  <div class="exercise-box">
+    <div class="exercise-label">応用 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>Hook と CI/CD を役割分担する設計書を書く</h4>
+    <p>Hook は手元の瞬時フィードバック、CI/CD は全体保証。両方を使うチームでは <strong>どっちで何をやるか</strong>の線引きが肝心です。以下の表を埋めてください。</p>
+    <table>
+      <thead><tr><th>作業</th><th>Hook(手元)</th><th>CI/CD(サーバ)</th><th>理由</th></tr></thead>
+      <tbody>
+        <tr><td>フォーマット</td><td>○(PostToolUse)</td><td>◎(--check のみ)</td><td>手元で整形、CI で差分検知</td></tr>
+        <tr><td>ユニットテスト</td><td>△(高速なものだけ)</td><td>◎(全件)</td><td>手元は速度優先、CI は網羅性</td></tr>
+        <tr><td>型チェック</td><td>？</td><td>？</td><td>—</td></tr>
+        <tr><td>セキュリティスキャン</td><td>？</td><td>？</td><td>—</td></tr>
+        <tr><td>E2Eテスト</td><td>？</td><td>？</td><td>—</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>MK の場合、2026年1月時点で仮運用している役割分担は次の通り:</p>
+      <ul>
+        <li><strong>応用1: チーム共有Hookパック</strong> — プロジェクト <code>.claude/settings.json</code> にコミット。<strong>個人設定を上書きしない範囲</strong>に絞り、Prettier と pre-commit test のみ共有(Stop通知は個人嗜好なので除外)。README に「無効化したい時は <code>.claude/settings.local.json</code> に <code>{"hooks": {}}</code> を置けばOK」と明記。</li>
+        <li><strong>応用2: 役割分担の埋め方</strong>
+          <table>
+            <thead><tr><th>作業</th><th>Hook</th><th>CI/CD</th><th>理由</th></tr></thead>
+            <tbody>
+              <tr><td>型チェック</td><td>△(変更ファイルだけ)</td><td>◎(全件)</td><td>手元は1秒以内で終わる範囲。CIは厳密</td></tr>
+              <tr><td>セキュリティスキャン</td><td>×</td><td>◎</td><td>時間がかかる・誤検知が多いのでCI一本化</td></tr>
+              <tr><td>E2Eテスト</td><td>×</td><td>◎</td><td>手元で走らせると数分ロックされる</td></tr>
+            </tbody>
+          </table>
+        </li>
+      </ul>
+      <div class="info-box">
+        <span class="label">Insight</span>
+        <p>Hook と CI/CD の使い分け原則は「<strong>Hook は1秒、CI は1分以上かけて良い</strong>」という時間軸。Hook で重い処理を回すと Claude の応答体験が壊れる。<strong>遅い処理は迷わず CI</strong>、速い処理で <strong>即座に気づきたいもの</strong>だけ Hook に置く、という線引きで大抵うまく行きます。</p>
+      </div>
+    </div>
+  </details>
+
+  <!-- ============================================================ -->
+  <!-- Section 6: 総まとめ -->
+  <!-- ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 修了のことば</h2>
+
+  <p>おつかれさまでした。8章・4時間の旅、そしてこの演習をやり遂げたあなたは、もう「Hook を知っている」側ではなく「<strong>Hook で自分の開発環境を再設計できる</strong>」側の人間です。概念(Ch01-04)・実装(Ch05-06)・運用(Ch07)を束ね、最後に自分の settings.json に刻み込むところまでやりきりました。</p>
+
+  <div class="quote">
+    Hook は時間を節約する道具ではない。<strong>自分の「いつも通り」</strong>を、シェルに静かに引き受けてもらう行為である。
+    <cite>— 本チュートリアルの総括</cite>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-num">8<small>章</small></div>
+      <div class="stat-label">学んだトピック</div>
+      <div class="stat-trend up">完了</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">3<small>→6</small></div>
+      <div class="stat-label">常駐Hook数(1→2周目)</div>
+      <div class="stat-trend up">段階追加で</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">1<small>週間</small></div>
+      <div class="stat-label">運用ログ</div>
+      <div class="stat-trend up">データで判断</div>
+    </div>
+  </div>
+
+  <p>この settings.json は <strong>作って終わりではなく</strong> 1週間運用してから本当のスタートです。1周目で気づいた「matcher の抜け・PATH の漏れ・邪魔になる1つ」を記録し、次の3つに持ち越す。3周やれば、自分専用の開発環境テンプレートが完成します。</p>
+
+  <p>あなたの開発ワークフローが、Hook による <strong>静かな自動化</strong>で、少しだけ速く、そして大きく安全になりますように。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span></p>
+
+  <div class="info-box">
+    <span class="label">Note</span>
+    <p>本章および本チュートリアル全体の記述は <strong>2026年1月時点</strong>の Claude Code 仕様に基づきます。hooks セクションのスキーマ・イベント名・環境変数は変わる可能性があります。必ず <a href="https://docs.claude.com/en/docs/claude-code/hooks" target="_blank" rel="noopener">公式 Hooks ドキュメント</a>で最新を確認してから運用してください。Hook は任意のシェルを実行するため、<strong>仕様変更時の切り戻し</strong>も念頭に置いてください。</p>
+  </div>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.claude.com/en/docs/claude-code/hooks" target="_blank" rel="noopener">Claude Code Hooks 公式ドキュメント</a> — イベント一覧・settings.json スキーマ・環境変数の一次情報。運用前に必ず参照。</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式</a> — CLI 全体仕様。<code>--debug</code> など Hook 検証で使うフラグの解説。</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener">Claude Code GitHub</a> — Issue / リリースノート。hooks 仕様の変更追跡に最適。</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://prettier.io/docs/en/cli" target="_blank" rel="noopener">Prettier CLI</a> — <code>--write</code> / <code>--check</code> / <code>--log-level</code> など Hook 内で使うフラグ。</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://jqlang.github.io/jq/manual/" target="_blank" rel="noopener">jq マニュアル</a> — Hook の stdin JSON を切り出すための定番ツール。<code>.tool_input.command</code> 等の参照に必須。</li>
+      <li><span class="res-type video">Video</span> <a href="https://www.youtube.com/results?search_query=Claude+Code+hooks" target="_blank" rel="noopener">YouTube: Claude Code hooks</a> — 海外エンジニアの Hook 実装デモ。PreToolUse/Stop の動作が目で追える。</li>
+      <li><span class="res-type video">Video</span> <a href="https://zenn.dev/topics/claudecode" target="_blank" rel="noopener">Zenn: Claude Code 関連記事</a> — 日本語の Hook 運用事例。他人の settings.json を読むとヒントが増える。</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>全8章の最終演習、おつかれさまでした。下のボタンで完走を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="08">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="07-troubleshoot-security.html"><span class="direction">&larr; Prev</span>トラブル&amp;セキュリティ</a>
+    <span></span>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<!-- 視覚化ライブラリ群 -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+<script>
+  window.addEventListener("load", function(){
+    // 候補10作業の評価スコア (棚卸しマトリクス)
+    var ctx1 = document.getElementById('ch8-bar-1');
+    if (ctx1 && window.Chart) {
+      new Chart(ctx1, {
+        type: 'bar',
+        data: {
+          labels: [
+            'Prettier自動化', 'pre-commitテスト', 'Stop通知',
+            'git pull on start', 'PIIマスク', 'Bashブロック',
+            '通知音', '週報まとめ', 'SQL整形', '証跡ログ'
+          ],
+          datasets: [
+            { label: '頻度', data: [10,8,9,5,4,6,5,3,4,7], backgroundColor: '#D97757', borderRadius: 4 },
+            { label: '定型度', data: [10,8,9,7,6,8,9,4,6,7], backgroundColor: 'rgba(217,119,87,0.45)', borderRadius: 4 },
+            { label: '安全性', data: [9,8,10,6,7,5,9,8,7,8], backgroundColor: '#cbd5e1', borderRadius: 4 }
+          ]
+        },
+        options: {
+          plugins: { legend: { position: 'bottom' } },
+          scales: {
+            x: { stacked: true },
+            y: { stacked: true, beginAtZero: true, max: 30, title: { display: true, text: 'スコア合計(3軸)' } }
+          }
+        }
+      });
+    }
+
+    // 1週間の発火推移 (line)
+    var ctx2 = document.getElementById('ch8-line-1');
+    if (ctx2 && window.Chart) {
+      new Chart(ctx2, {
+        type: 'line',
+        data: {
+          labels: ['D1','D2','D3','D4','D5','D6','D7'],
+          datasets: [
+            {
+              label: 'Prettier (PostToolUse)',
+              data: [8, 12, 16, 15, 18, 10, 8],
+              borderColor: '#D97757',
+              backgroundColor: 'rgba(217,119,87,0.2)',
+              tension: 0.3,
+              fill: true,
+              pointRadius: 4,
+              pointBackgroundColor: '#D97757'
+            },
+            {
+              label: 'pre-commitテスト (PreToolUse)',
+              data: [1, 2, 2, 2, 3, 1, 1],
+              borderColor: '#18181b',
+              backgroundColor: 'transparent',
+              tension: 0.3,
+              fill: false,
+              pointRadius: 3
+            },
+            {
+              label: 'Stop通知',
+              data: [3, 4, 5, 4, 5, 4, 3],
+              borderColor: '#94a3b8',
+              borderDash: [5, 3],
+              backgroundColor: 'transparent',
+              tension: 0.3,
+              fill: false,
+              pointRadius: 3
+            }
+          ]
+        },
+        options: {
+          plugins: { legend: { position: 'bottom' } },
+          scales: {
+            y: { beginAtZero: true, title: { display: true, text: '発火回数(日次)' } },
+            x: { title: { display: true, text: '運用日(1週間)' } }
+          }
+        }
+      });
+    }
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>settings.jsonの書き方 - MK's Claude Code Tutorial - Hooks Workshop</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code - Hooks
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav class="active"><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Practice</span><span class="phase-pct" id="pct-practice">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.03</span>
+    settings.jsonの書き方
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 8 sections</text>
+    </svg>
+    <div class="progress-info">0h / 4h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-hooks-overview.html"><span class="status-dot" data-chapter="01"></span> Hooksとは</a></li>
+    <li><a href="02-hook-events.html"><span class="status-dot" data-chapter="02"></span> Hookイベント一覧</a></li>
+    <li><a href="03-settings-syntax.html" class="active"><span class="status-dot" data-chapter="03"></span> settings.jsonの書き方</a></li>
+    <li><a href="04-recipes.html"><span class="status-dot" data-chapter="04"></span> Hookレシピ集</a></li>
+  </ul>
+  <div class="section-label">Practice</div>
+  <ul>
+    <li><a href="05-lint-prettier.html"><span class="status-dot" data-chapter="05"></span> 実践：Lint/Prettier</a></li>
+    <li><a href="06-stop-summary.html"><span class="status-dot" data-chapter="06"></span> 実践：Stopサマリ</a></li>
+    <li><a href="07-troubleshoot-security.html"><span class="status-dot" data-chapter="07"></span> トラブル&amp;セキュリティ</a></li>
+    <li><a href="08-final-exercise.html"><span class="status-dot" data-chapter="08"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 1: Basics &gt; Chapter 03</div>
+  <h1>settings.jsonの書き方</h1>
+  <p class="subtitle">基本構造・matcher・command・stdout/exit codeの扱い</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 30分</span>
+    <span class="badge">Phase: Basics</span>
+    <span class="badge">難易度: 初級</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">この章のゴール</span>
+    <p>Hookを動かすには必ず <code>settings.json</code> に定義を書きます。この章では<strong>3つのスコープ(user/project/local)</strong>・<strong>Hooksセクションの構造(イベント→matcher→hooks)</strong>・<strong>matcherの正規表現</strong>・<strong>commandの書き方</strong>・<strong>stdout/stderr/exit codeの規約</strong>・<strong>Hookスクリプトで使える環境変数</strong>を押さえ、最後に<strong>自分で設定を書いて発火させる</strong>ハンズオンまでやります。<span class="term" data-tip="2026年1月時点の記述。Hook仕様は進化中。最新は公式ドキュメント参照">本章の記述は2026年1月時点の情報</span>です。</p>
+  </div>
+
+  <div class="info-box" style="border-left-color:#dc2626; background:#fef2f2;">
+    <span class="label" style="color:#b91c1c;">セキュリティ注意</span>
+    <p>Hookは <strong>任意のシェルコマンド</strong> を自動実行します。他人から渡された <code>settings.json</code> をそのまま読み込むと<span class="term" data-tip="コードインジェクション：悪意あるコマンドが紛れ込んで実行される攻撃">コードインジェクション</span>になります。Ch07のセキュリティ章と合わせて、本章の例も<strong>内容を理解してからコピペ</strong>してください。</p>
+  </div>
+
+  <!-- ===== Section 1: 3つのスコープ ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 3つのスコープ — どこに書くか</h2>
+
+  <p><code>settings.json</code> は<strong>3つの場所</strong>に置けます。同じキーが複数に存在すると<strong>狭いスコープが優先</strong>されます。つまり「全体に適用したいならuser、プロジェクトで共有したいならproject、自分だけ・gitに入れたくないならlocal」という棲み分けです。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">スコープの階層 — 狭いほど強い</div>
+    <svg viewBox="0 0 520 260" width="100%" style="max-width:520px; display:block; margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <!-- user (outer) -->
+      <rect x="30" y="30" width="460" height="200" rx="14" fill="#D97757" opacity="0.12" stroke="#D97757" stroke-width="1.5"/>
+      <text x="60" y="55" font-size="12" font-weight="700" fill="#D97757">user: ~/.claude/settings.json</text>
+      <text x="60" y="72" font-size="10" fill="#475569">全プロジェクト共通</text>
+      <!-- project (middle) -->
+      <rect x="70" y="85" width="380" height="130" rx="12" fill="#D97757" opacity="0.22" stroke="#D97757" stroke-width="1.5"/>
+      <text x="95" y="108" font-size="12" font-weight="700" fill="#18181b">project: .claude/settings.json</text>
+      <text x="95" y="124" font-size="10" fill="#475569">リポジトリ同梱、チーム共有</text>
+      <!-- local (inner) -->
+      <rect x="115" y="138" width="290" height="68" rx="10" fill="#D97757" opacity="0.40" stroke="#D97757" stroke-width="1.5"/>
+      <text x="140" y="162" font-size="12" font-weight="700" fill="#18181b">local: .claude/settings.local.json</text>
+      <text x="140" y="178" font-size="10" fill="#475569">個人用、gitignore推奨</text>
+      <text x="140" y="194" font-size="10" font-weight="600" fill="#b91c1c">← 優先度最高</text>
+      <!-- arrow -->
+      <text x="260" y="248" text-anchor="middle" font-size="11" fill="#64748b">外側ほど広く適用 / 内側ほど優先度が高い</text>
+    </svg>
+    <div class="diagram-caption">3つが同時に定義されると、local &gt; project &gt; user の順で勝つ。</div>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>スコープ</th><th>パス</th><th>適用範囲</th><th>gitに入れる?</th><th>主な用途</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>user</strong></td><td><code>~/.claude/settings.json</code></td><td>全プロジェクト</td><td>対象外(個人PC)</td><td>自分のマシン共通Hook(通知・音・全体ログ)</td></tr>
+      <tr><td><strong>project</strong></td><td><code>.claude/settings.json</code></td><td>そのリポジトリだけ</td><td><strong>入れる</strong>(チーム共有)</td><td>プロジェクト固有Hook(Lint・テスト)</td></tr>
+      <tr><td><strong>local</strong></td><td><code>.claude/settings.local.json</code></td><td>そのリポジトリ&amp;自分だけ</td><td><strong>入れない</strong>(<code>.gitignore</code>)</td><td>個人の実験・APIキー・Webhook URL等</td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-box">
+    <span class="label">優先順位のイメージ</span>
+    <p>同じイベント(例: <code>PreToolUse</code>)が3スコープすべてに書かれていると、<strong>3つすべてが発火</strong>します(上書きではなく<span class="term" data-tip="マージ：複数スコープのHook定義が結合されて、全部が実行される挙動">マージ</span>)。ただし <code>permissions</code> のような単一値キーは local &gt; project &gt; user の順で勝ちます。<strong>Hookはマージ・それ以外は上書き</strong>と覚えると実務で困りません。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span></p>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: どこに書くか迷ったら</summary>
+    <div class="more-body">
+      <p>判断フロー: <strong>(1) 他のマシンでも欲しい?</strong> → No なら local。Yes なら (2)へ。<strong>(2) チーム全員に効かせたい?</strong> → Yes なら project(gitコミット)。No なら user(自マシン全リポジトリ)。</p>
+      <p>特に Slack Webhook URL や個人APIキーのような <span class="term" data-tip="シークレット：漏洩すると被害が出る秘密情報。Webhook URL・APIキー・Bearerトークン等">シークレット</span> を含むHookは<strong>必ず local</strong>に置き、<code>.gitignore</code> に <code>.claude/settings.local.json</code> を追加してください。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 2: Hooksセクション構造 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Hooksセクションの構造 — 3階層</h2>
+
+  <p>Hookの定義は必ず <code>"hooks"</code> キーの下に書きます。構造は<strong>イベント名 → matcher配列 → hook配列</strong>の3階層。これだけ押さえれば、どんなHookも読めるようになります。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Hooksセクションの3階層ツリー</div>
+    <pre class="mermaid">
+graph TD
+  R["hooks (root)"] --> E1["PreToolUse (event)"]
+  R --> E2["PostToolUse (event)"]
+  R --> E3["Stop (event)"]
+  E1 --> M1["matcher: Edit|Write (regex)"]
+  E1 --> M2["matcher: Bash"]
+  M1 --> H1["hook[0]: prettier --write"]
+  M1 --> H2["hook[1]: eslint --fix"]
+  M2 --> H3["hook[0]: danger-cmd-check.sh"]
+  E3 --> MS["matcher: (空=常時)"]
+  MS --> HS["hook[0]: summary.sh"]
+    </pre>
+    <div class="diagram-caption">イベント名の下に複数matcher、各matcherに複数hook。この3階層で何が起きても書ける。</div>
+  </div>
+
+  <h3>最小サンプル — これが読めれば全部読める</h3>
+
+  <pre><code>{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo 'about to edit' &gt;&amp;2"
+          }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="layers" width="20" height="20"></i>
+      <div><strong>第1階層:</strong> <code>"hooks"</code> の直下はイベント名(<code>PreToolUse</code>/<code>PostToolUse</code>/<code>Stop</code>/<code>UserPromptSubmit</code>/<code>SessionStart</code>/<code>SessionEnd</code>)。各イベントの値は<strong>配列</strong>。</div>
+    </li>
+    <li>
+      <i data-lucide="filter" width="20" height="20"></i>
+      <div><strong>第2階層:</strong> <span class="term" data-tip="matcher：このHookを発火させる対象(主にtool名)を絞り込む正規表現。ツール不要なイベント(Stop/SessionStart等)では省略可">matcher</span> はツール名のマッチング正規表現。<code>"Edit|Write"</code> なら両方で発火。省略か空文字ならそのイベントの<strong>全発火</strong>で動く。</div>
+    </li>
+    <li>
+      <i data-lucide="terminal" width="20" height="20"></i>
+      <div><strong>第3階層:</strong> <code>"hooks"</code>(同名でややこしい)配列には <code>{type: "command", command: "..."}</code> が並ぶ。複数書けば<strong>上から順に</strong>実行。</div>
+    </li>
+  </ul>
+
+  <!-- ===== Section 3: matcher 正規表現 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> matcher — 発火対象を絞る正規表現</h2>
+
+  <p><code>matcher</code> は<strong>ツール名に対する正規表現</strong>です。「このツールが呼ばれた時だけHookを走らせたい」を表現します。完全一致ではなく<span class="term" data-tip="部分一致：文字列のどこかにパターンが含まれれば一致。^ $ で完全一致を強制できる">部分一致</span>なので注意。</p>
+
+  <table>
+    <thead>
+      <tr><th>matcher の値</th><th>マッチするツール</th><th>典型用途</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>"Edit"</code></td><td>Edit のみ(ただし "MultiEdit" にも当たる。<code>"^Edit$"</code>で厳密に)</td><td>編集Hook</td></tr>
+      <tr><td><code>"Edit|Write|MultiEdit"</code></td><td>3つのいずれか</td><td>ファイル書き込み全般</td></tr>
+      <tr><td><code>"Bash"</code></td><td>Bashツール呼び出し</td><td>コマンド実行前チェック</td></tr>
+      <tr><td><code>"^(Edit|Write)$"</code></td><td>厳密に Edit か Write のみ</td><td>他と誤マッチしたくない時</td></tr>
+      <tr><td><code>""</code> または省略</td><td>そのイベントの全発火</td><td>Stop/SessionStartなどツール不要イベント</td></tr>
+      <tr><td><code>".*"</code></td><td>全ツール</td><td>PreToolUse全体で共通処理</td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-box">
+    <span class="label">regex 落とし穴 TOP3</span>
+    <p>(1) <code>"Edit"</code> は <code>MultiEdit</code> にも一致する(部分一致のため)。完全一致したければ <code>"^Edit$"</code>。<br>
+    (2) パイプ <code>|</code> は OR。括弧でくくるのが無難: <code>"^(Edit|Write)$"</code>。<br>
+    (3) JSON文字列なので <strong>バックスラッシュは二重</strong>: <code>"\\.ts$"</code> のように書く(matcherではあまり使わないが、commandに正規表現を渡す時に注意)。</p>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: matcherは「ツール名以外」にも拡張されつつある</summary>
+    <div class="more-body">
+      <p>2026年1月時点、matcherの主用途は<strong>ツール名マッチ</strong>です。ただしイベントによっては対象が異なります(<code>UserPromptSubmit</code> ではプロンプトにマッチさせる話が議論中、<code>SessionStart</code> は source にマッチなど)。最新仕様は<a href="https://docs.claude.com/en/docs/claude-code/hooks" target="_blank" rel="noopener">公式doc</a>を参照。<strong>迷ったらツール名だけで考える</strong>のが実務で安全です。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 4: command の書き方 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> command — シェル1行 or スクリプトpath</h2>
+
+  <p><code>command</code> には<strong>シェルコマンドの文字列</strong>を書きます。短い処理なら1行で書き切り、長ければ外部スクリプトに切り出すのが定石です。</p>
+
+  <div class="compare-cards">
+    <div class="cc neutral">
+      <span class="cc-label">1行で書き切る</span>
+      <h4>短くて使い捨て</h4>
+      <pre><code>{
+  "type": "command",
+  "command": "date +%s &gt;&gt; ~/claude-hook.log"
+}</code></pre>
+      <p><strong>向いてる</strong>: ログ追記・echo・通知1行。</p>
+    </div>
+    <div class="cc neutral">
+      <span class="cc-label">外部スクリプト</span>
+      <h4>複雑・再利用</h4>
+      <pre><code>{
+  "type": "command",
+  "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/lint.sh"
+}</code></pre>
+      <p><strong>向いてる</strong>: 条件分岐・複数コマンド・チーム共有。</p>
+    </div>
+  </div>
+
+  <h3>command のベストプラクティス</h3>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="check-circle" width="20" height="20"></i>
+      <div><strong>絶対パス or 環境変数で書く</strong> — <code>$CLAUDE_PROJECT_DIR/.claude/hooks/xxx.sh</code>。相対パスは<span class="term" data-tip="Hook実行時のcwdはプロジェクトルートだが、保証されるのは$CLAUDE_PROJECT_DIRの方。将来変更に備えて環境変数推奨">cwdに依存する</span>ので避ける。</div>
+    </li>
+    <li>
+      <i data-lucide="file-code" width="20" height="20"></i>
+      <div><strong>スクリプトには実行権限</strong> — <code>chmod +x .claude/hooks/lint.sh</code> を忘れない。実行できないと <span class="term" data-tip="Permission denied：実行権限がない時のエラー。chmod +x で解決">Permission denied</span> で失敗する。</div>
+    </li>
+    <li>
+      <i data-lucide="clock" width="20" height="20"></i>
+      <div><strong>長時間処理はタイムアウト設定</strong> — <code>"timeout": 30</code>(秒)を hook オブジェクトに指定。指定なしは既定60秒で強制終了。</div>
+    </li>
+    <li>
+      <i data-lucide="package" width="20" height="20"></i>
+      <div><strong>依存コマンドは前提を明示</strong> — <code>which jq &gt;/dev/null || exit 0</code> のように、入ってないツールがあっても<strong>Hook自体は失敗させない</strong>ガードを入れる。</div>
+    </li>
+  </ul>
+
+  <!-- ===== Section 5: stdout/stderr/exit code 規約 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> stdout / stderr / exit code の規約</h2>
+
+  <p>Hookが終了した時の<strong>exit code と stderr</strong> によって、Claude Codeの挙動が変わります。ここを理解すると「警告だけ出す」「処理を止める」を<strong>使い分けられる</strong>ようになります。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">exit code → Claudeの振る舞い</div>
+    <svg viewBox="0 0 560 260" width="100%" style="max-width:560px; display:block; margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <!-- exit 0 -->
+      <rect x="20" y="30" width="160" height="200" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+      <text x="100" y="58" text-anchor="middle" font-size="14" font-weight="700" fill="#15803d">exit 0</text>
+      <text x="100" y="80" text-anchor="middle" font-size="11" fill="#15803d">成功</text>
+      <text x="100" y="110" text-anchor="middle" font-size="10" fill="#475569">→ そのまま続行</text>
+      <text x="100" y="128" text-anchor="middle" font-size="10" fill="#475569">stdoutはtranscriptへ</text>
+      <text x="100" y="146" text-anchor="middle" font-size="10" fill="#475569">stderrは参考表示</text>
+      <text x="100" y="180" text-anchor="middle" font-size="10" font-weight="600" fill="#15803d">通常はこれ</text>
+      <!-- exit 2 -->
+      <rect x="200" y="30" width="160" height="200" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="1.5"/>
+      <text x="280" y="58" text-anchor="middle" font-size="14" font-weight="700" fill="#b91c1c">exit 2</text>
+      <text x="280" y="80" text-anchor="middle" font-size="11" fill="#b91c1c">ブロック</text>
+      <text x="280" y="110" text-anchor="middle" font-size="10" fill="#475569">→ 処理を中断</text>
+      <text x="280" y="128" text-anchor="middle" font-size="10" fill="#475569">stderrをClaudeに戻す</text>
+      <text x="280" y="146" text-anchor="middle" font-size="10" fill="#475569">Claudeが理由を判断</text>
+      <text x="280" y="180" text-anchor="middle" font-size="10" font-weight="600" fill="#b91c1c">止めたい時これ</text>
+      <!-- other exit -->
+      <rect x="380" y="30" width="160" height="200" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+      <text x="460" y="58" text-anchor="middle" font-size="14" font-weight="700" fill="#a16207">exit 1 他</text>
+      <text x="460" y="80" text-anchor="middle" font-size="11" fill="#a16207">警告</text>
+      <text x="460" y="110" text-anchor="middle" font-size="10" fill="#475569">→ 続行はする</text>
+      <text x="460" y="128" text-anchor="middle" font-size="10" fill="#475569">stderrはユーザへ</text>
+      <text x="460" y="146" text-anchor="middle" font-size="10" fill="#475569">Claudeには不伝達</text>
+      <text x="460" y="180" text-anchor="middle" font-size="10" font-weight="600" fill="#a16207">警告表示だけ</text>
+    </svg>
+    <div class="diagram-caption">exit 2 だけが特別。0は成功、2以外の非0はユーザ向け警告で続行。</div>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>exit code</th><th>意味</th><th>stdout の行方</th><th>stderr の行方</th><th>Claudeの挙動</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>0</code></td><td>成功</td><td>transcript(ユーザ表示)</td><td>ユーザ表示(参考)</td><td>続行</td></tr>
+      <tr><td><code>2</code></td><td><strong>ブロック</strong></td><td>ユーザ表示</td><td><strong>Claudeに戻る</strong></td><td>ツール実行を中断</td></tr>
+      <tr><td><code>1</code> や他の非0</td><td>警告</td><td>ユーザ表示</td><td>ユーザ表示のみ</td><td>続行(Claude不伝達)</td></tr>
+    </tbody>
+  </table>
+
+  <h3>PreToolUseで「危険コマンドを止める」実例</h3>
+
+  <pre><code>{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cat | jq -r '.tool_input.command' | grep -qE '^rm -rf /' &amp;&amp; { echo 'Dangerous rm -rf detected' &gt;&amp;2; exit 2; } || exit 0"
+          }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+
+  <p><code>cat | jq</code> で<span class="term" data-tip="stdin：標準入力。Hookには発火イベントのJSONが流れ込む。jqで中身を取り出す">stdin</span>に流れてくるJSONから <code>tool_input.command</code> を取り出し、<code>rm -rf /</code> で始まるなら <code>exit 2</code> でブロック、stderrにエラー理由を書きます。<strong>Claudeはstderrを読んで「やめます」と判断</strong>します。</p>
+
+  <div class="info-box">
+    <span class="label">JSONで詳細制御(高度)</span>
+    <p>stdoutに<code>{"decision": "block", "reason": "..."}</code> のようなJSONを出すと、exit codeより細かい制御ができます(<code>continue</code> / <code>stopReason</code> / <code>suppressOutput</code> 等)。まずは<strong>exit 0/2</strong>だけで十分実用になります。深掘りはCh04のレシピ集で。</p>
+  </div>
+
+  <!-- ===== Section 6: 環境変数 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Hookで使える環境変数</h2>
+
+  <p>Hookスクリプトの中では、Claude Codeが用意する<strong>環境変数</strong>が参照できます。これを使うとスクリプトが<span class="term" data-tip="ポータブル：どのマシン・どのパスで実行されても同じように動くこと">ポータブル</span>になり、チーム共有しても壊れません。</p>
+
+  <div class="kv-grid">
+    <div class="kv"><div class="kv-key"><code>$CLAUDE_PROJECT_DIR</code></div><div class="kv-val">プロジェクトルートの絶対パス。<strong>最頻出</strong>。スクリプトpathの基準に使う。</div></div>
+    <div class="kv"><div class="kv-key"><code>$CLAUDE_SESSION_ID</code></div><div class="kv-val">現セッションID。ログを<strong>セッション単位</strong>に分けたい時に使う。</div></div>
+    <div class="kv"><div class="kv-key"><code>$CLAUDE_EVENT</code></div><div class="kv-val">発火イベント名(<code>PreToolUse</code>等)。1つのスクリプトを複数イベントで共有する時に分岐用。</div></div>
+    <div class="kv"><div class="kv-key"><code>$CLAUDE_TOOL</code></div><div class="kv-val">発火元のツール名(<code>Edit</code>等)。ツール名でさらに条件分岐したい時。</div></div>
+    <div class="kv"><div class="kv-key">標準変数</div><div class="kv-val"><code>$HOME</code>/<code>$PATH</code>/<code>$USER</code>等のシェル変数も通常通り使える。</div></div>
+  </div>
+
+  <h3>典型的な使い方 — ログをプロジェクト配下に貯める</h3>
+
+  <pre><code>#!/usr/bin/env bash
+# .claude/hooks/log-edit.sh
+LOG_DIR="$CLAUDE_PROJECT_DIR/.claude/logs"
+mkdir -p "$LOG_DIR"
+echo "[$(date -Iseconds)] $CLAUDE_EVENT $CLAUDE_TOOL session=$CLAUDE_SESSION_ID" \
+  &gt;&gt; "$LOG_DIR/hooks.log"
+exit 0</code></pre>
+
+  <pre><code>{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/log-edit.sh"
+          }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+
+  <p>このスクリプトは<strong>どのマシンに持っていっても動きます</strong>。<code>$CLAUDE_PROJECT_DIR</code> に頼ることで、cwdや絶対パスのブレを吸収できるのがポイント。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span></p>
+
+  <details class="more-box">
+    <summary>もっと詳しく: stdin経由で流れてくるJSON</summary>
+    <div class="more-body">
+      <p>環境変数だけでなく、Hookには<strong>stdinからJSONオブジェクト</strong>が流れ込みます。中身は <code>{session_id, transcript_path, cwd, hook_event_name, tool_name, tool_input, ...}</code>。環境変数に無い情報(例: <code>tool_input.file_path</code>)はここから<code>jq</code>で取り出してください。例: <code>FILE=$(jq -r '.tool_input.file_path')</code>。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 7: ハンズオン ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> ハンズオン — 書いて発火させる</h2>
+
+  <p>読むだけでは身につきません。<strong>自分の手で設定を書き、claudeを実行して発火を観察</strong>します。所要5分、任意のディレクトリで実行できます。</p>
+
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-label">準備</div><div class="step-desc">試し用ディレクトリ作成</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-label">書く</div><div class="step-desc">.claude/settings.json 作成</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-label">実行</div><div class="step-desc">claude で編集指示</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-label">確認</div><div class="step-desc">ログ出力を確認</div></div>
+  </div>
+
+  <h3>Step 1: 試し用ディレクトリを作る</h3>
+  <pre><code>mkdir -p ~/hook-test/.claude
+cd ~/hook-test</code></pre>
+
+  <h3>Step 2: <code>.claude/settings.json</code> を作る</h3>
+  <pre><code>cat &gt; .claude/settings.json &lt;&lt;'JSON'
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"[HOOK FIRED] event=$CLAUDE_EVENT tool=$CLAUDE_TOOL at=$(date +%T)\" &gt;&gt; /tmp/hook-test.log"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"[STOP] session=$CLAUDE_SESSION_ID ended at=$(date +%T)\" &gt;&gt; /tmp/hook-test.log"
+          }
+        ]
+      }
+    ]
+  }
+}
+JSON</code></pre>
+
+  <h3>Step 3: Claudeで編集を頼む</h3>
+  <pre><code>claude "hello.txt に 'world' と書いてください"</code></pre>
+
+  <h3>Step 4: ログを確認</h3>
+  <pre><code>cat /tmp/hook-test.log
+# [HOOK FIRED] event=PreToolUse tool=Write at=14:32:10
+# [STOP] session=xxxxxxxx-xxxx-xxxx ended at=14:32:13</code></pre>
+
+  <div class="info-box">
+    <span class="label">ログが出なかった時</span>
+    <p>(1) <code>.claude/settings.json</code> のJSON構文エラー — <code>jq . .claude/settings.json</code> で検証。<br>
+    (2) matcherのミス — 実際に呼ばれたツール名をClaudeの出力から確認(<code>Write</code> or <code>Edit</code> or <code>MultiEdit</code>)。<br>
+    (3) <code>claude --debug</code> で実行ログ詳細。Ch07のトラブルシュート章で深掘りします。</p>
+  </div>
+
+  <p>ここまで完了すれば、<strong>settings.jsonは怖くない</strong>という感覚が身についているはずです。Ch04ではこの知識を土台に、すぐ使える<strong>10個のレシピ</strong>を紹介します。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span></p>
+
+  <!-- ===== スコープ別の発火イメージチャート ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 現場での配置 — どこに何を置くか</h2>
+
+  <p>実際のプロジェクトで、3スコープに<strong>どれくらいの割合</strong>でHookが置かれているかの肌感覚を可視化しておきます。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">スコープ別Hookの典型配分(筆者の観察)</div>
+    <canvas id="ch3-donut-1" height="220"></canvas>
+  </div>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Hook設定作成フロー — 迷ったらこの順</div>
+    <pre class="mermaid">
+graph LR
+  S(["設定を書きたい"]) --> A{"チームで共有?"}
+  A -- "はい" --> B[".claude/settings.json"]
+  A -- "いいえ 自分だけ" --> C{"シークレット含む?"}
+  C -- "はい" --> D[".claude/settings.local.json"]
+  C -- "いいえ 全リポで使う" --> E["~/.claude/settings.json"]
+  C -- "いいえ このリポだけ" --> D
+    </pre>
+    <div class="diagram-caption">「共有?」と「シークレット?」の2問で置き場が決まる。</div>
+  </div>
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>次のsettings.jsonの「何が起きるか」を読み解く</h4>
+    <p>以下の設定を読んで、Claude Codeが <code>Edit</code> と <code>Bash</code> を呼んだ時にそれぞれ何が起きるか、日本語で説明してください。</p>
+    <pre><code>{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "^Edit$",
+        "hooks": [
+          { "type": "command", "command": "echo 'pre-edit' &gt;&amp;2; exit 0" }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          { "type": "command", "command": "echo 'no bash allowed' &gt;&amp;2; exit 2" }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><strong>Edit呼び出し時:</strong> 1つ目のmatcher <code>^Edit$</code> が厳密一致で発動。<code>pre-edit</code> をstderrに出し、<code>exit 0</code> で成功。Claudeはそのまま編集を実行する。stderrは参考表示でユーザーに見える。</p>
+      <p><strong>Bash呼び出し時:</strong> 2つ目のmatcher <code>Bash</code> が発動。<code>no bash allowed</code> をstderrに出し、<code>exit 2</code> でブロック。Claudeはstderrを読んで「Bashが禁止されている」と理解し、別の手段を探すか処理を中断する。</p>
+      <p><strong>ポイント</strong>: <code>^Edit$</code> にすると <code>MultiEdit</code> には当たらない(厳密一致)。<code>Bash</code> だけは部分一致なので <code>BashOutput</code> があれば当たるが、2026年1月時点ではBashのみ。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>自分のリポジトリに3種類のHookを配置し、発火を確認する</h4>
+    <p>任意のGitリポジトリで、3スコープすべてに1つずつHookを置いて動かします。</p>
+    <ol>
+      <li><code>~/.claude/settings.json</code> に <strong>Stopイベント</strong> で <code>osascript -e 'display notification "Claude done"'</code> (macOS) か <code>notify-send</code> (Linux) を書く。全リポジトリで終了通知が飛ぶ</li>
+      <li>対象リポジトリの <code>.claude/settings.json</code> に <strong>PreToolUse: Edit|Write</strong> で <code>$CLAUDE_PROJECT_DIR/.claude/hooks/log.sh</code> を呼ぶ設定と、その <code>log.sh</code> を配置(実行権限をchmod +x)</li>
+      <li><code>.claude/settings.local.json</code> に自分だけの <strong>PostToolUse: Bash</strong> で <code>$CLAUDE_PROJECT_DIR/.claude/bash-audit.log</code> への追記Hookを置く</li>
+      <li><code>.gitignore</code> に <code>.claude/settings.local.json</code> と <code>.claude/*.log</code> を追加</li>
+      <li><code>claude</code> で編集+Bash実行を伴う指示を1つ投げ、3つすべてのHookが発火したか確認</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><strong>user scope (~/.claude/settings.json):</strong></p>
+      <pre><code>{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          { "type": "command", "command": "osascript -e 'display notification \"Claude done\" with title \"Claude Code\"'" }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+      <p><strong>project scope (.claude/settings.json):</strong></p>
+      <pre><code>{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          { "type": "command", "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/log.sh" }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+      <p><strong>.claude/hooks/log.sh</strong>(<code>chmod +x</code>を忘れず):</p>
+      <pre><code>#!/usr/bin/env bash
+echo "[$(date -Iseconds)] $CLAUDE_TOOL on $(pwd)" \
+  &gt;&gt; "$CLAUDE_PROJECT_DIR/.claude/edit-audit.log"
+exit 0</code></pre>
+      <p><strong>local scope (.claude/settings.local.json):</strong></p>
+      <pre><code>{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          { "type": "command", "command": "cat | jq -r '.tool_input.command' &gt;&gt; \"$CLAUDE_PROJECT_DIR/.claude/bash-audit.log\"" }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+      <p><strong>観察ポイント</strong>: Claude実行後に (1) Stop通知が飛ぶ (2) <code>edit-audit.log</code> に編集履歴 (3) <code>bash-audit.log</code> にBash履歴、が残っていればすべて正常。<code>.gitignore</code>で<code>settings.local.json</code>と<code>*.log</code>が除外されていればチームに漏れません。この配置が実運用の<strong>標準形</strong>です。</p>
+      <p>※ <code>claude --debug</code> を付けて実行すると、マージされた最終settingsと発火ログが見られます。Ch07のトラブルシュートで詳しく扱います。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><a href="https://docs.claude.com/en/docs/claude-code/hooks" target="_blank" rel="noopener">Claude Code Hooks 公式ドキュメント</a> <span class="res-type doc">Doc</span> — settings.jsonスキーマの一次情報</li>
+      <li><a href="https://docs.claude.com/en/docs/claude-code/settings" target="_blank" rel="noopener">Claude Code Settings ドキュメント</a> <span class="res-type doc">Doc</span> — スコープ・優先順位の最新仕様</li>
+      <li><a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 総合ドキュメント</a> <span class="res-type doc">Doc</span> — 全機能との位置関係を押さえる</li>
+      <li><a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener">Claude Code GitHub リポジトリ</a> <span class="res-type doc">Doc</span> — issueで最新仕様変更を追える</li>
+      <li><a href="https://jqlang.github.io/jq/manual/" target="_blank" rel="noopener">jq マニュアル</a> <span class="res-type doc">Doc</span> — stdinのJSONをcommandで捌く必携ツール</li>
+      <li><a href="https://www.youtube.com/results?search_query=Claude+Code+hooks+settings" target="_blank" rel="noopener">YouTube: Claude Code hooks settings 検索</a> <span class="res-type video">Video</span> — 他ユーザーの設定実例</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="03">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="02-hook-events.html"><span class="direction">&larr; Prev</span>Hookイベント一覧</a>
+    <a href="04-recipes.html"><span class="direction">Next &rarr;</span>Hookレシピ集</a>
+  </div>
+</main>
+
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+<script>
+  window.addEventListener("load", function(){
+    var ctx = document.getElementById('ch3-donut-1');
+    if (!ctx || !window.Chart) return;
+    new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: ['project (.claude/settings.json)', 'user (~/.claude/settings.json)', 'local (settings.local.json)'],
+        datasets: [{
+          data: [55, 30, 15],
+          backgroundColor: ['#D97757', 'rgba(217,119,87,0.4)', '#cbd5e1']
+        }]
+      },
+      options: {
+        plugins: { legend: { position: 'bottom' } },
+        cutout: '55%'
+      }
+    });
+  });
+</script>
+</body>
+</html>
