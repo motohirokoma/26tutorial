@@ -84,7 +84,7 @@
     <span class="badge">難易度: 中級</span>
   </div>
 
-  <p>Ch04でGitHub MCPを主戦場にした。今度はそれ以外の<strong>日常よく使う4ジャンル</strong> — <span class="term" data-tip="任意のディレクトリをMCP経由でClaude Codeに読ませる公式サーバー。作業dir外の~/Documents等にアクセスできる">Filesystem MCP</span>、<span class="term" data-tip="PostgreSQL等DBに読取専用で接続しスキーマ検査・SELECTを許可するMCPサーバー群">DB系MCP</span>、<span class="term" data-tip="Slackのメッセージ送受信・チャンネル要約をClaude Codeから操作できるMCPサーバー">Slack MCP</span>、<span class="term" data-tip="HTTPページを取得してMarkdownに変換するfetch系と、ヘッドレスブラウザで実DOM・スクショを取るPuppeteer系の総称">Fetch/Puppeteer MCP</span> — を駆け足でまわす。Ch03のカタログに出てきたサーバー群を、<strong>実際にどう動かすか</strong>に焦点を絞った実践章だ。</p>
+  <p>Ch04でGitHub MCPを主戦場にした。今度はそれ以外の<strong>日常よく使う4ジャンル</strong> — <span class="term" data-tip="任意のディレクトリをMCP経由でClaude Codeに読ませる公式サーバー。作業dir外の~/Documents等にアクセスできる">Filesystem MCP</span>、<span class="term" data-tip="PostgreSQL等DBに読取専用で接続しスキーマ検査・SELECTを許可するMCPサーバー群">DB系MCP</span>、<span class="term" data-tip="Slackのメッセージ送受信・チャンネル要約をClaude Codeから操作できるMCPサーバー">Slack MCP</span>、<span class="term" data-tip="HTTPページを取得してMarkdownに変換するfetch系と、ヘッドレスブラウザで実DOM・スクショを取るPuppeteer系の総称">Fetch/Puppeteer MCP</span> — を駆け足でまわす。Ch03のカタログに出てきたサーバー群を、<strong>実際にどう動かすか</strong>に焦点を絞った実践章です。</p>
 
   <div class="info-box"><span class="label">前提</span><p>Ch02の <code>.mcp.json</code> 基礎と、Ch04のシェル実行フロー(<code>claude mcp list</code> / トークン管理)がわかっていること。本章は「繋ぎ方」より「使いどころ」の比率が高い。</p></div>
 
@@ -144,7 +144,7 @@
 
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>Filesystem MCP: 作業dir外のファイルを扱う</h2>
 
-  <p>Claude Codeには組み込みのRead/Edit/Writeがあるが、それらは<strong>起動時の作業ディレクトリ配下</strong>しか扱えない。「<code>~/Documents</code> の資料を要約したい」「別リポの設定を覗きたい」といった場面で詰まる。<span class="term" data-tip="ファイル操作を許可する対象ディレクトリをMCPサーバー起動時引数で明示するモデル。許可外は触れない">ルート許可モデル</span>で安全にこれを解放するのがFilesystem MCPだ。</p>
+  <p>Claude Codeには組み込みのRead/Edit/Writeがあるが、それらは<strong>起動時の作業ディレクトリ配下</strong>しか扱えない。「<code>~/Documents</code> の資料を要約したい」「別リポの設定を覗きたい」といった場面で詰まる。<span class="term" data-tip="ファイル操作を許可する対象ディレクトリをMCPサーバー起動時引数で明示するモデル。許可外は触れない">ルート許可モデル</span>で安全にこれを解放するのがFilesystem MCPです。</p>
 
   <p>設定は1行追加するだけ。引数に渡したパスだけが<strong>読み書き可能な領域</strong>になる。</p>
 
@@ -361,7 +361,7 @@ graph TD
 
   <div class="info-box"><span class="label">落とし穴</span><p>スクリーンショットはbase64で大きい。<strong>Claude Codeのコンテキストを一気に食う</strong>。全画面ではなく要素指定スクショ(<code>screenshot(selector)</code>)で絞るか、ファイル保存して後で参照させる運用が賢い。</p></div>
 
-  <details class="more-box"><summary>もっと詳しく: robots.txt と利用規約</summary><div class="more-body"><p>MCPだからといってスクレイピングの倫理が緩むわけではない。<strong>robots.txt の尊重</strong>、<strong>利用規約の確認</strong>、<strong>API があるならAPIを優先</strong>、<strong>過剰リクエストの回避</strong>は通常のクローラーと同じ。FetchやPuppeteerで大量に叩くと、サービス側から見ればDoS攻撃と区別がつかない。レート制御は呼び出し元(あなたとClaude Code)の責任。</p></div></details>
+  <details class="more-box"><summary>もっと詳しく: robots.txt と利用規約</summary><div class="more-body"><p>MCPだからといってスクレイピングの倫理が緩むわけではありません。<strong>robots.txt の尊重</strong>、<strong>利用規約の確認</strong>、<strong>API があるならAPIを優先</strong>、<strong>過剰リクエストの回避</strong>は通常のクローラーと同じ。FetchやPuppeteerで大量に叩くと、サービス側から見ればDoS攻撃と区別がつかない。レート制御は呼び出し元(あなたとClaude Code)の責任。</p></div></details>
 
   <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
 
@@ -484,7 +484,7 @@ claude mcp list
         <li><code>filesystem__write_file("/Users/you/Documents/notes/20260118-xxx.md", content)</code> をツール呼び出し</li>
         <li><strong>書込承認UIが表示</strong> → ユーザーがYes → 保存完了</li>
       </ol>
-      <p>応用ポイント: Fetchが返すのは<strong>サイト側のHTML→Markdown変換</strong>。JSで後から生成される内容は取れないので、SPA記事なら<code>puppeteer</code>に切り替える判断ができれば◎。この「Fetchで試す→ダメならPuppeteer」の分岐を自力で回せれば本章の目的達成だ。</p>
+      <p>応用ポイント: Fetchが返すのは<strong>サイト側のHTML→Markdown変換</strong>。JSで後から生成される内容は取れないので、SPA記事なら<code>puppeteer</code>に切り替える判断ができれば◎。この「Fetchで試す→ダメならPuppeteer」の分岐を自力で回せれば本章の目的達成です。</p>
     </div>
   </details>
 
