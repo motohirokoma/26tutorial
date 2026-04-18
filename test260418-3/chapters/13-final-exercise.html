@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23ec4899%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>最終演習問題 — 君だけの "ビジネス基礎" を実装する - MK's First-Year Playbook</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #ec4899; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#ec4899" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's First-Year Playbook
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="../index.html#phase3" data-nav class="active"><span class="phase-name">Advanced</span><span class="phase-pct" id="pct-advanced">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.13</span>
+    最終演習問題 — 君だけの "ビジネス基礎" を実装する
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 13 sections</text>
+    </svg>
+    <div class="progress-info">0h / 8h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-ai-era-value.html"><span class="status-dot" data-chapter="01"></span> AI時代の価値</a></li>
+    <li><a href="02-student-to-member.html"><span class="status-dot" data-chapter="02"></span> 学生→社会人</a></li>
+    <li><a href="03-business-manners.html"><span class="status-dot" data-chapter="03"></span> マナー基本</a></li>
+    <li><a href="04-horenso-questions.html"><span class="status-dot" data-chapter="04"></span> 報連相+質問</a></li>
+  </ul>
+  <div class="section-label">Core</div>
+  <ul>
+    <li><a href="05-email.html"><span class="status-dot" data-chapter="05"></span> メール</a></li>
+    <li><a href="06-phone.html"><span class="status-dot" data-chapter="06"></span> 電話応対</a></li>
+    <li><a href="07-meeting.html"><span class="status-dot" data-chapter="07"></span> 会議・議事録</a></li>
+    <li><a href="08-logical-thinking.html"><span class="status-dot" data-chapter="08"></span> ロジカル入門</a></li>
+    <li><a href="09-documents.html"><span class="status-dot" data-chapter="09"></span> 文書作成</a></li>
+  </ul>
+  <div class="section-label">Advanced</div>
+  <ul>
+    <li><a href="10-relationships.html"><span class="status-dot" data-chapter="10"></span> 上司・先輩</a></li>
+    <li><a href="11-time-pdca.html"><span class="status-dot" data-chapter="11"></span> タイマネ・PDCA</a></li>
+    <li><a href="12-japanese-customs.html"><span class="status-dot" data-chapter="12"></span> 商習慣β</a></li>
+    <li><a href="13-final-exercise.html" class="active"><span class="status-dot" data-chapter="13"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 3: Advanced &gt; Chapter 13</div>
+  <h1>最終演習問題 — 君だけの "ビジネス基礎" を実装する</h1>
+  <p class="subtitle">配属初日から1週間後、ある金曜日の1日をシミュレートする。Ch01〜12で学んだ全てを使って、この日を乗り切ろう。</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 45min</span>
+    <span class="badge">Phase: Advanced</span>
+    <span class="badge">難易度: 応用</span>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#ec4899" fill-rule="evenodd"/></svg></span>最終演習問題の狙い</h2>
+
+  <p>ここまで12章、本当にお疲れさまでした。この章は <strong>ラスボス</strong> じゃない。むしろ <strong>君の武装確認</strong> だ。12章で手に入れた12個の道具を、<span class="term" data-tip="個別スキルではなく、複数のスキルを同時に連動させて使う力。実務の現場は常にこのモード">統合運用</span>する体験をしてもらう。</p>
+
+  <div class="info-box">
+    <span class="label">この章のゴール</span>
+    <p>Ch01〜12で学んだことを <strong>"1日の中で連続して" 使う</strong>。個別スキルの暗記ではなく、<em>統合運用</em>の力を試す。正解を出すことよりも、「どの章に戻ればいいか」が分かることが重要。</p>
+  </div>
+
+  <div class="diagram-box">
+    <div class="diagram-title">12章の知識マップ — この演習がどう繋ぐか</div>
+    <svg viewBox="0 0 620 360" width="100%" style="max-width:620px; display:block; margin:0 auto;">
+      <defs>
+        <radialGradient id="center-glow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#fce7f3"/>
+          <stop offset="100%" stop-color="#fff"/>
+        </radialGradient>
+      </defs>
+
+      <circle cx="310" cy="180" r="80" fill="url(#center-glow)" stroke="#ec4899" stroke-width="2.5"/>
+      <text x="310" y="170" text-anchor="middle" font-size="13" font-weight="700" fill="#be185d">Ch.13</text>
+      <text x="310" y="188" text-anchor="middle" font-size="11" fill="#64748b">金曜日の1日</text>
+      <text x="310" y="203" text-anchor="middle" font-size="11" fill="#64748b">統合演習</text>
+
+      <g font-size="10" fill="#64748b">
+        <circle cx="80" cy="50" r="28" fill="#fff" stroke="#ec4899" stroke-width="1.5"/>
+        <text x="80" y="48" text-anchor="middle" font-size="10" font-weight="700">Ch01</text>
+        <text x="80" y="62" text-anchor="middle">AI時代</text>
+
+        <circle cx="200" cy="30" r="28" fill="#fff" stroke="#ec4899" stroke-width="1.5"/>
+        <text x="200" y="28" text-anchor="middle" font-size="10" font-weight="700">Ch02</text>
+        <text x="200" y="42" text-anchor="middle">社会人</text>
+
+        <circle cx="320" cy="20" r="28" fill="#fff" stroke="#ec4899" stroke-width="1.5"/>
+        <text x="320" y="18" text-anchor="middle" font-size="10" font-weight="700">Ch03</text>
+        <text x="320" y="32" text-anchor="middle">マナー</text>
+
+        <circle cx="440" cy="30" r="28" fill="#fff" stroke="#ec4899" stroke-width="1.5"/>
+        <text x="440" y="28" text-anchor="middle" font-size="10" font-weight="700">Ch04</text>
+        <text x="440" y="42" text-anchor="middle">報連相</text>
+
+        <circle cx="560" cy="50" r="28" fill="#fff" stroke="#ec4899" stroke-width="1.5"/>
+        <text x="560" y="48" text-anchor="middle" font-size="10" font-weight="700">Ch05</text>
+        <text x="560" y="62" text-anchor="middle">メール</text>
+
+        <circle cx="590" cy="180" r="28" fill="#fff" stroke="#ec4899" stroke-width="1.5"/>
+        <text x="590" y="178" text-anchor="middle" font-size="10" font-weight="700">Ch06</text>
+        <text x="590" y="192" text-anchor="middle">電話</text>
+
+        <circle cx="560" cy="310" r="28" fill="#fff" stroke="#ec4899" stroke-width="1.5"/>
+        <text x="560" y="308" text-anchor="middle" font-size="10" font-weight="700">Ch07</text>
+        <text x="560" y="322" text-anchor="middle">会議</text>
+
+        <circle cx="440" cy="330" r="28" fill="#fff" stroke="#ec4899" stroke-width="1.5"/>
+        <text x="440" y="328" text-anchor="middle" font-size="10" font-weight="700">Ch08</text>
+        <text x="440" y="342" text-anchor="middle">ロジカル</text>
+
+        <circle cx="320" cy="340" r="28" fill="#fff" stroke="#ec4899" stroke-width="1.5"/>
+        <text x="320" y="338" text-anchor="middle" font-size="10" font-weight="700">Ch09</text>
+        <text x="320" y="352" text-anchor="middle">文書</text>
+
+        <circle cx="200" cy="330" r="28" fill="#fff" stroke="#ec4899" stroke-width="1.5"/>
+        <text x="200" y="328" text-anchor="middle" font-size="10" font-weight="700">Ch10</text>
+        <text x="200" y="342" text-anchor="middle">対人</text>
+
+        <circle cx="80" cy="310" r="28" fill="#fff" stroke="#ec4899" stroke-width="1.5"/>
+        <text x="80" y="308" text-anchor="middle" font-size="10" font-weight="700">Ch11</text>
+        <text x="80" y="322" text-anchor="middle">時間</text>
+
+        <circle cx="30" cy="180" r="28" fill="#fff" stroke="#ec4899" stroke-width="1.5"/>
+        <text x="30" y="178" text-anchor="middle" font-size="10" font-weight="700">Ch12</text>
+        <text x="30" y="192" text-anchor="middle">商習慣</text>
+      </g>
+
+      <g stroke="#ec4899" stroke-width="1" opacity="0.35" fill="none">
+        <line x1="80" y1="78" x2="245" y2="160"/>
+        <line x1="200" y1="58" x2="275" y2="142"/>
+        <line x1="320" y1="48" x2="310" y2="100"/>
+        <line x1="440" y1="58" x2="345" y2="142"/>
+        <line x1="560" y1="78" x2="375" y2="160"/>
+        <line x1="590" y1="180" x2="390" y2="180"/>
+        <line x1="560" y1="282" x2="375" y2="200"/>
+        <line x1="440" y1="302" x2="345" y2="218"/>
+        <line x1="320" y1="312" x2="310" y2="260"/>
+        <line x1="200" y1="302" x2="275" y2="218"/>
+        <line x1="80" y1="282" x2="245" y2="200"/>
+        <line x1="58" y1="180" x2="230" y2="180"/>
+      </g>
+    </svg>
+    <div class="diagram-caption">12本の線が中央に集まる。君が1日を過ごすということは、この12領域を同時に使うということ。</div>
+  </div>
+
+  <p>この演習で大事なのは、<span class="term" data-tip="正解1つを答えることではなく、状況に応じて複数のスキルを組み合わせる思考プロセス">プロセスの思考</span>だ。「この場面はCh04とCh05が効いてくるな」と <em>構造が見える</em> ようになれば、もう君は配属初日を生き抜ける。</p>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#ec4899" fill-rule="evenodd"/></svg></span>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#ec4899" fill-rule="evenodd"/></svg></span>ケーススタディ — "金曜日の1日"</h2>
+
+  <div class="info-box">
+    <span class="label">設定</span>
+    <p>君は新卒入社2ヶ月目。配属先は某企業の○○部(業種は何でもいい。営業・企画・バックオフィス、全部に通じる設定にしてある)。以下の1日をシミュレートする。各場面で「Q: あなたならどうする?」に自分なりの答えを出してから、解答を開くこと。</p>
+  </div>
+
+  <div class="diagram-box">
+    <div class="diagram-title">ある金曜日のタイムライン</div>
+    <svg viewBox="0 0 720 220" width="100%" style="max-width:720px; display:block; margin:0 auto;">
+      <line x1="30" y1="110" x2="690" y2="110" stroke="#ec4899" stroke-width="3"/>
+
+      <g font-size="11">
+        <circle cx="60" cy="110" r="10" fill="#ec4899"/>
+        <text x="60" y="85" text-anchor="middle" font-weight="700">9:00</text>
+        <text x="60" y="140" text-anchor="middle" fill="#64748b">出社/朝礼</text>
+        <text x="60" y="155" text-anchor="middle" fill="#64748b">A社同席依頼</text>
+
+        <circle cx="140" cy="110" r="10" fill="#ec4899"/>
+        <text x="140" y="85" text-anchor="middle" font-weight="700">9:30</text>
+        <text x="140" y="140" text-anchor="middle" fill="#64748b">先輩Slack</text>
+        <text x="140" y="155" text-anchor="middle" fill="#64748b">資料未着手</text>
+
+        <circle cx="230" cy="110" r="10" fill="#ec4899"/>
+        <text x="230" y="85" text-anchor="middle" font-weight="700">10:00</text>
+        <text x="230" y="140" text-anchor="middle" fill="#64748b">B社から電話</text>
+        <text x="230" y="155" text-anchor="middle" fill="#64748b">メール未開封</text>
+
+        <circle cx="320" cy="110" r="10" fill="#ec4899"/>
+        <text x="320" y="85" text-anchor="middle" font-weight="700">11:30</text>
+        <text x="320" y="140" text-anchor="middle" fill="#64748b">MTG準備</text>
+        <text x="320" y="155" text-anchor="middle" fill="#64748b">AI要約活用</text>
+
+        <circle cx="410" cy="110" r="10" fill="#ec4899"/>
+        <text x="410" y="85" text-anchor="middle" font-weight="700">13:00</text>
+        <text x="410" y="140" text-anchor="middle" fill="#64748b">A社MTG</text>
+        <text x="410" y="155" text-anchor="middle" fill="#64748b">議事録担当</text>
+
+        <circle cx="500" cy="110" r="10" fill="#ec4899"/>
+        <text x="500" y="85" text-anchor="middle" font-weight="700">15:00</text>
+        <text x="500" y="140" text-anchor="middle" fill="#64748b">議事録依頼</text>
+        <text x="500" y="155" text-anchor="middle" fill="#64748b">明日朝〆切</text>
+
+        <circle cx="590" cy="110" r="10" fill="#ec4899"/>
+        <text x="590" y="85" text-anchor="middle" font-weight="700">17:00</text>
+        <text x="590" y="140" text-anchor="middle" fill="#64748b">飲み会の誘い</text>
+        <text x="590" y="155" text-anchor="middle" fill="#64748b">月曜プレゼン</text>
+
+        <circle cx="680" cy="110" r="10" fill="#ec4899"/>
+        <text x="680" y="85" text-anchor="middle" font-weight="700">18:30</text>
+        <text x="680" y="140" text-anchor="middle" fill="#64748b">C社訃報</text>
+        <text x="680" y="155" text-anchor="middle" fill="#64748b">香典検討</text>
+      </g>
+
+      <text x="360" y="200" text-anchor="middle" font-size="12" fill="#be185d" font-weight="700">8つの分岐点。どれも1人で抱え込まないのがコツ</text>
+    </svg>
+    <div class="diagram-caption">まず全体像を把握してから、各場面に入る。"今どこにいるか" を俯瞰できるのも社会人の力。</div>
+  </div>
+
+  <h3>場面1 (9:00) — 上司からのMTG同席依頼</h3>
+  <div class="quote">
+    <strong>上司</strong>「○○さん、今日の午後13時から取引先A社とのMTGに同席してほしい。先方の新規提案の初回ヒアリングだ。よろしく。」
+  </div>
+  <p><strong>Q: あなたならどうする?</strong> 「はい、分かりました!」で終わっていい?</p>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><strong>正しい対応</strong>: 「承知しました」の前に、最低3つ確認する:</p>
+      <ul>
+        <li><strong>(1) 目的</strong>: 「初回ヒアリングということは、こちらは聞き役で、決裁はしない理解で合っていますか?」</li>
+        <li><strong>(2) 自分の役割</strong>: 「議事録担当ですか?発言は求められますか?」</li>
+        <li><strong>(3) 事前準備</strong>: 「A社の過去のやり取りや提案書があれば、事前に見ておきます」</li>
+      </ul>
+      <p><strong>悪い例</strong>: 「はい!頑張ります!」だけで席に戻る → 何のために呼ばれたか分からず、当日ぼんやり座るだけの置物になる。</p>
+      <p><strong>関連章</strong>: Ch04(報連相+質問)、Ch07(会議・議事録)、Ch10(上司・先輩)</p>
+    </div>
+  </details>
+
+  <h3>場面2 (9:30) — 先輩から突然のSlack</h3>
+  <div class="quote">
+    <strong>先輩</strong>「○○さん、昨日お願いしてた資料どう?午後確認したいんだけど」<br>
+    (実は、まだ着手していない。上司にも言っていない)
+  </div>
+  <p><strong>Q: あなたならどうする?</strong> 「もう少しで…」と曖昧に返していい?</p>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><strong>正しい対応</strong>: 嘘を一切つかない。事実と行動計画を即座に伝える。</p>
+      <ul>
+        <li><strong>即レス</strong>: 「すみません、まだ着手できていません。今日13時からA社MTG同席の指示が入ったため、終了後の15時以降に着手し、明日午前中に共有でも大丈夫でしょうか?」</li>
+        <li><strong>代替案提示</strong>: もし先輩が今日中に必要なら、「優先順を相談させてください。MTG準備と、どちらを先にすべきでしょうか?」</li>
+      </ul>
+      <p><strong>悪い例</strong>: 「もう少しでできます!」と嘘をつく → 夕方にバレて信頼崩壊。1年目で最もやってはいけない1つ。</p>
+      <p><strong>関連章</strong>: Ch04(報連相+質問)、Ch11(タイマネ・PDCA)</p>
+    </div>
+  </details>
+
+  <h3>場面3 (10:00) — 取引先B社からの電話</h3>
+  <div class="quote">
+    <strong>B社担当</strong>「先週お送りしたメール、お返事がまだないようですが…」<br>
+    (調べると、先週のメールを開封していなかった)
+  </div>
+  <p><strong>Q: あなたならどうする?</strong> 「確認します」と言って電話を切っていい?</p>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><strong>正しい対応</strong>: 電話中に即座に謝罪+復旧計画を伝える。</p>
+      <ul>
+        <li><strong>電話中に</strong>: 「大変失礼いたしました。確認が遅れており、誠に申し訳ございません。お急ぎでしたか?」(緊急度を確認)</li>
+        <li><strong>確認後</strong>: 「本日中に内容を確認のうえ、16時までにご連絡差し上げます。それで問題ございませんでしょうか?」(明確な時刻を約束)</li>
+        <li><strong>電話後</strong>: 内容を読み、上司に <em>事実 + 対応案 + 原因 + 再発防止</em> で即報告</li>
+      </ul>
+      <p><strong>悪い例</strong>: 「すみません、確認します」→ そのまま放置 → 先方激怒。社内では「あいつミスを隠した」と評価が落ちる。</p>
+      <p><strong>関連章</strong>: Ch05(メール)、Ch06(電話応対)、Ch04(報連相)</p>
+    </div>
+  </details>
+
+  <h3>場面4 (11:30) — 午後MTGの事前準備</h3>
+  <div class="quote">
+    A社の過去のやり取り、提案資料、前回議事録がある。時間は90分。AIに議事録要約を頼めるが…
+  </div>
+  <p><strong>Q: あなたならどうする?</strong> AIに全部要約させて読むだけで十分?</p>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><strong>正しい対応</strong>: AIは <em>下読み</em> と <em>論点抽出</em> に使い、自分は <em>仮説立て</em> に時間を使う。</p>
+      <ul>
+        <li><strong>AIに頼む</strong>: 「過去3回の議事録から、A社が繰り返し言及しているテーマを3つ抜き出して」「前回宿題になった事項を列挙して」</li>
+        <li><strong>自分でやる</strong>: 「今日は何が聞かれそうか」の仮説を2〜3個立てる。上司に「この辺を深掘りされると想定しています」と事前共有できれば満点</li>
+        <li><strong>議事録テンプレ準備</strong>: タイトル・参加者・日時・論点欄を空欄で作っておく(Ch07の型)</li>
+      </ul>
+      <p><strong>悪い例</strong>: AI要約を流し読みして終わり → MTG中に「あ、この話出た」と気づくが、仮説がないので深い質問ができない。</p>
+      <p><strong>関連章</strong>: Ch01(AI時代の価値)、Ch07(会議・議事録)、Ch08(ロジカル入門)</p>
+    </div>
+  </details>
+
+  <h3>場面5 (13:00) — A社とのMTG開始</h3>
+  <div class="quote">
+    MTGが始まった。君は議事録担当。上司が先方と話している。発言タイミングが来るかもしれない。
+  </div>
+  <p><strong>Q: あなたならどうする?</strong> PCをずっと打つだけでいい?</p>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><strong>正しい対応</strong>: 議事録は <em>論点ごと</em> に整理。発言機会は3種類に備える。</p>
+      <ul>
+        <li><strong>議事録</strong>: 時系列でなく、"論点 → 発言 → 結論/宿題" で整理。後で<span class="term" data-tip="会議後に参加者に共有される議事録。合意事項の確認文書として重要">minutes</span>として使える形に</li>
+        <li><strong>発言機会 A</strong>: 振られたら → まず結論。「はい、○○については△△です」</li>
+        <li><strong>発言機会 B</strong>: 聞き逃した時 → 「恐れ入ります、1点確認させてください。先ほどの○○は△△という理解で合っていますか?」</li>
+        <li><strong>発言機会 C</strong>: 宿題が曖昧な時 → 「念のため、宿題を整理させてください。○○を来週○日までに、でよろしいでしょうか?」(これが一番評価される)</li>
+      </ul>
+      <p><strong>悪い例</strong>: 下を向いてPC打ちっぱなし → 先方から「存在感のない人」と認識される。発言しなくても、うなずく・目線を合わせるだけで違う。</p>
+      <p><strong>関連章</strong>: Ch07(会議・議事録)、Ch03(マナー)、Ch08(ロジカル)</p>
+    </div>
+  </details>
+
+  <h3>場面6 (15:00) — 議事録の依頼</h3>
+  <div class="quote">
+    <strong>上司</strong>「議事録、明日朝までに頼む。A社にも送る想定で」
+  </div>
+  <p><strong>Q: あなたならどうする?</strong> 徹夜で完璧を目指す?</p>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><strong>正しい対応</strong>: <span class="term" data-tip="完璧でない状態でも一旦形にして見せ、フィードバックを受けて改善するアプローチ">ドラフト → レビュー → 清書</span> の3段構え。</p>
+      <ul>
+        <li><strong>15:30まで</strong>に <em>ドラフト版</em> を作る(30分勝負)。AIに「この論点メモを議事録体裁に整えて」と指示するのが速い</li>
+        <li><strong>16:00</strong> 上司に「ドラフトできました。先にご確認いただけますか?」と送る。<em>完璧じゃなくていい</em></li>
+        <li><strong>17:00</strong> フィードバックを反映</li>
+        <li><strong>翌朝8時</strong> 最終版を上司に最終確認 → A社送付</li>
+      </ul>
+      <p><strong>悪い例</strong>: 22時まで1人で書いて、翌朝「完璧です」と送る → 重要な論点が抜けていたら、A社送付前に気づけない。<em>1人で抱える = 最大のリスク</em>。</p>
+      <p><strong>関連章</strong>: Ch07(議事録)、Ch09(文書作成)、Ch11(タイマネ)</p>
+    </div>
+  </details>
+
+  <h3>場面7 (17:00) — 飲み会の誘い</h3>
+  <div class="quote">
+    <strong>先輩</strong>「今週は飲み会いかない?19時から。」<br>
+    (来週月曜の朝一に、重要プレゼンの準備が残っている。議事録も残っている)
+  </div>
+  <p><strong>Q: あなたならどうする?</strong> 断る?行く?</p>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><strong>正しい対応</strong>: 断る基準は「仕事が回るか」だが、<em>断り方</em> にこそスキルが宿る。</p>
+      <ul>
+        <li><strong>判断軸</strong>: 議事録が今夜中に終わるか?月曜プレゼンの進捗は?体力は?</li>
+        <li><strong>今回の推奨</strong>: 議事録ドラフトが16時に出せていれば、<em>1時間だけ顔を出す</em> は選択肢に入る(関係構築は1年目の重要投資)</li>
+        <li><strong>断る場合の型</strong>: 「お誘いありがとうございます。嬉しいのですが、明日朝までの議事録と月曜プレゼン準備があり、今週は外させてください。来週のご都合どこかで改めてお願いできますか?」(感謝+理由+代替提示)</li>
+      </ul>
+      <p><strong>悪い例A</strong>: 無言スタンプで「すみません無理です」 → 関係が冷える。</p>
+      <p><strong>悪い例B</strong>: 断れず無理して参加 → 月曜プレゼンが間に合わず、先輩にも上司にも迷惑をかける。</p>
+      <p><strong>関連章</strong>: Ch10(上司・先輩)、Ch11(タイマネ)、Ch12(商習慣)</p>
+    </div>
+  </details>
+
+  <h3>場面8 (18:30) — 取引先C社担当者から訃報</h3>
+  <div class="quote">
+    <strong>C社担当</strong>(メール)「父が急逝し、来週葬儀となります。恐れ入りますが、お打ち合わせ日程を再調整いただけますでしょうか」<br>
+    (会社として香典を送る予定)
+  </div>
+  <p><strong>Q: あなたならどうする?</strong> 新卒のあなたは何をすべき?</p>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><strong>正しい対応</strong>: 1人で判断しない。<em>お悔やみは会社対応</em> なので、必ず上司・先輩に相談。</p>
+      <ul>
+        <li><strong>(1) すぐに上司に報告</strong>: 「C社○○様から訃報のメールが入りました。日程変更と、香典のご対応について、ご判断をいただけますでしょうか」</li>
+        <li><strong>(2) 自分からの返信</strong>: 丁寧なお悔やみの言葉 + 日程は <em>落ち着かれてから</em> で構わない旨を伝える。"お忙しい" "お元気で" などの<span class="term" data-tip="弔事で使うと失礼にあたる言葉。重ね言葉や死を連想させる語">忌み言葉</span>を避ける</li>
+        <li><strong>(3) 香典</strong>: 会社によって窓口が異なる(総務 or 上司)。独断で送らない。金額・表書き(「御霊前」or「御仏前」)・袋の選定は必ず先輩に確認</li>
+        <li><strong>(4) 葬儀参列の有無</strong>: これも会社判断。自分で「行きます」は言わない</li>
+      </ul>
+      <p><strong>悪い例</strong>: 自分で判断して軽いお悔やみメールだけ返す → 会社としての対応が遅れ、取引先に失礼。</p>
+      <p><strong>関連章</strong>: Ch12(商習慣β)、Ch05(メール)、Ch10(上司・先輩)</p>
+    </div>
+  </details>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#ec4899" fill-rule="evenodd"/></svg></span>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#ec4899" fill-rule="evenodd"/></svg></span>模範解答の深掘り — 比較で見る</h2>
+
+  <p>8場面の中で、特にZ世代がつまずきやすい2つを、比較カードで深掘りしておく。</p>
+
+  <h3>場面2(先輩Slack)の良い対応 vs 悪い対応</h3>
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">悪い対応</span>
+      <h4>「もう少しでできます」</h4>
+      <ul>
+        <li>着手してないのに"進行中"のフリ</li>
+        <li>時刻の約束なし</li>
+        <li>上司にもまだ共有してない</li>
+        <li>夕方バレて信頼崩壊</li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">良い対応</span>
+      <h4>「未着手です。明日午前でお願いできますか」</h4>
+      <ul>
+        <li>事実を即開示(嘘をつかない)</li>
+        <li>明日午前と時刻を明示</li>
+        <li>A社MTGという理由も添える</li>
+        <li>優先順位の相談も提案</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>場面7(飲み会)の良い断り vs 悪い断り</h3>
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">悪い断り</span>
+      <h4>「すみません無理です(スタンプ)」</h4>
+      <ul>
+        <li>理由なし</li>
+        <li>感謝なし</li>
+        <li>代替提案なし</li>
+        <li>関係が冷える</li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">良い断り</span>
+      <h4>「来週改めてお願いできますか」</h4>
+      <ul>
+        <li>誘ってくれたお礼</li>
+        <li>具体的な理由(議事録・月曜プレゼン)</li>
+        <li>来週に振る代替案</li>
+        <li>関係は温まる</li>
+      </ul>
+    </div>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: 場面8(訃報)の行動フロー</summary>
+    <div class="more-body">
+      <p>訃報対応はビジネスパーソンとして生涯必要な型。新卒のうちに<em>1人で動かない</em>原則を体に入れておく。</p>
+      <p>シーケンス図で整理するとこうなる:</p>
+      <div class="mermaid">
+sequenceDiagram
+  participant C as C社担当
+  participant Me as あなた(新卒)
+  participant B as 上司
+  participant S as 総務/先輩
+  C->>Me: ["訃報メール受信"]
+  Me->>Me: ["内容確認・忌み言葉チェック"]
+  Me->>B: ["即共有: 訃報+対応判断依頼"]
+  B->>Me: ["会社対応方針(香典・参列)"]
+  Me->>S: ["香典の金額・袋を確認"]
+  Me->>C: ["お悔やみ返信(日程は落ち着いてから)"]
+  B->>S: ["会社として香典手配"]
+      </div>
+      <p><strong>ポイント</strong>: 君から先方への返信は <em>速やかに</em>、ただし <em>会社判断の前に独断で深入りしない</em>。この塩梅が社会人の型。</p>
+    </div>
+  </details>
+
+  <div class="info-box">
+    <span class="label">AI時代のポイント</span>
+    <p>8場面のうち、AIが <strong>完全に代替できる場面は0個</strong>。<em>補助として使える場面</em>はいくつかある(場面4の過去資料要約、場面6の議事録ドラフト)。でも、判断と責任と対人のコアは、全て君が担う。<span class="term" data-tip="AIでは代替できない、人間固有の価値を生み出す能力の集合">代替不可能性</span>とは、この8場面を淀みなくこなす力そのものだ。</p>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#ec4899" fill-rule="evenodd"/></svg></span>総合評価ルーブリック</h2>
+
+  <p>自分の回答を <strong>自己採点</strong> してみよう。1〜5点で各観点を評価する。</p>
+
+  <table>
+    <thead>
+      <tr><th>場面</th><th>信頼</th><th>対人</th><th>論理</th><th>実行</th><th>文化</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1: MTG同席依頼</td><td>☆</td><td></td><td>☆</td><td></td><td></td></tr>
+      <tr><td>2: 先輩Slack</td><td>☆</td><td>☆</td><td></td><td>☆</td><td></td></tr>
+      <tr><td>3: B社電話</td><td>☆</td><td>☆</td><td></td><td>☆</td><td></td></tr>
+      <tr><td>4: MTG準備</td><td></td><td></td><td>☆</td><td>☆</td><td></td></tr>
+      <tr><td>5: A社MTG</td><td></td><td>☆</td><td>☆</td><td></td><td>☆</td></tr>
+      <tr><td>6: 議事録</td><td>☆</td><td></td><td>☆</td><td>☆</td><td></td></tr>
+      <tr><td>7: 飲み会</td><td></td><td>☆</td><td></td><td>☆</td><td>☆</td></tr>
+      <tr><td>8: 訃報</td><td>☆</td><td>☆</td><td></td><td></td><td>☆</td></tr>
+    </tbody>
+  </table>
+
+  <p>☆印のある軸で、自分が1〜5点だとどれくらいかを考える。合計してみよう。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">5軸レーダー — 自己評価の例(入社2ヶ月目の平均像)</div>
+    <canvas id="ch13-radar" height="260"></canvas>
+  </div>
+
+  <div class="info-box">
+    <span class="label">採点基準の目安</span>
+    <p><strong>5点</strong>: 正解の要素を全て自分の言葉で書けた / <strong>4点</strong>: 主要ポイントは押さえた / <strong>3点</strong>: 方向性は合っていた / <strong>2点</strong>: 惜しい / <strong>1点</strong>: この章を復習。3点以下の軸があれば、該当章にすぐ戻ろう。<em>この演習は1回で終わらせない</em>。3ヶ月後、半年後に再訪すると、全く違う景色が見える。</p>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: 配属後に戻ってくるための "しおり"</summary>
+    <div class="more-body">
+      <p>このサイトの真の使い方は、<em>完走</em> じゃなく <em>帰還</em>。配属後、こういう時に戻ってきてほしい:</p>
+      <ul>
+        <li><strong>取引先から突然の電話で固まった日</strong> → Ch06</li>
+        <li><strong>上司に"何でもっと早く言わないんだ"と言われた日</strong> → Ch04</li>
+        <li><strong>会議で発言できなかった日</strong> → Ch07 + 場面5</li>
+        <li><strong>メール1通に1時間かかった日</strong> → Ch05</li>
+        <li><strong>訃報や慶事の連絡を受けた日</strong> → Ch12 + 場面8</li>
+        <li><strong>月曜の朝、今週の見通しが立たない時</strong> → Ch11</li>
+      </ul>
+      <p><strong>しおりの作り方</strong>: スマホのブックマークで「MK's Playbook」フォルダを作り、このサイトをピン留め。困った時に30秒で開ける状態にしておく。</p>
+    </div>
+  </details>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#ec4899" fill-rule="evenodd"/></svg></span>これから — 完走おめでとう、でもこれはスタート</h2>
+
+  <p>ここまで読み切ってくれて、本当にありがとう。でも、勘違いしないでほしい。</p>
+
+  <div class="info-box">
+    <span class="label">祝辞</span>
+    <p><strong>この13章を終えたことで、君は "スタートラインに立てた"</strong>。勝ったわけじゃない。でも、同期の中で "戦う準備ができた数少ない1人" になった。それだけで十分、今夜は祝っていい。</p>
+  </div>
+
+  <div class="diagram-box">
+    <div class="diagram-title">旅のメタファ — 君が今いる場所、君が行く場所</div>
+    <svg viewBox="0 0 620 260" width="100%" style="max-width:620px; display:block; margin:0 auto;">
+      <defs>
+        <linearGradient id="road-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#fce7f3"/>
+          <stop offset="100%" stop-color="#ec4899"/>
+        </linearGradient>
+      </defs>
+
+      <path d="M 40 180 Q 200 100, 310 150 T 580 80" stroke="url(#road-grad)" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <path d="M 40 180 Q 200 100, 310 150 T 580 80" stroke="#ec4899" stroke-width="1" stroke-dasharray="4 5" fill="none" opacity="0.5"/>
+
+      <circle cx="40" cy="180" r="16" fill="#fff" stroke="#ec4899" stroke-width="2.5"/>
+      <text x="40" y="184" text-anchor="middle" font-size="14" font-weight="700" fill="#be185d">君</text>
+      <text x="40" y="215" text-anchor="middle" font-size="11" fill="#64748b">2026 春</text>
+      <text x="40" y="230" text-anchor="middle" font-size="10" fill="#94a3b8">新卒1日目</text>
+
+      <circle cx="200" cy="120" r="10" fill="#ec4899" opacity="0.6"/>
+      <text x="200" y="100" text-anchor="middle" font-size="11" fill="#64748b">半年後</text>
+      <text x="200" y="145" text-anchor="middle" font-size="9" fill="#94a3b8">"あいつ1年目でヤバい"</text>
+
+      <circle cx="380" cy="145" r="11" fill="#ec4899" opacity="0.75"/>
+      <text x="380" y="125" text-anchor="middle" font-size="11" fill="#64748b">1年後</text>
+      <text x="380" y="170" text-anchor="middle" font-size="9" fill="#94a3b8">"後輩に教えられる"</text>
+
+      <circle cx="580" cy="80" r="18" fill="#ec4899"/>
+      <text x="580" y="85" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">★</text>
+      <text x="580" y="115" text-anchor="middle" font-size="11" fill="#64748b">3年後の君</text>
+      <text x="580" y="130" text-anchor="middle" font-size="10" fill="#94a3b8">代替不可能な1人</text>
+
+      <text x="310" y="245" text-anchor="middle" font-size="12" fill="#be185d" font-weight="700">道は真っ直ぐじゃない。でも、地図は君の手の中にある</text>
+    </svg>
+    <div class="diagram-caption">13章は地図。道を歩くのは君自身。迷ったら、このサイトに戻ってくればいい。</div>
+  </div>
+
+  <p>1年目で作るべきは、<strong>輪郭</strong> だ。「○○さんってこういう人」と言ってもらえる輪郭。それは、AIには描けない。なぜなら、AIは <em>誰でもない</em> からだ。</p>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="compass" width="20" height="20"></i>
+      <div><strong>方向は自分で決める</strong> — 1年目の君だけの"輪郭"の方向は、誰にも代わりに決められない</div>
+    </li>
+    <li>
+      <i data-lucide="backpack" width="20" height="20"></i>
+      <div><strong>道具は13個ある</strong> — このサイトの各章が、君の背負った道具になる</div>
+    </li>
+    <li>
+      <i data-lucide="map" width="20" height="20"></i>
+      <div><strong>地図は持ち歩ける</strong> — スマホにブックマークしておけば、いつでも開ける</div>
+    </li>
+    <li>
+      <i data-lucide="users" width="20" height="20"></i>
+      <div><strong>1人で歩かなくていい</strong> — 上司・先輩・同期・取引先。全員が地図の一部</div>
+    </li>
+  </ul>
+
+  <div class="quote">
+    AI時代だからこそ、"<strong>君である理由</strong>" が武器になる。敬語もメールも電話も議事録も、すべては君の輪郭を描くための道具だ。道具は、使い込むほど手に馴染む。今日から、使い込もう。<br><br>
+    いってらっしゃい。現場で会おう。
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#ec4899" fill-rule="evenodd"/></svg></span>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000179034.html" target="_blank" rel="noopener"><span class="res-type doc">Doc</span>厚生労働省: 働き方・人材政策(新入社員向け資料も含む)</a></li>
+      <li><a href="https://www.jil.go.jp/" target="_blank" rel="noopener"><span class="res-type doc">Doc</span>労働政策研究・研修機構(JILPT): 若年雇用レポート</a></li>
+      <li><a href="https://www.soumu.go.jp/main_sosiki/kenkyu/ai_network/" target="_blank" rel="noopener"><span class="res-type doc">Doc</span>総務省: AIネットワーク社会推進会議(AI時代の責任論)</a></li>
+      <li><a href="https://www.nli-research.co.jp/" target="_blank" rel="noopener"><span class="res-type doc">Doc</span>ニッセイ基礎研究所: Z世代・新卒研究レポート</a></li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>最終章です。下のボタンで記録して、このサイトを "いつでも戻れる場所" にしておきましょう。</p>
+    <button class="btn-complete" data-chapter="13">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="12-japanese-customs.html"><span class="direction">&larr; Prev</span>日本の商習慣β — 接待・贈答・冠婚葬祭</a>
+    <span></span>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#fce7f3',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#ec4899',
+      lineColor: '#ec4899',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<!-- 視覚化ライブラリ群 -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+  window.addEventListener('load', function() {
+    var ctx = document.getElementById('ch13-radar');
+    if (!ctx || !window.Chart) return;
+    new Chart(ctx, {
+      type: 'radar',
+      data: {
+        labels: ['信頼', '対人', '論理', '実行', '文化'],
+        datasets: [{
+          label: '自己評価(この演習後)',
+          data: [75, 65, 70, 60, 55],
+          backgroundColor: 'rgba(236,72,153,0.25)',
+          borderColor: '#ec4899',
+          pointBackgroundColor: '#ec4899'
+        }, {
+          label: '入社時の自分',
+          data: [30, 25, 35, 30, 15],
+          backgroundColor: 'rgba(100,116,139,0.1)',
+          borderColor: '#94a3b8',
+          pointBackgroundColor: '#94a3b8'
+        }, {
+          label: '1年後の目標',
+          data: [85, 80, 80, 80, 70],
+          backgroundColor: 'rgba(34,197,94,0.12)',
+          borderColor: '#22c55e',
+          borderDash: [4, 4],
+          pointBackgroundColor: '#22c55e'
+        }]
+      },
+      options: {
+        plugins: { legend: { position: 'bottom' } },
+        scales: { r: { suggestedMin: 0, suggestedMax: 100 } }
+      }
+    });
+  });
+</script>
+</body>
+</html>
