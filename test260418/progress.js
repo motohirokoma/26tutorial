@@ -14,9 +14,9 @@ import {
   serverTimestamp,
 } from './firebase-config.js';
 
-const STORAGE_KEY = 'test0418-tutorial-progress';
-const STREAK_KEY = 'test0418-tutorial-streak';
-const TUTORIAL_SLUG = 'test0418';
+const STORAGE_KEY = 'test260418-tutorial-progress';
+const STREAK_KEY = 'test260418-tutorial-streak';
+const TUTORIAL_SLUG = 'test260418';
 
 const CHAPTERS = [
   { id: '01', title: 'お金と人生設計の全体像', hours: 0.5, phase: 'basics' },
