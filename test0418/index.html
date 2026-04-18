@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%233b82f6%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>MK's FP Basics - 10時間完全カリキュラム</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #3b82f6; }
+
+  main { margin-left: 0; max-width: 960px; margin: 52px auto 0; padding: 48px 40px 120px; }
+
+  .hero { text-align: center; padding: 40px 0 48px; }
+  .hero h1 { font-size: 42px; letter-spacing: -1px; margin-bottom: 16px; }
+  .hero .subtitle { max-width: 560px; margin: 0 auto 36px; font-size: 17px; }
+
+  .stats-row { display: flex; justify-content: center; gap: 48px; margin-bottom: 20px; }
+  .stat { text-align: center; }
+  .stat .num { font-size: 36px; font-weight: 700; letter-spacing: -1px; }
+  .stat .label { font-size: 13px; color: var(--text-secondary); }
+
+  .phase-section { margin: 40px 0 24px; }
+  .phase-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+  .phase-num { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; background: var(--accent); color: white; border-radius: 8px; font-size: 14px; font-weight: 700; }
+  .phase-header h2 { margin: 0; border: none; padding: 0; font-size: 20px; }
+  .phase-header .hours { margin-left: auto; font-size: 13px; color: var(--text-secondary); font-weight: 500; }
+
+  .chapter-list { list-style: none; margin: 0; padding: 0; }
+  .chapter-list li { margin: 0; }
+  .chapter-list a { display: flex; align-items: center; gap: 16px; padding: 16px 20px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; text-decoration: none; color: var(--text); margin-bottom: 8px; box-shadow: var(--shadow); transition: all 0.15s; }
+  .chapter-list a:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); border-color: var(--accent); }
+  .chapter-list .ch-num { display: flex; align-items: center; justify-content: center; min-width: 36px; height: 36px; background: var(--accent-light); border-radius: 8px; font-size: 12px; font-weight: 700; color: var(--text); flex-shrink: 0; padding: 0 6px; }
+  .chapter-list .ch-info { flex: 1; }
+  .chapter-list .ch-title { font-size: 15px; font-weight: 600; margin-bottom: 2px; }
+  .chapter-list .ch-desc { font-size: 13px; color: var(--text-secondary); }
+  .chapter-list .ch-time { font-size: 12px; color: var(--text-secondary); font-weight: 500; flex-shrink: 0; padding: 4px 10px; background: var(--accent-light); border-radius: 6px; }
+  .chapter-list .ch-num { min-width: 44px; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#3b82f6" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's FP Basics
+    </a>
+    <ul class="nav-links">
+      <li><a href="#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="#phase2" data-nav><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="#phase3" data-nav><span class="phase-name">Advanced</span><span class="phase-pct" id="pct-advanced">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<main>
+  <div class="hero">
+    <div class="badge-row" style="justify-content:center; margin-bottom:20px;">
+      <span class="badge">10-Hour Complete Curriculum</span>
+    </div>
+    <h1>MK's FP Basics <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="22" height="22" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#3b82f6" fill-rule="evenodd"/></svg></span></h1>
+    <p class="subtitle">フィナンシャルプランナー3級の学習を通じて、大学生〜新卒社会人が「日常で本当に使えるお金の知識」を身につけるカリキュラム。給与・税金・社会保険・投資・保険・住宅まで、10時間で網羅します。</p>
+    <div class="stats-row">
+      <div class="stat"><div class="num">10</div><div class="label">hours</div></div>
+      <div class="stat"><div class="num">13</div><div class="label">chapters</div></div>
+      <div class="stat"><div class="num">13</div><div class="label">sections</div></div>
+    </div>
+  </div>
+
+  <div class="index-progress">
+    <div class="progress-header">
+      <div class="title">Your Progress</div>
+      <div class="index-progress-count" style="font-size:13px; color:var(--text-secondary);">0 / 13 sections completed</div>
+    </div>
+    <div class="progress-bar-track">
+      <div class="index-progress-fill" style="width:0%"></div>
+    </div>
+    <div class="progress-meta">
+      <span class="index-progress-time">0h / 10h</span>
+    </div>
+  </div>
+
+  <div class="chart-card">
+    <div class="chart-title">Time Distribution</div>
+    <div class="bar-row"><div class="bar-label">Phase 1: Basics</div><div class="bar-track"><div class="bar-fill c1" style="width:30%">3h</div></div></div>
+    <div class="bar-row"><div class="bar-label">Phase 2: Core</div><div class="bar-track"><div class="bar-fill c2" style="width:40%">4h</div></div></div>
+    <div class="bar-row"><div class="bar-label">Phase 3: Advanced</div><div class="bar-track"><div class="bar-fill c3" style="width:30%">3h</div></div></div>
+  </div>
+
+  <div class="phase-section" id="phase1">
+    <div class="phase-header">
+      <div class="phase-num">1</div><h2>Basics - 基礎編</h2><div class="hours">3 hours</div>
+    </div>
+    <ul class="chapter-list">
+      <li><a href="chapters/01-intro.html" class="chapter-link" data-chapter="01"><div class="ch-num">01</div><div class="ch-info"><div class="ch-title">お金と人生設計の全体像</div><div class="ch-desc">家計・ライフイベント・キャッシュフローの感覚をつかむ</div></div><div class="ch-time">30min</div><div class="ch-checkbox" data-chapter="01"></div></a></li>
+      <li><a href="chapters/02-salary-tax-social.html" class="chapter-link" data-chapter="02"><div class="ch-num">02</div><div class="ch-info"><div class="ch-title">給与・税金・社会保険の基本</div><div class="ch-desc">給与明細の読み方と「額面と手取り」の仕組み</div></div><div class="ch-time">60min</div><div class="ch-checkbox" data-chapter="02"></div></a></li>
+      <li><a href="chapters/03-pension.html" class="chapter-link" data-chapter="03"><div class="ch-num">03</div><div class="ch-info"><div class="ch-title">公的年金の仕組み</div><div class="ch-desc">国民年金・厚生年金と老後までの見通し</div></div><div class="ch-time">45min</div><div class="ch-checkbox" data-chapter="03"></div></a></li>
+      <li><a href="chapters/04-household-cashflow.html" class="chapter-link" data-chapter="04"><div class="ch-num">04</div><div class="ch-info"><div class="ch-title">家計管理とキャッシュフロー</div><div class="ch-desc">収支記録・貯蓄率・予算配分の実践</div></div><div class="ch-time">45min</div><div class="ch-checkbox" data-chapter="04"></div></a></li>
+    </ul>
+  </div>
+
+  <div class="phase-section" id="phase2">
+    <div class="phase-header">
+      <div class="phase-num">2</div><h2>Core - 金融リテラシー核心</h2><div class="hours">4 hours</div>
+    </div>
+    <ul class="chapter-list">
+      <li><a href="chapters/05-bank-deposits.html" class="chapter-link" data-chapter="05"><div class="ch-num">05</div><div class="ch-info"><div class="ch-title">銀行・預貯金と金利</div><div class="ch-desc">単利・複利と預金の種類、金利リスクの基本</div></div><div class="ch-time">30min</div><div class="ch-checkbox" data-chapter="05"></div></a></li>
+      <li><a href="chapters/06-investment-basics.html" class="chapter-link" data-chapter="06"><div class="ch-num">06</div><div class="ch-info"><div class="ch-title">投資商品の基礎：債券・株式・投資信託</div><div class="ch-desc">仕組み・リターン源泉・リスクの見方</div></div><div class="ch-time">60min</div><div class="ch-checkbox" data-chapter="06"></div></a></li>
+      <li><a href="chapters/07-nisa-ideco.html" class="chapter-link" data-chapter="07"><div class="ch-num">07</div><div class="ch-info"><div class="ch-title">NISA・iDeCo：非課税制度を使いこなす</div><div class="ch-desc">制度比較・実際の始め方・配分の考え方</div></div><div class="ch-time">60min</div><div class="ch-checkbox" data-chapter="07"></div></a></li>
+      <li><a href="chapters/08-life-insurance.html" class="chapter-link" data-chapter="08"><div class="ch-num">08</div><div class="ch-info"><div class="ch-title">生命保険の考え方</div><div class="ch-desc">必要保障額の計算と保険種類の選び方</div></div><div class="ch-time">45min</div><div class="ch-checkbox" data-chapter="08"></div></a></li>
+      <li><a href="chapters/09-non-life-insurance.html" class="chapter-link" data-chapter="09"><div class="ch-num">09</div><div class="ch-info"><div class="ch-title">損害保険の考え方</div><div class="ch-desc">自動車・火災・医療・賃貸での必要性</div></div><div class="ch-time">45min</div><div class="ch-checkbox" data-chapter="09"></div></a></li>
+    </ul>
+  </div>
+
+  <div class="phase-section" id="phase3">
+    <div class="phase-header">
+      <div class="phase-num">3</div><h2>Advanced - 実生活応用</h2><div class="hours">3 hours</div>
+    </div>
+    <ul class="chapter-list">
+      <li><a href="chapters/10-mortgage-real-estate.html" class="chapter-link" data-chapter="10"><div class="ch-num">10</div><div class="ch-info"><div class="ch-title">住宅ローンと不動産</div><div class="ch-desc">借入可能額・変動/固定・繰上返済の判断軸</div></div><div class="ch-time">60min</div><div class="ch-checkbox" data-chapter="10"></div></a></li>
+      <li><a href="chapters/11-tax-filing.html" class="chapter-link" data-chapter="11"><div class="ch-num">11</div><div class="ch-info"><div class="ch-title">確定申告・所得控除の基本</div><div class="ch-desc">医療費・ふるさと納税・iDeCo控除の実務</div></div><div class="ch-time">45min</div><div class="ch-checkbox" data-chapter="11"></div></a></li>
+      <li><a href="chapters/12-inheritance.html" class="chapter-link" data-chapter="12"><div class="ch-num">12</div><div class="ch-info"><div class="ch-title">相続の基本知識</div><div class="ch-desc">大学生〜新卒でも知っておきたい最小限</div></div><div class="ch-time">30min</div><div class="ch-checkbox" data-chapter="12"></div></a></li>
+      <li><a href="chapters/13-final-exercise.html" class="chapter-link" data-chapter="13"><div class="ch-num">13</div><div class="ch-info"><div class="ch-title">最終演習問題：あなたのライフプラン</div><div class="ch-desc">25〜65歳のCF表と資産配分の統合演習</div></div><div class="ch-time">45min</div><div class="ch-checkbox" data-chapter="13"></div></a></li>
+    </ul>
+  </div>
+
+  <div class="section-deco"><span class="deco-line"></span><span class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#3b82f6" fill-rule="evenodd"/></svg></span><span class="deco-line"></span></div>
+
+  <div class="info-box" style="margin-top:24px;">
+    <div class="label">Prerequisites</div>
+    <p>特別な前提知識は不要です。毎月の給与明細(もしくはアルバイトの給与明細)を手元に用意できれば、各章の数字を自分の状況に当てはめながら読み進められます。計算はスマホの電卓で十分です。</p>
+  </div>
+</main>
+
+<script type="module" src="progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(59,130,246,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#3b82f6',
+      lineColor: '#3b82f6',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script>
+(function () {
+  var navLinks = document.querySelectorAll('[data-nav]');
+  var sections = [];
+  navLinks.forEach(function (link) {
+    var id = link.getAttribute('href').replace('#', '');
+    var el = document.getElementById(id);
+    if (el) sections.push({ el: el, link: link });
+  });
+  function update() {
+    var scrollY = window.scrollY + 120;
+    var current = sections[0];
+    for (var i = 0; i < sections.length; i++) {
+      if (sections[i].el.offsetTop <= scrollY) current = sections[i];
+    }
+    navLinks.forEach(function (l) { l.classList.remove('active'); });
+    if (current) current.link.classList.add('active');
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%233b82f6%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>銀行・預貯金と金利 - MK's FP Basics</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #3b82f6; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#3b82f6" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's FP Basics
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav class="active"><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="../index.html#phase3" data-nav><span class="phase-name">Advanced</span><span class="phase-pct" id="pct-advanced">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.05</span>
+    銀行・預貯金と金利
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 13 sections</text>
+    </svg>
+    <div class="progress-info">0h / 10h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-intro.html"><span class="status-dot" data-chapter="01"></span> お金と人生設計の全体像</a></li>
+    <li><a href="02-salary-tax-social.html"><span class="status-dot" data-chapter="02"></span> 給与・税金・社会保険の基本</a></li>
+    <li><a href="03-pension.html"><span class="status-dot" data-chapter="03"></span> 公的年金の仕組み</a></li>
+    <li><a href="04-household-cashflow.html"><span class="status-dot" data-chapter="04"></span> 家計管理とキャッシュフロー</a></li>
+  </ul>
+  <div class="section-label">Core</div>
+  <ul>
+    <li class="active"><a href="05-bank-deposits.html" class="active"><span class="status-dot" data-chapter="05"></span> 銀行・預貯金と金利</a></li>
+    <li><a href="06-investment-basics.html"><span class="status-dot" data-chapter="06"></span> 投資商品の基礎</a></li>
+    <li><a href="07-nisa-ideco.html"><span class="status-dot" data-chapter="07"></span> NISA・iDeCo</a></li>
+    <li><a href="08-life-insurance.html"><span class="status-dot" data-chapter="08"></span> 生命保険の考え方</a></li>
+    <li><a href="09-non-life-insurance.html"><span class="status-dot" data-chapter="09"></span> 損害保険の考え方</a></li>
+  </ul>
+  <div class="section-label">Advanced</div>
+  <ul>
+    <li><a href="10-mortgage-real-estate.html"><span class="status-dot" data-chapter="10"></span> 住宅ローンと不動産</a></li>
+    <li><a href="11-tax-filing.html"><span class="status-dot" data-chapter="11"></span> 確定申告・所得控除</a></li>
+    <li><a href="12-inheritance.html"><span class="status-dot" data-chapter="12"></span> 相続の基本知識</a></li>
+    <li><a href="13-final-exercise.html"><span class="status-dot" data-chapter="13"></span> 最終演習問題</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 2: Core &gt; Chapter 05</div>
+  <h1>銀行・預貯金と金利</h1>
+  <p class="subtitle">単利と複利、72の法則、ペイオフ、預貯金の「当たり前」を押さえる</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 30分</span>
+    <span class="badge">Phase: Core</span>
+    <span class="badge">難易度: 初級</span>
+  </div>
+
+  <p>「貯金しておけば大丈夫」——本当にそうだろうか。本章では<span class="term" data-tip="預金と貯金の総称。銀行は預金、ゆうちょ銀行は貯金と呼ぶが、仕組みはほぼ同じ">預貯金</span>の種類、<span class="term" data-tip="利息の付き方。元本だけに付くか、利息にも付くか">単利と複利</span>の違い、そして「なぜ預金だけでは資産が増えないか」を数字で体感する。次章の投資に入る前の、<strong>守りの土台</strong>を固める短い章だ。</p>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#3b82f6" fill-rule="evenodd"/></svg></span>預金の種類を整理する</h2>
+
+  <p>まずは「預金」と一口に言っても複数の種類があることを押さえよう。用途・金利・流動性がそれぞれ違う。</p>
+
+  <table>
+    <thead>
+      <tr><th>種類</th><th>金利目安</th><th>引き出し</th><th>用途</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>普通預金</strong></td><td>0.001〜0.1%</td><td>いつでも可</td><td>生活費・給与受取</td></tr>
+      <tr><td><strong>定期預金</strong></td><td>0.01〜0.3%</td><td>原則満期まで不可</td><td>当面使わない余剰資金</td></tr>
+      <tr><td><span class="term" data-tip="米ドルやユーロなど外国通貨で預ける預金。金利は高いが為替変動リスクあり">外貨預金</span></td><td>米ドル4〜5%</td><td>為替次第で損益</td><td>分散・外貨需要のある人</td></tr>
+      <tr><td><span class="term" data-tip="主に法人の当座取引用。利息が付かないかわりに手形・小切手が使える">当座預金</span></td><td>0%(無利息)</td><td>いつでも可</td><td>法人の決済専用</td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-box"><span class="label">Tips</span><p>新卒のうちは「普通預金=生活費3〜6か月分」「定期預金=使途の決まった貯蓄(結婚資金など)」の二本立てで十分。外貨預金は <strong>為替リスクと手数料</strong> で表面金利ほど儲からないことが多く、初心者の最初の選択肢には向かない。</p></div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: 外貨預金の「4%」に潜む落とし穴</summary>
+    <div class="more-body">
+      <p>米ドル預金で年4%でも、預入時に1ドル150円で買い、満期に140円で円に戻せば、為替差損 約6.7% で 金利分が丸ごと消える。さらに多くの銀行で <strong>往復の為替手数料(1ドル片道25銭〜1円)</strong> が差し引かれる。メガバンクの窓口外貨預金は「高金利に見えるが実質コストが高い」代表格。外貨で運用したいなら、本来は証券口座の外国債券やFX、または全世界株式インデックスなど <strong>もっと効率の良い手段</strong> を検討すべき。</p>
+    </div>
+  </details>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#3b82f6" fill-rule="evenodd"/></svg></span>単利と複利——お金が雪だるまになる仕組み</h2>
+
+  <p><span class="term" data-tip="元本だけに利息が付く方式。利息は元本に組み込まれない">単利</span>は「元本×金利」を毎年受け取るシンプルな方式。<span class="term" data-tip="利息を元本に組み込み、翌年はその合計に利息が付く方式">複利</span>は「利息にも利息が付く」方式で、期間が長いほど圧倒的に差が開く。計算式で書くとこうなる。</p>
+
+  <div class="kv-grid">
+    <div class="kv"><div class="kv-key">単利</div><div class="kv-val">元本 × (1 + 金利 × 年数)</div></div>
+    <div class="kv"><div class="kv-key">複利</div><div class="kv-val">元本 × (1 + 金利)<sup>年数</sup></div></div>
+  </div>
+
+  <p>実際にどれくらい差が付くのか。元本100万円、金利5%で30年運用した場合のシミュレーション。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">100万円を金利5%で運用した時の推移(単利 vs 複利)</div>
+    <canvas id="ch5-line-1" height="220"></canvas>
+    <div class="diagram-caption">複利は30年後に432万円、単利は250万円。差は約180万円。これが「複利の魔法」。</div>
+  </div>
+
+  <div class="info-box"><span class="label">Note</span><p>銀行の定期預金・投資信託・NISAの積立は基本的に<strong>複利</strong>で増える(利息が元本に組み込まれて翌期も運用される)。一方で個人向け国債の一部や保険商品の中には単利型もあるので、商品説明で必ず確認すること。</p></div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#3b82f6" fill-rule="evenodd"/></svg></span>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#3b82f6" fill-rule="evenodd"/></svg></span>72の法則——元本が2倍になる年数を暗算する</h2>
+
+  <p>複利の威力を素早く見積もるための有名な公式が <strong>72の法則</strong>。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">72の法則のイメージ</div>
+    <svg id="rough-rule72" width="100%" height="200" viewBox="0 0 440 200"></svg>
+    <div class="diagram-caption">「72 ÷ 金利(%) = 元本が2倍になる年数」。手描きでも暗算できるシンプルさが強み。</div>
+  </div>
+
+  <p>実際の金利別に当てはめてみると、低金利のインパクトの凄まじさが分かる。</p>
+
+  <table>
+    <thead>
+      <tr><th>金利</th><th>2倍になる年数</th><th>備考</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>0.001%(メガバンク普通預金)</td><td><strong>約72,000年</strong></td><td>人類の歴史より長い</td></tr>
+      <tr><td>0.1%(ネット銀行普通預金)</td><td>約720年</td><td>江戸時代から今まで</td></tr>
+      <tr><td>0.3%(定期預金)</td><td>240年</td><td>ひいひい…孫の代</td></tr>
+      <tr><td>3%(過去の定期預金・一部個人向け国債)</td><td>24年</td><td>現役世代で到達可能</td></tr>
+      <tr><td>5%(全世界株式の歴史的平均)</td><td>14.4年</td><td>新卒22歳→36歳で2倍</td></tr>
+      <tr><td>7%(米国株式S&amp;P500の歴史的平均)</td><td>約10.3年</td><td>10年で倍の迫力</td></tr>
+      <tr><td>10%</td><td>7.2年</td><td>バブル期の定期相当</td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-box"><span class="label">Warning</span><p>現在のメガバンク普通預金(0.001%)に置いておくと、お金が2倍になるのに <strong>7万2千年</strong> かかる。文字通り「増やす手段ではない」ことが数字で分かる。</p></div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#3b82f6" fill-rule="evenodd"/></svg></span>では預金の役割とは?——「守り」のポジション</h2>
+
+  <p>増えないなら預金はいらないのか? 違う。預金には <strong>「守り」</strong> という明確な役割がある。</p>
+
+  <div class="compare-cards">
+    <div class="cc good">
+      <span class="cc-label">預金の強み</span>
+      <h4>守りの資産</h4>
+      <ul>
+        <li>元本保証(ペイオフ制度)</li>
+        <li>いつでも引き出せる流動性</li>
+        <li>値下がりリスクがない</li>
+        <li>生活防衛資金の置き場として最適</li>
+      </ul>
+    </div>
+    <div class="cc bad">
+      <span class="cc-label">預金の弱み</span>
+      <h4>増やせない資産</h4>
+      <ul>
+        <li>金利がインフレに追いつかない</li>
+        <li>実質的な購買力が目減りする</li>
+        <li>長期の複利効果を活かせない</li>
+        <li>機会損失が大きい</li>
+      </ul>
+    </div>
+  </div>
+
+  <p>現実的な目安として、<span class="term" data-tip="病気・失業など収入が途絶えても当面生活できる最低限のお金。手取り月給×3〜6か月分が目安">生活防衛資金</span> に相当する「手取り月給×3〜6か月分」は <strong>普通預金</strong> に置き、それを超える余剰資金は投資に回すのが王道。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">資産配分の基本イメージ(新卒〜20代)</div>
+    <svg viewBox="0 0 420 240" width="100%" style="max-width:420px; display:block; margin:0 auto;">
+      <rect x="40" y="40" width="340" height="50" fill="#3b82f6" opacity="0.85"/>
+      <text x="210" y="70" text-anchor="middle" font-size="13" font-weight="700" fill="white">生活防衛資金(普通預金) — 手取り3〜6か月分</text>
+      <rect x="40" y="100" width="340" height="50" fill="#3b82f6" opacity="0.45"/>
+      <text x="210" y="130" text-anchor="middle" font-size="13" font-weight="700">近い将来の大型支出(定期預金)</text>
+      <rect x="40" y="160" width="340" height="50" fill="rgba(59,130,246,0.15)"/>
+      <text x="210" y="190" text-anchor="middle" font-size="13" font-weight="700">長期運用資金(投資・NISA)</text>
+      <text x="210" y="20" text-anchor="middle" font-size="11" fill="#64748b">↑ 守り(使う時期が近い)</text>
+      <text x="210" y="232" text-anchor="middle" font-size="11" fill="#64748b">↓ 攻め(10年以上使わない)</text>
+    </svg>
+    <div class="diagram-caption">使う時期が近いほど「守り(預金)」、遠いほど「攻め(投資)」へ配分する。</div>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#3b82f6" fill-rule="evenodd"/></svg></span>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#3b82f6" fill-rule="evenodd"/></svg></span>ペイオフ制度——1銀行あたり1,000万円+利息まで保護</h2>
+
+  <p>銀行が破綻しても預金者を守る仕組みが <span class="term" data-tip="銀行破綻時に預金保険機構が預金者に保険金を支払う制度。1金融機関あたり元本1,000万円とその利息まで保護">ペイオフ制度</span>。日本の全ての銀行・信用金庫・信用組合が加入している<span class="term" data-tip="民間金融機関と政府が共同で運営する、預金者保護のための保険機構">預金保険機構</span> が保証する。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">ペイオフ保護の範囲(1銀行あたり)</div>
+    <svg viewBox="0 0 480 220" width="100%" style="max-width:480px; display:block; margin:0 auto;">
+      <rect x="20" y="40" width="280" height="100" fill="#3b82f6" opacity="0.25" stroke="#3b82f6" stroke-width="2"/>
+      <text x="160" y="75" text-anchor="middle" font-size="13" font-weight="700" fill="#1e40af">保護される</text>
+      <text x="160" y="100" text-anchor="middle" font-size="12">元本 1,000万円</text>
+      <text x="160" y="120" text-anchor="middle" font-size="12">+ 破綻日までの利息</text>
+      <rect x="300" y="40" width="160" height="100" fill="#fee2e2" stroke="#dc2626" stroke-width="1.5"/>
+      <text x="380" y="75" text-anchor="middle" font-size="13" font-weight="700" fill="#b91c1c">保護されない</text>
+      <text x="380" y="100" text-anchor="middle" font-size="12">1,000万円超の部分</text>
+      <text x="380" y="120" text-anchor="middle" font-size="11" fill="#64748b">(配当次第で一部返還)</text>
+      <text x="240" y="170" text-anchor="middle" font-size="11" fill="#64748b">※ 同一銀行内の全預金を合算してカウント</text>
+      <text x="240" y="190" text-anchor="middle" font-size="11" fill="#64748b">※ 普通・定期・外貨預金などすべて含む(当座預金は全額保護=決済性預金)</text>
+    </svg>
+    <div class="diagram-caption">1,000万円を超える資金を置くなら、複数の銀行に分散するのが基本。</div>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: ペイオフ保護の「1,000万円ルール」の詳細</summary>
+    <div class="more-body">
+      <p><strong>合算の単位</strong> は「同一金融機関(の本支店を含む全体)・同一預金者」。メガバンクA行の新宿支店と渋谷支店は合算されるが、A行とB行は別カウント。また <strong>決済用預金(無利息・要求払い・決済サービスの3条件を満たす当座預金等)</strong> は全額保護され、ペイオフの1,000万円枠とは別枠。大企業の運転資金がここに入る。</p>
+      <p>外貨預金は <strong>保護対象外</strong> なので注意。投資信託や株式は銀行で買っても預金保険の対象外だが、<strong>分別管理</strong> により銀行破綻でも資産は守られる(証券会社経由の場合は投資者保護基金が別途1,000万円まで補償)。</p>
+    </div>
+  </details>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#3b82f6" fill-rule="evenodd"/></svg></span>どの銀行を選ぶか——メガバンク vs ネット銀行 vs 地方銀行</h2>
+
+  <p>銀行選びは「どこが得か」というより <strong>「自分の生活にどう馴染むか」</strong> で決める。3タイプの違いを押さえよう。</p>
+
+  <table>
+    <thead>
+      <tr><th>観点</th><th>メガバンク</th><th>ネット銀行</th><th>地方銀行</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>普通預金金利</td><td>0.001〜0.02%</td><td><strong>0.1〜0.2%</strong></td><td>0.001〜0.02%</td></tr>
+      <tr><td>定期預金金利</td><td>0.01〜0.1%</td><td><strong>0.1〜0.3%</strong></td><td>0.01〜0.1%</td></tr>
+      <tr><td>ATM手数料</td><td>提携ATM有料になりがち</td><td><strong>月数回無料(コンビニ含む)</strong></td><td>地元ATM無料</td></tr>
+      <tr><td>他行振込手数料</td><td>200〜500円</td><td><strong>月数回無料</strong></td><td>200〜400円</td></tr>
+      <tr><td>窓口・対面相談</td><td><strong>全国に支店</strong></td><td>基本なし</td><td><strong>地元密着で手厚い</strong></td></tr>
+      <tr><td>アプリ・UX</td><td>改善中だが重め</td><td><strong>洗練</strong></td><td>バラつき</td></tr>
+      <tr><td>向いている人</td><td>住宅ローン等の総合取引</td><td><strong>日常の資産置き場</strong></td><td>地元で事業や不動産</td></tr>
+    </tbody>
+  </table>
+
+  <div class="diagram-box">
+    <div class="diagram-title">銀行タイプの選び方フロー</div>
+    <pre class="mermaid">
+graph TD
+  A["銀行を選ぶ"] --> B{"窓口で相談したい?"}
+  B -- "はい・頻繁に" --> C["メガバンク or 地方銀行"]
+  B -- "いいえ・ほぼネット完結" --> D{"金利・手数料を重視?"}
+  D -- "はい" --> E["ネット銀行(楽天・住信SBI・PayPay等)"]
+  D -- "いいえ" --> F["普段使いのメガバンクでOK"]
+  C --> G{"地元で不動産・事業?"}
+  G -- "はい" --> H["地方銀行"]
+  G -- "いいえ" --> I["メガバンク"]
+    </pre>
+    <div class="diagram-caption">「窓口の要否 → 金利重視か → 地元性」の3軸で大抵決まる。</div>
+  </div>
+
+  <div class="info-box"><span class="label">実践のコツ</span><p>多くの人にとって現実解は <strong>「給与受取=メガバンク、貯蓄=ネット銀行」の2行持ち</strong>。給与振込口座はメガバンクを指定される会社が多いので、そこから毎月ネット銀行へ自動振替で移すと、高金利と利便性を両立できる。</p></div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#3b82f6" fill-rule="evenodd"/></svg></span>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#3b82f6" fill-rule="evenodd"/></svg></span>本章のまとめ
+
+  <ul class="icon-list">
+    <li><i data-lucide="layers" width="20" height="20"></i><div><strong>預金は4種類</strong> — 普通・定期・外貨・当座。最初は普通+定期の2本立てで十分</div></li>
+    <li><i data-lucide="trending-up" width="20" height="20"></i><div><strong>複利の力</strong> — 長期ほど単利との差が広がる。投資を始める理由がここにある</div></li>
+    <li><i data-lucide="calculator" width="20" height="20"></i><div><strong>72の法則</strong> — 72÷金利(%)=2倍になる年数。0.001%なら7万年以上</div></li>
+    <li><i data-lucide="shield" width="20" height="20"></i><div><strong>ペイオフ</strong> — 1銀行あたり元本1,000万円+利息まで保護。超える分は分散</div></li>
+    <li><i data-lucide="building-2" width="20" height="20"></i><div><strong>銀行選び</strong> — メガバンク給与+ネット銀行貯蓄の2行持ちが王道</div></li>
+  </ul>
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>72の法則で2倍になる年数を計算する</h4>
+    <p>以下の4パターンについて、72の法則を使って「元本が2倍になるおおよその年数」を電卓で計算してみよう。</p>
+    <ol>
+      <li>メガバンク普通預金(年0.001%)</li>
+      <li>ネット銀行の定期預金(年0.2%)</li>
+      <li>全世界株式インデックスファンドの長期平均(年5%)</li>
+      <li>米国株式S&amp;P500の長期平均(年7%)</li>
+    </ol>
+    <p>計算した後、自分が22歳として「65歳までに何倍になるか」を4パターンそれぞれ考察してみよう。</p>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><strong>72÷金利(%) の計算結果:</strong></p>
+      <ul>
+        <li>0.001% → 72 ÷ 0.001 = <strong>72,000年</strong>(人類の文明より長い)</li>
+        <li>0.2% → 72 ÷ 0.2 = <strong>360年</strong>(江戸時代から現代まで)</li>
+        <li>5% → 72 ÷ 5 = <strong>14.4年</strong></li>
+        <li>7% → 72 ÷ 7 = <strong>約10.3年</strong></li>
+      </ul>
+      <p><strong>22歳→65歳(43年間)の倍率</strong>(複利 × 年数):</p>
+      <pre><code>0.001% : (1.00001)^43 ≒ 1.0004倍 (ほぼ元本のまま)
+0.2%   : (1.002)^43   ≒ 1.09倍 (43年で+9%)
+5%     : (1.05)^43    ≒ 8.1倍
+7%     : (1.07)^43    ≒ 18.3倍</code></pre>
+      <p>100万円が65歳時点で、預金なら100万円〜109万円、投資なら810万〜1,830万円。<strong>この差こそ、預金だけでは資産が作れない理由</strong>。ただし投資は当然リスクがあり、この計算は「歴史的平均が未来も続く」仮定での試算。次章以降で詳しく扱う。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>自分に合う銀行を選んでみる</h4>
+    <p>以下のステップで、自分用の「メインバンク候補」を1〜2行選び、その理由を120字程度でまとめてみよう。</p>
+    <ol>
+      <li>給与振込口座の指定(会社から指定されている場合はどこか)を確認</li>
+      <li>月あたりのATM利用回数・他行振込回数をざっくり見積もる</li>
+      <li>「窓口で相談する機会があるか」を自問(住宅ローン・まとまった相続・事業計画など)</li>
+      <li>上の表とフロー図を参考に、<strong>給与口座用1行+貯蓄用1行</strong> を選定</li>
+      <li>選んだ銀行の公式サイトで、普通預金金利・ATM手数料・他行振込手数料の3点を確認</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><strong>回答例(新卒・都内勤務・一人暮らしのケース):</strong></p>
+      <blockquote>
+        <p>給与振込はMUFG指定なので「三菱UFJ銀行」をメインに使い、毎月給料日に生活費3か月分を残して残りを「住信SBIネット銀行」に自動振替で移す。SBIはランク特典でATM手数料・振込手数料が月数回無料になり、普通預金金利もMUFGの100倍以上(0.001% vs 0.1%)。窓口相談が必要な場面(住宅ローンなど)は将来MUFGで相談する。</p>
+      </blockquote>
+      <p><strong>ポイント:</strong></p>
+      <ul>
+        <li>会社指定を変えられない給与口座はメガバンクで受け入れ、<strong>貯蓄はネット銀行に流す</strong>発想</li>
+        <li>「自動振替」で先取り貯蓄(Ch04で学んだ内容)と連動させる</li>
+        <li>金額が1,000万円に近づいてきたら、ペイオフ対策でもう1行追加を検討</li>
+      </ul>
+      <p>銀行選びは「一度決めたら終わり」ではない。結婚・住宅購入・転職などのライフイベントごとに見直す前提で、まずは2行持ちから始めればよい。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span><a href="https://www.fsa.go.jp/teach/index.html" target="_blank" rel="noopener">金融庁「基礎から学べる金融ガイド」</a> — 預金・金利・ペイオフの公式解説。一次情報として最も信頼できる</li>
+      <li><span class="res-type doc">Doc</span><a href="https://www.dic.go.jp/" target="_blank" rel="noopener">預金保険機構(公式サイト)</a> — ペイオフ制度の詳細、対象金融機関リスト、破綻時のQ&amp;Aなど</li>
+      <li><span class="res-type doc">Doc</span><a href="https://www.boj.or.jp/statistics/dl/depo/prime/index.htm" target="_blank" rel="noopener">日本銀行「預金種類別店頭表示金利の平均」</a> — 直近の実際の金利水準を月次で確認できる統計</li>
+      <li><span class="res-type video">Video</span><a href="https://www.youtube.com/@ryogakucho" target="_blank" rel="noopener">両学長 リベラルアーツ大学 — ネット銀行おすすめ・ペイオフ解説</a> — 銀行選びや預金の守り方を分かりやすく紹介するチャンネル</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="05">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="04-household-cashflow.html"><span class="direction">&larr; Prev</span>家計管理とキャッシュフロー</a>
+    <a href="06-investment-basics.html"><span class="direction">Next &rarr;</span>投資商品の基礎</a>
+  </div>
+</main>
+
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(59,130,246,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#3b82f6',
+      lineColor: '#3b82f6',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+<script>
+window.addEventListener("load", function() {
+  // 単利 vs 複利 折れ線
+  var ctxLine = document.getElementById('ch5-line-1');
+  if (ctxLine && window.Chart) {
+    var years = [];
+    var simple = [];
+    var compound = [];
+    var principal = 100;
+    var rate = 0.05;
+    for (var y = 0; y <= 30; y++) {
+      years.push(y + '年');
+      simple.push(Math.round(principal * (1 + rate * y) * 10) / 10);
+      compound.push(Math.round(principal * Math.pow(1 + rate, y) * 10) / 10);
+    }
+    new Chart(ctxLine, {
+      type: 'line',
+      data: {
+        labels: years,
+        datasets: [
+          { label: '単利', data: simple, borderColor: '#94a3b8', backgroundColor: 'rgba(148,163,184,0.15)', tension: 0.2, fill: false },
+          { label: '複利', data: compound, borderColor: '#3b82f6', backgroundColor: 'rgba(59,130,246,0.15)', tension: 0.2, fill: true }
+        ]
+      },
+      options: {
+        plugins: { legend: { position: 'bottom' } },
+        scales: { y: { beginAtZero: false, title: { display: true, text: '資産残高(万円)' } } }
+      }
+    });
+  }
+
+  // rough.js で 72の法則 の図解
+  var rsvg = document.getElementById('rough-rule72');
+  if (rsvg && window.rough) {
+    var r = rough.svg(rsvg);
+    rsvg.appendChild(r.rectangle(40, 60, 90, 70, { fill: 'rgba(59,130,246,0.15)', fillStyle: 'hachure', stroke: '#3b82f6', strokeWidth: 2 }));
+    rsvg.appendChild(r.line(140, 95, 200, 95, { stroke: '#475569', strokeWidth: 2 }));
+    rsvg.appendChild(r.rectangle(210, 60, 90, 70, { fill: 'rgba(59,130,246,0.15)', fillStyle: 'hachure', stroke: '#3b82f6', strokeWidth: 2 }));
+    rsvg.appendChild(r.line(310, 95, 370, 95, { stroke: '#475569', strokeWidth: 2 }));
+    rsvg.appendChild(r.rectangle(380, 60, 50, 70, { fill: '#fef3c7', fillStyle: 'hachure', stroke: '#d97706', strokeWidth: 2 }));
+
+    var addText = function(x, y, t, size, weight, color) {
+      var el = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      el.setAttribute('x', x); el.setAttribute('y', y); el.setAttribute('text-anchor', 'middle');
+      el.setAttribute('font-size', size); el.setAttribute('font-weight', weight);
+      if (color) el.setAttribute('fill', color);
+      el.textContent = t;
+      rsvg.appendChild(el);
+    };
+    addText(85, 90, '72', 22, 700, '#1e40af');
+    addText(85, 115, '(定数)', 10, 500, '#64748b');
+    addText(170, 90, '÷', 22, 700, '#475569');
+    addText(255, 90, '金利%', 16, 700, '#1e40af');
+    addText(255, 115, '(例: 5)', 10, 500, '#64748b');
+    addText(340, 90, '=', 22, 700, '#475569');
+    addText(405, 90, '年数', 14, 700, '#b45309');
+    addText(405, 115, '(2倍)', 10, 500, '#92400e');
+    addText(220, 170, '例: 金利5% → 72÷5 = 14.4年で元本が2倍になる', 12, 600);
+  }
+});
+</script>
+</body>
+</html>
