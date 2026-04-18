@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%237c3aed%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>Transformer - MK's Understanding LLM</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #7c3aed; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Understanding LLM
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" class="active" data-nav><span class="phase-name">Deep Dive</span><span class="phase-pct" id="pct-deepdive">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.04</span>
+    Transformer
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 7 sections</text>
+    </svg>
+    <div class="progress-info">0h / 4h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-what-is-llm.html"><span class="status-dot" data-chapter="01"></span> LLMとは何か</a></li>
+    <li><a href="02-tokens-embeddings.html"><span class="status-dot" data-chapter="02"></span> 言葉を数字に変える</a></li>
+    <li><a href="03-next-token-prediction.html"><span class="status-dot" data-chapter="03"></span> 次単語予測</a></li>
+  </ul>
+  <div class="section-label">Deep Dive</div>
+  <ul>
+    <li><a href="04-transformer.html" class="active"><span class="status-dot" data-chapter="04"></span> Transformer</a></li>
+    <li><a href="05-training.html"><span class="status-dot" data-chapter="05"></span> LLMはどう学ぶのか</a></li>
+    <li><a href="06-capabilities-limits.html"><span class="status-dot" data-chapter="06"></span> 能力・限界・未来</a></li>
+    <li><a href="07-final-exercise.html"><span class="status-dot" data-chapter="07"></span> 最終演習問題</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 2: Deep Dive &gt; Chapter 04</div>
+  <h1>Transformer 〜注意機構という発明〜</h1>
+  <p class="subtitle">2017年に発表された1本の論文「Attention Is All You Need」。今のAIブームはすべてこの論文から始まりました。この章では、Transformerの核心 — 「Attention(注意機構)」 — を図と日常的な例えで理解します。数式は一切使いません。</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 45分</span>
+    <span class="badge">Phase: Deep Dive</span>
+    <span class="badge">難易度: 中級</span>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span>1. Transformer 以前の世界 — RNN の限界</h2>
+
+  <div class="fade-in">
+    <p>2017年以前、文章を扱うAIは <span class="term" data-tip="Recurrent Neural Network。文章を1単語ずつ順番に処理する古典的なニューラルネット。">RNN</span> や <span class="term" data-tip="Long Short-Term Memory。RNNの改良版で長期記憶を扱える。">LSTM</span> という構造が主流でした。これらは <strong>「単語を1つずつ順番に読む」</strong> 方式で動きます。人間が左から右に読むのに近い。</p>
+
+    <p>しかしこの方式には致命的な弱点がありました:</p>
+  </div>
+
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">RNN/LSTMの弱点</span>
+      <h4>1単語ずつしか処理できない</h4>
+      <ul>
+        <li>並列計算ができない → 学習が遅い</li>
+        <li>長文だと最初の方を忘れる</li>
+        <li>文末から文頭への参照が苦手</li>
+        <li>GPUの恩恵を受けにくい</li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">Transformerの解決</span>
+      <h4>全単語を同時に処理</h4>
+      <ul>
+        <li>並列計算可能 → GPU使い倒せる</li>
+        <li>「Attention」で任意の単語間を直結</li>
+        <li>長文でも遠い単語の関係を保持</li>
+        <li>大規模化とスケーリング法則の道を開いた</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span>2. Attention の核心メタファ: 「文の中での会話」</h2>
+
+  <p>Attentionを一言で説明するメタファ: <strong>「文中の単語が、互いに『君のこと、どれくらい気にすべき?』を聞き合う仕組み」</strong>。</p>
+
+  <p>例えば文「<strong>銀行に行ったら、川が氾濫していた</strong>」を読むとき、<strong>「銀行」</strong> という単語の意味を確定するには、後ろの「川」「氾濫」を見る必要があります(英語の "bank" が「銀行」か「川岸」かが決まる)。Attentionはこの <strong>双方向参照</strong> を1ステップで可能にします。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">「銀行に行ったら、川が氾濫していた」のAttention重みイメージ</div>
+    <svg viewBox="0 0 600 200" width="100%" style="max-width:600px; display:block; margin:0 auto;">
+      <!-- tokens -->
+      <g font-size="13" font-weight="600" text-anchor="middle">
+        <text x="60"  y="40">銀行</text>
+        <text x="140" y="40">に</text>
+        <text x="220" y="40">行った</text>
+        <text x="300" y="40">ら</text>
+        <text x="380" y="40">、</text>
+        <text x="460" y="40">川</text>
+        <text x="540" y="40">が</text>
+      </g>
+      <!-- 銀行 from below row -->
+      <g font-size="13" font-weight="700" text-anchor="middle" fill="#7c3aed">
+        <text x="60" y="180">銀行(注目元)</text>
+      </g>
+      <!-- attention lines (thicker = stronger) -->
+      <line x1="60" y1="170" x2="60"  y2="50" stroke="#7c3aed" stroke-width="3" opacity="0.9"/>
+      <line x1="60" y1="170" x2="140" y2="50" stroke="#7c3aed" stroke-width="0.8" opacity="0.4"/>
+      <line x1="60" y1="170" x2="220" y2="50" stroke="#7c3aed" stroke-width="1.2" opacity="0.4"/>
+      <line x1="60" y1="170" x2="300" y2="50" stroke="#7c3aed" stroke-width="0.6" opacity="0.3"/>
+      <line x1="60" y1="170" x2="380" y2="50" stroke="#7c3aed" stroke-width="0.4" opacity="0.3"/>
+      <line x1="60" y1="170" x2="460" y2="50" stroke="#7c3aed" stroke-width="4"   opacity="0.95"/>
+      <line x1="60" y1="170" x2="540" y2="50" stroke="#7c3aed" stroke-width="0.8" opacity="0.4"/>
+      <text x="300" y="125" text-anchor="middle" font-size="11" fill="#71717a">線の太さ = 注目の強さ</text>
+    </svg>
+    <div class="diagram-caption">「銀行」が「川」を強く見ている。これで「金融機関の銀行」じゃなく「川岸の bank」だと判別できる。</div>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span>3. Q, K, V — 検索エンジンのメタファ</h2>
+
+  <p>Attentionの仕組みは <strong>図書館の検索</strong> に例えるとつかめます。各トークンは3つの「役割」を持ちます:</p>
+
+  <div class="kv-grid">
+    <div class="kv">
+      <div class="kv-key">Query (Q) — 質問</div>
+      <div class="kv-val">「私は◯◯を探してる」</div>
+    </div>
+    <div class="kv">
+      <div class="kv-key">Key (K) — 札</div>
+      <div class="kv-val">「私は△△の本です」</div>
+    </div>
+    <div class="kv">
+      <div class="kv-key">Value (V) — 中身</div>
+      <div class="kv-val">「私の内容はこれ」</div>
+    </div>
+  </div>
+
+  <p>各トークンは <strong>Q を出して全トークンの K と照合</strong> し、似ているもの(内積が大きいもの)の <strong>V を多めに混ぜて</strong> 自分の新しい表現を作ります。これが Self-Attention(自己注意)。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Self-Attention の流れ(模式)</div>
+    <pre class="mermaid">
+graph LR
+  T1["トークン群<br/>(ベクトル列)"] --> Q["Q<br/>各トークンが質問"]
+  T1 --> K["K<br/>各トークンが札"]
+  T1 --> V["V<br/>各トークンが中身"]
+  Q --> S["Q × K<br/>類似度行列"]
+  K --> S
+  S --> SM["Softmax<br/>(0〜1の重みに)"]
+  SM --> M["重みつき和"]
+  V --> M
+  M --> O["新ベクトル列"]
+    </pre>
+    <div class="diagram-caption">入力ベクトル列が、3つの行列(Q,K,V)に分裂し、互いに参照し合って混ざり、新しいベクトル列が出力される。</div>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span>4. Multi-Head Attention — 複数の視点で見る</h2>
+
+  <p>Self-Attentionを <strong>並列に複数本</strong> 走らせる。これが <span class="term" data-tip="複数のAttentionを並列実行して結果を結合する仕組み。各ヘッドが異なる関係性を学習する。">Multi-Head Attention</span>。</p>
+
+  <p>1つのヘッドが「主語と動詞の対応」を見るとき、別のヘッドは「指示語の参照先」、また別のヘッドは「同じトピックの単語のクラスタ」を見る、というように <strong>分業</strong> します。GPT-4 では概ね <strong>96 ヘッド</strong>、Claude も同程度。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Multi-Head の役割分担イメージ</div>
+    <svg viewBox="0 0 480 220" width="100%" style="max-width:480px; display:block; margin:0 auto;">
+      <rect x="20" y="20" width="440" height="40" rx="6" fill="#7c3aed" opacity="0.15" stroke="#7c3aed"/>
+      <text x="240" y="44" text-anchor="middle" font-size="13" font-weight="700">入力トークン列</text>
+      <g>
+        <rect x="20"  y="90" width="100" height="60" rx="6" fill="#18181b" opacity="0.1" stroke="#18181b"/>
+        <text x="70"  y="115" text-anchor="middle" font-size="11" font-weight="600">Head 1</text>
+        <text x="70"  y="135" text-anchor="middle" font-size="10" fill="#71717a">主語↔動詞</text>
+        <rect x="135" y="90" width="100" height="60" rx="6" fill="#18181b" opacity="0.1" stroke="#18181b"/>
+        <text x="185" y="115" text-anchor="middle" font-size="11" font-weight="600">Head 2</text>
+        <text x="185" y="135" text-anchor="middle" font-size="10" fill="#71717a">指示語↔参照</text>
+        <rect x="250" y="90" width="100" height="60" rx="6" fill="#18181b" opacity="0.1" stroke="#18181b"/>
+        <text x="300" y="115" text-anchor="middle" font-size="11" font-weight="600">Head 3</text>
+        <text x="300" y="135" text-anchor="middle" font-size="10" fill="#71717a">トピック</text>
+        <rect x="365" y="90" width="100" height="60" rx="6" fill="#18181b" opacity="0.1" stroke="#18181b"/>
+        <text x="415" y="115" text-anchor="middle" font-size="11" font-weight="600">... 96個</text>
+        <text x="415" y="135" text-anchor="middle" font-size="10" fill="#71717a">それぞれ別視点</text>
+      </g>
+      <rect x="20" y="180" width="440" height="32" rx="6" fill="#7c3aed" opacity="0.5" stroke="#7c3aed"/>
+      <text x="240" y="200" text-anchor="middle" font-size="13" font-weight="700" fill="white">結合 → 次の層へ</text>
+      <line x1="70"  y1="62" x2="70"  y2="88" stroke="#a1a1aa" stroke-width="1"/>
+      <line x1="185" y1="62" x2="185" y2="88" stroke="#a1a1aa" stroke-width="1"/>
+      <line x1="300" y1="62" x2="300" y2="88" stroke="#a1a1aa" stroke-width="1"/>
+      <line x1="415" y1="62" x2="415" y2="88" stroke="#a1a1aa" stroke-width="1"/>
+      <line x1="70"  y1="152" x2="70"  y2="178" stroke="#a1a1aa" stroke-width="1"/>
+      <line x1="185" y1="152" x2="185" y2="178" stroke="#a1a1aa" stroke-width="1"/>
+      <line x1="300" y1="152" x2="300" y2="178" stroke="#a1a1aa" stroke-width="1"/>
+      <line x1="415" y1="152" x2="415" y2="178" stroke="#a1a1aa" stroke-width="1"/>
+    </svg>
+    <div class="diagram-caption">複数の視点から同時に文を見ることで、豊かな関係性を捕まえる。</div>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span>5. Transformerブロック全体像</h2>
+
+  <p>Transformer 1ブロック = <strong>Multi-Head Attention</strong> + <strong>Feed Forward</strong>(各トークンを個別に処理する全結合層)+ <strong>残差接続</strong>(入力をそのまま足す)+ <strong>正規化</strong>。これを <strong>何十段</strong> も積みます。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Transformerブロック1段の構造</div>
+    <pre class="mermaid">
+graph TD
+  X["入力ベクトル列"] --> A1["LayerNorm"]
+  A1 --> A2["Multi-Head Attention"]
+  A2 --> R1(("+"))
+  X --> R1
+  R1 --> F1["LayerNorm"]
+  F1 --> F2["Feed Forward<br/>(各トークン個別)"]
+  F2 --> R2(("+"))
+  R1 --> R2
+  R2 --> Y["出力ベクトル列<br/>(次のブロックへ)"]
+    </pre>
+    <div class="diagram-caption">"+" は残差接続。深く積んでも勾配が消えにくくする工夫。</div>
+  </div>
+
+  <h3>「層の深さ」と性能の関係</h3>
+
+  <table>
+    <thead>
+      <tr><th>モデル</th><th>Transformerブロック数</th><th>パラメータ数</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>BERT-base (2018)</td><td>12</td><td>110M</td></tr>
+      <tr><td>GPT-2</td><td>48</td><td>1.5B</td></tr>
+      <tr><td>GPT-3</td><td>96</td><td>175B</td></tr>
+      <tr><td>Llama 3.1 405B</td><td>126</td><td>405B</td></tr>
+    </tbody>
+  </table>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span>6. なぜ計算量がコンテキスト長の2乗なのか</h2>
+
+  <p>Self-Attentionで各トークンが <strong>他の全トークン</strong> を見ます。トークンが N 個あれば、ペアの数は <strong>N × N = N²</strong>。コンテキスト長が2倍になれば計算量は4倍、10倍になれば100倍。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">計算量はコンテキスト長の2乗で増加</div>
+    <canvas id="ch04-line-quad" height="180"></canvas>
+  </div>
+
+  <p>これが「<strong>長文を扱うLLMが高い</strong>」と「<strong>200K以上のコンテキストはまだ高価</strong>」の根本理由。Flash Attention や Sparse Attention など、この2乗を緩和する研究がホットトピック。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span></p>
+
+  <details class="more-box">
+    <summary>もっと詳しく: なぜ Position Encoding が必要なのか</summary>
+    <div class="more-body">
+      <p>Self-Attentionは「全トークンを並列に見る」ので、<strong>順序の情報がない</strong> という弱点があります。「猫が犬を追う」も「犬が猫を追う」も、Attentionだけだと区別できない。</p>
+      <p>これを補うのが <strong>Positional Encoding</strong>(位置エンコーディング)。各トークンの埋め込みに「これは1番目」「これは2番目」を表すベクトルを足してから入力します。最近は RoPE(Rotary Position Embedding)が主流で、長文外挿性能が良いとされています。</p>
+    </div>
+  </details>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span>7. Decoder-only / Encoder-only / Encoder-Decoder</h2>
+
+  <p>Transformer家系には3種類あります。用途で使い分けられます:</p>
+
+  <div class="compare-cards">
+    <div class="cc neutral">
+      <span class="cc-label">Encoder-only</span>
+      <h4>BERT 系</h4>
+      <ul>
+        <li>双方向に読む</li>
+        <li>分類・抽出が得意</li>
+        <li>生成はしない</li>
+        <li>例: 検索, NER, 感情分析</li>
+      </ul>
+    </div>
+    <div class="cc neutral">
+      <span class="cc-label">Decoder-only</span>
+      <h4>GPT / Claude / Llama</h4>
+      <ul>
+        <li>左から右に生成</li>
+        <li>後ろを見ない (Causal Mask)</li>
+        <li>対話・生成に最適</li>
+        <li>現代LLMの主流</li>
+      </ul>
+    </div>
+    <div class="cc neutral">
+      <span class="cc-label">Encoder-Decoder</span>
+      <h4>T5, 翻訳系</h4>
+      <ul>
+        <li>入力を encode → 出力を decode</li>
+        <li>翻訳・要約に伝統的</li>
+        <li>最近はDecoder-onlyに押されぎみ</li>
+        <li>例: T5, BART</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span>8. まとめ</h2>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="git-branch" width="20" height="20"></i>
+      <div><strong>Attention</strong> — 各トークンが他の全トークンに「注目」できる仕組み</div>
+    </li>
+    <li>
+      <i data-lucide="key" width="20" height="20"></i>
+      <div><strong>Q, K, V</strong> — 質問・札・中身。検索エンジンのメタファで考える</div>
+    </li>
+    <li>
+      <i data-lucide="layers" width="20" height="20"></i>
+      <div><strong>Multi-Head</strong> — 複数の視点を並列で。文法・参照・話題などを分業</div>
+    </li>
+    <li>
+      <i data-lucide="repeat" width="20" height="20"></i>
+      <div><strong>多段に積む</strong> — 12〜126段。深くするほど抽象度が上がる</div>
+    </li>
+    <li>
+      <i data-lucide="alert-triangle" width="20" height="20"></i>
+      <div><strong>計算量はN²</strong> — 長文ほど高くつく。Long-context技術が要る理由</div>
+    </li>
+  </ul>
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>「文脈で意味が変わる」例を10個集める</h4>
+    <p>Attention の存在意義は「文脈で単語の意味が変わる」を捕まえること。同形異義語・多義語を10個挙げて、各単語が「何を見て」意味を確定しているかを書き出します。</p>
+    <ol>
+      <li>同じ単語で意味が複数ある語を10個リストアップ</li>
+      <li>各単語について、2つの異なる文を作る</li>
+      <li>各文で、その単語が文中の <em>どの語</em> を見ることで意味が決まるかを矢印で書く</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>例:</p>
+      <ul>
+        <li><strong>はし</strong> — 「川にはしを架ける」(→「川」を見る = 橋) / 「はしで食べる」(→「食べる」を見る = 箸)</li>
+        <li><strong>くも</strong> — 「空に黒いくも」(→「空」 = 雲) / 「くもの巣を払う」(→「巣」 = 蜘蛛)</li>
+        <li><strong>あつい</strong> — 「お茶があつい」(→「お茶」 = 熱い) / 「友情があつい」(→「友情」 = 厚い)</li>
+        <li><strong>bank</strong> — "go to the bank for money" (→ money = 銀行) / "river bank" (→ river = 川岸)</li>
+        <li><strong>apple</strong> — "I bought an apple" (→ bought = 果物) / "Apple released iPhone" (→ released = 会社)</li>
+      </ul>
+      <p>これがまさにAttentionが解く問題。Word2Vec などの <em>静的</em> 埋め込みは「あつい」に常に同じベクトルを割り当てます。Transformerは <em>文脈に応じてベクトルを書き換える</em> ので、同じ「あつい」でも文ごとに違う意味を持てます。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>BertViz で実際のAttention重みを可視化する</h4>
+    <p>論より証拠。実物のAttention重みをブラウザで眺めて、「Attention がどんな関係性を捕まえているか」を見る。</p>
+    <ol>
+      <li><a href="https://github.com/jessevig/bertviz" target="_blank">BertViz</a> のColabリンクを開く(無料・ブラウザだけでOK)</li>
+      <li>用意されたデモ文(英語)で、各ヘッドのAttentionパターンを観察</li>
+      <li>自分の文を入れて(英語のほうが分かりやすい)、特徴的なヘッドを3つ見つける</li>
+      <li>(余裕があれば) 「The animal didn't cross the road because it was too tired.」で "it" が何を指すか、Attentionが正しく "animal" を強く見ているか確認</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>典型的な観察結果:</p>
+      <ul>
+        <li>あるヘッドは「直前の単語」だけを強く見る → 局所的文脈担当</li>
+        <li>別のヘッドは「主語」を文末まで強く見る → 主語追跡担当</li>
+        <li>別のヘッドは「同じ品詞」をクラスタ化する → 構文担当</li>
+        <li>"it" は実際に "animal" を強く参照する → 指示語解消担当</li>
+      </ul>
+      <p>これを目で見ると、「Attention が何かを学んでいる」ことが具体的に納得できます。BERT/GPTの内部解釈研究(Mechanistic Interpretability)はここから始まる広大な領域です。</p>
+      <p><strong>応用ヒント:</strong> Anthropic が公開している <em>"Attention Heads in Pythia"</em> や <em>"Toy Models of Superposition"</em> を読むと、Attention ヘッドの内部解釈の最先端が分かります。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span><a href="https://arxiv.org/abs/1706.03762" target="_blank">Attention Is All You Need (原論文)</a> — Transformerが生まれた1本</li>
+      <li><span class="res-type article">Article</span><a href="https://jalammar.github.io/illustrated-transformer/" target="_blank">The Illustrated Transformer — Jay Alammar</a> — 図解の決定版</li>
+      <li><span class="res-type video">Video</span><a href="https://www.youtube.com/watch?v=eMlx5fFNoYc" target="_blank">Visualizing Attention, a Transformer's Heart — 3Blue1Brown</a> — 3Brownの神アニメ解説</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="04">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="03-next-token-prediction.html"><span class="direction">&larr; Prev</span>次単語予測</a>
+    <a href="05-training.html"><span class="direction">Next &rarr;</span>LLMはどう学ぶのか</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#f4f4f5',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#18181b',
+      lineColor: '#18181b',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+  window.addEventListener('load', function() {
+    new Chart(document.getElementById('ch04-line-quad'), {
+      type: 'line',
+      data: {
+        labels: ['1K', '4K', '16K', '32K', '64K', '128K', '200K'],
+        datasets: [{
+          label: '相対計算量(1K=1)',
+          data: [1, 16, 256, 1024, 4096, 16384, 40000],
+          borderColor: '#7c3aed',
+          backgroundColor: 'rgba(124,58,237,0.15)',
+          tension: 0.3,
+          fill: true
+        }]
+      },
+      options: {
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true, type: 'logarithmic', title: { display: true, text: '計算量(対数スケール)' } }, x: { title: { display: true, text: 'コンテキスト長(トークン)' } } }
+      }
+    });
+  });
+</script>
+</body>
+</html>

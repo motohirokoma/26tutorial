@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%237c3aed%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>最終演習問題 - MK's Understanding LLM</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #7c3aed; }
+  .news-article {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 28px;
+    margin: 24px 0;
+    box-shadow: var(--shadow);
+    font-family: ui-serif, Georgia, serif;
+  }
+  .news-article .meta { font-size: 11px; color: var(--text-secondary); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+  .news-article h3 { font-size: 22px; margin: 0 0 12px; font-family: inherit; }
+  .news-article p { font-size: 15px; line-height: 1.8; }
+  .question-card {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 16px 0;
+  }
+  .question-card .q-num {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: var(--purple);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .question-card h4 { margin: 0 0 8px; font-size: 16px; }
+  .hint-box {
+    background: #fff7ed;
+    border-left: 3px solid var(--orange);
+    border-radius: 0 6px 6px 0;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Understanding LLM
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" class="active" data-nav><span class="phase-name">Deep Dive</span><span class="phase-pct" id="pct-deepdive">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.07</span>
+    最終演習問題
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 7 sections</text>
+    </svg>
+    <div class="progress-info">0h / 4h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-what-is-llm.html"><span class="status-dot" data-chapter="01"></span> LLMとは何か</a></li>
+    <li><a href="02-tokens-embeddings.html"><span class="status-dot" data-chapter="02"></span> 言葉を数字に変える</a></li>
+    <li><a href="03-next-token-prediction.html"><span class="status-dot" data-chapter="03"></span> 次単語予測</a></li>
+  </ul>
+  <div class="section-label">Deep Dive</div>
+  <ul>
+    <li><a href="04-transformer.html"><span class="status-dot" data-chapter="04"></span> Transformer</a></li>
+    <li><a href="05-training.html"><span class="status-dot" data-chapter="05"></span> LLMはどう学ぶのか</a></li>
+    <li><a href="06-capabilities-limits.html"><span class="status-dot" data-chapter="06"></span> 能力・限界・未来</a></li>
+    <li><a href="07-final-exercise.html" class="active"><span class="status-dot" data-chapter="07"></span> 最終演習問題</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 2: Deep Dive &gt; Chapter 07</div>
+  <h1>最終演習問題</h1>
+  <p class="subtitle">ここまで学んだキーワードを総動員して、<strong>架空の技術ニュース記事</strong> を読み解きます。5問の設問 + ヒント + 模範解答 + 応用課題。できるだけ自力で書き出してから、模範解答と比べてみてください。</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 30分</span>
+    <span class="badge">Phase: Deep Dive</span>
+    <span class="badge">難易度: 統合</span>
+  </div>
+
+  <div class="diagram-box">
+    <div class="diagram-title">習熟チェックの構成</div>
+    <pre class="mermaid">
+graph LR
+  N["ニュース記事<br/>を読む"] --> Q["5つの設問<br/>に答える"]
+  Q --> H["ヒント<br/>を見て深める"]
+  H --> A["模範解答<br/>と比較"]
+  A --> P["応用課題<br/>(2題)"]
+    </pre>
+    <div class="diagram-caption">「読む → 考える → 答え合わせ → 派生問題」のサイクルで定着させる。</div>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span>1. 課題ニュース記事(架空)</h2>
+
+  <div class="news-article">
+    <div class="meta">2026年4月15日 — Tech Crunch JP(架空)</div>
+    <h3>米 AcmeAI、700億パラメータの新LLM「Zephyr-70B」を公開<br/>Claude 3.5 Sonnet に匹敵する性能、オープンウェイトで提供</h3>
+    <p>米 <strong>AcmeAI</strong> は4月14日、新しい大規模言語モデル「<strong>Zephyr-70B</strong>」を発表した。<strong>パラメータ数は700億</strong>、Decoder-only Transformer構造を採用し、Llama 3 と同様にオープンウェイトで Hugging Face 上に公開された。</p>
+    <p>事前学習には <strong>15Tトークン</strong>(うちコード3T、日本語0.5T、英語10T、その他1.5T)を使用。Chinchilla 比で見ても <em>データ量が極めて多い</em> 設計となっており、推論コストが低い小型モデルとして実用性能を最大化する戦略を取った。</p>
+    <p>Fine-tuning には <strong>SFT 12万件 + DPO</strong> を採用。RLHF ではなく DPO を選んだ理由として、AcmeAI は「学習の安定性とコスト面での優位性」を挙げている。</p>
+    <p>ベンチマーク結果は <strong>MMLU 84.2</strong>、<strong>HumanEval 76.5</strong>、<strong>GSM8K 91.0</strong>。同規模の Llama 3 70B Instruct を全項目で上回り、Claude 3.5 Sonnet と同等水準とされる。コンテキスト長は <strong>128K</strong>、Multi-Head Attention の代替として <strong>Grouped Query Attention (GQA)</strong> を採用、推論時のメモリ消費を1/4に削減した。</p>
+    <p>ライセンスは独自の「AcmeAI Open License v1」で、月間アクティブユーザ7億未満の商用利用は無料。ハルシネーション対策として、推論時に <strong>RAG パイプライン</strong> を組み合わせる事例が紹介された。</p>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span>2. 設問</h2>
+
+  <div class="question-card">
+    <div class="q-num">Q1</div>
+    <h4>「700億パラメータ」「15Tトークン」は何を意味するか?</h4>
+    <p>記事中の数字 <strong>2つ</strong>(70B、15T)が <em>それぞれ何を表しているのか</em> 、それらの大小関係に Chinchilla 法則の観点で言える特徴を答えよ。</p>
+  </div>
+
+  <div class="question-card">
+    <div class="q-num">Q2</div>
+    <h4>Decoder-only Transformer とは?</h4>
+    <p>「Decoder-only Transformer 構造」とはどんな構造か。Encoder-only / Encoder-Decoder と何が違うか、それぞれが得意とすることを含めて答えよ。</p>
+  </div>
+
+  <div class="question-card">
+    <div class="q-num">Q3</div>
+    <h4>SFT + DPO とは何で、なぜRLHFの代替になるのか?</h4>
+    <p>SFT が何の頭文字で何の段階か、DPO がRLHFと何が違うか、AcmeAIが DPO を選んだ理由を、自分の言葉で説明せよ。</p>
+  </div>
+
+  <div class="question-card">
+    <div class="q-num">Q4</div>
+    <h4>「コンテキスト長 128K」とは?</h4>
+    <p>128K (=131,072) という数字の単位は何か。長いことのメリットとデメリットをそれぞれ答えよ。</p>
+  </div>
+
+  <div class="question-card">
+    <div class="q-num">Q5</div>
+    <h4>RAGをなぜハルシネーション対策に使うのか?</h4>
+    <p>RAG が何の頭文字か、どんな仕組みか、なぜハルシネーション(幻覚)を <em>減らせる</em> のかを答えよ。</p>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span>3. 段階的ヒント</h2>
+
+  <details class="more-box">
+    <summary>ヒント1: 「数字の単位」を確認しよう</summary>
+    <div class="more-body">
+      <p>「70B」「15T」「128K」のBやTやKは、それぞれ何の略でしょうか? Ch01 / Ch02 / Ch05 で扱った単位を思い出してください。</p>
+    </div>
+  </details>
+
+  <details class="more-box">
+    <summary>ヒント2: 「Decoder-only / Encoder-only / Encoder-Decoder」の用途を表に整理</summary>
+    <div class="more-body">
+      <p>Ch04 末尾で3種類を比較しました。それぞれが <em>何を得意とするか</em> をまず1行ずつ書いてみる。</p>
+    </div>
+  </details>
+
+  <details class="more-box">
+    <summary>ヒント3: RLHF と DPO の比較</summary>
+    <div class="more-body">
+      <p>Ch05 のmore-boxで触れたDPO。RLHFが「報酬モデル + PPO」の <em>2段構え</em> なのに対し、DPOは <em>1段</em> で済む。何が省略されている?</p>
+    </div>
+  </details>
+
+  <details class="more-box">
+    <summary>ヒント4: 「コンテキスト長」と「N²計算量」</summary>
+    <div class="more-body">
+      <p>Ch04 で「Self-Attentionの計算量はトークン数の2乗」を学びました。コンテキスト長を伸ばすデメリットはここから来ます。</p>
+    </div>
+  </details>
+
+  <details class="more-box">
+    <summary>ヒント5: ハルシネーションの根本原因</summary>
+    <div class="more-body">
+      <p>Ch03 / Ch06 で扱いました。LLMは「次のトークンの確率」しか出さない。事実検証は <em>内蔵していない</em>。RAGはどこにこの「事実検証」を差し込む?</p>
+    </div>
+  </details>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span>4. 模範解答</h2>
+
+  <details class="answer-toggle">
+    <summary>Q1: 「70B / 15T」の意味</summary>
+    <div class="answer-body">
+      <p><strong>70B</strong> = <strong>70 Billion = 700億パラメータ</strong>。モデルが持つ重み(数値)の総数。「賢さの容量」の目安。</p>
+      <p><strong>15T</strong> = <strong>15 Trillion = 15兆トークン</strong>。事前学習に使ったテキストデータの量。</p>
+      <p>Chinchilla 法則の最適比は P : D = 1 : 20。70B × 20 = 1.4T が「最適データ量」。15T はその <strong>約11倍</strong> で、明らかに <em>過剰</em>。これは Llama 3 と同じ戦略で、「<em>推論時に小さく安く</em>、訓練時に大量データで性能を絞り出す</em>」設計思想。Chinchilla 最適より過剰なデータを与えると、収益逓減はあるが性能はまだ上がる、というトレードオフを取っている。</p>
+    </div>
+  </details>
+
+  <details class="answer-toggle">
+    <summary>Q2: Decoder-only Transformer</summary>
+    <div class="answer-body">
+      <p><strong>Decoder-only</strong> = 入力を <em>左から右に</em> 一方向で処理し、各位置で次のトークンを予測する Transformer 構造。<strong>因果マスク</strong>(Causal Mask)で「自分より後ろのトークン」を見えないようにする。</p>
+      <p>3種類の比較:</p>
+      <table>
+        <thead><tr><th>構造</th><th>特徴</th><th>代表モデル</th><th>得意</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Decoder-only</strong></td><td>左→右で生成</td><td>GPT, Claude, Llama, Zephyr</td><td>対話・生成・補完</td></tr>
+          <tr><td><strong>Encoder-only</strong></td><td>双方向で理解</td><td>BERT, RoBERTa</td><td>分類・抽出・検索</td></tr>
+          <tr><td><strong>Encoder-Decoder</strong></td><td>入力理解 → 出力生成</td><td>T5, BART</td><td>翻訳・要約(古典)</td></tr>
+        </tbody>
+      </table>
+      <p>現代の対話型LLMはほぼすべて Decoder-only。生成と理解を <em>1つの構造</em> で兼ねられる柔軟性が勝った。</p>
+    </div>
+  </details>
+
+  <details class="answer-toggle">
+    <summary>Q3: SFT + DPO とRLHFの代替性</summary>
+    <div class="answer-body">
+      <p><strong>SFT</strong> = Supervised Fine-Tuning(教師ありFine-tuning)。事前学習後の base モデルに、<strong>「Q→理想A」の人間作成ペア</strong> を与えて指示に従えるようにする段階。</p>
+      <p><strong>DPO</strong> = Direct Preference Optimization。RLHFと同じく「人間の好みデータ(2つの回答どっちが良い?)」を使うが、<strong>報酬モデルもPPOも要らない</strong>。好みデータから直接モデルを最適化する。</p>
+      <p><strong>なぜRLHFの代替になるか:</strong></p>
+      <ul>
+        <li>RLHF = (1) 報酬モデル訓練 + (2) PPOで強化学習。<em>2段構え</em>。安定性が悪く、ハイパラチューニングが難しい</li>
+        <li>DPO = 1段で済む。実装が簡単、訓練が安定、コストが低い</li>
+        <li>性能的にはほぼ同等(2024-2025年時点での研究結果)</li>
+      </ul>
+      <p>AcmeAI が DPO を選んだのは、現在の <strong>業界トレンド</strong> に沿った合理的判断。Llama 3 後期、Mistral, DeepSeek などもDPO系を多用している。</p>
+    </div>
+  </details>
+
+  <details class="answer-toggle">
+    <summary>Q4: コンテキスト長128K</summary>
+    <div class="answer-body">
+      <p><strong>単位はトークン</strong>。128K = 131,072 トークン。日本語なら約6万文字、英語なら約10万単語(本1冊分)。一度のリクエストで入力できる(およびモデル内部で同時に保持できる)テキストの最大量。</p>
+      <p><strong>メリット:</strong></p>
+      <ul>
+        <li>長い文書(契約書、技術ドキュメント、小説)を一度に処理できる</li>
+        <li>長い対話履歴を保持できる(会話の文脈を忘れにくい)</li>
+        <li>RAGで多くの文書を一度に渡せる</li>
+      </ul>
+      <p><strong>デメリット:</strong></p>
+      <ul>
+        <li>計算量がトークン数の <strong>2乗</strong> で増える(Ch04参照)。コストと遅延が大きい</li>
+        <li>「Lost in the middle」現象 — 中央付近の情報を見落としやすい</li>
+        <li>メモリ消費が大きい。GQA など緩和技術が必要</li>
+      </ul>
+      <p>記事の <em>「GQAでメモリ消費を1/4に」</em> はこれを緩和する工夫の一例。</p>
+    </div>
+  </details>
+
+  <details class="answer-toggle">
+    <summary>Q5: RAGとハルシネーション対策</summary>
+    <div class="answer-body">
+      <p><strong>RAG</strong> = Retrieval-Augmented Generation(検索拡張生成)。仕組み:</p>
+      <ol>
+        <li>ユーザの質問が来る</li>
+        <li>関連する文書を <em>外部DB</em> から検索(Web、社内ドキュメント、技術マニュアルなど)</li>
+        <li>取得した文書をプロンプトに <strong>添付</strong> してLLMに渡す</li>
+        <li>LLMは <em>その文書を根拠に</em> 回答を生成、引用元も付けられる</li>
+      </ol>
+      <p><strong>なぜハルシネーションを減らせるか:</strong></p>
+      <ul>
+        <li>LLMの内部知識(訓練データ)に頼らず、<em>その場で取得した一次情報</em> を使うから</li>
+        <li>「自分が知らないことを生成で埋める」必要がない → 嘘が出にくい</li>
+        <li>引用元のURL/ページが付くので、ユーザが <em>事実検証できる</em></li>
+        <li>学習締切以降の <strong>最新情報</strong> も扱える</li>
+      </ul>
+      <p>現代の業務利用LLMはほぼ確実にRAGかWeb検索が組み込まれている。Perplexity, ChatGPT検索, Claude with web, Notion AI などすべてこの系統。</p>
+    </div>
+  </details>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span>5. 理解度の自己評価</h2>
+
+  <p>5問中、いくつ自力で正答できましたか? 下のレベル指標を参考に、必要なら関連章を復習してみてください。</p>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-num">5/5</div>
+      <div class="stat-label">完璧</div>
+      <div class="stat-trend up">↑ ニュース読解OK</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">3-4/5</div>
+      <div class="stat-label">合格ライン</div>
+      <div class="stat-trend up">基礎は身についた</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">1-2/5</div>
+      <div class="stat-label">復習推奨</div>
+      <div class="stat-trend down">該当章を再読</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">0/5</div>
+      <div class="stat-label">最初から</div>
+      <div class="stat-trend down">Ch01から</div>
+    </div>
+  </div>
+
+  <table>
+    <thead><tr><th>設問</th><th>関連章</th><th>キーワード</th></tr></thead>
+    <tbody>
+      <tr><td>Q1 (B/T 単位)</td><td>Ch01, Ch05</td><td>パラメータ数, Chinchilla</td></tr>
+      <tr><td>Q2 (Decoder-only)</td><td>Ch04</td><td>Transformer, Attention, 因果マスク</td></tr>
+      <tr><td>Q3 (SFT/DPO)</td><td>Ch05</td><td>SFT, RLHF, DPO, 報酬モデル</td></tr>
+      <tr><td>Q4 (Context長)</td><td>Ch02, Ch04</td><td>トークン, N²計算量, GQA</td></tr>
+      <tr><td>Q5 (RAG)</td><td>Ch03, Ch06</td><td>ハルシネーション, 検索拡張生成</td></tr>
+    </tbody>
+  </table>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span>6. 応用課題</h2>
+
+  <p>本章をクリアした方向けに、次の <strong>2つの派生記事</strong> を読み解いてみてください。模範解答は付けません。<em>自分で調べたり、LLMに聞きながら</em> 整理するのが、ここから先のリアルな学び方です。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span></p>
+
+  <div class="news-article">
+    <div class="meta">2026年4月10日 — Tech News(架空)</div>
+    <h3>Google、コンテキスト長 2M トークンの Gemini 2.5 を発表</h3>
+    <p>Google は <strong>2Mトークン</strong> のコンテキスト長を持つ Gemini 2.5 を発表した。長文書の一括処理に強みを持つ一方、業界専門家からは <em>「Lost in the middle」</em> 問題と <em>「N²計算量」</em> による高コストが課題として指摘されている。</p>
+  </div>
+
+  <ul class="icon-list">
+    <li><i data-lucide="help-circle" width="20" height="20"></i><div>「2Mトークン」とは具体的にどれくらいの量か?</div></li>
+    <li><i data-lucide="help-circle" width="20" height="20"></i><div>「Lost in the middle」を平易に説明できるか?</div></li>
+    <li><i data-lucide="help-circle" width="20" height="20"></i><div>「N²計算量」がなぜ問題になるか、Ch04の知識で説明できるか?</div></li>
+  </ul>
+
+  <div class="news-article">
+    <div class="meta">2026年3月28日 — AI Weekly(架空)</div>
+    <h3>社内FAQボット、RAG + 小型モデル構成で95%の正答率</h3>
+    <p>大手商社A社が公開した社内FAQボットは、Llama 3 8B Instruct + 社内文書 5万件のベクトルDBによるRAG構成で、<strong>正答率95%</strong> を達成した。専用GPT-4ボットを置き換え、<em>運用コストを1/10に削減</em> したという。</p>
+  </div>
+
+  <ul class="icon-list">
+    <li><i data-lucide="help-circle" width="20" height="20"></i><div>「Llama 3 8B Instruct」の3つの単語(Llama 3 / 8B / Instruct)はそれぞれ何を意味するか?</div></li>
+    <li><i data-lucide="help-circle" width="20" height="20"></i><div>「ベクトルDB」とは何か、Ch02の埋め込みとどう関係するか?</div></li>
+    <li><i data-lucide="help-circle" width="20" height="20"></i><div>なぜ <em>小型LLM + RAG</em> が <em>大型LLM単独</em> より良いケースがあるのか?</div></li>
+  </ul>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span>7. 最後に</h2>
+
+  <div class="quote">
+    あなたはもう、ニュースで「<strong>700億パラメータ</strong>」「<strong>RLHF</strong>」「<strong>マルチモーダル</strong>」「<strong>RAG</strong>」「<strong>エージェント</strong>」と書かれて、<em>意味を取り違えることがない</em> 状態に到達しました。
+    <cite>— おめでとうございます</cite>
+  </div>
+
+  <p>ここから先は、<strong>実際に手を動かしてみる</strong> ことが一番効きます。Hugging Face で base モデルと Instruct モデルを動かし比べる、自分の Mac で Llama 3 8B を ollama で動かす、API経由で Temperature を変えて遊ぶ。Ch01-06 の <em>知識</em> が <em>感覚</em> に変わります。</p>
+
+  <p><span class="pulse-dot"></span>このコースは終了です。お疲れ様でした!</p>
+
+  <div class="resources-section">
+    <h3>参考リソース(コース全体)</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span><a href="https://stanford-cs324.github.io/winter2022/" target="_blank">Stanford CS324: Large Language Models</a> — もっと深く学ぶ最良の教科書</li>
+      <li><span class="res-type video">Video</span><a href="https://www.youtube.com/@AndrejKarpathy" target="_blank">Andrej Karpathy YouTube</a> — 元Tesla AI Director / OpenAI 創業メンバーの神講義シリーズ</li>
+      <li><span class="res-type article">Article</span><a href="https://huggingface.co/blog" target="_blank">Hugging Face Blog</a> — 最新モデル・技術の解説</li>
+      <li><span class="res-type doc">Doc</span><a href="https://docs.anthropic.com/" target="_blank">Anthropic Docs</a> — Claude を使い倒すための公式ドキュメント</li>
+      <li><span class="res-type article">Article</span><a href="https://arxiv.org/list/cs.CL/recent" target="_blank">arXiv cs.CL recent</a> — 言語モデル研究の最先端を追う</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。コース完走おめでとうございます!</p>
+    <button class="btn-complete" data-chapter="07">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="06-capabilities-limits.html"><span class="direction">&larr; Prev</span>能力・限界・未来</a>
+    <span></span>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#f4f4f5',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#18181b',
+      lineColor: '#18181b',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>

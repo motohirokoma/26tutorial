@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%2316a34a%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>最終演習問題 - Kuririn's Physical AI Crash Course</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #16a34a; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></div>
+      &gt;_ Kuririn's Physical AI Crash Course
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="../index.html#phase3" data-nav><span class="phase-name">Advanced</span><span class="phase-pct" id="pct-advanced">0%</span></a></li>
+      <li><a href="../index.html#phase4" data-nav class="active"><span class="phase-name">Final</span><span class="phase-pct" id="pct-final">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.08</span>
+    最終演習問題
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 37 sections</text>
+    </svg>
+    <div class="progress-info">0h / 8h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-overview.html"><span class="status-dot" data-chapter="01"></span> フィジカルAIの全体像</a></li>
+    <li><a href="02-classical-control.html"><span class="status-dot" data-chapter="02"></span> 古典制御とロボットの基盤技術</a></li>
+  </ul>
+  <div class="section-label">Core</div>
+  <ul>
+    <li><a href="03-reinforcement-learning.html"><span class="status-dot" data-chapter="03"></span> 強化学習によるロボット制御</a></li>
+    <li><a href="04-imitation-learning.html"><span class="status-dot" data-chapter="04"></span> 模倣学習とテレオペレーション</a></li>
+    <li><a href="05-vla-models.html"><span class="status-dot" data-chapter="05"></span> VLAモデルの最前線</a></li>
+  </ul>
+  <div class="section-label">Advanced</div>
+  <ul>
+    <li><a href="06-implementation-barriers.html"><span class="status-dot" data-chapter="06"></span> 実装の壁</a></li>
+    <li><a href="07-business-scoping.html"><span class="status-dot" data-chapter="07"></span> ビジネススコーピングの技法</a></li>
+  </ul>
+  <div class="section-label">Final</div>
+  <ul>
+    <li><a href="08-final-exercise.html" class="active"><span class="status-dot" data-chapter="08"></span> 最終演習問題</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 4: Final &gt; Chapter 08</div>
+  <h1>最終演習問題</h1>
+  <p class="subtitle">8時間の学びを統合する ― 実践的なビジネス提案シナリオに挑戦</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 60min</span>
+    <span class="badge">Phase: Final</span>
+    <span class="badge">難易度: 総合</span>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- Section 1: 演習の概要と進め方 -->
+  <!-- ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span> 演習の概要と進め方</h2>
+
+  <p>この最終演習は、Ch01からCh07で学んだ知識を<strong>ひとつの実践的なビジネスシナリオ</strong>に統合して活用する総合問題です。正解はひとつではありません。論理的な思考プロセスと、技術の限界を踏まえた誠実な提案ができることが重要です。</p>
+
+  <div class="info-box">
+    <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span>
+    <div>
+      <strong>推奨時間配分</strong><br>
+      この演習は全体で約60分を想定しています。以下の配分で取り組んでください。
+      <ul style="margin-top:0.5rem">
+        <li><strong>読む（10分）</strong> ― シナリオを丁寧に読み、前提条件を整理する</li>
+        <li><strong>考える（30分）</strong> ― 自分なりの解答を紙やメモに書き出す</li>
+        <li><strong>解答確認（20分）</strong> ― 模範解答と比較し、見落としたポイントを確認する</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>評価の観点</h3>
+
+  <p>この演習では、以下の4つの観点で自己評価してみてください。</p>
+
+  <div class="step-list">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <strong>タスク分解の精度</strong><br>
+        顧客の要望を適切な粒度で技術タスクに分解できているか。大きすぎず、細かすぎない分解がポイントです。
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <strong>技術選定の妥当性</strong><br>
+        各タスクの特性（構造化/非構造化、剛体/柔軟体）に応じた技術を選べているか。万能な解は存在しないことを理解しているか。
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <strong>実現可能なロードマップ</strong><br>
+        リスクの低い工程から着手するフェーズ設計ができているか。顧客のROI期待と技術的制約のバランスが取れているか。
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <strong>誠実なコミュニケーション</strong><br>
+        技術の限界を隠さず、かつ顧客に希望を持たせる説明ができているか。「できません」ではなく「段階的にここまでできます」という伝え方ができるか。
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- Section 2: 総合ケーススタディ -->
+  <!-- ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span> 総合ケーススタディ: 大手自動車部品メーカーの検品・組立自動化</h2>
+
+  <p>あなたはAIソリューション企業のコンサルタントです。以下の顧客から相談を受けました。シナリオを読み、4つの設問に解答してください。</p>
+
+  <!-- シナリオ全体構造図 SVG -->
+  <div style="text-align:center; margin:2rem 0">
+    <svg viewBox="0 0 720 320" width="100%" style="max-width:720px; font-family:inherit" xmlns="http://www.w3.org/2000/svg">
+      <!-- Background -->
+      <rect x="0" y="0" width="720" height="320" rx="12" fill="#fafafa" stroke="#e4e4e7" stroke-width="1"/>
+      <!-- Title -->
+      <text x="360" y="30" text-anchor="middle" font-size="14" font-weight="bold" fill="#18181b">演習シナリオの全体構造</text>
+      <!-- Box 1: 顧客課題 -->
+      <rect x="20" y="55" width="155" height="80" rx="8" fill="#fff" stroke="#18181b" stroke-width="1.5"/>
+      <text x="97" y="80" text-anchor="middle" font-size="11" font-weight="bold" fill="#18181b">顧客課題</text>
+      <text x="97" y="98" text-anchor="middle" font-size="9" fill="#52525b">検品+組立の自動化</text>
+      <text x="97" y="113" text-anchor="middle" font-size="9" fill="#52525b">人件費30%削減</text>
+      <text x="97" y="128" text-anchor="middle" font-size="9" fill="#52525b">2年以内ROI達成</text>
+      <!-- Arrow 1 -->
+      <line x1="175" y1="95" x2="200" y2="95" stroke="#18181b" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+      <!-- Box 2: タスク分解 -->
+      <rect x="200" y="55" width="155" height="80" rx="8" fill="#fff" stroke="#16a34a" stroke-width="1.5"/>
+      <text x="277" y="80" text-anchor="middle" font-size="11" font-weight="bold" fill="#16a34a">タスク分解</text>
+      <text x="277" y="98" text-anchor="middle" font-size="9" fill="#52525b">検品（画像分類）</text>
+      <text x="277" y="113" text-anchor="middle" font-size="9" fill="#52525b">ゴムホース組立</text>
+      <text x="277" y="128" text-anchor="middle" font-size="9" fill="#52525b">ワイヤーハーネス組立</text>
+      <!-- Arrow 2 -->
+      <line x1="355" y1="95" x2="380" y2="95" stroke="#18181b" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+      <!-- Box 3: 技術選定 -->
+      <rect x="380" y="55" width="155" height="80" rx="8" fill="#fff" stroke="#16a34a" stroke-width="1.5"/>
+      <text x="457" y="80" text-anchor="middle" font-size="11" font-weight="bold" fill="#16a34a">技術選定</text>
+      <text x="457" y="98" text-anchor="middle" font-size="9" fill="#52525b">古典CV+DL</text>
+      <text x="457" y="113" text-anchor="middle" font-size="9" fill="#52525b">模倣学習</text>
+      <text x="457" y="128" text-anchor="middle" font-size="9" fill="#52525b">VLA (PoC段階)</text>
+      <!-- Arrow 3 -->
+      <line x1="535" y1="95" x2="560" y2="95" stroke="#18181b" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+      <!-- Box 4: ロードマップ -->
+      <rect x="560" y="55" width="140" height="80" rx="8" fill="#fff" stroke="#18181b" stroke-width="1.5"/>
+      <text x="630" y="80" text-anchor="middle" font-size="11" font-weight="bold" fill="#18181b">ロードマップ</text>
+      <text x="630" y="98" text-anchor="middle" font-size="9" fill="#52525b">Phase1: 検品PoC</text>
+      <text x="630" y="113" text-anchor="middle" font-size="9" fill="#52525b">Phase2: 組立PoC</text>
+      <text x="630" y="128" text-anchor="middle" font-size="9" fill="#52525b">Phase3: 段階展開</text>
+      <!-- Bottom label -->
+      <rect x="160" y="170" width="400" height="130" rx="8" fill="#f4f4f5" stroke="#e4e4e7" stroke-width="1"/>
+      <text x="360" y="195" text-anchor="middle" font-size="12" font-weight="bold" fill="#18181b">各章の知識がどう活きるか</text>
+      <text x="200" y="218" font-size="10" fill="#52525b">Ch02 古典制御 ......... 既存PLC資産の評価</text>
+      <text x="200" y="236" font-size="10" fill="#52525b">Ch03 強化学習 ......... Sim2Realの可能性検討</text>
+      <text x="200" y="254" font-size="10" fill="#52525b">Ch04 模倣学習 ......... 柔軟物体操作の技術選定</text>
+      <text x="200" y="272" font-size="10" fill="#52525b">Ch05 VLAモデル ....... 最新技術の限界理解</text>
+      <text x="200" y="290" font-size="10" fill="#52525b">Ch06 実装の壁 ......... 推論遅延・安全性の制約</text>
+      <!-- Arrowhead marker -->
+      <defs>
+        <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#18181b"/>
+        </marker>
+      </defs>
+    </svg>
+  </div>
+
+  <h3>顧客プロファイル</h3>
+
+  <div class="info-box">
+    <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span>
+    <div>
+      <strong>ABC精密工業株式会社</strong><br>
+      <ul style="margin-top:0.5rem">
+        <li><strong>業種:</strong> 自動車部品製造（Tier1サプライヤー）</li>
+        <li><strong>年商:</strong> 約3,000億円</li>
+        <li><strong>従業員:</strong> 約8,000名（うち製造現場4,500名）</li>
+        <li><strong>主力製品:</strong> ゴムホース、ワイヤーハーネス、金属プレス部品</li>
+        <li><strong>既存設備:</strong> PLCベースの古典制御ライン（稼働歴15年）</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>顧客の要望</h3>
+
+  <blockquote style="border-left:3px solid #16a34a; padding:1rem 1.5rem; margin:1.5rem 0; background:#f4f4f5; border-radius:0 8px 8px 0; font-style:italic">
+    「品質検品と柔軟部品（ゴムホース、ワイヤーハーネス）の組立工程をAIロボットで自動化したい。年間人件費30億円のうち30%削減（約9億円/年）が目標。初期投資を含めて2年以内にROIを達成したい」
+  </blockquote>
+
+  <h3>現状の詳細情報</h3>
+
+  <table>
+    <thead>
+      <tr>
+        <th>工程</th>
+        <th>環境</th>
+        <th>対象物</th>
+        <th>現状の自動化レベル</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>品質検品</strong></td>
+        <td>構造化環境（固定カメラ、照明制御済み）</td>
+        <td>金属部品・ゴム部品の外観</td>
+        <td>目視検査が主体、一部ルールベース画像処理</td>
+      </tr>
+      <tr>
+        <td><strong>ゴムホース組立</strong></td>
+        <td>半構造化環境</td>
+        <td>柔軟体（変形する）</td>
+        <td>完全手作業、熟練工に依存</td>
+      </tr>
+      <tr>
+        <td><strong>ワイヤーハーネス組立</strong></td>
+        <td>非構造化環境</td>
+        <td>複雑な柔軟体（分岐・絡まり）</td>
+        <td>完全手作業、多品種対応が必要</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>設問</h3>
+
+  <div class="info-box" style="border-left:3px solid #16a34a">
+    <div>
+      <p style="margin-top:0"><strong>設問 a) タスク分解</strong></p>
+      <p>顧客の要望を技術タスクに分解し、それぞれの技術的難易度を<strong>低・中・高・極高</strong>の4段階で評価してください。各タスクについて、難易度の根拠も述べてください。</p>
+    </div>
+  </div>
+
+  <div class="info-box" style="border-left:3px solid #16a34a">
+    <div>
+      <p style="margin-top:0"><strong>設問 b) 技術アプローチの選定</strong></p>
+      <p>検品工程と組立工程それぞれに最適な技術アプローチを選定し、<strong>なぜその技術が最適なのか</strong>を説明してください。Ch02〜Ch05で学んだ技術（古典制御、強化学習、模倣学習、VLA）の中から適切なものを選んでください。</p>
+    </div>
+  </div>
+
+  <div class="info-box" style="border-left:3px solid #16a34a">
+    <div>
+      <p style="margin-top:0"><strong>設問 c) ロードマップの策定</strong></p>
+      <p>PoC（概念実証）からパイロット、本番展開までのフェーズ分けロードマップを提案してください。各フェーズの<strong>期間、目標、成功基準、概算コスト</strong>を含めてください。</p>
+    </div>
+  </div>
+
+  <div class="info-box" style="border-left:3px solid #16a34a">
+    <div>
+      <p style="margin-top:0"><strong>設問 d) VLAに関する顧客質問への回答</strong></p>
+      <p>顧客の技術責任者から「最近話題のVLAモデルを使えば、検品から組立まで全工程を一括で自動化できるのではないか？」と質問されました。技術的に正確で、かつ顧客の信頼を得られる回答を作成してください。</p>
+    </div>
+  </div>
+
+  <p style="margin-top:2rem; padding:1rem; background:#f4f4f5; border-radius:8px; text-align:center; font-weight:600">まずは自分で考えてみましょう。準備ができたら、下のヒントや模範解答を確認してください。</p>
+
+  <!-- ============================================================ -->
+  <!-- Section 3: 段階的ヒント -->
+  <!-- ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span> 段階的ヒント</h2>
+
+  <p>行き詰まったら、ひとつずつヒントを開いてみてください。一度に全部見るのではなく、段階的に確認することをおすすめします。</p>
+
+  <details class="hint-block" style="margin:1rem 0; padding:1rem 1.5rem; background:#f4f4f5; border-radius:8px; border-left:3px solid #16a34a">
+    <summary style="cursor:pointer; font-weight:600; color:#18181b">ヒント 1: タスク分解のフレームワーク</summary>
+    <div style="margin-top:1rem">
+      <p>Ch07「ビジネススコーピングの技法」で学んだタスク分解フレームワークを思い出してください。顧客の要望を「工程」ごとに分け、それぞれについて以下の軸で評価します。</p>
+      <ul>
+        <li><strong>環境の構造化度</strong> ― 固定された環境か、変動する環境か</li>
+        <li><strong>操作対象の特性</strong> ― 剛体か柔軟体か</li>
+        <li><strong>精度要求</strong> ― どの程度の精度が求められるか</li>
+        <li><strong>既存自動化の有無</strong> ― すでにある程度自動化されているか</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="hint-block" style="margin:1rem 0; padding:1rem 1.5rem; background:#f4f4f5; border-radius:8px; border-left:3px solid #16a34a">
+    <summary style="cursor:pointer; font-weight:600; color:#18181b">ヒント 2: 柔軟部品の操作難易度</summary>
+    <div style="margin-top:1rem">
+      <p>Ch05で学んだVLAモデルのロバスト性評価を思い出してください。柔軟物体（deformable objects）の操作は、ロボティクスにおいて<strong>最も難しいカテゴリのひとつ</strong>です。特に:</p>
+      <ul>
+        <li>ゴムホースは形状が一定しないため、把持計画が複雑になる</li>
+        <li>ワイヤーハーネスは分岐構造を持ち、絡まりやすいため、さらに難易度が上がる</li>
+        <li>これらの操作にはリアルタイムの力覚フィードバックが不可欠</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="hint-block" style="margin:1rem 0; padding:1rem 1.5rem; background:#f4f4f5; border-radius:8px; border-left:3px solid #16a34a">
+    <summary style="cursor:pointer; font-weight:600; color:#18181b">ヒント 3: 検品工程の技術的位置づけ</summary>
+    <div style="margin-top:1rem">
+      <p>検品工程は<strong>画像認識ベース</strong>のタスクであり、ロボットの物理的操作を伴いません。これは既存の画像分類・異常検知技術の延長で十分に対応可能です。</p>
+      <ul>
+        <li>構造化環境（固定カメラ・照明制御）は、DLベースの画像認識にとって理想的な条件</li>
+        <li>すでにルールベースの画像処理が一部導入されており、データ収集基盤がある</li>
+        <li>検品は「判断」のタスクであり、「操作」のタスクではない ― この区別が重要</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="hint-block" style="margin:1rem 0; padding:1rem 1.5rem; background:#f4f4f5; border-radius:8px; border-left:3px solid #16a34a">
+    <summary style="cursor:pointer; font-weight:600; color:#18181b">ヒント 4: エッジ推論の制約</summary>
+    <div style="margin-top:1rem">
+      <p>Ch06「実装の壁」で学んだエッジ推論の遅延制約を考慮してください。</p>
+      <ul>
+        <li>組立工程はリアルタイム制御が必要（目標: 制御周期10ms以下）</li>
+        <li>VLAモデルの推論は現時点で数百ms〜数秒かかることがある</li>
+        <li>検品であればバッチ処理も可能なため、推論速度の制約は緩い</li>
+        <li>エッジデバイスのコストも、全工程に高性能GPUを配備するとROIに影響する</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="hint-block" style="margin:1rem 0; padding:1rem 1.5rem; background:#f4f4f5; border-radius:8px; border-left:3px solid #16a34a">
+    <summary style="cursor:pointer; font-weight:600; color:#18181b">ヒント 5: VLAの限界と信頼構築</summary>
+    <div style="margin-top:1rem">
+      <p>VLAモデルの現時点での限界を正直に伝えることが、長期的な顧客との信頼関係構築につながります。</p>
+      <ul>
+        <li>VLAは「汎用性」が強みだが、特定タスクの精度では専用モデルに劣る場合がある</li>
+        <li>産業用途での実績はまだ限定的であり、安全認証（ISO 10218等）の取得事例も少ない</li>
+        <li>「全部できます」と言って失敗するより、「段階的に検証しましょう」と提案する方が信頼される</li>
+        <li>技術の進化速度を考えると、2〜3年後にはVLAが実用レベルに到達する可能性はある ― その時に備えたアーキテクチャ設計を提案するのも有効</li>
+      </ul>
+    </div>
+  </details>
+
+  <!-- ============================================================ -->
+  <!-- Section 4: 模範解答 -->
+  <!-- ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span> 模範解答</h2>
+
+  <p>十分に考えてから、以下の模範解答を確認してください。あなたの解答と異なる部分があっても、論理的に筋が通っていれば問題ありません。</p>
+
+  <details style="margin:1.5rem 0; padding:0; border:1px solid #e4e4e7; border-radius:8px; overflow:hidden">
+    <summary style="cursor:pointer; font-weight:700; padding:1rem 1.5rem; background:#f4f4f5; color:#18181b; font-size:1.05rem">模範解答を見る</summary>
+    <div style="padding:1.5rem">
+
+      <!-- 解答 a) タスク分解 -->
+      <h3 style="margin-top:0">a) タスク分解と難易度評価</h3>
+
+      <table>
+        <thead>
+          <tr>
+            <th>タスク</th>
+            <th>分類</th>
+            <th>環境</th>
+            <th>対象物</th>
+            <th>難易度</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>外観検品</strong></td>
+            <td>画像分類タスク</td>
+            <td>構造化</td>
+            <td>剛体+柔軟体（表面のみ）</td>
+            <td><span style="display:inline-block; padding:2px 10px; background:#d1fae5; border-radius:4px; font-weight:600; color:#065f46">低</span></td>
+          </tr>
+          <tr>
+            <td><strong>ゴムホース組立</strong></td>
+            <td>柔軟物体操作タスク</td>
+            <td>半構造化</td>
+            <td>柔軟体（単純形状）</td>
+            <td><span style="display:inline-block; padding:2px 10px; background:#fef3c7; border-radius:4px; font-weight:600; color:#92400e">高</span></td>
+          </tr>
+          <tr>
+            <td><strong>ワイヤーハーネス組立</strong></td>
+            <td>複雑な柔軟物体操作タスク</td>
+            <td>非構造化</td>
+            <td>複雑な柔軟体（分岐+絡まり）</td>
+            <td><span style="display:inline-block; padding:2px 10px; background:#fee2e2; border-radius:4px; font-weight:600; color:#991b1b">極高</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p><strong>根拠:</strong></p>
+      <ul>
+        <li><strong>外観検品（低）:</strong> 構造化環境+画像のみのタスクであり、既存のDL技術で高精度に対応可能。物理的操作を伴わない。</li>
+        <li><strong>ゴムホース組立（高）:</strong> 柔軟物体の把持・挿入が必要。形状が一定しないため、力覚フィードバック付きの制御が不可欠。ただし、対象は単一の管状形状であり、パターンは限定的。</li>
+        <li><strong>ワイヤーハーネス組立（極高）:</strong> 分岐構造を持つ複雑な柔軟体。絡まりの解消、正しい分岐の識別、複数ポイントの同時固定が必要。現時点の技術で完全自動化は困難。</li>
+      </ul>
+
+      <!-- 解答 b) 技術選定 -->
+      <h3>b) 技術アプローチの選定</h3>
+
+      <table>
+        <thead>
+          <tr>
+            <th>工程</th>
+            <th>推奨技術</th>
+            <th>選定理由</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>外観検品</strong></td>
+            <td>古典CV + ディープラーニング（CNN）</td>
+            <td>構造化環境での画像分類は成熟技術。既存のルールベース処理をDLで置き換えることで精度向上が見込める。データも蓄積済み。</td>
+          </tr>
+          <tr>
+            <td><strong>ゴムホース組立</strong></td>
+            <td>模倣学習（テレオペレーション+行動クローニング）</td>
+            <td>熟練工の動作をテレオペで収集し、模倣学習で方策を獲得。力覚フィードバック付きのロボットアームを使用。Sim2Realの補助も検討。</td>
+          </tr>
+          <tr>
+            <td><strong>ワイヤーハーネス組立</strong></td>
+            <td>現時点ではVLA/模倣学習でPoC段階。<strong>部分自動化+人間協調</strong>を推奨</td>
+            <td>完全自動化は技術的に未成熟。一部の単純な工程（直線部分の配線固定等）を自動化し、複雑な分岐部分は人間が担当するハイブリッド方式を提案。</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="info-box">
+        <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span>
+        <div>
+          <strong>なぜ強化学習ではなく模倣学習か？</strong><br>
+          ゴムホース組立に強化学習（RL）を適用しない理由は主に2つ。(1) 柔軟物体のシミュレーションは精度が低く、Sim2Realのギャップが大きい。(2) 報酬関数の設計が極めて困難（「正しく組み付けられた」の定義が曖昧）。一方、熟練工のデモンストレーションデータは豊富に収集でき、模倣学習のほうが実用的。
+        </div>
+      </div>
+
+      <!-- 解答 c) ロードマップ -->
+      <h3>c) フェーズ分けロードマップ</h3>
+
+      <div class="step-list">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <strong>Phase 1: 検品PoC（3ヶ月 / 概算3,000万円）</strong><br>
+            <ul>
+              <li><strong>目標:</strong> 検品精度98%以上の画像分類モデルを構築</li>
+              <li><strong>内容:</strong> 既存画像データの整理・ラベリング、CNNモデルの学習、1ラインでの試験運用</li>
+              <li><strong>成功基準:</strong> 人間の検査員と同等以上の検出率（見逃し率0.1%以下）</li>
+              <li><strong>リスク:</strong> 低。技術的に確立された手法のため、失敗リスクは最小</li>
+            </ul>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <strong>Phase 2: ゴムホース組立PoC（6ヶ月 / 概算8,000万円）</strong><br>
+            <ul>
+              <li><strong>目標:</strong> ゴムホースの把持・挿入タスクの自動化を1工程で実証</li>
+              <li><strong>内容:</strong> テレオペレーションシステム構築、熟練工のデモデータ収集（500〜1,000エピソード）、模倣学習モデル訓練</li>
+              <li><strong>成功基準:</strong> タスク成功率90%以上、サイクルタイムが人間の1.5倍以内</li>
+              <li><strong>リスク:</strong> 中〜高。柔軟物体操作の難しさから、目標達成に追加調整が必要になる可能性</li>
+            </ul>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <strong>Phase 3: 段階展開（12ヶ月 / 概算3〜5億円）</strong><br>
+            <ul>
+              <li><strong>目標:</strong> 検品の全ライン展開 + ゴムホース組立の段階拡大</li>
+              <li><strong>内容:</strong> 検品システムの全10ライン展開、ゴムホース組立の対象品種拡大、ワイヤーハーネスの部分自動化PoC開始</li>
+              <li><strong>成功基準:</strong> 検品工程の人員50%削減、ゴムホース工程の人員30%削減</li>
+              <li><strong>ROI見込み:</strong> 検品+ゴムホースだけで年間約4〜5億円の人件費削減。初期投資6〜8億円に対し、2年以内のROI達成が見込める</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-box">
+        <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span>
+        <div>
+          <strong>ポイント: ROI計算の正直さ</strong><br>
+          ワイヤーハーネスの完全自動化を含めると、目標の「30%削減（9億円/年）」に到達する可能性がありますが、技術的リスクが高いため、まずは検品+ゴムホースで確実にROIを出す計画を提示するのが誠実です。ワイヤーハーネスは「Phase 4以降の中長期目標」として位置づけましょう。
+        </div>
+      </div>
+
+      <!-- 判断フローチャート (Mermaid) -->
+      <h3>技術選定の判断フローチャート</h3>
+      <div class="mermaid">
+flowchart TD
+    A["タスクを特定"] --> B{"物理操作が<br>必要か？"}
+    B -- "No（検品等）" --> C["画像認識<br>古典CV + DL"]
+    B -- "Yes" --> D{"対象は<br>剛体か？"}
+    D -- "剛体" --> E["古典制御<br>/ RL"]
+    D -- "柔軟体" --> F{"形状は<br>単純か？"}
+    F -- "単純<br>（ホース等）" --> G["模倣学習"]
+    F -- "複雑<br>（ハーネス等）" --> H{"完全自動化は<br>必要か？"}
+    H -- "Yes" --> I["現時点では困難<br>中長期R&D"]
+    H -- "部分的でOK" --> J["部分自動化<br>+ 人間協調"]
+
+    style A fill:#f4f4f5,stroke:#18181b,color:#18181b
+    style C fill:#d1fae5,stroke:#16a34a,color:#065f46
+    style E fill:#d1fae5,stroke:#16a34a,color:#065f46
+    style G fill:#fef3c7,stroke:#92400e,color:#92400e
+    style I fill:#fee2e2,stroke:#991b1b,color:#991b1b
+    style J fill:#fef3c7,stroke:#92400e,color:#92400e
+      </div>
+
+      <!-- 解答 d) VLA質問への回答 -->
+      <h3>d) VLAに関する顧客質問への模範回答</h3>
+
+      <p>以下は、顧客に対する回答の構成例です。</p>
+
+      <blockquote style="border-left:3px solid #16a34a; padding:1rem 1.5rem; margin:1.5rem 0; background:#f4f4f5; border-radius:0 8px 8px 0">
+        <p style="margin-top:0"><strong>「VLAモデルで全工程を一括自動化できますか？」への回答:</strong></p>
+
+        <p><strong>結論から申しますと、現時点では全工程の一括自動化は推奨しません。</strong>ただし、VLAは非常に有望な技術であり、中長期的には御社の自動化戦略の中核になる可能性があります。</p>
+
+        <p>その理由を3点ご説明します。</p>
+
+        <p><strong>第一に、VLAの強みと現在地です。</strong>VLA（Vision-Language-Action）モデルは、人間の指示を理解し、カメラ映像から直接ロボットの動作を生成できる画期的な技術です。しかし、産業用途での精度・速度・安全性の面では、まだ研究段階から実用段階への移行期にあります。</p>
+
+        <p><strong>第二に、タスクごとの最適解は異なります。</strong>検品工程には成熟した画像認識技術のほうが高精度かつ低コストです。ゴムホース組立には模倣学習が実績を出し始めています。「万能な1つの技術」よりも「タスクに最適な技術の組み合わせ」のほうが、確実にROIを達成できます。</p>
+
+        <p><strong>第三に、将来への備えは重要です。</strong>今回のシステムをモジュラー設計にしておけば、2〜3年後にVLAが実用レベルに達した際に、組立工程の制御部分をVLAベースに置き換えることが可能です。つまり、今の投資が将来のVLA導入の土台になります。</p>
+
+        <p style="margin-bottom:0"><strong>ご提案としては</strong>、まず確実に成果が出る検品から着手し、段階的に組立工程の自動化を進めていく計画をお勧めします。ワイヤーハーネスについては、VLA技術の成熟を見据えた中長期のR&Dテーマとして位置づけるのが最も合理的です。</p>
+      </blockquote>
+
+    </div>
+  </details>
+
+  <!-- ============================================================ -->
+  <!-- Section 5: 応用課題 -->
+  <!-- ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span> 応用課題</h2>
+
+  <p>本編の演習が終わったら、以下の応用課題にもチャレンジしてみてください。これらは明確な正解がない「オープンエンド」な問題です。</p>
+
+  <div class="info-box" style="border-left:3px solid #16a34a">
+    <div>
+      <p style="margin-top:0"><strong>応用課題 1: 競合分析</strong></p>
+      <p>ABC精密工業の技術責任者から追加の質問が来ました。</p>
+      <blockquote style="border-left:2px solid #a1a1aa; padding:0.5rem 1rem; margin:0.5rem 0; font-style:italic">「中国の競合企業が製造ラインの自動化で2年先行していると聞いています。彼らはどんな技術を使っていると思いますか？ わが社はどう対抗すべきでしょうか？」</blockquote>
+      <p><strong>考えるポイント:</strong></p>
+      <ul>
+        <li>中国の製造業におけるロボティクス導入の現状（大規模な人手によるデータ収集の優位性）</li>
+        <li>Sim2Real技術の中国企業での活用状況</li>
+        <li>日本企業が持つ「熟練工のノウハウ」というデータ資産の価値</li>
+        <li>「先行している」ことと「実用レベルで品質を出している」ことの違い</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="info-box" style="border-left:3px solid #16a34a; margin-top:1.5rem">
+    <div>
+      <p style="margin-top:0"><strong>応用課題 2: 自分の業界でのスコーピング演習</strong></p>
+      <p>このコースで学んだフレームワークを使って、<strong>あなた自身の担当業界</strong>でフィジカルAIの適用スコーピングを行ってみましょう。</p>
+      <p><strong>作成物:</strong> 3ページの概要提案書（以下の構成）</p>
+      <ol>
+        <li><strong>1ページ目:</strong> 対象業界・顧客の課題定義とタスク分解</li>
+        <li><strong>2ページ目:</strong> 技術選定マトリクスと推奨アプローチ</li>
+        <li><strong>3ページ目:</strong> フェーズ分けロードマップと概算ROI</li>
+      </ol>
+      <p>この演習を実際に行うことで、学んだ知識が「使える知識」に変わります。可能であれば、同僚やチームメンバーと共有してフィードバックをもらいましょう。</p>
+    </div>
+  </div>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><a href="https://arxiv.org/abs/2310.16828" target="_blank" rel="noopener">Open X-Embodiment: Robotic Learning Datasets and RT-X Models (2023)</a> ― Google DeepMindによるロボット汎用モデルの大規模データセットとベンチマーク</li>
+      <li><a href="https://www.mckinsey.com/capabilities/operations/our-insights/the-future-of-manufacturing" target="_blank" rel="noopener">McKinsey: The Future of Manufacturing</a> ― 製造業におけるAI・ロボティクス導入のビジネスインパクト分析</li>
+      <li><a href="https://ieeexplore.ieee.org/document/10160300" target="_blank" rel="noopener">IEEE: Deformable Object Manipulation - A Survey (2023)</a> ― 柔軟物体操作の技術的課題と最新手法の包括的サーベイ</li>
+      <li><a href="https://www.iso.org/standard/73792.html" target="_blank" rel="noopener">ISO/TS 15066:2016 - Collaborative Robots Safety</a> ― 協調ロボットの安全基準。産業導入時の安全認証要件の理解に必須</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="08">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="07-business-scoping.html"><span class="direction">&larr; Prev</span>ビジネススコーピングの技法</a>
+    <span></span>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#f4f4f5',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#18181b',
+      lineColor: '#18181b',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<!-- 視覚化ライブラリ群 (使う章だけ動作、未使用章はゼロコスト) -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  // Lucideアイコンを自動描画 (data-lucide="icon-name" 属性のある要素を全部処理)
+  if (window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>

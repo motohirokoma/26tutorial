@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%237c3aed%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>言葉を数字に変える - MK's Understanding LLM</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #7c3aed; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Understanding LLM
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" class="active" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Deep Dive</span><span class="phase-pct" id="pct-deepdive">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.02</span>
+    言葉を数字に変える
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 7 sections</text>
+    </svg>
+    <div class="progress-info">0h / 4h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-what-is-llm.html"><span class="status-dot" data-chapter="01"></span> LLMとは何か</a></li>
+    <li><a href="02-tokens-embeddings.html" class="active"><span class="status-dot" data-chapter="02"></span> 言葉を数字に変える</a></li>
+    <li><a href="03-next-token-prediction.html"><span class="status-dot" data-chapter="03"></span> 次単語予測</a></li>
+  </ul>
+  <div class="section-label">Deep Dive</div>
+  <ul>
+    <li><a href="04-transformer.html"><span class="status-dot" data-chapter="04"></span> Transformer</a></li>
+    <li><a href="05-training.html"><span class="status-dot" data-chapter="05"></span> LLMはどう学ぶのか</a></li>
+    <li><a href="06-capabilities-limits.html"><span class="status-dot" data-chapter="06"></span> 能力・限界・未来</a></li>
+    <li><a href="07-final-exercise.html"><span class="status-dot" data-chapter="07"></span> 最終演習問題</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 1: Basics &gt; Chapter 02</div>
+  <h1>言葉を数字に変える 〜トークンと埋め込み〜</h1>
+  <p class="subtitle">LLMは本質的に「数字を計算する機械」です。言葉はそのままでは食べさせられません。この章では、文章がどうやって数字に変換され、どう「意味を持つ数字」になるかを見ます。記事でよく出る「トークン」「埋め込み(Embedding)」「コンテキスト長 128K」の正体が、ここで全部つながります。</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 30分</span>
+    <span class="badge">Phase: Basics</span>
+    <span class="badge">難易度: 入門</span>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span>1. なぜ「数字に変える」必要があるのか</h2>
+
+  <div class="fade-in">
+    <p>LLMの中身は <strong>巨大な行列の掛け算と足し算の山</strong> です。コンピュータは <code>0.34</code> や <code>1.7</code> しか計算できません。「猫」も「Hello」も、まずは数字にする必要があります。</p>
+
+    <p>そこで2段階の変換が走ります:</p>
+  </div>
+
+  <div class="diagram-box">
+    <div class="diagram-title">テキスト → 数字への2段階変換</div>
+    <pre class="mermaid">
+graph LR
+  T["文章<br/>「猫が好き」"] --> S1["1. トークン化<br/>(Tokenization)"]
+  S1 --> ID["トークンID列<br/>[342, 19, 5821]"]
+  ID --> S2["2. 埋め込み<br/>(Embedding)"]
+  S2 --> V["ベクトル列<br/>[[0.2, -0.7, ...], ...]"]
+  V --> M["Transformer<br/>へ入力"]
+    </pre>
+    <div class="diagram-caption">「文章 → トークンID → 高次元ベクトル」の2段ロケット。後段はCh04のTransformerに渡される。</div>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span>2. ステップ1: トークン化</h2>
+
+  <p><span class="term" data-tip="文章を語彙の単位(サブワード)に区切ること。LLMでよく使われるのはBPE(Byte-Pair Encoding)。">トークン化</span>とは、文章を「LLMが知っている語彙単位」に区切ること。これは <strong>単語そのもの</strong> でも <strong>文字</strong> でもなく、その中間の <strong>サブワード</strong> です。</p>
+
+  <h3>具体例: 英語の場合</h3>
+
+  <p>「<code>tokenization</code>」という単語は、英語の GPT 系では多くの場合 <code>token</code> + <code>ization</code> の2つに分かれます。なぜか? <strong>未知の単語にも対応するため</strong> です。<code>tokenize</code> も <code>tokenizer</code> も <code>tokenization</code> も、共通の <code>token</code> を再利用できる。</p>
+
+  <h3>具体例: 日本語の場合</h3>
+
+  <p>日本語は <strong>1文字 = 1トークン</strong> ぐらいの粒度になりがち(欧文に最適化されたBPEだと、漢字1字に2-3トークン消費することも)。だから「日本語はトークンを食う」と言われます。</p>
+
+  <table>
+    <thead>
+      <tr><th>テキスト</th><th>大体のトークン数(GPT-4 系)</th><th>1トークンあたり</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>"Hello, world!"</td><td>4</td><td>≒ 3.5文字</td></tr>
+      <tr><td>「こんにちは、世界!」</td><td>10</td><td>≒ 1文字</td></tr>
+      <tr><td>"The quick brown fox jumps over the lazy dog"</td><td>9</td><td>≒ 単語1個</td></tr>
+      <tr><td>「素早い茶色の狐が怠惰な犬を飛び越える」</td><td>23</td><td>≒ 0.7文字</td></tr>
+    </tbody>
+  </table>
+
+  <div class="warn-box">
+    <div class="label">実用Tips</div>
+    <p>API の <strong>料金は入力+出力のトークン数</strong> でかかります。日本語は英語の <strong>2-3倍</strong> トークンを食うので、コストが跳ねやすい。長文プロンプトは英語で書く方が安いという「テクニック」が成立する根拠がここです。</p>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: BPE(Byte-Pair Encoding)って結局何?</summary>
+    <div class="more-body">
+      <p>BPE は元々データ圧縮アルゴリズムとして1994年に発明されました。「最も頻繁に出る2文字ペア」を1つの新しい記号に置き換える、を繰り返します。</p>
+      <p>例: 大量の英語コーパスでは <code>th</code> が頻出 → 1トークンに昇格。<code>the</code> も頻出 → 1トークンに昇格。一方 <code>xq</code> はめったに出ない → 別々のままに留まる。</p>
+      <p>結果として、頻出語は <strong>1トークン</strong>、レア語や新語は <strong>サブワードに分解</strong> される。これで「未知語ゼロ」「語彙数を抑える」「形態論を捉える」を全部一度に達成できます。</p>
+    </div>
+  </details>
+
+  <h3>1トークン ≒ 何文字?</h3>
+
+  <div class="diagram-box">
+    <div class="diagram-title">主要言語の「1トークンあたりの文字数」(GPT-4 概算)</div>
+    <canvas id="ch02-bar-chars" height="160"></canvas>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span>3. ステップ2: 埋め込み(Embedding)</h2>
+
+  <p>トークンIDは <code>342</code>、<code>19</code> のような <strong>意味のない通し番号</strong>。これをそのまま使ってもLLMは賢くなれません。「ID 342 と ID 19 が似てる単語かどうか」が分からないからです。</p>
+
+  <p>そこで <span class="term" data-tip="単語(トークン)を、意味の近さがベクトルの距離で表現される多次元ベクトルに変換する技術。Word2Vec/GloVe等が古典的、現代LLMは内部で持つ。">埋め込み(Embedding)</span> の登場。各トークンIDを <strong>数百〜数千次元のベクトル</strong> に変換します。このベクトル空間では、「意味が似ているトークンは近くに集まる」 という魔法が起きます。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">埋め込み空間のイメージ(2次元に投影)</div>
+    <svg viewBox="0 0 480 320" width="100%" style="max-width:480px; display:block; margin:0 auto;">
+      <defs>
+        <marker id="arr2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#7c3aed"/>
+        </marker>
+      </defs>
+      <line x1="40" y1="280" x2="460" y2="280" stroke="#a1a1aa" stroke-width="1"/>
+      <line x1="40" y1="280" x2="40" y2="20" stroke="#a1a1aa" stroke-width="1"/>
+      <text x="450" y="295" font-size="10" fill="#71717a">次元1</text>
+      <text x="20" y="20" font-size="10" fill="#71717a">次元2</text>
+      <!-- 動物クラスタ -->
+      <circle cx="120" cy="100" r="6" fill="#7c3aed"/>
+      <text x="130" y="100" font-size="11" font-weight="600">猫</text>
+      <circle cx="155" cy="115" r="6" fill="#7c3aed"/>
+      <text x="165" y="115" font-size="11" font-weight="600">犬</text>
+      <circle cx="100" cy="135" r="6" fill="#7c3aed"/>
+      <text x="55" y="138" font-size="11" font-weight="600">うさぎ</text>
+      <circle cx="135" cy="80" r="6" fill="#7c3aed"/>
+      <text x="145" y="80" font-size="11" font-weight="600">ハムスター</text>
+      <ellipse cx="125" cy="108" rx="55" ry="45" fill="#7c3aed" opacity="0.10" stroke="#7c3aed" stroke-dasharray="3,3"/>
+      <text x="125" y="170" text-anchor="middle" font-size="10" fill="#7c3aed" font-weight="700">ペット</text>
+      <!-- 国クラスタ -->
+      <circle cx="350" cy="200" r="6" fill="#16a34a"/>
+      <text x="360" y="200" font-size="11" font-weight="600">日本</text>
+      <circle cx="390" cy="220" r="6" fill="#16a34a"/>
+      <text x="400" y="220" font-size="11" font-weight="600">アメリカ</text>
+      <circle cx="370" cy="240" r="6" fill="#16a34a"/>
+      <text x="305" y="245" font-size="11" font-weight="600">ドイツ</text>
+      <ellipse cx="370" cy="220" rx="55" ry="40" fill="#16a34a" opacity="0.10" stroke="#16a34a" stroke-dasharray="3,3"/>
+      <text x="370" y="275" text-anchor="middle" font-size="10" fill="#16a34a" font-weight="700">国</text>
+      <!-- 動詞 -->
+      <circle cx="280" cy="80" r="6" fill="#ea580c"/>
+      <text x="290" y="80" font-size="11" font-weight="600">走る</text>
+      <circle cx="245" cy="105" r="6" fill="#ea580c"/>
+      <text x="200" y="108" font-size="11" font-weight="600">食べる</text>
+      <circle cx="305" cy="105" r="6" fill="#ea580c"/>
+      <text x="315" y="105" font-size="11" font-weight="600">寝る</text>
+      <ellipse cx="277" cy="95" rx="55" ry="35" fill="#ea580c" opacity="0.10" stroke="#ea580c" stroke-dasharray="3,3"/>
+      <text x="277" y="150" text-anchor="middle" font-size="10" fill="#ea580c" font-weight="700">動詞</text>
+    </svg>
+    <div class="diagram-caption">実際は数百〜数千次元。意味の似た単語が「方向」と「位置」で近くに集まる。</div>
+  </div>
+
+  <h3>有名な不思議: 「王 - 男 + 女 = 女王」</h3>
+
+  <p>埋め込みベクトルには <strong>意味の引き算ができる</strong> という不思議な性質があります。Word2Vec の論文(2013)で示された <em>有名すぎる例</em>:</p>
+
+  <div class="quote">
+    <code>vec("King") - vec("Man") + vec("Woman") ≒ vec("Queen")</code>
+    <cite>— ベクトル空間上で「性別の差分」を引いて足すと別の単語になる</cite>
+  </div>
+
+  <p>つまり、ベクトル空間の中に <strong>「性別の方向」「王族度の方向」</strong> が存在する。これが「意味を数字で表現できる」という主張の根拠です。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span></p>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span>4. ベクトルの「次元数」とモデルサイズ</h2>
+
+  <p>埋め込みベクトルが何次元あるかは、モデル設計の <strong>大きな選択</strong>。次元が多いほど表現力は上がるが、計算量とメモリも比例して増えます。</p>
+
+  <table>
+    <thead>
+      <tr><th>モデル</th><th>埋め込み次元</th><th>意味するところ</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Word2Vec (2013)</td><td>300</td><td>当時はこれで十分だった</td></tr>
+      <tr><td>GPT-2 small</td><td>768</td><td>BERT-base と同じ</td></tr>
+      <tr><td>GPT-3 (175B)</td><td>12,288</td><td>1単語に1.2万個の数字</td></tr>
+      <tr><td>Llama 3 70B</td><td>8,192</td><td>多くは数千〜1万次元の範囲</td></tr>
+    </tbody>
+  </table>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span>5. コンテキスト長: 128K って結局何?</h2>
+
+  <p>記事で「<strong>コンテキスト長 128K</strong>」「<strong>2M トークン対応</strong>」と書かれているこの数字。これは <strong>「一度に入力できるトークン数」</strong> のこと。</p>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-num">2K</div>
+      <div class="stat-label">GPT-3 (2020)</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">128K</div>
+      <div class="stat-label">GPT-4 Turbo</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">200K</div>
+      <div class="stat-label">Claude 3</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">2M</div>
+      <div class="stat-label">Gemini 2.0 Pro</div>
+    </div>
+  </div>
+
+  <p>128K トークン ≒ 英語の本 <strong>約1冊分</strong>(日本語だと1/2〜1/3)。長くなるほど、長い文書を一気に読ませて要約させたり、長い対話履歴を覚えさせたりできる。一方で <strong>計算コストはトークン数の2乗</strong> で増えます(Ch04 で扱う Attention の特性)。</p>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="ruler" width="20" height="20"></i>
+      <div><strong>感覚として:</strong> 1万トークン ≒ 5,000日本語文字 ≒ 短編小説1本</div>
+    </li>
+    <li>
+      <i data-lucide="book-open" width="20" height="20"></i>
+      <div><strong>128Kトークン:</strong> ≒ 6万日本語文字 ≒ 新書1冊分</div>
+    </li>
+    <li>
+      <i data-lucide="library" width="20" height="20"></i>
+      <div><strong>2Mトークン:</strong> ≒ 100万日本語文字 ≒ 長編小説4-5冊分</div>
+    </li>
+    <li>
+      <i data-lucide="zap" width="20" height="20"></i>
+      <div><strong>注意:</strong> 「入力できる」≠「全部活用できる」。途中の情報を見落とす(<span class="term" data-tip="長いコンテキストで途中の情報を取りこぼす現象。「Lost in the middle」と呼ばれる。">Lost in the middle</span>)現象が知られている</div>
+    </li>
+  </ul>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span>6. まとめ</h2>
+
+  <div class="info-box">
+    <div class="label">この章のキーポイント</div>
+    <p>① 文章は <strong>トークン化</strong> でサブワード単位の <strong>ID列</strong> になる<br/>
+    ② 各IDは <strong>埋め込み</strong> で数百〜数千次元の <strong>ベクトル</strong> になる<br/>
+    ③ 意味の似たトークンはベクトル空間で近くに集まる<br/>
+    ④ コンテキスト長 = 1回に入力できるトークン数 = モデルの「視野の広さ」</p>
+  </div>
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>OpenAI Tokenizer で自分の文章を「数える」</h4>
+    <p>OpenAI が提供する公式トークナイザビューアで、英語と日本語が <strong>同じ文の長さでも別物</strong> になることを確認します。</p>
+    <ol>
+      <li><a href="https://platform.openai.com/tokenizer" target="_blank">https://platform.openai.com/tokenizer</a> を開く</li>
+      <li>"The quick brown fox jumps over the lazy dog" を入れてトークン数を確認</li>
+      <li>「素早い茶色の狐が怠惰な犬を飛び越える」を入れて確認</li>
+      <li>2つを比べて、何倍違うか計算する</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>結果(GPT-4o系トークナイザ概算):</p>
+      <ul>
+        <li>英語版: 約 9 トークン</li>
+        <li>日本語版: 約 17-23 トークン(モデルによる、新しいGPT-4o系は日本語効率が改善されている)</li>
+      </ul>
+      <p>日本語は <strong>2倍以上</strong> トークンを食うことが多いです。これがAPI課金時の <em>隠れたコスト</em> になります。</p>
+      <p>応用Tip: GPT-4o の Tokenizer は GPT-3.5 のものより日本語効率が良いです。古いモデルから乗り換えるだけでコストが下がる、という現象も。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>「埋め込みの距離」を擬似的に体感する</h4>
+    <p>埋め込みベクトル空間で「どれくらい近いか」をLLMに直接質問できます。あなたが普段使うLLMに次のプロンプトを投げて、結果を比較してみてください。</p>
+    <ol>
+      <li>使えるLLM(ChatGPT・Claude・Geminiなど)を1つ開く</li>
+      <li>こう聞く: 「『京都』に意味的に近い単語を、日本の地名以外で、近い順に5つ挙げて」</li>
+      <li>次に「『京都』に近い単語を、抽象的な概念だけで5つ挙げて」</li>
+      <li>2つの結果を比較して、なぜ違うかを考察</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>例えば1つ目の結果は「古都」「奈良」「金閣寺」「茶道」「八坂神社」のように <strong>場所・歴史・観光</strong> 軸が出ます。2つ目は「伝統」「侘び寂び」「四季」「精神性」「美意識」のように <strong>抽象軸</strong> が出ます。</p>
+      <p>面白いポイント: 同じ「京都」というトークンの埋め込みベクトルに、これだけ <strong>多面的な「方向」</strong> が含まれている、ということです。LLMはプロンプトの文脈に応じて、この多次元のベクトルから <em>必要な軸を引き出して</em> 答えを生成しています。</p>
+      <p>これは <em>静的な単語埋め込み</em>(Word2Vec)から <em>文脈依存の埋め込み</em>(Transformer時代のもの)への進化を体感する練習でもあります。Ch04 の Attention で「文脈で意味が変わる」仕組みが分かるとさらに面白いです。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span><a href="https://platform.openai.com/tokenizer" target="_blank">OpenAI Tokenizer</a> — 自分の文章のトークン数をブラウザで即確認</li>
+      <li><span class="res-type article">Article</span><a href="https://jalammar.github.io/illustrated-word2vec/" target="_blank">The Illustrated Word2vec — Jay Alammar</a> — 埋め込みの直感がつかめる図解記事</li>
+      <li><span class="res-type video">Video</span><a href="https://www.youtube.com/watch?v=zduSFxRajkE" target="_blank">Let's build the GPT Tokenizer — Karpathy</a> — BPEを2時間で実装する伝説の動画</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="02">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="01-what-is-llm.html"><span class="direction">&larr; Prev</span>LLMとは何か</a>
+    <a href="03-next-token-prediction.html"><span class="direction">Next &rarr;</span>次単語予測</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#f4f4f5',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#18181b',
+      lineColor: '#18181b',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+  window.addEventListener('load', function() {
+    new Chart(document.getElementById('ch02-bar-chars'), {
+      type: 'bar',
+      data: {
+        labels: ['英語', 'スペイン語', 'フランス語', '中国語', '日本語', 'タイ語', 'ヒンディー語'],
+        datasets: [{
+          label: '1トークンあたりの文字数(目安)',
+          data: [3.8, 2.0, 2.1, 1.5, 1.0, 0.7, 0.6],
+          backgroundColor: '#18181b',
+          borderRadius: 6
+        }]
+      },
+      options: {
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true, title: { display: true, text: '文字 / トークン' } } }
+      }
+    });
+  });
+</script>
+</body>
+</html>

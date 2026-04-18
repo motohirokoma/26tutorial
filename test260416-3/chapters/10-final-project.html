@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>最終演習 - MK's Claude Code Tutorial - Short Edition</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code Tutorial - Short Edition
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="../index.html#phase3" data-nav class="active"><span class="phase-name">Practice</span><span class="phase-pct" id="pct-practice">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.10</span>
+    最終演習
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18" stroke-dasharray="0 113.1" stroke-dashoffset="0" transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 10 sections</text>
+    </svg>
+    <div class="progress-info">0h / 10h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-what-is-claude-code.html"><span class="status-dot" data-chapter="01"></span> Claude Codeとは</a></li>
+    <li><a href="02-installation.html"><span class="status-dot" data-chapter="02"></span> インストール</a></li>
+    <li><a href="03-basic-commands.html"><span class="status-dot" data-chapter="03"></span> 基本コマンド</a></li>
+    <li><a href="04-prompt-design.html"><span class="status-dot" data-chapter="04"></span> プロンプト設計</a></li>
+  </ul>
+  <div class="section-label">Core</div>
+  <ul>
+    <li><a href="05-file-operations.html"><span class="status-dot" data-chapter="05"></span> ファイル操作</a></li>
+    <li><a href="06-git.html"><span class="status-dot" data-chapter="06"></span> Git連携</a></li>
+    <li><a href="07-troubleshooting.html"><span class="status-dot" data-chapter="07"></span> エラー対処</a></li>
+  </ul>
+  <div class="section-label">Practice</div>
+  <ul>
+    <li><a href="08-web-page.html"><span class="status-dot" data-chapter="08"></span> 実践: Webページ</a></li>
+    <li><a href="09-web-app.html"><span class="status-dot" data-chapter="09"></span> 実践: Webアプリ</a></li>
+    <li><a href="10-final-project.html" class="active"><span class="status-dot" data-chapter="10"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 3: Practice &gt; Chapter 10</div>
+  <h1>最終演習</h1>
+  <p class="subtitle">これまでの全部を統合して、自分の課題を1つ Claude と一緒に解決する。Short Edition の卒業課題。</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 30min</span>
+    <span class="badge">Phase: Practice</span>
+    <span class="badge">難易度: 統合</span>
+  </div>
+
+  <div class="quote">
+    あなたが10時間で学んだことを、<strong>あなた自身の1つの課題で</strong> 試す時間です。完璧を目指さない。動けば勝ち。
+    <cite>— 卒業課題のスピリット</cite>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>問題提示</h2>
+
+  <p><strong>あなたの日常 or 業務にある「ちょっと面倒な作業」を1つ選び、Claude Code で30分以内に自動化または改善するツールを1つ作って GitHub Pages に公開する</strong>。</p>
+
+  <div class="info-box">
+    <span class="label">ルール</span>
+    <p>
+      ① 完璧でなくていい(動けば合格)<br>
+      ② 既存のWebサイト・アプリ・スクリプト、何でもOK<br>
+      ③ 30分の予算で「動くもの」をリリース<br>
+      ④ 公開URLとコードはGitHubに残す
+    </p>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>テーマのアイデア</h2>
+
+  <p>「何を作ろう」と迷う人向けの、30分で作れるアイデア集。1つ選んでも、組み合わせてもOK。</p>
+
+  <div class="card-grid">
+    <div class="card hover-card">
+      <h4>家計メモアプリ</h4>
+      <p>金額+カテゴリだけのシンプル家計簿。月間集計付き。</p>
+    </div>
+    <div class="card hover-card">
+      <h4>名刺リンク集</h4>
+      <p>1ページのリンクツリー(LinkTree風)を自作。SNS / 仕事 / ブログを整理。</p>
+    </div>
+    <div class="card hover-card">
+      <h4>ポモドーロタイマー</h4>
+      <p>25分 + 5分のサイクルを自動で進めるタイマー。通知音付き。</p>
+    </div>
+    <div class="card hover-card">
+      <h4>勉強記録</h4>
+      <p>科目+時間を記録、今週の累計を表示するシンプルログアプリ。</p>
+    </div>
+    <div class="card hover-card">
+      <h4>レシピ検索</h4>
+      <p>自分が知ってるレシピをタグで分類して検索できるカード集。</p>
+    </div>
+    <div class="card hover-card">
+      <h4>アイデアメモ</h4>
+      <p>思いついたら即書き込めるメモ帳。タグ + 日付 + 検索付き。</p>
+    </div>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>30分の使い方</h2>
+
+  <div class="diagram-box">
+    <div class="diagram-title">時間配分テンプレート</div>
+    <canvas id="ch-donut-1" height="200"></canvas>
+  </div>
+  <script>
+window.addEventListener('load', () => {  new Chart(document.getElementById('ch-donut-1'), {
+    type: 'doughnut',
+    data: {
+      labels: ['企画 (5min)', '依頼&生成 (15min)', '調整 (5min)', '公開 (5min)'],
+      datasets: [{ data: [5, 15, 5, 5], backgroundColor: ['#18181b', '#3f3f46', '#71717a', '#a1a1aa'] }]
+    },
+    options: { plugins: { legend: { position: 'bottom' } } }
+  });});
+  </script>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>段階的ヒント</h2>
+
+  <details class="more-box">
+    <summary>ヒント1: 何を作るか決まらない</summary>
+    <div class="more-body">
+      <p>「自分が今週、3回以上やった『手動の繰り返し作業』」をリストアップ。一番面倒なものを選ぶ。例: 「家計の入力」「タスク忘れ防止」「学習進捗の管理」。テーマがあれば6割勝ったも同然。</p>
+    </div>
+  </details>
+
+  <details class="more-box">
+    <summary>ヒント2: 機能を絞る</summary>
+    <div class="more-body">
+      <p>30分なので、機能は最大3つに絞る。「入力 / 表示 / 保存」だけでもアプリは成立する。Ch09のToDoアプリのような構造をベースにすると、応用が楽。</p>
+    </div>
+  </details>
+
+  <details class="more-box">
+    <summary>ヒント3: Plan を1分かける</summary>
+    <div class="more-body">
+      <p>いきなり「実装して」と頼まず、必ず「方針を3案出して」 → 「決まったら手順を書いて」 → 「OKそれで実装して」の順。Ch04で学んだPlan→Design→Buildフロー。</p>
+    </div>
+  </details>
+
+  <details class="more-box">
+    <summary>ヒント4: 詰まったら</summary>
+    <div class="more-body">
+      <p>「動かない」なら、エラー全文をClaudeに貼って原因と修正を聞く(Ch07)。「設計が悪そう」なら、<code>/clear</code>して別アプローチを最初から提案させる。<strong>絶対に1人で抱え込まない</strong>。</p>
+    </div>
+  </details>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>合否の基準</h2>
+
+  <div class="compare-cards">
+    <div class="cc good">
+      <span class="cc-label">合格</span>
+      <h4>これがあれば卒業</h4>
+      <ul>
+        <li>公開URLにアクセスすると動く</li>
+        <li>「自分が解きたかった問題」が部分的にでも解けている</li>
+        <li>GitHubにコードが残っている</li>
+      </ul>
+    </div>
+    <div class="cc bad">
+      <span class="cc-label">不合格</span>
+      <h4>こっちじゃダメ</h4>
+      <ul>
+        <li>動かない / 公開できなかった</li>
+        <li>本に載ってる例題そのまま (自分の課題感ゼロ)</li>
+        <li>30分のプランがそもそも壮大すぎ</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>模範解答 (例: ポモドーロタイマー)</h2>
+
+  <details class="answer-toggle">
+    <summary>30分でこんな感じに作れる(クリックで展開)</summary>
+    <div class="answer-body">
+      <p>例として「ポモドーロタイマー」を選んだ場合の依頼&完成までを再現。</p>
+      <pre><code># Plan (3分)
+&gt; ~/Desktop/pomodoro でポモドーロタイマーを作りたい。
+  まず方針3案出して(機能の優先順位ベースで)。
+
+# Design (2分)
+&gt; 案A (シンプル: 25分タイマー + 通知音 + 履歴) で進めて。
+  index.html 1ファイルで実装する手順を書いて。
+
+# Build (15分)
+&gt; OKその手順で実装して。
+
+# テスト (5分): ブラウザで実際に動作確認
+&gt; タイマーが3秒で終わる「テストモード」を追加して、デバッグ後に消して
+
+# 調整 (3分)
+&gt; モバイルで通知音が鳴らない、Web Audio APIに切替えて
+
+# 公開 (2分)
+&gt; このフォルダを GitHub の "pomodoro" リポジトリに push、
+  GitHub Pages 有効化して URL 教えて</code></pre>
+      <p>これだけで30分以内に動くポモドーロタイマーが世界に公開できます。これが <strong>「Claude Code を使える人の生産性」</strong>。</p>
+    </div>
+  </details>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>応用課題</h2>
+
+  <p>30分でできた人向けの追加チャレンジ。</p>
+
+  <ul class="icon-list">
+    <li><i data-lucide="palette" width="20" height="20"></i><div><strong>ダークモード対応</strong> — Ch08の手法を移植 (5分)</div></li>
+    <li><i data-lucide="bar-chart" width="20" height="20"></i><div><strong>統計画面</strong> — 過去のデータをグラフ表示 (Chart.js使用、15分)</div></li>
+    <li><i data-lucide="users" width="20" height="20"></i><div><strong>共有リンク</strong> — URLパラメータで状態を共有できるように (10分)</div></li>
+    <li><i data-lucide="layers" width="20" height="20"></i><div><strong>第2版を別レポジトリで</strong> — 同じテーマで設計をやり直す (30分)</div></li>
+  </ul>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>修了お疲れさまでした</h2>
+
+  <p>10時間を完走したあなたは、もう <strong>Claude Code 利用者の上位40%</strong> に入っています。<strong>3つの自分用Webプロジェクト</strong> をGitHubに残し、<strong>動く成果物</strong> を世界に公開できました。</p>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-num">10<small>h</small></div>
+      <div class="stat-label">学習時間</div>
+      <div class="stat-trend up">↑ 完走</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">3<small>+</small></div>
+      <div class="stat-label">公開プロジェクト</div>
+      <div class="stat-trend up">↑ 履歴書に書ける</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">∞</div>
+      <div class="stat-label">これからの応用</div>
+      <div class="stat-trend up">↑ 副業 / 業務効率化</div>
+    </div>
+  </div>
+
+  <p><span class="pulse-dot"></span> あなたの新しい働き方は、ここから始まります。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span></p>
+
+  <div class="info-box">
+    <span class="label">次のステップ</span>
+    <p>もっと深く学びたいなら Anthropic 公式ドキュメントの <code>Best Practices</code> や <code>Hooks</code> / <code>Sub-agents</code> / <code>MCP</code> を読みましょう。Short Editionで土台はできているので、独学でも吸収速度が違います。</p>
+  </div>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.claude.com/en/docs/claude-code/best-practices" target="_blank" rel="noopener">Claude Code Best Practices</a> — さらなる深堀り</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.claude.com/en/docs/claude-code/hooks" target="_blank" rel="noopener">Hooks</a> — 自動化の応用</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.claude.com/en/docs/claude-code/mcp" target="_blank" rel="noopener">MCP (Model Context Protocol)</a> — 外部ツール接続</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>最終演習を提出したら、下のボタンを押して10時間カリキュラムの完走を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="10">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="09-web-app.html"><span class="direction">&larr; Prev</span>実践: ミニWebアプリ</a>
+    <span></span>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#f4f4f5',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#18181b',
+      lineColor: '#18181b',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>

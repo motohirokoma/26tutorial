@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%237c3aed%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>LLMの能力・限界・未来 - MK's Understanding LLM</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #7c3aed; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Understanding LLM
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" class="active" data-nav><span class="phase-name">Deep Dive</span><span class="phase-pct" id="pct-deepdive">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.06</span>
+    LLMの能力・限界・未来
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 7 sections</text>
+    </svg>
+    <div class="progress-info">0h / 4h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-what-is-llm.html"><span class="status-dot" data-chapter="01"></span> LLMとは何か</a></li>
+    <li><a href="02-tokens-embeddings.html"><span class="status-dot" data-chapter="02"></span> 言葉を数字に変える</a></li>
+    <li><a href="03-next-token-prediction.html"><span class="status-dot" data-chapter="03"></span> 次単語予測</a></li>
+  </ul>
+  <div class="section-label">Deep Dive</div>
+  <ul>
+    <li><a href="04-transformer.html"><span class="status-dot" data-chapter="04"></span> Transformer</a></li>
+    <li><a href="05-training.html"><span class="status-dot" data-chapter="05"></span> LLMはどう学ぶのか</a></li>
+    <li><a href="06-capabilities-limits.html" class="active"><span class="status-dot" data-chapter="06"></span> 能力・限界・未来</a></li>
+    <li><a href="07-final-exercise.html"><span class="status-dot" data-chapter="07"></span> 最終演習問題</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 2: Deep Dive &gt; Chapter 06</div>
+  <h1>LLMの能力・限界・未来</h1>
+  <p class="subtitle">仕組みを知った今、ふたたび「LLMは何ができて、何ができないのか」に戻ります。創発能力・ハルシネーション・バイアス・アラインメント・マルチモーダル・エージェント。ニュースで頻繁に出るこれらの用語を、この章で一気に結びつけます。</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 30分</span>
+    <span class="badge">Phase: Deep Dive</span>
+    <span class="badge">難易度: 中級</span>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span>1. 創発能力(Emergent Abilities)</h2>
+
+  <div class="fade-in">
+    <p><span class="term" data-tip="モデルサイズが一定を超えると、それまでできなかったタスクが急にできるようになる現象。Emergent Abilities。">創発能力</span>とは、「<strong>あるサイズを超えると、急にできるようになる能力</strong>」のこと。Scaling Lawの予測する <em>滑らかな改善</em> とは別に、特定タスクで <em>段差</em> のような性能ジャンプが観察されました。</p>
+
+    <p>典型例: 算数の繰り上がり、複数段階の論理推論、ペルシャ語のことわざ理解。10Bパラメータでは0%、100Bパラメータでは突然70%、のような曲線。</p>
+  </div>
+
+  <div class="diagram-box">
+    <div class="diagram-title">創発能力の典型曲線(模式)</div>
+    <canvas id="ch06-line-emergence" height="220"></canvas>
+  </div>
+
+  <div class="info-box">
+    <div class="label">論争: 本当に「創発」なのか?</div>
+    <p>2023年、「<a href="https://arxiv.org/abs/2304.15004" target="_blank">Are Emergent Abilities of LLMs a Mirage?</a>」という論文が物議。「評価尺度が <em>離散的</em> だから段差に見えるだけで、連続尺度で測れば滑らかなんじゃないか」という反論。これがまだ決着していないのが現状です。</p>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span>2. ハルシネーション — 自信満々の嘘</h2>
+
+  <p><span class="term" data-tip="LLMが事実でない情報を自信を持って出力する現象。事実検証機能を内蔵しないため必然的に起きる。">ハルシネーション</span>(Hallucination)はLLMの最大の弱点。Ch03で見たように、LLMは「次のトークンの確率」を出すだけで、<em>事実検証する仕組みを内蔵していない</em>。</p>
+
+  <h3>典型的なハルシネーションのパターン</h3>
+
+  <table>
+    <thead>
+      <tr><th>パターン</th><th>具体例</th><th>原因</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>架空の論文を引用</td><td>「Smith et al. 2021 で示されています」</td><td>論文タイトルの統計的それっぽさ</td></tr>
+      <tr><td>架空のAPI関数</td><td><code>numpy.linspace_safe()</code> を使う</td><td>命名パターンからの「ありそう」生成</td></tr>
+      <tr><td>事実の混合</td><td>「夏目漱石の代表作 走れメロス」</td><td>関連語の混線</td></tr>
+      <tr><td>判例・URL捏造</td><td>架空の判例番号を引用</td><td>形式に沿った穴埋め生成</td></tr>
+      <tr><td>計算ミス</td><td>「12,345 × 678 = 8,365,910」(誤)</td><td>確率分布での計算は近似</td></tr>
+    </tbody>
+  </table>
+
+  <h3>対策: RAG(検索拡張生成)</h3>
+
+  <p><span class="term" data-tip="Retrieval-Augmented Generation。外部のデータベースから関連情報を検索して、それをLLMの入力に与えて回答を生成する手法。">RAG</span>(Retrieval-Augmented Generation)は、ハルシネーション対策の現実的な解。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">RAG の仕組み</div>
+    <pre class="mermaid">
+graph LR
+  Q["ユーザの質問"] --> R["検索<br/>(自社DB / Web)"]
+  R --> D["関連文書<br/>(参考資料)"]
+  Q --> P["プロンプト組み立て"]
+  D --> P
+  P --> L["LLM"]
+  L --> A["回答<br/>+ 引用元"]
+    </pre>
+    <div class="diagram-caption">「内部知識だけで答える」のをやめて、<strong>外部データを毎回読ませて答える</strong>。引用元も付けやすい。</div>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span>3. バイアスと安全性</h2>
+
+  <p>学習データはインターネット。インターネットは <strong>人類社会の偏りそのまま</strong>。だからLLMは社会の偏りを <strong>そのまま、ときに強化して</strong> 出力します。</p>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="users" width="20" height="20"></i>
+      <div><strong>性別バイアス</strong> — 「医者」を男性、「看護師」を女性と仮定する傾向</div>
+    </li>
+    <li>
+      <i data-lucide="globe" width="20" height="20"></i>
+      <div><strong>文化バイアス</strong> — 学習データの大半が英語 + 西洋中心、非西洋文化の情報が薄い</div>
+    </li>
+    <li>
+      <i data-lucide="alert-octagon" width="20" height="20"></i>
+      <div><strong>政治的バイアス</strong> — RLHFラベラーの傾向(米国の高学歴若年層)が反映されやすい</div>
+    </li>
+    <li>
+      <i data-lucide="brain-circuit" width="20" height="20"></i>
+      <div><strong>世代・古さの偏り</strong> — 学習締切日(knowledge cutoff)以降の情報を知らない</div>
+    </li>
+  </ul>
+
+  <p>これらは <strong>RLHFやSystem Promptで緩和</strong> はできるが、根絶は難しい。LLMを使う側が「<em>そういうもの</em>」と理解しておく必要があります。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span></p>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span>4. ベンチマーク — どう「賢さ」を測るのか</h2>
+
+  <p>LLMの「賢さ」は <strong>標準化されたベンチマーク</strong> で比較されます。主要なものを覚えておくと、ニュースの「ベンチマーク◯◯で1位」が読めます。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">主要モデルのベンチマーク比較(模式)</div>
+    <canvas id="ch06-radar" height="300"></canvas>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>ベンチマーク</th><th>内容</th><th>難易度</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>MMLU</td><td>57科目の選択式試験(高校〜大学院)</td><td>初級〜中級</td></tr>
+      <tr><td>HumanEval</td><td>Python関数の自動生成と実行テスト</td><td>中級</td></tr>
+      <tr><td>GSM8K</td><td>小学校レベルの算数文章題</td><td>初級</td></tr>
+      <tr><td>MATH</td><td>競技数学レベル</td><td>上級</td></tr>
+      <tr><td>SWE-bench</td><td>実在GitHubのバグを修正</td><td>超上級</td></tr>
+      <tr><td>ARC-AGI</td><td>抽象推論パズル(人間は易しいがLLM苦手)</td><td>真の難所</td></tr>
+    </tbody>
+  </table>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span>5. マルチモーダル(Multimodal)</h2>
+
+  <p>テキストだけでなく <strong>画像・音声・動画</strong> も扱えるLLM。GPT-4o, Claude 3.5 Sonnet, Gemini 2.0 が代表。仕組みは「画像/音声を <em>トークン化</em> してテキストと同じシーケンスに乗せる」。Ch02のトークン化が「言語以外」にも拡張された形です。</p>
+
+  <div class="kv-grid">
+    <div class="kv"><div class="kv-key">テキスト</div><div class="kv-val">サブワードトークン</div></div>
+    <div class="kv"><div class="kv-key">画像</div><div class="kv-val">パッチトークン (ViT)</div></div>
+    <div class="kv"><div class="kv-key">音声</div><div class="kv-val">スペクトログラムをパッチ化</div></div>
+    <div class="kv"><div class="kv-key">動画</div><div class="kv-val">フレーム×パッチ</div></div>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span>6. エージェント(Agent)</h2>
+
+  <p>LLMが <strong>道具を使い、行動し、自律的にタスクを完遂する</strong> 形態。これが2024-2026年のホットトピック。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">エージェントのループ(ReAct パターン)</div>
+    <pre class="mermaid">
+graph LR
+  G["目標<br/>(ユーザ)"] --> T["思考<br/>(Thought)"]
+  T --> A["行動<br/>(Tool使用)"]
+  A --> O["観察<br/>(結果)"]
+  O --> T2{"終了?"}
+  T2 -- No --> T
+  T2 -- Yes --> R["最終回答"]
+    </pre>
+    <div class="diagram-caption">LLMが「考える→道具で行動する→結果を見る」を自律的に繰り返す。Claude Code, ChatGPT Operator などがこの系統。</div>
+  </div>
+
+  <h3>「道具」の典型例</h3>
+
+  <ul class="icon-list">
+    <li><i data-lucide="search" width="20" height="20"></i><div><strong>Web検索</strong> — 最新情報の取得、ハルシネーション抑制</div></li>
+    <li><i data-lucide="terminal" width="20" height="20"></i><div><strong>コード実行</strong> — Python/JSを動かして計算、データ分析</div></li>
+    <li><i data-lucide="folder" width="20" height="20"></i><div><strong>ファイル読み書き</strong> — ローカルファイルの操作(Claude Code, Cursor等)</div></li>
+    <li><i data-lucide="mouse-pointer" width="20" height="20"></i><div><strong>ブラウザ操作</strong> — クリック・入力 (Computer Use, Operator)</div></li>
+    <li><i data-lucide="api" width="20" height="20"></i><div><strong>APIコール</strong> — 任意の外部サービスを呼ぶ (MCP, Function Calling)</div></li>
+  </ul>
+
+  <div class="info-box">
+    <div class="label">2026年時点の主要エージェント</div>
+    <p><strong>Claude Code</strong>(Anthropic, ターミナル内エージェント)/<strong>Cursor / Windsurf</strong>(IDE内エージェント)/<strong>Devin</strong>(Cognition, 自律コーディング)/<strong>ChatGPT Operator</strong>(OpenAI, ブラウザ操作)/<strong>Manus</strong>(中国発、汎用)。それぞれ得意な道具と環境が違う。</p>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span>7. これからの方向性</h2>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-date">2024-2025</div>
+      <div class="tl-title">推論モデル(Reasoning)</div>
+      <div class="tl-body">o1, o3, DeepSeek-R1, Claude Sonnet thinking。「考える時間を伸ばす」ことで難問を解く。RLVRで訓練。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">2025</div>
+      <div class="tl-title">マルチモーダル + リアルタイム</div>
+      <div class="tl-body">音声で会話、画面共有で説明、リアルタイム翻訳。Advanced Voice Mode, Gemini Live。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">2025-2026</div>
+      <div class="tl-title">エージェント時代の本格化</div>
+      <div class="tl-body">「指示したら最後までやる」AI。MCPなどのプロトコル標準化が進む。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">2026+</div>
+      <div class="tl-title">小型化と特化</div>
+      <div class="tl-body">スマホで動く7Bモデル、用途特化型のSLM(Small LM)。プライバシー重視のオンデバイスAI。</div>
+    </div>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span>8. まとめ</h2>
+
+  <div class="quote">
+    LLMは「<strong>創発</strong>」によって急に賢くなるが、「<strong>ハルシネーション</strong>」「<strong>バイアス</strong>」を持つ。これを <em>RAG・アラインメント・エージェント</em> 等の周辺技術で補い、より <em>マルチモーダル</em> で <em>自律的</em> な存在になっていく。
+    <cite>— この章のひとことまとめ</cite>
+  </div>
+
+  <p><span class="pulse-dot"></span>あなたは今、ニュースの主要キーワードをほぼ網羅しました。最終章 (Ch07) で、これらを使って <strong>架空の技術ニュース記事</strong> を読み解いてみましょう。</p>
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>ハルシネーションを意図的に起こさせる</h4>
+    <p>LLMの限界を <em>体感</em> するために、ハルシネーションを観察します。</p>
+    <ol>
+      <li>ChatGPT または Claude を開く</li>
+      <li>「<strong>『深層変分注意機構』(Deep Variational Attention Mechanism)という手法について、提案論文と主要な貢献を教えて</strong>」と聞く ※架空の用語</li>
+      <li>応答に「もっともらしい論文タイトルや著者名」が含まれていないか確認</li>
+      <li>含まれていたら、「Google Scholar で実在を確認して」と続けて聞く</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>典型的な結果:</p>
+      <ul>
+        <li>古いモデル/思考なしモデルだと「Smith et al. (2021)」のような <strong>架空の引用</strong> を生成しがち</li>
+        <li>新しいモデル(Claude 3.5+, GPT-4o, Gemini 2.0+)は「その用語は私が知る限り存在しません」と <em>不確実性を表明</em> する傾向が強くなった</li>
+        <li>RAG/検索付きのモード(Perplexity, ChatGPT検索, Claude with web)は、<em>本当は存在しない</em> ことを発見できる</li>
+      </ul>
+      <p>これがアラインメントの進歩。「分からないと言える」モデルが増えてきた。ただし完全ではないので、<strong>重要な事実は必ず一次ソースで検証</strong> する習慣が必要です。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>「同じ質問」を3つの異なるモードで比べる</h4>
+    <p>事前学習だけ vs RAG vs エージェント、で同じ質問への答えがどう変わるかを観察。</p>
+    <ol>
+      <li>質問を1つ用意。例: 「2025年のノーベル物理学賞受賞者は誰?」</li>
+      <li>モード1: 通常のChatGPT/Claude(検索OFF)で聞く → 学習締切以降ならハルシネートしがち</li>
+      <li>モード2: Perplexity または ChatGPT (検索ON) で聞く → RAGで実際に検索した結果が返る</li>
+      <li>モード3: Claude Code または Devin で「2025のノーベル物理学賞をWeb検索して、信頼できるソース3つから引用してまとめて」を実行</li>
+      <li>3つの応答の <strong>正確性</strong>・<strong>引用源</strong>・<strong>不確実性の表明</strong> を比較</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>典型的な結果:</p>
+      <ul>
+        <li>モード1: 学習締切前なら正解、それ以後だと「私の知識は2024年までです」と返るか、ハルシネートする</li>
+        <li>モード2: ほぼ確実に正答。引用URLも付く。但し「検索結果が間違っていれば一緒に間違える」</li>
+        <li>モード3: 複数ソース照合があるので最も信頼性が高い。だが <strong>時間がかかる</strong>(エージェントループの分)</li>
+      </ul>
+      <p>このトレードオフ表が、実プロジェクトでLLMを設計する時の判断軸になります:</p>
+      <table>
+        <thead><tr><th>モード</th><th>速度</th><th>正確性</th><th>コスト</th><th>用途</th></tr></thead>
+        <tbody>
+          <tr><td>素のLLM</td><td>速い</td><td>不安定</td><td>安い</td><td>創作・要約・書き換え</td></tr>
+          <tr><td>RAG</td><td>中</td><td>高い</td><td>中</td><td>FAQ, 社内文書検索</td></tr>
+          <tr><td>エージェント</td><td>遅い</td><td>最高</td><td>高い</td><td>調査・自動化・複雑タスク</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span><a href="https://arxiv.org/abs/2206.07682" target="_blank">Emergent Abilities of LLMs (Wei et al. 2022)</a> — 創発能力の元論文</li>
+      <li><span class="res-type article">Article</span><a href="https://www.anthropic.com/research" target="_blank">Anthropic Research</a> — アラインメント・解釈可能性研究の最先端</li>
+      <li><span class="res-type doc">Doc</span><a href="https://modelcontextprotocol.io/" target="_blank">Model Context Protocol (MCP)</a> — エージェントの道具接続の標準プロトコル</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="06">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="05-training.html"><span class="direction">&larr; Prev</span>LLMはどう学ぶのか</a>
+    <a href="07-final-exercise.html"><span class="direction">Next &rarr;</span>最終演習問題</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#f4f4f5',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#18181b',
+      lineColor: '#18181b',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+  window.addEventListener('load', function() {
+    new Chart(document.getElementById('ch06-line-emergence'), {
+      type: 'line',
+      data: {
+        labels: ['1B', '5B', '10B', '50B', '100B', '300B', '1T'],
+        datasets: [
+          { label: '滑らか系: 文章要約', data: [40, 50, 58, 67, 75, 81, 86], borderColor: '#a1a1aa', backgroundColor: 'rgba(0,0,0,0)', tension: 0.3, fill: false },
+          { label: '創発系: 算数推論', data: [2, 3, 4, 5, 12, 55, 82], borderColor: '#7c3aed', backgroundColor: 'rgba(124,58,237,0.15)', tension: 0.3, fill: true }
+        ]
+      },
+      options: {
+        plugins: { legend: { position: 'bottom' } },
+        scales: {
+          x: { title: { display: true, text: 'パラメータ数(対数)' } },
+          y: { beginAtZero: true, max: 100, title: { display: true, text: '正答率 (%)' } }
+        }
+      }
+    });
+
+    new Chart(document.getElementById('ch06-radar'), {
+      type: 'radar',
+      data: {
+        labels: ['MMLU(常識)', 'HumanEval(コード)', 'GSM8K(算数)', 'MATH(数学)', 'SWE-bench(実装)'],
+        datasets: [
+          { label: 'GPT-4o', data: [88, 90, 95, 76, 38], backgroundColor: 'rgba(24,24,27,0.15)', borderColor: '#18181b', pointBackgroundColor: '#18181b' },
+          { label: 'Claude 3.5 Sonnet', data: [89, 92, 96, 71, 49], backgroundColor: 'rgba(124,58,237,0.15)', borderColor: '#7c3aed', pointBackgroundColor: '#7c3aed' },
+          { label: 'Llama 3 70B', data: [82, 81, 88, 51, 18], backgroundColor: 'rgba(234,88,12,0.10)', borderColor: '#ea580c', pointBackgroundColor: '#ea580c' }
+        ]
+      },
+      options: {
+        plugins: { legend: { position: 'bottom' } },
+        scales: { r: { suggestedMin: 0, suggestedMax: 100 } }
+      }
+    });
+  });
+</script>
+</body>
+</html>

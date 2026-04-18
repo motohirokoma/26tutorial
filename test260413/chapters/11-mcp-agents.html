@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>MCP と Agents - MK's Claude Code Tutorial</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code Tutorial
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="../index.html#phase3" class="active" data-nav><span class="phase-name">Advanced</span><span class="phase-pct" id="pct-adv">0%</span></a></li>
+      <li><a href="../index.html#phase4" data-nav><span class="phase-name">Projects</span><span class="phase-pct" id="pct-proj">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.11</span>
+    MCP と Agents
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 19 sections</text>
+    </svg>
+    <div class="progress-info">0h / 26h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-introduction.html"><span class="status-dot" data-chapter="01"></span> Introduction</a></li>
+    <li><a href="02-installation.html"><span class="status-dot" data-chapter="02"></span> Installation</a></li>
+    <li><a href="03-basic-commands.html"><span class="status-dot" data-chapter="03"></span> Basic Commands</a></li>
+    <li><a href="04-prompt-design.html"><span class="status-dot" data-chapter="04"></span> Prompt Design</a></li>
+  </ul>
+
+  <div class="section-label">Core</div>
+  <ul>
+    <li><a href="05-file-operations.html"><span class="status-dot" data-chapter="05"></span> File Operations</a></li>
+    <li><a href="06-git-integration.html"><span class="status-dot" data-chapter="06"></span> Git Integration</a></li>
+    <li><a href="07-1-github-workflow.html"><span class="status-dot" data-chapter="07-1"></span> GitHub <span class="sub-label">1/2</span></a></li>
+    <li><a href="07-2-github-workflow.html"><span class="status-dot" data-chapter="07-2"></span> GitHub <span class="sub-label">2/2</span></a></li>
+    <li><a href="08-1-debugging.html"><span class="status-dot" data-chapter="08-1"></span> Debug <span class="sub-label">1/2</span></a></li>
+    <li><a href="08-2-testing.html"><span class="status-dot" data-chapter="08-2"></span> Test &amp; TDD <span class="sub-label">2/2</span></a></li>
+  </ul>
+
+  <div class="section-label">Advanced</div>
+  <ul>
+    <li><a href="09-claude-md-settings.html"><span class="status-dot" data-chapter="09"></span> CLAUDE.md</a></li>
+    <li><a href="10-skills-hooks.html"><span class="status-dot" data-chapter="10"></span> Skills &amp; Hooks</a></li>
+    <li><a href="11-mcp-agents.html" class="active"><span class="status-dot" data-chapter="11"></span> MCP &amp; Agents</a></li>
+  </ul>
+
+  <div class="section-label">Projects</div>
+  <ul>
+    <li><a href="12-1-project-website.html"><span class="status-dot" data-chapter="12-1"></span> Web Site <span class="sub-label">1/2</span></a></li>
+    <li><a href="12-2-project-website.html"><span class="status-dot" data-chapter="12-2"></span> Web Site <span class="sub-label">2/2</span></a></li>
+    <li><a href="13-1-project-app.html"><span class="status-dot" data-chapter="13-1"></span> Web App <span class="sub-label">1/2</span></a></li>
+    <li><a href="13-2-project-app.html"><span class="status-dot" data-chapter="13-2"></span> Web App <span class="sub-label">2/2</span></a></li>
+    <li><a href="14-1-project-ios.html"><span class="status-dot" data-chapter="14-1"></span> iOS App <span class="sub-label">1/2</span></a></li>
+    <li><a href="14-2-project-ios.html"><span class="status-dot" data-chapter="14-2"></span> iOS App <span class="sub-label">2/2</span></a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 3: Advanced &gt; Chapter 11</div>
+  <h1>MCP と Agents</h1>
+  <p class="subtitle">外部システム (Slack/Notion/DBなど) とClaudeをつなぐ標準プロトコル <span class="term" data-tip="Model Context Protocol。AIと外部ツールを統一APIで結ぶオープン仕様">MCP</span>、巨大タスクを分業する<span class="term" data-tip="メインClaudeから派生する独立コンテキストを持つ補助エージェント">サブエージェント</span>。1人のClaudeが、組織のAIになる章。</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 1h</span>
+    <span class="badge">Phase 3: Advanced</span>
+    <span class="badge">難易度: 応用</span>
+  </div>
+
+  <!-- ===================== 1. MCP とは ===================== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> MCP — AI界の「USB-C」</h2>
+
+  <p>MCP (Model Context Protocol) は、AIモデルと外部システムをつなぐ<strong>標準プロトコル</strong>。これまでツール毎にバラバラだった連携を、1つの仕様にまとめました。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">MCP のメタファ</div>
+    <svg viewBox="0 0 540 220" width="100%" style="max-width:540px; display:block; margin:0 auto;">
+      <!-- center: Claude -->
+      <rect x="220" y="80" width="100" height="60" rx="10" fill="#18181b"/>
+      <text x="270" y="115" text-anchor="middle" font-size="14" font-weight="700" fill="white">Claude</text>
+      <!-- MCP hub -->
+      <ellipse cx="270" cy="180" rx="80" ry="14" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+      <text x="270" y="184" text-anchor="middle" font-size="11" font-weight="700" fill="#a16207">MCP (USB-C)</text>
+      <!-- 4 services -->
+      <rect x="20"  y="40"  width="120" height="40" rx="8" fill="#dbeafe" stroke="#2563eb"/>
+      <text x="80"  y="65"  text-anchor="middle" font-size="12" font-weight="600" fill="#1e40af">Slack</text>
+      <rect x="160" y="20"  width="120" height="40" rx="8" fill="#dcfce7" stroke="#16a34a"/>
+      <text x="220" y="45"  text-anchor="middle" font-size="12" font-weight="600" fill="#15803d">Notion</text>
+      <rect x="290" y="20"  width="120" height="40" rx="8" fill="#fce7f3" stroke="#be185d"/>
+      <text x="350" y="45"  text-anchor="middle" font-size="12" font-weight="600" fill="#9d174d">PostgreSQL</text>
+      <rect x="410" y="40"  width="120" height="40" rx="8" fill="#fef3c7" stroke="#d97706"/>
+      <text x="470" y="65"  text-anchor="middle" font-size="12" font-weight="600" fill="#a16207">GitHub</text>
+      <!-- lines -->
+      <line x1="80"  y1="80"  x2="220" y2="180" stroke="#71717a" stroke-width="1.5"/>
+      <line x1="220" y1="60"  x2="240" y2="166" stroke="#71717a" stroke-width="1.5"/>
+      <line x1="350" y1="60"  x2="300" y2="166" stroke="#71717a" stroke-width="1.5"/>
+      <line x1="470" y1="80"  x2="320" y2="180" stroke="#71717a" stroke-width="1.5"/>
+    </svg>
+    <div class="diagram-caption">どのサービスも「MCPサーバー」を立てれば、Claudeから同じ作法で扱える。</div>
+  </div>
+
+  <div class="info-box">
+    <span class="label">なぜMCPが重要か</span>
+    <p>以前は「Slack連携するには独自スクリプト、Notionは別の独自スクリプト...」と毎回車輪の再発明でした。MCPで仕様が共通化され、<strong>誰かが書いた連携を即流用</strong>できるようになっています。</p>
+  </div>
+
+  <h3>MCP の3要素</h3>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="server" width="20" height="20"></i>
+      <div><strong>MCPサーバー</strong> — 外部システム側に立てるAdapter。「Slackとは何ができる」をAIに伝える</div>
+    </li>
+    <li>
+      <i data-lucide="link" width="20" height="20"></i>
+      <div><strong>MCPクライアント</strong> — Claude Code 側の機能。サーバーをリストアップして、必要に応じて呼ぶ</div>
+    </li>
+    <li>
+      <i data-lucide="code" width="20" height="20"></i>
+      <div><strong>JSON-RPC プロトコル</strong> — クライアント↔サーバー間の共通言語。仕様書はオープン</div>
+    </li>
+  </ul>
+
+  <!-- ===================== 2. MCP の追加方法 ===================== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> MCPサーバーの追加 — 3つの導入経路</h2>
+
+  <p>MCPサーバーを Claude Code に追加する方法は3つ。手軽さで使い分けます。</p>
+
+  <table>
+    <thead><tr><th>経路</th><th>特徴</th><th>例</th></tr></thead>
+    <tbody>
+      <tr><td><code>claude mcp add</code> CLI</td><td>1コマンドで追加。ローカル設定に書き込まれる</td><td><code>claude mcp add github npx @modelcontextprotocol/server-github</code></td></tr>
+      <tr><td><code>.mcp.json</code> プロジェクト同梱</td><td>チーム全員で同じMCP構成を共有</td><td>リポジトリ直下に <code>.mcp.json</code></td></tr>
+      <tr><td>desktop拡張</td><td>UIから追加・OAuth対応サービスが楽</td><td>Linear / GitHub / Notion 等</td></tr>
+    </tbody>
+  </table>
+
+  <h3><code>.mcp.json</code> の例</h3>
+
+<pre><code>{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/Users/me/Documents"]
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": { "GITHUB_TOKEN": "ghp_..." }
+    },
+    "postgres": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-postgres", "postgres://localhost/mydb"]
+    }
+  }
+}
+</code></pre>
+
+  <div class="diagram-box">
+    <div class="diagram-title">MCPサーバー追加から利用まで</div>
+    <pre class="mermaid">
+graph LR
+  A[claude mcp add] --> B[サーバー起動]
+  B --> C[ツール一覧公開]
+  C --> D[Claudeが認識]
+  D --> E[ユーザー指示]
+  E --> F[該当MCPツール呼出]
+  F --> G[結果をClaudeへ]
+    </pre>
+    <div class="diagram-caption">1度入れたら、あとはClaudeが自動でMCPツールを使う。</div>
+  </div>
+
+  <div class="warn-box">
+    <span class="label">権限とセキュリティ</span>
+    <p>MCPサーバーは認証情報(APIトークン等)を持つことが多いです。<strong>環境変数</strong>で渡し、<code>.mcp.json</code> 自体には書かない。第三者製サーバーは公式以外なら必ずソース確認。</p>
+  </div>
+
+  <!-- ===================== 3. MCP の活用例 ===================== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> MCP の典型的な活用例</h2>
+
+  <div class="compare-cards">
+    <div class="cc neutral">
+      <span class="cc-label">読み取り系</span>
+      <h4>情報取得</h4>
+      <ul>
+        <li>「先週のSlackで議論された機能を要約して」</li>
+        <li>「Linearの今週オープンなIssue一覧」</li>
+        <li>「DB の users テーブルから過去30日の登録数」</li>
+      </ul>
+    </div>
+    <div class="cc neutral">
+      <span class="cc-label">書き込み系</span>
+      <h4>アクション</h4>
+      <ul>
+        <li>「このバグをLinearにIssueとして登録」</li>
+        <li>「READMEを更新してNotionの仕様書も同期」</li>
+        <li>「このPRをGitHubでドラフトとして作成」</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>MCP導入後にClaudeで起きる変化 (体感)</h3>
+
+  <div class="diagram-box">
+    <div class="diagram-title">対応可能タスクの広がり</div>
+    <canvas id="ch11-radar-1" height="240"></canvas>
+  </div>
+  <script>
+  window.addEventListener('load', function() {
+    const el = document.getElementById('ch11-radar-1');
+    if (!el || !window.Chart) return;
+    new Chart(el, {
+      type: 'radar',
+      data: {
+        labels: ['コード生成', 'Slack調査', 'Notion更新', 'DB分析', 'Issue作成', 'メール送信'],
+        datasets: [
+          { label: 'MCP無し', data: [85, 10, 15, 20, 10, 0], backgroundColor: 'rgba(120,120,128,0.15)', borderColor: '#a1a1aa', pointBackgroundColor: '#a1a1aa' },
+          { label: 'MCP有り', data: [85, 80, 75, 78, 90, 60], backgroundColor: 'rgba(24,24,27,0.20)', borderColor: '#18181b', pointBackgroundColor: '#18181b' }
+        ]
+      },
+      options: { plugins: { legend: { position: 'bottom' } }, scales: { r: { suggestedMin: 0, suggestedMax: 100 } } }
+    });
+  });
+  </script>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===================== 4. サブエージェント ===================== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> サブエージェント — Claudeが自分の代わりに別のClaudeを呼ぶ</h2>
+
+  <p>大きなタスクを<strong>分業</strong>するための仕組みがサブエージェント。メインClaudeが「コードレビュー担当」「テスト書き担当」など独立した別Claudeを派生させ、結果だけ持ち帰ります。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">サブエージェントの構造</div>
+    <pre class="mermaid">
+graph TD
+  M[メインClaude]
+  M -->|"PR分析"| A1["Sub: code-reviewer"]
+  M -->|"テスト追加"| A2["Sub: test-writer"]
+  M -->|"ドキュメント更新"| A3["Sub: doc-writer"]
+  A1 -->|要点のみ| M
+  A2 -->|テスト結果| M
+  A3 -->|更新差分| M
+    </pre>
+    <div class="diagram-caption">各サブは<strong>独立したコンテキスト</strong>を持つ。メインのコンテキストを汚さない。</div>
+  </div>
+
+  <h3>なぜサブエージェントを使うか</h3>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="hard-drive" width="20" height="20"></i>
+      <div><strong>コンテキスト節約</strong> — 巨大ログをサブで処理、メインには結論だけ返す</div>
+    </li>
+    <li>
+      <i data-lucide="users" width="20" height="20"></i>
+      <div><strong>専門化</strong> — レビュー特化のシステムプロンプトを持つサブを別個に運用</div>
+    </li>
+    <li>
+      <i data-lucide="git-branch" width="20" height="20"></i>
+      <div><strong>並列処理</strong> — 5つのファイルを5つのサブで同時にチェック</div>
+    </li>
+  </ul>
+
+  <h3>サブエージェント定義の例</h3>
+
+  <p>サブエージェントは <code>.claude/agents/&lt;name&gt;.md</code> に定義します。</p>
+
+<pre><code>---
+name: code-reviewer
+description: PR や変更diffをレビューする専門エージェント。指摘は「Critical / Major / Minor」に分類して返す。
+tools: Read, Grep, Bash(git diff:*)
+---
+
+# コードレビュー担当
+
+## 役割
+- 変更されたファイルの品質を評価
+- セキュリティ・性能・保守性の3軸でチェック
+- 各指摘に重要度ラベルを必ず付ける
+
+## 出力フォーマット
+### Critical
+- ...
+### Major
+- ...
+### Minor
+- ...
+</code></pre>
+
+  <details class="more-box">
+    <summary>もっと詳しく: メインClaudeとサブの呼び出し作法</summary>
+    <div class="more-body">
+      <p>メインClaudeはユーザーの依頼を見て、「これは code-reviewer 案件だ」と判断するとサブを派生させます。明示的に呼ぶには「<code>code-reviewer エージェントを使ってこのPRを分析して</code>」のように指示すればOK。</p>
+      <p>サブが返すのは<strong>テキスト要約のみ</strong>(ファイル本体ではない)。なので並列で10個サブを動かしてもメインClaudeのコンテキストは肥大化しません。</p>
+    </div>
+  </details>
+
+  <!-- ===================== 5. MCP × Sub-agent × Skills ===================== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 三位一体 — Skills × Hooks × MCP × Agents</h2>
+
+  <p>Phase 3全体で扱った4つの拡張機構は、組み合わせると強力です。「リリース通知ワークフロー」を例に統合像を見てみましょう。</p>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-date">trigger</div>
+      <div class="tl-title">ユーザー依頼</div>
+      <div class="tl-body">「v1.2.0 をリリースして」</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">step 1</div>
+      <div class="tl-title">Skill 発火</div>
+      <div class="tl-body">release-flow Skillが手順テンプレを提示</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">step 2</div>
+      <div class="tl-title">Sub-Agent</div>
+      <div class="tl-body">changelog-writer サブが過去commitを集約してリリースノート作成</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">step 3</div>
+      <div class="tl-title">MCP (GitHub)</div>
+      <div class="tl-body">GitHub Releases にタグとノートを作成</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">step 4</div>
+      <div class="tl-title">MCP (Slack)</div>
+      <div class="tl-body">#release チャンネルに投稿</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">step 5</div>
+      <div class="tl-title">Stop Hook</div>
+      <div class="tl-body">完了ログを社内ダッシュボードに追記</div>
+    </div>
+  </div>
+
+  <div class="kv-grid">
+    <div class="kv"><div class="kv-key">Skills</div><div class="kv-val">手順を知ってる</div></div>
+    <div class="kv"><div class="kv-key">Sub-agents</div><div class="kv-val">分業して動く</div></div>
+    <div class="kv"><div class="kv-key">MCP</div><div class="kv-val">外部とつながる</div></div>
+    <div class="kv"><div class="kv-key">Hooks</div><div class="kv-val">自動で挟まる</div></div>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>filesystem MCPサーバーを追加して、Documentsを分析させる</h4>
+    <p>公式の filesystem MCPサーバーを追加し、自分の Documents フォルダの構成を Claude に分析させてみましょう。</p>
+    <ol>
+      <li>ターミナルで <code>claude mcp add fs npx -y @modelcontextprotocol/server-filesystem ~/Documents</code> を実行</li>
+      <li><code>claude mcp list</code> で追加されたか確認</li>
+      <li>Claudeに「Documents の中で容量が大きいフォルダ Top 5 を教えて」と聞く</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>Claudeが MCP の <code>list_directory</code> や <code>get_file_info</code> ツールを順番に呼んで集計します。出力イメージ:</p>
+<pre><code>Documents の容量Top 5:
+1. Photos        — 12.3 GB
+2. Backups       —  4.1 GB
+3. Projects      —  2.8 GB
+4. Downloads     —  1.6 GB
+5. ScreenRecords —  0.9 GB
+</code></pre>
+      <p>動かない時の確認: <code>claude mcp list</code> で <strong>状態 connected</strong> になっているか / 引数のパスが存在しているか / Claudeセッションを再起動したか。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>code-reviewer サブエージェント + GitHub MCP で PR レビュー自動化</h4>
+    <p>サブエージェントで「PR をレビューする専門家」を定義し、GitHub MCPと組み合わせて、PR番号だけ渡せばレビューコメントが自動生成される仕組みを作ってください。</p>
+    <ol>
+      <li><code>./.claude/agents/code-reviewer.md</code> を作成 (上の例を参考)</li>
+      <li>GitHub MCP を <code>claude mcp add</code> で追加 (要 GITHUB_TOKEN)</li>
+      <li>Claudeに「<code>#42</code> の PR を code-reviewer エージェントでレビューして」と依頼</li>
+      <li>サブが diff を取得 → 分析 → メインに要約 → ユーザーに提示、までの流れを確認</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>動作確認のポイント:</p>
+      <ol>
+        <li>サブが <code>tools: Read, Grep, Bash(git diff:*)</code> 以外を使おうとして拒否されないか (allow設定)</li>
+        <li>GitHub MCP の <code>get_pull_request</code> / <code>get_pull_request_diff</code> が呼ばれているか</li>
+        <li>レスポンスが <strong>Critical / Major / Minor</strong> の3区分で構造化されているか</li>
+      </ol>
+      <p>うまく行けばこんな出力に:</p>
+<pre><code>### Critical
+- src/auth.ts:42 - SQLインジェクションの可能性。プレースホルダ使用必須
+
+### Major
+- src/api.ts:101 - エラー時に500を返しているが、原因のスタックトレースをログ出力していない
+
+### Minor
+- README.md - インストール手順の Node バージョンが18のまま (現在20以上推奨)
+</code></pre>
+      <p>応用: 全PRに自動でこのレビューを走らせるには、<code>PostToolUse</code> Hook で <code>gh pr view</code> 実行後にサブを呼ぶように設定可能。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span><a href="https://modelcontextprotocol.io/" target="_blank">Model Context Protocol 公式</a> — 仕様書とリファレンス実装</li>
+      <li><span class="res-type doc">Doc</span><a href="https://docs.claude.com/en/docs/claude-code/mcp" target="_blank">Claude Code: MCP 設定</a> — <code>claude mcp</code> CLI と <code>.mcp.json</code></li>
+      <li><span class="res-type doc">Doc</span><a href="https://docs.claude.com/en/docs/claude-code/sub-agents" target="_blank">Claude Code: Sub-agents</a> — サブエージェント定義と呼び出し</li>
+      <li><span class="res-type repo">Repo</span><a href="https://github.com/modelcontextprotocol/servers" target="_blank">公式 MCP servers リポジトリ</a> — Filesystem / GitHub / Slack 等の参考実装</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="11">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="10-skills-hooks.html"><span class="direction">&larr; Prev</span>Skills と Hooks</a>
+    <a href="12-1-project-website.html"><span class="direction">Next &rarr;</span>Project: Website (Setup)</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#f4f4f5',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#18181b',
+      lineColor: '#18181b',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>

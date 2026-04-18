@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%2316a34a%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>実装の壁 ― Edge推論・Sim-to-Real・データの現実 - Kuririn's Physical AI Crash Course</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #16a34a; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></div>
+      &gt;_ Kuririn's Physical AI Crash Course
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="../index.html#phase3" data-nav><span class="phase-name">Advanced</span><span class="phase-pct" id="pct-advanced">0%</span></a></li>
+      <li><a href="../index.html#phase4" data-nav><span class="phase-name">Final</span><span class="phase-pct" id="pct-final">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.06</span>
+    実装の壁 ― Edge推論・Sim-to-Real・データの現実
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 37 sections</text>
+    </svg>
+    <div class="progress-info">0h / 8h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-overview.html"><span class="status-dot" data-chapter="01"></span> フィジカルAIの全体像</a></li>
+    <li><a href="02-classical-control.html"><span class="status-dot" data-chapter="02"></span> 古典制御とロボットの基盤技術</a></li>
+  </ul>
+  <div class="section-label">Core</div>
+  <ul>
+    <li><a href="03-reinforcement-learning.html"><span class="status-dot" data-chapter="03"></span> 強化学習によるロボット制御</a></li>
+    <li><a href="04-imitation-learning.html"><span class="status-dot" data-chapter="04"></span> 模倣学習とテレオペレーション</a></li>
+    <li><a href="05-vla-models.html"><span class="status-dot" data-chapter="05"></span> VLAモデルの最前線</a></li>
+  </ul>
+  <div class="section-label">Advanced</div>
+  <ul>
+    <li class="active"><a href="06-implementation-barriers.html"><span class="status-dot" data-chapter="06"></span> 実装の壁</a></li>
+    <li><a href="07-business-scoping.html"><span class="status-dot" data-chapter="07"></span> ビジネススコーピングの技法</a></li>
+  </ul>
+  <div class="section-label">Final</div>
+  <ul>
+    <li><a href="08-final-exercise.html"><span class="status-dot" data-chapter="08"></span> 最終演習問題</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 3: Advanced &gt; Chapter 06</div>
+  <h1>実装の壁 ― Edge推論・Sim-to-Real・データの現実</h1>
+  <p class="subtitle">フィジカルAIの実装を阻む3つの壁を横断的に整理し、技術選定の判断力を養う</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 60min</span>
+    <span class="badge">Phase: Advanced</span>
+    <span class="badge">難易度: 上級</span>
+  </div>
+
+  <div class="info-box">
+    <strong>前提知識</strong><br>
+    この章はCh01〜05の内容を前提としています。特にCh03（強化学習）とCh05（VLAモデル）の知識が重要です。
+    <br><a href="05-vla-models.html">Ch05: VLAモデルの最前線 &rarr;</a>
+  </div>
+
+  <!-- =============================== Section 1 =============================== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span> エッジデバイスでのリアルタイム推論</h2>
+
+  <p>フィジカルAIがクラウド上のLLMと決定的に異なるのは、<strong>リアルタイム性の要求</strong>です。ロボットは目の前の物体を掴む判断を10〜100ミリ秒以内に下さなければなりません。人間が「あっ」と思う間（約200ms）でさえ、ロボット制御には遅すぎる場合があるのです。</p>
+
+  <!-- SVG: 推論遅延のタイムライン図 -->
+  <div style="text-align:center; margin:2rem 0;">
+    <svg viewBox="0 0 600 220" width="100%" style="max-width:600px;" xmlns="http://www.w3.org/2000/svg">
+      <!-- Timeline base -->
+      <line x1="40" y1="100" x2="560" y2="100" stroke="#18181b" stroke-width="2"/>
+      <!-- Arrow -->
+      <polygon points="556,94 568,100 556,106" fill="#18181b"/>
+      <!-- Stage boxes -->
+      <rect x="50" y="70" width="100" height="60" rx="8" fill="#f4f4f5" stroke="#18181b" stroke-width="1.5"/>
+      <text x="100" y="95" text-anchor="middle" font-size="11" font-weight="bold" fill="#18181b">Sensor Input</text>
+      <text x="100" y="112" text-anchor="middle" font-size="9" fill="#666">~2ms</text>
+
+      <rect x="170" y="70" width="100" height="60" rx="8" fill="#f4f4f5" stroke="#18181b" stroke-width="1.5"/>
+      <text x="220" y="95" text-anchor="middle" font-size="11" font-weight="bold" fill="#18181b">Pre-process</text>
+      <text x="220" y="112" text-anchor="middle" font-size="9" fill="#666">~5ms</text>
+
+      <rect x="290" y="70" width="110" height="60" rx="8" fill="#16a34a" opacity="0.15" stroke="#16a34a" stroke-width="2"/>
+      <text x="345" y="92" text-anchor="middle" font-size="11" font-weight="bold" fill="#16a34a">AI Inference</text>
+      <text x="345" y="112" text-anchor="middle" font-size="10" fill="#16a34a">10-80ms</text>
+
+      <rect x="420" y="70" width="110" height="60" rx="8" fill="#f4f4f5" stroke="#18181b" stroke-width="1.5"/>
+      <text x="475" y="95" text-anchor="middle" font-size="11" font-weight="bold" fill="#18181b">Action Output</text>
+      <text x="475" y="112" text-anchor="middle" font-size="9" fill="#666">~3ms</text>
+
+      <!-- Constraint lines -->
+      <line x1="50" y1="160" x2="530" y2="160" stroke="#e11d48" stroke-width="2" stroke-dasharray="6,3"/>
+      <text x="290" y="155" text-anchor="middle" font-size="11" fill="#e11d48" font-weight="bold">Control Loop Deadline: 10-100ms</text>
+
+      <!-- Cloud latency comparison -->
+      <line x1="50" y1="195" x2="530" y2="195" stroke="#f59e0b" stroke-width="2" stroke-dasharray="6,3"/>
+      <text x="290" y="190" text-anchor="middle" font-size="11" fill="#f59e0b" font-weight="bold">Cloud Round-trip: 50-300ms (NG for real-time)</text>
+
+      <!-- Time axis -->
+      <text x="40" y="55" font-size="10" fill="#666">0ms</text>
+      <text x="530" y="55" font-size="10" fill="#666">~100ms</text>
+    </svg>
+    <p style="font-size:0.85rem; color:#666; margin-top:0.5rem;">推論パイプラインの各段階と制約ライン：AI推論がボトルネックになりやすい</p>
+  </div>
+
+  <p><span class="term" data-tip="Edge Inference：クラウドに送らず、ロボットに搭載されたデバイス上で直接AI推論を行うこと。低遅延が最大の利点">エッジ推論</span>とは、クラウドにデータを送らずに、ロボットに搭載されたデバイス上で直接推論を行うアプローチです。遅延を最小化できますが、デバイスの計算能力には厳しい制約があります。</p>
+
+  <!-- Table: エッジデバイス比較表 -->
+  <h3>主要エッジデバイスの比較</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>デバイス</th>
+        <th>GPU/NPU性能</th>
+        <th>消費電力</th>
+        <th>価格帯</th>
+        <th>主な用途</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong><span class="term" data-tip="NVIDIAのエッジAIコンピューティングプラットフォーム。Orin世代で最大275 TOPSの推論性能を実現">NVIDIA Jetson Orin</span></strong></td>
+        <td>275 TOPS</td>
+        <td>15-60W</td>
+        <td>$500-2,000</td>
+        <td>ロボット、AGV、ドローン</td>
+      </tr>
+      <tr>
+        <td><strong>Intel NUC + OpenVINO</strong></td>
+        <td>~11 TOPS (NPU)</td>
+        <td>15-28W</td>
+        <td>$300-800</td>
+        <td>検査、軽量ビジョン</td>
+      </tr>
+      <tr>
+        <td><strong><span class="term" data-tip="QualcommのロボティクスプラットフォームRB5。5G通信統合でリモート管理に強い">Qualcomm RB5</span></strong></td>
+        <td>15 TOPS</td>
+        <td>~10W</td>
+        <td>$400-600</td>
+        <td>モバイルロボット、5G連携</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>モデル圧縮の3つの技術</h3>
+  <p>大規模なAIモデルをエッジデバイスに載せるには、モデルの「ダイエット」が必要です。</p>
+
+  <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:1rem; margin:1.5rem 0;">
+    <div style="background:#f4f4f5; border-radius:10px; padding:1rem;">
+      <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;">
+        <i data-lucide="minimize-2" style="width:20px;height:20px;color:#16a34a;"></i>
+        <strong><span class="term" data-tip="Quantization：モデルの重みを32bit浮動小数点から8bitや4bit整数に変換し、計算量とメモリ使用量を削減する技術">量子化</span></strong>
+      </div>
+      <p style="font-size:0.88rem; margin:0;">32bit &rarr; 8bit/4bitに精度を落とし、メモリと計算量を削減。精度低下は1-3%程度</p>
+    </div>
+    <div style="background:#f4f4f5; border-radius:10px; padding:1rem;">
+      <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;">
+        <i data-lucide="school" style="width:20px;height:20px;color:#16a34a;"></i>
+        <strong><span class="term" data-tip="Knowledge Distillation：大きなモデル（教師）の知識を小さなモデル（生徒）に転写する技術">知識蒸留</span></strong>
+      </div>
+      <p style="font-size:0.88rem; margin:0;">大きなモデルの「知恵」を小さなモデルに転写。サイズを1/10以下に</p>
+    </div>
+    <div style="background:#f4f4f5; border-radius:10px; padding:1rem;">
+      <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;">
+        <i data-lucide="scissors" style="width:20px;height:20px;color:#16a34a;"></i>
+        <strong><span class="term" data-tip="Pruning：ニューラルネットワークの重要でないパラメータ（重み）を除去して軽量化する技術">プルーニング</span></strong>
+      </div>
+      <p style="font-size:0.88rem; margin:0;">重要度の低い接続を「剪定」。構造的プルーニングで推論速度を直接改善</p>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <strong>クラウド推論 vs エッジ推論のトレードオフ</strong><br>
+    エッジは低遅延・プライバシー保護に優れますが、モデルサイズと性能に制約があります。一方、クラウドは高性能モデルを使えますが、ネットワーク遅延（50-300ms）がリアルタイム制御に致命的です。実務では<strong>ハイブリッド構成</strong>（高頻度の制御ループはエッジ、計画レベルの判断はクラウド）が現実的な解です。
+  </div>
+
+  <details class="more-box">
+    <summary>Deep Dive: VLAモデルのエッジ展開の現状</summary>
+    <p>Ch05で学んだVLAモデル（RT-2、Octoなど）は数十億パラメータを持つことがあり、Jetson Orin NXでも推論に200ms以上かかるケースがあります。2025年時点では、VLAのエッジ展開は以下の戦略が模索されています：</p>
+    <ul>
+      <li><strong>小型VLA</strong>：パラメータ数を10億以下に抑えた軽量版の開発</li>
+      <li><strong>Cascading構成</strong>：軽量モデルで高頻度判断、VLAは低頻度の計画のみ担当</li>
+      <li><strong>量子化+蒸留</strong>：INT4量子化と蒸留の組み合わせで2-4倍の高速化</li>
+    </ul>
+  </details>
+
+  <!-- =============================== Section 2 =============================== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span> Sim-to-Realギャップの現実</h2>
+
+  <p>Ch03で触れた<span class="term" data-tip="Sim-to-Real Transfer：シミュレーション環境で訓練したAIの方策を、現実のロボットに移行・適用すること">Sim-to-Real転移</span>は、理論的には魅力的ですが、実際には「シミュレータと現実の間に深い溝がある」という厳しい現実に直面します。</p>
+
+  <h3>シミュレータの忠実度レベル</h3>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span>
+
+  <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:1rem; margin:1.5rem 0;">
+    <div style="background:#f4f4f5; border-radius:10px; padding:1rem; border-left:4px solid #16a34a;">
+      <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;">
+        <i data-lucide="eye" style="width:20px;height:20px;color:#16a34a;"></i>
+        <strong>ビジュアル忠実度</strong>
+      </div>
+      <p style="font-size:0.88rem; margin:0;">照明、テクスチャ、反射の再現度。カメラベースのAIに直接影響</p>
+    </div>
+    <div style="background:#f4f4f5; border-radius:10px; padding:1rem; border-left:4px solid #2563eb;">
+      <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;">
+        <i data-lucide="atom" style="width:20px;height:20px;color:#2563eb;"></i>
+        <strong>物理忠実度</strong>
+      </div>
+      <p style="font-size:0.88rem; margin:0;">摩擦、重力、接触力学の正確さ。マニピュレーションに直接影響</p>
+    </div>
+    <div style="background:#f4f4f5; border-radius:10px; padding:1rem; border-left:4px solid #e11d48;">
+      <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;">
+        <i data-lucide="radio" style="width:20px;height:20px;color:#e11d48;"></i>
+        <strong>センサー忠実度</strong>
+      </div>
+      <p style="font-size:0.88rem; margin:0;">カメラノイズ、LiDARの点群密度、力覚センサーの精度の再現</p>
+    </div>
+  </div>
+
+  <h3>Domain Randomizationの仕組みと限界</h3>
+  <p><span class="term" data-tip="Domain Randomization：シミュレーション中のテクスチャ、照明、物理パラメータなどをランダムに変化させ、多様な環境に対する頑健性を学習させる手法">Domain Randomization</span>は、シミュレータ上でテクスチャや照明条件、物理パラメータをランダムに変化させることで、現実世界への転移性能を高める手法です。しかし万能ではありません。</p>
+
+  <!-- Mermaid: Sim-to-Real判断フロー -->
+  <div class="mermaid">
+  flowchart TD
+    A["タスクを定義"] --> B{"シミュレータで<br/>十分に再現可能？"}
+    B -- Yes --> C["Domain Randomizationで<br/>ロバスト性を確保"]
+    C --> D{"Sim-to-Real<br/>ギャップは許容範囲？"}
+    D -- Yes --> E["追加Fine-tuningで<br/>実環境に適応"]
+    D -- No --> F["System Identificationで<br/>パラメータ校正"]
+    F --> G{"改善した？"}
+    G -- Yes --> E
+    G -- No --> H["実機データでの<br/>追加学習が必要"]
+    B -- No --> I["実機データ収集から<br/>スタート"]
+    H --> J["ハイブリッド学習"]
+    I --> J
+    E --> K["実環境デプロイ"]
+    J --> K
+    style A fill:#f4f4f5,stroke:#18181b
+    style B fill:#f4f4f5,stroke:#18181b
+    style K fill:#16a34a,color:#fff,stroke:none
+  </div>
+
+  <p><span class="term" data-tip="System Identification：シミュレータの物理パラメータ（摩擦係数、慣性など）を実機のデータに基づいて精密に調整する工程">System Identification</span>は、実機から収集したデータをもとにシミュレータのパラメータを校正するプロセスです。摩擦係数や関節のダンピングなど、微妙なパラメータの違いがSim-to-Realギャップの主因となります。</p>
+
+  <details class="more-box">
+    <summary>Deep Dive: シミュレータ投資の判断基準</summary>
+    <p>シミュレータの忠実度を上げるにはコストがかかります。判断の目安は：</p>
+    <ul>
+      <li><strong>タスクが反復的で大量データが必要</strong> &rarr; シミュレータに投資する価値が高い（強化学習に数百万エピソードが必要なケース）</li>
+      <li><strong>実機データ収集が安価</strong> &rarr; 実機中心の方がコスト効率が良い（テレオペで50-100時間で十分なケース）</li>
+      <li><strong>安全リスクが高い</strong> &rarr; シミュレータ先行が必須（人間の近くで動くロボット）</li>
+    </ul>
+    <p>NVIDIA Isaac SimやMuJoCoは年々忠実度が向上していますが、柔軟物体（布、食品等）のシミュレーションは依然として難しい領域です。</p>
+  </details>
+
+  <!-- =============================== Section 3 =============================== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span> データの質と量の現実</h2>
+
+  <p>フィジカルAIは「データ・ハングリー」な技術です。特に模倣学習やVLAモデルの学習には大量の高品質なデモンストレーションデータが必要ですが、そのコストは想像以上に高いものです。</p>
+
+  <!-- Stats grid -->
+  <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap:1rem; margin:1.5rem 0;">
+    <div style="background:#f4f4f5; border-radius:10px; padding:1.2rem; text-align:center;">
+      <div style="font-size:1.8rem; font-weight:bold; color:#16a34a;">$150-300</div>
+      <div style="font-size:0.82rem; color:#555;">テレオペデータ1時間あたりの収集コスト</div>
+    </div>
+    <div style="background:#f4f4f5; border-radius:10px; padding:1.2rem; text-align:center;">
+      <div style="font-size:1.8rem; font-weight:bold; color:#16a34a;">50-500h</div>
+      <div style="font-size:0.82rem; color:#555;">VLAモデル学習に必要な典型的データ量</div>
+    </div>
+    <div style="background:#f4f4f5; border-radius:10px; padding:1.2rem; text-align:center;">
+      <div style="font-size:1.8rem; font-weight:bold; color:#16a34a;">60-80%</div>
+      <div style="font-size:0.82rem; color:#555;">プロジェクト時間のうちデータ関連に費やす割合</div>
+    </div>
+    <div style="background:#f4f4f5; border-radius:10px; padding:1.2rem; text-align:center;">
+      <div style="font-size:1.8rem; font-weight:bold; color:#16a34a;">3-5x</div>
+      <div style="font-size:0.82rem; color:#555;">多様性確保のための追加コスト倍率</div>
+    </div>
+  </div>
+
+  <h3>合成データ vs 実世界データ</h3>
+  <p><span class="term" data-tip="Synthetic Data：シミュレーションやCGで生成された訓練用データ。コストは低いが、実世界との乖離（Domain Gap）が課題">合成データ</span>はシミュレーション上で安価に大量生成できますが、実世界データとの品質差（Domain Gap）が常に課題です。実務では両者を組み合わせた<strong>データ混合戦略</strong>が有効です。</p>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span>
+
+  <div class="info-box">
+    <strong>データ多様性のチェックリスト</strong><br>
+    学習データの多様性が不足すると、わずかな環境変化でロボットが機能しなくなります。以下を確認しましょう：
+    <ul style="margin:0.5rem 0 0 1.2rem;">
+      <li><strong>照明条件</strong> — 朝・昼・夜、蛍光灯・LED・自然光</li>
+      <li><strong>物体バリエーション</strong> — サイズ、色、素材、ブランドの違い</li>
+      <li><strong>背景の変化</strong> — テーブルの色、周囲のオブジェクト</li>
+      <li><strong>操作者の多様性</strong> — テレオペの癖の違いがモデルの汎化性に影響</li>
+    </ul>
+  </div>
+
+  <p><span class="term" data-tip="ロボットが収集する画像・動画データに映り込む人物や環境情報のプライバシー保護。GDPR等の規制への対応が必要">プライバシー問題</span>も見逃せません。特に介護や物流現場のデータには人物が映り込みやすく、データの匿名化や保存ポリシーの整備がプロジェクト初期から求められます。</p>
+
+  <!-- =============================== Section 4 =============================== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span> 安全性と信頼性</h2>
+
+  <p>フィジカルAIが人間の近くで動作する以上、安全性は技術的にも法的にも最重要課題です。しかしここに深刻な矛盾が存在します。</p>
+
+  <div class="info-box" style="border-left-color:#e11d48;">
+    <strong>VLAモデルと安全性認証の矛盾</strong><br>
+    <span class="term" data-tip="ISO 13482：生活支援ロボットの安全要求事項を定めた国際規格。リスクアセスメントと安全機能の実装を要求">ISO 13482</span>などの安全規格は、ロボットの動作が予測可能であることを前提としています。しかしVLAモデルは<span class="term" data-tip="ブラックボックス：内部の判断ロジックが人間に解釈困難なAIモデルの特性。ディープラーニングの本質的な課題">ブラックボックス</span>であり、「なぜその行動をとったか」を事前に完全予測することが困難です。この矛盾がフィジカルAIの社会実装を遅らせる大きな要因となっています。
+  </div>
+
+  <h3>安全機能の実装レイヤー</h3>
+  <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:1rem; margin:1.5rem 0;">
+    <div style="background:#f4f4f5; border-radius:10px; padding:1rem;">
+      <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;">
+        <i data-lucide="shield" style="width:20px;height:20px;color:#16a34a;"></i>
+        <strong>力制限</strong>
+      </div>
+      <p style="font-size:0.88rem; margin:0;">トルクセンサーで接触力を常時監視。閾値超過で即時停止（ISO 10218-1準拠）</p>
+    </div>
+    <div style="background:#f4f4f5; border-radius:10px; padding:1rem;">
+      <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;">
+        <i data-lucide="alert-triangle" style="width:20px;height:20px;color:#16a34a;"></i>
+        <strong>衝突検知</strong>
+      </div>
+      <p style="font-size:0.88rem; margin:0;">電流値の急変やIMUの異常加速を検出。AI判断と独立したハードウェア安全層</p>
+    </div>
+    <div style="background:#f4f4f5; border-radius:10px; padding:1rem;">
+      <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;">
+        <i data-lucide="gauge" style="width:20px;height:20px;color:#16a34a;"></i>
+        <strong>速度制限</strong>
+      </div>
+      <p style="font-size:0.88rem; margin:0;">人間の近接度に応じた動的速度制限。SSM (Speed and Separation Monitoring) 方式</p>
+    </div>
+  </div>
+
+  <details class="more-box">
+    <summary>Deep Dive: Safety Envelopeパターン</summary>
+    <p><span class="term" data-tip="Safety Envelope：AIの出力を安全な範囲にクリッピングする監視層。AI判断の外側に独立した安全ガードとして機能">Safety Envelope</span>とは、AIモデルの出力を受け取った後、安全な範囲に収まっているかを検証する独立した監視レイヤーです。VLAモデルのような予測困難なAIでも、その出力を古典的な安全ルールでフィルタリングすることで、安全規格への適合を目指すアプローチです。具体的には、関節速度の上限クリッピング、動作空間の制限、人間検出時の自動減速などをAIとは独立したハードウェア/ソフトウェア層で実装します。</p>
+  </details>
+
+  <!-- =============================== Section 5 =============================== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span> コスト構造の全体像</h2>
+
+  <p>フィジカルAIプロジェクトのコストは、ハードウェアだけでなく多くの隠れたコストで構成されています。提案時にこれらを見落とすと、大幅な予算超過を招きます。</p>
+
+  <!-- Chart.js: コスト構造ドーナツチャート -->
+  <div style="max-width:400px; margin:2rem auto;">
+    <canvas id="costChart"></canvas>
+  </div>
+
+  <p>上のチャートが示すように、ハードウェア費用はプロジェクト全体コストの20-25%に過ぎません。<strong>データ収集（30%）とインテグレーション（20%）</strong>が隠れた主要コストです。</p>
+
+  <!-- Timeline: プロジェクトタイムライン -->
+  <h3>フィジカルAIプロジェクトの典型タイムライン</h3>
+  <div style="display:flex; flex-direction:column; gap:0; margin:1.5rem 0;">
+    <div style="display:flex; gap:1rem; align-items:flex-start;">
+      <div style="display:flex; flex-direction:column; align-items:center;">
+        <div style="width:36px; height:36px; border-radius:50%; background:#16a34a; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:0.8rem;">M1-2</div>
+        <div style="width:2px; height:40px; background:#e4e4e7;"></div>
+      </div>
+      <div style="padding-bottom:1rem;">
+        <strong>要件定義・PoC計画</strong><br>
+        <span style="font-size:0.88rem; color:#555;">タスク分析、技術選定、シミュレータ環境構築。コスト：全体の10%</span>
+      </div>
+    </div>
+    <div style="display:flex; gap:1rem; align-items:flex-start;">
+      <div style="display:flex; flex-direction:column; align-items:center;">
+        <div style="width:36px; height:36px; border-radius:50%; background:#16a34a; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:0.8rem;">M3-5</div>
+        <div style="width:2px; height:40px; background:#e4e4e7;"></div>
+      </div>
+      <div style="padding-bottom:1rem;">
+        <strong>データ収集・モデル学習</strong><br>
+        <span style="font-size:0.88rem; color:#555;">テレオペデータ収集、シミュレータ学習、初期モデル構築。コスト：全体の35%</span>
+      </div>
+    </div>
+    <div style="display:flex; gap:1rem; align-items:flex-start;">
+      <div style="display:flex; flex-direction:column; align-items:center;">
+        <div style="width:36px; height:36px; border-radius:50%; background:#16a34a; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:0.8rem;">M6-8</div>
+        <div style="width:2px; height:40px; background:#e4e4e7;"></div>
+      </div>
+      <div style="padding-bottom:1rem;">
+        <strong>Sim-to-Real調整・実機テスト</strong><br>
+        <span style="font-size:0.88rem; color:#555;">実環境でのチューニング、安全性評価、エッジ最適化。コスト：全体の30%</span>
+      </div>
+    </div>
+    <div style="display:flex; gap:1rem; align-items:flex-start;">
+      <div style="display:flex; flex-direction:column; align-items:center;">
+        <div style="width:36px; height:36px; border-radius:50%; background:#16a34a; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:0.8rem;">M9+</div>
+      </div>
+      <div>
+        <strong>本番デプロイ・保守運用</strong><br>
+        <span style="font-size:0.88rem; color:#555;">本番環境への展開、監視体制構築、継続的な改善。コスト：全体の25%</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <strong>ROI計算のポイント</strong><br>
+    フィジカルAIのROI計算では、以下の定量化が鍵です：
+    <ul style="margin:0.5rem 0 0 1.2rem;">
+      <li><strong>人件費削減</strong> — 自動化対象作業の人件費 x 置き換え率</li>
+      <li><strong>品質向上</strong> — 不良品率の低下、作業精度の向上を金額換算</li>
+      <li><strong>稼働率</strong> — 24h稼働が可能な場合の生産性向上分</li>
+      <li><strong>隠れコスト</strong> — 定期的なモデル再学習、データ追加収集、メンテナンス</li>
+    </ul>
+    一般的に、フィジカルAI投資の回収期間は<strong>2-4年</strong>が目安です。
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span>
+
+  <details class="more-box">
+    <summary>Deep Dive: なぜフィジカルAIは「見えないコスト」が大きいのか</summary>
+    <p>ソフトウェアAI（ChatGPTのようなサービス）と比較して、フィジカルAIが高コストになる根本原因は「物理世界とのインターフェース」にあります。テキストデータは安価に大量取得できますが、ロボットの動作データは実機やテレオペ環境が必要です。また、ソフトウェアのバグはデプロイで即修正できますが、ハードウェアの問題は現地対応が必須で、保守コストが桁違いに大きくなります。</p>
+  </details>
+
+  <!-- =============================== 演習 =============================== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span> 演習問題</h2>
+
+  <div style="background:#f4f4f5; border-radius:12px; padding:1.5rem; margin:1.5rem 0; border-left:4px solid #16a34a;">
+    <h3 style="margin-top:0;"><i data-lucide="pencil" style="width:18px;height:18px;color:#16a34a;vertical-align:middle;"></i> 演習1（入門）：エッジ推論の選定</h3>
+    <p>あなたのクライアントは倉庫内で自律走行するAGV（無人搬送車）を開発しています。カメラ画像から障害物を検出し、経路を動的に変更する必要があります。推論遅延は50ms以内が要件です。</p>
+    <p><strong>問い：</strong>エッジデバイスとして上記3つ（Jetson Orin / Intel NUC / RB5）のうちどれを推奨しますか？理由を3点挙げてください。</p>
+
+    <details style="margin-top:1rem;">
+      <summary style="cursor:pointer; font-weight:bold; color:#16a34a;">模範解答を見る</summary>
+      <div style="margin-top:0.75rem; padding:1rem; background:#fff; border-radius:8px;">
+        <p><strong>推奨：NVIDIA Jetson Orin</strong></p>
+        <ol>
+          <li><strong>性能要件</strong>：275 TOPSの推論性能により、物体検出モデル（YOLOv8等）を50ms以内で実行可能。Intel NUCの11 TOPSでは複雑なビジョンモデルの推論が間に合わない可能性がある。</li>
+          <li><strong>エコシステム</strong>：NVIDIA Isaac ROS等のロボティクス向けSDKが充実しており、開発期間を短縮できる。TensorRTによるモデル最適化も容易。</li>
+          <li><strong>消費電力と設置性</strong>：15-60Wの消費電力はAGVのバッテリーで十分給電可能。コンパクトな筐体でAGVへの組み込みも容易。</li>
+        </ol>
+        <p style="font-size:0.85rem; color:#666;">補足：RB5は5G連携に強みがあるが、15 TOPSではリアルタイム経路計画には性能不足。ただし予算制約が厳しい場合は、軽量モデル（MobileNet等）に限定してRB5を選ぶ戦略もあり得る。</p>
+      </div>
+    </details>
+  </div>
+
+  <div style="background:#f4f4f5; border-radius:12px; padding:1.5rem; margin:1.5rem 0; border-left:4px solid #18181b;">
+    <h3 style="margin-top:0;"><i data-lucide="code" style="width:18px;height:18px;color:#18181b;vertical-align:middle;"></i> 演習2（応用）：Sim-to-Real戦略の設計</h3>
+    <p>食品工場のクライアントが、ベルトコンベア上を流れてくる不定形の食品（パン、おにぎり等）をロボットアームでピッキングしたいと相談してきました。食品は形状・サイズにばらつきがあり、柔らかいため力加減が重要です。</p>
+    <p><strong>問い：</strong>Sim-to-Realアプローチでこのプロジェクトを進めるべきか、実機データ中心で進めるべきか。あなたの判断とその根拠を述べてください。また、どちらを選んでも避けられない課題を1つ挙げてください。</p>
+
+    <details style="margin-top:1rem;">
+      <summary style="cursor:pointer; font-weight:bold; color:#16a34a;">模範解答を見る</summary>
+      <div style="margin-top:0.75rem; padding:1rem; background:#fff; border-radius:8px;">
+        <p><strong>判断：実機データ中心（テレオペ + 少量のSimデータ併用）</strong></p>
+        <p><strong>根拠：</strong></p>
+        <ol>
+          <li><strong>柔軟物体のSim忠実度が低い</strong>：パンやおにぎりの変形特性をシミュレータで正確に再現するのは極めて困難。Domain Randomizationでも吸収しきれないギャップが残る。</li>
+          <li><strong>力加減の再現性</strong>：柔らかい食品を潰さずにピッキングするための微妙な力制御は、実機の力覚センサーデータでしか学習できない。</li>
+          <li><strong>コスト効率</strong>：食品工場環境は比較的構造化されているため、テレオペ50-100時間程度のデータで模倣学習の初期モデルが構築可能。高忠実度シミュレータ構築よりも費用対効果が高い。</li>
+        </ol>
+        <p><strong>避けられない課題：</strong>食品のバリエーション（サイズ・形状・硬さの個体差）に対するデータ多様性の確保。新商品が追加されるたびにデータを追加収集する継続的な運用コストが発生する。</p>
+      </div>
+    </details>
+  </div>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><a href="https://developer.nvidia.com/embedded/jetson-orin" target="_blank" rel="noopener">NVIDIA Jetson Orin 公式ページ</a></li>
+      <li><a href="https://arxiv.org/abs/1703.06907" target="_blank" rel="noopener">Domain Randomization for Transferring Deep Neural Networks (Tobin et al., 2017)</a></li>
+      <li><a href="https://www.iso.org/standard/53820.html" target="_blank" rel="noopener">ISO 13482:2014 Robots and robotic devices - Safety requirements</a></li>
+      <li><a href="https://arxiv.org/abs/2310.08864" target="_blank" rel="noopener">Open X-Embodiment: Robotic Learning Datasets and RT-X Models</a></li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="06">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="05-vla-models.html"><span class="direction">&larr; Prev</span>VLAモデルの最前線</a>
+    <a href="07-business-scoping.html"><span class="direction">Next &rarr;</span>ビジネススコーピングの技法</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#f4f4f5',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#18181b',
+      lineColor: '#18181b',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<!-- 視覚化ライブラリ群 (使う章だけ動作、未使用章はゼロコスト) -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  // Lucideアイコンを自動描画 (data-lucide="icon-name" 属性のある要素を全部処理)
+  if (window.lucide) lucide.createIcons();
+</script>
+<script>
+  // Chart.js: コスト構造ドーナツチャート
+  window.addEventListener("load", function(){
+    var ctx = document.getElementById("costChart").getContext("2d");
+    new Chart(ctx, {
+      type: "doughnut",
+      data: {
+        labels: ["Hardware (20%)", "Data Collection (30%)", "Integration (20%)", "Software/Model Dev (15%)", "Maintenance (15%)"],
+        datasets: [{
+          data: [20, 30, 20, 15, 15],
+          backgroundColor: ["#16a34a", "#18181b", "#6b7280", "#a3a3a3", "#d4d4d8"],
+          borderWidth: 2,
+          borderColor: "#fff"
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: "bottom",
+            labels: { font: { size: 12 }, padding: 16 }
+          },
+          title: {
+            display: true,
+            text: "Typical Physical AI Project Cost Breakdown",
+            font: { size: 14, weight: "bold" },
+            padding: { bottom: 16 }
+          }
+        }
+      }
+    });
+  });
+</script>
+</body>
+</html>

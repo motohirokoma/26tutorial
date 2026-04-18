@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>Skills と Hooks - MK's Claude Code Tutorial</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code Tutorial
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="../index.html#phase3" class="active" data-nav><span class="phase-name">Advanced</span><span class="phase-pct" id="pct-adv">0%</span></a></li>
+      <li><a href="../index.html#phase4" data-nav><span class="phase-name">Projects</span><span class="phase-pct" id="pct-proj">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.10</span>
+    Skills と Hooks
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 19 sections</text>
+    </svg>
+    <div class="progress-info">0h / 26h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-introduction.html"><span class="status-dot" data-chapter="01"></span> Introduction</a></li>
+    <li><a href="02-installation.html"><span class="status-dot" data-chapter="02"></span> Installation</a></li>
+    <li><a href="03-basic-commands.html"><span class="status-dot" data-chapter="03"></span> Basic Commands</a></li>
+    <li><a href="04-prompt-design.html"><span class="status-dot" data-chapter="04"></span> Prompt Design</a></li>
+  </ul>
+
+  <div class="section-label">Core</div>
+  <ul>
+    <li><a href="05-file-operations.html"><span class="status-dot" data-chapter="05"></span> File Operations</a></li>
+    <li><a href="06-git-integration.html"><span class="status-dot" data-chapter="06"></span> Git Integration</a></li>
+    <li><a href="07-1-github-workflow.html"><span class="status-dot" data-chapter="07-1"></span> GitHub <span class="sub-label">1/2</span></a></li>
+    <li><a href="07-2-github-workflow.html"><span class="status-dot" data-chapter="07-2"></span> GitHub <span class="sub-label">2/2</span></a></li>
+    <li><a href="08-1-debugging.html"><span class="status-dot" data-chapter="08-1"></span> Debug <span class="sub-label">1/2</span></a></li>
+    <li><a href="08-2-testing.html"><span class="status-dot" data-chapter="08-2"></span> Test &amp; TDD <span class="sub-label">2/2</span></a></li>
+  </ul>
+
+  <div class="section-label">Advanced</div>
+  <ul>
+    <li><a href="09-claude-md-settings.html"><span class="status-dot" data-chapter="09"></span> CLAUDE.md</a></li>
+    <li><a href="10-skills-hooks.html" class="active"><span class="status-dot" data-chapter="10"></span> Skills &amp; Hooks</a></li>
+    <li><a href="11-mcp-agents.html"><span class="status-dot" data-chapter="11"></span> MCP &amp; Agents</a></li>
+  </ul>
+
+  <div class="section-label">Projects</div>
+  <ul>
+    <li><a href="12-1-project-website.html"><span class="status-dot" data-chapter="12-1"></span> Web Site <span class="sub-label">1/2</span></a></li>
+    <li><a href="12-2-project-website.html"><span class="status-dot" data-chapter="12-2"></span> Web Site <span class="sub-label">2/2</span></a></li>
+    <li><a href="13-1-project-app.html"><span class="status-dot" data-chapter="13-1"></span> Web App <span class="sub-label">1/2</span></a></li>
+    <li><a href="13-2-project-app.html"><span class="status-dot" data-chapter="13-2"></span> Web App <span class="sub-label">2/2</span></a></li>
+    <li><a href="14-1-project-ios.html"><span class="status-dot" data-chapter="14-1"></span> iOS App <span class="sub-label">1/2</span></a></li>
+    <li><a href="14-2-project-ios.html"><span class="status-dot" data-chapter="14-2"></span> iOS App <span class="sub-label">2/2</span></a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 3: Advanced &gt; Chapter 10</div>
+  <h1>Skills と Hooks</h1>
+  <p class="subtitle"><span class="term" data-tip="特定のドメイン知識をパッケージ化したフォルダ。Claudeが必要に応じて自動で読み込む">Skills</span>でClaudeに専門能力を追加し、<span class="term" data-tip="Claudeのライフサイクルイベントに自動で割り込んで実行されるシェルコマンド">Hooks</span>で確定的な振る舞いを差し込む。「賢いだけ」から「自分の現場に最適化されたエージェント」へ。</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 1.5h</span>
+    <span class="badge">Phase 3: Advanced</span>
+    <span class="badge">難易度: 応用</span>
+  </div>
+
+  <!-- ===================== 1. メンタルモデル ===================== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 全体像 — 拡張ポイントの地図</h2>
+
+  <p>Claude Codeを「拡張する」道具は4種類あります。前章のCLAUDE.md / settings.json と合わせて、まず全体像をつかみましょう。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Claude Code 拡張ポイント (ラフスケッチ)</div>
+    <svg id="rough-10-1" width="100%" height="240" viewBox="0 0 540 240"></svg>
+    <div class="diagram-caption">中心はClaude本体。周りに「振る舞い」「能力」「環境」「自動化」が刺さるイメージ。</div>
+  </div>
+  <script>
+  window.addEventListener('load', function() {
+    const svg = document.getElementById('rough-10-1');
+    if (!svg || !window.rough) return;
+    const r = rough.svg(svg);
+    svg.appendChild(r.circle(270, 120, 90, { fill: '#f4f4f5', fillStyle: 'solid', stroke: '#18181b', strokeWidth: 2 }));
+    svg.appendChild(r.rectangle(30, 30, 140, 60, { fill: '#fef3c7', fillStyle: 'hachure', stroke: '#d97706', strokeWidth: 2 }));
+    svg.appendChild(r.rectangle(370, 30, 140, 60, { fill: '#dcfce7', fillStyle: 'hachure', stroke: '#16a34a', strokeWidth: 2 }));
+    svg.appendChild(r.rectangle(30, 150, 140, 60, { fill: '#dbeafe', fillStyle: 'hachure', stroke: '#2563eb', strokeWidth: 2 }));
+    svg.appendChild(r.rectangle(370, 150, 140, 60, { fill: '#fce7f3', fillStyle: 'hachure', stroke: '#be185d', strokeWidth: 2 }));
+    svg.appendChild(r.line(170, 60, 230, 100, { stroke: '#475569', strokeWidth: 1.5 }));
+    svg.appendChild(r.line(370, 60, 310, 100, { stroke: '#475569', strokeWidth: 1.5 }));
+    svg.appendChild(r.line(170, 180, 230, 140, { stroke: '#475569', strokeWidth: 1.5 }));
+    svg.appendChild(r.line(370, 180, 310, 140, { stroke: '#475569', strokeWidth: 1.5 }));
+    const addText = (x, y, t, size, weight) => {
+      const el = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      el.setAttribute('x', x); el.setAttribute('y', y); el.setAttribute('text-anchor', 'middle');
+      el.setAttribute('font-size', size); el.setAttribute('font-weight', weight);
+      el.textContent = t;
+      svg.appendChild(el);
+    };
+    addText(270, 115, 'Claude', 16, 700);
+    addText(270, 135, 'Code', 12, 600);
+    addText(100, 55, 'CLAUDE.md', 13, 700);
+    addText(100, 75, '振る舞い', 11, 400);
+    addText(440, 55, 'Skills', 13, 700);
+    addText(440, 75, '能力', 11, 400);
+    addText(100, 175, 'settings.json', 13, 700);
+    addText(100, 195, '環境/許可', 11, 400);
+    addText(440, 175, 'Hooks', 13, 700);
+    addText(440, 195, '自動化', 11, 400);
+  });
+  </script>
+
+  <table>
+    <thead><tr><th>道具</th><th>目的</th><th>実体</th><th>いつ動く</th></tr></thead>
+    <tbody>
+      <tr><td><strong>CLAUDE.md</strong></td><td>振る舞いを伝える</td><td>Markdownテキスト</td><td>毎ターン読まれる</td></tr>
+      <tr><td><strong>settings.json</strong></td><td>環境/許可を決める</td><td>JSON設定</td><td>起動時に1回</td></tr>
+      <tr><td><strong>Skills</strong></td><td>能力を追加する</td><td>フォルダ + SKILL.md</td><td>必要だとClaudeが判断した時</td></tr>
+      <tr><td><strong>Hooks</strong></td><td>確定的な処理を差し込む</td><td>シェルコマンド</td><td>特定イベント発生時</td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-box">
+    <span class="label">違いの要点</span>
+    <p>Skills は「<strong>取りに行ける</strong>知識」、Hooks は「<strong>強制的に</strong>挟む処理」。前者はClaude判断、後者はシステム判断。</p>
+  </div>
+
+  <!-- ===================== 2. Skills とは ===================== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Skills — 専門能力をフォルダで配る</h2>
+
+  <p>Skills は、特定タスクの<strong>手順・テンプレ・参考データ</strong>をひとまとめにしたフォルダ。Claudeはユーザーの依頼を読み、関係ありそうなSkillの説明文を見て<strong>必要な時だけ</strong>中身をロードします。</p>
+
+  <h3>Skill フォルダの最小構成</h3>
+
+<pre><code>~/.claude/skills/
+└── pdf-parser/             ← Skill名 = フォルダ名
+    ├── SKILL.md            ← 必須。Claudeが最初に読む説明書
+    ├── templates/          ← 任意。テンプレファイル
+    │   └── report.md
+    └── scripts/            ← 任意。補助スクリプト
+        └── extract.py
+</code></pre>
+
+  <h3>SKILL.md の構造</h3>
+
+<pre><code>---
+name: pdf-parser
+description: PDFファイルからテキスト・表・画像を抽出する。pdfplumber を使う。
+---
+
+# PDF Parser スキル
+
+## いつ使うか
+- ユーザがPDFを「読んで」「要約して」「抽出して」と言った時
+- ファイル拡張子が .pdf
+
+## 手順
+1. ファイルパスを ./scripts/extract.py に渡す
+2. 出力 JSON を解析
+3. 表があれば Markdown 表として整形
+</code></pre>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Skill が呼ばれる流れ</div>
+    <pre class="mermaid">
+sequenceDiagram
+  participant U as ユーザー
+  participant C as Claude
+  participant S as Skill
+  U->>C: 「この請求書PDFを集計して」
+  C->>C: 利用可能Skillの description を走査
+  C->>S: SKILL.md を読み込み
+  S-->>C: 手順 + scripts/extract.py を提示
+  C->>S: extract.py を実行
+  S-->>C: JSON 出力
+  C-->>U: 集計結果
+    </pre>
+    <div class="diagram-caption">Skillはユーザーが指名しなくても、Claudeが自分で気づいて呼ぶ。</div>
+  </div>
+
+  <div class="tip-box">
+    <span class="label">description の書き方が肝</span>
+    <p>Claudeは <code>description</code> を見てSkillを発火させるか判断します。ここに「このSkillはこういう時に使う」を具体的に書くほど、自動発火が正確になります。</p>
+  </div>
+
+  <!-- ===================== 3. Skill の置き場所 ===================== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Skill の置き場所と典型例</h2>
+
+  <table>
+    <thead><tr><th>場所</th><th>共有範囲</th><th>用途</th></tr></thead>
+    <tbody>
+      <tr><td><code>~/.claude/skills/</code></td><td>全プロジェクト共通 (個人)</td><td>自分用の汎用ツール</td></tr>
+      <tr><td><code>./.claude/skills/</code></td><td>このプロジェクトだけ</td><td>プロジェクト固有の手順</td></tr>
+      <tr><td>plugin marketplace</td><td>世界中で共有</td><td>OSS Skills の取り込み</td></tr>
+    </tbody>
+  </table>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-num">3<small>分</small></div>
+      <div class="stat-label">最小Skill作成時間</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">100<small>+</small></div>
+      <div class="stat-label">公開Skills (例)</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">∞</div>
+      <div class="stat-label">同時インストール上限</div>
+    </div>
+  </div>
+
+  <h3>具体的なSkill例 (3つの方向性)</h3>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="file-text" width="20" height="20"></i>
+      <div><strong>定型文書スキル</strong> — 議事録 / 障害報告 / RFC のフォーマットをテンプレ化。Claudeが正しい節構造で書く</div>
+    </li>
+    <li>
+      <i data-lucide="zap" width="20" height="20"></i>
+      <div><strong>専門知識スキル</strong> — 「Stripe 連携の鉄則10条」「自社UI規約」など、頻出ドメイン知識をパッケージ化</div>
+    </li>
+    <li>
+      <i data-lucide="cpu" width="20" height="20"></i>
+      <div><strong>外部処理スキル</strong> — 補助スクリプト (Python等) を同梱。Claudeはそれを呼ぶだけで複雑処理を完了させる</div>
+    </li>
+  </ul>
+
+  <details class="more-box">
+    <summary>もっと詳しく: SKILL.md の良い書き方 5原則</summary>
+    <div class="more-body">
+      <ol>
+        <li><strong>「いつ使うか」を冒頭に</strong> — Claudeが発火判断するため</li>
+        <li><strong>手順は番号付き</strong> — 順序を守らせるため</li>
+        <li><strong>NG例も書く</strong> — 「この時は使わない」を明示</li>
+        <li><strong>テンプレは別ファイルに</strong> — SKILL.md 本体を肥大化させない</li>
+        <li><strong>具体例を1つ入れる</strong> — Claudeはサンプルがあると精度が劇的に上がる</li>
+      </ol>
+    </div>
+  </details>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===================== 4. Hooks とは ===================== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Hooks — Claudeのライフサイクルに割り込む</h2>
+
+  <p>Hooks は <code>settings.json</code> に書く<strong>確定的な処理</strong>。Skillsと違いClaudeの判断は介在せず、特定イベントで<strong>必ず</strong>実行されます。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Hooks の発火イベント (タイムライン)</div>
+    <svg viewBox="0 0 540 200" width="100%" style="max-width:540px; display:block; margin:0 auto;">
+      <line x1="40" y1="100" x2="500" y2="100" stroke="#18181b" stroke-width="2"/>
+      <circle cx="80" cy="100" r="8" fill="#18181b"/>
+      <circle cx="200" cy="100" r="8" fill="#18181b"/>
+      <circle cx="320" cy="100" r="8" fill="#18181b"/>
+      <circle cx="440" cy="100" r="8" fill="#18181b"/>
+      <text x="80"  y="80" text-anchor="middle" font-size="11" font-weight="600">UserPrompt</text>
+      <text x="200" y="80" text-anchor="middle" font-size="11" font-weight="600">PreTool</text>
+      <text x="320" y="80" text-anchor="middle" font-size="11" font-weight="600">PostTool</text>
+      <text x="440" y="80" text-anchor="middle" font-size="11" font-weight="600">Stop</text>
+      <text x="80"  y="130" text-anchor="middle" font-size="10" fill="#71717a">入力を受け取った直後</text>
+      <text x="200" y="130" text-anchor="middle" font-size="10" fill="#71717a">ツール実行の直前</text>
+      <text x="320" y="130" text-anchor="middle" font-size="10" fill="#71717a">ツール実行の直後</text>
+      <text x="440" y="130" text-anchor="middle" font-size="10" fill="#71717a">応答完了時</text>
+      <text x="80"  y="160" text-anchor="middle" font-size="10" fill="#2563eb">入力ログ追記</text>
+      <text x="200" y="160" text-anchor="middle" font-size="10" fill="#2563eb">破壊的コマンドをブロック</text>
+      <text x="320" y="160" text-anchor="middle" font-size="10" fill="#2563eb">編集後に prettier</text>
+      <text x="440" y="160" text-anchor="middle" font-size="10" fill="#2563eb">完了通知/Slack</text>
+    </svg>
+    <div class="diagram-caption">主要4イベント。他にもサブエージェント関連などが追加されつつある。</div>
+  </div>
+
+  <h3>典型的なHookの設定</h3>
+
+<pre><code>{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          { "type": "command", "command": "npx prettier --write $CLAUDE_FILE_PATHS" }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          { "type": "command", "command": "say 'タスク完了'" }
+        ]
+      }
+    ]
+  }
+}
+</code></pre>
+
+  <div class="warn-box">
+    <span class="label">Hookは"必ず"動く</span>
+    <p>Hookに無限ループや破壊的コマンドを書くと、Claudeを起動するたびに実行されます。<strong>動作確認は別タスクで行ってから</strong>本設定に入れる癖をつけましょう。</p>
+  </div>
+
+  <!-- ===================== 5. Skills vs Hooks 使い分け ===================== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Skills と Hooks の使い分け</h2>
+
+  <p>「これ、SkillとHookどっちで実装すべき?」と迷う場面が多発します。判断基準は<strong>「Claudeに考えさせるか」「機械的に決まるか」</strong>。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">どちらを選ぶ?</div>
+    <pre class="mermaid">
+graph TD
+  Q{"その処理は毎回必ず実行?"}
+  Q -- "Yes 必ず" --> H[Hooks]
+  Q -- "No 状況次第" --> Q2{"高度な判断が必要?"}
+  Q2 -- "Yes" --> S[Skills]
+  Q2 -- "No 単純条件" --> H2["Hooks 条件付き"]
+    </pre>
+    <div class="diagram-caption">「必ず」「決定的」ならHooks、「内容を読んで判断」ならSkills。</div>
+  </div>
+
+  <div class="compare-cards">
+    <div class="cc neutral">
+      <span class="cc-label">Skills</span>
+      <h4>判断付きの能力</h4>
+      <ul>
+        <li>PDFを読み解く</li>
+        <li>議事録を整形する</li>
+        <li>Stripe連携コードを書く</li>
+      </ul>
+    </div>
+    <div class="cc neutral">
+      <span class="cc-label">Hooks</span>
+      <h4>機械的な処理</h4>
+      <ul>
+        <li>編集後にprettier実行</li>
+        <li>commit前にlint走らせる</li>
+        <li>応答完了でSlack通知</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>合わせ技 — Skill + Hook</h3>
+
+  <p>強力なのは両者の組み合わせ。「<strong>議事録Skill</strong>」がフォーマットを保ち、「<strong>PostTool Hook</strong>」が出力を即座にチームのesaへ投稿、といった具合です。</p>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-date">step 1</div>
+      <div class="tl-title">ユーザー入力</div>
+      <div class="tl-body">「先週の会議録音から議事録作って」</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">step 2</div>
+      <div class="tl-title">Skill 発火</div>
+      <div class="tl-body">議事録Skillが手順とテンプレを提供。Claudeが整形。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">step 3</div>
+      <div class="tl-title">PostTool Hook</div>
+      <div class="tl-body">Write 直後に <code>esa post</code> CLIで自動投稿。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">step 4</div>
+      <div class="tl-title">Stop Hook</div>
+      <div class="tl-body">完了通知をSlackへPOST。チームに即連携。</div>
+    </div>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>最小の Skill を作る</h4>
+    <p>「英語の文章を3行に要約する」だけのSkillを作成してください。</p>
+    <ol>
+      <li><code>mkdir -p ~/.claude/skills/quick-summary</code></li>
+      <li><code>~/.claude/skills/quick-summary/SKILL.md</code> を作る</li>
+      <li>front matter (<code>name</code>, <code>description</code>) と本文 (いつ使うか / 手順) を書く</li>
+      <li>Claudeに「これを要約して: &lt;英文&gt;」と頼んで、Skillが発火するか確認</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+<pre><code>---
+name: quick-summary
+description: 英語のテキストを日本語で3行に要約する。長文や記事URLを渡された時に使う。
+---
+
+# Quick Summary
+
+## いつ使うか
+- ユーザが「要約して」「サマって」と言い、対象が英語テキスト or URL の時
+
+## 手順
+1. テキストの主題を1行で抽出
+2. 主要な根拠を1行で抽出
+3. 結論/示唆を1行で抽出
+4. 出力フォーマット:
+   - 主題: ...
+   - 根拠: ...
+   - 結論: ...
+
+## NG
+- 日本語テキストには使わない (別タスクとして処理)
+</code></pre>
+      <p>Claudeで「次の英文を要約して: ...」と試すと、Skill 発火 → 3行構造で返ってくるはず。発火しない時は <code>description</code> をより具体的に書き直すのがコツ。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>PostToolUse Hook で自動フォーマット + Slack通知</h4>
+    <p>適当なJS/TSプロジェクトで、Claudeが <code>Edit</code> / <code>Write</code> を実行した直後に prettier を走らせ、さらにタスク完了時 (<code>Stop</code>) に Slack へ通知する Hook を組んでください。</p>
+    <ol>
+      <li>プロジェクトで <code>./.claude/settings.json</code> を作成</li>
+      <li><code>PostToolUse</code> hook で <code>npx prettier --write</code> を編集対象に実行</li>
+      <li><code>Stop</code> hook で <code>curl -X POST</code> で Slack Incoming Webhook 叩く</li>
+      <li>新しいClaudeセッションで実際にファイル編集 → 自動フォーマット + 通知が来るか確認</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+<pre><code>{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "npx prettier --write $CLAUDE_FILE_PATHS 2&gt;/dev/null || true"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "curl -s -X POST -H 'Content-type: application/json' --data '{\"text\":\"Claude task done\"}' $SLACK_WEBHOOK_URL"
+          }
+        ]
+      }
+    ]
+  },
+  "env": {
+    "SLACK_WEBHOOK_URL": "https://hooks.slack.com/services/XXX/YYY/ZZZ"
+  }
+}
+</code></pre>
+      <p>ポイント: prettier が失敗してもClaudeを止めないように <code>|| true</code> を付ける。SlackのWebhookは <code>settings.local.json</code> 側に置くとgitに上がらず安全。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span><a href="https://docs.claude.com/en/docs/claude-code/skills" target="_blank">Claude Code: Skills</a> — Skill の構造と動作仕様</li>
+      <li><span class="res-type doc">Doc</span><a href="https://docs.claude.com/en/docs/claude-code/hooks" target="_blank">Claude Code: Hooks</a> — Hook の全イベントとマッチャ仕様</li>
+      <li><span class="res-type article">Article</span><a href="https://www.anthropic.com/news/agent-skills" target="_blank">Anthropic: Agent Skills の発表</a> — Skills が解く問題と設計思想</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="10">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="09-claude-md-settings.html"><span class="direction">&larr; Prev</span>CLAUDE.md と設定管理</a>
+    <a href="11-mcp-agents.html"><span class="direction">Next &rarr;</span>MCP &amp; Agents</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#f4f4f5',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#18181b',
+      lineColor: '#18181b',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>

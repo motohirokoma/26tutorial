@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>実践: ミニWebアプリ - MK's Claude Code Tutorial - Short Edition</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code Tutorial - Short Edition
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="../index.html#phase3" data-nav class="active"><span class="phase-name">Practice</span><span class="phase-pct" id="pct-practice">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.09</span>
+    実践: ミニWebアプリ
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18" stroke-dasharray="0 113.1" stroke-dashoffset="0" transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 10 sections</text>
+    </svg>
+    <div class="progress-info">0h / 10h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-what-is-claude-code.html"><span class="status-dot" data-chapter="01"></span> Claude Codeとは</a></li>
+    <li><a href="02-installation.html"><span class="status-dot" data-chapter="02"></span> インストール</a></li>
+    <li><a href="03-basic-commands.html"><span class="status-dot" data-chapter="03"></span> 基本コマンド</a></li>
+    <li><a href="04-prompt-design.html"><span class="status-dot" data-chapter="04"></span> プロンプト設計</a></li>
+  </ul>
+  <div class="section-label">Core</div>
+  <ul>
+    <li><a href="05-file-operations.html"><span class="status-dot" data-chapter="05"></span> ファイル操作</a></li>
+    <li><a href="06-git.html"><span class="status-dot" data-chapter="06"></span> Git連携</a></li>
+    <li><a href="07-troubleshooting.html"><span class="status-dot" data-chapter="07"></span> エラー対処</a></li>
+  </ul>
+  <div class="section-label">Practice</div>
+  <ul>
+    <li><a href="08-web-page.html"><span class="status-dot" data-chapter="08"></span> 実践: Webページ</a></li>
+    <li><a href="09-web-app.html" class="active"><span class="status-dot" data-chapter="09"></span> 実践: Webアプリ</a></li>
+    <li><a href="10-final-project.html"><span class="status-dot" data-chapter="10"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 3: Practice &gt; Chapter 09</div>
+  <h1>実践: ミニWebアプリ</h1>
+  <p class="subtitle">「動的に動く」アプリを作る。ToDoリストを題材に、JS / localStorage / CRUD を実体験する。</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 1h 30min</span>
+    <span class="badge">Phase: Practice</span>
+    <span class="badge">難易度: 実践</span>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>作るもの: ToDo アプリ</h2>
+
+  <p>定番のToDoアプリを作ります。シンプルですが、<strong>Webアプリの基本要素が全部入り</strong>。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">完成イメージとデータ構造</div>
+    <svg viewBox="0 0 460 240" width="100%" style="max-width:460px;">
+      <rect x="20" y="20" width="280" height="200" fill="#fff" stroke="#e4e4e7" stroke-width="2" rx="8"/>
+      <text x="160" y="50" text-anchor="middle" font-size="16" font-weight="700">My ToDo</text>
+      <rect x="40" y="65" width="180" height="28" fill="#f4f4f5" stroke="#18181b"/>
+      <text x="50" y="84" font-size="12" fill="#71717a">新しいタスク...</text>
+      <rect x="225" y="65" width="55" height="28" fill="#18181b"/>
+      <text x="252" y="84" text-anchor="middle" font-size="12" fill="#fff">追加</text>
+      <rect x="40" y="105" width="240" height="22" fill="#dcfce7"/>
+      <text x="50" y="120" font-size="12">☑ 牛乳を買う</text>
+      <rect x="40" y="130" width="240" height="22"/>
+      <text x="50" y="145" font-size="12">☐ 本を返す</text>
+      <rect x="40" y="155" width="240" height="22"/>
+      <text x="50" y="170" font-size="12">☐ 提案書を書く</text>
+      <text x="40" y="200" font-size="11" fill="#71717a">2 / 3 残り</text>
+      <text x="320" y="40" font-size="11" font-weight="700">localStorage</text>
+      <rect x="320" y="50" width="120" height="170" fill="#fef3c7" stroke="#d97706" rx="6"/>
+      <text x="330" y="75" font-size="10" font-family="monospace">[</text>
+      <text x="330" y="92" font-size="10" font-family="monospace">  {id:1,</text>
+      <text x="330" y="106" font-size="10" font-family="monospace">   text:"牛乳",</text>
+      <text x="330" y="120" font-size="10" font-family="monospace">   done:true},</text>
+      <text x="330" y="138" font-size="10" font-family="monospace">  {id:2,...}</text>
+      <text x="330" y="155" font-size="10" font-family="monospace">]</text>
+      <text x="380" y="200" text-anchor="middle" font-size="10" fill="#71717a">永続化</text>
+    </svg>
+    <div class="diagram-caption">UI(左) ⇄ localStorage(右) の同期で、ブラウザを閉じてもデータが残る。</div>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>機能の分解</h2>
+
+  <p><span class="term" data-tip="Create / Read / Update / Delete の頭文字。データ操作の基本4機能。">CRUD</span> の4機能を、ToDoアプリでは以下のようにマップします。</p>
+
+  <table>
+    <thead><tr><th>CRUD</th><th>ToDoアプリでの操作</th><th>UI要素</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Create</strong></td><td>新しいタスクを追加</td><td>入力欄 + 追加ボタン</td></tr>
+      <tr><td><strong>Read</strong></td><td>タスク一覧を表示</td><td>リスト</td></tr>
+      <tr><td><strong>Update</strong></td><td>完了状態を切り替え</td><td>チェックボックス</td></tr>
+      <tr><td><strong>Delete</strong></td><td>タスクを削除</td><td>×ボタン</td></tr>
+    </tbody>
+  </table>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>データの流れ</h2>
+
+  <div class="diagram-box">
+    <div class="diagram-title">操作 → 状態更新 → 描画 のループ</div>
+<pre class="mermaid">
+flowchart LR
+  U["ユーザー操作"] --> H["イベントハンドラ"]
+  H --> S["state を更新"]
+  S --> L["localStorage に保存"]
+  S --> R["再描画"]
+  R --> U
+</pre>
+    <div class="diagram-caption">どんなWebアプリも、突き詰めるとこの4要素のループ。</div>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>進め方の段取り</h2>
+
+  <div class="diagram-box">
+    <div class="diagram-title">7ステップで完成</div>
+    <div class="steps">
+      <div class="step done"><div class="step-num">1</div><div class="step-label">骨組み</div><div class="step-desc">HTML</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-label">追加</div><div class="step-desc">Create</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-label">表示</div><div class="step-desc">Read</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-label">完了</div><div class="step-desc">Update</div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-label">削除</div><div class="step-desc">Delete</div></div>
+      <div class="step"><div class="step-num">6</div><div class="step-label">永続化</div><div class="step-desc">localStorage</div></div>
+      <div class="step"><div class="step-num">7</div><div class="step-label">公開</div><div class="step-desc">GitHub Pages</div></div>
+    </div>
+    <div class="diagram-caption">1ステップ10〜15分。1機能ずつ追加して、毎回ブラウザで確認。</div>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>Step 1-3: HTML + 追加機能</h2>
+
+  <pre><code>&gt; ~/Desktop/my-todo フォルダに ToDoアプリを作ります。
+  まず index.html だけ。CSS と JS は同じファイルに <code>&lt;style&gt;</code> と <code>&lt;script&gt;</code> で書いて。
+
+  機能要件:
+  - 入力欄 + 「追加」ボタン
+  - 追加されたタスクは下のリストに表示
+  - データはこの段階では一時的でOK (リロードで消えてOK)
+  - シンプルなスタイル (背景白、文字黒)
+
+  外部ライブラリは一切使わない。</code></pre>
+
+  <p>ブラウザで開いて、追加できることを確認したら、次へ。</p>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>Step 4-5: 完了 + 削除</h2>
+
+  <pre><code>&gt; 各タスクの左にチェックボックスを追加して、
+  クリックで完了状態(打ち消し線+グレー)を切替えられるようにして。
+  あと右端に × ボタンを追加して、押したらそのタスクを削除して。</code></pre>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>Step 6: 永続化 (localStorage)</h2>
+
+  <pre><code>&gt; タスクを localStorage に保存して、ブラウザを閉じても
+  次回開いた時に復元されるようにして。
+  キー名は "my-todo-tasks" で。</code></pre>
+
+  <div class="info-box">
+    <span class="label">localStorage の特徴</span>
+    <p><span class="term" data-tip="ブラウザに約5MBまで永続的にデータを保存できる仕組み。シンプルなアプリならDB不要。">localStorage</span> はブラウザごとに保存される。<strong>Chromeで保存したデータはSafariからは見えない</strong>。本格的なアプリならサーバー必要だが、個人ToDoならこれで十分。</p><span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>Step 7: 公開</h2>
+
+  <pre><code>&gt; このフォルダを GitHub の "my-todo" リポジトリにpushして、
+  GitHub Pages を有効化してください。完了したら公開URLを教えて。</code></pre>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>機能拡張のアイデア</h2>
+
+  <p>基本ができたら、+α を「自分で考えて頼む」練習。1機能ずつ足していくのがコツ。</p>
+
+  <ul class="icon-list">
+    <li><i data-lucide="filter" width="20" height="20"></i><div><strong>フィルタ</strong> — 「全て / 未完了 / 完了済」の切替</div></li>
+    <li><i data-lucide="search" width="20" height="20"></i><div><strong>検索</strong> — テキストで絞り込み</div></li>
+    <li><i data-lucide="calendar" width="20" height="20"></i><div><strong>期限</strong> — 日付フィールドを追加</div></li>
+    <li><i data-lucide="moon" width="20" height="20"></i><div><strong>ダークモード</strong> — Ch08で作った仕組みを移植</div></li>
+    <li><i data-lucide="download" width="20" height="20"></i><div><strong>エクスポート</strong> — JSONダウンロード機能</div></li>
+  </ul>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>つまずきポイントと対策</h2>
+
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">よくある失敗</span>
+      <h4>一気に全機能頼む</h4>
+      <p style="font-size:13px;">「ToDoアプリを作って、追加・削除・完了・期限・タグ・検索・ダークモード全部入りで」→ どこかが必ず壊れる。デバッグも難航。</p>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">正解</span>
+      <h4>1機能ずつ追加</h4>
+      <p style="font-size:13px;">最小機能を作って動作確認 → 1機能追加 → 動作確認 → ... を繰り返す。<strong>毎ステップで commit</strong> しておけばロールバックも安全。</p>
+    </div>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: 「DB使わなくていいの?」</summary>
+    <div class="more-body">
+      <p>個人で使うToDoならlocalStorageで十分。共有や端末跨ぎが必要になったら、Firebase Firestoreや Supabase などのBaaSを後付けで追加できます。最初からDB前提で設計すると複雑になるので、<strong>まずlocalStorageで動くものを作って、必要に応じてDBに置き換える</strong>のが定石です。</p>
+    </div>
+  </details>
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>本章の手順通り ToDo アプリを完成 → 公開</h4>
+    <p>7ステップを実際に踏みます。</p>
+    <ol>
+      <li><code>~/Desktop/my-todo</code> フォルダを作り claude 起動</li>
+      <li>本章の依頼例を順に実行 (Step 1〜6)</li>
+      <li>各ステップ後にブラウザでリロードして動作確認</li>
+      <li>完了したら GitHub Pages に公開</li>
+      <li>スマホで公開URLを開いて、タスクの追加→完了→削除を試す</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>「自力で動くToDoアプリを公開する」が達成できれば成功。完成チェックリスト:</p>
+      <pre><code>[完成チェック]
+□ タスクを追加できる
+□ 追加されたタスクが一覧に並ぶ
+□ チェックで完了/未完了を切替えられる (打ち消し線 + 色変化)
+□ × で削除できる
+□ ブラウザを閉じて開き直してもタスクが残っている
+□ GitHub Pages の公開URLで動く
+□ スマホでも操作できる</code></pre>
+      <p>これが達成できたら、もうあなたは <strong>「Webアプリを作って公開できる人」</strong>。年収換算で副業案件が現実的に取れるレベルです。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>「未完了 / 完了 / 全て」フィルタを追加</h4>
+    <p>1機能だけ自分で発注する練習。</p>
+    <ol>
+      <li>上部に3つのボタン (「未完了」「完了」「全て」) を追加するよう Claude に依頼</li>
+      <li>クリックで表示するタスクを絞り込めるようにする</li>
+      <li>選択中のフィルタは目立つスタイル(背景色など)に</li>
+      <li>動作確認後、commit + push で公開版にも反映</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>JS側ではフィルタ用の <code>state.filter</code> を保持し、描画時にフィルタする。CSSは <code>.filter-btn.active</code> セレクタで選択状態を表現するのが定番です。</p>
+      <pre><code>// 概念だけ
+let filter = 'all'; // 'all' | 'active' | 'done'
+
+function render() {
+  const visible = tasks.filter(t =&gt; {
+    if (filter === 'active') return !t.done;
+    if (filter === 'done') return t.done;
+    return true;
+  });
+  // visible を画面に描画
+}
+
+document.querySelectorAll('.filter-btn').forEach(btn =&gt; {
+  btn.addEventListener('click', () =&gt; {
+    filter = btn.dataset.filter;
+    document.querySelectorAll('.filter-btn').forEach(b =&gt; b.classList.toggle('active', b === btn));
+    render();
+  });
+});</code></pre>
+      <p>「<strong>状態を変えて → 再描画</strong>」のパターンが身についたら、Webアプリ開発の核心を掴んでいます。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span> <a href="https://developer.mozilla.org/ja/docs/Web/API/Window/localStorage" target="_blank" rel="noopener">MDN localStorage</a> — 永続化APIの公式ドキュメント</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://developer.mozilla.org/ja/docs/Learn/JavaScript" target="_blank" rel="noopener">MDN JavaScript 入門</a> — JSの基礎</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://todomvc.com/" target="_blank" rel="noopener">TodoMVC</a> — 様々なフレームワークでのToDo実装例集</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="09">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="08-web-page.html"><span class="direction">&larr; Prev</span>実践: 自己紹介Webページ</a>
+    <a href="10-final-project.html"><span class="direction">Next &rarr;</span>最終演習</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#f4f4f5',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#18181b',
+      lineColor: '#18181b',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>

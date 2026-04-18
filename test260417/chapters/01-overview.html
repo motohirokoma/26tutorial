@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%2316a34a%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>フィジカルAIの全体像 - Kuririn's Physical AI Crash Course</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #16a34a; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></div>
+      &gt;_ Kuririn's Physical AI Crash Course
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="../index.html#phase3" data-nav><span class="phase-name">Advanced</span><span class="phase-pct" id="pct-advanced">0%</span></a></li>
+      <li><a href="../index.html#phase4" data-nav><span class="phase-name">Final</span><span class="phase-pct" id="pct-final">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.01</span>
+    フィジカルAIの全体像
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 37 sections</text>
+    </svg>
+    <div class="progress-info">0h / 8h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-overview.html"><span class="status-dot" data-chapter="01"></span> フィジカルAIの全体像</a></li>
+    <li><a href="02-classical-control.html"><span class="status-dot" data-chapter="02"></span> 古典制御とロボットの基盤技術</a></li>
+  </ul>
+  <div class="section-label">Core</div>
+  <ul>
+    <li><a href="03-reinforcement-learning.html"><span class="status-dot" data-chapter="03"></span> 強化学習によるロボット制御</a></li>
+    <li><a href="04-imitation-learning.html"><span class="status-dot" data-chapter="04"></span> 模倣学習とテレオペレーション</a></li>
+    <li><a href="05-vla-models.html"><span class="status-dot" data-chapter="05"></span> VLAモデルの最前線</a></li>
+  </ul>
+  <div class="section-label">Advanced</div>
+  <ul>
+    <li><a href="06-implementation-barriers.html"><span class="status-dot" data-chapter="06"></span> 実装の壁</a></li>
+    <li><a href="07-business-scoping.html"><span class="status-dot" data-chapter="07"></span> ビジネススコーピングの技法</a></li>
+  </ul>
+  <div class="section-label">Final</div>
+  <ul>
+    <li><a href="08-final-exercise.html"><span class="status-dot" data-chapter="08"></span> 最終演習問題</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 1: Basics &gt; Chapter 01</div>
+  <h1>フィジカルAIの全体像</h1>
+  <p class="subtitle">フィジカルAIとは何か — 定義・市場・プレイヤーを俯瞰し、ビジネス機会を掴む</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 45min</span>
+    <span class="badge">Phase: Basics</span>
+    <span class="badge">難易度: 入門</span>
+  </div>
+
+  <div class="info-box">
+    <strong>前提知識:</strong> Ch00の基礎用語（自由度、センサー、教師あり/なし/強化学習）を理解していることが前提です。不安な方は<a href="00-prerequisites.html">はじめての方へ</a>を先にご覧ください。
+  </div>
+
+  <!-- ===== Section 1: フィジカルAIの定義 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span> フィジカルAIの定義</h2>
+
+  <p><span class="term" data-tip="Physical AI：物理世界でセンサーによる知覚、AIによる判断、アクチュエータによる行動を行うAIシステムの総称">フィジカルAI</span>とは、<strong>物理世界で知覚・判断・行動するAI</strong>のことです。ChatGPTのようなソフトウェアAIがテキストや画像の世界で完結するのに対し、フィジカルAIは現実の物体に触れ、動かし、変化を起こします。</p>
+
+  <!-- SVG: 知覚→判断→行動ループ -->
+  <div style="text-align:center; margin:2rem 0;">
+    <svg viewBox="0 0 520 280" width="100%" style="max-width:520px;" xmlns="http://www.w3.org/2000/svg">
+      <!-- Perception circle -->
+      <circle cx="260" cy="60" r="50" fill="#f4f4f5" stroke="#16a34a" stroke-width="2.5"/>
+      <text x="260" y="55" text-anchor="middle" font-size="14" font-weight="bold" fill="#18181b">知覚</text>
+      <text x="260" y="72" text-anchor="middle" font-size="11" fill="#555">Perception</text>
+      <!-- Decision circle -->
+      <circle cx="110" cy="220" r="50" fill="#f4f4f5" stroke="#18181b" stroke-width="2.5"/>
+      <text x="110" y="215" text-anchor="middle" font-size="14" font-weight="bold" fill="#18181b">判断</text>
+      <text x="110" y="232" text-anchor="middle" font-size="11" fill="#555">Decision</text>
+      <!-- Action circle -->
+      <circle cx="410" cy="220" r="50" fill="#f4f4f5" stroke="#e11d48" stroke-width="2.5"/>
+      <text x="410" y="215" text-anchor="middle" font-size="14" font-weight="bold" fill="#18181b">行動</text>
+      <text x="410" y="232" text-anchor="middle" font-size="11" fill="#555">Action</text>
+      <!-- Arrows -->
+      <defs>
+        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="#18181b"/>
+        </marker>
+      </defs>
+      <!-- Perception -> Decision -->
+      <path d="M215 95 Q 140 140 130 170" fill="none" stroke="#18181b" stroke-width="2" marker-end="url(#arrowhead)"/>
+      <text x="148" y="130" font-size="11" fill="#16a34a" font-weight="bold">カメラ・LiDAR</text>
+      <!-- Decision -> Action -->
+      <path d="M160 230 Q 260 260 360 230" fill="none" stroke="#18181b" stroke-width="2" marker-end="url(#arrowhead)"/>
+      <text x="260" y="265" text-anchor="middle" font-size="11" fill="#18181b" font-weight="bold">AI モデルが指令</text>
+      <!-- Action -> Perception (feedback) -->
+      <path d="M445 185 Q 440 100 310 65" fill="none" stroke="#18181b" stroke-width="2" marker-end="url(#arrowhead)"/>
+      <text x="410" y="115" font-size="11" fill="#e11d48" font-weight="bold">モーター駆動</text>
+      <!-- Center label -->
+      <text x="260" y="180" text-anchor="middle" font-size="13" fill="#16a34a" font-weight="bold">物理世界</text>
+      <text x="260" y="196" text-anchor="middle" font-size="11" fill="#888">リアルタイム閉ループ</text>
+    </svg>
+    <p style="font-size:0.85rem; color:#666; margin-top:0.5rem;">フィジカルAIの核心：知覚→判断→行動の閉ループが物理世界で回り続ける</p>
+  </div>
+
+  <h3>ソフトウェアAIとの決定的な違い</h3>
+  <p>ソフトウェアAIは間違えても「もう一度やり直し」が簡単ですが、フィジカルAIは物理世界で動くため、<strong>失敗のコストが高い</strong>（物を壊す、人を傷つけるリスクがある）という本質的な違いがあります。この制約こそが、フィジカルAIの技術開発を難しく、同時にビジネス価値を高くしています。</p>
+
+  <h3>具体的なフィジカルAIの例</h3>
+  <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:1rem; margin:1.5rem 0;">
+    <div style="background:#f4f4f5; border-radius:10px; padding:1.2rem; border-left:3px solid #16a34a;">
+      <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;">
+        <i data-lucide="car" style="width:22px;height:22px;color:#16a34a;"></i>
+        <strong>自動運転</strong>
+      </div>
+      <p style="font-size:0.85rem; margin:0;">カメラ・LiDARで知覚、AIが判断、ステアリング・ブレーキで行動</p>
+    </div>
+    <div style="background:#f4f4f5; border-radius:10px; padding:1.2rem; border-left:3px solid #16a34a;">
+      <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;">
+        <i data-lucide="factory" style="width:22px;height:22px;color:#16a34a;"></i>
+        <strong>産業用ロボット</strong>
+      </div>
+      <p style="font-size:0.85rem; margin:0;">ビジョンで部品認識、最適な把持計画を立て、アームで組立</p>
+    </div>
+    <div style="background:#f4f4f5; border-radius:10px; padding:1.2rem; border-left:3px solid #16a34a;">
+      <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;">
+        <i data-lucide="plane" style="width:22px;height:22px;color:#16a34a;"></i>
+        <strong>ドローン</strong>
+      </div>
+      <p style="font-size:0.85rem; margin:0;">GPSとカメラで自己位置推定、障害物回避、自律飛行</p>
+    </div>
+    <div style="background:#f4f4f5; border-radius:10px; padding:1.2rem; border-left:3px solid #16a34a;">
+      <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;">
+        <i data-lucide="person-standing" style="width:22px;height:22px;color:#16a34a;"></i>
+        <strong><span class="term" data-tip="人型ロボット。二足歩行、両腕作業が可能。Tesla Optimus、Figure 02、Atlas等が代表格">ヒューマノイド</span></strong>
+      </div>
+      <p style="font-size:0.85rem; margin:0;">人間と同じ環境で汎用タスクを実行。究極のフィジカルAI</p>
+    </div>
+  </div>
+
+  <details class="more-box">
+    <summary>Deep Dive: NVIDIAジェンスン・ファンCEOの「Physical AIの時代」宣言</summary>
+    <p>2024年のCES基調講演で、NVIDIAのジェンスン・ファンCEOは「次のAIのフロンティアはPhysical AIだ」と宣言しました。NVIDIAは<span class="term" data-tip="NVIDIAが提供するロボット開発プラットフォーム。シミュレーション、学習、デプロイのフルスタックを提供">Isaac</span>プラットフォームと<span class="term" data-tip="NVIDIAの3D仮想世界シミュレーション基盤。物理法則に従ったデジタルツイン環境を構築可能">Omniverse</span>を軸に、ロボットAIの開発基盤を提供するエコシステム戦略を推進しています。GPU需要がデータセンター向けだけでなく「ロボットの脳」としても拡大する構図は、ビジネスとしても極めて大きなインパクトを持ちます。</p>
+  </details>
+
+  <!-- ===== Section 2: 市場規模と成長ドライバー ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span> 市場規模と成長ドライバー</h2>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span>
+
+  <p>フィジカルAI（ロボティクスAI）市場は急激な成長を見せています。Goldman Sachsは<span class="term" data-tip="ヒューマノイドロボット市場の予測。2035年までに380億ドル規模に達するとの推計">ヒューマノイドロボット市場だけで2035年に380億ドル</span>に達すると予測しています。</p>
+
+  <!-- Stats Grid -->
+  <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap:1rem; margin:1.5rem 0;">
+    <div style="text-align:center; padding:1.2rem; background:#f4f4f5; border-radius:10px;">
+      <div style="font-size:2rem; font-weight:bold; color:#16a34a;">$38B</div>
+      <div style="font-size:0.82rem; color:#555;">ヒューマノイド市場<br>2035年予測</div>
+    </div>
+    <div style="text-align:center; padding:1.2rem; background:#f4f4f5; border-radius:10px;">
+      <div style="font-size:2rem; font-weight:bold; color:#16a34a;">45%</div>
+      <div style="font-size:0.82rem; color:#555;">年平均成長率<br>(CAGR)</div>
+    </div>
+    <div style="text-align:center; padding:1.2rem; background:#f4f4f5; border-radius:10px;">
+      <div style="font-size:2rem; font-weight:bold; color:#16a34a;">$80B+</div>
+      <div style="font-size:0.82rem; color:#555;">産業ロボティクス<br>2030年予測</div>
+    </div>
+    <div style="text-align:center; padding:1.2rem; background:#f4f4f5; border-radius:10px;">
+      <div style="font-size:2rem; font-weight:bold; color:#16a34a;">300+</div>
+      <div style="font-size:0.82rem; color:#555;">ロボティクスAI<br>スタートアップ数</div>
+    </div>
+  </div>
+
+  <!-- Chart.js: 市場規模推移 -->
+  <div style="max-width:600px; margin:2rem auto;">
+    <canvas id="marketChart"></canvas>
+  </div>
+
+  <h3>なぜ今、爆発的に伸びているのか</h3>
+  <p>フィジカルAIが急成長している背景には、4つの<span class="term" data-tip="市場の成長を加速させる要因のこと">成長ドライバー</span>があります。</p>
+
+  <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1rem; margin:1.5rem 0;">
+    <div style="background:linear-gradient(135deg, #f4f4f5 0%, #fff 100%); border-radius:10px; padding:1.2rem; border:1px solid #e4e4e7;">
+      <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;">
+        <i data-lucide="cpu" style="width:20px;height:20px;color:#16a34a;"></i>
+        <strong>計算能力の飛躍</strong>
+      </div>
+      <p style="font-size:0.85rem; margin:0;">GPUの性能が10年で100倍以上に向上。リアルタイム推論が実現</p>
+    </div>
+    <div style="background:linear-gradient(135deg, #f4f4f5 0%, #fff 100%); border-radius:10px; padding:1.2rem; border:1px solid #e4e4e7;">
+      <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;">
+        <i data-lucide="sparkles" style="width:20px;height:20px;color:#16a34a;"></i>
+        <strong><span class="term" data-tip="大量データで事前学習された大規模AIモデル。テキスト・画像・ロボット操作など多様なタスクに転移可能">基盤モデル</span>の進化</strong>
+      </div>
+      <p style="font-size:0.85rem; margin:0;">LLM/VLMの成功がロボット制御モデル（VLA等）に波及</p>
+    </div>
+    <div style="background:linear-gradient(135deg, #f4f4f5 0%, #fff 100%); border-radius:10px; padding:1.2rem; border:1px solid #e4e4e7;">
+      <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;">
+        <i data-lucide="monitor" style="width:20px;height:20px;color:#16a34a;"></i>
+        <strong>シミュレータの革新</strong>
+      </div>
+      <p style="font-size:0.85rem; margin:0;">NVIDIA Omniverse等で物理忠実度の高いSim環境が普及</p>
+    </div>
+    <div style="background:linear-gradient(135deg, #f4f4f5 0%, #fff 100%); border-radius:10px; padding:1.2rem; border:1px solid #e4e4e7;">
+      <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;">
+        <i data-lucide="trending-down" style="width:20px;height:20px;color:#16a34a;"></i>
+        <strong>ハードウェアコスト低下</strong>
+      </div>
+      <p style="font-size:0.85rem; margin:0;">中国勢の参入でロボットの価格が劇的に下落。Unitreeは$16Kで四足歩行ロボットを販売</p>
+    </div>
+  </div>
+
+  <details class="more-box">
+    <summary>Deep Dive: Sim-to-Realがゲームチェンジャーである理由</summary>
+    <p>従来のロボット開発は「実機で試して壊して直す」の繰り返しで、時間もコストも莫大でした。<span class="term" data-tip="シミュレータ内でロボットを数百万回試行錯誤させ、学習した方策を現実のロボットに転移する手法">Sim-to-Real転移</span>により、仮想環境で数百万回の学習を行い、成功したポリシーだけを実機に移す開発が可能になりました。NVIDIA IsaacSimでは1台のGPUで数千のロボットを同時にシミュレートでき、開発スピードを桁違いに加速します。これはソフトウェア開発における「CI/CDパイプライン」に相当する革命だと言えます。</p>
+  </details>
+
+  <!-- ===== Section 3: 主要プレイヤーマップ ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span> 主要プレイヤーマップ</h2>
+
+  <p>フィジカルAIのエコシステムは、プラットフォーム提供者、ロボットメーカー、AI研究機関の3層で構成されています。ビジネスの現場で「どの会社が何をしているか」を語れることが、コンサルタントやセールスの信頼性に直結します。</p>
+
+  <!-- Table: 主要プレイヤー比較表 -->
+  <table>
+    <thead>
+      <tr>
+        <th>企業/組織</th>
+        <th>カテゴリ</th>
+        <th>主な製品/取り組み</th>
+        <th>注目ポイント</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>NVIDIA</strong></td>
+        <td>プラットフォーム</td>
+        <td>Isaac, Omniverse, GR00T</td>
+        <td>ロボットAI開発基盤のデファクト</td>
+      </tr>
+      <tr>
+        <td><strong>Google DeepMind</strong></td>
+        <td>AI研究</td>
+        <td><span class="term" data-tip="Google DeepMindが開発したロボット操作基盤モデル。自然言語指示でロボットアームを制御">RT-2</span>, Gemini Robotics</td>
+        <td>VLAモデルの先駆者</td>
+      </tr>
+      <tr>
+        <td><strong>Tesla</strong></td>
+        <td>ヒューマノイド</td>
+        <td><span class="term" data-tip="テスラが開発中の汎用ヒューマノイドロボット。自社工場での稼働を目指す">Optimus</span></td>
+        <td>自動運転AIチームの転用</td>
+      </tr>
+      <tr>
+        <td><strong>Figure AI</strong></td>
+        <td>ヒューマノイド</td>
+        <td>Figure 02</td>
+        <td>OpenAIとの提携、BMW工場導入</td>
+      </tr>
+      <tr>
+        <td><strong>Boston Dynamics</strong></td>
+        <td>ロボットメーカー</td>
+        <td>Atlas, Spot, Stretch</td>
+        <td>動力学制御のパイオニア</td>
+      </tr>
+      <tr>
+        <td><strong><span class="term" data-tip="中国の四足歩行ロボットメーカー。低価格戦略で市場を席巻。Go2は約16,000ドルから">Unitree</span></strong></td>
+        <td>ロボットメーカー</td>
+        <td>Go2, H1, G1</td>
+        <td>低価格路線で市場破壊</td>
+      </tr>
+      <tr>
+        <td><strong>Preferred Networks</strong></td>
+        <td>AI研究</td>
+        <td>自律移動、マニピュレーション</td>
+        <td>日本発のフィジカルAIリーダー</td>
+      </tr>
+      <tr>
+        <td><strong>UBTECH</strong></td>
+        <td>ヒューマノイド</td>
+        <td>Walker X</td>
+        <td>中国ヒューマノイド市場の大手</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span>
+
+  <details class="more-box">
+    <summary>Deep Dive: 中国勢の台頭とグローバル競争</summary>
+    <p>2024年以降、中国のロボティクスメーカーが驚異的なスピードで市場に参入しています。Unitreeは四足歩行ロボットGo2を16,000ドル（Boston Dynamics Spotの約1/5）で販売し、ヒューマノイドG1は約10万ドルという価格設定です。UBTECHは深圳に世界最大級のヒューマノイド工場を建設中です。この価格破壊は「ハードウェアのコモディティ化」を加速させ、<strong>AIソフトウェア（頭脳）の差別化が最大の競争軸</strong>になることを意味します。コンサルタントとしては、クライアントに「ハードは安くなる。投資すべきはAIと統合力」と伝えられると価値が高まります。</p>
+  </details>
+
+  <!-- ===== Section 4: ビジネス観点 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span> ビジネス観点：どの産業で使われるか</h2>
+
+  <p>フィジカルAIは産業ごとに導入の成熟度が大きく異なります。顧客の業界に合わせた的確なアドバイスのために、現在の導入ステージを把握しておきましょう。</p>
+
+  <!-- Mermaid: 産業別の導入成熟度 -->
+  <div class="mermaid">
+  graph LR
+    subgraph 実用化済
+      A["製造業<br/>溶接・組立・検査"]
+      B["物流<br/>倉庫ピッキング"]
+    end
+    subgraph 実証段階
+      C["医療<br/>手術支援"]
+      D["建設<br/>測量・運搬"]
+      E["農業<br/>収穫・除草"]
+    end
+    subgraph 研究段階
+      F["小売<br/>店舗オペレーション"]
+      G["家庭<br/>汎用家事ロボット"]
+    end
+    A --> C
+    B --> D
+    C --> F
+    D --> G
+    style A fill:#16a34a,color:#fff,stroke:none
+    style B fill:#16a34a,color:#fff,stroke:none
+    style C fill:#f4f4f5,stroke:#18181b
+    style D fill:#f4f4f5,stroke:#18181b
+    style E fill:#f4f4f5,stroke:#18181b
+    style F fill:#fef3c7,stroke:#d97706
+    style G fill:#fef3c7,stroke:#d97706
+  </div>
+
+  <h3>産業別の導入状況と期待ROI</h3>
+
+  <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap:1rem; margin:1.5rem 0;">
+    <div style="background:#fff; border-radius:10px; padding:1.2rem; border:1px solid #e4e4e7;">
+      <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.75rem;">
+        <i data-lucide="factory" style="width:22px;height:22px;color:#16a34a;"></i>
+        <strong>製造業</strong>
+        <span style="font-size:0.75rem; background:#16a34a; color:#fff; padding:2px 8px; border-radius:99px; margin-left:auto;">実用化済</span>
+      </div>
+      <p style="font-size:0.85rem; margin:0 0 0.5rem;">溶接、塗装、組立、外観検査が主要用途。品質向上と人手不足対策が導入動機</p>
+      <div style="font-size:0.82rem; color:#16a34a; font-weight:bold;">期待ROI: 1-2年で回収</div>
+    </div>
+    <div style="background:#fff; border-radius:10px; padding:1.2rem; border:1px solid #e4e4e7;">
+      <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.75rem;">
+        <i data-lucide="package" style="width:22px;height:22px;color:#16a34a;"></i>
+        <strong>物流・倉庫</strong>
+        <span style="font-size:0.75rem; background:#16a34a; color:#fff; padding:2px 8px; border-radius:99px; margin-left:auto;">実用化済</span>
+      </div>
+      <p style="font-size:0.85rem; margin:0 0 0.5rem;">ピッキング、パレタイジング、AGV/AMR搬送。EC拡大で需要急増中</p>
+      <div style="font-size:0.82rem; color:#16a34a; font-weight:bold;">期待ROI: 1-3年で回収</div>
+    </div>
+    <div style="background:#fff; border-radius:10px; padding:1.2rem; border:1px solid #e4e4e7;">
+      <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.75rem;">
+        <i data-lucide="heart-pulse" style="width:22px;height:22px;color:#16a34a;"></i>
+        <strong>医療</strong>
+        <span style="font-size:0.75rem; background:#f4f4f5; color:#18181b; padding:2px 8px; border-radius:99px; margin-left:auto;">実証段階</span>
+      </div>
+      <p style="font-size:0.85rem; margin:0 0 0.5rem;"><span class="term" data-tip="da Vinciシステムなど。外科医が遠隔操作するロボット。AI支援で精度向上が進む">手術支援ロボット</span>が先行。リハビリ、介護への拡大が期待</p>
+      <div style="font-size:0.82rem; color:#555; font-weight:bold;">期待ROI: 3-5年（規制要因あり）</div>
+    </div>
+    <div style="background:#fff; border-radius:10px; padding:1.2rem; border:1px solid #e4e4e7;">
+      <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.75rem;">
+        <i data-lucide="hard-hat" style="width:22px;height:22px;color:#16a34a;"></i>
+        <strong>建設</strong>
+        <span style="font-size:0.75rem; background:#f4f4f5; color:#18181b; padding:2px 8px; border-radius:99px; margin-left:auto;">実証段階</span>
+      </div>
+      <p style="font-size:0.85rem; margin:0 0 0.5rem;">測量ドローン、自律運搬車、3Dプリンティング建設。深刻な人手不足が推進力</p>
+      <div style="font-size:0.82rem; color:#555; font-weight:bold;">期待ROI: 2-4年で回収</div>
+    </div>
+    <div style="background:#fff; border-radius:10px; padding:1.2rem; border:1px solid #e4e4e7;">
+      <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.75rem;">
+        <i data-lucide="wheat" style="width:22px;height:22px;color:#16a34a;"></i>
+        <strong>農業</strong>
+        <span style="font-size:0.75rem; background:#f4f4f5; color:#18181b; padding:2px 8px; border-radius:99px; margin-left:auto;">実証段階</span>
+      </div>
+      <p style="font-size:0.85rem; margin:0 0 0.5rem;">収穫ロボット、除草AI、ドローン散布。非構造化環境への適応が課題</p>
+      <div style="font-size:0.82rem; color:#555; font-weight:bold;">期待ROI: 3-5年で回収</div>
+    </div>
+    <div style="background:#fff; border-radius:10px; padding:1.2rem; border:1px solid #e4e4e7;">
+      <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.75rem;">
+        <i data-lucide="utensils" style="width:22px;height:22px;color:#16a34a;"></i>
+        <strong>サービス業</strong>
+        <span style="font-size:0.75rem; background:#fef3c7; color:#92400e; padding:2px 8px; border-radius:99px; margin-left:auto;">研究段階</span>
+      </div>
+      <p style="font-size:0.85rem; margin:0 0 0.5rem;">配膳ロボット、清掃ロボットが先行。接客・調理は依然として研究段階</p>
+      <div style="font-size:0.82rem; color:#888; font-weight:bold;">期待ROI: 5年以上</div>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <strong>コンサルとしてのポイント</strong><br>
+    クライアントから「うちもAIロボット入れたい」と言われたとき、まず確認すべきは<strong>「タスクの構造化度合い」</strong>です。工場のライン作業のように環境が整理されている（=<span class="term" data-tip="作業環境が予測可能で変動が少ない状態。工場ラインが典型例。対義語は非構造化環境（家庭、屋外など）">構造化環境</span>）ほどフィジカルAIは導入しやすく、ROIも出やすい。「まず構造化されたタスクから始めて段階的に拡張」が定石です。
+  </div>
+
+  <details class="more-box">
+    <summary>Deep Dive: 日本市場の特殊性 — 人手不足という追い風</summary>
+    <p>日本は世界でも突出した少子高齢化が進む国であり、2030年には約644万人の労働力不足が予測されています（パーソル総合研究所調べ）。この「人が足りない」という構造的問題は、フィジカルAIにとって強力な追い風です。特に物流（2024年問題）、建設、介護、農業は深刻な人手不足に直面しており、ロボット導入のROIが成り立ちやすい分野です。日本市場向けの提案では「コスト削減」ではなく「労働力の補完」という文脈でフレーミングすると響きやすい傾向があります。</p>
+  </details>
+
+  <!-- ===== Exercises ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span> 演習問題</h2>
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>知覚→判断→行動ループの適用</h4>
+    <p>自分の担当業界（または興味のある業界）でフィジカルAIが適用できそうな場面を<strong>3つ</strong>挙げ、それぞれについて「知覚→判断→行動」のループで説明してください。</p>
+    <ol>
+      <li>業界と適用場面を特定する</li>
+      <li>各場面で「何を知覚し」「何を判断し」「何を行動するか」を明記する</li>
+      <li>3つの場面がなるべく異なるタスク種類（検品、搬送、組立など）になるようにする</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><strong>例：物流業界</strong></p>
+      <p><strong>場面1：倉庫でのピッキング作業</strong></p>
+      <ul>
+        <li><strong>知覚：</strong>RGB-Dカメラで棚の商品位置・形状・ラベルを認識</li>
+        <li><strong>判断：</strong>注文データと照合し、最適な把持戦略（吸着/挟持）を選択</li>
+        <li><strong>行動：</strong>ロボットアームが商品を棚から取り出し、出荷コンテナに配置</li>
+      </ul>
+      <p><strong>場面2：搬送の自動化</strong></p>
+      <ul>
+        <li><strong>知覚：</strong>LiDARとカメラで倉庫内の通路・障害物・作業員を検知</li>
+        <li><strong>判断：</strong>SLAMで自己位置を特定し、混雑状況に応じた最短ルートを計算</li>
+        <li><strong>行動：</strong>AMR（自律移動ロボット）がパレットを指定場所まで搬送</li>
+      </ul>
+      <p><strong>場面3：入荷検品</strong></p>
+      <ul>
+        <li><strong>知覚：</strong>カメラで段ボール外装の破損・ラベルの内容を画像認識</li>
+        <li><strong>判断：</strong>破損度合いと発注データを照合し、受入可否を自動判定</li>
+        <li><strong>行動：</strong>合格品はコンベアで次工程へ、不合格品は返品レーンへ仕分け</li>
+      </ul>
+      <p>ポイント：3場面とも異なるタスク種類（ピッキング=操作、搬送=移動、検品=検査）にすると、フィジカルAIの適用範囲の広さを示せます。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>30秒エレベーターピッチ</h4>
+    <p>顧客から「フィジカルAIで工場の生産性を上げたい」と言われました。この章で学んだ内容だけで、<strong>30秒のエレベーターピッチ</strong>（約100〜150字）を書いてください。</p>
+    <ol>
+      <li>市場トレンドで「なぜ今か」を示す</li>
+      <li>具体的な導入メリットを1つ挙げる</li>
+      <li>「まず何から始めるか」の提案で締める</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><strong>模範ピッチ例（約140字）：</strong></p>
+      <p>「フィジカルAI市場は2030年に900億ドル規模に成長すると予測され、NVIDIAやGoogleが巨額投資を進めています。御社の検品工程にAI画像認識を導入すれば、見逃し率を現行の3%から0.5%以下に改善でき、年間の不良品コストを大幅に削減できます。まずは1ラインでの3ヶ月PoCから始めてみませんか。」</p>
+      <p><strong>評価ポイント：</strong></p>
+      <ul>
+        <li>市場データで信頼感を出している（数字の裏付け）</li>
+        <li>顧客の具体的な課題（検品精度）に結びつけている</li>
+        <li>「PoC」という現実的な第一歩を提案して、いきなり大規模投資を求めていない</li>
+        <li>30秒で読める分量に収まっている</li>
+      </ul>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><a href="https://blogs.nvidia.com/blog/physical-ai/" target="_blank" rel="noopener">NVIDIA Blog: The Era of Physical AI</a></li>
+      <li><a href="https://www.goldmansachs.com/insights/articles/humanoid-robots-on-the-rise" target="_blank" rel="noopener">Goldman Sachs: Humanoid Robots on the Rise (2024)</a></li>
+      <li><a href="https://deepmind.google/discover/blog/shaping-the-future-of-advanced-robotics/" target="_blank" rel="noopener">Google DeepMind: Shaping the Future of Robotics</a></li>
+      <li><a href="https://spectrum.ieee.org/humanoid-robot" target="_blank" rel="noopener">IEEE Spectrum: Humanoid Robots</a></li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="01">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="00-prerequisites.html"><span class="direction">&larr; Prev</span>はじめての方へ (前提知識)</a>
+    <a href="02-classical-control.html"><span class="direction">Next &rarr;</span>古典制御とロボットの基盤技術</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#f4f4f5',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#18181b',
+      lineColor: '#18181b',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<!-- 視覚化ライブラリ群 (使う章だけ動作、未使用章はゼロコスト) -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  // Lucideアイコンを自動描画 (data-lucide="icon-name" 属性のある要素を全部処理)
+  if (window.lucide) lucide.createIcons();
+
+  // Chart.js: 市場規模推移グラフ
+  window.addEventListener("load", function(){
+    var ctx = document.getElementById('marketChart');
+    if (!ctx) return;
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['2023', '2024', '2025', '2026', '2027', '2028', '2029', '2030'],
+        datasets: [
+          {
+            label: '産業ロボティクスAI市場 (十億ドル)',
+            data: [18, 24, 32, 41, 52, 62, 72, 83],
+            backgroundColor: 'rgba(22, 163, 74, 0.7)',
+            borderColor: '#16a34a',
+            borderWidth: 1,
+            borderRadius: 4
+          },
+          {
+            label: 'ヒューマノイドロボット市場 (十億ドル)',
+            data: [0.5, 1.2, 2.5, 4.5, 7.5, 12, 18, 26],
+            backgroundColor: 'rgba(24, 24, 27, 0.6)',
+            borderColor: '#18181b',
+            borderWidth: 1,
+            borderRadius: 4
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: 'フィジカルAI関連市場の成長予測',
+            font: { size: 14, weight: 'bold' },
+            color: '#18181b'
+          },
+          legend: {
+            labels: { font: { size: 12 }, color: '#555' }
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: '市場規模 (十億ドル)',
+              font: { size: 12 },
+              color: '#555'
+            },
+            grid: { color: '#f4f4f5' }
+          },
+          x: {
+            grid: { display: false }
+          }
+        }
+      }
+    });
+  });
+</script>
+</body>
+</html>

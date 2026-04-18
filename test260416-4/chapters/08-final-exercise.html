@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23eab308%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>最終演習問題 - MK's Understanding LLM - for Student</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #eab308; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#eab308" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Understanding LLM - for Student
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav class="active"><span class="phase-name">Practice</span><span class="phase-pct" id="pct-practice">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.08</span>
+    最終演習問題: 自分の"助手"をつくろう
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 8 sections</text>
+    </svg>
+    <div class="progress-info">0h / 3h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-what-is-genai.html"><span class="status-dot" data-chapter="01"></span> そもそも生成AIって何?</a></li>
+    <li><a href="02-vs-search.html"><span class="status-dot" data-chapter="02"></span> Google検索と何が違うの?</a></li>
+    <li><a href="03-try-it.html"><span class="status-dot" data-chapter="03"></span> ChatGPT・Claudeを使ってみよう</a></li>
+    <li><a href="04-prompting.html"><span class="status-dot" data-chapter="04"></span> 伝え方のコツ</a></li>
+  </ul>
+  <div class="section-label">Practice</div>
+  <ul>
+    <li><a href="05-daily-use.html"><span class="status-dot" data-chapter="05"></span> 毎日の暮らしで使ってみる</a></li>
+    <li><a href="06-caveats.html"><span class="status-dot" data-chapter="06"></span> 気をつけたい3つのこと</a></li>
+    <li><a href="07-tips.html"><span class="status-dot" data-chapter="07"></span> 便利に使うヒント</a></li>
+    <li><a href="08-final-exercise.html" class="active"><span class="status-dot" data-chapter="08"></span> 最終演習問題</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 2: Practice &gt; Chapter 08</div>
+  <h1>最終演習問題: 自分の"助手"をつくろう</h1>
+  <p class="subtitle">このチュートリアルで学んだことを全部使って、「毎週使える自分専用プロンプト」を3つ作ります。これで一人前。</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 20分</span>
+    <span class="badge">Phase: Practice</span>
+    <span class="badge">難易度: 総合演習</span>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#eab308" fill-rule="evenodd"/></svg></span>課題</h2>
+
+  <div class="quote">
+    <strong>あなたの生活に「毎週使える」プロンプトを3つ作り、それぞれ実際に試して、効果を確かめる。</strong>
+  </div>
+
+  <p>「なんとなくAIが使える」から「<strong>毎日の生活に組み込める</strong>」へのステップアップが、この演習の目的です。</p>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#eab308" fill-rule="evenodd"/></svg></span>演習のステップ</h2>
+
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-label">棚卸し</div><div class="step-desc">生活の「小さなストレス」を5個書き出す</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-label">選ぶ</div><div class="step-desc">毎週発生するものを3つ選ぶ</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-label">書く</div><div class="step-desc">Ch04の3原則でプロンプトを書く</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-label">試す</div><div class="step-desc">実際にAIに投げて効果を確認</div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-label">保存</div><div class="step-desc">メモアプリに「マイ・プロンプト集」として保存</div></div>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#eab308" fill-rule="evenodd"/></svg></span>段階的ヒント</h2>
+
+  <details class="more-box">
+    <summary>🔸 ヒント1: 「ストレスの棚卸し」って何を書けばいい?</summary>
+    <div class="more-body">
+      <p>以下の3つの問いで、5個探してみてください:</p>
+      <ul>
+        <li>1日のうち「面倒だな...」と感じる瞬間は?</li>
+        <li>週に1回以上やっている「考える必要がある作業」は?</li>
+        <li>人にやってほしいけど頼めない「頭脳労働」は?</li>
+      </ul>
+      <p><strong>例</strong>: 献立決め、メール文面を考える、子どもの宿題の相談、PTAの連絡文、旦那の誕生日プレゼント選び、義実家への季節のご挨拶、子どもの絵本の感想文チェック、など。</p>
+    </div>
+  </details>
+
+  <details class="more-box">
+    <summary>🔸 ヒント2: 「毎週使える」の基準は?</summary>
+    <div class="more-body">
+      <p>次のどれかにYESなら合格:</p>
+      <ul>
+        <li>毎週(または2週に1回以上)必ず発生する</li>
+        <li>毎回パターンが似ている(=テンプレートが使える)</li>
+        <li>AIに頼める範囲のこと(=文章・相談・提案系)</li>
+      </ul>
+      <p><strong>却下される例</strong>: 「年1回の確定申告」(頻度が低い)、「クレカの引き落とし管理」(AIでは扱えない金融情報)、「深い人間関係のトラブル」(AIより専門家)</p>
+    </div>
+  </details>
+
+  <details class="more-box">
+    <summary>🔸 ヒント3: プロンプトに何を盛り込む?</summary>
+    <div class="more-body">
+      <p>Ch04の3原則を思い出してください:</p>
+      <ol>
+        <li><strong>役割</strong>: 「あなたは〇〇です」</li>
+        <li><strong>具体的な状況</strong>: いつ・誰が・どんな状況で</li>
+        <li><strong>欲しい答えの形</strong>: 文字数・パターン数・トーン</li>
+      </ol>
+      <p>+ 毎回変わる部分を<code>[ここに入れる]</code>と角括弧で空けておく。これで<strong>毎週、空欄を埋めるだけ</strong>で使えるテンプレートになる。</p>
+    </div>
+  </details>
+
+  <details class="more-box">
+    <summary>🔸 ヒント4: テンプレートの書き方サンプル</summary>
+    <div class="more-body">
+      <pre><code>あなたは[役割]です。
+
+【状況】
+[今の状況を1〜2行で]
+
+【お願い】
+[何を作ってほしいか]
+
+【条件】
+・文字数: [目安]
+・トーン: [丁寧/カジュアル/など]
+・パターン数: [3つなど]
+
+よろしくお願いします。</code></pre>
+      <p>このテンプレートを「献立」「メール」「相談」の3用途でコピーして、それぞれの役割と条件を埋めるだけ。</p>
+    </div>
+  </details>
+
+  <details class="more-box">
+    <summary>🔸 ヒント5: うまくいかなかった時</summary>
+    <div class="more-body">
+      <p>思った答えが返らなかったら、以下を追加で指示:</p>
+      <ul>
+        <li>「もっと具体的に」</li>
+        <li>「もっと短く」「もっと長く」</li>
+        <li>「別のパターンも3つ」</li>
+        <li>「[違うトーン]で書き直して」</li>
+        <li>「例を1つ見せるので、同じスタイルで」</li>
+      </ul>
+      <p>一発で完璧を目指さず、<strong>会話で磨く</strong>のがコツ。人に頼む時と同じです。</p>
+    </div>
+  </details>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#eab308" fill-rule="evenodd"/></svg></span>評価ポイント</h2>
+
+  <table>
+    <thead>
+      <tr><th>観点</th><th>合格ライン</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>役割指定があるか</td><td>3つとも冒頭に「あなたは〇〇です」がある</td></tr>
+      <tr><td>空欄テンプレになっているか</td><td>毎回変える部分が角括弧で明示されている</td></tr>
+      <tr><td>実際に試したか</td><td>3つ全部、少なくとも1回は実際に投げた</td></tr>
+      <tr><td>生活で使えるか</td><td>保存して次週から実用する決意がある</td></tr>
+    </tbody>
+  </table>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#eab308" fill-rule="evenodd"/></svg></span>模範解答</h2>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る(まずは自分で書いてから!)</summary>
+    <div class="answer-body">
+      <p>以下は40代主婦の方の例です。あなたの生活に合わせてカスタマイズしてください。</p>
+
+      <h4 style="margin-top:16px;">マイ・プロンプト1: 週の献立を決める</h4>
+      <pre><code>あなたは栄養士の資格を持つ料理上手な友達です。
+
+【状況】
+・家族構成: 夫婦(40代)+小学生1人(8歳、野菜嫌い)
+・平日の夕飯担当: 私
+・冷蔵庫の在庫: [ここに写真を貼るか、在庫を書く]
+・今週の特記事項: [例: 習い事で水曜だけ18時帰り]
+
+【お願い】
+月曜〜金曜の夕飯5日分を、
+・20分以内に作れる
+・主菜・副菜・汁物のバランス
+・野菜嫌いな子が食べやすい工夫あり
+で作ってください。
+
+【条件】
+・買い物リストも末尾に付けて
+・水曜だけ10分で作れるもの</code></pre>
+
+      <h4 style="margin-top:16px;">マイ・プロンプト2: 連絡帳・PTAメールを書く</h4>
+      <pre><code>あなたは小学校に子どもを通わせる保護者です。
+
+【状況】
+・宛先: [担任の先生/PTA会長/クラス保護者]
+・目的: [欠席連絡/お礼/お知らせ/お願い]
+・入れたい内容:
+  - [ポイント1]
+  - [ポイント2]
+
+【お願い】
+丁寧で適切な文面を3パターン作って。
+
+【条件】
+・200字以内
+・敬語だけど堅苦しくない
+・末尾は「よろしくお願いいたします。」で統一</code></pre>
+
+      <h4 style="margin-top:16px;">マイ・プロンプト3: 子育ての悩み相談</h4>
+      <pre><code>あなたは子育て経験豊富な先輩ママ友です。
+
+【状況】
+うちの子(8歳・男の子)のことで悩んでいます。
+[具体的な悩みを書く]
+
+【お願い】
+まず共感してから、3つの具体的な声かけ・対応案をください。
+
+【条件】
+・強く叱らない方向で
+・続けられそうな小さなステップ
+・過去の失敗例も教えてくれると嬉しい</code></pre>
+
+      <p>この3つを<strong>スマホのメモアプリに保存</strong>しておけば、毎週<strong>空欄を埋めるだけ</strong>で即使える「あなた専用の助手」になります。</p>
+
+      <p><strong>1週間続けると</strong>、合計60〜90分の時短になります。これが1ヶ月で4〜6時間、1年で50〜70時間。<strong>自分の時間が戻ってくる</strong>ということを、ぜひ体験してください。</p>
+    </div>
+  </details>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#eab308" fill-rule="evenodd"/></svg></span>応用課題</h2>
+
+  <div class="exercise-box">
+    <div class="exercise-label">応用1</div>
+    <span class="difficulty advanced">上級</span>
+    <h4>家族を巻き込む</h4>
+    <p>旦那さんや子どもにも、あなたのマイ・プロンプトを1つ使わせてみてください。「使えた!」という体験を家族でシェア。</p>
+    <ol>
+      <li>旦那さんに「週末の夕飯、これでAIに聞いてみて」と渡す</li>
+      <li>子どもに(小学校中学年以上なら)「宿題で分からない時の聞き方」を教える</li>
+      <li>1週間後、家族の変化を観察する</li>
+    </ol>
+  </div>
+
+  <div class="exercise-box">
+    <div class="exercise-label">応用2</div>
+    <span class="difficulty advanced">上級</span>
+    <h4>1ヶ月後の振り返り</h4>
+    <p>今日から1ヶ月後、以下を振り返ってみてください。</p>
+    <ol>
+      <li>マイ・プロンプトは何回使ったか?</li>
+      <li>どれが一番役に立ったか?一番使わなかったものは?</li>
+      <li>新しく生まれたプロンプトは?(=生活の中で発見したもの)</li>
+      <li>どれくらい時間が節約できたか?(ざっくり)</li>
+    </ol>
+    <p>この振り返りで、あなたの「AI活用スキル」がさらに磨かれます。</p>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#eab308" fill-rule="evenodd"/></svg></span>🎉 修了おめでとうございます!</h2>
+
+  <p>ここまで読み終わったあなたは、もう<strong>生成AIを「説明できる」「使える」人</strong>です。最初に目指した到達目標:</p>
+
+  <div class="compare-cards">
+    <div class="cc good">
+      <span class="cc-label">達成</span>
+      <h4>✅ LLMとは何か説明できる</h4>
+      <p>「文章を扱うAIで、ChatGPTやClaudeの中身」と、身近な人に説明できる状態。</p>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">達成</span>
+      <h4>✅ 検索と生成AIの違いがわかる</h4>
+      <p>「探すのが検索、作るのが生成AI」と使い分けができる状態。</p>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">達成</span>
+      <h4>✅ 日常で使いこなせる</h4>
+      <p>3つのマイ・プロンプトを作り、毎週の生活に組み込める状態。</p>
+    </div>
+  </div>
+
+  <div class="quote">
+    生成AIは「難しいもの」ではなく「友達のような助手」。<br>
+    今日から、生活がちょっと軽くなりますように。<br>
+    <cite>— MK's Understanding LLM - for Student</cite>
+  </div>
+
+  <p><span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#eab308" fill-rule="evenodd"/></svg></span>「下のMark as Completeボタン」を押して、8章すべてをコンプリートしましょう!</p>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span><a href="https://chatgpt.com/" target="_blank" rel="noopener">ChatGPT</a></li>
+      <li><span class="res-type doc">Doc</span><a href="https://claude.ai/" target="_blank" rel="noopener">Claude</a></li>
+      <li><span class="res-type doc">Doc</span><a href="https://learnprompting.org/" target="_blank" rel="noopener">Learn Prompting (さらに深めたい人向け・英語)</a></li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この最終章を終えたら、下のボタンを押して<strong>完走</strong>しましょう!</p>
+    <button class="btn-complete" data-chapter="08">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="07-tips.html"><span class="direction">&larr; Prev</span>便利に使うヒント</a>
+    <a href="../index.html"><span class="direction">Home &rarr;</span>トップに戻る</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#f4f4f5',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#18181b',
+      lineColor: '#18181b',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>

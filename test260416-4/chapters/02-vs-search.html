@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23eab308%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>Google検索と何が違うの? - MK's Understanding LLM - for Student</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #eab308; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#eab308" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Understanding LLM - for Student
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav class="active"><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Practice</span><span class="phase-pct" id="pct-practice">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.02</span>
+    Google検索と何が違うの?
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 8 sections</text>
+    </svg>
+    <div class="progress-info">0h / 3h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-what-is-genai.html"><span class="status-dot" data-chapter="01"></span> そもそも生成AIって何?</a></li>
+    <li><a href="02-vs-search.html" class="active"><span class="status-dot" data-chapter="02"></span> Google検索と何が違うの?</a></li>
+    <li><a href="03-try-it.html"><span class="status-dot" data-chapter="03"></span> ChatGPT・Claudeを使ってみよう</a></li>
+    <li><a href="04-prompting.html"><span class="status-dot" data-chapter="04"></span> 伝え方のコツ</a></li>
+  </ul>
+  <div class="section-label">Practice</div>
+  <ul>
+    <li><a href="05-daily-use.html"><span class="status-dot" data-chapter="05"></span> 毎日の暮らしで使ってみる</a></li>
+    <li><a href="06-caveats.html"><span class="status-dot" data-chapter="06"></span> 気をつけたい3つのこと</a></li>
+    <li><a href="07-tips.html"><span class="status-dot" data-chapter="07"></span> 便利に使うヒント</a></li>
+    <li><a href="08-final-exercise.html"><span class="status-dot" data-chapter="08"></span> 最終演習問題</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 1: Basics &gt; Chapter 02</div>
+  <h1>Google検索と何が違うの?</h1>
+  <p class="subtitle">この章でこのチュートリアルのコア到達目標を達成します。「検索」と「生成AI」、似てるようで役割が全く違います。</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 20分</span>
+    <span class="badge">Phase: Basics</span>
+    <span class="badge">難易度: 超入門</span>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#eab308" fill-rule="evenodd"/></svg></span>一言で: 検索は「<span class="term" data-tip="既にどこかのウェブサイトに書かれている情報を探す行為">探す</span>」、生成AIは「<span class="term" data-tip="あなたの質問に合わせてその場で文章を組み立てる行為">作る</span>」</h2>
+
+  <p>両方とも「質問すると答えが返ってくる」という点では似ています。でも、<strong>内部でやっていることは全然違います</strong>。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">「質問→答え」の動きの違い</div>
+    <svg viewBox="0 0 480 320" width="100%" style="max-width:520px; display:block; margin:0 auto;">
+      <!-- Google側 -->
+      <text x="115" y="30" text-anchor="middle" font-size="14" font-weight="700">Google検索</text>
+      <rect x="50"  y="45"  width="130" height="40" rx="8" fill="#f4f4f5" stroke="#52525b"/>
+      <text x="115" y="70"  text-anchor="middle" font-size="12">あなたの質問</text>
+      <path d="M115,90 L115,110" stroke="#52525b" stroke-width="2" marker-end="url(#arr-k)"/>
+      <rect x="50"  y="115" width="130" height="55" rx="8" fill="#e4e4e7" stroke="#52525b"/>
+      <text x="115" y="140" text-anchor="middle" font-size="12">既存のウェブ</text>
+      <text x="115" y="157" text-anchor="middle" font-size="12">ページを探す</text>
+      <path d="M115,175 L115,195" stroke="#52525b" stroke-width="2" marker-end="url(#arr-k)"/>
+      <rect x="50"  y="200" width="130" height="55" rx="8" fill="#f4f4f5" stroke="#52525b"/>
+      <text x="115" y="225" text-anchor="middle" font-size="12">ページの一覧</text>
+      <text x="115" y="242" text-anchor="middle" font-size="12">(リンク集)</text>
+      <text x="115" y="285" text-anchor="middle" font-size="11" fill="#71717a">→ 自分で開いて読む</text>
+
+      <!-- 生成AI側 -->
+      <text x="365" y="30" text-anchor="middle" font-size="14" font-weight="700">生成AI</text>
+      <rect x="300" y="45"  width="130" height="40" rx="8" fill="#fef9c3" stroke="#eab308"/>
+      <text x="365" y="70"  text-anchor="middle" font-size="12">あなたの質問</text>
+      <path d="M365,90 L365,110" stroke="#eab308" stroke-width="2" marker-end="url(#arr-y)"/>
+      <rect x="300" y="115" width="130" height="55" rx="8" fill="#fde68a" stroke="#eab308"/>
+      <text x="365" y="140" text-anchor="middle" font-size="12">AIが考えて</text>
+      <text x="365" y="157" text-anchor="middle" font-size="12">文章を作る</text>
+      <path d="M365,175 L365,195" stroke="#eab308" stroke-width="2" marker-end="url(#arr-y)"/>
+      <rect x="300" y="200" width="130" height="55" rx="8" fill="#fef9c3" stroke="#eab308"/>
+      <text x="365" y="225" text-anchor="middle" font-size="12">答えそのもの</text>
+      <text x="365" y="242" text-anchor="middle" font-size="12">(文章で)</text>
+      <text x="365" y="285" text-anchor="middle" font-size="11" fill="#71717a">→ そのまま読める</text>
+
+      <defs>
+        <marker id="arr-k" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#52525b"/></marker>
+        <marker id="arr-y" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#eab308"/></marker>
+      </defs>
+    </svg>
+    <div class="diagram-caption">Google = 既に書かれている場所を「探して」リンクで返す。生成AI = その場で「文章を作って」返す。</div>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#eab308" fill-rule="evenodd"/></svg></span>同じ質問を投げたら、答えはこう違う</h2>
+
+  <p>想像してみてください。「<strong>鶏むね肉と玉ねぎで、15分でできる夕飯</strong>」と聞きたい時。</p>
+
+  <div class="compare-cards">
+    <div class="cc neutral">
+      <span class="cc-label">Googleの答え方</span>
+      <h4>リンクの一覧</h4>
+      <ul>
+        <li>🔗 クックパッド「鶏むね肉 玉ねぎ 時短」(5000件)</li>
+        <li>🔗 デリッシュキッチン「鶏むね丼」動画</li>
+        <li>🔗 個人ブログ「我が家の鶏むね料理」</li>
+        <li>🔗 ...</li>
+      </ul>
+      <p style="font-size:12px;color:#71717a;margin-top:8px;">→ 自分で開いて、読み比べて、決める。</p>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">生成AIの答え方</span>
+      <h4>文章で提案してくれる</h4>
+      <p>「はい、3つ提案しますね。</p>
+      <ol style="margin:0;padding-left:20px;">
+        <li><strong>鶏むね親子丼</strong>(12分)<br>鶏・玉ねぎを煮て卵でとじる</li>
+        <li><strong>鶏と玉ねぎの甘辛炒め</strong>(10分)</li>
+        <li><strong>鶏むね肉の照り焼き</strong>(15分)</li>
+      </ol>
+      <p style="font-size:12px;color:#71717a;margin-top:8px;">→ そのまま使える答えが返ってくる。</p>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <span class="label">ポイント</span>
+    <p>同じ情報を探すのでも、<strong>「自分で読み比べたい」なら検索、「答えだけ欲しい」なら生成AI</strong>。どちらが良い悪いではなく、用途が違うのです。</p>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#eab308" fill-rule="evenodd"/></svg></span>比較表でまとめる</h2>
+
+  <table>
+    <thead>
+      <tr><th>観点</th><th>Google検索</th><th>生成AI (ChatGPTなど)</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>答えの形</td><td>リンクの一覧</td><td>文章そのもの</td></tr>
+      <tr><td>情報の新しさ</td><td>最新のニュースもOK</td><td><strong>古い情報のことがある</strong></td></tr>
+      <tr><td>正確さ</td><td>情報源が明確</td><td><strong>もっともらしく間違える場合あり</strong></td></tr>
+      <tr><td>文章を作ってくれる</td><td>×</td><td>◎</td></tr>
+      <tr><td>相談・壁打ち</td><td>苦手</td><td>得意</td></tr>
+      <tr><td>翻訳・要約</td><td>別サービスが必要</td><td>その場でできる</td></tr>
+      <tr><td>画像を作る</td><td>×</td><td>◎</td></tr>
+      <tr><td>値段</td><td>無料</td><td>基本無料(有料プランあり)</td></tr>
+    </tbody>
+  </table>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#eab308" fill-rule="evenodd"/></svg></span>使い分けのルール</h2>
+
+  <p>迷った時はこのフローチャートで判断できます。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">検索 vs 生成AI の使い分けフロー</div>
+    <pre class="mermaid">
+graph TD
+  Q["調べたいこと発生"] --> Q1{"最新ニュースや<br/>正確な事実?"}
+  Q1 -- "Yes" --> G["Google検索"]
+  Q1 -- "No" --> Q2{"文章を<br/>作ってほしい?"}
+  Q2 -- "Yes" --> AI["生成AI"]
+  Q2 -- "No" --> Q3{"相談したい?<br/>アイデアが欲しい?"}
+  Q3 -- "Yes" --> AI
+  Q3 -- "No" --> G
+    </pre>
+    <div class="diagram-caption">「最新のニュース・正確な事実」は検索、「文章作成・相談」は生成AI。</div>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#eab308" fill-rule="evenodd"/></svg></span>得意分野を見える化</h2>
+
+  <p>具体的な用途で、それぞれどれくらい得意かを5段階で比較してみました。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">用途別の得意度(5段階)</div>
+    <canvas id="ch2-radar" height="220"></canvas>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#eab308" fill-rule="evenodd"/></svg></span>最近は「生成AI×検索」も登場</h2>
+
+  <p>実は最近、<strong>検索と生成AIを組み合わせた</strong>新しいサービスも増えてきました。</p>
+
+  <ul class="icon-list">
+    <li><i data-lucide="search" width="20" height="20"></i><div><strong>Perplexity (パープレキシティ)</strong> — 「質問すると、AIが最新のウェブ情報を調べて、出典付きでまとめてくれる」サービス</div></li>
+    <li><i data-lucide="globe" width="20" height="20"></i><div><strong>ChatGPTのWeb検索機能</strong> — 最新のニュースも検索して答えてくれる(ChatGPTの有料/無料両方で使える)</div></li>
+    <li><i data-lucide="sparkles" width="20" height="20"></i><div><strong>GoogleのAI概要</strong> — Google検索の結果の一番上に、AIがまとめた要約が出る機能</div></li>
+  </ul>
+
+  <details class="more-box">
+    <summary>もっと詳しく: なぜ生成AIは「古い情報」になりがちなの?</summary>
+    <div class="more-body">
+      <p>ChatGPTなどのLLMは、<strong>ある時点までのインターネット情報を事前に「勉強」した</strong>状態で作られます。その「勉強した日付」を<span class="term" data-tip="knowledge cutoff の日本語訳。LLMが学習したデータの最終日">学習カットオフ</span>と言います。</p>
+      <p>例えば「学習カットオフが2024年10月」のモデルだと、それ以降のニュースは知らないのです。</p>
+      <p>ただし、最近のサービスは<strong>ウェブ検索機能と組み合わせている</strong>ので、実質的に最新情報も扱えるようになっています。気にしすぎなくて大丈夫。</p>
+    </div>
+  </details>
+
+  <div class="info-box">
+    <span class="label">Tips — この章の本質</span>
+    <p>「検索は情報の<strong>入口</strong>、生成AIは情報の<strong>出口</strong>」と覚えると整理しやすい。何かを調べ始める時は検索、答えをまとめたい時は生成AI。両方使えばさらに強い。</p>
+  </div>
+
+  <p><span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#eab308" fill-rule="evenodd"/></svg></span>「検索と生成AIは別物」と分かれば、もうこのチュートリアルの山場は越えました。お疲れさまでした!</p>
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>どっちを使うべき?仕分けクイズ</h4>
+    <p>次の5つの質問、それぞれ「検索」「生成AI」どちらが向いてそうですか?直感で答えてOK。</p>
+    <ol>
+      <li>「今日の東京の天気は?」</li>
+      <li>「PTAの会長が変わった挨拶メールを書いて」</li>
+      <li>「近所のラーメン屋で人気のお店はどこ?」</li>
+      <li>「子どもが『なんで空は青いの?』と聞いてきた。小学生にも分かるように説明して」</li>
+      <li>「来月の子供会のお知らせ、文面を3パターン作って」</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <ol>
+        <li>🔍 <strong>検索</strong> — 今日の天気は最新情報。生成AIは古い情報を答える可能性あり</li>
+        <li>🤖 <strong>生成AI</strong> — 文章作成そのもの。最も得意な領域</li>
+        <li>🔍 <strong>検索</strong>(+地図アプリ) — 地域性と最新の口コミが必要。生成AIは詳しくない</li>
+        <li>🤖 <strong>生成AI</strong> — 「小学生に分かるように説明し直す」が超得意</li>
+        <li>🤖 <strong>生成AI</strong> — パターン違いで何個も出すのが得意</li>
+      </ol>
+      <p>原則は<strong>「最新・正確な事実 = 検索」「文章を作る・相談 = 生成AI」</strong>。迷ったら両方に聞いてみて、比べてみるのもアリです。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>自分の使い分けマップを作る</h4>
+    <p>あなたが普段スマホで検索している「検索ワード」を、直近で10個思い出してみてください。そしてそれぞれ「検索」か「生成AI」か、どっちが向くか仕分けしてみましょう。</p>
+    <ol>
+      <li>Google検索の履歴を見て、直近10件を書き出す</li>
+      <li>「検索が向くもの」「生成AIが向くもの」に分ける</li>
+      <li>「生成AIに切り替えたら楽になりそう」なものを3つ選ぶ</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><strong>仕分け例</strong>:</p>
+      <ul>
+        <li>🔍 残すべき検索: 「近所のスーパー 営業時間」「台風 現在地」「推しのライブ会場」</li>
+        <li>🤖 生成AIに移すと楽: 「子ども 熱 対応(=相談)」「メール 文例 お詫び(=文章作成)」「夜ご飯 材料別 レシピ(=提案)」</li>
+      </ul>
+      <p>このリストが、Ch05で実際に試す時の<strong>マイ・ネタ帳</strong>になります。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span><a href="https://www.perplexity.ai/" target="_blank" rel="noopener">Perplexity (生成AI×検索)</a></li>
+      <li><span class="res-type doc">Doc</span><a href="https://help.openai.com/en/articles/9237897-chatgpt-search" target="_blank" rel="noopener">ChatGPT Search 公式説明 (英語)</a></li>
+      <li><span class="res-type doc">Doc</span><a href="https://blog.google/products/search/generative-ai-google-search-may-2024/" target="_blank" rel="noopener">Google AI概要 の紹介ブログ (英語)</a></li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="02">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="01-what-is-genai.html"><span class="direction">&larr; Prev</span>そもそも生成AIって何?</a>
+    <a href="03-try-it.html"><span class="direction">Next &rarr;</span>ChatGPT・Claudeを使ってみよう</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#f4f4f5',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#18181b',
+      lineColor: '#18181b',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+  window.addEventListener('load', function () {
+    var ctx = document.getElementById('ch2-radar');
+    if (!ctx || !window.Chart) return;
+    new Chart(ctx, {
+      type: 'radar',
+      data: {
+        labels: ['最新ニュース', '事実の確認', '文章を書く', '翻訳', '相談・壁打ち', 'アイデア出し'],
+        datasets: [
+          { label: 'Google検索', data: [5, 5, 1, 2, 1, 2], backgroundColor: 'rgba(82,82,91,0.2)', borderColor: '#52525b', pointBackgroundColor: '#52525b' },
+          { label: '生成AI', data: [2, 3, 5, 5, 5, 5], backgroundColor: 'rgba(234,179,8,0.25)', borderColor: '#eab308', pointBackgroundColor: '#eab308' }
+        ]
+      },
+      options: { plugins: { legend: { position: 'bottom' } }, scales: { r: { suggestedMin: 0, suggestedMax: 5 } } }
+    });
+  });
+</script>
+</body>
+</html>

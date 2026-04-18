@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>Project: Website Deploy - MK's Claude Code Tutorial</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code Tutorial
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="../index.html#phase3" data-nav><span class="phase-name">Advanced</span><span class="phase-pct" id="pct-adv">0%</span></a></li>
+      <li><a href="../index.html#phase4" class="active" data-nav><span class="phase-name">Projects</span><span class="phase-pct" id="pct-proj">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.12-2</span>
+    Project: Website (Deploy)
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 19 sections</text>
+    </svg>
+    <div class="progress-info">0h / 26h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-introduction.html"><span class="status-dot" data-chapter="01"></span> Introduction</a></li>
+    <li><a href="02-installation.html"><span class="status-dot" data-chapter="02"></span> Installation</a></li>
+    <li><a href="03-basic-commands.html"><span class="status-dot" data-chapter="03"></span> Basic Commands</a></li>
+    <li><a href="04-prompt-design.html"><span class="status-dot" data-chapter="04"></span> Prompt Design</a></li>
+  </ul>
+
+  <div class="section-label">Core</div>
+  <ul>
+    <li><a href="05-file-operations.html"><span class="status-dot" data-chapter="05"></span> File Operations</a></li>
+    <li><a href="06-git-integration.html"><span class="status-dot" data-chapter="06"></span> Git Integration</a></li>
+    <li><a href="07-1-github-workflow.html"><span class="status-dot" data-chapter="07-1"></span> GitHub <span class="sub-label">1/2</span></a></li>
+    <li><a href="07-2-github-workflow.html"><span class="status-dot" data-chapter="07-2"></span> GitHub <span class="sub-label">2/2</span></a></li>
+    <li><a href="08-1-debugging.html"><span class="status-dot" data-chapter="08-1"></span> Debug <span class="sub-label">1/2</span></a></li>
+    <li><a href="08-2-testing.html"><span class="status-dot" data-chapter="08-2"></span> Test &amp; TDD <span class="sub-label">2/2</span></a></li>
+  </ul>
+
+  <div class="section-label">Advanced</div>
+  <ul>
+    <li><a href="09-claude-md-settings.html"><span class="status-dot" data-chapter="09"></span> CLAUDE.md</a></li>
+    <li><a href="10-skills-hooks.html"><span class="status-dot" data-chapter="10"></span> Skills &amp; Hooks</a></li>
+    <li><a href="11-mcp-agents.html"><span class="status-dot" data-chapter="11"></span> MCP &amp; Agents</a></li>
+  </ul>
+
+  <div class="section-label">Projects</div>
+  <ul>
+    <li><a href="12-1-project-website.html"><span class="status-dot" data-chapter="12-1"></span> Web Site <span class="sub-label">1/2</span></a></li>
+    <li><a href="12-2-project-website.html" class="active"><span class="status-dot" data-chapter="12-2"></span> Web Site <span class="sub-label">2/2</span></a></li>
+    <li><a href="13-1-project-app.html"><span class="status-dot" data-chapter="13-1"></span> Web App <span class="sub-label">1/2</span></a></li>
+    <li><a href="13-2-project-app.html"><span class="status-dot" data-chapter="13-2"></span> Web App <span class="sub-label">2/2</span></a></li>
+    <li><a href="14-1-project-ios.html"><span class="status-dot" data-chapter="14-1"></span> iOS App <span class="sub-label">1/2</span></a></li>
+    <li><a href="14-2-project-ios.html"><span class="status-dot" data-chapter="14-2"></span> iOS App <span class="sub-label">2/2</span></a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 4: Projects &gt; Chapter 12-2</div>
+  <h1>Project: ポートフォリオ (Deploy)</h1>
+  <p class="subtitle">前章で作ったローカルサイトを<strong>世界に公開</strong>します。GitHub Pages + GitHub Actions で push するだけで自動デプロイ。最後にカスタムドメインとアクセス計測まで。</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 1.5h</span>
+    <span class="badge">Phase 4: Projects</span>
+    <span class="badge">難易度: 実践</span>
+  </div>
+
+  <!-- ===================== 1. デプロイ全体図 ===================== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 全体像 — push から世界公開までのパイプライン</h2>
+
+  <div class="diagram-box">
+    <div class="diagram-title">CI/CD パイプライン</div>
+    <pre class="mermaid">
+graph LR
+  D[ローカル編集] -->|"git push"| G[GitHub repo]
+  G -->|"Actions trigger"| A["GitHub Actions"]
+  A -->|"npm run build"| B["dist/"]
+  B -->|"deploy step"| P[GitHub Pages]
+  P -->|"https://..."| U[訪問者]
+    </pre>
+    <div class="diagram-caption">push 1回でビルドからデプロイまで全自動。サーバー管理不要。</div>
+  </div>
+
+  <h3>選択肢の比較</h3>
+
+  <table>
+    <thead><tr><th>サービス</th><th>無料枠</th><th>カスタムドメイン</th><th>難易度</th><th>本章採用</th></tr></thead>
+    <tbody>
+      <tr><td><strong>GitHub Pages</strong></td><td>無料 (公開リポジトリ)</td><td>○</td><td>★★☆</td><td>○</td></tr>
+      <tr><td>Vercel</td><td>個人無料</td><td>○</td><td>★☆☆</td><td>(代替)</td></tr>
+      <tr><td>Cloudflare Pages</td><td>無料</td><td>○</td><td>★★☆</td><td>(代替)</td></tr>
+      <tr><td>Netlify</td><td>個人無料</td><td>○</td><td>★☆☆</td><td>(代替)</td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-box">
+    <span class="label">なぜ GitHub Pages を選ぶか</span>
+    <p>本シリーズはGitHub中心でPhase 2を組んできました。同じプラットフォーム内で完結する方が <span class="term" data-tip="複数ツールを行き来する負荷">コンテキストスイッチ</span> が減ります。Vercel/Cloudflareでも所要時間はほぼ同じです。</p>
+  </div>
+
+  <!-- ===================== 2. リポジトリ準備 ===================== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Step A — GitHub リポジトリを作る</h2>
+
+  <div class="steps">
+    <div class="step done"><div class="step-num">1</div><div class="step-label">gh CLI</div><div class="step-desc">repo create</div></div>
+    <div class="step done"><div class="step-num">2</div><div class="step-label">push</div><div class="step-desc">first commit</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-label">Pages有効化</div><div class="step-desc">Actions経由</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-label">workflow追加</div><div class="step-desc">deploy.yml</div></div>
+  </div>
+
+<pre><code># 前章のディレクトリで実行
+gh repo create portfolio --public --source=. --push
+gh repo view --web   # ブラウザで開いて確認
+</code></pre>
+
+  <h3>Pages を有効化 (Actions経由)</h3>
+
+  <p>GitHub Pages の設定は <strong>Source: GitHub Actions</strong> を選ぶのが推奨。<code>main</code>へのpushで自動的にビルドされ、別ブランチを介さず公開されます。</p>
+
+<pre><code>gh api --method POST /repos/&lt;username&gt;/portfolio/pages \
+  -f "build_type=workflow"
+</code></pre>
+
+  <div class="diagram-box">
+    <div class="diagram-title">GitHub Pages 設定画面のイメージ</div>
+    <svg viewBox="0 0 540 220" width="100%" style="max-width:540px; display:block; margin:0 auto;">
+      <rect x="10" y="10" width="520" height="200" rx="10" fill="#ffffff" stroke="#e4e4e7"/>
+      <text x="30" y="40" font-size="14" font-weight="700">Pages</text>
+      <line x1="30" y1="50" x2="510" y2="50" stroke="#e4e4e7"/>
+      <text x="30" y="80" font-size="12" font-weight="600">Build and deployment</text>
+      <text x="30" y="105" font-size="11" fill="#71717a">Source</text>
+      <rect x="30" y="115" width="200" height="32" rx="6" fill="#f4f4f5" stroke="#18181b" stroke-width="1.5"/>
+      <text x="130" y="135" text-anchor="middle" font-size="12" font-weight="600">GitHub Actions ▾</text>
+      <text x="240" y="135" font-size="10" fill="#16a34a">← これを選択</text>
+      <text x="30" y="180" font-size="11" fill="#71717a">公開URL: https://&lt;user&gt;.github.io/portfolio/</text>
+    </svg>
+    <div class="diagram-caption">Source = GitHub Actions にすると、自分でworkflowを書く前提になる。</div>
+  </div>
+
+  <!-- ===================== 3. Workflow を Claude に書かせる ===================== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Step B — workflow を Claude に書かせる</h2>
+
+  <p>Claudeに丸投げOKな部分。Astroの公式が <code>withastro/action</code> を出しているので、これを使うように指示します。</p>
+
+  <div class="quote">
+    <code>.github/workflows/deploy.yml</code> を作って。Astro公式の <code>withastro/action@v3</code> を使い、main への push で GitHub Pages にデプロイする最小構成で。Node 20。
+    <cite>— Claudeへのプロンプト例</cite>
+  </div>
+
+  <h3>生成される deploy.yml</h3>
+
+<pre><code>name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: withastro/action@v3
+        with:
+          node-version: 20
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
+</code></pre>
+
+  <div class="warn-box">
+    <span class="label">base path に注意</span>
+    <p><code>https://user.github.io/portfolio/</code> のように<strong>サブパス</strong>で公開する場合、<code>astro.config.mjs</code> に <code>site</code> と <code>base</code> を指定する必要があります。次節で対応。</p>
+  </div>
+
+  <h3>astro.config.mjs を更新</h3>
+
+<pre><code>// astro.config.mjs
+import { defineConfig } from 'astro/config';
+import tailwind from '@astrojs/tailwind';
+
+export default defineConfig({
+  site: 'https://&lt;username&gt;.github.io',
+  base: '/portfolio',
+  integrations: [tailwind()],
+});
+</code></pre>
+
+  <!-- ===================== 4. デプロイ実行 ===================== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Step C — push してデプロイ完了を見届ける</h2>
+
+<pre><code>git add .
+git commit -m "ci: setup GitHub Pages deployment"
+git push
+gh run watch   # Actions の実行を観察
+</code></pre>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-date">+0s</div>
+      <div class="tl-title">push 完了</div>
+      <div class="tl-body">workflow が起動</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">+15s</div>
+      <div class="tl-title">npm install</div>
+      <div class="tl-body">依存解決 (キャッシュで2回目以降高速化)</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">+45s</div>
+      <div class="tl-title">npm run build</div>
+      <div class="tl-body">dist/ 生成</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">+60s</div>
+      <div class="tl-title">deploy-pages</div>
+      <div class="tl-body">アーティファクトをPagesへアップロード</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">+90s</div>
+      <div class="tl-title">公開完了</div>
+      <div class="tl-body">https://&lt;user&gt;.github.io/portfolio/ で見える</div>
+    </div>
+  </div>
+
+  <div class="tip-box">
+    <span class="label">最初のデプロイは2-5分かかる</span>
+    <p>GitHubのドメイン伝播 + キャッシュなしビルドのため。2回目以降は概ね90秒前後で安定します。</p>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===================== 5. ハマりやすいエラー集 ===================== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> よくあるエラーと Claude への聞き方</h2>
+
+  <div class="troubleshoot-box">
+    <div class="ts-label">Troubleshooting</div>
+    <dl>
+      <dt>404 が出る (公開URLにアクセスしても何も出ない)</dt>
+      <dd><code>base</code> 設定漏れの典型。<code>astro.config.mjs</code> に <code>base: '/portfolio'</code> が入っているか、リンクは <code>&lt;a href={`${base}/blog`}&gt;</code> の形になっているかをClaudeに確認させる。</dd>
+
+      <dt>画像が壊れる</dt>
+      <dd>絶対パス <code>/img/foo.png</code> はサブパス公開で壊れる。Astroの <code>&lt;Image&gt;</code> コンポーネントか <code>import.meta.env.BASE_URL</code> 経由で組み立てる。</dd>
+
+      <dt>GitHub Actions が build で落ちる</dt>
+      <dd>Node バージョン不一致が9割。<code>workflow.yml</code> を <code>node-version: 20</code> 固定 + <code>package.json</code> の <code>engines</code> も統一。</dd>
+
+      <dt>Lighthouse が低い</dt>
+      <dd>画像が原因の事が多い。Astroの <code>&lt;Image&gt;</code> 必須化、<code>loading="lazy"</code>、WebP出力をClaudeに頼む。</dd>
+    </dl>
+  </div>
+
+  <!-- ===================== 6. カスタムドメイン ===================== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 仕上げ — カスタムドメインとアクセス計測</h2>
+
+  <h3>カスタムドメイン</h3>
+
+  <ol>
+    <li>取得済みドメインの DNS で <code>CNAME</code> レコードを <code>&lt;user&gt;.github.io</code> に向ける</li>
+    <li>リポジトリ Settings &gt; Pages &gt; Custom domain に入力</li>
+    <li><strong>Enforce HTTPS</strong> にチェック (証明書は自動発行)</li>
+    <li><code>public/CNAME</code> ファイルを置く (内容はドメイン名のみ1行)</li>
+  </ol>
+
+  <h3>アクセス計測 (プライバシー優先)</h3>
+
+  <p>Google Analyticsより<span class="term" data-tip="クッキー不要・個人情報を収集しないアクセス解析サービス。Plausible や Umami 等">プライバシー重視の計測</span>を推奨。Plausibleなら1行のscriptタグで完了。</p>
+
+<pre><code>&lt;!-- src/layouts/Base.astro &lt;head&gt; 内 --&gt;
+&lt;script defer data-domain="example.com" src="https://plausible.io/js/script.js"&gt;&lt;/script&gt;
+</code></pre>
+
+  <div class="diagram-box">
+    <div class="diagram-title">最終的に達成される指標 (目安)</div>
+    <canvas id="ch12-2-radar-1" height="240"></canvas>
+  </div>
+  <script>
+  window.addEventListener('load', function() {
+    const el = document.getElementById('ch12-2-radar-1');
+    if (!el || !window.Chart) return;
+    new Chart(el, {
+      type: 'radar',
+      data: {
+        labels: ['Performance', 'Accessibility', 'Best Practices', 'SEO', 'PWA'],
+        datasets: [{
+          label: 'Lighthouse スコア',
+          data: [98, 95, 100, 92, 30],
+          backgroundColor: 'rgba(24,24,27,0.18)',
+          borderColor: '#18181b',
+          pointBackgroundColor: '#18181b'
+        }]
+      },
+      options: { plugins: { legend: { display: false } }, scales: { r: { suggestedMin: 0, suggestedMax: 100 } } }
+    });
+  });
+  </script>
+
+  <h3>Before / After</h3>
+
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">前章開始時</span>
+      <h4>ローカルだけ</h4>
+      <ul>
+        <li>localhost でしか見れない</li>
+        <li>誰にも共有できない</li>
+        <li>変更したらまた手動デプロイ</li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">本章完了後</span>
+      <h4>世界公開</h4>
+      <ul>
+        <li>独自ドメインでアクセス可</li>
+        <li>push するだけで反映</li>
+        <li>HTTPSと計測も完備</li>
+      </ul>
+    </div>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>GitHub Pages にサイトを公開する</h4>
+    <p>前章で作ったローカルサイトを、本章の手順で公開してください。最終的に <code>https://&lt;username&gt;.github.io/portfolio/</code> でアクセスできるところまで。</p>
+    <ol>
+      <li><code>gh repo create portfolio --public --source=. --push</code></li>
+      <li><code>.github/workflows/deploy.yml</code> をClaudeに作らせる</li>
+      <li><code>astro.config.mjs</code> に site / base を追加</li>
+      <li>Pages 設定で Source = GitHub Actions に</li>
+      <li>push して2分待つ → 公開URLにアクセス</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>うまく行かない時のチェックリスト:</p>
+      <ol>
+        <li><code>gh run list</code> で workflow が走ったか</li>
+        <li><code>gh run view --log</code> でビルドエラー有無</li>
+        <li>Settings &gt; Pages で「Your site is live at...」が表示されているか</li>
+        <li>URLにアクセスして 404 が出るなら <code>base</code> の <code>/</code> 漏れを疑う (例: <code>base: 'portfolio'</code> ではなく <code>'/portfolio'</code>)</li>
+      </ol>
+      <p>解決後は <code>npm run build &amp;&amp; npm run preview</code> でローカルでもサブパス挙動を確認できると、デプロイ前に検出可能になります。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>PR プレビュー環境を追加する</h4>
+    <p>main へのpushで本番デプロイ、PR では別URLでプレビューを見れるように workflow を拡張してください。Cloudflare Pagesかvercel preview相当の体験を、GitHub Actions だけで実現します。</p>
+    <ol>
+      <li>PR トリガー用の workflow 追加 (<code>on: pull_request</code>)</li>
+      <li>ビルドした dist/ を <code>actions/upload-artifact</code> でPRにコメント添付</li>
+      <li>もしくは <code>peaceiris/actions-gh-pages</code> でブランチ別パスへデプロイ</li>
+      <li>PRマージで preview ブランチを掃除する step も追加</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>シンプル路線: <strong>Cloudflare Pages preview</strong> を使う方が現実的に楽です。Cloudflare 側で GitHubリポジトリを連携するだけで、PR毎にユニークURLが自動発行されます。</p>
+      <p>あえて GitHub Pages 縛りでやるなら:</p>
+<pre><code>name: PR Preview
+on: pull_request
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: withastro/action@v3
+        with: { node-version: 20 }
+      - uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          destination_dir: pr-${{ github.event.number }}
+      - uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          message: |
+            Preview: https://&lt;user&gt;.github.io/portfolio/pr-${{ github.event.number }}/
+</code></pre>
+      <p>ただしAstroの <code>base</code> もPR番号で動的に変える必要があり、思ったより手間。実務的には Cloudflare/Vercel に任せて GitHub Pages は本番のみが多いです。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span><a href="https://docs.github.com/en/pages" target="_blank">GitHub Pages 公式</a> — Source オプションと設定全般</li>
+      <li><span class="res-type doc">Doc</span><a href="https://docs.astro.build/en/guides/deploy/github/" target="_blank">Astro: Deploy to GitHub Pages</a> — base設定の正解</li>
+      <li><span class="res-type repo">Repo</span><a href="https://github.com/withastro/action" target="_blank">withastro/action</a> — Astro公式GitHub Action</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="12-2">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="12-1-project-website.html"><span class="direction">&larr; Prev</span>Project: Website (Setup)</a>
+    <a href="13-1-project-app.html"><span class="direction">Next &rarr;</span>Project: Web App (Backend)</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#f4f4f5',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#18181b',
+      lineColor: '#18181b',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>

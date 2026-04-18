@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%237c3aed%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>LLMとは何か - MK's Understanding LLM</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #7c3aed; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Understanding LLM
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" class="active" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Deep Dive</span><span class="phase-pct" id="pct-deepdive">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.01</span>
+    LLMとは何か
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 7 sections</text>
+    </svg>
+    <div class="progress-info">0h / 4h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-what-is-llm.html" class="active"><span class="status-dot" data-chapter="01"></span> LLMとは何か</a></li>
+    <li><a href="02-tokens-embeddings.html"><span class="status-dot" data-chapter="02"></span> 言葉を数字に変える</a></li>
+    <li><a href="03-next-token-prediction.html"><span class="status-dot" data-chapter="03"></span> 次単語予測</a></li>
+  </ul>
+  <div class="section-label">Deep Dive</div>
+  <ul>
+    <li><a href="04-transformer.html"><span class="status-dot" data-chapter="04"></span> Transformer</a></li>
+    <li><a href="05-training.html"><span class="status-dot" data-chapter="05"></span> LLMはどう学ぶのか</a></li>
+    <li><a href="06-capabilities-limits.html"><span class="status-dot" data-chapter="06"></span> 能力・限界・未来</a></li>
+    <li><a href="07-final-exercise.html"><span class="status-dot" data-chapter="07"></span> 最終演習問題</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 1: Basics &gt; Chapter 01</div>
+  <h1>LLMとは何か</h1>
+  <p class="subtitle">AI / 機械学習 / ディープラーニング / 生成AI / LLM。似ているけれど違うこれらの言葉を、一枚の地図に整理します。記事で「LLMが〜」と書かれたとき、自分がいまどこの話をしているかが分かるようになるのがゴール。</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 30分</span>
+    <span class="badge">Phase: Basics</span>
+    <span class="badge">難易度: 入門</span>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span>1. まず「地図」を描く</h2>
+
+  <div class="fade-in">
+    <p>「<span class="term" data-tip="Artificial Intelligence。人間の知的振る舞いを機械に行わせる技術全般。">AI</span>」「<span class="term" data-tip="Machine Learning。データから自動でパターンを学ぶ手法。AIの一分野。">機械学習</span>」「<span class="term" data-tip="Deep Learning。多層ニューラルネットワークを使う機械学習。画像・音声・言語で大成功した。">ディープラーニング</span>」「<span class="term" data-tip="Generative AI。テキストや画像など新しいコンテンツを生成するAI。">生成AI</span>」「<span class="term" data-tip="Large Language Model。膨大なテキストで訓練された言語モデル。">LLM</span>」。ニュースで毎日見る言葉ですが、ほとんどの人は <strong>包含関係を取り違えています</strong>。最初にやるべきは、「どれがどれの中に入っているのか」を絵で押さえることです。</p>
+
+    <svg class="anim-svg" viewBox="0 0 200 100" width="100%" style="max-width:240px; display:block; margin: 8px auto 0;">
+      <path d="M 10,80 Q 100,10 190,80" fill="none" stroke="#7c3aed" stroke-width="3"/>
+    </svg>
+  </div>
+
+  <div class="diagram-box">
+    <div class="diagram-title">用語のロシアンドール構造</div>
+    <svg viewBox="0 0 480 320" width="100%" style="max-width:480px; display:block; margin:0 auto;">
+      <rect x="20" y="20" width="440" height="280" rx="14" fill="#f4f4f5" stroke="#18181b" stroke-width="1.5"/>
+      <text x="240" y="42" text-anchor="middle" font-size="13" font-weight="700">AI(人工知能 全体)</text>
+      <rect x="60" y="60" width="360" height="220" rx="12" fill="#e4e4e7" stroke="#52525b" stroke-width="1.5"/>
+      <text x="240" y="82" text-anchor="middle" font-size="13" font-weight="700">機械学習(データから学ぶ)</text>
+      <rect x="100" y="100" width="280" height="160" rx="10" fill="#d4d4d8" stroke="#3f3f46" stroke-width="1.5"/>
+      <text x="240" y="122" text-anchor="middle" font-size="13" font-weight="700">ディープラーニング</text>
+      <rect x="140" y="140" width="200" height="100" rx="8" fill="#a1a1aa" stroke="#18181b" stroke-width="1.5"/>
+      <text x="240" y="162" text-anchor="middle" font-size="13" font-weight="700" fill="white">生成AI</text>
+      <rect x="180" y="180" width="120" height="40" rx="6" fill="#7c3aed" stroke="#5b21b6" stroke-width="1.5"/>
+      <text x="240" y="205" text-anchor="middle" font-size="13" font-weight="700" fill="white">LLM</text>
+    </svg>
+    <div class="diagram-caption">AI ⊃ 機械学習 ⊃ ディープラーニング ⊃ 生成AI ⊃ LLM。LLMは生成AIの「テキスト担当」。</div>
+  </div>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="brain" width="20" height="20"></i>
+      <div><strong>AI</strong> — 「機械が知的に振る舞う」全領域。ルールベース(if文の塊)も、学習型も両方含む。</div>
+    </li>
+    <li>
+      <i data-lucide="trending-up" width="20" height="20"></i>
+      <div><strong>機械学習</strong> — データから自動でパターンを学ぶ手法。AIの一部だが「if文の塊」は含まない。</div>
+    </li>
+    <li>
+      <i data-lucide="layers" width="20" height="20"></i>
+      <div><strong>ディープラーニング</strong> — 多層の<span class="term" data-tip="脳の神経細胞を模した数理モデル。入力に重みをかけて足し合わせ、活性化関数を通す処理を多層に重ねたもの。">ニューラルネット</span>を使う機械学習。画像・音声・言語で爆発的成功。</div>
+    </li>
+    <li>
+      <i data-lucide="sparkles" width="20" height="20"></i>
+      <div><strong>生成AI</strong> — 新しいコンテンツ(テキスト・画像・音声・動画)を <em>作る</em> AI。分類や予測ではなく <em>生成</em> が目的。</div>
+    </li>
+    <li>
+      <i data-lucide="bot" width="20" height="20"></i>
+      <div><strong>LLM</strong> — 「テキスト生成に特化した、巨大なディープラーニングモデル」。ChatGPT・Claude・Gemini・Llama がこれ。</div>
+    </li>
+  </ul>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span>2. 「Large(大きい)」って何が大きいの?</h2>
+
+  <p>LLM の <strong>L</strong> は Large。何が大きいかというと、主に <strong>2つ</strong>:</p>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-num">1.4T<small>tokens</small></div>
+      <div class="stat-label">学習データ量</div>
+      <div class="stat-trend up">≒ Wikipedia 約700倍</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">70B<small>params</small></div>
+      <div class="stat-label">モデルパラメータ数</div>
+      <div class="stat-trend up">脳のシナプスは100兆</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">$10M<small>+</small></div>
+      <div class="stat-label">1回の学習コスト目安</div>
+      <div class="stat-trend">GPU を数千台で数週間</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">128K<small>tokens</small></div>
+      <div class="stat-label">扱える文脈長</div>
+      <div class="stat-trend">本1冊分が入る</div>
+    </div>
+  </div>
+
+  <p>つまり <strong>「インターネットを丸ごと読み込んだ、巨大な統計マシン」</strong> です。「<span class="term" data-tip="モデルが持つ重み(数値)の総数。学習で調整される。70B = 700億個。">パラメータ</span>」は、後の章で「モデルの賢さの容量」と理解しますが、いまは <em>「ツマミの数」</em> と覚えておけば十分。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">主要LLMのパラメータ数(対数スケールではなく実数比較)</div>
+    <canvas id="ch01-bar-models" height="160"></canvas>
+  </div>
+  <script>
+  window.addEventListener('load', function() {
+    new Chart(document.getElementById('ch01-bar-models'), {
+      type: 'bar',
+      data: {
+        labels: ['GPT-2 (2019)', 'GPT-3 (2020)', 'Llama 2 7B', 'Llama 2 70B', 'GPT-4 推定', 'Llama 3.1 405B'],
+        datasets: [{
+          label: 'パラメータ数(B = 10億)',
+          data: [1.5, 175, 7, 70, 1500, 405],
+          backgroundColor: '#18181b',
+          borderRadius: 6
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        plugins: { legend: { display: false } },
+        scales: { x: { beginAtZero: true, title: { display: true, text: 'B (Billion = 10億)' } } }
+      }
+    });
+  });
+  </script>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span>3. 何ができて、何ができないのか(現時点)</h2>
+
+  <p>仕組みを学ぶ前に、まず「現在地」を押さえます。LLM が <em>得意</em> なことと <em>苦手</em> なことを比較カードで:</p>
+
+  <div class="compare-cards">
+    <div class="cc good">
+      <span class="cc-label">得意</span>
+      <h4>パターンの読み取り・生成</h4>
+      <ul>
+        <li>文章の要約・翻訳・書き換え</li>
+        <li>コード生成・レビュー</li>
+        <li>「それっぽい」回答の即時提示</li>
+        <li>大量の文章からの抽出・整理</li>
+        <li>ロールプレイ・対話</li>
+      </ul>
+    </div>
+    <div class="cc bad">
+      <span class="cc-label">苦手</span>
+      <h4>正確性・最新性・推論</h4>
+      <ul>
+        <li>事実確認(<span class="term" data-tip="LLMが事実でないことを自信満々に出力する現象。Hallucination。">ハルシネーション</span>)</li>
+        <li>学習後に起きた出来事</li>
+        <li>大きな数値の正確な計算</li>
+        <li>長い論理の厳密な追跡</li>
+        <li>「分からない」と認めること</li>
+      </ul>
+    </div>
+  </div>
+
+  <p>この「得意 / 苦手」の境界が <strong>なぜそうなるのか</strong> を、Ch02〜Ch06 で仕組みから理解していきます。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span></p>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span>4. 5世代の歴史を一気に見る</h2>
+
+  <p>「なぜ今、急に LLM が騒がれるのか?」は、過去20年の流れを <strong>1本のタイムライン</strong> で見れば一目です。</p>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-date">2003 - 2012</div>
+      <div class="tl-title">統計的機械学習の時代</div>
+      <div class="tl-body">手作業で特徴量を設計。SVM・ロジスティック回帰など。文脈の長い文章は苦手。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">2013</div>
+      <div class="tl-title">Word2Vec — 単語に「意味のある数字」</div>
+      <div class="tl-body">単語を数百次元のベクトルに埋め込む手法が登場。Ch02 で詳しく扱う。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">2017</div>
+      <div class="tl-title">"Attention Is All You Need" — Transformer 登場</div>
+      <div class="tl-body">Google が発表した1本の論文。今のすべての LLM はこの上に立つ。Ch04 で扱う。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">2020</div>
+      <div class="tl-title">GPT-3 — 1750億パラメータの衝撃</div>
+      <div class="tl-body">「<strong>大きくすれば質が変わる</strong>」(<span class="term" data-tip="モデルサイズ・データ量・計算量を増やすと性能が予測可能なカーブで上がるという経験則。">Scaling Law</span>)が証明される。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">2022</div>
+      <div class="tl-title">ChatGPT 公開 — 一般人がLLMに触れる</div>
+      <div class="tl-body"><span class="term" data-tip="Reinforcement Learning from Human Feedback。人間の好みを学ばせる強化学習。Ch05で扱う。">RLHF</span> でチャット用に整えられた GPT-3.5 が公開。2ヶ月で1億ユーザ。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">2023 - 現在</div>
+      <div class="tl-title">マルチモーダル / エージェント時代</div>
+      <div class="tl-body">画像・音声・動画も扱う Gemini / GPT-4o / Claude。LLM が <em>道具を使う</em> エージェントへ。Ch06 で扱う。</div>
+    </div>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: なぜ「大きさ」がそんなに効くのか?</summary>
+    <div class="more-body">
+      <p>2020年に OpenAI が発表した論文 "Scaling Laws for Neural Language Models" では、モデルサイズ・データ量・計算量と性能の間に <strong>滑らかなべき乗則</strong> があることが示されました。簡単に言えば「10倍大きくすれば性能はこれくらい上がる」という予測可能なカーブが見つかったのです。</p>
+      <p>さらに驚きだったのは <strong>創発(Emergence)</strong>。あるサイズを超えると、それまでできなかったタスク(例: 算数の繰り上がり、推論、コード)が <em>急に</em> できるようになる現象が観察されました。これが「とにかく大きくすれば賢くなる」の根拠であり、現在のスケール競争の出発点です。詳しくは Ch05 と Ch06 で。</p>
+    </div>
+  </details>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span>5. 主要LLM の俯瞰図</h2>
+
+  <p>2026年時点で名前を聞く主要LLMを一覧に。それぞれ「<strong>誰が作っているか</strong>」「<strong>どこで使えるか</strong>」を整理します。</p>
+
+  <table>
+    <thead>
+      <tr><th>モデル</th><th>提供元</th><th>主な提供形態</th><th>特徴</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>GPT-4 / GPT-4o</td><td>OpenAI</td><td>ChatGPT, API</td><td>汎用性能の代表格、マルチモーダル</td></tr>
+      <tr><td>Claude 3.5 Sonnet</td><td>Anthropic</td><td>Claude.ai, API</td><td>長文・コード・倫理整合に強い</td></tr>
+      <tr><td>Gemini 2.0</td><td>Google</td><td>Gemini, Vertex AI</td><td>2Mトークン超の超長文対応</td></tr>
+      <tr><td>Llama 3 / 3.1</td><td>Meta</td><td>オープンウェイト</td><td>無料DL可、ローカル実行可</td></tr>
+      <tr><td>Mistral / Mixtral</td><td>Mistral AI</td><td>API, オープン</td><td>軽量で高性能、欧州発</td></tr>
+      <tr><td>DeepSeek-V3 / R1</td><td>DeepSeek</td><td>オープン</td><td>低コスト訓練、推論モデル</td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-box">
+    <div class="label">用語整理: クローズド vs オープンウェイト</div>
+    <p><strong>クローズド</strong>(GPT-4, Claude, Gemini)= モデル本体は非公開、API経由で使う。<strong>オープンウェイト</strong>(Llama, Mistral, DeepSeek)= モデルファイルが公開され、自分のPC・サーバで動かせる。「<span class="term" data-tip="完全にオープンソースではないが、学習済みの重みファイルが公開されており、自由に利用・改変・再配布できる(ライセンスによる制限あり)。">オープンウェイト</span>」と「オープンソース」は厳密には別物です。</p>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span>6. これからの章で何を学ぶか</h2>
+
+  <div class="steps">
+    <div class="step done"><div class="step-num">1</div><div class="step-label">地図</div><div class="step-desc">いまここ</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-label">数字化</div><div class="step-desc">Token + Embedding</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-label">予測</div><div class="step-desc">Next-token</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-label">構造</div><div class="step-desc">Transformer</div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-label">学習</div><div class="step-desc">RLHF</div></div>
+    <div class="step"><div class="step-num">6</div><div class="step-label">未来</div><div class="step-desc">Agent</div></div>
+  </div>
+
+  <div class="quote">
+    LLM とは、<strong>巨大な統計マシンに、人類の文章を読ませて、「次に来る単語はたぶんこれ」を予測させる</strong> 装置である。
+    <cite>— この章のひとことまとめ</cite>
+  </div>
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>「AI / 機械学習 / DL / 生成AI / LLM」を自分の言葉で書く</h4>
+    <p>5つの用語について、それぞれ <strong>1行</strong> で「これは何か」を、誰かに口頭で説明するつもりで書き出してください。包含関係(どれがどれに含まれるか)も書く。</p>
+    <ol>
+      <li>白紙の紙(またはメモアプリ)を用意</li>
+      <li>5つの用語を縦に書く</li>
+      <li>右側に1行の定義を書く</li>
+      <li>下に「⊃」記号で包含関係を書く(例: AI ⊃ 機械学習 ⊃ ...)</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <ul>
+        <li><strong>AI</strong> — 機械が知的に振る舞う領域全部(if文ベースも含む)</li>
+        <li><strong>機械学習</strong> — データから自動でパターンを学ぶ手法</li>
+        <li><strong>ディープラーニング</strong> — 多層ニューラルネットを使う機械学習</li>
+        <li><strong>生成AI</strong> — 新しいコンテンツを「作る」AI(分類ではなく生成)</li>
+        <li><strong>LLM</strong> — テキスト生成に特化した巨大なディープラーニングモデル</li>
+      </ul>
+      <p>包含関係: <code>AI ⊃ 機械学習 ⊃ ディープラーニング ⊃ 生成AI ⊃ LLM</code></p>
+      <p>このシンプルな関係を <em>口で説明できる</em> なら、ニュース記事の「生成AI規制」「LLM倫理」「機械学習の偏り」がそれぞれ <strong>どのレベルの議論</strong> なのかが瞬時に分かるようになります。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>身近なAIサービスを5つ「分類」する</h4>
+    <p>あなたが過去1ヶ月で触ったAI的サービス(ChatGPT、Google翻訳、Netflixのレコメンド、スマホの顔認識、Siri など)を5つ挙げ、それぞれが「LLM か、生成AIだがLLMでないか、ディープラーニングだが生成AIでないか、機械学習だがDLでないか、AIだが機械学習ですらないか」を判定してみてください。</p>
+    <ol>
+      <li>サービスを5つ書き出す</li>
+      <li>それぞれが何の入力 → 何の出力かを書く</li>
+      <li>上記5レベルのどこに属するかを判定</li>
+      <li>判断に迷うものはその理由をメモ</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>判定例(諸説あり、目的は「考えること」):</p>
+      <ul>
+        <li><strong>ChatGPT(対話)</strong> → テキスト→テキスト → <strong>LLM</strong></li>
+        <li><strong>DALL·E(画像生成)</strong> → テキスト→画像 → <strong>生成AI(LLMではない)</strong></li>
+        <li><strong>スマホ顔認識</strong> → 画像→人物識別 → <strong>ディープラーニング(生成ではない)</strong></li>
+        <li><strong>Netflixレコメンド</strong> → 視聴履歴→推薦 → <strong>機械学習(DLではない場合が多い)</strong></li>
+        <li><strong>古いSiriの定型応答</strong> → ルールベース → <strong>AI(機械学習ではない)</strong></li>
+      </ul>
+      <p>判定で迷ったものこそが学習の宝物です。「Google翻訳って今はLLM?」のような疑問は、実は <em>歴史的な変遷</em> を反映しています(昔は統計翻訳→今はTransformer系)。これがニュースの読み方を一段引き上げます。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type article">Article</span><a href="https://stanford-cs324.github.io/winter2022/" target="_blank">Stanford CS324: Large Language Models</a> — 最良の入門講義ノート(英語)</li>
+      <li><span class="res-type video">Video</span><a href="https://www.youtube.com/watch?v=zjkBMFhNj_g" target="_blank">[1hr Talk] Intro to LLMs by Andrej Karpathy</a> — OpenAI元メンバーによる超わかりやすい1時間講義</li>
+      <li><span class="res-type doc">Doc</span><a href="https://en.wikipedia.org/wiki/Large_language_model" target="_blank">Wikipedia: Large Language Model</a> — 用語のリファレンスとして</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="01">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <span></span>
+    <a href="02-tokens-embeddings.html"><span class="direction">Next &rarr;</span>言葉を数字に変える</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#f4f4f5',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#18181b',
+      lineColor: '#18181b',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>

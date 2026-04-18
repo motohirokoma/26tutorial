@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%2316a34a%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>模倣学習とテレオペレーション - Kuririn's Physical AI Crash Course</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #16a34a; }
+
+  .pipeline-svg { max-width: 700px; margin: 1.5rem auto; display: block; }
+  .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin: 1.5rem 0; }
+  .compare-card { border: 1px solid #e4e4e7; border-radius: 12px; padding: 1.2rem 1.4rem; background: #fff; }
+  .compare-card h4 { margin: 0 0 .6rem; font-size: .95rem; }
+  .compare-card .tag { display: inline-block; font-size: .7rem; padding: 2px 8px; border-radius: 999px; margin-bottom: .5rem; }
+  .compare-card .tag-bc { background: #dbeafe; color: #1e40af; }
+  .compare-card .tag-irl { background: #fef3c7; color: #92400e; }
+  .compare-card ul { margin: 0; padding-left: 1.2rem; font-size: .88rem; line-height: 1.7; }
+  .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+  .stat-card { text-align: center; border: 1px solid #e4e4e7; border-radius: 12px; padding: 1.2rem .8rem; background: #fafafa; }
+  .stat-card .stat-num { font-size: 1.6rem; font-weight: 700; color: #16a34a; }
+  .stat-card .stat-label { font-size: .78rem; color: #71717a; margin-top: .3rem; }
+  @media(max-width:600px){
+    .compare-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></div>
+      &gt;_ Kuririn's Physical AI Crash Course
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="../index.html#phase3" data-nav><span class="phase-name">Advanced</span><span class="phase-pct" id="pct-advanced">0%</span></a></li>
+      <li><a href="../index.html#phase4" data-nav><span class="phase-name">Final</span><span class="phase-pct" id="pct-final">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.04</span>
+    模倣学習とテレオペレーション
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 37 sections</text>
+    </svg>
+    <div class="progress-info">0h / 8h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-overview.html"><span class="status-dot" data-chapter="01"></span> フィジカルAIの全体像</a></li>
+    <li><a href="02-classical-control.html"><span class="status-dot" data-chapter="02"></span> 古典制御とロボットの基盤技術</a></li>
+  </ul>
+  <div class="section-label">Core</div>
+  <ul>
+    <li><a href="03-reinforcement-learning.html"><span class="status-dot" data-chapter="03"></span> 強化学習によるロボット制御</a></li>
+    <li class="active"><a href="04-imitation-learning.html"><span class="status-dot" data-chapter="04"></span> 模倣学習とテレオペレーション</a></li>
+    <li><a href="05-vla-models.html"><span class="status-dot" data-chapter="05"></span> VLAモデルの最前線</a></li>
+  </ul>
+  <div class="section-label">Advanced</div>
+  <ul>
+    <li><a href="06-implementation-barriers.html"><span class="status-dot" data-chapter="06"></span> 実装の壁</a></li>
+    <li><a href="07-business-scoping.html"><span class="status-dot" data-chapter="07"></span> ビジネススコーピングの技法</a></li>
+  </ul>
+  <div class="section-label">Final</div>
+  <ul>
+    <li><a href="08-final-exercise.html"><span class="status-dot" data-chapter="08"></span> 最終演習問題</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 2: Core &gt; Chapter 04</div>
+  <h1>模倣学習とテレオペレーション</h1>
+  <p class="subtitle">人間の動きから学ぶ ― デモデータの収集から模倣学習の仕組みまで</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 60min</span>
+    <span class="badge">Phase: Core</span>
+    <span class="badge">難易度: 中級</span>
+  </div>
+
+  <div class="prereq-box">
+    <p><strong>前提知識:</strong> Ch.03「強化学習によるロボット制御」で報酬関数と方策学習の基礎を学んでおくと、本章の比較がよりスムーズに理解できます。</p>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- Section 1: 模倣学習とは                      -->
+  <!-- ============================================ -->
+  <section class="chapter-section" data-section="04-1">
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span> 模倣学習とは</h2>
+
+  <p><span class="term" data-tip="人間のデモンストレーションから方策を学習する手法の総称">模倣学習</span>（Imitation Learning）は、強化学習のように報酬関数を設計するのではなく、<strong>人間の実演データから直接ロボットの行動方策を学習</strong>する手法です。料理を習うとき、レシピの点数（報酬）ではなく、熟練シェフの手さばきを真似るイメージです。</p>
+
+  <p>模倣学習には大きく2つのアプローチがあります。</p>
+
+  <!-- Compare Cards: BC vs IRL -->
+  <div class="compare-grid">
+    <div class="compare-card">
+      <span class="tag tag-bc">教師あり学習型</span>
+      <h4><span class="term" data-tip="デモデータの状態-行動ペアを直接教師あり学習で模倣する手法">Behavior Cloning（BC）</span></h4>
+      <ul>
+        <li>お手本の状態と行動のペアを教師データとして直接学習</li>
+        <li>実装がシンプルで導入コストが低い</li>
+        <li><span class="term" data-tip="学習データの分布から外れると急激にエラーが蓄積する問題">分布シフト</span>に弱い</li>
+        <li>データ量でカバーするアプローチが主流</li>
+      </ul>
+    </div>
+    <div class="compare-card">
+      <span class="tag tag-irl">逆問題型</span>
+      <h4><span class="term" data-tip="デモから背後にある報酬関数を推定し、その報酬で強化学習する手法">Inverse Reinforcement Learning（IRL）</span></h4>
+      <ul>
+        <li>デモから「なぜそう動いたか」の報酬関数を推定</li>
+        <li>推定した報酬で強化学習を実行</li>
+        <li>汎化性能が高い傾向</li>
+        <li>計算コストが大きく、学習が不安定になりやすい</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SVG: Behavior Cloning パイプライン -->
+  <svg class="pipeline-svg" viewBox="0 0 700 140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Behavior Cloningのパイプライン図">
+    <!-- Step 1 -->
+    <rect x="10" y="30" width="130" height="70" rx="10" fill="#f4f4f5" stroke="#18181b" stroke-width="1.5"/>
+    <text x="75" y="58" text-anchor="middle" font-size="12" font-weight="600" fill="#18181b">人間のデモ</text>
+    <text x="75" y="78" text-anchor="middle" font-size="10" fill="#71717a">テレオペ操作</text>
+    <!-- Arrow 1 -->
+    <path d="M145 65 L175 65" stroke="#16a34a" stroke-width="2" marker-end="url(#arrowG04)"/>
+    <!-- Step 2 -->
+    <rect x="180" y="30" width="130" height="70" rx="10" fill="#f4f4f5" stroke="#18181b" stroke-width="1.5"/>
+    <text x="245" y="58" text-anchor="middle" font-size="12" font-weight="600" fill="#18181b">状態-行動ペア</text>
+    <text x="245" y="78" text-anchor="middle" font-size="10" fill="#71717a">(s, a) データセット</text>
+    <!-- Arrow 2 -->
+    <path d="M315 65 L345 65" stroke="#16a34a" stroke-width="2" marker-end="url(#arrowG04)"/>
+    <!-- Step 3 -->
+    <rect x="350" y="30" width="130" height="70" rx="10" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+    <text x="415" y="58" text-anchor="middle" font-size="12" font-weight="600" fill="#18181b">方策学習</text>
+    <text x="415" y="78" text-anchor="middle" font-size="10" fill="#71717a">π(a|s) を最適化</text>
+    <!-- Arrow 3 -->
+    <path d="M485 65 L515 65" stroke="#16a34a" stroke-width="2" marker-end="url(#arrowG04)"/>
+    <!-- Step 4 -->
+    <rect x="520" y="30" width="130" height="70" rx="10" fill="#f4f4f5" stroke="#18181b" stroke-width="1.5"/>
+    <text x="585" y="58" text-anchor="middle" font-size="12" font-weight="600" fill="#18181b">ロボット実行</text>
+    <text x="585" y="78" text-anchor="middle" font-size="10" fill="#71717a">自律行動</text>
+    <defs>
+      <marker id="arrowG04" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+        <path d="M0,0 L8,3 L0,6" fill="#16a34a"/>
+      </marker>
+    </defs>
+  </svg>
+
+  <aside class="info-box">
+    <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span>
+    <div>
+      <strong>強化学習 vs 模倣学習の最大の違い</strong>
+      <p>強化学習は「報酬関数の設計」が必要ですが、模倣学習は「質の高いデモデータの収集」が必要です。どちらも簡単ではありませんが、ビジネス現場では「やってみせる」方が「報酬を定義する」より直感的なケースが多く、模倣学習が実務で注目されています。</p>
+    </div>
+  </aside>
+
+  <details class="more-box">
+    <summary>DAgger: 分布シフトへの対策</summary>
+    <p><span class="term" data-tip="Dataset Aggregation の略。学習した方策でデータを集め、人間が修正ラベルを付けて再学習するオンライン手法">DAgger</span>は Behavior Cloning の弱点である分布シフト問題を緩和する手法です。学習済みの方策でロボットを動かし、逸脱した場面で人間が「正しい行動」をラベル付けしてデータセットに追加します。これを繰り返すことで、方策の弱点を重点的にカバーできます。ただし人間の介入が必要なため、データ収集コストが BCの単純収集より高くなります。</p>
+  </details>
+  </section>
+
+  <!-- ============================================ -->
+  <!-- Section 2: テレオペレーションによるデータ収集  -->
+  <!-- ============================================ -->
+  <section class="chapter-section" data-section="04-2">
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span> テレオペレーションによるデータ収集</h2>
+
+  <p>模倣学習のデータを集める主要な方法が<span class="term" data-tip="遠隔操作でロボットを動かし、操作データを記録する手法">テレオペレーション</span>（Teleoperation）です。人間がリアルタイムでロボットを操作し、その動きをそのまま学習データとして記録します。</p>
+
+  <!-- Table: テレオペ方式比較 -->
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>方式</th>
+          <th>操作デバイス</th>
+          <th>直感性</th>
+          <th>データ品質</th>
+          <th>設備コスト</th>
+          <th>習熟時間</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>ジョイスティック</strong></td>
+          <td>ゲームパッド / 3Dマウス</td>
+          <td>△ 低い</td>
+          <td>△ ばらつき大</td>
+          <td>◎ ~5万円</td>
+          <td>数日~1週間</td>
+        </tr>
+        <tr>
+          <td><strong>VRコントローラ</strong></td>
+          <td>Meta Quest / HTC Vive</td>
+          <td>○ 中程度</td>
+          <td>○ 安定</td>
+          <td>○ ~30万円</td>
+          <td>数時間~1日</td>
+        </tr>
+        <tr>
+          <td><strong><span class="term" data-tip="人間が動かすリーダーアームの動きを、フォロワーアームがリアルタイムで追従する方式">リーダーフォロワー</span></strong></td>
+          <td>同型アーム（2台1組）</td>
+          <td>◎ 高い</td>
+          <td>◎ 高品質</td>
+          <td>△ ~300万円</td>
+          <td>30分~数時間</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>リーダーフォロワー方式は設備コストが高いものの、操作者が「自分の手で物を掴む」感覚に近いため、直感的で質の高いデモデータを短時間で収集できます。<span class="term" data-tip="Googleが開発した双腕テレオペロボット。リーダーフォロワー方式で家事タスクのデモ収集を実現">Mobile ALOHA</span>プロジェクトでは、この方式で料理や掃除といった家事タスクの大量デモを収集しました。</p>
+
+  <aside class="info-box">
+    <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span>
+    <div>
+      <strong>Mobile ALOHAの衝撃</strong>
+      <p>2023年末に公開されたMobile ALOHAは、約5万ドルの部品コストで双腕モバイルマニピュレータを構築し、50デモ程度のデータで新しいタスクを学習できることを示しました。「少量デモ＋共同学習」のアプローチは、ビジネス導入のハードルを大きく下げる可能性があります。</p>
+    </div>
+  </aside>
+
+  <details class="more-box">
+    <summary>VRテレオペの進化: 触覚フィードバック</summary>
+    <p>最新のVRテレオペでは、力覚センサからの触覚フィードバックをVRコントローラの振動で再現する技術が発展しています。これにより操作者は「物を握る力加減」を感覚的に把握でき、繊細な操作（卵を掴む、柔らかい食品を扱うなど）のデモ品質が向上します。設備コストは上がりますが、柔軟物操作のデータ収集では費用対効果が高いとされています。</p>
+  </details>
+  </section>
+
+  <!-- ============================================ -->
+  <!-- Section 3: データ品質とスケーリング          -->
+  <!-- ============================================ -->
+  <section class="chapter-section" data-section="04-3">
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span> データ品質とスケーリング</h2>
+
+  <p>模倣学習の性能は<strong>データの量と質</strong>に大きく左右されます。ただし、闇雲にデモ数を増やせばいいわけではありません。</p>
+
+  <!-- Mermaid: データ収集→学習フロー -->
+  <div class="mermaid">
+flowchart LR
+    A["デモ収集<br/>テレオペ"] --> B["前処理<br/>フィルタ・正規化"]
+    B --> C["Data Augmentation<br/>ノイズ付加・視点変換"]
+    C --> D["方策学習<br/>BC / IRL"]
+    D --> E["評価<br/>成功率テスト"]
+    E -->|"性能不足"| A
+    E -->|"合格"| F["デプロイ"]
+    style A fill:#f4f4f5,stroke:#18181b,color:#18181b
+    style D fill:#dcfce7,stroke:#16a34a,color:#18181b
+    style F fill:#dcfce7,stroke:#16a34a,color:#18181b
+  </div>
+
+  <p>データの<span class="term" data-tip="異なる初期条件・環境・物体配置など、学習データのバリエーションの豊富さ">多様性</span>は量と同じくらい重要です。同じ操作者が同じ場所で100回繰り返すより、異なる操作者・異なる物体配置・異なる照明条件で50回収集する方が、汎化性能の高い方策が学習できます。</p>
+
+  <p><span class="term" data-tip="既存データに変換や摂動を加えて訓練データを擬似的に増やす手法">Data Augmentation</span>もスケーリングの鍵です。画像にランダムクロップ・色調変換・背景置換を施すことで、実質的なデータ量を数倍に増やせます。</p>
+
+  <details class="more-box">
+    <summary>Open X-Embodiment: データ共有の大潮流</summary>
+    <p><span class="term" data-tip="Google DeepMindが主導する、22機関・22種類のロボットから収集した100万以上のエピソードを含む大規模データセット">Open X-Embodiment</span>プロジェクトは、異なるロボット・異なる研究機関が収集したデモデータを統一フォーマットで共有する試みです。100万エピソード以上の規模で、個々の研究室では到底集められないデータ量を実現しています。このようなデータセット共有の動きは、模倣学習の「データのボトルネック」を緩和する重要なトレンドです。</p>
+  </details>
+
+  <!-- Stats Grid: データ収集の現実感 -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-num">50~200</div>
+      <div class="stat-label">1タスクに必要な<br>デモ数（目安）</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">2~5分</div>
+      <div class="stat-label">1デモあたりの<br>収集時間</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">3~10x</div>
+      <div class="stat-label">Data Augmentationの<br>データ増幅倍率</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">100万+</div>
+      <div class="stat-label">Open X-Embodimentの<br>エピソード数</div>
+    </div>
+  </div>
+
+  <details class="more-box">
+    <summary>シミュレーションデータとの併用</summary>
+    <p>実機でのテレオペだけでなく、シミュレータ（Isaac Sim, MuJoCoなど）で生成したデモデータを混ぜて学習する「<span class="term" data-tip="シミュレーション環境と実環境のデータを混合して学習する手法">Sim+Real混合学習</span>」も有力です。シミュレータなら自動でデモを大量生成できるため、コスト効率に優れます。ただしSim-to-Realギャップ（シミュレーションと現実の差）を埋めるドメインランダマイゼーションが必須です。</p>
+  </details>
+  </section>
+
+  <!-- ============================================ -->
+  <!-- Section 4: ビジネス観点                      -->
+  <!-- ============================================ -->
+  <section class="chapter-section" data-section="04-4">
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span> ビジネス観点: 模倣学習プロジェクトの現実</h2>
+
+  <p>模倣学習プロジェクトを提案・推進する際、最も見落とされがちなのが<strong>データ収集のコストと時間</strong>です。「AIが学習してくれる」の前段階にある「人間がひたすら操作する」工程を正しく見積もることが、プロジェクト成功の鍵です。</p>
+
+  <!-- Stats Grid: コスト感 -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-num">1,000</div>
+      <div class="stat-label">本格運用に必要な<br>デモ数（複雑タスク）</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">5~15日</div>
+      <div class="stat-label">1,000デモ収集<br>にかかる日数</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">300~500万</div>
+      <div class="stat-label">リーダーフォロワー方式<br>初期設備投資（円）</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">2~4名</div>
+      <div class="stat-label">1プロジェクトの<br>オペレータ必要人数</div>
+    </div>
+  </div>
+
+  <p>1,000デモを集める現実的なスケジュール感を考えてみましょう。1デモ3分、準備とリセットに2分で、1デモあたり5分。1日6時間稼働で72デモ。<strong>約14日間、オペレータがフルタイムで操作し続ける</strong>計算です。オペレータの疲労によるデータ品質低下も考慮すると、交代要員の確保も必要になります。</p>
+
+  <aside class="info-box">
+    <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span>
+    <div>
+      <strong>顧客への伝え方</strong>
+      <p>「AIが学習するのは1日ですが、そのための教師データ収集に2週間かかります」――この認識ギャップをプロジェクト初期に埋めることが、スケジュール遅延やコスト超過を防ぐ最大のポイントです。模倣学習プロジェクトの工数は「データ収集70%、学習・調整20%、評価・デプロイ10%」が典型的な配分です。</p>
+    </div>
+  </aside>
+
+  <p>テレオペ設備の調達リードタイムも要注意です。リーダーフォロワー用のアームは受注生産が多く、<strong>発注から納品まで2~3ヶ月</strong>かかるケースもあります。PoC段階ではVRコントローラで始め、本格フェーズでリーダーフォロワーに移行するのが現実的なステップです。</p>
+
+  <p><span class="term" data-tip="デモ操作者のスキルレベルによるデータ品質の差。初心者の操作データは学習を阻害する可能性がある">オペレータ品質</span>も見落とせません。操作に不慣れなオペレータのデモデータは、タスクの「最適な動き」から乖離し、学習後の方策性能を下げます。オペレータのトレーニング期間（通常1~3日）と、初期のデモデータを除外する「<span class="term" data-tip="オペレータが十分習熟する前に収集したデモを訓練データから除外するプロセス">ウォームアップ除外</span>」も計画に織り込みましょう。</p>
+  </section>
+
+  <!-- ============================================ -->
+  <!-- Exercises                                    -->
+  <!-- ============================================ -->
+  <section class="chapter-section" data-section="04-exercise">
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span> 演習問題</h2>
+
+  <div class="exercise-box">
+    <h3>演習1（入門）: テレオペ方式の選定</h3>
+    <p>あなたの会社は「倉庫内の小型部品ピッキング」の自動化を検討しています。PoCフェーズで100デモ、本番フェーズで1,000デモの収集を計画しています。以下の条件を踏まえ、PoCと本番それぞれでどのテレオペ方式を選ぶべきか、理由とともに説明してください。</p>
+    <ul>
+      <li>PoCの予算: 50万円以内</li>
+      <li>本番の予算: 500万円以内</li>
+      <li>対象物: 硬い金属部品（3~10cm）</li>
+      <li>オペレータ: 社内エンジニア2名（ロボット操作経験なし）</li>
+    </ul>
+    <details class="more-box">
+      <summary>模範解答を見る</summary>
+      <p><strong>PoC: VRコントローラ方式</strong>を推奨。予算50万円以内で収まり（Meta Quest 3が約7万円）、習熟時間も数時間~1日。100デモなら2~3日で収集可能。硬い金属部品は把持が比較的容易なため、VRでも十分なデータ品質を確保できる。</p>
+      <p><strong>本番: リーダーフォロワー方式</strong>に移行。1,000デモ規模では操作効率とデータ品質が重要になる。設備投資300~500万円は本番予算内。リーダーフォロワーなら習熟が速く（30分~）、長時間操作でも疲労が少ない。2名交代で約10~14日で1,000デモ収集が現実的。</p>
+    </details>
+  </div>
+
+  <div class="exercise-box">
+    <h3>演習2（応用）: データ収集計画書の作成</h3>
+    <p>食品工場の弁当盛り付けライン自動化プロジェクトのデータ収集計画を作成してください。以下の情報を含めること。</p>
+    <ul>
+      <li>対象タスクの分析（硬い容器 + 柔らかい食材の組み合わせ）</li>
+      <li>テレオペ方式の選定と理由</li>
+      <li>必要デモ数の見積もり（根拠付き）</li>
+      <li>収集スケジュール（日数・人員）</li>
+      <li>想定されるリスクと対策</li>
+    </ul>
+    <details class="more-box">
+      <summary>模範解答を見る</summary>
+      <p><strong>タスク分析:</strong> 弁当の盛り付けは「ご飯をすくう（柔軟物）」「おかずを配置する（半柔軟）」「容器を移動する（剛体）」の複合タスク。柔軟物操作を含むため、力加減の精密なデモが必要。</p>
+      <p><strong>テレオペ方式:</strong> リーダーフォロワー方式。柔軟物（食材）の力加減を操作者が直感的に制御できることが決定要因。VRでは力覚フィードバックが不足し、食材を潰すデモが混入するリスク。</p>
+      <p><strong>デモ数見積もり:</strong> 3種の盛り付けパターン × 各200デモ = 600デモ（ベースライン）。食材のバリエーション（形状・硬さのばらつき）を考慮し、計800~1,000デモを目標。</p>
+      <p><strong>スケジュール:</strong> 1デモ5分（準備含む）× 1,000 = 約83時間。3名体制（交代）、1日6時間稼働で約5日。トレーニング2日 + ウォームアップ除外分1日 = 合計約8日間。</p>
+      <p><strong>リスクと対策:</strong> (1) 食材劣化 → 冷蔵管理・短時間バッチ収集 (2) 操作者疲労 → 3名ローテーション (3) 衛生管理 → ロボットアームの定期清掃プロトコル策定。</p>
+    </details>
+  </div>
+  </section>
+
+  <!-- ============================================ -->
+  <!-- Resources                                    -->
+  <!-- ============================================ -->
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><a href="https://mobile-aloha.github.io/" target="_blank" rel="noopener">Mobile ALOHA プロジェクトページ</a> ― リーダーフォロワー方式テレオペの代表例</li>
+      <li><a href="https://robotics-transformer-x.github.io/" target="_blank" rel="noopener">Open X-Embodiment</a> ― 22機関による大規模ロボティクスデータセット</li>
+      <li><a href="https://arxiv.org/abs/2309.10818" target="_blank" rel="noopener">A Survey of Imitation Learning (2023)</a> ― 模倣学習の包括的サーベイ論文</li>
+      <li><a href="https://arxiv.org/abs/1011.0686" target="_blank" rel="noopener">DAgger (Ross et al., 2011)</a> ― 分布シフト対策の基礎論文</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="04">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="03-reinforcement-learning.html"><span class="direction">&larr; Prev</span>強化学習によるロボット制御</a>
+    <a href="05-vla-models.html"><span class="direction">Next &rarr;</span>VLAモデルの最前線</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#f4f4f5',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#18181b',
+      lineColor: '#18181b',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<!-- 視覚化ライブラリ群 (使う章だけ動作、未使用章はゼロコスト) -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  // Lucideアイコンを自動描画 (data-lucide="icon-name" 属性のある要素を全部処理)
+  if (window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>

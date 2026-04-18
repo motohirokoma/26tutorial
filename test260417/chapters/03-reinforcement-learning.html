@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%2316a34a%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>強化学習によるロボット制御 - Kuririn's Physical AI Crash Course</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #16a34a; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></div>
+      &gt;_ Kuririn's Physical AI Crash Course
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="../index.html#phase3" data-nav><span class="phase-name">Advanced</span><span class="phase-pct" id="pct-advanced">0%</span></a></li>
+      <li><a href="../index.html#phase4" data-nav><span class="phase-name">Final</span><span class="phase-pct" id="pct-final">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.03</span>
+    強化学習によるロボット制御
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 37 sections</text>
+    </svg>
+    <div class="progress-info">0h / 8h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-overview.html"><span class="status-dot" data-chapter="01"></span> フィジカルAIの全体像</a></li>
+    <li><a href="02-classical-control.html"><span class="status-dot" data-chapter="02"></span> 古典制御とロボットの基盤技術</a></li>
+  </ul>
+  <div class="section-label">Core</div>
+  <ul>
+    <li class="active"><a href="03-reinforcement-learning.html"><span class="status-dot" data-chapter="03"></span> 強化学習によるロボット制御</a></li>
+    <li><a href="04-imitation-learning.html"><span class="status-dot" data-chapter="04"></span> 模倣学習とテレオペレーション</a></li>
+    <li><a href="05-vla-models.html"><span class="status-dot" data-chapter="05"></span> VLAモデルの最前線</a></li>
+  </ul>
+  <div class="section-label">Advanced</div>
+  <ul>
+    <li><a href="06-implementation-barriers.html"><span class="status-dot" data-chapter="06"></span> 実装の壁</a></li>
+    <li><a href="07-business-scoping.html"><span class="status-dot" data-chapter="07"></span> ビジネススコーピングの技法</a></li>
+  </ul>
+  <div class="section-label">Final</div>
+  <ul>
+    <li><a href="08-final-exercise.html"><span class="status-dot" data-chapter="08"></span> 最終演習問題</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 2: Core &gt; Chapter 03</div>
+  <h1>強化学習によるロボット制御</h1>
+  <p class="subtitle">試行錯誤から最適行動を学ぶ ― 強化学習の原理とSim-to-Real転移の要点</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 60min</span>
+    <span class="badge">Phase: Core</span>
+    <span class="badge">難易度: 中級</span>
+  </div>
+
+  <div class="info-box">
+    <p>この章では、ロボットが「試行錯誤」を通じて最適な行動を学ぶ<span class="term" data-tip="環境との相互作用を通じて、報酬を最大化する行動方策を学習する機械学習の一分野">強化学習（RL）</span>の仕組みと、シミュレータで学習した能力を実機に転移する<span class="term" data-tip="シミュレータ環境で学習した方策を、実際のロボット（実機）に適用する技術。Reality Gapの克服が鍵">Sim-to-Real転移</span>の要点を学びます。</p>
+  </div>
+
+  <!-- ===== Section 1: 強化学習の基本構造 ===== -->
+  <h2 data-section="03-01">
+    <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span>
+    強化学習の基本構造
+  </h2>
+
+  <p>強化学習は、「ゲームを上達するAI」のアナロジーで理解するのが最も直感的です。ゲームをプレイする（＝環境と相互作用する）中で、良い結果が出たら報酬をもらい、悪い結果なら罰を受ける。これを繰り返すうちに、どの状況でどう行動すれば良いかを学んでいきます。</p>
+
+  <p>強化学習の核となる5つの要素：</p>
+
+  <ul>
+    <li><strong><span class="term" data-tip="環境を観測し、行動を選択する主体。ロボットやソフトウェアがエージェントとなる">エージェント</span></strong> ― 学習する主体（ロボット）</li>
+    <li><strong><span class="term" data-tip="エージェントが相互作用する外部世界。物理環境やシミュレータが該当する">環境</span></strong> ― エージェントが活動する世界</li>
+    <li><strong><span class="term" data-tip="ある時点での環境の観測情報。ロボットのセンサー値、関節角度、カメラ画像などが含まれる">状態（State）</span></strong> ― 今どういう状況か</li>
+    <li><strong><span class="term" data-tip="エージェントが環境に対して行う操作。モーターの回転、グリッパーの開閉などの制御指令">行動（Action）</span></strong> ― 何をするか</li>
+    <li><strong><span class="term" data-tip="行動の結果として環境から得られるスカラー値のフィードバック。正の報酬（良い結果）と負の報酬（悪い結果）がある">報酬（Reward）</span></strong> ― どれくらい良かったか</li>
+  </ul>
+
+  <!-- SVG: 強化学習ループ -->
+  <div style="margin:2rem 0;overflow-x:auto;">
+    <svg viewBox="0 0 600 320" xmlns="http://www.w3.org/2000/svg" style="max-width:600px;width:100%;font-family:inherit;">
+      <rect width="600" height="320" rx="12" fill="#fafafa" stroke="#e4e4e7" stroke-width="1"/>
+      <!-- Agent box -->
+      <rect x="60" y="40" width="180" height="80" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+      <text x="150" y="72" text-anchor="middle" font-size="15" font-weight="700" fill="#166534">エージェント</text>
+      <text x="150" y="100" text-anchor="middle" font-size="12" fill="#166534">方策 π(a|s)</text>
+      <!-- Environment box -->
+      <rect x="360" y="40" width="180" height="80" rx="12" fill="#f4f4f5" stroke="#18181b" stroke-width="2"/>
+      <text x="450" y="72" text-anchor="middle" font-size="15" font-weight="700" fill="#18181b">環境</text>
+      <text x="450" y="100" text-anchor="middle" font-size="12" fill="#71717a">物理世界 / シミュレータ</text>
+      <!-- Action arrow (top: Agent → Environment) -->
+      <line x1="240" y1="65" x2="360" y2="65" stroke="#16a34a" stroke-width="2" marker-end="url(#arrowG03)"/>
+      <rect x="262" y="48" width="76" height="22" rx="4" fill="white" stroke="#16a34a" stroke-width="1"/>
+      <text x="300" y="64" text-anchor="middle" font-size="12" font-weight="600" fill="#16a34a">行動 a_t</text>
+      <!-- State arrow (bottom: Environment → Agent) -->
+      <line x1="360" y1="100" x2="240" y2="100" stroke="#18181b" stroke-width="2" marker-end="url(#arrowB03)"/>
+      <rect x="262" y="88" width="76" height="22" rx="4" fill="white" stroke="#18181b" stroke-width="1"/>
+      <text x="300" y="103" text-anchor="middle" font-size="12" font-weight="600" fill="#18181b">状態 s_t</text>
+      <!-- Reward arrow (curved bottom) -->
+      <path d="M 450 120 L 450 220 Q 450 250 420 250 L 180 250 Q 150 250 150 220 L 150 120" fill="none" stroke="#f59e0b" stroke-width="2" stroke-dasharray="6 3" marker-end="url(#arrowY03)"/>
+      <rect x="260" y="237" width="80" height="24" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+      <text x="300" y="254" text-anchor="middle" font-size="12" font-weight="600" fill="#92400e">報酬 r_t</text>
+      <!-- Loop label -->
+      <text x="300" y="295" text-anchor="middle" font-size="13" fill="#71717a">このループを数百万〜数億回繰り返す</text>
+      <!-- Value function note -->
+      <rect x="60" y="155" width="180" height="55" rx="8" fill="white" stroke="#e4e4e7" stroke-width="1"/>
+      <text x="150" y="175" text-anchor="middle" font-size="11" font-weight="600" fill="#18181b">価値関数 V(s)</text>
+      <text x="150" y="195" text-anchor="middle" font-size="10" fill="#71717a">「この状態はどれくらい良いか」</text>
+      <!-- Policy note -->
+      <rect x="360" y="155" width="180" height="55" rx="8" fill="white" stroke="#e4e4e7" stroke-width="1"/>
+      <text x="450" y="175" text-anchor="middle" font-size="11" font-weight="600" fill="#18181b">方策 π(a|s)</text>
+      <text x="450" y="195" text-anchor="middle" font-size="10" fill="#71717a">「この状態で何をすべきか」</text>
+      <!-- Arrowheads -->
+      <defs>
+        <marker id="arrowG03" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#16a34a"/></marker>
+        <marker id="arrowB03" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#18181b"/></marker>
+        <marker id="arrowY03" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#f59e0b"/></marker>
+      </defs>
+    </svg>
+  </div>
+
+  <p>強化学習で学ぶのは<span class="term" data-tip="状態を入力として行動を出力する関数。決定的方策（1つの行動を出力）と確率的方策（行動の確率分布を出力）がある">方策（Policy）</span>です。「この状態ではこの行動を取れ」というルールを、報酬フィードバックを手がかりに自動で獲得します。同時に<span class="term" data-tip="ある状態の「良さ」を数値化する関数。将来得られる報酬の期待値を表す">価値関数</span>（この状態はどれくらい良い状態か）も学習し、行動選択の指針とします。</p>
+
+  <details class="more-box">
+    <summary>探索と活用のジレンマ（Exploration vs Exploitation）</summary>
+    <p>強化学習エージェントは常にジレンマに直面します。「今まで見つけた中で一番良い行動を繰り返す（活用）」か、「もっと良い行動がないか試してみる（探索）」か。探索が足りないと局所最適に陥り、探索しすぎると学習効率が落ちます。このバランスの取り方が、アルゴリズム設計の重要なポイントです。</p>
+  </details>
+
+  <!-- ===== Section 2: 主要アルゴリズムの地図 ===== -->
+  <h2 data-section="03-02">
+    <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span>
+    主要アルゴリズムの地図
+  </h2>
+
+  <p>強化学習のアルゴリズムは数多くありますが、ロボット制御で特に重要な3つを押さえましょう。数式は不要です。それぞれの「性格」と「使いどころ」を理解することが大切です。</p>
+
+  <!-- Table: 主要RLアルゴリズム比較 -->
+  <div style="overflow-x:auto;margin:1.5rem 0;">
+    <table style="width:100%;border-collapse:collapse;font-size:.9rem;">
+      <thead>
+        <tr style="background:#18181b;color:white;">
+          <th style="padding:.75rem 1rem;text-align:left;border-radius:8px 0 0 0;">アルゴリズム</th>
+          <th style="padding:.75rem 1rem;text-align:left;">タイプ</th>
+          <th style="padding:.75rem 1rem;text-align:left;">特徴</th>
+          <th style="padding:.75rem 1rem;text-align:left;">ロボット制御での用途</th>
+          <th style="padding:.75rem 1rem;text-align:left;border-radius:0 8px 0 0;">サンプル効率</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom:1px solid #e4e4e7;">
+          <td style="padding:.75rem 1rem;font-weight:700;color:#16a34a;">PPO</td>
+          <td style="padding:.75rem 1rem;">On-policy</td>
+          <td style="padding:.75rem 1rem;">安定性が高く、ハイパーパラメータに頑健。実装が比較的容易</td>
+          <td style="padding:.75rem 1rem;">歩行制御、マニピュレーション全般</td>
+          <td style="padding:.75rem 1rem;color:#dc2626;">低い</td>
+        </tr>
+        <tr style="border-bottom:1px solid #e4e4e7;background:#fafafa;">
+          <td style="padding:.75rem 1rem;font-weight:700;color:#16a34a;">SAC</td>
+          <td style="padding:.75rem 1rem;">Off-policy</td>
+          <td style="padding:.75rem 1rem;">探索と活用のバランスが自動調整。連続行動空間に強い</td>
+          <td style="padding:.75rem 1rem;">精密な把持制御、力制御</td>
+          <td style="padding:.75rem 1rem;color:#16a34a;">高い</td>
+        </tr>
+        <tr>
+          <td style="padding:.75rem 1rem;font-weight:700;color:#16a34a;">TD3</td>
+          <td style="padding:.75rem 1rem;">Off-policy</td>
+          <td style="padding:.75rem 1rem;">Q値の過大評価を抑制。決定的方策で安定した出力</td>
+          <td style="padding:.75rem 1rem;">モーター制御、速度制御</td>
+          <td style="padding:.75rem 1rem;color:#16a34a;">高い</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>ここで重要な概念上の区分が2つあります：</p>
+
+  <p><strong><span class="term" data-tip="現在の方策で集めたデータのみで学習する手法。データの再利用ができないためサンプル効率が低いが、安定性は高い">On-policy</span> vs <span class="term" data-tip="過去に別の方策で集めたデータも再利用して学習できる手法。サンプル効率が高いが、学習が不安定になりやすい">Off-policy</span>：</strong>On-policy（PPO）は「今の自分が集めたデータでしか学べない」。Off-policy（SAC, TD3）は「過去のデータを再利用できる」。実機でのデータ収集コストが高いロボットでは、Off-policyの<strong>サンプル効率の高さ</strong>が大きな利点です。</p>
+
+  <!-- Mermaid: On-policy vs Off-policy の判定フロー -->
+  <div class="mermaid">
+flowchart TD
+  START["ロボット制御タスク"] --> Q1{"実機でデータ収集<br>できる量は？"}
+  Q1 -->|"十分（シミュレータあり）"| Q2{"学習の安定性を<br>最優先するか？"}
+  Q1 -->|"限定的（実機のみ）"| OFF["Off-policy推奨<br>(SAC / TD3)"]
+  Q2 -->|"はい"| ON["On-policy推奨<br>(PPO)"]
+  Q2 -->|"いいえ"| OFF2["Off-policy推奨<br>(SAC / TD3)"]
+
+  style START fill:#f4f4f5,stroke:#18181b,color:#18181b
+  style Q1 fill:#dcfce7,stroke:#16a34a,color:#166534
+  style Q2 fill:#dcfce7,stroke:#16a34a,color:#166534
+  style ON fill:#f4f4f5,stroke:#18181b,color:#18181b
+  style OFF fill:#f4f4f5,stroke:#18181b,color:#18181b
+  style OFF2 fill:#f4f4f5,stroke:#18181b,color:#18181b
+  </div>
+  <p class="caption">図: アルゴリズム選択の判断フロー（簡易版）</p>
+
+  <!-- Compare cards: Model-based vs Model-free -->
+  <p><strong><span class="term" data-tip="環境の動力学モデル（状態遷移関数）を明示的に学習・利用する手法。サンプル効率は高いがモデル誤差のリスクがある">Model-based</span> vs <span class="term" data-tip="環境のモデルを使わず、直接経験から方策や価値関数を学習する手法。PPO, SAC, TD3はいずれもModel-free">Model-free</span>：</strong></p>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin:1.5rem 0;">
+    <div style="background:#f4f4f5;border-radius:12px;padding:1.5rem;border-top:4px solid #16a34a;">
+      <h4 style="margin:0 0 1rem;color:#16a34a;"><i data-lucide="box" style="width:18px;height:18px;vertical-align:middle;margin-right:6px;"></i>Model-based RL</h4>
+      <ul style="margin:0;padding-left:1.2rem;font-size:.9rem;line-height:1.8;">
+        <li>環境の「物理法則」を学習して予測に使う</li>
+        <li>サンプル効率が非常に高い</li>
+        <li>モデル誤差が性能を制限する</li>
+        <li>計画（Planning）と組み合わせ可能</li>
+        <li><strong>向くタスク：</strong>物理法則がはっきりした制御</li>
+      </ul>
+    </div>
+    <div style="background:#f4f4f5;border-radius:12px;padding:1.5rem;border-top:4px solid #18181b;">
+      <h4 style="margin:0 0 1rem;color:#18181b;"><i data-lucide="zap" style="width:18px;height:18px;vertical-align:middle;margin-right:6px;"></i>Model-free RL</h4>
+      <ul style="margin:0;padding-left:1.2rem;font-size:.9rem;line-height:1.8;">
+        <li>環境のモデルなしで直接学習</li>
+        <li>大量のデータ（試行錯誤）が必要</li>
+        <li>モデル誤差のリスクがない</li>
+        <li>PPO, SAC, TD3はすべてこちら</li>
+        <li><strong>向くタスク：</strong>複雑で予測困難な環境</li>
+      </ul>
+    </div>
+  </div>
+
+  <details class="more-box">
+    <summary>現場で聞かれる「PPOでいいですか？」への答え方</summary>
+    <p>ベンダーからの提案で「PPOを使います」と言われることが多いですが、それ自体は妥当なことが多いです。PPOはロボティクス分野で最も広く使われており、学習の安定性が高い。ただし、<strong>実機データが限られる</strong>場合はSACやTD3のほうがサンプル効率の面で有利です。「なぜPPOなのか？シミュレータを使うのか？実機でデータを取るのか？」と聞けると、提案の妥当性を評価できます。</p>
+  </details>
+
+  <!-- ===== Section 3: 報酬設計の難しさ ===== -->
+  <h2 data-section="03-03">
+    <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span>
+    報酬設計の難しさ
+  </h2>
+
+  <p>強化学習で最も難しく、最もプロジェクトの成否を左右するのが<span class="term" data-tip="タスクの目標を報酬関数として数値化する作業。適切な報酬設計がないとエージェントは望ましくない行動を学習する">報酬設計（Reward Design）</span>です。「何を良い行動とするか」を数値で定義しなければなりません。</p>
+
+  <p>具体例で考えましょう。「<strong>箸でものを掴む</strong>」タスクの報酬をどう設計するか：</p>
+
+  <div class="info-box">
+    <p><i data-lucide="target" style="width:16px;height:16px;display:inline-block;vertical-align:middle;margin-right:4px;"></i><strong>単純な報酬：</strong>「掴めたら+1、掴めなかったら0」→ 問題点：どうやって掴みに行けばいいか全くヒントがなく、ランダムに掴めるまで膨大な試行が必要（<span class="term" data-tip="報酬がほとんどの時間ステップでゼロになる状況。エージェントが学習の手がかりを得られない">Sparse Reward</span>問題）</p>
+  </div>
+
+  <p>そこで<span class="term" data-tip="学習を助けるために中間的な報酬を追加すること。目標に近づくほど報酬が増えるような設計">Reward Shaping</span>を行います：「手が食べ物に近づいたら+0.1」「箸が正しい角度になったら+0.2」「掴めたら+1.0」。しかし、ここに落とし穴があります。</p>
+
+  <aside class="callout-box">
+    <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span>
+    <p><strong>Reward Hacking（報酬ハック）の恐怖：</strong>「手が食べ物に近い」で報酬を与えると、ロボットが食べ物のすぐ近くで手を振り続けて報酬を稼ぐ ― 掴もうとせずに「近くにいること」を最適化してしまう。人間が意図した行動とAIが学習した行動がズレる、典型的な<span class="term" data-tip="エージェントが報酬関数の設計上の抜け穴を見つけて、設計者の意図しない方法で報酬を最大化してしまう現象">Reward Hacking</span>です。</p>
+  </aside>
+
+  <p>報酬設計は「工学」であると同時に「アート」でもあります。ベンダー選定の際には、<strong>報酬設計の経験と実績</strong>を重要な評価基準とすべきです。</p>
+
+  <details class="more-box">
+    <summary>報酬設計の最新アプローチ ― 人間のフィードバックの活用</summary>
+    <p>近年は、人間が「良い行動」と「悪い行動」の動画ペアを見て優劣をつける<strong>RLHF（Reinforcement Learning from Human Feedback）</strong>のアプローチがロボティクスにも応用されています。LLM（大規模言語モデル）の学習で有名になった手法ですが、報酬関数を人間が直接数値で定義する必要がなくなるため、報酬設計の困難さを大幅に軽減できる可能性があります。</p>
+  </details>
+
+  <!-- ===== Section 4: Sim-to-Real転移 ===== -->
+  <h2 data-section="03-04">
+    <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span>
+    Sim-to-Real転移
+  </h2>
+
+  <p>強化学習は数百万回の試行錯誤を要しますが、実際のロボットで数百万回の動作を繰り返すのは非現実的です（壊れます）。そこで登場するのが<span class="term" data-tip="物理法則に基づいてロボットと環境の挙動を仮想空間上で再現するソフトウェア。高速に大量の試行を実行できる">物理シミュレータ</span>です。</p>
+
+  <p>主要なシミュレータの位置づけ：</p>
+
+  <ul>
+    <li><strong><span class="term" data-tip="NVIDIAが開発する高忠実度ロボティクスシミュレータ。GPUによる大規模並列シミュレーションが可能">NVIDIA Isaac Sim</span></strong> ― GPU並列で高速。産業界での採用が拡大中</li>
+    <li><strong><span class="term" data-tip="DeepMindが開発した物理エンジン。接触シミュレーションの精度が高く研究分野で広く使用される">MuJoCo</span></strong> ― 接触物理の精度が高い。研究の標準的環境</li>
+    <li><strong><span class="term" data-tip="Pythonで使えるオープンソースの物理シミュレータ。手軽に試せるが、忠実度はIsaac SimやMuJoCoに劣る">PyBullet</span></strong> ― 無料で手軽。プロトタイピング向き</li>
+  </ul>
+
+  <p>しかし、シミュレータで完璧に動いた方策が、実機ではまったく動かない ― この問題を<span class="term" data-tip="シミュレータと現実世界の物理特性の差異。摩擦、質量、センサーノイズ、接触力学などに違いが生じる">Reality Gap（現実との乖離）</span>と呼びます。</p>
+
+  <!-- Chart.js: Sim-to-Real性能ギャップ -->
+  <div style="max-width:560px;margin:2rem auto;">
+    <canvas id="simToRealChart" width="560" height="320"></canvas>
+  </div>
+
+  <p>Reality Gapを克服する主要な手法が<span class="term" data-tip="シミュレータの物理パラメータ（摩擦、質量、照明、ノイズ等）を学習中にランダムに変動させることで、ロバストな方策を獲得する手法">Domain Randomization</span>です。シミュレータの物理パラメータ（摩擦係数、質量、照明条件、センサーノイズなど）を学習中にランダムに変化させます。すると、エージェントは「特定の環境条件に最適化する」のではなく、「幅広い条件に対応できるロバストな方策」を学びます。</p>
+
+  <div class="info-box">
+    <p><i data-lucide="scale" style="width:16px;height:16px;display:inline-block;vertical-align:middle;margin-right:4px;"></i><strong>シミュレータ構築のトレードオフ：</strong>忠実度を上げればReality Gapは縮まるが、構築コストと計算コストが増大する。忠実度が低いとGapが広がるが、安く早く回せる。プロジェクトの予算・期間・求める性能に応じた<strong>妥当性判断</strong>が求められます。</p>
+  </div>
+
+  <aside class="callout-box">
+    <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span>
+    <p><strong>OpenAIのルービックキューブ事例：</strong>2019年、OpenAIはシミュレータでDomain Randomizationを極限まで活用し、ロボットハンドでルービックキューブを解くことに成功しました。シミュレータ内で<strong>数千年分</strong>の試行錯誤を実行し、現実の物理誤差にも対応できるロバストな方策を獲得した象徴的な事例です。</p>
+  </aside>
+
+  <details class="more-box">
+    <summary>Sim-to-Real転移の成功率を上げるための実務Tips</summary>
+    <p><strong>1. センサーキャリブレーション：</strong>実機のセンサーとシミュレータのセンサーモデルの差異を事前に計測し、可能な限り一致させる。<br>
+    <strong>2. 段階的転移：</strong>まずシミュレータで学習し、次に実機で少量の追加学習（Fine-tuning）を行う2段階アプローチが有効。<br>
+    <strong>3. 忠実度の優先順位：</strong>タスクに最も影響する物理パラメータ（把持なら接触摩擦、歩行なら地面反力）を特定し、そこの忠実度を優先的に上げる。</p>
+  </details>
+
+  <!-- ===== Section 5: ビジネス観点 ===== -->
+  <h2 data-section="03-05">
+    <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span>
+    ビジネス観点：強化学習プロジェクトの見積もり
+  </h2>
+
+  <p>強化学習は「AI制御の花形」ですが、プロジェクトとしてのコストとリスクを正しく理解しておく必要があります。</p>
+
+  <!-- Stats grid: 強化学習プロジェクトの典型コスト指標 -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin:2rem 0;">
+    <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:1.25rem;text-align:center;">
+      <div style="font-size:2rem;font-weight:800;color:#16a34a;">3-12ヶ月</div>
+      <div style="font-size:.85rem;color:#52525b;margin-top:.5rem;">PoC〜実機デモまでの典型期間</div>
+    </div>
+    <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:1.25rem;text-align:center;">
+      <div style="font-size:2rem;font-weight:800;color:#16a34a;">500万〜5000万円</div>
+      <div style="font-size:.85rem;color:#52525b;margin-top:.5rem;">シミュレータ構築 + GPU計算コスト</div>
+    </div>
+    <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:1.25rem;text-align:center;">
+      <div style="font-size:2rem;font-weight:800;color:#16a34a;">2-5名</div>
+      <div style="font-size:.85rem;color:#52525b;margin-top:.5rem;">コアチーム規模（RL研究者+エンジニア）</div>
+    </div>
+    <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:1.25rem;text-align:center;">
+      <div style="font-size:2rem;font-weight:800;color:#16a34a;">60-80%</div>
+      <div style="font-size:.85rem;color:#52525b;margin-top:.5rem;">Sim-to-Real転移で失われる性能の目安</div>
+    </div>
+  </div>
+
+  <p>「<strong>そもそも強化学習でやるべきか？</strong>」の判断基準を整理しましょう：</p>
+
+  <div class="info-box">
+    <p><i data-lucide="check-circle" style="width:16px;height:16px;display:inline-block;vertical-align:middle;margin-right:4px;color:#16a34a;"></i><strong>強化学習が向くケース：</strong></p>
+    <ul style="margin:.5rem 0 0;padding-left:1.5rem;">
+      <li>環境が複雑で明示的なルール化が困難</li>
+      <li>シミュレータが構築可能（物理法則がある程度既知）</li>
+      <li>報酬の定義が可能（成功/失敗が明確）</li>
+      <li>大量の試行錯誤を許容できる時間・コストがある</li>
+    </ul>
+  </div>
+
+  <div class="info-box">
+    <p><i data-lucide="x-circle" style="width:16px;height:16px;display:inline-block;vertical-align:middle;margin-right:4px;color:#dc2626;"></i><strong>強化学習を避けるべきケース：</strong></p>
+    <ul style="margin:.5rem 0 0;padding-left:1.5rem;">
+      <li>古典制御やルールベースで十分解ける</li>
+      <li>人間のデモデータが豊富にある → <strong>模倣学習</strong>のほうが効率的（次章で解説）</li>
+      <li>シミュレータの構築が困難（特殊な物理現象、柔軟物体など）</li>
+      <li>安全要件が極めて厳しい（医療、原発など）</li>
+    </ul>
+  </div>
+
+  <details class="more-box">
+    <summary>ベンダー提案を評価する5つの質問</summary>
+    <p>AIベンダーが「強化学習で解決します」と提案してきた際、以下の質問を投げかけましょう：</p>
+    <ol style="line-height:2;">
+      <li><strong>シミュレータはどのプラットフォームを使うか？</strong>（独自開発 vs 既存ツール）</li>
+      <li><strong>報酬設計はどうするか？</strong>（過去の類似タスクの経験はあるか）</li>
+      <li><strong>Reality Gapの対策は？</strong>（Domain Randomization + Fine-tuning等）</li>
+      <li><strong>学習に必要な計算リソースと期間の見積もりは？</strong>（GPU台数・学習日数）</li>
+      <li><strong>強化学習以外のアプローチ（模倣学習等）を検討したか？</strong>（なぜRLが最適なのかの根拠）</li>
+    </ol>
+  </details>
+
+  <!-- ===== 演習問題 ===== -->
+  <h2 data-section="03-exercise">
+    <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span>
+    演習問題
+  </h2>
+
+  <div class="exercise-box" style="background:#f0fdf4;border:1.5px solid #16a34a;border-radius:12px;padding:1.5rem;margin:1.5rem 0;">
+    <h4 style="margin:0 0 .75rem;"><span class="badge" style="background:#16a34a;color:white;">入門</span> 報酬設計チャレンジ</h4>
+    <p>「ロボットアームが机の上のコップを持ち上げて、隣のテーブルに置く」というタスクを強化学習で解く場合、報酬関数をどう設計しますか？少なくとも3つの中間報酬を含めて設計し、起こりうるReward Hackingの例も1つ挙げてください。</p>
+    <details class="more-box">
+      <summary>模範解答を見る</summary>
+      <p><strong>報酬設計例：</strong></p>
+      <ul>
+        <li>グリッパーがコップに近づく：距離に反比例する連続報酬（+0.0〜+0.2）</li>
+        <li>コップを安定的に把持：+0.3</li>
+        <li>コップを持ち上げる（高さに応じた連続報酬）：+0.0〜+0.2</li>
+        <li>コップを目標位置に近づける：距離に反比例する連続報酬（+0.0〜+0.2）</li>
+        <li>コップを目標位置に安定して置く：+1.0</li>
+        <li>コップを落とす/倒す：-0.5</li>
+      </ul>
+      <p><strong>Reward Hackingの例：</strong>「持ち上げる高さ」で報酬を与えると、コップを高く投げ上げるだけでも報酬が得られてしまう。「持ち上げている間のグリッパー力の安定性」も報酬に含めないと、雑な持ち上げが最適行動として学習される可能性がある。</p>
+    </details>
+  </div>
+
+  <div class="exercise-box" style="background:#f4f4f5;border:1.5px solid #18181b;border-radius:12px;padding:1.5rem;margin:1.5rem 0;">
+    <h4 style="margin:0 0 .75rem;"><span class="badge" style="background:#18181b;color:white;">応用</span> プロジェクト判断シミュレーション</h4>
+    <p>あなたは物流企業のAI推進担当です。倉庫内での「不定形段ボールの積み付け（パレタイジング）」を自動化するため、AIベンダーから以下の2つの提案を受けました。どちらを採用すべきか、根拠とともに判断してください。</p>
+    <ul>
+      <li><strong>提案A：</strong>強化学習ベース。Isaac Simで学習環境を構築し、Domain Randomizationで転移。開発期間8ヶ月、コスト4000万円</li>
+      <li><strong>提案B：</strong>模倣学習ベース。人間オペレーターの作業データ200時間を収集し学習。開発期間5ヶ月、コスト2500万円</li>
+    </ul>
+    <details class="more-box">
+      <summary>模範解答を見る</summary>
+      <p><strong>判断のポイント：</strong></p>
+      <p>本ケースでは<strong>提案Bが有利</strong>と考えられます。理由：</p>
+      <ol style="line-height:2;">
+        <li><strong>タスクの性質：</strong>パレタイジングは人間が日常的に行っているタスクであり、「良い積み方」のデモデータが比較的容易に収集できる。模倣学習が向くタスク</li>
+        <li><strong>報酬設計の困難さ：</strong>強化学習の場合、「安定した積み方」の報酬をどう定義するかが難しい（崩れにくさ、空間効率、荷物の向きなど複合的な基準）</li>
+        <li><strong>コスト・期間：</strong>3ヶ月短く、1500万円安い。物流業界のスピード感に合う</li>
+        <li><strong>ただし注意点：</strong>段ボールの種類が極端に多い場合や、今後のタスク変更が頻繁な場合は、強化学習の汎化能力が活きる可能性もある。「現在の段ボール種類数」と「将来の変動見込み」を確認すべき</li>
+      </ol>
+    </details>
+  </div>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><a href="https://spinningup.openai.com/" target="_blank" rel="noopener">OpenAI Spinning Up</a> ― 強化学習の入門に最適な公式教材</li>
+      <li><a href="https://developer.nvidia.com/isaac-sim" target="_blank" rel="noopener">NVIDIA Isaac Sim</a> ― 産業用ロボティクスシミュレータ</li>
+      <li><a href="https://mujoco.org/" target="_blank" rel="noopener">MuJoCo</a> ― DeepMindの物理エンジン（無料公開済み）</li>
+      <li><a href="https://arxiv.org/abs/1910.07113" target="_blank" rel="noopener">Solving Rubik's Cube with a Robot Hand (OpenAI, 2019)</a> ― Sim-to-Realの象徴的論文</li>
+      <li><a href="https://lilianweng.github.io/posts/2018-04-08-policy-gradient/" target="_blank" rel="noopener">Policy Gradient Methods (Lilian Weng)</a> ― 方策勾配法の優れた解説記事</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="03">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="02-classical-control.html"><span class="direction">&larr; Prev</span>古典制御とロボットの基盤技術</a>
+    <a href="04-imitation-learning.html"><span class="direction">Next &rarr;</span>模倣学習とテレオペレーション</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#f4f4f5',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#18181b',
+      lineColor: '#18181b',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<!-- 視覚化ライブラリ群 (使う章だけ動作、未使用章はゼロコスト) -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  // Lucideアイコンを自動描画 (data-lucide="icon-name" 属性のある要素を全部処理)
+  if (window.lucide) lucide.createIcons();
+</script>
+<script>
+  // Chart.js: Sim-to-Real性能ギャップ
+  window.addEventListener("load", function(){
+    var ctx = document.getElementById("simToRealChart");
+    if (!ctx) return;
+    new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: ["歩行制御", "物体把持", "ドア開閉", "箱の積み上げ", "布の折り畳み"],
+        datasets: [
+          {
+            label: "シミュレータ成功率 (%)",
+            data: [98, 95, 92, 88, 75],
+            backgroundColor: "#16a34a",
+            borderRadius: 6
+          },
+          {
+            label: "実機成功率 (転移後) (%)",
+            data: [82, 58, 45, 35, 15],
+            backgroundColor: "#18181b",
+            borderRadius: 6
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: "Sim-to-Real転移時の性能ギャップ（タスク別）",
+            font: { size: 14, weight: "600" },
+            color: "#18181b",
+            padding: { bottom: 16 }
+          },
+          legend: {
+            position: "bottom",
+            labels: { font: { size: 12 }, padding: 16 }
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 100,
+            ticks: { callback: function(v){ return v + "%"; }, font: { size: 11 } },
+            grid: { color: "#f4f4f5" }
+          },
+          x: {
+            ticks: { font: { size: 11 } },
+            grid: { display: false }
+          }
+        }
+      }
+    });
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>Project: iOS Data & API - MK's Claude Code Tutorial</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code Tutorial
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="../index.html#phase3" data-nav><span class="phase-name">Advanced</span><span class="phase-pct" id="pct-adv">0%</span></a></li>
+      <li><a href="../index.html#phase4" class="active" data-nav><span class="phase-name">Projects</span><span class="phase-pct" id="pct-proj">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.14-1</span>
+    Project: iOS App (Data &amp; API)
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 19 sections</text>
+    </svg>
+    <div class="progress-info">0h / 26h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-introduction.html"><span class="status-dot" data-chapter="01"></span> Introduction</a></li>
+    <li><a href="02-installation.html"><span class="status-dot" data-chapter="02"></span> Installation</a></li>
+    <li><a href="03-basic-commands.html"><span class="status-dot" data-chapter="03"></span> Basic Commands</a></li>
+    <li><a href="04-prompt-design.html"><span class="status-dot" data-chapter="04"></span> Prompt Design</a></li>
+  </ul>
+
+  <div class="section-label">Core</div>
+  <ul>
+    <li><a href="05-file-operations.html"><span class="status-dot" data-chapter="05"></span> File Operations</a></li>
+    <li><a href="06-git-integration.html"><span class="status-dot" data-chapter="06"></span> Git Integration</a></li>
+    <li><a href="07-1-github-workflow.html"><span class="status-dot" data-chapter="07-1"></span> GitHub <span class="sub-label">1/2</span></a></li>
+    <li><a href="07-2-github-workflow.html"><span class="status-dot" data-chapter="07-2"></span> GitHub <span class="sub-label">2/2</span></a></li>
+    <li><a href="08-1-debugging.html"><span class="status-dot" data-chapter="08-1"></span> Debug <span class="sub-label">1/2</span></a></li>
+    <li><a href="08-2-testing.html"><span class="status-dot" data-chapter="08-2"></span> Test &amp; TDD <span class="sub-label">2/2</span></a></li>
+  </ul>
+
+  <div class="section-label">Advanced</div>
+  <ul>
+    <li><a href="09-claude-md-settings.html"><span class="status-dot" data-chapter="09"></span> CLAUDE.md</a></li>
+    <li><a href="10-skills-hooks.html"><span class="status-dot" data-chapter="10"></span> Skills &amp; Hooks</a></li>
+    <li><a href="11-mcp-agents.html"><span class="status-dot" data-chapter="11"></span> MCP &amp; Agents</a></li>
+  </ul>
+
+  <div class="section-label">Projects</div>
+  <ul>
+    <li><a href="12-1-project-website.html"><span class="status-dot" data-chapter="12-1"></span> Web Site <span class="sub-label">1/2</span></a></li>
+    <li><a href="12-2-project-website.html"><span class="status-dot" data-chapter="12-2"></span> Web Site <span class="sub-label">2/2</span></a></li>
+    <li><a href="13-1-project-app.html"><span class="status-dot" data-chapter="13-1"></span> Web App <span class="sub-label">1/2</span></a></li>
+    <li><a href="13-2-project-app.html"><span class="status-dot" data-chapter="13-2"></span> Web App <span class="sub-label">2/2</span></a></li>
+    <li><a href="14-1-project-ios.html" class="active"><span class="status-dot" data-chapter="14-1"></span> iOS App <span class="sub-label">1/2</span></a></li>
+    <li><a href="14-2-project-ios.html"><span class="status-dot" data-chapter="14-2"></span> iOS App <span class="sub-label">2/2</span></a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 4: Projects &gt; Chapter 14-1</div>
+  <h1>Project: iOS App (Data &amp; API)</h1>
+  <p class="subtitle">Tasq の iOS クライアントを SwiftUI で構築。本章は<strong>データ層・API層</strong> — SwiftData モデル、Web API クライアント、ローカルキャッシュまで。次章で UI と仕上げ。</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 1.5h</span>
+    <span class="badge">Phase 4: Projects</span>
+    <span class="badge">難易度: 実践</span>
+  </div>
+
+  <!-- ===================== 1. iOSの世界とClaude Code ===================== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 前提 — iOS と Claude Code の付き合い方</h2>
+
+  <p>iOSは Xcode・Swift・SwiftUI の世界で、Web系と作法がやや違います。<strong>Claude Code はターミナルで動かす前提</strong>で、Xcodeはビルド/Simulator実行に使うのが現実解です。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">役割分担</div>
+    <svg viewBox="0 0 540 200" width="100%" style="max-width:540px; display:block; margin:0 auto;">
+      <rect x="20"  y="40" width="220" height="120" rx="10" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+      <text x="130" y="70" text-anchor="middle" font-size="14" font-weight="700" fill="#a16207">Claude Code</text>
+      <text x="130" y="92"  text-anchor="middle" font-size="11" fill="#7c2d12">Swift コード生成・編集</text>
+      <text x="130" y="110" text-anchor="middle" font-size="11" fill="#7c2d12">テスト追加・差分提案</text>
+      <text x="130" y="128" text-anchor="middle" font-size="11" fill="#7c2d12">ファイル整理・命名修正</text>
+      <text x="130" y="146" text-anchor="middle" font-size="11" fill="#7c2d12">CLAUDE.md でiOS規約共有</text>
+      <rect x="300" y="40" width="220" height="120" rx="10" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+      <text x="410" y="70" text-anchor="middle" font-size="14" font-weight="700" fill="#1e40af">Xcode</text>
+      <text x="410" y="92"  text-anchor="middle" font-size="11" fill="#1e3a8a">ビルド (xcodebuild も可)</text>
+      <text x="410" y="110" text-anchor="middle" font-size="11" fill="#1e3a8a">Simulator 実行</text>
+      <text x="410" y="128" text-anchor="middle" font-size="11" fill="#1e3a8a">プレビュー / Instruments</text>
+      <text x="410" y="146" text-anchor="middle" font-size="11" fill="#1e3a8a">証明書 / Provisioning</text>
+    </svg>
+    <div class="diagram-caption">「文字を書くのはClaude」「動かすのはXcode」の二刀流が最速。</div>
+  </div>
+
+  <h3>使う技術</h3>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="smartphone" width="20" height="20"></i>
+      <div><strong>SwiftUI</strong> — 宣言的UI。React/Astro と発想が近く、Claudeも書きやすい</div>
+    </li>
+    <li>
+      <i data-lucide="database" width="20" height="20"></i>
+      <div><strong>SwiftData</strong> — iOS 17+ の新ローカルDB。CoreDataの後継、@Model 1行で永続化</div>
+    </li>
+    <li>
+      <i data-lucide="cloud" width="20" height="20"></i>
+      <div><strong>URLSession + async/await</strong> — Web Tasq API と通信。新しいSwift並行性</div>
+    </li>
+    <li>
+      <i data-lucide="key" width="20" height="20"></i>
+      <div><strong>ASWebAuthenticationSession</strong> — Google OAuth ログインを Safari ベースで安全に</div>
+    </li>
+  </ul>
+
+  <!-- ===================== 2. プロジェクト準備 ===================== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Step 1 — Xcode プロジェクトと CLAUDE.md</h2>
+
+  <div class="steps">
+    <div class="step done"><div class="step-num">1</div><div class="step-label">Xcode新規</div><div class="step-desc">SwiftUI App</div></div>
+    <div class="step done"><div class="step-num">2</div><div class="step-label">git init</div><div class="step-desc">terminal側</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-label">CLAUDE.md</div><div class="step-desc">Swift規約</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-label">Models</div><div class="step-desc">SwiftData</div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-label">API client</div><div class="step-desc">URLSession</div></div>
+  </div>
+
+<pre><code># Xcodeで新規プロジェクト作成 (App, Swift, SwiftUI, iOS 17+, SwiftData on)
+# 名前: TasqIOS、保存先: ~/projects/tasq-ios
+cd ~/projects/tasq-ios
+git init &amp;&amp; git add . &amp;&amp; git commit -m "init: TasqIOS"
+
+# Claude Code を起動
+claude
+</code></pre>
+
+  <h3>iOS 用 CLAUDE.md</h3>
+
+<pre><code># TasqIOS
+
+## 概要
+Tasq Web App の iOS クライアント。SwiftUI + SwiftData。
+Web側 (Next.js) と同じユーザー・タスクを共有。
+
+## 技術
+- Swift 5.10 / iOS 17+ / SwiftUI / SwiftData
+- 通信: URLSession + async/await
+- 認証: ASWebAuthenticationSession で Google OAuth
+- Keychain: ライブラリ未使用、Security.framework 直叩き
+
+## 命名
+- struct/class: UpperCamelCase
+- メンバ・関数: lowerCamelCase
+- View suffix: ~View, Model suffix: ~Model
+- ファイル名 = 型名
+
+## 設計
+- Views フォルダ: SwiftUI View のみ
+- Models フォルダ: @Model や struct
+- Services フォルダ: API/Auth/Sync
+- 1 View 1 ファイル。500行を超えたら分割
+
+## NG
+- ! force-unwrap は禁止 (テスト除く)
+- print() を残さない (ログは Logger を使う)
+- async let の例外伝播を握りつぶさない
+</code></pre>
+
+  <div class="info-box">
+    <span class="label">Xcodeに頼りすぎない</span>
+    <p>Xcodeでファイル作ると名前が <em>UntitledView2</em> になりがち。<strong>Claudeに「TaskListView を作って」と頼めば</strong>、命名規則と中身が揃った状態で生成されます。</p>
+  </div>
+
+  <!-- ===================== 3. SwiftData モデル ===================== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Step 2 — SwiftData モデル定義</h2>
+
+<pre><code>// Models/Task.swift
+import SwiftData
+import Foundation
+
+@Model
+final class Task {
+    @Attribute(.unique) var id: String
+    var title: String
+    var notes: String?
+    var done: Bool
+    var dueAt: Date?
+    var priority: Int
+    var updatedAt: Date
+
+    init(id: String = UUID().uuidString,
+         title: String,
+         notes: String? = nil,
+         done: Bool = false,
+         dueAt: Date? = nil,
+         priority: Int = 0,
+         updatedAt: Date = .now) {
+        self.id = id
+        self.title = title
+        self.notes = notes
+        self.done = done
+        self.dueAt = dueAt
+        self.priority = priority
+        self.updatedAt = updatedAt
+    }
+}
+</code></pre>
+
+  <p>App エントリで ModelContainer を渡せば、ViewからContextが触れます。</p>
+
+<pre><code>@main
+struct TasqIOSApp: App {
+    var body: some Scene {
+        WindowGroup { RootView() }
+            .modelContainer(for: Task.self)
+    }
+}
+</code></pre>
+
+  <div class="diagram-box">
+    <div class="diagram-title">SwiftData / API / View の関係</div>
+    <pre class="mermaid">
+graph LR
+  V[SwiftUI View] -->|"@Query"| LD["SwiftData (local)"]
+  V -->|action| API[ApiClient]
+  API -->|HTTPS| W["Web API /api/tasks"]
+  W -->|JSON| API
+  API -->|upsert| LD
+  LD -->|"Task[]"| V
+    </pre>
+    <div class="diagram-caption">View はローカルだけ見る。APIはバックグラウンドで同期する役割。</div>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===================== 4. APIクライアント ===================== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Step 3 — ApiClient (URLSession + async/await)</h2>
+
+<pre><code>// Services/ApiClient.swift
+import Foundation
+
+struct ApiTask: Codable, Identifiable {
+    let id: String
+    let title: String
+    let done: Bool
+    let dueAt: Date?
+    let priority: Int
+    let updatedAt: Date
+}
+
+actor ApiClient {
+    static let shared = ApiClient()
+    private let base = URL(string: "https://tasq.example.com")!
+    var sessionToken: String?  // Keychainから注入
+
+    func fetchTasks(view: String) async throws -&gt; [ApiTask] {
+        var req = URLRequest(url: base.appending(path: "api/tasks").appending(queryItems: [.init(name: "view", value: view)]))
+        req.setValue("Bearer \(sessionToken ?? "")", forHTTPHeaderField: "Authorization")
+        let (data, res) = try await URLSession.shared.data(for: req)
+        guard (res as? HTTPURLResponse)?.statusCode == 200 else { throw ApiError.badStatus }
+        struct Wrap: Codable { let data: [ApiTask] }
+        let dec = JSONDecoder(); dec.dateDecodingStrategy = .iso8601
+        return try dec.decode(Wrap.self, from: data).data
+    }
+}
+
+enum ApiError: Error { case badStatus, decode }
+</code></pre>
+
+  <div class="tip-box">
+    <span class="label">actor の効用</span>
+    <p>API client を <code>actor</code> にすると、<span class="term" data-tip="複数スレッドが同時に状態を読み書きして起きるバグ">データ競合</span> をコンパイラが検出してくれます。SwiftConcurrencyの恩恵を最大化。</p>
+  </div>
+
+  <h3>同期サービス (差分マージ)</h3>
+
+<pre><code>// Services/SyncService.swift
+import SwiftData
+
+@MainActor
+final class SyncService {
+    let context: ModelContext
+    init(context: ModelContext) { self.context = context }
+
+    func pull(view: String) async throws {
+        let remote = try await ApiClient.shared.fetchTasks(view: view)
+        for r in remote {
+            let predicate = #Predicate&lt;Task&gt; { $0.id == r.id }
+            if let local = try context.fetch(FetchDescriptor(predicate: predicate)).first {
+                if r.updatedAt &gt; local.updatedAt {
+                    local.title = r.title; local.done = r.done
+                    local.dueAt = r.dueAt; local.priority = r.priority
+                    local.updatedAt = r.updatedAt
+                }
+            } else {
+                context.insert(Task(id: r.id, title: r.title, done: r.done,
+                                    dueAt: r.dueAt, priority: r.priority,
+                                    updatedAt: r.updatedAt))
+            }
+        }
+        try context.save()
+    }
+}
+</code></pre>
+
+  <!-- ===================== 5. 認証 ===================== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Step 4 — Google OAuth と Keychain</h2>
+
+  <div class="diagram-box">
+    <div class="diagram-title">iOSログインフロー</div>
+    <pre class="mermaid">
+sequenceDiagram
+  participant U as User
+  participant A as TasqIOS
+  participant S as Safari Auth
+  participant W as Web Tasq
+  U->>A: Sign in with Google
+  A->>S: ASWebAuthenticationSession
+  S->>W: ["/api/auth/signin?callback=tasqios://"]
+  W->>S: Google同意
+  S->>A: redirect tasqios://#token=...
+  A->>A: Keychainに保存
+  A-->>U: ログイン完了
+    </pre>
+    <div class="diagram-caption">Web側でログイン → ディープリンクでトークン受け渡し → Keychain保存。</div>
+  </div>
+
+  <h3>Keychain ラッパ (最小)</h3>
+
+<pre><code>// Services/Keychain.swift
+import Security
+import Foundation
+
+enum Keychain {
+    static func save(_ value: String, for key: String) {
+        let data = Data(value.utf8)
+        let q: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrAccount as String: key,
+            kSecValueData as String: data,
+        ]
+        SecItemDelete(q as CFDictionary)
+        SecItemAdd(q as CFDictionary, nil)
+    }
+    static func load(_ key: String) -&gt; String? {
+        let q: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrAccount as String: key,
+            kSecReturnData as String: true,
+        ]
+        var item: CFTypeRef?
+        guard SecItemCopyMatching(q as CFDictionary, &amp;item) == errSecSuccess,
+              let data = item as? Data else { return nil }
+        return String(data: data, encoding: .utf8)
+    }
+}
+</code></pre>
+
+  <div class="warn-box">
+    <span class="label">! force-unwrap禁止</span>
+    <p>Swiftで <code>!</code> を使うとクラッシュ直行。CLAUDE.mdでNGにしておけば、Claudeが <code>guard let</code> や <code>??</code> を自然に使う書き方をしてくれます。</p>
+  </div>
+
+  <!-- ===================== 6. ここまでの状態 ===================== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> ここまでで揃ったもの</h2>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-num">1<small>Model</small></div>
+      <div class="stat-label">SwiftData (Task)</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">4<small>API</small></div>
+      <div class="stat-label">fetch/create/patch/del</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">1<small>auth</small></div>
+      <div class="stat-label">Google OAuth</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">0<small>UI</small></div>
+      <div class="stat-label">次章で実装</div>
+    </div>
+  </div>
+
+  <p>本章はバックボーンを完成。次章 (14-2) で SwiftUI のViewを乗せ、最終的にApp Store Connect への提出準備までを扱います。</p>
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>Task @Model に reminderAt を追加</h4>
+    <p>本章のSwiftData モデルに <code>reminderAt: Date?</code> を追加し、SwiftUI Preview でデータが永続化される事を確認してください。</p>
+    <ol>
+      <li>Claudeに「<code>Models/Task.swift</code> に reminderAt: Date? を追加。init にも反映」と依頼</li>
+      <li>変更後にXcodeで <strong>Clean Build Folder</strong></li>
+      <li>SwiftDataはマイグレーションが必要 (オプショナル追加なら自動)</li>
+      <li>Simulator で起動して、サンプルデータを書き込み → 再起動 → 残っているか確認</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+<pre><code>@Model
+final class Task {
+    @Attribute(.unique) var id: String
+    var title: String
+    var notes: String?
+    var done: Bool
+    var dueAt: Date?
+    var reminderAt: Date?    // ← 追加
+    var priority: Int
+    var updatedAt: Date
+    init(id: String = UUID().uuidString, title: String, notes: String? = nil,
+         done: Bool = false, dueAt: Date? = nil, reminderAt: Date? = nil,
+         priority: Int = 0, updatedAt: Date = .now) {
+        self.id = id; self.title = title; self.notes = notes
+        self.done = done; self.dueAt = dueAt; self.reminderAt = reminderAt
+        self.priority = priority; self.updatedAt = updatedAt
+    }
+}
+</code></pre>
+      <p>注意: フィールドの<strong>追加だけ</strong>なら自動マイグレーション可。型変更や削除はSchemaMigrationPlanを書く必要が出ます。Web側のスキーマもセットで更新しないと差分マージで欠落するので忘れずに。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>SyncService にエラーリトライとオフライン耐性を追加</h4>
+    <p>ネットワーク不通時もアプリが落ちないように、<code>SyncService.pull</code> を改良してください。</p>
+    <ol>
+      <li>失敗時に最大3回リトライ (指数バックオフ)</li>
+      <li>3回失敗なら静かに諦め、ローカルデータをそのまま表示</li>
+      <li>成功時は <code>UserDefaults</code> に <code>lastSyncedAt</code> を記録</li>
+      <li>UIから「最終同期: 5分前」のように表示できるよう Published プロパティを公開</li>
+      <li>SimulatorでWi-FiをOFFにして挙動確認</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+<pre><code>@MainActor
+final class SyncService: ObservableObject {
+    let context: ModelContext
+    @Published var lastSyncedAt: Date?
+    init(context: ModelContext) { self.context = context
+        if let t = UserDefaults.standard.object(forKey: "lastSync") as? Date { lastSyncedAt = t }
+    }
+
+    func pull(view: String) async {
+        for attempt in 0..&lt;3 {
+            do {
+                try await pullOnce(view: view)
+                lastSyncedAt = .now
+                UserDefaults.standard.set(lastSyncedAt, forKey: "lastSync")
+                return
+            } catch {
+                let delay = UInt64(pow(2.0, Double(attempt)) * 1_000_000_000)
+                try? await Task.sleep(nanoseconds: delay)
+            }
+        }
+        // 諦めてローカル表示続行
+    }
+
+    private func pullOnce(view: String) async throws { /* 本章 pull の中身 */ }
+}
+</code></pre>
+      <p>テスト: Wi-Fi OFFにしてアプリを起動 → クラッシュせずローカルキャッシュが表示される / Wi-Fi ON で再同期する を目視確認。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span><a href="https://developer.apple.com/documentation/swiftdata" target="_blank">SwiftData 公式ドキュメント</a> — @Model / @Query / Migration</li>
+      <li><span class="res-type doc">Doc</span><a href="https://developer.apple.com/documentation/swift/concurrency" target="_blank">Swift Concurrency</a> — async/await / actor / Task</li>
+      <li><span class="res-type doc">Doc</span><a href="https://developer.apple.com/documentation/authenticationservices/aswebauthenticationsession" target="_blank">ASWebAuthenticationSession</a> — OAuthのiOS流</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="14-1">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="13-2-project-app.html"><span class="direction">&larr; Prev</span>Project: Web App (Frontend)</a>
+    <a href="14-2-project-ios.html"><span class="direction">Next &rarr;</span>Project: iOS App (UI &amp; Summary)</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#f4f4f5',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#18181b',
+      lineColor: '#18181b',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>

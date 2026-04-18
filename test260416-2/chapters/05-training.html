@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%237c3aed%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>LLMはどう学ぶのか - MK's Understanding LLM</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #7c3aed; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Understanding LLM
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" class="active" data-nav><span class="phase-name">Deep Dive</span><span class="phase-pct" id="pct-deepdive">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.05</span>
+    LLMはどう学ぶのか
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 7 sections</text>
+    </svg>
+    <div class="progress-info">0h / 4h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-what-is-llm.html"><span class="status-dot" data-chapter="01"></span> LLMとは何か</a></li>
+    <li><a href="02-tokens-embeddings.html"><span class="status-dot" data-chapter="02"></span> 言葉を数字に変える</a></li>
+    <li><a href="03-next-token-prediction.html"><span class="status-dot" data-chapter="03"></span> 次単語予測</a></li>
+  </ul>
+  <div class="section-label">Deep Dive</div>
+  <ul>
+    <li><a href="04-transformer.html"><span class="status-dot" data-chapter="04"></span> Transformer</a></li>
+    <li><a href="05-training.html" class="active"><span class="status-dot" data-chapter="05"></span> LLMはどう学ぶのか</a></li>
+    <li><a href="06-capabilities-limits.html"><span class="status-dot" data-chapter="06"></span> 能力・限界・未来</a></li>
+    <li><a href="07-final-exercise.html"><span class="status-dot" data-chapter="07"></span> 最終演習問題</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 2: Deep Dive &gt; Chapter 05</div>
+  <h1>LLMはどう学ぶのか 〜事前学習とRLHF〜</h1>
+  <p class="subtitle">ChatGPT のようなLLMは、実は <strong>3段階</strong> の学習を経て作られます。インターネットを丸呑みする「事前学習」、人間のお手本で調教する「Fine-tuning」、そして人間の好みで微調整する「RLHF」。そして「大きくすれば賢くなる」法則 = Scaling Law。ここを押さえると、「7B」「70B」「RLHF」「アラインメント」という頻出用語が全部つながります。</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 45分</span>
+    <span class="badge">Phase: Deep Dive</span>
+    <span class="badge">難易度: 中級</span>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span>1. LLMができるまでの3段階</h2>
+
+  <div class="fade-in">
+    <p>「ChatGPTを作る」と聞くと <em>1つ</em> の訓練のように感じますが、実際は <strong>3段階</strong> 別々の訓練を順に走らせます。これを知ると <em>記事の8割の用語</em> が自動的に分かるようになります。</p>
+  </div>
+
+  <div class="diagram-box">
+    <div class="diagram-title">LLM完成までの3段階パイプライン</div>
+    <pre class="mermaid">
+graph LR
+  D1["インターネット<br/>テキスト全部"] --> P["Step 1<br/>事前学習<br/>(数千万ドル)"]
+  P --> M1["素のモデル<br/>(GPT-base)"]
+  M1 --> S["Step 2<br/>SFT<br/>人間のお手本"]
+  S --> M2["指示に従う<br/>モデル"]
+  M2 --> R["Step 3<br/>RLHF<br/>人間の好み"]
+  R --> M3["ChatGPT<br/>として公開"]
+    </pre>
+    <div class="diagram-caption">事前学習で「言葉が分かる」、SFTで「指示に従う」、RLHFで「人間が好む答えを出す」。</div>
+  </div>
+
+  <div class="steps">
+    <div class="step done"><div class="step-num">1</div><div class="step-label">事前学習</div><div class="step-desc">Pre-training</div></div>
+    <div class="step done"><div class="step-num">2</div><div class="step-label">SFT</div><div class="step-desc">Fine-tuning</div></div>
+    <div class="step done"><div class="step-num">3</div><div class="step-label">RLHF</div><div class="step-desc">人間の好み</div></div>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span>2. Step 1: 事前学習(Pre-training)</h2>
+
+  <p><span class="term" data-tip="LLM作成の第1段階。インターネット規模のテキストで「次のトークン予測」をひたすら訓練する。最も重く高価。">事前学習</span>とは、<strong>インターネットほぼ全部</strong>、書籍、論文、コードなどを集めた巨大データで <em>「次のトークン予測」</em> を <strong>何兆回も</strong> 繰り返すこと。Ch03で見た「次の1トークン予測」を、教師なし学習として大量に走らせます。</p>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-num">15T<small>tokens</small></div>
+      <div class="stat-label">Llama 3 学習データ</div>
+      <div class="stat-trend">≒ Wikipedia 7,500倍</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">$80M</div>
+      <div class="stat-label">GPT-4 推定学習コスト</div>
+      <div class="stat-trend">公開情報からの推定</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">25K</div>
+      <div class="stat-label">使用GPU数(GPT-4)</div>
+      <div class="stat-trend">Nvidia A100 を90日</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">1.4B<small>kWh</small></div>
+      <div class="stat-label">GPT-4学習の推定電力</div>
+      <div class="stat-trend">≒ 13万世帯の年間消費</div>
+    </div>
+  </div>
+
+  <p>この段階で出てくるのは <strong>「素のモデル」</strong>(base model)。「<strong>明日は晴れ</strong>」と入れたら「<strong>でしょう。傘は不要です。</strong>」と続きを書く、文章補完マシン状態。質問しても答えるとは限らず、<em>関連する文を返してくる</em> だけ。</p>
+
+  <div class="info-box">
+    <div class="label">用語: 7B / 70B / 405B が意味するもの</div>
+    <p><strong>B = Billion(10億)</strong> パラメータ。Llama 3 7B = 70億パラメータの軽量版、70B = 700億の中量、405B = 4050億の超大型。Llama・Mistralはサイズ違いの兄弟モデルを公開しており、自分のGPUに合わせて選びます。8GB VRAMなら7B、80GBなら70B、複数GPUなら405Bが目安。</p>
+  </div>
+
+  <h3>「インターネット全部」の中身</h3>
+
+  <div class="diagram-box">
+    <div class="diagram-title">事前学習データの内訳(典型例)</div>
+    <canvas id="ch05-donut-data" height="220"></canvas>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span>3. Step 2: SFT(教師ありFine-tuning)</h2>
+
+  <p>素のモデルは <em>会話できない</em>。そこで <span class="term" data-tip="Supervised Fine-Tuning。人間が作った高品質な「質問→理想回答」のペアでモデルを微調整するステップ。">SFT</span>(Supervised Fine-Tuning)で、<strong>「質問→理想の回答」</strong> ペアを <strong>数万〜数十万件</strong> 用意して学習させます。これは人間のラベラーが書いたお手本データ。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">SFTの例(対話データセット)</div>
+    <pre class="mermaid">
+graph TD
+  E["人間ラベラー"] --> Q1["Q: 富士山の高さは?"]
+  E --> A1["A: 約3,776mです。日本で最も高い山です。"]
+  E --> Q2["Q: 詩を1つ書いて"]
+  E --> A2["A: 春の風よ ..."]
+  Q1 --> M["base モデル<br/>を fine-tune"]
+  A1 --> M
+  Q2 --> M
+  A2 --> M
+  M --> R["指示に従えるモデル"]
+    </pre>
+    <div class="diagram-caption">数万件規模の「Q&A理想ペア」で、対話形式に整形する。</div>
+  </div>
+
+  <p>SFT後のモデルは「指示に従う」ようになる(<strong>Instruct モデル</strong>と呼ばれる)。Llama 3 8B Instruct, Mistral Instruct のように <code>Instruct</code> が付いていればこの段階を経たもの。</p>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span>4. Step 3: RLHF(人間のフィードバックによる強化学習)</h2>
+
+  <p><span class="term" data-tip="Reinforcement Learning from Human Feedback。人間が複数の回答を比較して順位付けし、それに沿うようモデルを微調整する強化学習。">RLHF</span> は ChatGPT を ChatGPT たらしめた技術。SFT後のモデルに <strong>「人間の好み」</strong> を教えます。</p>
+
+  <h3>RLHF の流れ</h3>
+
+  <div class="diagram-box">
+    <div class="diagram-title">RLHF の3ステップ</div>
+    <pre class="mermaid">
+graph LR
+  M1["SFTモデル"] --> G["1つの質問に<br/>複数回答を生成"]
+  G --> H["人間が<br/>順位付け"]
+  H --> RM["報酬モデル<br/>(Reward Model)<br/>を訓練"]
+  RM --> PPO["強化学習<br/>(PPO)で<br/>SFTモデルを更新"]
+  PPO --> F["RLHFモデル<br/>(ChatGPTなど)"]
+    </pre>
+    <div class="diagram-caption">人間は「答えを書く」のではなく「答えを比較する」だけ。これがスケールの鍵。</div>
+  </div>
+
+  <ol>
+    <li><strong>複数回答生成:</strong> 同じ質問にSFTモデルが4-7個の異なる回答を出す</li>
+    <li><strong>人間が順位付け:</strong> ラベラーが「A > C > B > D」のように良い順に並べる</li>
+    <li><strong>報酬モデル(RM)を訓練:</strong> 「人間がどっちを好むか」を予測するモデル</li>
+    <li><strong>PPOで強化学習:</strong> 報酬が高い回答を出しやすくなるよう、SFTモデルを更新</li>
+  </ol>
+
+  <div class="warn-box">
+    <div class="label">なぜ「順位付け」が「お手本書き」より重要か</div>
+    <p>「理想回答を書く」のは人間にとって難しい(専門知識・文才が要る)。「2つの回答を比べて良い方を選ぶ」のは <strong>誰でもできる</strong>。これがRLHFが大規模化できた理由。OpenAIは数十万件の比較データを集めたとされる。</p>
+  </div>
+
+  <h3>RLHFが解決したこと</h3>
+
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">SFTだけのモデル</span>
+      <h4>「正しいけど嫌な答え」</h4>
+      <ul>
+        <li>長すぎる/短すぎる</li>
+        <li>形式が場面に合わない</li>
+        <li>失礼/冷たい言い回し</li>
+        <li>有害な指示にも従う</li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">RLHF後のモデル</span>
+      <h4>「人間が読んで気持ちいい答え」</h4>
+      <ul>
+        <li>適切な長さで構造化</li>
+        <li>場面に合わせた敬体/常体</li>
+        <li>丁寧で親切</li>
+        <li>有害指示は丁寧に拒否</li>
+      </ul>
+    </div>
+  </div>
+
+  <p>「ChatGPTの答え方が <em>気持ちいい</em>」のは、技術ではなく <strong>RLHFで微調整された結果</strong>。GPT-3 そのままだったら、こんなに使われていなかったでしょう。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span></p>
+
+  <details class="more-box">
+    <summary>もっと詳しく: DPO・RLAIF などRLHFの後継</summary>
+    <div class="more-body">
+      <p>RLHFは強力ですが、報酬モデルとPPOの2段構えで <strong>不安定で重い</strong>。これを簡略化する手法が次々登場しています:</p>
+      <ul>
+        <li><strong>DPO</strong>(Direct Preference Optimization): 報酬モデルを介さず、好みデータから直接モデルを更新。シンプル。</li>
+        <li><strong>RLAIF</strong>(Reinforcement Learning from AI Feedback): 人間の代わりに <em>別のLLM</em> が順位付け。Anthropic の Constitutional AI はこの系統。</li>
+        <li><strong>RLVR</strong>(Verifiable Rewards): コードや数学のように <em>機械的に正解判定できる</em> 場面で使う。DeepSeek-R1 などの推論モデルで活用。</li>
+      </ul>
+    </div>
+  </details>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span>5. Scaling Law — 大きくすれば賢くなる法則</h2>
+
+  <p>2020年に OpenAI が発表した <span class="term" data-tip="モデルサイズ・データ量・計算量を増やすと性能(損失)が予測可能なべき乗則で改善するという経験則。">Scaling Law</span>。「モデルサイズ × データ量 × 計算量」と性能(loss)の間に、<strong>滑らかなべき乗則</strong> がある、という発見。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">パラメータ数と性能(loss)の関係(模式)</div>
+    <canvas id="ch05-line-scaling" height="220"></canvas>
+  </div>
+
+  <h3>Chinchilla の法則 — 「データ量も増やせ」</h3>
+
+  <p>2022年 DeepMind が発表。「モデルサイズだけ増やしてもダメ。<strong>データ量も同時に増やせ</strong>」。具体的には、パラメータ数 P に対して <strong>データ量 D = 約20×P トークン</strong> が最適とされる。これ以後、Llama などは「<strong>少ないパラメータ × 大量データ</strong>」の方向に振った。</p>
+
+  <table>
+    <thead>
+      <tr><th>モデル</th><th>パラメータ</th><th>学習トークン</th><th>D/P 比</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>GPT-3</td><td>175B</td><td>0.3T</td><td>1.7(過少)</td></tr>
+      <tr><td>Chinchilla</td><td>70B</td><td>1.4T</td><td>20(最適)</td></tr>
+      <tr><td>Llama 2 70B</td><td>70B</td><td>2T</td><td>28</td></tr>
+      <tr><td>Llama 3 8B</td><td>8B</td><td>15T</td><td>1875(超過剰)</td></tr>
+    </tbody>
+  </table>
+
+  <p>Llama 3 は意図的に <em>Chinchilla を大幅に超えた</em> データで学習。「推論コストが安い小モデルを最大限性能を引き出す」という設計思想。</p>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span>6. アラインメント — 「賢い」と「良い」は別</h2>
+
+  <p><span class="term" data-tip="LLMの動作を人間の意図・価値観・安全性と一致させる取り組み全般。">アラインメント</span>(alignment)とは、「LLMが人間にとって <strong>有用・無害・正直</strong> に振る舞うようにする」こと。RLHFはアラインメントの一手法。</p>
+
+  <p>賢いLLMが <em>有害な指示</em> に何でも従ったら社会的に大問題。一方で <em>過剰に拒否する</em> と使い物にならない。この両立は技術と倫理の最前線です。</p>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="shield" width="20" height="20"></i>
+      <div><strong>Helpful(有用)</strong> — ユーザの意図を汲み取り、役に立つ答えを返す</div>
+    </li>
+    <li>
+      <i data-lucide="shield-check" width="20" height="20"></i>
+      <div><strong>Harmless(無害)</strong> — 違法・有害・差別的な指示は丁寧に拒否</div>
+    </li>
+    <li>
+      <i data-lucide="check-circle" width="20" height="20"></i>
+      <div><strong>Honest(正直)</strong> — 知らないことは「分からない」、自信のない情報には注釈</div>
+    </li>
+    <li>
+      <i data-lucide="book" width="20" height="20"></i>
+      <div><strong>Constitutional AI</strong> — Anthropic の手法。「憲法」を与えて自己修正させる</div>
+    </li>
+  </ul>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span>7. まとめ</h2>
+
+  <div class="quote">
+    LLMは <strong>3段階</strong> で作られる: ① インターネットを丸呑み(<em>事前学習</em>)、② 人間のお手本で教える(<em>SFT</em>)、③ 人間の好みで微調整(<em>RLHF</em>)。「<strong>大きく + データ多く</strong>」が性能の根本(<em>Scaling/Chinchilla</em>)。「賢い」と「良い」は別の問題で、後者を解くのが <em>アラインメント</em>。
+    <cite>— この章のひとことまとめ</cite>
+  </div>
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>「base モデル」と「Instruct モデル」の違いを観察する</h4>
+    <p>同じLlama でも、base と Instruct は <strong>全然動きが違う</strong>。これを Hugging Face で見てみます。</p>
+    <ol>
+      <li><a href="https://huggingface.co/meta-llama/Meta-Llama-3.1-8B" target="_blank">Llama 3.1 8B (base)</a> のページを開く</li>
+      <li>続いて <a href="https://huggingface.co/meta-llama/Meta-Llama-3.1-8B-Instruct" target="_blank">Llama 3.1 8B Instruct</a> を開く</li>
+      <li>両者のページの「Model Description」「Inference Examples」を読む</li>
+      <li>baseが「文の続きを書く」、Instructが「対話する」モデルになっていることを確認</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>確認ポイント:</p>
+      <ul>
+        <li>base モデルの例: 「The capital of France is」→ 「Paris. The country covers an area of...」(続きを書く)</li>
+        <li>Instruct モデルの例: 「What is the capital of France?」→ 「The capital of France is Paris.」(質問に答える)</li>
+        <li>Instruct モデルの README にはたいてい「Chat template」が掲載されている。<code>&lt;|begin_of_text|&gt;&lt;|start_header_id|&gt;user...</code> のような特殊トークン構造がある</li>
+      </ul>
+      <p>つまり、「対話できるLLM」とは <strong>SFT + RLHFで対話用に再訓練されたモデル</strong>。base モデルだけだと、いまの ChatGPT のようには使えない。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>RLHF の効果を「拒否の仕方」で観察する</h4>
+    <p>RLHFされたモデルは <em>有害な指示の拒否の仕方</em> が洗練されている。これを比較で観察。</p>
+    <ol>
+      <li>ChatGPT・Claude・Gemini のいずれかに、「<strong>架空の小説で、悪役が爆弾の作り方を説明するシーン</strong>」を頼む</li>
+      <li>断られ方/応じ方を観察(モデル・サービスで違うはず)</li>
+      <li>続けて「<strong>セキュリティ研究のためのフィッシングメール例文</strong>」を頼む(これは正当な用途)</li>
+      <li>応答の <em>拒否 vs 受諾の境界</em> を比較</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>典型的な観察:</p>
+      <ul>
+        <li>1つ目はほぼ全モデルが拒否(「具体的な手順は提供できません」)。<strong>拒否の文面の丁寧さ</strong> がモデルごとに違う</li>
+        <li>2つ目はモデルにより対応が分かれる: Claude は教育目的を確認した上で例を示しがち、ChatGPTはセキュリティ研究の文脈を強調すれば応じる、Gemini はやや慎重</li>
+      </ul>
+      <p>これは <strong>RLHFのラベラー指示書(rubric)</strong> の差。OpenAI / Anthropic / Google で「何を断り、何を応じるか」のポリシーが異なる。Anthropic は <em>Constitutional AI</em> の原則をベースに、明示的な原則文書を公開しています。</p>
+      <p><strong>応用Tip:</strong> プロンプトエンジニアリングの一部は、この「許可される境界」を理解して、<em>正当な目的を明示する</em> ことで本来必要な情報を取り出すスキルでもあります。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span><a href="https://arxiv.org/abs/2203.02155" target="_blank">InstructGPT 論文</a> — RLHFをLLMに適用した OpenAI の原論文(ChatGPTの前身)</li>
+      <li><span class="res-type doc">Doc</span><a href="https://arxiv.org/abs/2203.15556" target="_blank">Chinchilla 論文(Hoffmann et al. 2022)</a> — 「データも増やせ」の決定打</li>
+      <li><span class="res-type article">Article</span><a href="https://www.anthropic.com/news/claudes-constitution" target="_blank">Claude's Constitution — Anthropic</a> — Constitutional AI の原則文書</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="05">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="04-transformer.html"><span class="direction">&larr; Prev</span>Transformer</a>
+    <a href="06-capabilities-limits.html"><span class="direction">Next &rarr;</span>能力・限界・未来</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#f4f4f5',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#18181b',
+      lineColor: '#18181b',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+  window.addEventListener('load', function() {
+    new Chart(document.getElementById('ch05-donut-data'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Webクロール (Common Crawl)', 'コード (GitHub)', '書籍', 'Wikipedia', '論文 / arXiv', 'その他'],
+        datasets: [{
+          data: [60, 17, 12, 4, 4, 3],
+          backgroundColor: ['#18181b', '#3f3f46', '#52525b', '#71717a', '#a1a1aa', '#d4d4d8']
+        }]
+      },
+      options: { plugins: { legend: { position: 'bottom' } } }
+    });
+
+    new Chart(document.getElementById('ch05-line-scaling'), {
+      type: 'line',
+      data: {
+        labels: ['10M', '100M', '1B', '10B', '100B', '1T'],
+        datasets: [{
+          label: 'モデル損失(小さいほど賢い)',
+          data: [4.5, 3.6, 2.9, 2.3, 1.9, 1.6],
+          borderColor: '#7c3aed',
+          backgroundColor: 'rgba(124,58,237,0.15)',
+          tension: 0.3,
+          fill: true
+        }]
+      },
+      options: {
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { title: { display: true, text: 'パラメータ数(対数)' } },
+          y: { title: { display: true, text: 'Loss(下ほど良い)' }, reverse: false }
+        }
+      }
+    });
+  });
+</script>
+</body>
+</html>

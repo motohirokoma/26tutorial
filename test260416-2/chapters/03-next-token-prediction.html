@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%237c3aed%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>次単語予測 - MK's Understanding LLM</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #7c3aed; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Understanding LLM
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" class="active" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Deep Dive</span><span class="phase-pct" id="pct-deepdive">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.03</span>
+    次単語予測
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 7 sections</text>
+    </svg>
+    <div class="progress-info">0h / 4h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-what-is-llm.html"><span class="status-dot" data-chapter="01"></span> LLMとは何か</a></li>
+    <li><a href="02-tokens-embeddings.html"><span class="status-dot" data-chapter="02"></span> 言葉を数字に変える</a></li>
+    <li><a href="03-next-token-prediction.html" class="active"><span class="status-dot" data-chapter="03"></span> 次単語予測</a></li>
+  </ul>
+  <div class="section-label">Deep Dive</div>
+  <ul>
+    <li><a href="04-transformer.html"><span class="status-dot" data-chapter="04"></span> Transformer</a></li>
+    <li><a href="05-training.html"><span class="status-dot" data-chapter="05"></span> LLMはどう学ぶのか</a></li>
+    <li><a href="06-capabilities-limits.html"><span class="status-dot" data-chapter="06"></span> 能力・限界・未来</a></li>
+    <li><a href="07-final-exercise.html"><span class="status-dot" data-chapter="07"></span> 最終演習問題</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 1: Basics &gt; Chapter 03</div>
+  <h1>次単語予測 〜LLMの意外とシンプルな原理〜</h1>
+  <p class="subtitle">LLMが長文を書いたり質問に答えたりする姿は複雑ですが、原理は驚くほどシンプル。「次に来るトークンを予測する」を繰り返しているだけです。この章で、その仕組みと、なぜLLMは毎回違う答えを返すのか(Temperature / Top-p)を理解します。</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 30分</span>
+    <span class="badge">Phase: Basics</span>
+    <span class="badge">難易度: 入門</span>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span>1. LLMがやっている、たった一つのこと</h2>
+
+  <div class="fade-in">
+    <p>LLMの中身は、突き詰めれば <strong>1つの関数</strong> です。</p>
+
+    <div class="quote">
+      <code>(これまでのトークン列) → (次のトークンの確率分布)</code>
+      <cite>— LLMの本質はこの1行に集約される</cite>
+    </div>
+
+    <p>例えば「<strong>今日の天気は</strong>」と入れたら、辞書(語彙)の中の数万トークンそれぞれに <strong>確率</strong> がつきます:</p>
+  </div>
+
+  <div class="diagram-box">
+    <div class="diagram-title">「今日の天気は」の次に来るトークンの確率(イメージ)</div>
+    <canvas id="ch03-bar-probs" height="180"></canvas>
+  </div>
+
+  <p>LLMは <strong>「晴れ」</strong> を選ぶ確率が一番高いと判断しました。これを選んだら、次は「今日の天気は晴れ」を入力して、また次のトークンを予測。これを <strong>えんえんと繰り返す</strong>。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">自己回帰(Autoregressive)生成の流れ</div>
+    <pre class="mermaid">
+graph LR
+  A["今日の天気は"] --> B["LLM"] --> C["晴れ"]
+  C --> D["今日の天気は晴れ"] --> E["LLM"] --> F["です"]
+  F --> G["今日の天気は晴れです"] --> H["LLM"] --> I["。"]
+  I --> J["..."]
+    </pre>
+    <div class="diagram-caption">出力したトークンを次の入力に追加して、また予測。これを<strong>EOS(終了)トークン</strong>か上限まで繰り返す。</div>
+  </div>
+
+  <div class="info-box">
+    <div class="label">用語: 自己回帰(Autoregressive)</div>
+    <p>「<span class="term" data-tip="Autoregressive。自分の出力を自分の入力に戻す方式。GPT系の生成方法。">自己回帰</span>」とは、自分の出した結果を自分の入力に追加していく方式のこと。GPT系LLMは全部これ。だから生成中にストリーミング(文字が1個ずつ出てくる演出)ができる。</p>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span>2. 「どう選ぶか」でキャラが決まる: サンプリング戦略</h2>
+
+  <p>LLMは確率分布を出すまで。<strong>そこからどう1つ選ぶか</strong> は別の話です。これがLLMの「個性」を決める部分。</p>
+
+  <h3>戦略A: いつも一番高い確率を取る(Greedy / Argmax)</h3>
+
+  <p>毎回 <strong>1位</strong> のトークンを取る。決まりきった答えになるが、創造性ゼロ。同じ入力に対して必ず同じ出力。コードレビューや事実回答にはこれが向く。</p>
+
+  <h3>戦略B: 確率に従ってサイコロを振る(Sampling)</h3>
+
+  <p>確率分布に比例して<strong>ランダムに</strong>選ぶ。「晴れ」42%, 「曇り」27% なら、42:27 の比でサイコロを振る感じ。同じ入力でも毎回違う答えが出る。これがChatGPTで「何度か聞き直すと違う答えが出る」理由です。</p>
+
+  <h3>Temperature(温度)</h3>
+
+  <p><span class="term" data-tip="Sampling時に確率分布の鋭さを調整するパラメータ。低い→決定的、高い→ランダム。">Temperature</span> は確率分布の <strong>鋭さ</strong> を調整するつまみ。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Temperature が確率分布をどう変えるか</div>
+    <canvas id="ch03-line-temp" height="220"></canvas>
+  </div>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="snowflake" width="20" height="20"></i>
+      <div><strong>Temperature 0(冷たい)</strong> — Greedy と同じ。常に1位を選ぶ。決定的。</div>
+    </li>
+    <li>
+      <i data-lucide="thermometer" width="20" height="20"></i>
+      <div><strong>Temperature 0.7(中間)</strong> — ChatGPTのデフォルト付近。自然な多様性。</div>
+    </li>
+    <li>
+      <i data-lucide="flame" width="20" height="20"></i>
+      <div><strong>Temperature 1.5+(熱い)</strong> — レアなトークンも選ばれる。創造的だが破綻も増える。</div>
+    </li>
+  </ul>
+
+  <h3>Top-k / Top-p(候補の絞り込み)</h3>
+
+  <p>確率の低い「変なトークン」を最初から除外する仕組み:</p>
+
+  <table>
+    <thead>
+      <tr><th>パラメータ</th><th>仕組み</th><th>例</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Top-k</strong></td><td>確率上位 k 個の中だけからサンプリング</td><td>k=40 → 上位40候補だけ</td></tr>
+      <tr><td><strong>Top-p</strong>(Nucleus)</td><td>累積確率が p になるまでの候補だけ</td><td>p=0.9 → 累積90%に入る候補だけ</td></tr>
+    </tbody>
+  </table>
+
+  <div class="warn-box">
+    <div class="label">使い分けの目安</div>
+    <p>事実ベース・コード生成 → <strong>Temperature 0〜0.3</strong>。創作・ブレスト → <strong>Temperature 0.8〜1.2 + Top-p 0.95</strong>。極端に1.5を超えると意味不明な単語が混じってきます。</p>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span>3. 「次の1トークンだけ」からなぜ賢く見えるのか</h2>
+
+  <p>「えっ、次の1トークン予測してるだけで、なんで複雑な質問に答えられるの?」という疑問が当然出ます。答えは <strong>3つの仕組みの合わせ技</strong> です:</p>
+
+  <div class="steps">
+    <div class="step done"><div class="step-num">1</div><div class="step-label">圧倒的データ</div><div class="step-desc">人類の文章を学習</div></div>
+    <div class="step done"><div class="step-num">2</div><div class="step-label">巨大モデル</div><div class="step-desc">数百億のパラメータ</div></div>
+    <div class="step done"><div class="step-num">3</div><div class="step-label">文脈の読み取り</div><div class="step-desc">Transformer (Ch04)</div></div>
+  </div>
+
+  <p>「次の1トークン」を予測するには、<strong>その時点までの全文脈を理解</strong> しなければなりません。「フランスの首都は」の次に「パリ」と答えるには、地理を知っている必要がある。「だが、結局その仕組みは間違っているのか?」の次に「いいえ」と答えるには、否定の論理を理解している必要がある。</p>
+
+  <p>つまり <strong>「次の1トークンを精密に予測できる関数」=「世界をかなり理解している関数」</strong> という構図。これがLLMの本質的なアイデアです。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span></p>
+
+  <details class="more-box">
+    <summary>もっと詳しく: ハルシネーションの根本原因</summary>
+    <div class="more-body">
+      <p>LLMは「次のトークンの<em>確率</em>」を出すだけで、「<em>事実かどうか</em>」を判断する仕組みを内蔵していません。「アインシュタインは」の次に「ノーベル物理学賞を1921年に」が来やすい確率分布を持っているなら、それを生成する。本人がそれを言ったかどうかは、単に<em>学習データに頻出していたかどうか</em> でしか分からない。</p>
+      <p>これが <strong>ハルシネーション</strong>(自信満々の嘘)の根本原因。「事実検証は別レイヤーが必要」というのが、RAG(検索拡張生成)などの技術が要る理由です。Ch06 で扱います。</p>
+    </div>
+  </details>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span>4. ストリーミング表示の正体</h2>
+
+  <p>ChatGPTで答えが <strong>1文字ずつタイピングされる</strong> ように出てくる、あのアニメーション。あれは <strong>演出ではなく実際の動き</strong> です。LLMは1トークン生成するたびに、それをすぐにユーザに送っているのです。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">1トークン = 1ステップ。ユーザに即送る</div>
+    <pre class="mermaid">
+sequenceDiagram
+  participant U as ユーザー
+  participant S as サーバー
+  participant L as LLM
+  U->>S: 質問
+  S->>L: 推論開始
+  L-->>S: トークン1 「は」
+  S-->>U: 「は」
+  L-->>S: トークン2 「い」
+  S-->>U: 「い」
+  L-->>S: トークン3 「、」
+  S-->>U: 「、」
+  L-->>S: ...
+  L-->>S: EOS (終了)
+  S-->>U: 完了
+    </pre>
+    <div class="diagram-caption">体感速度を上げるための重要な工夫。「待たされてる感」が劇的に減る。</div>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#7c3aed" fill-rule="evenodd"/></svg></span>5. まとめ</h2>
+
+  <div class="kv-grid">
+    <div class="kv"><div class="kv-key">基本動作</div><div class="kv-val">1トークン予測 × 反復</div></div>
+    <div class="kv"><div class="kv-key">出力</div><div class="kv-val">確率分布</div></div>
+    <div class="kv"><div class="kv-key">選び方</div><div class="kv-val">Sampling + Temp/Top-p</div></div>
+    <div class="kv"><div class="kv-key">演出</div><div class="kv-val">ストリーミング</div></div>
+  </div>
+
+  <p>次章 (Ch04) では、この「次の1トークン予測」を支える <strong>Transformer</strong> の中身、特に <strong>Attention(注意機構)</strong> を見ていきます。</p>
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>「同じ入力で違う答え」を実験する</h4>
+    <p>あなたが普段使うLLMで、Temperatureの効果を体感します。</p>
+    <ol>
+      <li>ChatGPT または Claude を開く</li>
+      <li>「<strong>『朝のコーヒーは』に続く文を1行で書いて</strong>」と頼む</li>
+      <li>新しいチャットを開いて、まったく同じプロンプトをもう一度</li>
+      <li>これを5回繰り返して、答えがどれくらい変わるか見る</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>5回試すと、たぶん毎回違う答えが返ります(完全同じはまず無い)。例:</p>
+      <ul>
+        <li>「朝のコーヒーは、私の1日のスイッチを入れる魔法だ。」</li>
+        <li>「朝のコーヒーは深い香りで眠気を吹き飛ばしてくれる。」</li>
+        <li>「朝のコーヒーは欠かせない儀式のようなものだ。」</li>
+      </ul>
+      <p>これがサンプリングの効果。同じ確率分布から異なるトークン列が選ばれている。Temperature を 0 に設定できるAPIなら、毎回完全に同じ答えが出るはずです。</p>
+      <p><strong>ポイント:</strong> LLMが「考えて違う答えを出している」のではなく、<em>確率分布からサイコロを振っている</em> から違う答えになる、という事実を体感してください。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>Temperature を意図的にずらして遊ぶ</h4>
+    <p>OpenAI Playground または Claude Workbench で、Temperatureを変えて違いを観察します。</p>
+    <ol>
+      <li><a href="https://platform.openai.com/playground" target="_blank">OpenAI Playground</a> または <a href="https://console.anthropic.com/workbench" target="_blank">Claude Workbench</a> を開く</li>
+      <li>同じプロンプト「短編小説の最初の一文を書いて」を3回入力 — Temperature 0, 0.7, 1.5 で</li>
+      <li>3つの結果を比較して、どう違うか観察</li>
+      <li>(余裕があれば) Top-p も 0.5, 0.9, 1.0 で試す</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>典型的な結果のパターン:</p>
+      <ul>
+        <li><strong>Temp 0:</strong> 「窓の外には朝霧が立ち込めていた。」のような <em>無難で凡庸</em> な始まり</li>
+        <li><strong>Temp 0.7:</strong> 「彼女が郵便受けを開けると、見知らぬ筆跡の手紙が一通だけ入っていた。」のような <em>適度に意外性のある</em> 始まり</li>
+        <li><strong>Temp 1.5:</strong> 「鯨が空から落ちてきた朝、僕は8時に目覚ましをセットしていた。」のような <em>ぶっ飛んだ</em> 始まり(時には文法も怪しくなる)</li>
+      </ul>
+      <p>「創造性」と「安定性」のトレードオフが、たった1つの数字でこんなに変わることを体感してください。</p>
+      <p><strong>応用:</strong> プロダクト開発で「同じ入力に同じ出力が必要」なら Temp=0、「毎回違う提案が欲しい」なら Temp=0.8 のように、用途で使い分けるのがプロの基本です。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type article">Article</span><a href="https://platform.openai.com/docs/guides/text-generation" target="_blank">OpenAI Docs: Text Generation</a> — Temperatureなどパラメータの公式解説</li>
+      <li><span class="res-type article">Article</span><a href="https://huggingface.co/blog/how-to-generate" target="_blank">How to generate text — Hugging Face Blog</a> — サンプリング戦略の図解付き解説</li>
+      <li><span class="res-type video">Video</span><a href="https://www.youtube.com/watch?v=kCc8FmEb1nY" target="_blank">Let's build GPT from scratch — Karpathy</a> — Pythonでの実装まで含めた決定版動画</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="03">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="02-tokens-embeddings.html"><span class="direction">&larr; Prev</span>言葉を数字に変える</a>
+    <a href="04-transformer.html"><span class="direction">Next &rarr;</span>Transformer</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#f4f4f5',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#18181b',
+      lineColor: '#18181b',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+  window.addEventListener('load', function() {
+    new Chart(document.getElementById('ch03-bar-probs'), {
+      type: 'bar',
+      data: {
+        labels: ['晴れ', '曇り', '雨', '雪', '良い', 'どう', 'なんと', '...(その他)'],
+        datasets: [{
+          label: '確率(%)',
+          data: [42, 27, 14, 5, 4, 3, 2, 3],
+          backgroundColor: ['#18181b','#3f3f46','#52525b','#71717a','#a1a1aa','#a1a1aa','#a1a1aa','#a1a1aa'],
+          borderRadius: 6
+        }]
+      },
+      options: {
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true, max: 50, title: { display: true, text: '確率 (%)' } } }
+      }
+    });
+
+    new Chart(document.getElementById('ch03-line-temp'), {
+      type: 'line',
+      data: {
+        labels: ['晴れ', '曇り', '雨', '雪', '良い', 'どう', 'なんと'],
+        datasets: [
+          { label: 'Temp = 0.3 (尖る)', data: [78, 15, 4, 1, 1, 0.5, 0.5], borderColor: '#18181b', backgroundColor: 'rgba(24,24,27,0.1)', tension: 0.3, fill: false },
+          { label: 'Temp = 1.0 (素直)', data: [42, 27, 14, 5, 4, 3, 2], borderColor: '#7c3aed', backgroundColor: 'rgba(124,58,237,0.1)', tension: 0.3, fill: false },
+          { label: 'Temp = 2.0 (平らに)', data: [22, 19, 17, 14, 11, 9, 8], borderColor: '#ea580c', backgroundColor: 'rgba(234,88,12,0.1)', tension: 0.3, fill: false }
+        ]
+      },
+      options: {
+        plugins: { legend: { position: 'bottom' } },
+        scales: { y: { beginAtZero: true, title: { display: true, text: '確率 (%)' } } }
+      }
+    });
+  });
+</script>
+</body>
+</html>

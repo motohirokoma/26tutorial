@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%2316a34a%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>VLAモデルの最前線 - Kuririn's Physical AI Crash Course</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #16a34a; }
+
+  .arch-svg { max-width: 720px; margin: 1.5rem auto; display: block; }
+  .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin: 1.5rem 0; }
+  .compare-card { border: 1px solid #e4e4e7; border-radius: 12px; padding: 1.2rem 1.4rem; background: #fff; }
+  .compare-card h4 { margin: 0 0 .6rem; font-size: .95rem; }
+  .compare-card .tag { display: inline-block; font-size: .7rem; padding: 2px 8px; border-radius: 999px; margin-bottom: .5rem; }
+  .compare-card .tag-rigid { background: #dbeafe; color: #1e40af; }
+  .compare-card .tag-deform { background: #fce7f3; color: #9d174d; }
+  .compare-card ul { margin: 0; padding-left: 1.2rem; font-size: .88rem; line-height: 1.7; }
+  .case-study { border-left: 4px solid #16a34a; background: #f0fdf4; border-radius: 0 8px 8px 0; padding: 1rem 1.2rem; margin: 1.2rem 0; }
+  .case-study h4 { margin: 0 0 .4rem; color: #15803d; font-size: .9rem; }
+  .case-study p { margin: .3rem 0; font-size: .88rem; }
+  .chart-container { max-width: 520px; margin: 1.5rem auto; }
+  @media(max-width:600px){
+    .compare-grid { grid-template-columns: 1fr; }
+    .chart-container { max-width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></div>
+      &gt;_ Kuririn's Physical AI Crash Course
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="../index.html#phase3" data-nav><span class="phase-name">Advanced</span><span class="phase-pct" id="pct-advanced">0%</span></a></li>
+      <li><a href="../index.html#phase4" data-nav><span class="phase-name">Final</span><span class="phase-pct" id="pct-final">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.05</span>
+    VLAモデルの最前線
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 37 sections</text>
+    </svg>
+    <div class="progress-info">0h / 8h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-overview.html"><span class="status-dot" data-chapter="01"></span> フィジカルAIの全体像</a></li>
+    <li><a href="02-classical-control.html"><span class="status-dot" data-chapter="02"></span> 古典制御とロボットの基盤技術</a></li>
+  </ul>
+  <div class="section-label">Core</div>
+  <ul>
+    <li><a href="03-reinforcement-learning.html"><span class="status-dot" data-chapter="03"></span> 強化学習によるロボット制御</a></li>
+    <li><a href="04-imitation-learning.html"><span class="status-dot" data-chapter="04"></span> 模倣学習とテレオペレーション</a></li>
+    <li class="active"><a href="05-vla-models.html"><span class="status-dot" data-chapter="05"></span> VLAモデルの最前線</a></li>
+  </ul>
+  <div class="section-label">Advanced</div>
+  <ul>
+    <li><a href="06-implementation-barriers.html"><span class="status-dot" data-chapter="06"></span> 実装の壁</a></li>
+    <li><a href="07-business-scoping.html"><span class="status-dot" data-chapter="07"></span> ビジネススコーピングの技法</a></li>
+  </ul>
+  <div class="section-label">Final</div>
+  <ul>
+    <li><a href="08-final-exercise.html"><span class="status-dot" data-chapter="08"></span> 最終演習問題</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 2: Core &gt; Chapter 05</div>
+  <h1>VLAモデルの最前線</h1>
+  <p class="subtitle">Vision-Language-Actionモデルが切り拓く汎用ロボット制御の新時代</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 60min</span>
+    <span class="badge">Phase: Core</span>
+    <span class="badge">難易度: 中級</span>
+  </div>
+
+  <div class="prereq-box">
+    <p><strong>前提知識:</strong> Ch.04「模倣学習とテレオペレーション」でデモデータの収集と学習の基礎を理解しておくと、VLAモデルの仕組みがスムーズに理解できます。</p>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- Section 1: VLAモデルとは                     -->
+  <!-- ============================================ -->
+  <section class="chapter-section" data-section="05-1">
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span> VLAモデルとは</h2>
+
+  <p><span class="term" data-tip="Vision（視覚）、Language（言語）、Action（行動）の3つを統合するマルチモーダル基盤モデル">VLA（Vision-Language-Action）モデル</span>は、ロボティクスにおける<span class="term" data-tip="大量データで事前学習され、多様なタスクに汎化できる大規模モデル">基盤モデル</span>（Foundation Model）の最先端アプローチです。カメラで<strong>見て</strong>、自然言語で<strong>指示を受けて</strong>、ロボットを<strong>動かす</strong>――この3要素を1つのモデルで統合します。</p>
+
+  <p>従来のロボット制御はタスクごとに個別のモデルを設計していましたが、VLAは「1つのモデルで多種多様なタスクを実行する」という<span class="term" data-tip="特定タスクに特化せず、幅広いタスクをこなせるロボットの能力">汎用性</span>を目指しています。これは自然言語処理におけるGPTの登場と同じインパクトを、ロボティクスにもたらす可能性があります。</p>
+
+  <!-- SVG: VLAアーキテクチャ概念図 -->
+  <svg class="arch-svg" viewBox="0 0 720 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="VLAモデルのアーキテクチャ概念図">
+    <!-- Input: Vision -->
+    <rect x="10" y="20" width="140" height="80" rx="10" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="80" y="50" text-anchor="middle" font-size="12" font-weight="700" fill="#1e40af">Vision Input</text>
+    <text x="80" y="70" text-anchor="middle" font-size="10" fill="#3b82f6">カメラ画像</text>
+    <text x="80" y="85" text-anchor="middle" font-size="9" fill="#64748b">RGB / Depth</text>
+
+    <!-- Input: Language -->
+    <rect x="10" y="120" width="140" height="80" rx="10" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+    <text x="80" y="150" text-anchor="middle" font-size="12" font-weight="700" fill="#92400e">Language Input</text>
+    <text x="80" y="170" text-anchor="middle" font-size="10" fill="#d97706">自然言語指示</text>
+    <text x="80" y="185" text-anchor="middle" font-size="9" fill="#64748b">"Pick up the cup"</text>
+
+    <!-- Arrow to Vision Encoder -->
+    <path d="M155 60 L195 60 L195 110 L230 110" stroke="#3b82f6" stroke-width="2" fill="none" marker-end="url(#arrowB05)"/>
+    <!-- Arrow to Language Encoder -->
+    <path d="M155 160 L195 160 L195 130 L230 130" stroke="#f59e0b" stroke-width="2" fill="none" marker-end="url(#arrowY05)"/>
+
+    <!-- Vision Encoder -->
+    <rect x="230" y="40" width="140" height="50" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="300" y="63" text-anchor="middle" font-size="11" font-weight="600" fill="#1e40af">Vision Encoder</text>
+    <text x="300" y="78" text-anchor="middle" font-size="9" fill="#64748b">ViT / ResNet</text>
+
+    <!-- Language Encoder -->
+    <rect x="230" y="110" width="140" height="50" rx="8" fill="#fefce8" stroke="#f59e0b" stroke-width="1.5"/>
+    <text x="300" y="133" text-anchor="middle" font-size="11" font-weight="600" fill="#92400e">Language Encoder</text>
+    <text x="300" y="148" text-anchor="middle" font-size="9" fill="#64748b">LLM / T5</text>
+
+    <!-- Arrows to Fusion -->
+    <path d="M375 65 L410 65 L410 120 L430 120" stroke="#18181b" stroke-width="2" fill="none" marker-end="url(#arrowK05)"/>
+    <path d="M375 135 L410 135 L410 120 L430 120" stroke="#18181b" stroke-width="2" fill="none"/>
+
+    <!-- Fusion block -->
+    <rect x="430" y="80" width="120" height="80" rx="10" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+    <text x="490" y="108" text-anchor="middle" font-size="11" font-weight="700" fill="#15803d">Multimodal</text>
+    <text x="490" y="124" text-anchor="middle" font-size="11" font-weight="700" fill="#15803d">Fusion</text>
+    <text x="490" y="146" text-anchor="middle" font-size="9" fill="#64748b">Cross-Attention</text>
+
+    <!-- Arrow to Action Decoder -->
+    <path d="M555 120 L585 120" stroke="#16a34a" stroke-width="2" marker-end="url(#arrowG05)"/>
+
+    <!-- Action Decoder -->
+    <rect x="590" y="70" width="120" height="100" rx="10" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+    <text x="650" y="100" text-anchor="middle" font-size="11" font-weight="700" fill="#15803d">Action</text>
+    <text x="650" y="116" text-anchor="middle" font-size="11" font-weight="700" fill="#15803d">Decoder</text>
+    <text x="650" y="140" text-anchor="middle" font-size="9" fill="#64748b">関節角度・速度</text>
+    <text x="650" y="155" text-anchor="middle" font-size="9" fill="#64748b">グリッパ開閉</text>
+
+    <!-- Output label -->
+    <text x="650" y="200" text-anchor="middle" font-size="10" font-weight="600" fill="#16a34a">Robot Action</text>
+    <path d="M650 170 L650 190" stroke="#16a34a" stroke-width="1.5" marker-end="url(#arrowG05)"/>
+
+    <!-- Legend -->
+    <rect x="10" y="225" width="12" height="12" rx="2" fill="#dbeafe"/>
+    <text x="28" y="235" font-size="9" fill="#64748b">Vision</text>
+    <rect x="80" y="225" width="12" height="12" rx="2" fill="#fef3c7"/>
+    <text x="98" y="235" font-size="9" fill="#64748b">Language</text>
+    <rect x="160" y="225" width="12" height="12" rx="2" fill="#dcfce7"/>
+    <text x="178" y="235" font-size="9" fill="#64748b">Action</text>
+
+    <defs>
+      <marker id="arrowB05" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#3b82f6"/></marker>
+      <marker id="arrowY05" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#f59e0b"/></marker>
+      <marker id="arrowK05" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#18181b"/></marker>
+      <marker id="arrowG05" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#16a34a"/></marker>
+    </defs>
+  </svg>
+
+  <aside class="info-box">
+    <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span>
+    <div>
+      <strong>VLAは「ロボットのGPT」</strong>
+      <p>ChatGPTが「テキストを読んで、テキストを返す」モデルであるように、VLAは「画像と言葉を受け取って、ロボットの行動を返す」モデルです。事前学習で獲得した豊富な視覚・言語知識を、ロボット制御という新しいドメインに転移する点が革新的です。</p>
+    </div>
+  </aside>
+  </section>
+
+  <!-- ============================================ -->
+  <!-- Section 2: 主要VLAモデルの比較               -->
+  <!-- ============================================ -->
+  <section class="chapter-section" data-section="05-2">
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span> 主要VLAモデルの比較</h2>
+
+  <p>2023年以降、複数の研究グループが競うようにVLAモデルを発表しています。それぞれのアプローチには明確な設計思想の違いがあります。</p>
+
+  <!-- Table: 主要VLAモデル比較 -->
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>モデル</th>
+          <th>開発元</th>
+          <th>ベースモデル</th>
+          <th>学習データ規模</th>
+          <th>特徴</th>
+          <th>公開状況</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong><span class="term" data-tip="Google DeepMindが開発。PaLM-Eをベースに視覚とロボット行動を統合したVLAモデル">RT-2</span></strong></td>
+          <td>Google DeepMind</td>
+          <td>PaLM-E (55B)</td>
+          <td>Web画像 + 実機130K</td>
+          <td>大規模LLMの知識をロボットに転移。言語指示の理解力が高い</td>
+          <td>非公開</td>
+        </tr>
+        <tr>
+          <td><strong><span class="term" data-tip="UC Berkeleyらが開発。Transformerベースで複数ロボットに汎化するオープンソースVLA">Octo</span></strong></td>
+          <td>UC Berkeley et al.</td>
+          <td>Transformer (93M)</td>
+          <td>Open X-Embodiment (800K)</td>
+          <td>軽量で複数ロボット対応。ファインチューニングが容易</td>
+          <td>オープンソース</td>
+        </tr>
+        <tr>
+          <td><strong><span class="term" data-tip="Stanford/UC Berkeleyが開発。Llama 2をベースにロボット行動をトークンとして出力するVLA">OpenVLA</span></strong></td>
+          <td>Stanford / Berkeley</td>
+          <td>Llama 2 (7B)</td>
+          <td>Open X-Embodiment (970K)</td>
+          <td>LLMの汎化力を活用。コミュニティ主導の改善が活発</td>
+          <td>オープンソース</td>
+        </tr>
+        <tr>
+          <td><strong><span class="term" data-tip="Physical Intelligence社が開発。Flow Matchingを用いた拡散型行動生成で高い汎用性を実現">π0</span></strong></td>
+          <td>Physical Intelligence</td>
+          <td>独自 (3B)</td>
+          <td>10K時間超のデモデータ</td>
+          <td>Flow Matching採用。器用な操作タスクに強い</td>
+          <td>一部公開</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <details class="more-box">
+    <summary>パラメータ数とロボットの「賢さ」の関係</summary>
+    <p>RT-2の55BパラメータとOctoの93Mパラメータには600倍の開きがあります。しかし「大きい＝賢い」とは限りません。Octoは小さいモデルで効率的に学習し、ファインチューニング込みではRT-2に匹敵する性能を出すケースもあります。ビジネス観点では、推論速度とデプロイのしやすさも重要な評価軸です。55Bモデルをエッジデバイスで動かすのは現実的に困難であり、<span class="term" data-tip="ロボットに搭載する計算機（GPU等）の処理能力の制約">エッジ推論制約</span>がモデル選択に大きく影響します。</p>
+  </details>
+
+  <!-- Mermaid: VLA推論パイプライン -->
+  <div class="mermaid">
+flowchart TB
+    A["カメラ入力<br/>RGB画像"] --> B["Vision Encoder<br/>特徴量抽出"]
+    C["言語指示<br/>自然言語テキスト"] --> D["Language Encoder<br/>テキスト埋め込み"]
+    B --> E["マルチモーダル統合<br/>Cross-Attention"]
+    D --> E
+    E --> F["Action Decoder<br/>行動トークン生成"]
+    F --> G["後処理<br/>トークン→関節角度変換"]
+    G --> H["ロボット実行<br/>リアルタイム制御"]
+    style E fill:#dcfce7,stroke:#16a34a,color:#18181b
+    style F fill:#dcfce7,stroke:#16a34a,color:#18181b
+    style A fill:#dbeafe,stroke:#3b82f6,color:#1e40af
+    style C fill:#fef3c7,stroke:#f59e0b,color:#92400e
+  </div>
+  </section>
+
+  <!-- ============================================ -->
+  <!-- Section 3: VLAのロバスト性評価               -->
+  <!-- ============================================ -->
+  <section class="chapter-section" data-section="05-3">
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span> VLAのロバスト性評価</h2>
+
+  <p>VLAモデルの真価は「どれだけ多様な状況で安定して動作するか」、つまり<span class="term" data-tip="環境の変化や想定外の状況に対して安定した性能を維持する能力">ロバスト性</span>にかかっています。ここがこのチュートリアル全体の<strong>核心</strong>です。</p>
+
+  <h3>剛体 vs 柔軟体: VLA性能の大きな落差</h3>
+
+  <p>現在のVLAモデルは<span class="term" data-tip="形状が変化しない硬い物体。金属部品、ペットボトル、箱など">剛体</span>の操作では高い成功率を示しますが、<span class="term" data-tip="掴むと変形する物体。布、食品、ケーブルなど。物理的な予測が極めて困難">柔軟体</span>の操作になると性能が大幅に低下します。</p>
+
+  <!-- Compare Cards: 剛体 vs 柔軟体 -->
+  <div class="compare-grid">
+    <div class="compare-card">
+      <span class="tag tag-rigid">得意領域</span>
+      <h4>剛体操作</h4>
+      <ul>
+        <li>把持の成功率: 85~95%</li>
+        <li>形状が変わらないため予測可能</li>
+        <li>グリッパの力加減がシンプル</li>
+        <li>例: 部品ピッキング、ボトル移動</li>
+      </ul>
+    </div>
+    <div class="compare-card">
+      <span class="tag tag-deform">苦手領域</span>
+      <h4>柔軟体操作</h4>
+      <ul>
+        <li>把持の成功率: 40~65%</li>
+        <li>掴むと形が変わる不確実性</li>
+        <li>力加減の微調整が必須</li>
+        <li>例: タオル畳み、ケーブル配線</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Chart.js: 剛体 vs 柔軟体 成功率比較 -->
+  <div class="chart-container">
+    <canvas id="robustnessChart"></canvas>
+  </div>
+
+  <h3>環境の動的変化への頑健性</h3>
+
+  <p>実環境ではカメラに映る景色が常に変化します。照明の変化、物体の位置ズレ、人間の介入など、<span class="term" data-tip="学習時と異なる環境条件に置かれたときの性能変化">ドメインシフト</span>への耐性がVLAの実用性を左右します。</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>環境変化の種類</th>
+          <th>性能低下幅</th>
+          <th>対策</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>照明変化（明→暗）</td>
+          <td>-5~15%</td>
+          <td>データ拡張で照明バリエーションを追加</td>
+        </tr>
+        <tr>
+          <td>物体の位置ズレ（5cm以内）</td>
+          <td>-3~8%</td>
+          <td>多様な初期配置でデモ収集</td>
+        </tr>
+        <tr>
+          <td>未見物体（形状類似）</td>
+          <td>-10~25%</td>
+          <td>VLMの視覚知識で部分的に汎化可能</td>
+        </tr>
+        <tr>
+          <td>背景変化（異なる部屋）</td>
+          <td>-15~30%</td>
+          <td>背景ランダマイゼーション、多環境でのデモ収集</td>
+        </tr>
+        <tr>
+          <td>人間の介入（作業中に手が入る）</td>
+          <td>-20~50%</td>
+          <td>安全停止機構 + 再計画能力の実装</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>ケーススタディ</h3>
+
+  <div class="case-study">
+    <h4>Case A: 工場での部品ピッキング</h4>
+    <p><strong>タスク:</strong> 金属部品をコンベアから取り出してトレイに配置。剛体・固定環境。</p>
+    <p><strong>VLAの成績:</strong> 成功率92%、タスク完遂時間4.2秒/個。照明変化にも頑健。</p>
+    <p><strong>評価:</strong> VLA導入の好適ケース。従来の画像認識+制御に対して「言語指示で対象物を切替え可能」というVLAならではの優位性がある。</p>
+  </div>
+
+  <div class="case-study">
+    <h4>Case B: 家庭でのタオル畳み</h4>
+    <p><strong>タスク:</strong> テーブル上のタオルを認識・把持・畳む。柔軟体・変動環境。</p>
+    <p><strong>VLAの成績:</strong> 成功率48%、タスク完遂時間28秒/枚。タオルの初期形状に強く依存。</p>
+    <p><strong>評価:</strong> 現時点ではVLA単体での実用化は困難。専用の柔軟物操作モジュールとの組み合わせが必要。デモデータ量を5倍に増やすと62%まで改善した報告あり。</p>
+  </div>
+
+  <aside class="info-box">
+    <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span>
+    <div>
+      <strong>「何ができるか」より「何ができないか」を知る</strong>
+      <p>VLAモデルのPoCを設計する際、最も価値のある情報は「失敗するケース」です。成功率92%の剛体ピッキングではなく、成功率48%のタオル畳みの方が、モデルの限界を知る上で重要なデータを提供します。PoC設計では意図的に「苦手なタスク」を含めることを推奨します。</p>
+    </div>
+  </aside>
+
+  <details class="more-box">
+    <summary>評価指標の選び方</summary>
+    <p>VLAモデルの評価で最もよく使われる指標は以下の4つです。</p>
+    <ul>
+      <li><strong>成功率（Success Rate）:</strong> タスク完了の割合。最も基本的だが、部分的成功を捉えられない</li>
+      <li><strong>タスク完遂時間:</strong> 成功した場合の所要時間。速度と正確さのバランスを評価</li>
+      <li><strong><span class="term" data-tip="学習時に見たことのない物体や環境でテストした際の成功率">汎化性能</span>:</strong> 未見物体・未見環境での成功率。実用性の最重要指標</li>
+      <li><strong>安全性指標:</strong> 衝突・落下・過大な力の発生頻度。人間共存環境では必須</li>
+    </ul>
+  </details>
+  </section>
+
+  <!-- ============================================ -->
+  <!-- Section 4: VLAの限界と未解決問題             -->
+  <!-- ============================================ -->
+  <section class="chapter-section" data-section="05-4">
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span> VLAの限界と未解決問題</h2>
+
+  <p>VLAモデルは大きな可能性を持つ一方で、実用化に向けて複数の重大な課題を抱えています。</p>
+
+  <h3>1. 行動のハルシネーション</h3>
+  <p>LLMが事実と異なるテキストを生成する「<span class="term" data-tip="モデルが実際には存在しない情報や不適切な行動を、あたかも正しいかのように生成する現象">ハルシネーション</span>」と同様の問題がVLAでも発生します。物体が存在しない場所に手を伸ばす、把持動作を開始するが途中で無意味な方向に逸れるなど、<strong>「幻覚的行動」</strong>が観察されています。物理的な行動のハルシネーションは、LLMのテキスト上の誤りと異なり、ロボットの衝突や物体の破損を引き起こすため深刻です。</p>
+
+  <h3>2. 長期計画能力の欠如</h3>
+  <p>現在のVLAモデルは「次の1アクション」の予測は得意ですが、<span class="term" data-tip="複数ステップにわたる目標達成に向けた行動系列の計画能力">長期計画</span>（10ステップ以上の連鎖的行動）は苦手です。「テーブルを片付ける」のような複合タスクでは、サブタスクの分解と順序付けが必要であり、現在のVLAだけでは対応が困難です。階層型の計画システム（高レベルLLM + 低レベルVLA）による解決が研究されています。</p>
+
+  <h3>3. 安全性保証の困難さ</h3>
+  <p><span class="term" data-tip="ニューラルネットワークの出力が特定の安全条件を常に満たすことを数学的に保証すること">形式的安全性保証</span>は、現在のディープラーニングベースのVLAでは実現できていません。自動車の自動運転と同様、「100%安全」の証明ができないことが、人間と共存する環境への導入の障壁となっています。</p>
+
+  <h3>4. 推論速度</h3>
+  <p>VLAモデルの推論は計算負荷が高く、大規模モデル（数十Bパラメータ）では<span class="term" data-tip="制御ループの周期。ロボット制御では10~100Hzが必要だが、VLAは1~5Hzに留まることが多い">制御周波数</span>が1~5Hzに留まります。人間の反射速度に比べて桁違いに遅く、動的なタスク（飛んでくるボールをキャッチする等）には対応できません。モデルの蒸留や量子化による高速化が急務です。</p>
+
+  <details class="more-box">
+    <summary>VLAの推論速度を改善する技術動向</summary>
+    <p>推論速度の改善に向けて、以下のアプローチが研究されています。(1) <span class="term" data-tip="大きなモデルの知識を小さなモデルに転移する手法">モデル蒸留</span>: 大規模VLAの知識を小型モデルに転写し、エッジデバイスで動作可能にする (2) <strong>量子化</strong>: FP32→INT8/INT4に精度を落として計算を高速化 (3) <strong>アクションチャンキング</strong>: 1回の推論で複数タイムステップの行動を一括予測 (4) <strong>投機的実行</strong>: 次のアクションを予測しながら現在のアクションを実行する。π0ではFlow Matchingにより比較的高速な推論（~10Hz）を実現しています。</p>
+  </details>
+  </section>
+
+  <!-- ============================================ -->
+  <!-- Section 5: ビジネス観点                      -->
+  <!-- ============================================ -->
+  <section class="chapter-section" data-section="05-5">
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span> ビジネス観点: VLAプロジェクトの提案術</h2>
+
+  <p>VLAモデルを顧客に提案する際に最も重要なのは、<strong>「できること」と「まだできないこと」を正直に伝える</strong>ことです。過度な期待はプロジェクト失敗とクライアントの信頼喪失に直結します。</p>
+
+  <h3>PoC設計のチェックリスト</h3>
+
+  <ul>
+    <li><strong>対象物の種類を確認:</strong> 剛体中心なら高成功率を見込める。柔軟体を含む場合は成功率の目安を事前に共有</li>
+    <li><strong>環境の変動幅を定義:</strong> 照明・物体配置・背景がどの程度変わるかを事前に調査</li>
+    <li><strong>「VLAならでは」の価値を明確に:</strong> 言語指示による柔軟なタスク切替えこそがVLAの最大の差別化ポイント</li>
+    <li><strong>推論デバイスの制約を確認:</strong> エッジGPUの種類・消費電力・設置スペース</li>
+    <li><strong>安全性要件を洗い出す:</strong> 人間共存環境か否かで、必要な安全機構が大きく異なる</li>
+  </ul>
+
+  <aside class="info-box">
+    <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span>
+    <div>
+      <strong>提案書に書くべき一文</strong>
+      <p>「VLAモデルは現時点で、固定環境での剛体操作において80~95%の成功率を達成しますが、柔軟物操作や大きな環境変動下では40~65%に低下します。本PoCでは両方のシナリオをテストし、貴社の業務に適した適用範囲を特定します。」――この水準の正直さが、長期的な信頼関係を構築します。</p>
+    </div>
+  </aside>
+
+  <details class="more-box">
+    <summary>オープンソース vs 独自開発: どちらを選ぶか</summary>
+    <p>VLAプロジェクトの立ち上げで最初に直面する判断が「既存のオープンソースモデル（Octo, OpenVLA）を使うか、ゼロから開発するか」です。</p>
+    <ul>
+      <li><strong>オープンソース推奨:</strong> PoCフェーズ、限られた予算、標準的なタスク。Octoは特にファインチューニングが容易で初期検証向き</li>
+      <li><strong>独自開発推奨:</strong> 独自のハードウェア構成、極めて特殊なタスク、長期的な差別化が必要な場合</li>
+      <li><strong>ハイブリッド:</strong> オープンソースモデルをベースにファインチューニング＋独自モジュール追加。最もコスト効率が高いアプローチ</li>
+    </ul>
+  </details>
+  </section>
+
+  <!-- ============================================ -->
+  <!-- Exercises                                    -->
+  <!-- ============================================ -->
+  <section class="chapter-section" data-section="05-exercise">
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span> 演習問題</h2>
+
+  <div class="exercise-box">
+    <h3>演習1（入門）: VLAモデルの選定</h3>
+    <p>あなたはロボットSIerのエンジニアです。顧客から「倉庫内の多品種商品ピッキングを自動化したい」と相談されました。以下の条件で最適なVLAモデルを1つ選び、理由を3つ挙げてください。</p>
+    <ul>
+      <li>対象物: 箱入り商品（剛体）、100品目以上</li>
+      <li>環境: 倉庫（照明変動あり、人間作業者が近くにいる）</li>
+      <li>予算: PoC段階で1,000万円以内</li>
+      <li>計算リソース: NVIDIA Jetson Orin（エッジGPU）</li>
+      <li>自社にAI開発チームあり（5名）</li>
+    </ul>
+    <details class="more-box">
+      <summary>模範解答を見る</summary>
+      <p><strong>推奨: Octo（+ ファインチューニング）</strong></p>
+      <p>理由1: <strong>軽量モデル（93Mパラメータ）</strong>のため、Jetson Orinで十分な推論速度を確保できる。RT-2（55B）やOpenVLA（7B）はJetsonでの動作が困難。</p>
+      <p>理由2: <strong>オープンソースでファインチューニングが容易。</strong>AI開発チームが自社にいるため、倉庫環境での追加学習をスムーズに進められる。</p>
+      <p>理由3: <strong>Open X-Embodimentの多様なデータで事前学習済み。</strong>100品目以上の多品種ピッキングには汎化性能が重要であり、大規模データセットで学習したOctoは初期性能が期待できる。</p>
+    </details>
+  </div>
+
+  <div class="exercise-box">
+    <h3>演習2（応用）: VLA導入のPoCプラン策定</h3>
+    <p>家電メーカーから「製品組立ラインの一部工程をVLAロボットで自動化したい」と依頼されました。対象工程は「ケーブルのコネクタ挿入」（半柔軟体操作）です。以下を含む3ヶ月間のPoCプランを作成してください。</p>
+    <ul>
+      <li>VLAモデルの選定と理由</li>
+      <li>想定される成功率の目標値（根拠付き）</li>
+      <li>データ収集計画（方式・量・期間）</li>
+      <li>評価計画（どの指標で、どう判定するか）</li>
+      <li>リスクと、顧客への伝え方</li>
+    </ul>
+    <details class="more-box">
+      <summary>模範解答を見る</summary>
+      <p><strong>モデル選定: OpenVLA + ファインチューニング</strong></p>
+      <p>コネクタ挿入は「挿入位置の視覚認識」と「微細な力制御」が必要。OpenVLAのLlama 2ベースの言語理解力で「赤いコネクタをポートAに挿して」のような柔軟な指示対応が可能。オープンソースのため改変自由。</p>
+      <p><strong>成功率目標: 75%（PoC終了時）</strong></p>
+      <p>根拠: ケーブルコネクタは「半柔軟体」であり、剛体操作（85~95%）と柔軟体操作（40~65%）の中間を見込む。ファインチューニング込みで75%が現実的な目標。量産ラインでの採用基準（95%以上）には追加開発が必要である旨を顧客に明示。</p>
+      <p><strong>データ収集: リーダーフォロワー方式、500デモ、2週間</strong></p>
+      <p>コネクタ挿入は力加減が重要なため、リーダーフォロワー方式を選択。1デモ2分（コネクタ1本挿入）、コネクタ5種×各100デモ=500デモ。2名体制、1日6時間で約8日。予備を含め2週間。</p>
+      <p><strong>評価計画:</strong> (1) 成功率 (2) 挿入精度（位置誤差mm） (3) 過大な力の発生回数 (4) 未見コネクタでの汎化テスト。各指標に合格基準を設定し、月次レビューで顧客と共有。</p>
+      <p><strong>リスクと顧客への伝え方:</strong> 「ケーブル操作は現在のVLA技術で最も難易度の高いタスク群に属します。PoC段階で75%の成功率を目標としますが、量産ライン基準（95%以上）の達成には、PoC後の追加開発フェーズ（推定3~6ヶ月）が必要です。」</p>
+    </details>
+  </div>
+  </section>
+
+  <!-- ============================================ -->
+  <!-- Resources                                    -->
+  <!-- ============================================ -->
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><a href="https://robotics-transformer2.github.io/" target="_blank" rel="noopener">RT-2: Vision-Language-Action Models</a> ― Google DeepMindのVLAフラッグシップ</li>
+      <li><a href="https://octo-models.github.io/" target="_blank" rel="noopener">Octo: An Open-Source Generalist Robot Policy</a> ― 軽量オープンソースVLA</li>
+      <li><a href="https://openvla.github.io/" target="_blank" rel="noopener">OpenVLA: An Open-Source VLA Model</a> ― LLMベースのオープンソースVLA</li>
+      <li><a href="https://www.physicalintelligence.company/blog/pi0" target="_blank" rel="noopener">π0 (pi-zero)</a> ― Physical Intelligence社の汎用ロボットモデル</li>
+      <li><a href="https://arxiv.org/abs/2310.08864" target="_blank" rel="noopener">Open X-Embodiment (2023)</a> ― 大規模ロボティクスデータセットとモデル</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="05">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="04-imitation-learning.html"><span class="direction">&larr; Prev</span>模倣学習とテレオペレーション</a>
+    <a href="06-implementation-barriers.html"><span class="direction">Next &rarr;</span>実装の壁 ― Edge推論・Sim-to-Real・データの現実</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#f4f4f5',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#18181b',
+      lineColor: '#18181b',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<!-- 視覚化ライブラリ群 (使う章だけ動作、未使用章はゼロコスト) -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  // Lucideアイコンを自動描画 (data-lucide="icon-name" 属性のある要素を全部処理)
+  if (window.lucide) lucide.createIcons();
+</script>
+<script>
+  // Chart.js: 剛体 vs 柔軟体でのタスク成功率比較
+  window.addEventListener("load", function(){
+    var ctx = document.getElementById("robustnessChart").getContext("2d");
+    new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: ["ピッキング", "配置", "挿入", "折り畳み", "ケーブル操作"],
+        datasets: [
+          {
+            label: "剛体 (成功率%)",
+            data: [94, 89, 82, null, null],
+            backgroundColor: "rgba(59,130,246,0.6)",
+            borderColor: "rgba(59,130,246,1)",
+            borderWidth: 1
+          },
+          {
+            label: "柔軟体 (成功率%)",
+            data: [72, 58, 45, 48, 38],
+            backgroundColor: "rgba(236,72,153,0.6)",
+            borderColor: "rgba(236,72,153,1)",
+            borderWidth: 1
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: "VLAモデルのタスク種別ごとの成功率 (概算値)",
+            font: { size: 13 },
+            color: "#18181b"
+          },
+          legend: { labels: { font: { size: 11 }, color: "#18181b" } }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 100,
+            title: { display: true, text: "成功率 (%)", font: { size: 11 }, color: "#71717a" },
+            ticks: { color: "#71717a" },
+            grid: { color: "#f4f4f5" }
+          },
+          x: {
+            ticks: { color: "#71717a", font: { size: 11 } },
+            grid: { display: false }
+          }
+        }
+      }
+    });
+  });
+</script>
+</body>
+</html>

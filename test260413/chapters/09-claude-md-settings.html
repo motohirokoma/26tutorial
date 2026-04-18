@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>CLAUDE.md と設定管理 - MK's Claude Code Tutorial</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code Tutorial
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="../index.html#phase3" class="active" data-nav><span class="phase-name">Advanced</span><span class="phase-pct" id="pct-adv">0%</span></a></li>
+      <li><a href="../index.html#phase4" data-nav><span class="phase-name">Projects</span><span class="phase-pct" id="pct-proj">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.09</span>
+    CLAUDE.md と設定管理
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 19 sections</text>
+    </svg>
+    <div class="progress-info">0h / 26h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-introduction.html"><span class="status-dot" data-chapter="01"></span> Introduction</a></li>
+    <li><a href="02-installation.html"><span class="status-dot" data-chapter="02"></span> Installation</a></li>
+    <li><a href="03-basic-commands.html"><span class="status-dot" data-chapter="03"></span> Basic Commands</a></li>
+    <li><a href="04-prompt-design.html"><span class="status-dot" data-chapter="04"></span> Prompt Design</a></li>
+  </ul>
+
+  <div class="section-label">Core</div>
+  <ul>
+    <li><a href="05-file-operations.html"><span class="status-dot" data-chapter="05"></span> File Operations</a></li>
+    <li><a href="06-git-integration.html"><span class="status-dot" data-chapter="06"></span> Git Integration</a></li>
+    <li><a href="07-1-github-workflow.html"><span class="status-dot" data-chapter="07-1"></span> GitHub <span class="sub-label">1/2</span></a></li>
+    <li><a href="07-2-github-workflow.html"><span class="status-dot" data-chapter="07-2"></span> GitHub <span class="sub-label">2/2</span></a></li>
+    <li><a href="08-1-debugging.html"><span class="status-dot" data-chapter="08-1"></span> Debug <span class="sub-label">1/2</span></a></li>
+    <li><a href="08-2-testing.html"><span class="status-dot" data-chapter="08-2"></span> Test &amp; TDD <span class="sub-label">2/2</span></a></li>
+  </ul>
+
+  <div class="section-label">Advanced</div>
+  <ul>
+    <li><a href="09-claude-md-settings.html" class="active"><span class="status-dot" data-chapter="09"></span> CLAUDE.md</a></li>
+    <li><a href="10-skills-hooks.html"><span class="status-dot" data-chapter="10"></span> Skills &amp; Hooks</a></li>
+    <li><a href="11-mcp-agents.html"><span class="status-dot" data-chapter="11"></span> MCP &amp; Agents</a></li>
+  </ul>
+
+  <div class="section-label">Projects</div>
+  <ul>
+    <li><a href="12-1-project-website.html"><span class="status-dot" data-chapter="12-1"></span> Web Site <span class="sub-label">1/2</span></a></li>
+    <li><a href="12-2-project-website.html"><span class="status-dot" data-chapter="12-2"></span> Web Site <span class="sub-label">2/2</span></a></li>
+    <li><a href="13-1-project-app.html"><span class="status-dot" data-chapter="13-1"></span> Web App <span class="sub-label">1/2</span></a></li>
+    <li><a href="13-2-project-app.html"><span class="status-dot" data-chapter="13-2"></span> Web App <span class="sub-label">2/2</span></a></li>
+    <li><a href="14-1-project-ios.html"><span class="status-dot" data-chapter="14-1"></span> iOS App <span class="sub-label">1/2</span></a></li>
+    <li><a href="14-2-project-ios.html"><span class="status-dot" data-chapter="14-2"></span> iOS App <span class="sub-label">2/2</span></a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 3: Advanced &gt; Chapter 9</div>
+  <h1>CLAUDE.md と設定管理</h1>
+  <p class="subtitle">プロジェクトの記憶をClaudeに渡す<span class="term" data-tip="Claudeが起動時に自動読込する、プロジェクト固有のオンボーディング資料">CLAUDE.md</span>と、許可・モデル・サブエージェントを束ねる<code>settings.json</code>。出力品質と安全性が一段階上がる、上級編の入口です。</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 1.5h</span>
+    <span class="badge">Phase 3: Advanced</span>
+    <span class="badge">難易度: 応用</span>
+  </div>
+
+  <!-- ===================== 1. CLAUDE.md とは ===================== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> CLAUDE.md とは — Claudeへの「ブリーフィング資料」</h2>
+
+  <p>
+    <strong>CLAUDE.md</strong>はプロジェクトルートに置く<span class="term" data-tip="特別な名前のファイル。プロジェクトを開いたClaudeが追加指示なしで自動的に内容を読み込み、コンテキストとして保持する">特別なファイル</span>。Claudeは起動時に<strong>自動で読み込んで</strong>、そこに書かれたルール・コンテキストを毎ターン守ります。新メンバーに渡す<span class="term" data-tip="プロジェクトの全体像・規約・前提知識をまとめた入社初日資料">オンボーディング資料</span>を、Claude向けに書いておくイメージです。
+  </p>
+
+  <div class="info-box">
+    <span class="label">CLAUDE.md の本質</span>
+    <p>「毎回口頭で説明していたこと」を文書化してClaudeの記憶にする仕組み。技術スタック、命名規則、よく使うコマンド、絶対NGな操作、をここに集約します。</p>
+  </div>
+
+  <div class="diagram-box">
+    <div class="diagram-title">CLAUDE.md のある/なしで何が変わるか</div>
+    <svg viewBox="0 0 540 280" width="100%" style="max-width:540px; display:block; margin:0 auto;">
+      <!-- left: なし -->
+      <rect x="20" y="30" width="230" height="220" rx="10" fill="#fef2f2" stroke="#fecaca" stroke-width="1.5"/>
+      <text x="135" y="55" text-anchor="middle" font-size="13" font-weight="700" fill="#b91c1c">CLAUDE.md なし</text>
+      <text x="135" y="85" text-anchor="middle" font-size="11" fill="#7f1d1d">「Reactで書いて」</text>
+      <text x="135" y="105" text-anchor="middle" font-size="11" fill="#7f1d1d">→ 古いクラスコンポーネント</text>
+      <text x="135" y="135" text-anchor="middle" font-size="11" fill="#7f1d1d">「テストも」</text>
+      <text x="135" y="155" text-anchor="middle" font-size="11" fill="#7f1d1d">→ Jestを勝手に入れる</text>
+      <text x="135" y="185" text-anchor="middle" font-size="11" fill="#7f1d1d">「commit」</text>
+      <text x="135" y="205" text-anchor="middle" font-size="11" fill="#7f1d1d">→ コミット規約バラバラ</text>
+      <text x="135" y="235" text-anchor="middle" font-size="10" fill="#991b1b" font-weight="600">毎回ブレる・修正コスト高</text>
+
+      <!-- arrow -->
+      <path d="M260,140 L290,140" stroke="#71717a" stroke-width="2" marker-end="url(#arr-09-1)"/>
+      <defs><marker id="arr-09-1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#71717a"/></marker></defs>
+
+      <!-- right: あり -->
+      <rect x="300" y="30" width="220" height="220" rx="10" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1.5"/>
+      <text x="410" y="55" text-anchor="middle" font-size="13" font-weight="700" fill="#15803d">CLAUDE.md あり</text>
+      <text x="410" y="85" text-anchor="middle" font-size="11" fill="#14532d">「Reactで書いて」</text>
+      <text x="410" y="105" text-anchor="middle" font-size="11" fill="#14532d">→ 関数+Hooks (規約通り)</text>
+      <text x="410" y="135" text-anchor="middle" font-size="11" fill="#14532d">「テストも」</text>
+      <text x="410" y="155" text-anchor="middle" font-size="11" fill="#14532d">→ Vitest (記載通り)</text>
+      <text x="410" y="185" text-anchor="middle" font-size="11" fill="#14532d">「commit」</text>
+      <text x="410" y="205" text-anchor="middle" font-size="11" fill="#14532d">→ Conventional Commits 厳守</text>
+      <text x="410" y="235" text-anchor="middle" font-size="10" fill="#166534" font-weight="600">一貫した高品質出力</text>
+    </svg>
+    <div class="diagram-caption">同じ指示でも、CLAUDE.md があるかどうかで結果が劇的に変わる。</div>
+  </div>
+
+  <!-- ===================== 2. CLAUDE.md の階層 ===================== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 3階層のCLAUDE.md — グローバル / プロジェクト / サブディレクトリ</h2>
+
+  <p>CLAUDE.mdは1箇所だけではなく、<strong>3つのスコープ</strong>で重ね書きできます。Claudeは下から上に読みあげて、近いものほど優先します。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">設定の優先順位 (近いほど強い)</div>
+    <svg viewBox="0 0 460 240" width="100%" style="max-width:460px; display:block; margin:0 auto;">
+      <polygon points="230,20 290,80 170,80" fill="#18181b" stroke="#18181b"/>
+      <text x="230" y="58" text-anchor="middle" font-size="12" font-weight="700" fill="white">サブディレクトリ</text>
+      <polygon points="170,80 290,80 340,150 120,150" fill="#52525b" stroke="#18181b"/>
+      <text x="230" y="120" text-anchor="middle" font-size="12" font-weight="600" fill="white">プロジェクト ./CLAUDE.md</text>
+      <polygon points="120,150 340,150 400,220 60,220" fill="#d4d4d8" stroke="#18181b"/>
+      <text x="230" y="190" text-anchor="middle" font-size="12" font-weight="600">~/.claude/CLAUDE.md (グローバル)</text>
+      <text x="420" y="55" font-size="10" fill="#71717a">↑ 強い</text>
+      <text x="420" y="215" font-size="10" fill="#71717a">↓ 弱い</text>
+    </svg>
+    <div class="diagram-caption">同じトピックがあれば、より近いCLAUDE.mdが上書きする。</div>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>レイヤ</th><th>場所</th><th>共有範囲</th><th>典型的な内容</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>グローバル</strong></td><td><code>~/.claude/CLAUDE.md</code></td><td>自分の全プロジェクト</td><td>好みのスタイル / 共通の口調 / 個人の好みの言語</td></tr>
+      <tr><td><strong>プロジェクト</strong></td><td><code>./CLAUDE.md</code></td><td>このリポジトリのチーム全員</td><td>技術スタック / コーディング規約 / 重要な前提</td></tr>
+      <tr><td><strong>サブディレクトリ</strong></td><td><code>frontend/CLAUDE.md</code> など</td><td>そのディレクトリ配下のみ</td><td>その領域固有のルール (DBスキーマ / UI規約)</td></tr>
+    </tbody>
+  </table>
+
+  <div class="tip-box">
+    <span class="label">使い分けの原則</span>
+    <p>「自分だけ知ってればいい」ことはグローバル、「チームで共有すべき」ことはプロジェクト。プロジェクトCLAUDE.mdは <strong>git に commit する</strong>のが正解です。</p>
+  </div>
+
+  <!-- ===================== 3. 良いCLAUDE.mdの書き方 ===================== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 良いCLAUDE.md のテンプレート</h2>
+
+  <p>「全部書けばいい」わけではありません。Claudeは <span class="term" data-tip="モデルが扱える文字数の上限。CLAUDE.md は毎ターン読み込まれるので、肥大化するとそのぶん他の情報のスペースを食う">コンテキスト</span> を毎ターン消費します。<strong>読まないと困ること</strong>に絞るのが鉄則。</p>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="layers" width="20" height="20"></i>
+      <div><strong>1. プロジェクト概要 (3行)</strong> — 何を作ってるか / 誰のためか / 主要技術</div>
+    </li>
+    <li>
+      <i data-lucide="settings" width="20" height="20"></i>
+      <div><strong>2. 技術スタック</strong> — 言語 / FW / DB / デプロイ先 / バージョン</div>
+    </li>
+    <li>
+      <i data-lucide="folder-tree" width="20" height="20"></i>
+      <div><strong>3. ディレクトリ構造</strong> — ざっくり何がどこにあるか</div>
+    </li>
+    <li>
+      <i data-lucide="terminal" width="20" height="20"></i>
+      <div><strong>4. よく使うコマンド</strong> — 起動 / テスト / リント / ビルド / デプロイ</div>
+    </li>
+    <li>
+      <i data-lucide="check-circle" width="20" height="20"></i>
+      <div><strong>5. コーディング規約</strong> — 命名 / コメント / インポート順 / フォーマッタ</div>
+    </li>
+    <li>
+      <i data-lucide="alert-triangle" width="20" height="20"></i>
+      <div><strong>6. NG事項</strong> — 触っちゃダメなファイル / 使っちゃダメなコマンド</div>
+    </li>
+  </ul>
+
+  <h3>サンプル: Web アプリの CLAUDE.md</h3>
+
+<pre><code># Project: Recipe Share
+
+## 概要
+ユーザーがレシピを投稿・検索できるWebアプリ。
+ターゲット: 自炊初心者。要件は ./docs/spec.md 参照。
+
+## 技術スタック
+- Frontend: Next.js 14 (App Router) + TypeScript + Tailwind
+- Backend: Next.js API Routes + Prisma + PostgreSQL
+- Auth: NextAuth.js (Google OAuth)
+- Deploy: Vercel (本番) / GitHub Actions (CI)
+
+## ディレクトリ
+- app/        — ページとAPI Route
+- components/ — UI部品 (Atomic Design ではなく機能別)
+- lib/        — DB接続・ユーティリティ
+- prisma/     — schema.prisma とマイグレーション
+
+## コマンド
+- 開発:    npm run dev
+- テスト:  npm test (Vitest)
+- リント:  npm run lint (ESLint + Prettier)
+- DB更新:  npx prisma migrate dev
+
+## コーディング規約
+- 関数コンポーネント + Hooks のみ (クラスは書かない)
+- 1ファイル1コンポーネント、デフォルトエクスポート禁止 (named のみ)
+- 日本語コメントOK、ただし関数名・変数名は英語
+- API レスポンスは必ず { data, error } 形式
+
+## NG
+- prisma migrate reset は本番DBで絶対に使わない
+- env ファイルをコミットしない
+- master ブランチへの直接 push 禁止 (必ずPR経由)
+</code></pre>
+
+  <div class="info-box">
+    <span class="label">200行を超えたら</span>
+    <p>CLAUDE.md が200行を超えたら、領域別に <code>frontend/CLAUDE.md</code> 等へ分割を検討。読み込みコストと優先順位の両面で有利になります。</p>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: アンチパターンと改善例</summary>
+    <div class="more-body">
+      <p><strong>アンチパターン1: 当たり前の事だけ書く</strong> — 「TypeScriptを使う」「テストを書く」だけでは何も決まりません。<em>具体的な選択</em> (Vitest なのか Jest なのか) を書く。</p>
+      <p><strong>アンチパターン2: README をコピペ</strong> — README は人間向け、CLAUDE.md はClaude向け。「インストール手順」より「セッション内で守るべきルール」を優先。</p>
+      <p><strong>アンチパターン3: 全部書く</strong> — 5000行のCLAUDE.mdは逆効果。必要な箇所は <code>@docs/spec.md</code> のように <span class="term" data-tip="@で始まるファイル参照。Claudeはそのファイルを必要に応じて読みに行く">ファイル参照</span> で外出し。</p>
+    </div>
+  </details>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===================== 4. settings.json ===================== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> settings.json — 許可・モデル・環境変数</h2>
+
+  <p>CLAUDE.md は<strong>振る舞いを伝える</strong>ファイル。<code>settings.json</code> は <strong>環境を設定する</strong>ファイル。両者で役割が異なります。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">設定ファイルの読み込みフロー</div>
+    <pre class="mermaid">
+graph LR
+  A[Claude起動] --> B["~/.claude/settings.json"]
+  B --> C["./.claude/settings.json"]
+  C --> D["./.claude/settings.local.json"]
+  D --> E[マージ完了]
+  E --> F[セッション開始]
+    </pre>
+    <div class="diagram-caption">右側ほど優先度が高く、上書きする。<code>local</code> は個人用なので gitignore 推奨。</div>
+  </div>
+
+  <h3>主要な設定キー</h3>
+
+  <table>
+    <thead><tr><th>キー</th><th>用途</th><th>例</th></tr></thead>
+    <tbody>
+      <tr><td><code>permissions.allow</code></td><td>確認なしで許可するツール</td><td><code>"Bash(npm test:*)"</code></td></tr>
+      <tr><td><code>permissions.deny</code></td><td>絶対に拒否するツール</td><td><code>"Bash(rm -rf /:*)"</code></td></tr>
+      <tr><td><code>model</code></td><td>使うモデル</td><td><code>"claude-opus-4"</code></td></tr>
+      <tr><td><code>env</code></td><td>環境変数</td><td><code>{"DEBUG": "true"}</code></td></tr>
+      <tr><td><code>hooks</code></td><td>イベントごとに実行するスクリプト</td><td>(次章で詳説)</td></tr>
+    </tbody>
+  </table>
+
+  <h3>サンプル: プロジェクトの settings.json</h3>
+
+<pre><code>{
+  "permissions": {
+    "allow": [
+      "Bash(npm:*)",
+      "Bash(git status)",
+      "Bash(git diff:*)",
+      "Bash(npx prisma:*)",
+      "Read(*)",
+      "Write(src/**)",
+      "Edit(src/**)"
+    ],
+    "deny": [
+      "Bash(rm -rf:*)",
+      "Bash(npm publish:*)",
+      "Write(.env*)",
+      "Write(prisma/migrations/**)"
+    ]
+  },
+  "model": "claude-sonnet-4",
+  "env": {
+    "NODE_ENV": "development"
+  }
+}
+</code></pre>
+
+  <div class="warn-box">
+    <span class="label">deny の力</span>
+    <p><code>deny</code> は <code>allow</code> より強い。「念のため触らせない」ファイルは <code>deny</code> に明示しておくと、誤操作の事故を構造的に防げます。</p>
+  </div>
+
+  <!-- ===================== 5. 設定の3階層 ===================== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> どのファイルに何を書くか — 整理表</h2>
+
+  <p>「許可をどこに書くべきか」迷ったら、この表を見てください。</p>
+
+  <table>
+    <thead><tr><th>書きたい内容</th><th>場所</th><th>理由</th></tr></thead>
+    <tbody>
+      <tr><td>個人の好み (口調・言語)</td><td><code>~/.claude/CLAUDE.md</code></td><td>他人に強要しない</td></tr>
+      <tr><td>個人の API キー</td><td><code>~/.claude/settings.json</code> の env</td><td>commitしないため</td></tr>
+      <tr><td>プロジェクトの技術スタック</td><td><code>./CLAUDE.md</code></td><td>チーム全員が必要</td></tr>
+      <tr><td>npm 系コマンドの常時許可</td><td><code>./.claude/settings.json</code></td><td>チーム標準として共有</td></tr>
+      <tr><td>自分のローカル環境用設定</td><td><code>./.claude/settings.local.json</code></td><td>gitignore済み・他人に影響なし</td></tr>
+      <tr><td>絶対NGなコマンド</td><td><code>./.claude/settings.json</code> の deny</td><td>事故防止はチーム全員の利益</td></tr>
+    </tbody>
+  </table>
+
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">ありがち</span>
+      <h4>個人設定をプロジェクトに</h4>
+      <ul>
+        <li>口調や好みを <code>./CLAUDE.md</code> に書く</li>
+        <li>個人のAPIキーを commit してしまう</li>
+        <li>結果: チームメンバーが混乱</li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">正解</span>
+      <h4>スコープを切る</h4>
+      <ul>
+        <li>個人 → <code>~/.claude/</code></li>
+        <li>チーム → <code>./.claude/</code> (commit可)</li>
+        <li>機密 → <code>settings.local.json</code> (gitignore)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===================== 6. 運用Tips ===================== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 運用Tips — 育てる、削る、共有する</h2>
+
+  <div class="steps">
+    <div class="step done"><div class="step-num">1</div><div class="step-label">最小から</div><div class="step-desc">10行で始める</div></div>
+    <div class="step done"><div class="step-num">2</div><div class="step-label">違和感で追記</div><div class="step-desc">毎回直す指示を文書化</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-label">定期的に削減</div><div class="step-desc">使われない記述を削る</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-label">分割</div><div class="step-desc">200行超でサブ階層へ</div></div>
+  </div>
+
+  <div class="kv-grid">
+    <div class="kv"><div class="kv-key">推奨初期サイズ</div><div class="kv-val">10〜30行</div></div>
+    <div class="kv"><div class="kv-key">分割の目安</div><div class="kv-val">200行超</div></div>
+    <div class="kv"><div class="kv-key">レビュー頻度</div><div class="kv-val">月1回</div></div>
+    <div class="kv"><div class="kv-key">commit 対象</div><div class="kv-val">プロジェクト版のみ</div></div>
+  </div>
+
+  <h3>「Claude にCLAUDE.md を書かせる」テクニック</h3>
+
+  <p>新規プロジェクトで一から書くのは大変。Claudeに <code>/init</code> コマンドを使わせるのが最速です。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">/init を使った半自動セットアップ</div>
+    <pre class="mermaid">
+sequenceDiagram
+  participant U as ユーザー
+  participant C as Claude
+  U->>C: ["/init"]
+  C->>C: リポジトリを走査 (package.json / README)
+  C-->>U: CLAUDE.md ドラフト提示
+  U->>C: 「DBはPostgreSQL、リント追加」
+  C-->>U: 反映版を提示
+  U->>C: 「OK、commit して」
+    </pre>
+    <div class="diagram-caption"><code>/init</code> はリポジトリの空気を読んで、たたき台を作ってくれる。</div>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>自分用グローバル CLAUDE.md を書く</h4>
+    <p><code>~/.claude/CLAUDE.md</code> を作成し、自分の好みを5行以内で記述してください。次のセッションでClaudeの返答が変わるか確認します。</p>
+    <ol>
+      <li><code>mkdir -p ~/.claude</code> で作成</li>
+      <li><code>~/.claude/CLAUDE.md</code> を編集</li>
+      <li>「日本語で」「コードはコメント付きで」など自分の好みを書く</li>
+      <li>新しくClaudeを起動して、設定が効いているか試す</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>例: 以下のような最小限の内容で十分効果が出ます。</p>
+<pre><code># Personal Preferences
+
+- 返答は日本語で。技術用語の英単語はそのままでOK。
+- コードを書く時は、行ごとに何をしているかの短いコメントを付ける。
+- 質問が曖昧な時は、勝手に進めずに最初に1問だけ確認する。
+- 結論を最初に言ってから理由を述べる (PREP法)。
+</code></pre>
+      <p>新しいセッションでClaudeに「FizzBuzzをPythonで書いて」と頼むと、上記の好みが反映された返答が返ってきます。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>既存リポジトリに /init で CLAUDE.md を生成し、磨き込む</h4>
+    <p>手元にある任意のリポジトリで、Claude に<code>/init</code> を使わせ、生成された CLAUDE.md を改善してください。</p>
+    <ol>
+      <li>対象リポジトリで <code>claude</code> を起動、<code>/init</code> 実行</li>
+      <li>生成された CLAUDE.md を読み、不足/過剰を3点ずつリストアップ</li>
+      <li>修正版を編集して commit</li>
+      <li>同じプロンプト (例: 「テストを追加して」) を <strong>修正前</strong>と<strong>修正後</strong>で実行し、出力の差を比較</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>典型的な不足: <strong>NG事項</strong> (deny相当) と <strong>命名規約</strong> が抜けている事が多いです。逆に過剰なのは「インストール手順」「パッケージ一覧」など README にあるべき情報。</p>
+      <p>改善例の差分:</p>
+<pre><code>+ ## NG
++ - master へ直接 push しない
++ - .env をコミットしない
++ - 既存 migration ファイルの編集禁止 (新規追加で対応)
++
++ ## 命名規約
++ - コンポーネントは PascalCase、その他は camelCase
++ - テストファイルは *.test.ts (spec.ts ではない)
+
+- ## インストール
+- npm install して npm run dev
+</code></pre>
+      <p>修正後は「テストを追加して」のような曖昧な指示でも、<code>*.test.ts</code> 命名を守って書いてくれるようになります。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span><a href="https://docs.claude.com/en/docs/claude-code/memory" target="_blank">Claude Code: Memory (CLAUDE.md)</a> — 公式の階層仕様と読み込み順</li>
+      <li><span class="res-type doc">Doc</span><a href="https://docs.claude.com/en/docs/claude-code/settings" target="_blank">Claude Code: Settings</a> — settings.json の全キー一覧</li>
+      <li><span class="res-type article">Article</span><a href="https://www.anthropic.com/engineering/claude-code-best-practices" target="_blank">Anthropic Engineering: Claude Code Best Practices</a> — 実プロジェクトでの運用ノウハウ</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="09">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="08-2-testing.html"><span class="direction">&larr; Prev</span>Test &amp; TDD</a>
+    <a href="10-skills-hooks.html"><span class="direction">Next &rarr;</span>Skills &amp; Hooks</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#f4f4f5',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#18181b',
+      lineColor: '#18181b',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>

@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23eab308%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>伝え方のコツ - MK's Understanding LLM - for Student</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #eab308; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#eab308" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Understanding LLM - for Student
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav class="active"><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Practice</span><span class="phase-pct" id="pct-practice">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.04</span>
+    伝え方のコツ (プロンプトの基本)
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 8 sections</text>
+    </svg>
+    <div class="progress-info">0h / 3h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-what-is-genai.html"><span class="status-dot" data-chapter="01"></span> そもそも生成AIって何?</a></li>
+    <li><a href="02-vs-search.html"><span class="status-dot" data-chapter="02"></span> Google検索と何が違うの?</a></li>
+    <li><a href="03-try-it.html"><span class="status-dot" data-chapter="03"></span> ChatGPT・Claudeを使ってみよう</a></li>
+    <li><a href="04-prompting.html" class="active"><span class="status-dot" data-chapter="04"></span> 伝え方のコツ</a></li>
+  </ul>
+  <div class="section-label">Practice</div>
+  <ul>
+    <li><a href="05-daily-use.html"><span class="status-dot" data-chapter="05"></span> 毎日の暮らしで使ってみる</a></li>
+    <li><a href="06-caveats.html"><span class="status-dot" data-chapter="06"></span> 気をつけたい3つのこと</a></li>
+    <li><a href="07-tips.html"><span class="status-dot" data-chapter="07"></span> 便利に使うヒント</a></li>
+    <li><a href="08-final-exercise.html"><span class="status-dot" data-chapter="08"></span> 最終演習問題</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 1: Basics &gt; Chapter 04</div>
+  <h1>伝え方のコツ (プロンプトの基本)</h1>
+  <p class="subtitle">同じAIに聞いても、伝え方一つで答えのクオリティが激変します。3つの原則を押さえれば、一気に使えるようになります。</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 30分</span>
+    <span class="badge">Phase: Basics</span>
+    <span class="badge">難易度: 初級</span>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#eab308" fill-rule="evenodd"/></svg></span>プロンプトって何?</h2>
+
+  <p><span class="term" data-tip="AIに対する指示・質問のこと。日本語でも英語でもOK。">プロンプト</span>とは、ひらたく言うと「<strong>AIへのお願いの文</strong>」のこと。</p>
+
+  <p>人間に何かを頼む時と同じで、<strong>あいまいに頼むとあいまいな返事が返ってくる</strong>し、具体的に頼むと具体的な返事が返ってきます。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">「伝え方」で結果が変わるイメージ</div>
+    <svg id="rough-prompt" width="100%" height="220" viewBox="0 0 480 220"></svg>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#eab308" fill-rule="evenodd"/></svg></span>3つの原則</h2>
+
+  <p>難しい勉強は不要です。この<strong>3つだけ</strong>を意識すれば、ほとんどのケースで十分。</p>
+
+  <ul class="icon-list">
+    <li><i data-lucide="target" width="20" height="20"></i><div><strong>1. 具体的に言う</strong> — 「料理教えて」ではなく「鶏むね肉と玉ねぎで15分でできる夕飯を3つ」</div></li>
+    <li><i data-lucide="user" width="20" height="20"></i><div><strong>2. 役割を与える</strong> — 「あなたは小学校の先生です」「プロの編集者として」など、立場を指定</div></li>
+    <li><i data-lucide="list" width="20" height="20"></i><div><strong>3. 例を見せる</strong> — 「こんな感じで」と例文やフォーマットを1つ見せる</div></li>
+  </ul>
+
+  <div class="diagram-box">
+    <div class="diagram-title">プロンプトの「要素」ピラミッド</div>
+    <svg viewBox="0 0 420 260" width="100%" style="max-width:460px; display:block; margin:0 auto;">
+      <polygon points="210,20 260,70 160,70" fill="#18181b"/>
+      <text x="210" y="52" text-anchor="middle" font-size="12" font-weight="700" fill="white">やりたいこと</text>
+
+      <polygon points="160,70 260,70 300,140 120,140" fill="#eab308"/>
+      <text x="210" y="98"  text-anchor="middle" font-size="12" font-weight="700" fill="#18181b">具体性・役割</text>
+      <text x="210" y="118" text-anchor="middle" font-size="11" fill="#18181b">(この3原則)</text>
+
+      <polygon points="120,140 300,140 340,210 80,210" fill="#fef9c3" stroke="#eab308"/>
+      <text x="210" y="170" text-anchor="middle" font-size="12" font-weight="700">例示・出力形式</text>
+      <text x="210" y="190" text-anchor="middle" font-size="11" fill="#52525b">(あるとより精度アップ)</text>
+
+      <text x="370" y="45"  font-size="10" fill="#71717a">↑ 必須</text>
+      <text x="370" y="205" font-size="10" fill="#71717a">↓ 応用</text>
+    </svg>
+    <div class="diagram-caption">頂点: 何をしたいか / 中段: 具体性と役割 / 下段: 例と出力形式。3段目まで書ければ上級者。</div>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#eab308" fill-rule="evenodd"/></svg></span>原則1: 具体的に言う</h2>
+
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">Before</span>
+      <h4>あいまいな質問</h4>
+      <p><code>料理のレシピ教えて</code></p>
+      <p style="font-size:12px;color:#71717a;">→ AI: 「どんな料理を探していますか?」と逆質問されたり、一般論が返ってくる</p>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">After</span>
+      <h4>具体的な質問</h4>
+      <p><code>鶏むね肉200gと玉ねぎ1個で、15分以内にできる和食の夕飯を3つ提案して。子供(小2)が食べやすいものがいい。</code></p>
+      <p style="font-size:12px;color:#71717a;">→ AI: 即、3つの具体的レシピが返ってくる</p>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <span class="label">具体的に言うためのチェックリスト</span>
+    <p><strong>5W1H</strong>を意識: 誰が(Who)・いつ(When)・どこで(Where)・何を(What)・なぜ(Why)・どう(How)。全部は不要、重要な2〜3個で十分。</p>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#eab308" fill-rule="evenodd"/></svg></span>原則2: 役割を与える</h2>
+
+  <p>冒頭に「<strong>あなたは〇〇です</strong>」と一文つけるだけで、AIの答え方がガラリと変わります。</p>
+
+  <table>
+    <thead>
+      <tr><th>役割指定</th><th>同じ質問: 「子どもが学校に行きたくないと言い出した、どう接する?」</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>(指定なし)</td><td>一般論、教科書的な回答</td></tr>
+      <tr><td><strong>あなたは小児科医です</strong></td><td>身体症状の確認から入り、医学的な視点</td></tr>
+      <tr><td><strong>あなたは経験豊富な小学校の担任です</strong></td><td>学校内の状況を確認しつつ、家庭での声かけ</td></tr>
+      <tr><td><strong>あなたは子育て経験豊富な友達です</strong></td><td>気持ちに寄り添う共感的な回答</td></tr>
+    </tbody>
+  </table>
+
+  <p>同じ質問でも、<strong>役割によって答えのトーンも中身も変わる</strong>。これは人間に頼む時と全く同じです。</p>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#eab308" fill-rule="evenodd"/></svg></span>原則3: 例を見せる</h2>
+
+  <p>「こんな感じで」と<strong>例を1つ</strong>見せると、AIは一気にあなたのイメージに近づきます。</p>
+
+  <pre><code>子どもの連絡帳に書く「体調不良で欠席」の文面を作って。
+
+例)
+いつもお世話になっております。
+本日〇〇は発熱のため、お休みさせていただきます。
+ご迷惑をおかけしますが、よろしくお願いいたします。
+
+この例のトーンで、
+・腹痛での欠席
+・家庭の事情での欠席
+・大雨のため遅刻
+の3パターンを作って。</code></pre>
+
+  <p>こうすると、あなたの普段使う<strong>「丁寧度合い」「長さ」「言い回し」</strong>にあわせた答えが返ってきます。</p>
+
+  <div class="info-box">
+    <span class="label">呼び方</span>
+    <p>例を見せるこのやり方は、AIの世界では<span class="term" data-tip="少しの例を見せて学ばせる指示方法。few-shot prompting">Few-shot(フューショット)</span>と呼ばれます。名前は覚えなくてOKですが、「例を1個見せる」だけでも劇的に改善します。</p>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#eab308" fill-rule="evenodd"/></svg></span>改善サイクル: 一発で決まらなくても大丈夫</h2>
+
+  <p>プロンプトは<strong>何度でも書き直してOK</strong>。答えがイマイチなら、続けて追加で指示すれば直してくれます。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">プロンプト改善のサイクル</div>
+    <pre class="mermaid">
+graph LR
+  A["質問する"] --> B["答えが返る"]
+  B --> C{"満足?"}
+  C -- "Yes" --> D["完了"]
+  C -- "No" --> E["追加で指示"]
+  E --> B
+    </pre>
+    <div class="diagram-caption">「もっと短く」「もっとやさしい言葉で」「箇条書きで」など、思いついた調整を続ければOK。</div>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#eab308" fill-rule="evenodd"/></svg></span>使える追加指示フレーズ集</h2>
+
+  <div class="kv-grid">
+    <div class="kv"><div class="kv-key">もっと短く</div><div class="kv-val">「100字以内で」</div></div>
+    <div class="kv"><div class="kv-key">やさしく</div><div class="kv-val">「小学生にわかるように」</div></div>
+    <div class="kv"><div class="kv-key">フォーマル</div><div class="kv-val">「ビジネスメール調で」</div></div>
+    <div class="kv"><div class="kv-key">見やすく</div><div class="kv-val">「箇条書きにして」</div></div>
+    <div class="kv"><div class="kv-key">選択肢が欲しい</div><div class="kv-val">「3パターン作って」</div></div>
+    <div class="kv"><div class="kv-key">違う視点</div><div class="kv-val">「別の角度から考えて」</div></div>
+    <div class="kv"><div class="kv-key">続きが欲しい</div><div class="kv-val">「もう少し詳しく」</div></div>
+    <div class="kv"><div class="kv-key">理由が知りたい</div><div class="kv-val">「なぜそう思う?」</div></div>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#eab308" fill-rule="evenodd"/></svg></span>使い回せるテンプレート3つ</h2>
+
+  <p>この3つをコピペして、角括弧の中を埋めるだけで即使えます。スマホのメモに保存しておくと便利。</p>
+
+  <details class="more-box">
+    <summary>🔸 テンプレ1: 文章作成(メール・お知らせ)</summary>
+    <div class="more-body">
+      <pre><code>あなたは[プロの編集者/小学校のPTA役員/など]です。
+
+[メール/お知らせ/お詫び文]を書いてほしい。
+宛先: [誰に]
+目的: [なぜ]
+入れたい内容:
+- [要点1]
+- [要点2]
+トーン: [丁寧/カジュアル/短め など]
+文字数: [目安]
+
+3パターン作ってください。</code></pre>
+    </div>
+  </details>
+
+  <details class="more-box">
+    <summary>🔸 テンプレ2: 相談・壁打ち</summary>
+    <div class="more-body">
+      <pre><code>あなたは[子育て経験豊富な友達/カウンセラー/など]です。
+
+状況: [今起きていること]
+気持ち: [自分の今の気持ち]
+聞きたいこと: [具体的に知りたいこと]
+
+共感してから、3つのアドバイスをください。</code></pre>
+    </div>
+  </details>
+
+  <details class="more-box">
+    <summary>🔸 テンプレ3: 翻訳・要約・言い換え</summary>
+    <div class="more-body">
+      <pre><code>以下の[英語/難しい文章]を、[小学生でも分かるように/ビジネス調に/など]
+日本語に[翻訳/要約/言い換え]してください。
+
+---
+[ここに元の文章を貼る]
+---</code></pre>
+    </div>
+  </details>
+
+  <p><span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#eab308" fill-rule="evenodd"/></svg></span>Basics編はこれで終了!Phase 2: Practiceでは、これらのコツを<strong>毎日の暮らし</strong>に応用します。</p>
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>「あいまいな質問」を「具体的な質問」に書き換えてみよう</h4>
+    <p>次のあいまいな質問を、<strong>具体性を足して</strong>書き直してください。</p>
+    <ol>
+      <li>「健康に良い食事を教えて」</li>
+      <li>「メールを書いて」</li>
+      <li>「子育てのコツは?」</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><strong>書き換え例</strong>:</p>
+      <ol>
+        <li>「40代女性、デスクワーク中心、血圧が少し高め。普段自炊できる人向けの、1週間分の夕飯メニューを作って」</li>
+        <li>「あなたはビジネスメールの達人です。取引先に来月のミーティング日程変更をお願いするメールを、丁寧で簡潔に書いてください」</li>
+        <li>「あなたは経験豊富なママ友です。5歳の娘がなかなか寝ない悩みに、3つのアドバイスを共感しながらください」</li>
+      </ol>
+      <p>ポイント: <strong>「誰が/いつ/何を/どう」を1つ以上加える</strong>。役割も一緒に指定すればさらに精度アップ。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>実際にBefore/Afterを投げて比べてみる</h4>
+    <p>Exercise 1で作った3つの「書き換え前」と「書き換え後」を、<strong>実際にChatGPTかClaudeに両方投げて</strong>、返ってくる答えを比べてみてください。</p>
+    <ol>
+      <li>新しいチャットを開く</li>
+      <li>「書き換え前」の質問を投げる → 答えを見る</li>
+      <li>別の新しいチャットを開く</li>
+      <li>「書き換え後」の質問を投げる → 答えを見る</li>
+      <li>長さ、具体性、使いやすさを比較する</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><strong>観察のポイント</strong>:</p>
+      <ul>
+        <li><strong>長さが違う</strong>: 具体的に聞くと、具体的な答え(=長め)が返る</li>
+        <li><strong>使えるかどうかが違う</strong>: あいまい質問の答えは一般論、具体質問の答えは即使える</li>
+        <li><strong>トーンが違う</strong>: 役割を指定すると、その人らしい話し方になる</li>
+      </ul>
+      <p>この差を体感すると、<strong>「伝え方の3分」が「作業時間の30分」を節約する</strong>ことが実感できます。プロンプトを書く時間は「面倒」ではなく「投資」です。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span><a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview" target="_blank" rel="noopener">Anthropic 公式 プロンプト入門 (英語)</a></li>
+      <li><span class="res-type doc">Doc</span><a href="https://platform.openai.com/docs/guides/prompt-engineering" target="_blank" rel="noopener">OpenAI 公式 プロンプトガイド (英語)</a></li>
+      <li><span class="res-type doc">Doc</span><a href="https://github.com/dair-ai/Prompt-Engineering-Guide" target="_blank" rel="noopener">Prompt Engineering Guide (オープンソース)</a></li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="04">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="03-try-it.html"><span class="direction">&larr; Prev</span>ChatGPT・Claudeを使ってみよう</a>
+    <a href="05-daily-use.html"><span class="direction">Next &rarr;</span>毎日の暮らしで使ってみる</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#f4f4f5',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#18181b',
+      lineColor: '#18181b',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+  window.addEventListener('load', function () {
+    var svg = document.getElementById('rough-prompt');
+    if (!svg || !window.rough) return;
+    var r = rough.svg(svg);
+    // 左: あいまいな質問 → ぼんやりした答え
+    svg.appendChild(r.rectangle(30, 40, 120, 50, { fill: '#f4f4f5', fillStyle: 'hachure', stroke: '#52525b', strokeWidth: 2 }));
+    svg.appendChild(r.line(150, 65, 220, 65, { stroke: '#52525b', strokeWidth: 2 }));
+    svg.appendChild(r.rectangle(220, 40, 140, 50, { fill: '#e4e4e7', fillStyle: 'hachure', stroke: '#52525b', strokeWidth: 2 }));
+    // 右: 具体的な質問 → 具体的な答え
+    svg.appendChild(r.rectangle(30, 130, 120, 50, { fill: '#fef9c3', fillStyle: 'hachure', stroke: '#eab308', strokeWidth: 2 }));
+    svg.appendChild(r.line(150, 155, 220, 155, { stroke: '#eab308', strokeWidth: 2 }));
+    svg.appendChild(r.rectangle(220, 130, 140, 50, { fill: '#fde68a', fillStyle: 'solid', stroke: '#eab308', strokeWidth: 2 }));
+    // Text
+    function addText(x, y, t, size, weight, color) {
+      var el = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      el.setAttribute('x', x); el.setAttribute('y', y); el.setAttribute('text-anchor', 'middle');
+      el.setAttribute('font-size', size); el.setAttribute('font-weight', weight);
+      if (color) el.setAttribute('fill', color);
+      el.textContent = t; svg.appendChild(el);
+    }
+    addText(90,  68,  'あいまい質問', 12, 600);
+    addText(290, 62,  'ぼんやりした', 12, 600);
+    addText(290, 80,  '一般論', 12, 600);
+    addText(90,  158, '具体質問', 12, 700);
+    addText(290, 152, '即使える', 12, 700);
+    addText(290, 170, '具体的答え', 12, 700);
+    addText(240, 210, '↑ 伝え方で結果がガラリと変わる', 12, 500, '#71717a');
+  });
+</script>
+</body>
+</html>

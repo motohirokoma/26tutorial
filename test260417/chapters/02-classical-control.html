@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%2316a34a%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>古典制御とロボットの基盤技術 - Kuririn's Physical AI Crash Course</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #16a34a; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></div>
+      &gt;_ Kuririn's Physical AI Crash Course
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="../index.html#phase3" data-nav><span class="phase-name">Advanced</span><span class="phase-pct" id="pct-advanced">0%</span></a></li>
+      <li><a href="../index.html#phase4" data-nav><span class="phase-name">Final</span><span class="phase-pct" id="pct-final">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.02</span>
+    古典制御とロボットの基盤技術
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 37 sections</text>
+    </svg>
+    <div class="progress-info">0h / 8h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-overview.html"><span class="status-dot" data-chapter="01"></span> フィジカルAIの全体像</a></li>
+    <li class="active"><a href="02-classical-control.html"><span class="status-dot" data-chapter="02"></span> 古典制御とロボットの基盤技術</a></li>
+  </ul>
+  <div class="section-label">Core</div>
+  <ul>
+    <li><a href="03-reinforcement-learning.html"><span class="status-dot" data-chapter="03"></span> 強化学習によるロボット制御</a></li>
+    <li><a href="04-imitation-learning.html"><span class="status-dot" data-chapter="04"></span> 模倣学習とテレオペレーション</a></li>
+    <li><a href="05-vla-models.html"><span class="status-dot" data-chapter="05"></span> VLAモデルの最前線</a></li>
+  </ul>
+  <div class="section-label">Advanced</div>
+  <ul>
+    <li><a href="06-implementation-barriers.html"><span class="status-dot" data-chapter="06"></span> 実装の壁</a></li>
+    <li><a href="07-business-scoping.html"><span class="status-dot" data-chapter="07"></span> ビジネススコーピングの技法</a></li>
+  </ul>
+  <div class="section-label">Final</div>
+  <ul>
+    <li><a href="08-final-exercise.html"><span class="status-dot" data-chapter="08"></span> 最終演習問題</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 1: Basics &gt; Chapter 02</div>
+  <h1>古典制御とロボットの基盤技術</h1>
+  <p class="subtitle">PID制御からROS2まで ― AI以前のロボット制御技術とその限界を理解する</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 60min</span>
+    <span class="badge">Phase: Basics</span>
+    <span class="badge">難易度: 入門</span>
+  </div>
+
+  <div class="info-box">
+    <p>この章では、AI登場以前のロボット制御技術を体系的に学びます。<span class="term" data-tip="あらかじめ定められたルールに基づいて制御を行う方式。if-then条件分岐が基本">ルールベース制御</span>、<span class="term" data-tip="比例・積分・微分の3要素で偏差を修正するフィードバック制御の代表格">PID制御</span>、<span class="term" data-tip="Robot Operating System 2。ロボット開発のための標準ミドルウェア">ROS2</span>、<span class="term" data-tip="Simultaneous Localization and Mapping。自己位置推定と地図生成を同時に行う技術">SLAM</span>を理解した上で、なぜAIが必要なのかを明確にします。</p>
+  </div>
+
+  <!-- ===== Section 1: ルールベース制御の世界 ===== -->
+  <h2 data-section="02-01">
+    <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span>
+    ルールベース制御の世界
+  </h2>
+
+  <p>産業ロボットの多くは、今でも<span class="term" data-tip="プログラムされた条件分岐（if-then-else）に従って動作を決定する制御方式">ルールベース制御</span>で動いています。「もしセンサーAの値が閾値を超えたら、モーターBを停止する」といった条件分岐の組み合わせです。</p>
+
+  <p>工場の組立ラインでは、人間のオペレーターが<span class="term" data-tip="ロボットに動作点を直接教え込む作業。ティーチングペンダントを使って一つずつ位置を記録する">ティーチング</span>と呼ばれる作業で、ロボットに動作経路を一つずつ教え込みます。ロボットはその通りに動くだけで、「考える」ことはしません。</p>
+
+  <div class="info-box">
+    <p><i data-lucide="info" style="width:16px;height:16px;display:inline-block;vertical-align:middle;margin-right:4px;"></i><strong>ビジネス観点：</strong>ティーチングには熟練工が1台あたり数日〜数週間を要します。製品モデルチェンジのたびに再ティーチングが必要になるため、<strong>多品種少量生産</strong>のラインではコストが膨大になります。</p>
+  </div>
+
+  <p>ルールベース制御の最大の強みは<strong>予測可能性</strong>です。同じ入力に対して必ず同じ出力が返るため、安全認証が取りやすく、デバッグも比較的容易です。しかし、決定的な弱点があります。</p>
+
+  <aside class="callout-box">
+    <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span>
+    <p><strong>ルールベース制御の限界：</strong>未知の状況に対応する能力がゼロ。想定外のワークの形状、予期しない障害物、照明条件の変化 ― こうした「ルールに書かれていないこと」が起きると、ロボットは停止するか誤動作します。</p>
+  </aside>
+
+  <details class="more-box">
+    <summary>ティーチングの実際 ― 現場で何が起きているか</summary>
+    <p>自動車工場のスポット溶接ラインでは、1台のロボットに対して数百点の教示点を設定します。新車種の立ち上げ時には、ライン全体で<strong>数千時間のティーチング工数</strong>が必要になります。近年は<span class="term" data-tip="CADデータからロボットの動作経路を自動生成する技術。ティーチング工数を大幅に削減できる">オフラインティーチング</span>ツールが普及し始めていますが、最終的な微調整は依然として現場で行われるケースが大半です。</p>
+  </details>
+
+  <!-- ===== Section 2: PID制御の仕組みと直感 ===== -->
+  <h2 data-section="02-02">
+    <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span>
+    PID制御の仕組みと直感
+  </h2>
+
+  <p><span class="term" data-tip="Proportional-Integral-Derivative制御。偏差の比例・積分・微分に基づくフィードバック制御">PID制御</span>は、産業界で最も広く使われているフィードバック制御の手法です。車の<span class="term" data-tip="設定した速度を自動的に維持する車両の機能。PID制御の典型的な応用例">クルーズコントロール</span>を例に、直感的に理解してみましょう。</p>
+
+  <div class="info-box">
+    <p><strong>クルーズコントロールのアナロジー：</strong>目標速度100km/hに対して、現在80km/hなら「偏差は20km/h」。この偏差をゼロにするようアクセルを調整するのがPID制御の本質です。</p>
+  </div>
+
+  <p><strong>P（比例）</strong>は「今の偏差に比例して修正する」こと。偏差が大きければ大きく踏み込み、小さければ軽く踏みます。直感的ですが、Pだけだと目標値にピタリと合わず、少し手前で振動してしまいます。</p>
+
+  <p><strong>I（積分）</strong>は「過去の偏差の蓄積を考慮する」こと。ずっと少し低い速度が続いていたら、その分を上乗せします。長い上り坂で速度が落ち続けるような場面で威力を発揮します。</p>
+
+  <p><strong>D（微分）</strong>は「偏差の変化の速さを見る」こと。急に偏差が大きくなっている（急な下り坂で加速している）なら、早めにブレーキを効かせます。<span class="term" data-tip="制御出力が目標値を超えて振動する現象。行き過ぎと戻りすぎを繰り返す">オーバーシュート</span>を抑制する役割です。</p>
+
+  <!-- SVG: PID制御の概念図 -->
+  <div style="margin:2rem 0;overflow-x:auto;">
+    <svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg" style="max-width:720px;width:100%;font-family:inherit;">
+      <!-- Background -->
+      <rect width="720" height="220" rx="12" fill="#fafafa" stroke="#e4e4e7" stroke-width="1"/>
+      <!-- 目標値 -->
+      <rect x="20" y="85" width="90" height="50" rx="8" fill="#16a34a" opacity="0.12" stroke="#16a34a" stroke-width="1.5"/>
+      <text x="65" y="115" text-anchor="middle" font-size="13" font-weight="600" fill="#18181b">目標値 r(t)</text>
+      <!-- 比較器 (circle) -->
+      <circle cx="155" cy="110" r="18" fill="white" stroke="#18181b" stroke-width="1.5"/>
+      <text x="155" y="115" text-anchor="middle" font-size="16" font-weight="700" fill="#18181b">+</text>
+      <text x="143" y="135" font-size="10" fill="#71717a">-</text>
+      <!-- Arrow: 目標値 → 比較器 -->
+      <line x1="110" y1="110" x2="137" y2="110" stroke="#18181b" stroke-width="1.5" marker-end="url(#arrowhead02)"/>
+      <!-- 偏差ラベル -->
+      <text x="200" y="100" font-size="11" fill="#71717a">偏差 e(t)</text>
+      <!-- Arrow: 比較器 → PIDボックス -->
+      <line x1="173" y1="110" x2="240" y2="110" stroke="#18181b" stroke-width="1.5" marker-end="url(#arrowhead02)"/>
+      <!-- PID分岐 -->
+      <rect x="242" y="30" width="100" height="36" rx="6" fill="#dcfce7" stroke="#16a34a" stroke-width="1.2"/>
+      <text x="292" y="53" text-anchor="middle" font-size="12" font-weight="600" fill="#166534">P 比例</text>
+      <rect x="242" y="92" width="100" height="36" rx="6" fill="#dcfce7" stroke="#16a34a" stroke-width="1.2"/>
+      <text x="292" y="115" text-anchor="middle" font-size="12" font-weight="600" fill="#166534">I 積分</text>
+      <rect x="242" y="154" width="100" height="36" rx="6" fill="#dcfce7" stroke="#16a34a" stroke-width="1.2"/>
+      <text x="292" y="177" text-anchor="middle" font-size="12" font-weight="600" fill="#166534">D 微分</text>
+      <!-- Branch lines -->
+      <line x1="240" y1="110" x2="240" y2="48" stroke="#18181b" stroke-width="1"/>
+      <line x1="240" y1="48" x2="242" y2="48" stroke="#18181b" stroke-width="1"/>
+      <line x1="240" y1="110" x2="242" y2="110" stroke="#18181b" stroke-width="1"/>
+      <line x1="240" y1="110" x2="240" y2="172" stroke="#18181b" stroke-width="1"/>
+      <line x1="240" y1="172" x2="242" y2="172" stroke="#18181b" stroke-width="1"/>
+      <!-- Merge lines -->
+      <line x1="342" y1="48" x2="385" y2="48" stroke="#18181b" stroke-width="1"/>
+      <line x1="385" y1="48" x2="385" y2="110" stroke="#18181b" stroke-width="1"/>
+      <line x1="342" y1="110" x2="385" y2="110" stroke="#18181b" stroke-width="1"/>
+      <line x1="342" y1="172" x2="385" y2="172" stroke="#18181b" stroke-width="1"/>
+      <line x1="385" y1="172" x2="385" y2="110" stroke="#18181b" stroke-width="1"/>
+      <!-- 合算器 -->
+      <circle cx="400" cy="110" r="14" fill="white" stroke="#18181b" stroke-width="1.5"/>
+      <text x="400" y="115" text-anchor="middle" font-size="14" font-weight="700" fill="#18181b">Σ</text>
+      <line x1="385" y1="110" x2="386" y2="110" stroke="#18181b" stroke-width="1.5"/>
+      <!-- Arrow: 合算 → プラント -->
+      <line x1="414" y1="110" x2="460" y2="110" stroke="#18181b" stroke-width="1.5" marker-end="url(#arrowhead02)"/>
+      <text x="440" y="100" font-size="11" fill="#71717a">u(t)</text>
+      <!-- プラント（制御対象） -->
+      <rect x="462" y="85" width="110" height="50" rx="8" fill="#f4f4f5" stroke="#18181b" stroke-width="1.5"/>
+      <text x="517" y="108" text-anchor="middle" font-size="12" font-weight="600" fill="#18181b">制御対象</text>
+      <text x="517" y="124" text-anchor="middle" font-size="11" fill="#71717a">(プラント)</text>
+      <!-- Arrow: プラント → 出力 -->
+      <line x1="572" y1="110" x2="620" y2="110" stroke="#18181b" stroke-width="1.5" marker-end="url(#arrowhead02)"/>
+      <!-- 出力 -->
+      <rect x="622" y="85" width="80" height="50" rx="8" fill="#16a34a" opacity="0.12" stroke="#16a34a" stroke-width="1.5"/>
+      <text x="662" y="115" text-anchor="middle" font-size="13" font-weight="600" fill="#18181b">出力 y(t)</text>
+      <!-- Feedback line -->
+      <line x1="662" y1="135" x2="662" y2="195" stroke="#18181b" stroke-width="1.2" stroke-dasharray="4 3"/>
+      <line x1="662" y1="195" x2="155" y2="195" stroke="#18181b" stroke-width="1.2" stroke-dasharray="4 3"/>
+      <line x1="155" y1="195" x2="155" y2="128" stroke="#18181b" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arrowhead02)"/>
+      <text x="400" y="210" text-anchor="middle" font-size="11" fill="#71717a">フィードバック</text>
+      <!-- Arrowhead -->
+      <defs>
+        <marker id="arrowhead02" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#18181b"/>
+        </marker>
+      </defs>
+    </svg>
+  </div>
+
+  <p>PID制御の最大の課題は<span class="term" data-tip="P, I, Dの3つのゲイン（係数）を最適に設定する作業。環境が変わると再調整が必要になる">チューニング</span>です。3つのパラメータ（Kp, Ki, Kd）の最適な組み合わせを見つけるのは、経験と試行錯誤に頼る部分が大きく、環境が変わるたびに再調整が必要です。</p>
+
+  <details class="more-box">
+    <summary>PIDチューニングの現場感覚</summary>
+    <p>工場の温度制御システムでPIDチューニングを行う場合、まずPゲインだけを上げていき、出力が発振し始める臨界点を見つけます（<span class="term" data-tip="限界感度法。Pゲインだけで発振する点を見つけ、そこから経験則でKi, Kdを算出する古典的手法">ジーグラー・ニコルズ法</span>）。しかし実際の現場では、季節による外気温変動、生産ラインの稼働状況による熱負荷変動など、さまざまな外乱要因があり、年に数回の再チューニングが必要になることも珍しくありません。</p>
+  </details>
+
+  <!-- ===== Section 3: ROS2 ===== -->
+  <h2 data-section="02-03">
+    <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span>
+    ROS2 ― ロボットのOS
+  </h2>
+
+  <p><span class="term" data-tip="Robot Operating System 2。ロボット開発のためのオープンソースミドルウェアフレームワーク。実際にはOSではなく通信基盤＋ツール群">ROS2</span>は、ロボットソフトウェア開発の<strong>事実上の標準</strong>です。名前に「OS」と入っていますが、LinuxやWindowsのようなオペレーティングシステムではなく、ロボットのソフトウェアコンポーネント間の<strong>通信基盤</strong>とツール群です。</p>
+
+  <p>ROS2の核となる3つの概念を押さえましょう：</p>
+
+  <ul>
+    <li><strong><span class="term" data-tip="ROS2における独立した処理単位。カメラ制御、経路計画、モーター制御などがそれぞれノードとして動作する">ノード</span></strong> ― 独立した処理単位。カメラ、モーター、経路計画などがそれぞれノードになります</li>
+    <li><strong><span class="term" data-tip="ノード間でデータを非同期にやり取りする通信チャネル。Publish-Subscribeパターンで動作する">トピック</span></strong> ― ノード間のデータ通信路。Publish-Subscribe方式で非同期にデータを流します</li>
+    <li><strong><span class="term" data-tip="ノード間の同期的なリクエスト-レスポンス型の通信。特定の処理を依頼して結果を待つ場合に使用する">サービス</span></strong> ― 同期的なリクエスト-レスポンス通信。「今の位置を教えて」のような問い合わせに使います</li>
+  </ul>
+
+  <!-- Mermaid: ROS2ノード/トピック通信フロー -->
+  <div class="mermaid">
+graph LR
+  CAM["カメラノード"] -->|"/camera/image"| PROC["画像処理ノード"]
+  PROC -->|"/detected_objects"| PLAN["経路計画ノード"]
+  LIDAR["LiDARノード"] -->|"/scan"| PLAN
+  PLAN -->|"/cmd_vel"| MOTOR["モーター制御ノード"]
+  MOTOR -->|"/odom"| PLAN
+  PLAN -.->|"サービス: /get_map"| MAP["地図サーバー"]
+
+  style CAM fill:#dcfce7,stroke:#16a34a,color:#166534
+  style LIDAR fill:#dcfce7,stroke:#16a34a,color:#166534
+  style PROC fill:#f4f4f5,stroke:#18181b,color:#18181b
+  style PLAN fill:#f4f4f5,stroke:#18181b,color:#18181b
+  style MOTOR fill:#f4f4f5,stroke:#18181b,color:#18181b
+  style MAP fill:#f4f4f5,stroke:#18181b,color:#18181b
+  </div>
+  <p class="caption">図: ROS2のノード間通信。実線矢印がトピック（非同期）、点線矢印がサービス（同期）</p>
+
+  <div class="info-box">
+    <p><i data-lucide="building-2" style="width:16px;height:16px;display:inline-block;vertical-align:middle;margin-right:4px;"></i><strong>ビジネス観点：なぜROS2対応がベンダー選定基準になるのか</strong></p>
+    <p>ROS2非対応のロボットは、他社のセンサーやソフトウェアとの<strong>相互運用性</strong>が極端に低くなります。独自通信プロトコルのロボットを導入すると、<strong>ベンダーロックイン</strong>のリスクが高まり、後からの拡張・改修コストが膨らみます。RFP（提案依頼書）にROS2対応を要件として含めることが、中長期的なコスト最適化につながります。</p>
+  </div>
+
+  <details class="more-box">
+    <summary>ROS1からROS2への移行 ― 何が変わったのか</summary>
+    <p>ROS1（2007年〜）は研究用として広く使われましたが、リアルタイム性の欠如、セキュリティの不備、マルチロボット対応の難しさといった課題がありました。ROS2（2017年〜）はこれらを根本から再設計し、<span class="term" data-tip="Data Distribution Service。OMG標準の分散リアルタイム通信ミドルウェア。ROS2の通信層として採用されている">DDS</span>ベースの通信層、リアルタイムOS対応、組み込みセキュリティを実現しています。2025年時点で新規プロジェクトはほぼROS2で始まるのが一般的です。</p>
+  </details>
+
+  <!-- ===== Section 4: SLAM ===== -->
+  <h2 data-section="02-04">
+    <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span>
+    SLAM ― 自己位置推定と地図生成
+  </h2>
+
+  <p>「目隠しをして知らない部屋を歩く」ことを想像してください。壁に触れながら部屋の形を把握し、同時に自分がどこにいるかも把握する ― これがまさに<span class="term" data-tip="Simultaneous Localization and Mapping。未知の環境で自己位置推定と環境地図の構築を同時に行う技術">SLAM</span>のやっていることです。</p>
+
+  <p>ロボットは地図を持たない未知の環境に投入されることがあります。その際、センサーで周囲を観測し、<strong>「自分がどこにいるか」</strong>と<strong>「周囲がどうなっているか」</strong>を同時に推定しなければなりません。この鶏と卵の問題を解くのがSLAMです。</p>
+
+  <!-- Steps component: SLAMのプロセス -->
+  <div class="steps-container" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin:2rem 0;">
+    <div class="step-card" style="background:#fafafa;border:1px solid #e4e4e7;border-radius:12px;padding:1.25rem;text-align:center;position:relative;">
+      <div style="width:40px;height:40px;background:#16a34a;color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.1rem;margin:0 auto .75rem;">1</div>
+      <h4 style="margin:0 0 .5rem;font-size:.95rem;">スキャン</h4>
+      <p style="font-size:.85rem;color:#52525b;margin:0;">LiDARやカメラで周囲の距離情報を取得</p>
+    </div>
+    <div class="step-card" style="background:#fafafa;border:1px solid #e4e4e7;border-radius:12px;padding:1.25rem;text-align:center;">
+      <div style="width:40px;height:40px;background:#16a34a;color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.1rem;margin:0 auto .75rem;">2</div>
+      <h4 style="margin:0 0 .5rem;font-size:.95rem;">特徴抽出</h4>
+      <p style="font-size:.85rem;color:#52525b;margin:0;">壁の角、柱、ドアなどランドマークを検出</p>
+    </div>
+    <div class="step-card" style="background:#fafafa;border:1px solid #e4e4e7;border-radius:12px;padding:1.25rem;text-align:center;">
+      <div style="width:40px;height:40px;background:#16a34a;color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.1rem;margin:0 auto .75rem;">3</div>
+      <h4 style="margin:0 0 .5rem;font-size:.95rem;">マッチング</h4>
+      <p style="font-size:.85rem;color:#52525b;margin:0;">前回のスキャンと照合し自己位置を推定</p>
+    </div>
+    <div class="step-card" style="background:#fafafa;border:1px solid #e4e4e7;border-radius:12px;padding:1.25rem;text-align:center;">
+      <div style="width:40px;height:40px;background:#16a34a;color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.1rem;margin:0 auto .75rem;">4</div>
+      <h4 style="margin:0 0 .5rem;font-size:.95rem;">地図更新</h4>
+      <p style="font-size:.85rem;color:#52525b;margin:0;">新しい観測情報を統合し環境地図を更新</p>
+    </div>
+  </div>
+
+  <p>SLAMには大きく2つのアプローチがあります：</p>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin:2rem 0;">
+    <div style="background:white;border:1.5px solid #16a34a;border-radius:12px;padding:1.5rem;">
+      <h4 style="margin:0 0 .75rem;display:flex;align-items:center;gap:.5rem;"><i data-lucide="radar" style="width:20px;height:20px;color:#16a34a;"></i> LiDAR SLAM</h4>
+      <ul style="margin:0;padding-left:1.2rem;font-size:.9rem;line-height:1.7;">
+        <li>レーザーで距離を直接計測</li>
+        <li>高精度（誤差 数cm）</li>
+        <li>照明条件に強い</li>
+        <li>3D LiDARは高価（数十万〜数百万円）</li>
+        <li>屋内・倉庫に強い</li>
+      </ul>
+    </div>
+    <div style="background:white;border:1.5px solid #18181b;border-radius:12px;padding:1.5rem;">
+      <h4 style="margin:0 0 .75rem;display:flex;align-items:center;gap:.5rem;"><i data-lucide="camera" style="width:20px;height:20px;color:#18181b;"></i> Visual SLAM</h4>
+      <ul style="margin:0;padding-left:1.2rem;font-size:.9rem;line-height:1.7;">
+        <li>カメラ画像から3D構造を推定</li>
+        <li>中精度（条件による）</li>
+        <li>テクスチャの少ない壁が苦手</li>
+        <li>カメラは安価（数千円〜）</li>
+        <li>屋外・広域に適する</li>
+      </ul>
+    </div>
+  </div>
+
+  <aside class="callout-box">
+    <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span>
+    <p><strong>Navigation Stackとの関係：</strong>SLAMは「地図を作る」技術ですが、実際のロボットは地図を使って「目的地まで移動する」必要があります。ROS2の<span class="term" data-tip="ROS2のナビゲーション機能群。SLAM、経路計画、障害物回避を統合的に扱う">Navigation Stack（Nav2）</span>は、SLAMで生成した地図上で経路計画・障害物回避を行うフレームワークです。</p>
+  </aside>
+
+  <details class="more-box">
+    <summary>ループクロージャ問題 ― SLAMの最大の技術課題</summary>
+    <p>ロボットが広いエリアを探索して元の場所に戻ってきたとき、「ここは以前来た場所だ」と認識して累積誤差を修正する処理を<span class="term" data-tip="長距離移動後に蓄積した位置誤差を、以前訪れた場所の再認識によって一括修正する処理">ループクロージャ</span>と呼びます。これができないと、地図がどんどんずれていきます。近年はディープラーニングベースの場所認識（Place Recognition）を組み合わせたSLAMが注目されています。</p>
+  </details>
+
+  <!-- ===== Section 5: 古典制御の限界 ===== -->
+  <h2 data-section="02-05">
+    <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span>
+    古典制御の限界 ― なぜAIが必要か
+  </h2>
+
+  <p>これまで見てきたルールベース制御、PID制御、ROS2+SLAMは、<span class="term" data-tip="工場の組立ラインのように物の位置・形状・手順が固定された環境。変動要素が少なく予測可能">構造化環境</span>では極めて有効です。しかし現実世界の多くの場面は<span class="term" data-tip="家庭、倉庫、屋外のように物の位置・形状・状況が常に変動する環境。未知の要素が多い">非構造化環境</span>です。</p>
+
+  <!-- Compare cards: 構造化環境 vs 非構造化環境 -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin:2rem 0;">
+    <div style="background:#f4f4f5;border-radius:12px;padding:1.5rem;border-top:4px solid #16a34a;">
+      <h4 style="margin:0 0 1rem;color:#16a34a;"><i data-lucide="factory" style="width:18px;height:18px;vertical-align:middle;margin-right:6px;"></i>構造化環境</h4>
+      <ul style="margin:0;padding-left:1.2rem;font-size:.9rem;line-height:1.8;">
+        <li>物の位置・形状が固定</li>
+        <li>照明・温度が制御されている</li>
+        <li>作業手順が完全に定義済み</li>
+        <li>人間の介入が限定的</li>
+        <li><strong>例：</strong>自動車組立ライン、半導体工場</li>
+      </ul>
+      <div style="margin-top:1rem;padding:.75rem;background:white;border-radius:8px;font-size:.85rem;color:#16a34a;font-weight:600;text-align:center;">
+        古典制御で十分対応可能
+      </div>
+    </div>
+    <div style="background:#f4f4f5;border-radius:12px;padding:1.5rem;border-top:4px solid #18181b;">
+      <h4 style="margin:0 0 1rem;color:#18181b;"><i data-lucide="home" style="width:18px;height:18px;vertical-align:middle;margin-right:6px;"></i>非構造化環境</h4>
+      <ul style="margin:0;padding-left:1.2rem;font-size:.9rem;line-height:1.8;">
+        <li>物の位置・形状が毎回異なる</li>
+        <li>照明・天候が変動する</li>
+        <li>想定外の状況が頻発する</li>
+        <li>人間との協調が必要</li>
+        <li><strong>例：</strong>家庭、物流倉庫、農場、介護施設</li>
+      </ul>
+      <div style="margin-top:1rem;padding:.75rem;background:white;border-radius:8px;font-size:.85rem;color:#dc2626;font-weight:600;text-align:center;">
+        古典制御では対応困難 → AIが必要
+      </div>
+    </div>
+  </div>
+
+  <p>古典制御が壁にぶつかる具体的な場面を整理しましょう：</p>
+
+  <!-- Table: 古典制御 vs AI制御 -->
+  <div style="overflow-x:auto;margin:1.5rem 0;">
+    <table style="width:100%;border-collapse:collapse;font-size:.9rem;">
+      <thead>
+        <tr style="background:#18181b;color:white;">
+          <th style="padding:.75rem 1rem;text-align:left;border-radius:8px 0 0 0;">課題</th>
+          <th style="padding:.75rem 1rem;text-align:left;">古典制御のアプローチ</th>
+          <th style="padding:.75rem 1rem;text-align:left;border-radius:0 8px 0 0;">AI制御のアプローチ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom:1px solid #e4e4e7;">
+          <td style="padding:.75rem 1rem;font-weight:600;">未知の物体の把持</td>
+          <td style="padding:.75rem 1rem;color:#71717a;">形状ごとにルールを用意 → 網羅不可能</td>
+          <td style="padding:.75rem 1rem;color:#16a34a;">視覚情報から把持戦略を学習</td>
+        </tr>
+        <tr style="border-bottom:1px solid #e4e4e7;background:#fafafa;">
+          <td style="padding:.75rem 1rem;font-weight:600;">柔軟物体の操作</td>
+          <td style="padding:.75rem 1rem;color:#71717a;">変形の数学モデル構築が困難</td>
+          <td style="padding:.75rem 1rem;color:#16a34a;">試行錯誤で操作方法を学習</td>
+        </tr>
+        <tr style="border-bottom:1px solid #e4e4e7;">
+          <td style="padding:.75rem 1rem;font-weight:600;">人間との協調作業</td>
+          <td style="padding:.75rem 1rem;color:#71717a;">安全のため人間を排除（柵で囲う）</td>
+          <td style="padding:.75rem 1rem;color:#16a34a;">意図推定・動作予測で協調</td>
+        </tr>
+        <tr style="border-bottom:1px solid #e4e4e7;background:#fafafa;">
+          <td style="padding:.75rem 1rem;font-weight:600;">環境変動への適応</td>
+          <td style="padding:.75rem 1rem;color:#71717a;">パラメータの手動再調整</td>
+          <td style="padding:.75rem 1rem;color:#16a34a;">オンラインで継続的に適応</td>
+        </tr>
+        <tr>
+          <td style="padding:.75rem 1rem;font-weight:600;">多品種少量生産</td>
+          <td style="padding:.75rem 1rem;color:#71717a;">製品ごとに再ティーチング</td>
+          <td style="padding:.75rem 1rem;color:#16a34a;">少数のデモから汎化</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <aside class="callout-box">
+    <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span>
+    <p><strong>重要な視点：</strong>AIは古典制御を「置き換える」のではなく、「補完する」ものです。低レベルのモーター制御にはPIDが依然として使われ、その上位層でAIが「何を」「どう」動かすかを判断する ― この<strong>階層的なアーキテクチャ</strong>が現代のフィジカルAIの姿です。</p>
+  </aside>
+
+  <details class="more-box">
+    <summary>古典制御 + AIのハイブリッド事例</summary>
+    <p>Googleのロボット研究チームは、把持タスクにおいて高レベルの戦略決定（どの向きで掴むか）にはAIを、実際のグリッパー制御にはPID制御を使うハイブリッドアプローチを採用しています。このように、AIと古典制御は対立するものではなく、それぞれの強みを活かした組み合わせが実用化の鍵となります。</p>
+  </details>
+
+  <!-- ===== 演習問題 ===== -->
+  <h2 data-section="02-exercise">
+    <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span>
+    演習問題
+  </h2>
+
+  <div class="exercise-box" style="background:#f0fdf4;border:1.5px solid #16a34a;border-radius:12px;padding:1.5rem;margin:1.5rem 0;">
+    <h4 style="margin:0 0 .75rem;"><span class="badge" style="background:#16a34a;color:white;">入門</span> PID制御のアナロジー</h4>
+    <p>あなたの会社のオフィスビルの空調システムを例に、PID制御のP・I・Dそれぞれの役割を、非エンジニアの同僚にも伝わるように説明してください。</p>
+    <details class="more-box">
+      <summary>模範解答を見る</summary>
+      <p><strong>P（比例）：</strong>「設定温度25度に対して現在28度なら、3度の差に応じてエアコンを強く稼働させる。差が大きいほどパワーを上げる。」</p>
+      <p><strong>I（積分）：</strong>「25.5度あたりでなかなか25度に下がらない状態が続くと、その蓄積された微小な差を考慮して出力を少し上乗せする。じわじわ残る誤差を解消する役割。」</p>
+      <p><strong>D（微分）：</strong>「急に外気温が上がって室温が急上昇し始めたとき、温度変化の速さを検知して先回りで出力を上げる。オーバーシュート（冷やしすぎ）を防ぐブレーキ役。」</p>
+    </details>
+  </div>
+
+  <div class="exercise-box" style="background:#f4f4f5;border:1.5px solid #18181b;border-radius:12px;padding:1.5rem;margin:1.5rem 0;">
+    <h4 style="margin:0 0 .75rem;"><span class="badge" style="background:#18181b;color:white;">応用</span> 制御方式の選定判断</h4>
+    <p>あなたは食品工場のDX推進担当です。以下の2つのタスクについて、古典制御（ルールベース/PID）で十分か、AI制御が必要かを判断し、その根拠を述べてください。</p>
+    <ul>
+      <li><strong>タスクA：</strong>ベルトコンベア上の均一なペットボトルを一定間隔でケースに詰める</li>
+      <li><strong>タスクB：</strong>形状・大きさがバラバラの野菜（トマト、キュウリ、ナス等）を傷つけずにピッキングし、品質別に仕分ける</li>
+    </ul>
+    <details class="more-box">
+      <summary>模範解答を見る</summary>
+      <p><strong>タスクA — 古典制御で十分：</strong>ペットボトルは形状が均一で、コンベア上の位置も予測可能。PID制御でコンベア速度を制御し、ルールベースでタイミングを管理すれば対応できる。構造化環境の典型例。</p>
+      <p><strong>タスクB — AI制御が必要：</strong>野菜は一つひとつ形状・硬さ・熟度が異なる（非構造化環境）。画像認識で品質判定、力制御で潰さない把持、品種ごとの最適把持戦略の切り替えが必要。古典制御では全パターンのルールを書ききれない。ただし、グリッパーの低レベル制御にはPIDを使い、上位の判断にAIを使うハイブリッド構成が現実的。</p>
+    </details>
+  </div>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><a href="https://docs.ros.org/en/jazzy/" target="_blank" rel="noopener">ROS2公式ドキュメント (Jazzy)</a> ― ROS2の最新LTSリリースの公式ガイド</li>
+      <li><a href="https://navigation.ros.org/" target="_blank" rel="noopener">Nav2 (Navigation Stack)</a> ― ROS2のナビゲーションフレームワーク</li>
+      <li><a href="https://www.youtube.com/watch?v=wUisfTjmWzA" target="_blank" rel="noopener">PID Control Explained</a> ― Brian Douglasによるわかりやすい解説動画</li>
+      <li><a href="https://github.com/raulmur/ORB_SLAM2" target="_blank" rel="noopener">ORB-SLAM2</a> ― Visual SLAMの代表的なOSS実装</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="02">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="01-overview.html"><span class="direction">&larr; Prev</span>フィジカルAIの全体像</a>
+    <a href="03-reinforcement-learning.html"><span class="direction">Next &rarr;</span>強化学習によるロボット制御</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#f4f4f5',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#18181b',
+      lineColor: '#18181b',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<!-- 視覚化ライブラリ群 (使う章だけ動作、未使用章はゼロコスト) -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  // Lucideアイコンを自動描画 (data-lucide="icon-name" 属性のある要素を全部処理)
+  if (window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>

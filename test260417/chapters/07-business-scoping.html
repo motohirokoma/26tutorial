@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%2316a34a%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>ビジネススコーピングの技法 - Kuririn's Physical AI Crash Course</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #16a34a; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></div>
+      &gt;_ Kuririn's Physical AI Crash Course
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="../index.html#phase3" data-nav><span class="phase-name">Advanced</span><span class="phase-pct" id="pct-advanced">0%</span></a></li>
+      <li><a href="../index.html#phase4" data-nav><span class="phase-name">Final</span><span class="phase-pct" id="pct-final">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.07</span>
+    ビジネススコーピングの技法
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 37 sections</text>
+    </svg>
+    <div class="progress-info">0h / 8h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-overview.html"><span class="status-dot" data-chapter="01"></span> フィジカルAIの全体像</a></li>
+    <li><a href="02-classical-control.html"><span class="status-dot" data-chapter="02"></span> 古典制御とロボットの基盤技術</a></li>
+  </ul>
+  <div class="section-label">Core</div>
+  <ul>
+    <li><a href="03-reinforcement-learning.html"><span class="status-dot" data-chapter="03"></span> 強化学習によるロボット制御</a></li>
+    <li><a href="04-imitation-learning.html"><span class="status-dot" data-chapter="04"></span> 模倣学習とテレオペレーション</a></li>
+    <li><a href="05-vla-models.html"><span class="status-dot" data-chapter="05"></span> VLAモデルの最前線</a></li>
+  </ul>
+  <div class="section-label">Advanced</div>
+  <ul>
+    <li><a href="06-implementation-barriers.html"><span class="status-dot" data-chapter="06"></span> 実装の壁</a></li>
+    <li class="active"><a href="07-business-scoping.html"><span class="status-dot" data-chapter="07"></span> ビジネススコーピングの技法</a></li>
+  </ul>
+  <div class="section-label">Final</div>
+  <ul>
+    <li><a href="08-final-exercise.html"><span class="status-dot" data-chapter="08"></span> 最終演習問題</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 3: Advanced &gt; Chapter 07</div>
+  <h1>ビジネススコーピングの技法</h1>
+  <p class="subtitle">顧客の要望を技術に翻訳する ― フィジカルAI提案の思考プロセスを体験する</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 75min</span>
+    <span class="badge">Phase: Advanced</span>
+    <span class="badge">難易度: 上級</span>
+  </div>
+
+  <div class="info-box">
+    <strong>前提知識</strong><br>
+    この章はCh01〜06のすべてを前提としています。特にCh06（実装の壁）のコスト構造と技術制約の理解が重要です。
+    <br><a href="06-implementation-barriers.html">Ch06: 実装の壁 &rarr;</a>
+  </div>
+
+  <!-- =============================== Section 1 =============================== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span> スコーピングの基本フレームワーク</h2>
+
+  <p>顧客から「ロボットで自動化したい」と言われたとき、どう思考を組み立てればよいのか。フィジカルAIの<span class="term" data-tip="Scoping：プロジェクトの範囲と実現可能性を明確に定義するプロセス。技術選定と顧客期待のすり合わせが核心">スコーピング</span>には、5つの明確なステップがあります。</p>
+
+  <!-- SVG: スコーピング5ステップのパイプライン図 -->
+  <div style="text-align:center; margin:2rem 0;">
+    <svg viewBox="0 0 640 140" width="100%" style="max-width:640px;" xmlns="http://www.w3.org/2000/svg">
+      <!-- Step 1 -->
+      <rect x="10" y="30" width="108" height="80" rx="10" fill="#16a34a" stroke="none"/>
+      <text x="64" y="62" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">1. 要望の</text>
+      <text x="64" y="78" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">ヒアリング</text>
+      <text x="64" y="100" text-anchor="middle" font-size="9" fill="#d9f99d">What / Why</text>
+      <!-- Arrow -->
+      <polygon points="122,70 136,60 136,80" fill="#16a34a"/>
+
+      <!-- Step 2 -->
+      <rect x="140" y="30" width="108" height="80" rx="10" fill="#18181b" stroke="none"/>
+      <text x="194" y="62" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">2. タスク</text>
+      <text x="194" y="78" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">分解</text>
+      <text x="194" y="100" text-anchor="middle" font-size="9" fill="#a3a3a3">Decompose</text>
+      <polygon points="252,70 266,60 266,80" fill="#18181b"/>
+
+      <!-- Step 3 -->
+      <rect x="270" y="30" width="108" height="80" rx="10" fill="#16a34a" stroke="none"/>
+      <text x="324" y="62" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">3. 技術</text>
+      <text x="324" y="78" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">選定</text>
+      <text x="324" y="100" text-anchor="middle" font-size="9" fill="#d9f99d">Tech Match</text>
+      <polygon points="382,70 396,60 396,80" fill="#16a34a"/>
+
+      <!-- Step 4 -->
+      <rect x="400" y="30" width="108" height="80" rx="10" fill="#18181b" stroke="none"/>
+      <text x="454" y="62" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">4. 実現</text>
+      <text x="454" y="78" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">可能性評価</text>
+      <text x="454" y="100" text-anchor="middle" font-size="9" fill="#a3a3a3">Feasibility</text>
+      <polygon points="512,70 526,60 526,80" fill="#18181b"/>
+
+      <!-- Step 5 -->
+      <rect x="530" y="30" width="108" height="80" rx="10" fill="#16a34a" stroke="none"/>
+      <text x="584" y="62" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">5. 提案</text>
+      <text x="584" y="78" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">策定</text>
+      <text x="584" y="100" text-anchor="middle" font-size="9" fill="#d9f99d">Proposal</text>
+    </svg>
+    <p style="font-size:0.85rem; color:#666; margin-top:0.5rem;">スコーピング5ステップ：要望から提案まで一気通貫の思考フレームワーク</p>
+  </div>
+
+  <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap:1rem; margin:1.5rem 0;">
+    <div style="background:#f4f4f5; border-radius:10px; padding:1rem;">
+      <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;">
+        <i data-lucide="ear" style="width:20px;height:20px;color:#16a34a;"></i>
+        <strong>Step 1: 要望のヒアリング</strong>
+      </div>
+      <p style="font-size:0.88rem; margin:0;">顧客の「本当の課題」を引き出す。「自動化したい」の裏にある人手不足・品質課題・コスト削減のどれが主動機か</p>
+    </div>
+    <div style="background:#f4f4f5; border-radius:10px; padding:1rem;">
+      <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;">
+        <i data-lucide="split" style="width:20px;height:20px;color:#16a34a;"></i>
+        <strong>Step 2: タスク分解</strong>
+      </div>
+      <p style="font-size:0.88rem; margin:0;">漠然とした要望を具体的なロボティクスタスクに変換。操作対象・環境・精度要件を明確化</p>
+    </div>
+    <div style="background:#f4f4f5; border-radius:10px; padding:1rem;">
+      <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;">
+        <i data-lucide="cpu" style="width:20px;height:20px;color:#16a34a;"></i>
+        <strong>Step 3: 技術選定</strong>
+      </div>
+      <p style="font-size:0.88rem; margin:0;">タスク特性に合った技術（古典制御/RL/模倣学習/VLA）を選択。過剰技術も不足技術もNG</p>
+    </div>
+    <div style="background:#f4f4f5; border-radius:10px; padding:1rem;">
+      <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;">
+        <i data-lucide="check-square" style="width:20px;height:20px;color:#16a34a;"></i>
+        <strong>Step 4: 実現可能性評価</strong>
+      </div>
+      <p style="font-size:0.88rem; margin:0;">Ch06で学んだ「壁」を当てはめる。エッジ制約、データ収集コスト、安全要件をチェック</p>
+    </div>
+    <div style="background:#f4f4f5; border-radius:10px; padding:1rem;">
+      <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;">
+        <i data-lucide="file-text" style="width:20px;height:20px;color:#16a34a;"></i>
+        <strong>Step 5: 提案策定</strong>
+      </div>
+      <p style="font-size:0.88rem; margin:0;">フェーズ分けした現実的な計画を提示。「できること」と「まだ難しいこと」を誠実に伝える</p>
+    </div>
+  </div>
+
+  <!-- =============================== Section 2 =============================== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span> タスク分解の技術</h2>
+
+  <p>顧客の「ロボットで自動化したい」という漠然とした要望を、<span class="term" data-tip="Task Decomposition：複雑なタスクをロボットが実行可能な単位タスクに分解する工程。グラスプ、プレース、ナビゲーション等の要素動作に分ける">タスク分解</span>によってロボティクスの言語に翻訳します。分解の軸は3つです。</p>
+
+  <h3>分析軸1：操作対象の分類</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>対象物の性質</th>
+        <th>具体例</th>
+        <th>難易度</th>
+        <th>必要技術レベル</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong><span class="term" data-tip="Rigid Body：形状が変化しない固体。金属部品、プラスチック製品など。把持が比較的容易">剛体</span></strong></td>
+        <td>金属部品、箱、ボトル</td>
+        <td>低〜中</td>
+        <td>古典制御で対応可能</td>
+      </tr>
+      <tr>
+        <td><strong><span class="term" data-tip="Deformable Object：力を加えると形状が変化する物体。食品、布、ケーブルなど。制御が非常に困難">柔軟体</span></strong></td>
+        <td>食品、布、ケーブル</td>
+        <td>高</td>
+        <td>模倣学習 or VLA推奨</td>
+      </tr>
+      <tr>
+        <td><strong>液体・粉体</strong></td>
+        <td>飲料、調味料、粉末</td>
+        <td>非常に高</td>
+        <td>専用エンドエフェクタ + AI</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>分析軸2：環境の構造化レベル</h3>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span>
+
+  <!-- SVG: 四象限マトリクス -->
+  <div style="text-align:center; margin:2rem 0;">
+    <svg viewBox="0 0 500 420" width="100%" style="max-width:500px;" xmlns="http://www.w3.org/2000/svg">
+      <!-- Axes -->
+      <line x1="80" y1="360" x2="480" y2="360" stroke="#18181b" stroke-width="2"/>
+      <line x1="80" y1="360" x2="80" y2="40" stroke="#18181b" stroke-width="2"/>
+      <polygon points="476,354 488,360 476,366" fill="#18181b"/>
+      <polygon points="74,44 80,32 86,44" fill="#18181b"/>
+
+      <!-- Axis labels -->
+      <text x="280" y="400" text-anchor="middle" font-size="12" font-weight="bold" fill="#18181b">対象物の多様性 &rarr;</text>
+      <text x="30" y="200" text-anchor="middle" font-size="12" font-weight="bold" fill="#18181b" transform="rotate(-90 30 200)">環境の構造化度 &rarr;</text>
+
+      <!-- Quadrant backgrounds -->
+      <rect x="82" y="42" width="198" height="158" fill="#16a34a" opacity="0.08"/>
+      <rect x="280" y="42" width="198" height="158" fill="#f59e0b" opacity="0.08"/>
+      <rect x="82" y="200" width="198" height="158" fill="#f59e0b" opacity="0.08"/>
+      <rect x="280" y="200" width="198" height="158" fill="#e11d48" opacity="0.08"/>
+
+      <!-- Quadrant labels -->
+      <text x="181" y="80" text-anchor="middle" font-size="11" font-weight="bold" fill="#16a34a">Easy Zone</text>
+      <text x="181" y="96" text-anchor="middle" font-size="10" fill="#16a34a">古典制御で十分</text>
+      <rect x="120" y="110" width="122" height="36" rx="6" fill="#fff" stroke="#16a34a" stroke-width="1"/>
+      <text x="181" y="125" text-anchor="middle" font-size="9" fill="#333">例：工場の定型組立</text>
+      <text x="181" y="138" text-anchor="middle" font-size="9" fill="#333">食品箱詰め</text>
+
+      <text x="379" y="80" text-anchor="middle" font-size="11" font-weight="bold" fill="#f59e0b">Medium Zone</text>
+      <text x="379" y="96" text-anchor="middle" font-size="10" fill="#f59e0b">模倣学習が有効</text>
+      <rect x="318" y="110" width="122" height="36" rx="6" fill="#fff" stroke="#f59e0b" stroke-width="1"/>
+      <text x="379" y="125" text-anchor="middle" font-size="9" fill="#333">例：多品種ピッキング</text>
+      <text x="379" y="138" text-anchor="middle" font-size="9" fill="#333">倉庫仕分け</text>
+
+      <text x="181" y="238" text-anchor="middle" font-size="11" font-weight="bold" fill="#f59e0b">Medium Zone</text>
+      <text x="181" y="254" text-anchor="middle" font-size="10" fill="#f59e0b">RL + 環境適応</text>
+      <rect x="120" y="268" width="122" height="36" rx="6" fill="#fff" stroke="#f59e0b" stroke-width="1"/>
+      <text x="181" y="283" text-anchor="middle" font-size="9" fill="#333">例：屋外巡回ロボット</text>
+      <text x="181" y="296" text-anchor="middle" font-size="9" fill="#333">農業収穫</text>
+
+      <text x="379" y="238" text-anchor="middle" font-size="11" font-weight="bold" fill="#e11d48">Hard Zone</text>
+      <text x="379" y="254" text-anchor="middle" font-size="10" fill="#e11d48">VLA必須（未成熟領域）</text>
+      <rect x="318" y="268" width="122" height="36" rx="6" fill="#fff" stroke="#e11d48" stroke-width="1"/>
+      <text x="379" y="283" text-anchor="middle" font-size="9" fill="#333">例：介護支援</text>
+      <text x="379" y="296" text-anchor="middle" font-size="9" fill="#333">家事全般ロボット</text>
+
+      <!-- Divider lines -->
+      <line x1="280" y1="42" x2="280" y2="358" stroke="#ccc" stroke-width="1" stroke-dasharray="4,4"/>
+      <line x1="82" y1="200" x2="478" y2="200" stroke="#ccc" stroke-width="1" stroke-dasharray="4,4"/>
+
+      <!-- Axis tick labels -->
+      <text x="181" y="378" text-anchor="middle" font-size="10" fill="#666">少ない</text>
+      <text x="379" y="378" text-anchor="middle" font-size="10" fill="#666">多い</text>
+      <text x="68" y="130" text-anchor="end" font-size="10" fill="#666">高い</text>
+      <text x="68" y="290" text-anchor="end" font-size="10" fill="#666">低い</text>
+    </svg>
+    <p style="font-size:0.85rem; color:#666; margin-top:0.5rem;">タスク難易度の四象限マトリクス：環境構造化度と対象物多様性で技術水準が決まる</p>
+  </div>
+
+  <h3>分析軸3：タスク複雑度の評価</h3>
+  <p>個々の動作だけでなく、タスク全体の<span class="term" data-tip="Task Horizon：タスクの開始から完了までに必要なステップ数。ホライズンが長いほど計画能力が重要になる">タスクホライズン</span>（ステップ数）と、失敗した際のリカバリーの難しさも評価します。「箱を持ち上げて横に置く」は短ホライズン、「棚から商品を探して梱包して配送ラベルを貼る」は長ホライズンのタスクです。</p>
+
+  <details class="more-box">
+    <summary>Deep Dive: タスク分解の実践テクニック</summary>
+    <p>実務では顧客のヒアリング時に以下の質問リストを使うと、タスク分解の精度が上がります：</p>
+    <ul>
+      <li>「1つの作業サイクルを最初から最後まで見せてもらえますか？」（作業観察）</li>
+      <li>「どの工程で一番ミスが起きますか？」（品質課題の特定）</li>
+      <li>「作業環境は日によって変わりますか？」（環境変動の把握）</li>
+      <li>「扱う物体は何種類ありますか？新しい種類は増えますか？」（汎化要件の把握）</li>
+      <li>「作業者によって手順は違いますか？」（タスクの標準化度合い）</li>
+    </ul>
+    <p>これらの回答から、操作対象・環境・精度・汎化の4軸で定量的にタスクプロファイルを作成します。</p>
+  </details>
+
+  <!-- =============================== Section 3 =============================== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span> 技術選定マトリクス</h2>
+
+  <p>タスク分解の結果を受けて、どの技術を選択すべきかを体系的に判断します。以下の<span class="term" data-tip="Technology Selection Matrix：タスクの特性と要件に基づき、最適な技術アプローチを体系的に選択するための判断表">技術選定マトリクス</span>を活用してください。</p>
+
+  <!-- Table: 技術選定マトリクス -->
+  <table>
+    <thead>
+      <tr>
+        <th>判断基準</th>
+        <th>古典制御</th>
+        <th>強化学習 (RL)</th>
+        <th>模倣学習</th>
+        <th>VLA</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>環境の構造化度</strong></td>
+        <td>高（固定環境）</td>
+        <td>中（変動あり）</td>
+        <td>中〜低</td>
+        <td>低（非構造化OK）</td>
+      </tr>
+      <tr>
+        <td><strong>対象物の多様性</strong></td>
+        <td>低（定型品）</td>
+        <td>中</td>
+        <td>中〜高</td>
+        <td>高（未知物体OK）</td>
+      </tr>
+      <tr>
+        <td><strong>必要な汎化性能</strong></td>
+        <td>不要</td>
+        <td>中</td>
+        <td>中〜高</td>
+        <td>高</td>
+      </tr>
+      <tr>
+        <td><strong>データ取得コスト</strong></td>
+        <td>不要</td>
+        <td>低（Simで可能）</td>
+        <td>中（テレオペ要）</td>
+        <td>高（大規模データ要）</td>
+      </tr>
+      <tr>
+        <td><strong>リアルタイム性</strong></td>
+        <td>非常に高（&lt;1ms）</td>
+        <td>高（~10ms）</td>
+        <td>中（~50ms）</td>
+        <td>低〜中（~100ms+）</td>
+      </tr>
+      <tr>
+        <td><strong>開発期間</strong></td>
+        <td>短（1-3ヶ月）</td>
+        <td>中（3-6ヶ月）</td>
+        <td>中（3-6ヶ月）</td>
+        <td>長（6-12ヶ月）</td>
+      </tr>
+      <tr>
+        <td><strong>安全認証の取得</strong></td>
+        <td>容易</td>
+        <td>やや困難</td>
+        <td>困難</td>
+        <td>非常に困難</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span>
+
+  <div class="info-box">
+    <strong>「過剰技術」の罠に注意</strong><br>
+    「VLAが最先端だから全部VLAで」という提案は危険です。構造化環境で定型品を扱うなら、古典制御の方が安価・安全・高速です。<strong>最も単純な技術で要件を満たす</strong>のがプロの選定です。技術の新しさではなく、<span class="term" data-tip="Technology-Market Fit：顧客のタスク要件に対して、技術的に最も適切な（過不足のない）ソリューションを選択すること">テクノロジーマーケットフィット</span>を重視しましょう。
+  </div>
+
+  <!-- =============================== Section 4 =============================== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span> ケーススタディ3本立て</h2>
+
+  <p>ここまで学んだフレームワークを、3つの実践的なケースに適用してみましょう。各ケースの環境・対象物・要件が大きく異なることに注目してください。</p>
+
+  <!-- Mermaid: ケーススタディ判断フロー -->
+  <div class="mermaid">
+  flowchart TD
+    Q1{"環境は<br/>構造化されている？"}
+    Q1 -- Yes --> Q2{"対象物は<br/>定型品？"}
+    Q1 -- No --> Q3{"人間と<br/>協調する？"}
+    Q2 -- Yes --> R1["古典制御 + ビジョン<br/>ケース1: 食品工場"]
+    Q2 -- No --> R2["模倣学習 or VLA<br/>ケース2: 物流倉庫"]
+    Q3 -- Yes --> R3["VLA + Safety Envelope<br/>ケース3: 介護施設"]
+    Q3 -- No --> R4["RL + Domain Adaptation<br/>屋外自律ロボット等"]
+    style Q1 fill:#f4f4f5,stroke:#18181b
+    style Q2 fill:#f4f4f5,stroke:#18181b
+    style Q3 fill:#f4f4f5,stroke:#18181b
+    style R1 fill:#16a34a,color:#fff,stroke:none
+    style R2 fill:#16a34a,color:#fff,stroke:none
+    style R3 fill:#16a34a,color:#fff,stroke:none
+    style R4 fill:#16a34a,color:#fff,stroke:none
+  </div>
+
+  <!-- Compare cards: 3ケース -->
+  <h3>ケース比較</h3>
+  <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:1rem; margin:1.5rem 0;">
+    <!-- Case 1 -->
+    <div style="background:#fff; border-radius:12px; padding:1.2rem; border:2px solid #16a34a;">
+      <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.75rem;">
+        <i data-lucide="package" style="width:22px;height:22px;color:#16a34a;"></i>
+        <strong style="font-size:1rem;">Case 1: 食品工場の箱詰め</strong>
+      </div>
+      <table style="font-size:0.82rem; width:100%; margin:0;">
+        <tr><td style="padding:2px 4px;"><strong>環境</strong></td><td style="padding:2px 4px;">構造化（固定ライン）</td></tr>
+        <tr><td style="padding:2px 4px;"><strong>対象物</strong></td><td style="padding:2px 4px;">定型品（箱、パウチ）</td></tr>
+        <tr><td style="padding:2px 4px;"><strong>推奨技術</strong></td><td style="padding:2px 4px;">古典制御 + ビジョン</td></tr>
+        <tr><td style="padding:2px 4px;"><strong>開発期間</strong></td><td style="padding:2px 4px;">2-4ヶ月</td></tr>
+        <tr><td style="padding:2px 4px;"><strong>予算目安</strong></td><td style="padding:2px 4px;">1,000-3,000万円</td></tr>
+      </table>
+      <p style="font-size:0.82rem; margin:0.75rem 0 0; color:#555;">定型的なタスクには成熟技術を。AIは物体検出のみで十分。</p>
+    </div>
+
+    <!-- Case 2 -->
+    <div style="background:#fff; border-radius:12px; padding:1.2rem; border:2px solid #f59e0b;">
+      <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.75rem;">
+        <i data-lucide="warehouse" style="width:22px;height:22px;color:#f59e0b;"></i>
+        <strong style="font-size:1rem;">Case 2: 物流倉庫のピッキング</strong>
+      </div>
+      <table style="font-size:0.82rem; width:100%; margin:0;">
+        <tr><td style="padding:2px 4px;"><strong>環境</strong></td><td style="padding:2px 4px;">半構造化（棚配置変動）</td></tr>
+        <tr><td style="padding:2px 4px;"><strong>対象物</strong></td><td style="padding:2px 4px;">多品種（形状・重量多様）</td></tr>
+        <tr><td style="padding:2px 4px;"><strong>推奨技術</strong></td><td style="padding:2px 4px;">模倣学習 or VLA</td></tr>
+        <tr><td style="padding:2px 4px;"><strong>開発期間</strong></td><td style="padding:2px 4px;">6-9ヶ月</td></tr>
+        <tr><td style="padding:2px 4px;"><strong>予算目安</strong></td><td style="padding:2px 4px;">3,000-8,000万円</td></tr>
+      </table>
+      <p style="font-size:0.82rem; margin:0.75rem 0 0; color:#555;">多品種対応にはAI汎化が必要。テレオペデータ100h+を想定。</p>
+    </div>
+
+    <!-- Case 3 -->
+    <div style="background:#fff; border-radius:12px; padding:1.2rem; border:2px solid #e11d48;">
+      <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.75rem;">
+        <i data-lucide="heart-handshake" style="width:22px;height:22px;color:#e11d48;"></i>
+        <strong style="font-size:1rem;">Case 3: 介護施設の生活支援</strong>
+      </div>
+      <table style="font-size:0.82rem; width:100%; margin:0;">
+        <tr><td style="padding:2px 4px;"><strong>環境</strong></td><td style="padding:2px 4px;">非構造化（生活空間）</td></tr>
+        <tr><td style="padding:2px 4px;"><strong>対象物</strong></td><td style="padding:2px 4px;">極めて多様 + 人間</td></tr>
+        <tr><td style="padding:2px 4px;"><strong>推奨技術</strong></td><td style="padding:2px 4px;">VLA + Safety Envelope</td></tr>
+        <tr><td style="padding:2px 4px;"><strong>開発期間</strong></td><td style="padding:2px 4px;">12ヶ月以上</td></tr>
+        <tr><td style="padding:2px 4px;"><strong>予算目安</strong></td><td style="padding:2px 4px;">1億円〜</td></tr>
+      </table>
+      <p style="font-size:0.82rem; margin:0.75rem 0 0; color:#555;">現時点では部分自動化（特定タスクのみ）の提案が現実的。</p>
+    </div>
+  </div>
+
+  <details class="more-box">
+    <summary>Deep Dive: ケース3が「全自動化」できない理由</summary>
+    <p>介護施設での生活支援が現時点で最も難しい理由は、技術的な問題だけではありません：</p>
+    <ul>
+      <li><strong>タスクの多様性</strong>：食事介助、移動支援、見守り、コミュニケーションなど、求められるタスクが膨大</li>
+      <li><strong>安全要件の厳しさ</strong>：高齢者との物理的接触を伴うため、ISO 13482の要件を満たす必要がある。VLAのブラックボックス性との矛盾</li>
+      <li><strong>倫理的受容性</strong>：「ロボットに介護されること」への心理的抵抗。技術だけでなく社会受容の問題</li>
+      <li><strong>データ収集の困難さ</strong>：プライバシーの壁が最も高い領域。利用者の同意取得と匿名化のコストが膨大</li>
+    </ul>
+    <p>現実的な提案は「見守り + 物品搬送」のような、<span class="term" data-tip="Partial Automation：完全自動化ではなく、特定の限定的なタスクのみをロボットが担当する段階的アプローチ">部分自動化</span>から始め、信頼と実績を積み上げて徐々に範囲を広げるアプローチです。</p>
+  </details>
+
+  <!-- =============================== Section 5 =============================== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span> 提案書の書き方</h2>
+
+  <p>技術選定が終わったら、最後は「伝える」フェーズです。技術的に正確でありながら、経営層にも理解できる提案書を書く力は、フィジカルAIのビジネスプロフェッショナルにとって最も重要なスキルです。</p>
+
+  <h3>フェーズ分けの重要性</h3>
+  <p>フィジカルAIの提案では、一括導入ではなく<span class="term" data-tip="Phased Approach：PoC（概念実証）→パイロット（限定運用）→本番展開のように段階的にプロジェクトを進める手法。リスク分散と学習の機会を確保">フェーズ分けアプローチ</span>が必須です。</p>
+
+  <!-- Steps component: PoC→パイロット→本番 -->
+  <div style="display:flex; flex-direction:column; gap:0; margin:1.5rem 0;">
+    <div style="display:flex; gap:1rem; align-items:flex-start;">
+      <div style="display:flex; flex-direction:column; align-items:center;">
+        <div style="width:40px; height:40px; border-radius:50%; background:#16a34a; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:0.85rem;">PoC</div>
+        <div style="width:2px; height:50px; background:#e4e4e7;"></div>
+      </div>
+      <div style="padding-bottom:1rem;">
+        <strong>Phase 1: PoC（概念実証）</strong> — 1-3ヶ月 / 予算：全体の10-15%<br>
+        <span style="font-size:0.88rem; color:#555;">限定環境で技術的実現性を検証。「本当にロボットで実行可能か」を確認する。Go/No-Goの判断ポイント</span>
+      </div>
+    </div>
+    <div style="display:flex; gap:1rem; align-items:flex-start;">
+      <div style="display:flex; flex-direction:column; align-items:center;">
+        <div style="width:40px; height:40px; border-radius:50%; background:#16a34a; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:0.75rem;">Pilot</div>
+        <div style="width:2px; height:50px; background:#e4e4e7;"></div>
+      </div>
+      <div style="padding-bottom:1rem;">
+        <strong>Phase 2: パイロット（限定運用）</strong> — 3-6ヶ月 / 予算：全体の30-40%<br>
+        <span style="font-size:0.88rem; color:#555;">本番に近い環境で運用検証。データ収集、エッジ最適化、安全性テストを実施。KPIの定量測定</span>
+      </div>
+    </div>
+    <div style="display:flex; gap:1rem; align-items:flex-start;">
+      <div style="display:flex; flex-direction:column; align-items:center;">
+        <div style="width:40px; height:40px; border-radius:50%; background:#16a34a; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:0.75rem;">Prod</div>
+      </div>
+      <div>
+        <strong>Phase 3: 本番展開</strong> — 3-6ヶ月 / 予算：全体の45-60%<br>
+        <span style="font-size:0.88rem; color:#555;">全面導入と保守体制構築。継続的な改善サイクルの確立。横展開の計画策定</span>
+      </div>
+    </div>
+  </div>
+
+  <h3>提案書に含めるべき6つの要素</h3>
+  <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:1rem; margin:1.5rem 0;">
+    <div style="background:#f4f4f5; border-radius:10px; padding:1rem;">
+      <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;">
+        <i data-lucide="target" style="width:20px;height:20px;color:#16a34a;"></i>
+        <strong>1. 課題定義</strong>
+      </div>
+      <p style="font-size:0.85rem; margin:0;">顧客のビジネス課題を定量的に記述</p>
+    </div>
+    <div style="background:#f4f4f5; border-radius:10px; padding:1rem;">
+      <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;">
+        <i data-lucide="layout-list" style="width:20px;height:20px;color:#16a34a;"></i>
+        <strong>2. タスク分析結果</strong>
+      </div>
+      <p style="font-size:0.85rem; margin:0;">分解したタスクと技術選定の根拠</p>
+    </div>
+    <div style="background:#f4f4f5; border-radius:10px; padding:1rem;">
+      <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;">
+        <i data-lucide="milestone" style="width:20px;height:20px;color:#16a34a;"></i>
+        <strong>3. フェーズ計画</strong>
+      </div>
+      <p style="font-size:0.85rem; margin:0;">PoC/パイロット/本番の段階的ロードマップ</p>
+    </div>
+    <div style="background:#f4f4f5; border-radius:10px; padding:1rem;">
+      <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;">
+        <i data-lucide="calculator" style="width:20px;height:20px;color:#16a34a;"></i>
+        <strong>4. 概算コスト/ROI</strong>
+      </div>
+      <p style="font-size:0.85rem; margin:0;">隠れコスト含む全体コストとROI試算</p>
+    </div>
+    <div style="background:#f4f4f5; border-radius:10px; padding:1rem;">
+      <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;">
+        <i data-lucide="alert-circle" style="width:20px;height:20px;color:#16a34a;"></i>
+        <strong>5. リスクと制約</strong>
+      </div>
+      <p style="font-size:0.85rem; margin:0;">技術的限界と対策を誠実に記載</p>
+    </div>
+    <div style="background:#f4f4f5; border-radius:10px; padding:1rem;">
+      <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;">
+        <i data-lucide="handshake" style="width:20px;height:20px;color:#16a34a;"></i>
+        <strong>6. 期待値の調整</strong>
+      </div>
+      <p style="font-size:0.85rem; margin:0;">「できること」と「まだ難しいこと」の明確な線引き</p>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <strong>誠実さが最大の差別化要因</strong><br>
+    フィジカルAI市場では過剰な期待を煽るベンダーが少なくありません。「現時点ではここまでが現実的です。ただし、この計画で段階的に進めれば、将来的にはここまで到達できます」という<span class="term" data-tip="Honest Assessment：技術の限界と可能性の両方を正直に伝えるコミュニケーション。短期的には案件を逃す可能性があるが、長期的な信頼関係を構築する">誠実なアセスメント</span>が、長期的な信頼とリピート案件につながります。
+  </div>
+
+  <details class="more-box">
+    <summary>Deep Dive: 提案書のアンチパターン</summary>
+    <p>避けるべき提案書の典型例：</p>
+    <ul>
+      <li><strong>「AIで全自動化」の一括提案</strong> — フェーズ分けなし、リスク記載なし。顧客の期待値が天井まで上がり、必ず失望を招く</li>
+      <li><strong>技術用語の羅列</strong> — VLA、RL、Transformerなどの用語を並べるだけで、顧客のビジネスインパクトに翻訳していない</li>
+      <li><strong>最先端技術への偏重</strong> — 古典制御で解決できるのにVLAを提案。コスト増と開発期間の長期化を招く</li>
+      <li><strong>保守運用コストの不記載</strong> — 初期費用だけ提示し、年間の保守・データ更新コストを記載しない</li>
+    </ul>
+  </details>
+
+  <!-- =============================== 演習 =============================== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#16a34a" fill-rule="evenodd"/></svg></span> 演習問題</h2>
+
+  <div style="background:#f4f4f5; border-radius:12px; padding:1.5rem; margin:1.5rem 0; border-left:4px solid #16a34a;">
+    <h3 style="margin-top:0;"><i data-lucide="pencil" style="width:18px;height:18px;color:#16a34a;vertical-align:middle;"></i> 演習1（入門）：タスク分解と技術選定</h3>
+    <p>あるドラッグストアチェーンから相談がありました。「店舗のバックヤードで、入荷した段ボールから商品を取り出して棚に並べる作業を自動化したい」とのことです。商品は医薬品、日用品、化粧品など数千SKUあり、サイズと形状は多様です。バックヤードの棚配置は店舗ごとに異なります。</p>
+    <p><strong>問い：</strong>5ステップフレームワークに沿って、このケースのタスク分解と技術選定を行ってください。</p>
+
+    <details style="margin-top:1rem;">
+      <summary style="cursor:pointer; font-weight:bold; color:#16a34a;">模範解答を見る</summary>
+      <div style="margin-top:0.75rem; padding:1rem; background:#fff; border-radius:8px;">
+        <p><strong>Step 1: 要望ヒアリングの整理</strong></p>
+        <ul>
+          <li>主動機：人手不足（バックヤード作業者の採用難）</li>
+          <li>対象：数千SKUの多品種商品</li>
+          <li>環境：半構造化（棚配置は固定だが店舗差あり）</li>
+        </ul>
+        <p><strong>Step 2: タスク分解</strong></p>
+        <ol>
+          <li>段ボール開封（カッター操作 / 固定ツール）</li>
+          <li>商品認識（カメラでSKU識別）</li>
+          <li>ピッキング（多様なサイズ・形状の把持）</li>
+          <li>棚への配置（指定位置への正確なプレース）</li>
+        </ol>
+        <p><strong>Step 3: 技術選定</strong></p>
+        <ul>
+          <li>四象限マトリクス上：半構造化環境 x 高多様性 → <strong>模倣学習</strong>が最適</li>
+          <li>数千SKUの認識にはVLAの汎化能力も検討に値するが、コスト面から模倣学習 + 物体認識モデル（YOLO等）のハイブリッドを推奨</li>
+          <li>段ボール開封は専用治具で対応（AIは不要）</li>
+        </ul>
+        <p><strong>Step 4: 実現可能性</strong></p>
+        <ul>
+          <li>エッジ推論：Jetson Orinで物体認識 + 把持計画は50ms以内で実行可能</li>
+          <li>データ：テレオペ100-200時間分が必要。主要SKU500種をカバーすれば残りは汎化で対応可能と見込む</li>
+          <li>安全性：バックヤードは顧客不在環境のため、安全要件は比較的低い</li>
+        </ul>
+        <p><strong>Step 5: 提案方針</strong></p>
+        <ul>
+          <li>PoC（3ヶ月）：1店舗のバックヤードで上位100SKUのみ対象に実証</li>
+          <li>パイロット（6ヶ月）：3店舗に拡大、500SKUに対応。棚配置の差分吸収</li>
+          <li>本番（6ヶ月〜）：全店舗展開。SKU追加時の継続学習パイプラインを構築</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <div style="background:#f4f4f5; border-radius:12px; padding:1.5rem; margin:1.5rem 0; border-left:4px solid #18181b;">
+    <h3 style="margin-top:0;"><i data-lucide="code" style="width:18px;height:18px;color:#18181b;vertical-align:middle;"></i> 演習2（応用）：提案書エグゼクティブサマリの作成</h3>
+    <p>演習1のドラッグストアケースについて、経営層向けの<strong>提案書エグゼクティブサマリ（200-300字）</strong>を作成してください。以下を含めること：</p>
+    <ul>
+      <li>解決する課題</li>
+      <li>提案するソリューションの概要</li>
+      <li>期待されるROI</li>
+      <li>リスクと制約の1行言及</li>
+    </ul>
+
+    <details style="margin-top:1rem;">
+      <summary style="cursor:pointer; font-weight:bold; color:#16a34a;">模範解答を見る</summary>
+      <div style="margin-top:0.75rem; padding:1rem; background:#fff; border-radius:8px;">
+        <p><strong>エグゼクティブサマリ例：</strong></p>
+        <p style="background:#f9fafb; padding:1rem; border-radius:8px; border:1px solid #e4e4e7;">
+          バックヤードの商品陳列作業における慢性的な人手不足に対し、AIロボットによる自動棚出しシステムを提案します。カメラによる商品認識と模倣学習型ロボットアームにより、主要500 SKUの段ボール開封から棚配置までを自動化します。PoC（3ヶ月/800万円）で1店舗実証後、パイロット（6ヶ月/3,000万円）で3店舗展開、本番（全店舗/1.2億円〜）と段階的に進めます。人件費削減と24時間稼働による効率化で、投資回収期間は約2.5年を見込みます。ただし、壊れやすい商品（ガラス瓶等）の把持や、新規SKU追加時の追加データ収集コストが継続課題となります。
+        </p>
+      </div>
+    </details>
+  </div>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><a href="https://arxiv.org/abs/2307.15818" target="_blank" rel="noopener">RT-2: Vision-Language-Action Models (DeepMind, 2023)</a></li>
+      <li><a href="https://www.mckinsey.com/capabilities/operations/our-insights/unlocking-the-industrial-potential-of-robotics-and-automation" target="_blank" rel="noopener">McKinsey: Unlocking the Industrial Potential of Robotics</a></li>
+      <li><a href="https://spectrum.ieee.org/warehouse-robot" target="_blank" rel="noopener">IEEE Spectrum: Warehouse Robotics</a></li>
+      <li><a href="https://www.iso.org/standard/53820.html" target="_blank" rel="noopener">ISO 13482:2014 Personal care robots - Safety requirements</a></li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="07">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="06-implementation-barriers.html"><span class="direction">&larr; Prev</span>実装の壁 ― Edge推論・Sim-to-Real・データの現実</a>
+    <a href="08-final-exercise.html"><span class="direction">Next &rarr;</span>最終演習問題</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#f4f4f5',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#18181b',
+      lineColor: '#18181b',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<!-- 視覚化ライブラリ群 (使う章だけ動作、未使用章はゼロコスト) -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  // Lucideアイコンを自動描画 (data-lucide="icon-name" 属性のある要素を全部処理)
+  if (window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23eab308%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>ChatGPT・Claudeを使ってみよう - MK's Understanding LLM - for Student</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #eab308; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#eab308" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Understanding LLM - for Student
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav class="active"><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Practice</span><span class="phase-pct" id="pct-practice">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.03</span>
+    ChatGPT・Claudeを使ってみよう
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 8 sections</text>
+    </svg>
+    <div class="progress-info">0h / 3h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-what-is-genai.html"><span class="status-dot" data-chapter="01"></span> そもそも生成AIって何?</a></li>
+    <li><a href="02-vs-search.html"><span class="status-dot" data-chapter="02"></span> Google検索と何が違うの?</a></li>
+    <li><a href="03-try-it.html" class="active"><span class="status-dot" data-chapter="03"></span> ChatGPT・Claudeを使ってみよう</a></li>
+    <li><a href="04-prompting.html"><span class="status-dot" data-chapter="04"></span> 伝え方のコツ</a></li>
+  </ul>
+  <div class="section-label">Practice</div>
+  <ul>
+    <li><a href="05-daily-use.html"><span class="status-dot" data-chapter="05"></span> 毎日の暮らしで使ってみる</a></li>
+    <li><a href="06-caveats.html"><span class="status-dot" data-chapter="06"></span> 気をつけたい3つのこと</a></li>
+    <li><a href="07-tips.html"><span class="status-dot" data-chapter="07"></span> 便利に使うヒント</a></li>
+    <li><a href="08-final-exercise.html"><span class="status-dot" data-chapter="08"></span> 最終演習問題</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 1: Basics &gt; Chapter 03</div>
+  <h1>ChatGPT・Claudeを使ってみよう</h1>
+  <p class="subtitle">理屈はここまで。実際に触ってみるのが一番の近道です。メールアドレス1つあればOK、所要時間は5分。</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 25分</span>
+    <span class="badge">Phase: Basics</span>
+    <span class="badge">難易度: 超入門</span>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#eab308" fill-rule="evenodd"/></svg></span>この章の流れ</h2>
+
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-label">登録</div><div class="step-desc">メールアドレスでサインアップ</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-label">画面を開く</div><div class="step-desc">使い方の基本UIを理解</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-label">最初の会話</div><div class="step-desc">「自己紹介して」と聞いてみる</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-label">会話を続ける</div><div class="step-desc">追加で質問してみる</div></div>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#eab308" fill-rule="evenodd"/></svg></span>Step 1: アカウントを作る</h2>
+
+  <p>ChatGPTもClaudeも、基本的な流れは同じです。</p>
+
+  <ul class="icon-list">
+    <li><i data-lucide="link" width="20" height="20"></i><div><strong>ChatGPT</strong>: <a href="https://chatgpt.com/" target="_blank" rel="noopener">https://chatgpt.com/</a> にアクセス</div></li>
+    <li><i data-lucide="link" width="20" height="20"></i><div><strong>Claude</strong>: <a href="https://claude.ai/" target="_blank" rel="noopener">https://claude.ai/</a> にアクセス</div></li>
+    <li><i data-lucide="mail" width="20" height="20"></i><div>「Sign up」(または「サインアップ」)ボタンをクリック</div></li>
+    <li><i data-lucide="user-plus" width="20" height="20"></i><div>メールアドレスを入力 or Googleアカウントでログイン</div></li>
+    <li><i data-lucide="check-circle" width="20" height="20"></i><div>届いたメールの確認リンクをクリックして完了</div></li>
+  </ul>
+
+  <div class="info-box">
+    <span class="label">安心ポイント</span>
+    <p>どちらも<strong>無料で使えます</strong>(ChatGPTは無料プランで最新のGPTが1日数十回まで、Claudeは無料プランで十分な回数使えます)。クレジットカード登録は不要です。</p>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: 有料プランって必要?</summary>
+    <div class="more-body">
+      <p>結論: <strong>最初は不要</strong>です。無料で1〜2週間使ってみて、「毎日何度も使うぞ!」となったら検討してOK。</p>
+      <p>参考まで、2026年4月時点の主な違い:</p>
+      <ul>
+        <li><strong>ChatGPT Plus (月20ドル)</strong>: 最新モデルが回数無制限、画像生成回数も多い、Voiceモード</li>
+        <li><strong>Claude Pro (月20ドル)</strong>: 5倍の使用量、Projects機能、早い応答</li>
+      </ul>
+      <p>有料は「使い倒す前提」の人向け。まずは無料を徹底的に試すのがおすすめです。</p>
+    </div>
+  </details>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#eab308" fill-rule="evenodd"/></svg></span>Step 2: 画面を理解する</h2>
+
+  <p>ログイン後の画面は、どちらのサービスもほぼ同じ作りです。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">ChatGPT/Claudeの基本画面</div>
+    <svg viewBox="0 0 520 340" width="100%" style="max-width:560px; display:block; margin:0 auto;">
+      <!-- 外枠 -->
+      <rect x="10" y="10" width="500" height="320" rx="10" fill="#fafafa" stroke="#a1a1aa"/>
+      <!-- サイドバー -->
+      <rect x="10" y="10" width="130" height="320" fill="#f4f4f5" stroke="#a1a1aa"/>
+      <text x="75" y="40"  text-anchor="middle" font-size="12" font-weight="700">サイドバー</text>
+      <text x="75" y="60"  text-anchor="middle" font-size="10" fill="#52525b">+ 新しいチャット</text>
+      <text x="75" y="80"  text-anchor="middle" font-size="10" fill="#52525b">過去の会話</text>
+      <text x="75" y="98"  text-anchor="middle" font-size="10" fill="#71717a">・献立相談</text>
+      <text x="75" y="114" text-anchor="middle" font-size="10" fill="#71717a">・英語翻訳</text>
+      <text x="75" y="130" text-anchor="middle" font-size="10" fill="#71717a">・メール文例</text>
+
+      <!-- メイン会話エリア -->
+      <text x="320" y="40" text-anchor="middle" font-size="12" font-weight="700">会話エリア</text>
+      <rect x="160" y="55" width="330" height="40" rx="16" fill="#e4e4e7"/>
+      <text x="180" y="78" font-size="11" fill="#18181b">あなた: こんにちは!</text>
+      <rect x="160" y="105" width="330" height="60" rx="16" fill="#fef9c3" stroke="#eab308"/>
+      <text x="180" y="128" font-size="11" fill="#18181b">AI: こんにちは!どんなお手伝いを</text>
+      <text x="180" y="146" font-size="11" fill="#18181b">させていただきましょうか?</text>
+
+      <!-- 入力欄 -->
+      <rect x="160" y="270" width="330" height="45" rx="12" fill="#ffffff" stroke="#eab308" stroke-width="2"/>
+      <text x="175" y="296" font-size="11" fill="#a1a1aa">ここにメッセージを入力...</text>
+      <circle cx="475" cy="293" r="12" fill="#eab308"/>
+      <text x="475" y="298" text-anchor="middle" font-size="14" fill="#fff" font-weight="700">→</text>
+
+      <text x="320" y="228" text-anchor="middle" font-size="10" fill="#71717a">ここがやり取りの表示エリア</text>
+      <text x="320" y="245" text-anchor="middle" font-size="10" fill="#71717a">↓ 入力は下の枠に</text>
+    </svg>
+    <div class="diagram-caption">サイドバー = 過去のチャット / メインエリア = 会話表示 / 下の枠 = 入力欄。LINEのトーク画面を想像すると近い。</div>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#eab308" fill-rule="evenodd"/></svg></span>Step 3: 最初の会話を試す</h2>
+
+  <p>入力欄に以下を打ち込んで、Enterキー(スマホなら送信ボタン)を押してみましょう。</p>
+
+  <pre><code>こんにちは!あなたは何ができるの?小学生でも分かるように説明して。</code></pre>
+
+  <p>すると、AIが自己紹介的な返事をくれます。<strong>これがあなたの初めての生成AIとの会話</strong>です。</p>
+
+  <div class="quote">
+    大事なコツ: <strong>「丁寧語じゃなくていい」「くだけた口調でOK」</strong>。LINE で友達に話しかける感じで書いて大丈夫です。AIはあなたの言葉のニュアンスをちゃんと汲み取ります。
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#eab308" fill-rule="evenodd"/></svg></span>Step 4: 会話を「続ける」</h2>
+
+  <p>ここが検索にはない、生成AIの強みです。<strong>前のやりとりを覚えていて、続けて質問できる</strong>。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">会話の流れのイメージ</div>
+    <pre class="mermaid">
+sequenceDiagram
+  participant U as あなた
+  participant A as AI
+  U->>A: 夕飯何がいい?
+  A-->>U: 家族構成と好みを教えてください
+  U->>A: 夫と小学生、和食が好き
+  A-->>U: 鮭の塩焼きと豚汁はどう?
+  U->>A: 豚汁の材料も教えて
+  A-->>U: 豚肉、大根、人参、ごぼう...
+    </pre>
+    <div class="diagram-caption">「豚汁の材料」と聞いただけで、前の流れを覚えているから話が通じる。</div>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#eab308" fill-rule="evenodd"/></svg></span>試してみたい「最初の1つ」おすすめ3選</h2>
+
+  <p>登録して最初に試すと「おお!」と感動しやすいお題を3つ選びました。</p>
+
+  <ul class="icon-list">
+    <li><i data-lucide="chef-hat" width="20" height="20"></i><div><strong>「冷蔵庫に〇〇と△△と□□がある。簡単な夕飯を3つ提案して」</strong> — 献立相談。即使える結果が返る</div></li>
+    <li><i data-lucide="mail" width="20" height="20"></i><div><strong>「明日子どもが熱で保育園を休む連絡メール、丁寧に書いて」</strong> — 文章作成。コピペでそのまま送れる</div></li>
+    <li><i data-lucide="book-open" width="20" height="20"></i><div><strong>「『光合成』って何?小学4年生の子に5行で説明して」</strong> — 説明の翻訳。子どもの宿題ヘルプに最高</div></li>
+  </ul>
+
+  <div class="info-box">
+    <span class="label">よくある初日のトラブル</span>
+    <p><strong>「思ったのと違う答えが返ってきた」</strong>→ 大丈夫、それが普通。Ch04で<strong>「伝え方のコツ」</strong>を学べば、思い通りの答えが返るようになります。最初から完璧を目指さなくてOK。</p>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#eab308" fill-rule="evenodd"/></svg></span>ChatGPT vs Claude: 最初に触るならどっち?</h2>
+
+  <table>
+    <thead>
+      <tr><th>項目</th><th>ChatGPT</th><th>Claude</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>世界での知名度</td><td>圧倒的に1位</td><td>2〜3位</td></tr>
+      <tr><td>無料枠</td><td>1日数十回まで最新モデル</td><td>5時間で十数回(柔軟)</td></tr>
+      <tr><td>日本語の自然さ</td><td>〇</td><td>◎(とても丁寧)</td></tr>
+      <tr><td>画像生成</td><td>無料でも可(少ない回数)</td><td>×(画像理解は可)</td></tr>
+      <tr><td>音声会話</td><td>◎</td><td>△(モバイルアプリで可)</td></tr>
+      <tr><td>長文を読ませる</td><td>〇</td><td>◎(長い文章に強い)</td></tr>
+    </tbody>
+  </table>
+
+  <p>迷うなら<strong>両方登録</strong>して、同じ質問を両方に投げて比べてみるのもオススメ。登録は各5分で終わります。</p>
+
+  <p><span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#eab308" fill-rule="evenodd"/></svg></span>ここまで来たら、もう生成AIユーザーの仲間入りです!「怖いもの」ではなく「便利な友達」になってきたはず。</p>
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>実際に登録して「ハロー」を交わす</h4>
+    <p>このチュートリアルを一旦閉じて、ChatGPTかClaudeに登録してみましょう。そして最初のメッセージを送ってください。</p>
+    <ol>
+      <li><a href="https://chatgpt.com/" target="_blank" rel="noopener">chatgpt.com</a> または <a href="https://claude.ai/" target="_blank" rel="noopener">claude.ai</a> を開く</li>
+      <li>メールアドレス or Googleアカウントで登録</li>
+      <li>「こんにちは!あなたは何ができるの?小学生でも分かるように説明して。」と送る</li>
+      <li>返ってきた内容を読んでみる</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>返ってくる内容の例(Claudeの場合):</p>
+      <pre><code>こんにちは!わたしはClaudeっていうAIだよ。
+かんたんに言うと、「おしゃべりできるコンピューター」なんだ。
+
+できることは、
+・しつもんに答える
+・お話を書く
+・かんじやさんすうの宿題をてつだう
+・えいごを日本語にする  など、たくさん!
+
+でも、まちがうこともあるから、だいじなことは
+大人の人にたしかめてね。</code></pre>
+      <p>ちゃんと「小学生にわかるように」と伝えただけで、言葉遣いもひらがなも調整してくれます。これが生成AIの魔法。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>会話を「続ける」練習</h4>
+    <p>さっきの会話の流れで、追加の質問を3往復してみてください。話題を変えずに深掘りしてみるのがコツ。</p>
+    <ol>
+      <li>最初の返事に対して「じゃあ、夕飯のメニューを考えるのは得意?」と続ける</li>
+      <li>返ってきた答えに対して「冷蔵庫に卵と豆腐と玉ねぎしかない時の夕飯は?」と続ける</li>
+      <li>さらに「その中で一番5分でできそうなものは?」と聞く</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>3往復目で重要なのは、<strong>「その中で」「さっきの〇〇について」</strong>という指示語が通じていること。ちゃんと前の話を覚えていて、「さっき紹介した3つのうち」という文脈で答えてくれます。</p>
+      <p>例えば: <em>「さっきお伝えした中では、『卵と豆腐の簡単中華炒め』が最速ですね。フライパンで玉ねぎを炒めて卵と豆腐を加えるだけ、5分でできます」</em>のような回答が返るはず。</p>
+      <p>これが<strong>検索には絶対できない</strong>生成AIの強み。会話で深掘りできるのです。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span><a href="https://chatgpt.com/" target="_blank" rel="noopener">ChatGPT サインアップ</a></li>
+      <li><span class="res-type doc">Doc</span><a href="https://claude.ai/" target="_blank" rel="noopener">Claude サインアップ</a></li>
+      <li><span class="res-type video">Video</span><a href="https://help.openai.com/en/articles/6783457-what-is-chatgpt" target="_blank" rel="noopener">ChatGPT 公式ヘルプ (英語)</a></li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="03">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="02-vs-search.html"><span class="direction">&larr; Prev</span>Google検索と何が違うの?</a>
+    <a href="04-prompting.html"><span class="direction">Next &rarr;</span>伝え方のコツ</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#f4f4f5',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#18181b',
+      lineColor: '#18181b',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>
