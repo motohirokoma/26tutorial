@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>最終演習：定期タスク3つ自動化 - MK's Claude Code Tutorial - Schedule & Loop</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code - Schedule
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav class="active"><span class="phase-name">Practice</span><span class="phase-pct" id="pct-practice">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.08</span>
+    最終演習：定期タスク3つ自動化
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 8 sections</text>
+    </svg>
+    <div class="progress-info">0h / 4h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-schedule-loop-overview.html"><span class="status-dot" data-chapter="01"></span> Scheduled Tasks & Loop とは</a></li>
+    <li><a href="02-loop-skill.html"><span class="status-dot" data-chapter="02"></span> /loop スキル</a></li>
+    <li><a href="03-cron-schedule.html"><span class="status-dot" data-chapter="03"></span> Scheduled Tasks</a></li>
+    <li><a href="04-prompt-design.html"><span class="status-dot" data-chapter="04"></span> 放置運用プロンプト</a></li>
+  </ul>
+  <div class="section-label">Practice</div>
+  <ul>
+    <li><a href="05-ci-polling.html"><span class="status-dot" data-chapter="05"></span> 実践：CIチェック</a></li>
+    <li><a href="06-daily-pr-summary.html"><span class="status-dot" data-chapter="06"></span> 実践：PRサマリ通知</a></li>
+    <li><a href="07-long-running-loop.html"><span class="status-dot" data-chapter="07"></span> 実践：/loop で自走</a></li>
+    <li><a href="08-final-exercise.html" class="active"><span class="status-dot" data-chapter="08"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 2: Practice &gt; Chapter 08</div>
+  <h1>最終演習：定期タスク3つ自動化</h1>
+  <p class="subtitle">業務から3つ選んで組み込む — Schedule と /loop を2週間運用し効果測定まで</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 25分</span>
+    <span class="badge">Phase: Practice</span>
+    <span class="badge">難易度: 応用</span>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- Section 1: 7章の学びを「自分の業務」に落とす -->
+  <!-- ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 7章の学びを「自分の業務」に落とす</h2>
+
+  <p>ここまで Ch01-Ch07 で、<strong>Scheduled Tasks</strong>(定時のcron実行)と <strong>/loop</strong>(dynamic / interval の自走モード)、放置運用プロンプト、そして CI監視・PRサマリ・長時間タスク自走 の3つの実戦パターンを学んできました。知識を<strong>あなたの業務に3つ埋め込む</strong>のがこの最終章の目的です。</p>
+
+  <p>目標は<strong>「2週間のうちに3つの定期タスクを自分の業務で動かし、コスト・効果・通知負荷を数字で把握できている」</strong>状態。放置運用は<strong>コストに直結する</strong>のでザル設計は禁物、でも怖がって小さくしすぎると効果ゼロ。絶妙なバランスを<span class="term" data-tip="自分の業務で実運用し、データを見ながら磨き上げる。教科書では学べない最後の1ピース">実運用</span>で掴むのが本演習です。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span></p>
+
+  <div class="info-box">
+    <span class="label">Tips</span>
+    <p>最初は完璧を狙わず、<strong>5分でノートに10個の定期業務を書き出し</strong>、頻度×定型度×痛み(時間/認知)の3軸で3つに絞る。先に動かしてから磨けばよいという割り切りが肝心。2週間運用して<strong>やめる1つ</strong>を見つけるのがこの演習最大の収穫です。</p>
+  </div>
+
+  <!-- 7章の知識が演習の各段階に効くSVG -->
+  <div class="diagram-box">
+    <div class="diagram-title">7章の知識が「3つ組み込む」のどこに効くか</div>
+    <svg viewBox="0 0 720 340" width="100%" style="max-width:720px; display:block; margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0" y="0" width="720" height="340" rx="12" fill="#fafafa" stroke="#e4e4e7"/>
+      <text x="360" y="28" text-anchor="middle" font-size="13" font-weight="700" fill="#18181b">Ch01-07の知識が1枚の運用設計書に収束する</text>
+
+      <!-- 基礎 -->
+      <rect x="30" y="55" width="200" height="115" rx="8" fill="rgba(217,119,87,0.15)" stroke="#D97757"/>
+      <text x="130" y="78" text-anchor="middle" font-size="12" font-weight="700" fill="#D97757">基礎(CONCEPT)</text>
+      <text x="130" y="98" text-anchor="middle" font-size="10" fill="#52525b">Ch01 Schedule vs /loop</text>
+      <text x="130" y="114" text-anchor="middle" font-size="10" fill="#52525b">Ch02 dynamic vs interval</text>
+      <text x="130" y="130" text-anchor="middle" font-size="10" fill="#52525b">Ch03 cron式・通知・Task</text>
+      <text x="130" y="146" text-anchor="middle" font-size="10" fill="#52525b">Ch04 放置運用プロンプト</text>
+      <text x="130" y="162" text-anchor="middle" font-size="10" fill="#52525b">→ 候補選定・種別判定</text>
+
+      <!-- 実践 -->
+      <rect x="260" y="55" width="200" height="115" rx="8" fill="rgba(217,119,87,0.15)" stroke="#D97757"/>
+      <text x="360" y="78" text-anchor="middle" font-size="12" font-weight="700" fill="#D97757">実践(PATTERNS)</text>
+      <text x="360" y="98" text-anchor="middle" font-size="10" fill="#52525b">Ch05 5分ごとのCIチェック</text>
+      <text x="360" y="114" text-anchor="middle" font-size="10" fill="#52525b">Ch06 毎朝9時のPRサマリ</text>
+      <text x="360" y="130" text-anchor="middle" font-size="10" fill="#52525b">Ch07 夜まで /loop 自走</text>
+      <text x="360" y="146" text-anchor="middle" font-size="10" fill="#52525b">短/中/長の3リズム</text>
+      <text x="360" y="162" text-anchor="middle" font-size="10" fill="#52525b">→ 3つの実装テンプレ</text>
+
+      <!-- 運用 -->
+      <rect x="490" y="55" width="200" height="115" rx="8" fill="rgba(217,119,87,0.15)" stroke="#D97757"/>
+      <text x="590" y="78" text-anchor="middle" font-size="12" font-weight="700" fill="#D97757">運用(OPERATE)</text>
+      <text x="590" y="98" text-anchor="middle" font-size="10" fill="#52525b">コスト見積もり</text>
+      <text x="590" y="114" text-anchor="middle" font-size="10" fill="#52525b">二重通知回避</text>
+      <text x="590" y="130" text-anchor="middle" font-size="10" fill="#52525b">失敗時のフォールバック</text>
+      <text x="590" y="146" text-anchor="middle" font-size="10" fill="#52525b">2週間ログ・測定</text>
+      <text x="590" y="162" text-anchor="middle" font-size="10" fill="#52525b">→ 定着・撤退判断</text>
+
+      <!-- 矢印 -->
+      <line x1="130" y1="175" x2="360" y2="235" stroke="#D97757" stroke-width="1.5"/>
+      <line x1="360" y1="175" x2="360" y2="235" stroke="#D97757" stroke-width="1.5"/>
+      <line x1="590" y1="175" x2="360" y2="235" stroke="#D97757" stroke-width="1.5"/>
+
+      <!-- 成果物 -->
+      <rect x="180" y="235" width="360" height="85" rx="8" fill="#ffffff" stroke="#18181b" stroke-width="1.5"/>
+      <text x="360" y="258" text-anchor="middle" font-size="13" font-weight="700" fill="#18181b">あなたの定期タスク運用設計書</text>
+      <text x="360" y="278" text-anchor="middle" font-size="10" fill="#52525b">候補3つ / cron式 or loopモード / 通知経路</text>
+      <text x="360" y="294" text-anchor="middle" font-size="10" fill="#52525b">コスト見積 / 2週間ログ / 次の3つの計画</text>
+      <text x="360" y="310" text-anchor="middle" font-size="10" fill="#52525b">本章の記述は2026年1月時点の情報に基づく</text>
+    </svg>
+    <div class="diagram-caption">CONCEPT × PATTERNS × OPERATE の3軸を束ねたものが、あなた専用の定期運用テンプレートになる。</div>
+  </div>
+
+  <h3>今回の演習の進め方</h3>
+
+  <div class="steps">
+    <div class="step done"><div class="step-num">1</div><div class="step-label">棚卸し</div><div class="step-desc">定期業務10個</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-label">3つ選定</div><div class="step-desc">頻度×痛み×定型度</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-label">Schedule or Loop</div><div class="step-desc">モード判定</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-label">実装</div><div class="step-desc">プロンプト+通知</div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-label">2週間運用</div><div class="step-desc">ログ・効果測定</div></div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- Section 2: 問題提示 -->
+  <!-- ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 問題: あなたの業務に定期タスクを3つ組み込む</h2>
+
+  <p>以下の前提で<strong>1枚の運用設計書</strong>を作ってください。フォーマットはスプレッドシート・Notion・Markdownどれでも構いません。</p>
+
+  <h3>前提条件</h3>
+
+  <table>
+    <thead>
+      <tr><th>項目</th><th>内容</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>対象者</td><td>Claude Code を日常業務で1週間以上使っている人</td></tr>
+      <tr><td>期間</td><td>設計1日 + 運用2週間(実運用で検証)</td></tr>
+      <tr><td>個数</td><td><span class="term" data-tip="最初は多すぎないことが肝。3つが設計・測定・改善を同時に回せる上限。通知疲れも3つまでなら許容できる。">3つ</span>(欲張らない)</td></tr>
+      <tr><td>選定基準</td><td>週1回以上発生する定型業務 / 無人実行で完結 / 時間か認知負荷が痛い</td></tr>
+      <tr><td>実行方式</td><td><span class="term" data-tip="Ch03 で学んだ CronCreate ツール / /schedule スキル経由で cron式を登録する定時実行。例: 0 9 * * 1-5">Scheduled Tasks</span> / <span class="term" data-tip="Ch02 で学んだ ScheduleWakeup ベースの自走モード。dynamic(Claude自身が次ターン予約)と interval(一定間隔)の2種。">/loop</span>(dynamic / interval)から選択</td></tr>
+      <tr><td>通知</td><td>Slack / push / メール のいずれか(二重通知回避の工夫必須)</td></tr>
+      <tr><td>測定指標</td><td>実行回数 / 成功率 / 月額コスト見積 / 満足度(5段階)</td></tr>
+      <tr><td>検証環境</td><td>Claude Code CLI (<span class="term" data-tip="2026年1月時点の記述。cron式仕様・通知オプション・コスト単価は公式で最新を確認">2026年1月時点</span>)</td></tr>
+    </tbody>
+  </table>
+
+  <h3>求めるアウトプット (5点セット)</h3>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="clipboard-list" width="20" height="20"></i>
+      <div><strong>棚卸しマトリクス</strong> — 自分の定期業務を10個リストアップし、頻度×定型度×痛みで評価</div>
+    </li>
+    <li>
+      <i data-lucide="target" width="20" height="20"></i>
+      <div><strong>3つの候補カード</strong> — 名前・目的・起動方式(cron or /loop)・通知経路・想定コスト</div>
+    </li>
+    <li>
+      <i data-lucide="file-text" width="20" height="20"></i>
+      <div><strong>プロンプトテンプレ(3種)</strong> — Ch04の self-contained 原則(目的/データ源/成功条件/出力形式/異常時)</div>
+    </li>
+    <li>
+      <i data-lucide="git-branch" width="20" height="20"></i>
+      <div><strong>実行フロー図</strong> — トリガー→実行→判定→通知 を Mermaid で1枚</div>
+    </li>
+    <li>
+      <i data-lucide="activity" width="20" height="20"></i>
+      <div><strong>測定指標と2週間ログ</strong> — 成功率・コスト実測・満足度。Before/Afterの差分を出す</div>
+    </li>
+  </ul>
+
+  <!-- タイムライン -->
+  <h3>演習のタイムライン(2週間運用)</h3>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-date">D-0</div>
+      <div class="tl-title">棚卸し・候補抽出</div>
+      <div class="tl-body">10分で定期業務10個リストアップ。頻度×定型度×痛みで評価し、3つに絞る。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">D-1</div>
+      <div class="tl-title">モード選定・実装</div>
+      <div class="tl-body">各候補を Schedule / /loop dynamic / /loop interval のどれで動かすか判定。プロンプトと通知を組み立ててドライラン。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">D-2 〜 D-14</div>
+      <div class="tl-title">実運用・ログ取得</div>
+      <div class="tl-body">実際に動かす。毎回 成功/失敗・所要時間・通知の適切さ を1行メモ。コスト管理画面も週次で確認。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">D-15</div>
+      <div class="tl-title">効果測定・振り返り</div>
+      <div class="tl-body">Before/After 比較。コスト実測値、通知疲れの有無、やめるべき1つを特定。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">D-16 〜</div>
+      <div class="tl-title">次の3つへ</div>
+      <div class="tl-body">応用課題: 計測データを踏まえて、チーム共有と2周目の候補決定。</div>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <span class="label">Note</span>
+    <p>「3つ全部うまく行く」ことを目指さないで構いません。3つのうち<strong>1つが残れば成功</strong>、2つ残れば合格、3つ残れば上出来。放置運用は<strong>月額コストと通知疲れ</strong>が2大リスクなので、データで判断して迷わず止める勇気も学びの一部です。</p>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- Section 3: 段階ヒント (5つ) -->
+  <!-- ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 段階ヒント (行き詰まったら開く)</h2>
+
+  <p>いきなり全部開くと「答え写し」になります。まず自分で1つ書いてみて、詰まったヒントだけ開いてください。5つのヒントは <strong>候補発見 → Schedule or Loop の選択 → プロンプト → 通知設計 → コスト見積もり</strong> の順に対応しています。</p>
+
+  <details class="more-box">
+    <summary>もっと詳しく: ヒント1 — 候補の見つけ方 (Ch01)</summary>
+    <div class="more-body">
+      <p>定期タスク化の<strong>良い候補</strong>には5つのシグナルがあります:</p>
+      <ul>
+        <li><strong>週1回以上発生する</strong> — 1度きりなら手で動かしたほうが速い</li>
+        <li><strong>出力の形式が決まっている</strong> — 要約・箇条書き・Slack投稿など定型</li>
+        <li><strong>判断が単純(Yes/No or 閾値)</strong> — ビルド成功?/PR増減?/記事公開済み?など</li>
+        <li><strong>頻度/時間帯が固定</strong> — 毎朝9時・5分間隔・毎週月曜 など</li>
+        <li><strong>時間か認知が痛い</strong> — 1回30分以上か、毎日気にかけないといけない</li>
+      </ul>
+      <p>逆に<strong>悪い候補</strong>は: ①対話的に判断が変わる / ②前回の結果を人間が見て分岐する / ③厳密な再現性が必要(生成AIは毎回ゆらぐ) / ④データ源が認証の都度手入力を要する。この4つは手作業か Slash Command のほうが総じて速いです。</p>
+      <div class="info-box">
+        <span class="label">Tips</span>
+        <p>候補が6個しか出ないなら<strong>1日のタイムライン</strong>(9時→10時→…)を紙に書く。「ビルド確認」「Slackトレンド確認」「競合ニュース」「自PR状況」「夜間の計算ジョブ」など、無意識でやっている定期確認業務が必ず何個か出てきます。</p>
+      </div>
+    </div>
+  </details>
+
+  <details class="more-box">
+    <summary>もっと詳しく: ヒント2 — Schedule か /loop か(モード判定) (Ch01 / Ch02 / Ch03)</summary>
+    <div class="more-body">
+      <p>判定は<strong>3択のフローチャート</strong>でほぼ一意に決まります:</p>
+      <table>
+        <thead><tr><th>条件</th><th>推奨モード</th><th>理由</th></tr></thead>
+        <tbody>
+          <tr><td>「毎朝9時」「毎週月曜」など<strong>時刻固定</strong></td><td><strong>Scheduled Tasks (CronCreate)</strong></td><td>cron式 `0 9 * * 1-5` で明示。時差・祝日管理もcron側</td></tr>
+          <tr><td>「5分ごと」「10分ごと」など<strong>短い一定間隔の監視</strong></td><td><strong>/loop interval</strong> or Schedule(*/5 * * * *)</td><td>ビルド監視・CI確認。短間隔なら /loop のほうが起動オーバーヘッド少ない</td></tr>
+          <tr><td><strong>1ステップごとに状況判断</strong>して次のスリープ長を決めたい</td><td><strong>/loop dynamic</strong></td><td>ScheduleWakeup を Claude 自身が呼ぶ。長時間自走(Ch07)に最適</td></tr>
+        </tbody>
+      </table>
+      <p>迷ったら <strong>「次の起動時刻は人間が事前に決められるか?」</strong>だけ自問。Yes なら Schedule、No なら /loop(とくに判断が都度なら dynamic)。</p>
+      <div class="info-box">
+        <span class="label">Warning</span>
+        <p>interval モードと Schedule `*/5` は似て見えますが、interval は<strong>セッション内の反復</strong>、Schedule は<strong>独立起動</strong>。長期運用・通知責務が重いなら Schedule、短期の張り付き監視なら interval が向きます(Ch01の比較表参照)。</p>
+      </div>
+    </div>
+  </details>
+
+  <details class="more-box">
+    <summary>もっと詳しく: ヒント3 — 放置運用プロンプトテンプレ (Ch04)</summary>
+    <div class="more-body">
+      <p>Ch04 の self-contained 原則に沿った<strong>テンプレート骨格</strong>(無人実行前提):</p>
+      <pre><code># 目的
+[何を成果としたいか1行 / 定期実行なので同じ条件で毎回動く]
+
+# データ源
+[URL / API / ファイルパス — 認証はどう通すかも明記]
+
+# 成功条件
+[このときだけ通知する、このときは静かに終わる]
+
+# 出力形式
+[Slackテキスト / JSON / ファイル書き出し どれか固定]
+
+# 異常時の動作
+- データ取得失敗: [スキップ / リトライ1回 / 即通知]
+- 前回と同じ結果: [通知しない(二重通知回避)]
+- 実行時間超過: [打ち切り / 部分結果通知]
+
+# 冪等性
+[同じ入力で同じ出力になる / 副作用を起こさない]
+</code></pre>
+      <p>悪い例は「毎朝PR一覧を送って」だけ。良い例は「open PR のうち自分がレビュワーで48時間未反応のものだけ、Slack #pr-reminder に優先度H/M/L付きで投稿。該当0件なら静かに終了。取得エラー時は1回リトライ後に自分DMへアラート」まで書ききったもの。<strong>曖昧さを残すと放置運用で揺らぐ</strong>のが最大の落とし穴です。</p>
+    </div>
+  </details>
+
+  <details class="more-box">
+    <summary>もっと詳しく: ヒント4 — 通知設計(二重通知回避) (Ch05 / Ch06)</summary>
+    <div class="more-body">
+      <p>放置運用で最もユーザを離脱させるのは<strong>通知疲れ</strong>。3つの原則で設計:</p>
+      <ol>
+        <li><strong>状態変化のみ通知</strong> — 「ビルド失敗したまま」なら2回目以降は静かに。前回ステータスを<span class="term" data-tip="実行状態を跨いで保持するファイルや小さなDB。~/.claude-state/ch8-ci-last.txt のように1行テキストでも十分">ステートファイル</span>に保存して比較</li>
+        <li><strong>チャンネル分離</strong> — 緊急(CI失敗=即Slack DM) / 日次サマリ(PRレビュー=#pr-daily) / 週次(メール) で音量を分ける</li>
+        <li><strong>ミュート時間の設定</strong> — 深夜・週末は保留し翌営業日にまとめる。cron側で時間枠制御</li>
+      </ol>
+      <p>通知経路は<strong>1タスクに1経路</strong>が鉄則。Slack・メール・pushを全部繋ぐと冗長で、どれも読まれなくなります。</p>
+      <div class="info-box">
+        <span class="label">Warning</span>
+        <p>Slack Webhook は秘匿情報。環境変数 `SLACK_WEBHOOK_URL` 経由で渡し、プロンプトに直書きしない。リポジトリにコミットすると即座に <span class="term" data-tip="GitHubのシークレットスキャンで自動検出され、Slackが自動で無効化する仕組み。コミット履歴に残った時点でリボーク相当の手間が発生する">トークン失効</span>が走ります(2026年1月時点の GitHub Push Protection 仕様)。</p>
+      </div>
+    </div>
+  </details>
+
+  <details class="more-box">
+    <summary>もっと詳しく: ヒント5 — コスト見積もり(放置運用の落とし穴)</summary>
+    <div class="more-body">
+      <p>定期タスクの月額コストは<strong>3変数</strong>で概算できます:</p>
+      <div class="kv-grid">
+        <div class="kv"><div class="kv-key">実行回数/月</div><div class="kv-val">cron頻度 × 稼働日</div></div>
+        <div class="kv"><div class="kv-key">1回あたりトークン</div><div class="kv-val">in + out (プロンプト+出力)</div></div>
+        <div class="kv"><div class="kv-key">単価</div><div class="kv-val">モデル別 $/1M tokens</div></div>
+      </div>
+      <p>例: 「5分ごとCI監視」= 月 12 × 24 × 30 = 8,640回。1回3Kトークン消費なら月25.9Mトークン。<strong>常駐系は積もるとサイフに刺さる</strong>のでドライラン時に必ず概算する。</p>
+      <p>削減テク: ①状態未変化なら早期終了(APIコール0)で8割カット ②サマリだけキャッシュし再呼び出し ③短間隔監視は業務時間内に限る(cron で `0-23/5 9-18 * * 1-5`)。<strong>運用コストの月上限</strong>を決めて、超えたら自動停止できる設計が安心。</p>
+      <p>見るべき本当の指標は「<strong>月額コスト ÷ 月の価値(時間削減分)</strong>」。3以上なら黒字、1未満ならやめる判断を躊躇しない。</p>
+    </div>
+  </details>
+
+  <!-- ============================================================ -->
+  <!-- Section 4: 模範解答 -->
+  <!-- ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 模範解答: MKの「朝ニュース・週次レポ・夜リファクタ」3点セット</h2>
+
+  <p>自分で書いてみましたか? ここから下は、MK本人が2026年1月時点で実際に動かしている<strong>3つの定期タスク</strong>の設計書です。短(朝)/中(週)/長(夜)のリズム分散が特徴。まずは書き上げてから答え合わせにどうぞ。</p>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+
+      <h3>1. 棚卸しマトリクス</h3>
+
+      <p>候補10業務を 頻度(週何回) × 定型度 × 痛み(手動時の負担) の3軸で10段階評価。スコア合計上位3つを採用しました。</p>
+
+      <div class="diagram-box">
+        <div class="diagram-title">候補10業務の評価スコア(棚卸しマトリクス)</div>
+        <canvas id="ch8-bar-1" height="220"></canvas>
+        <div class="diagram-caption">上位3つ(朝ニュース要約/週次レポート/夜リファクタ)を今回採用。リズムを意図的にバラす。</div>
+      </div>
+
+      <h3>2. 採用した3つの定期タスク</h3>
+
+      <div class="compare-cards">
+        <div class="cc good">
+          <span class="cc-label">#1 朝</span>
+          <h4>朝のニュース要約(Schedule)</h4>
+          <ul>
+            <li>方式: Scheduled Tasks</li>
+            <li>cron: <code>0 7 * * 1-5</code></li>
+            <li>通知: Slack #morning-news</li>
+            <li>頻度: 平日毎朝</li>
+            <li>短縮: 手動25分 → 0分(読むだけ)</li>
+          </ul>
+        </div>
+        <div class="cc good">
+          <span class="cc-label">#2 週</span>
+          <h4>週次PRレポート(Schedule)</h4>
+          <ul>
+            <li>方式: Scheduled Tasks</li>
+            <li>cron: <code>30 17 * * 5</code></li>
+            <li>通知: メール(マネージャ宛)</li>
+            <li>頻度: 毎週金曜17:30</li>
+            <li>短縮: 手動60分 → 5分(レビューだけ)</li>
+          </ul>
+        </div>
+        <div class="cc good">
+          <span class="cc-label">#3 夜</span>
+          <h4>夜の長時間リファクタ(/loop)</h4>
+          <ul>
+            <li>方式: /loop dynamic</li>
+            <li>起動: 22:00 手動 or cron起動</li>
+            <li>通知: 翌朝の完了Slack</li>
+            <li>頻度: 月2-4回</li>
+            <li>短縮: 夜中の監視不要(自走)</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>3. プロンプトテンプレ(3種)</h3>
+
+      <table>
+        <thead>
+          <tr><th>タスク</th><th>方式</th><th>cron式 / トリガー</th><th>通知</th><th>月想定コスト</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>朝ニュース要約</td><td>Scheduled Tasks</td><td><code>0 7 * * 1-5</code></td><td>Slack #morning-news</td><td>約 $3</td></tr>
+          <tr><td>週次PRレポート</td><td>Scheduled Tasks</td><td><code>30 17 * * 5</code></td><td>メール(週1)</td><td>約 $1</td></tr>
+          <tr><td>夜リファクタ</td><td>/loop dynamic</td><td>22:00 手動起動</td><td>完了時Slack DM</td><td>約 $15/月(実行月のみ)</td></tr>
+        </tbody>
+      </table>
+
+      <h4>#1 朝のニュース要約(Scheduled Tasks)の実プロンプト</h4>
+      <pre><code># 目的
+過去24時間のAI・Claude Code関連ニュースを5件に要約し、
+毎朝7時に Slack #morning-news へ投稿する。
+
+# データ源
+- Hacker News 上位100件(API)
+- Anthropic公式Blog(RSS)
+- GitHub Trending "Agent / LLM" タグ(HTML)
+- 取得失敗時は空配列扱い、後続は続行
+
+# 成功条件
+Claude Code / Agent SDK / 新モデル / 新機能 の
+いずれかのキーワードに該当するもの Top5
+
+# 出力形式
+Slack Block Kit JSON で #morning-news に post。
+各項目: タイトル / 1行要約 / URL / 重要度(★1-3)
+
+# 異常時の動作
+- 全データ源失敗: DMで自分に "morning-news: all sources failed"
+- 該当0件: "本日は該当ニュースなし" と投稿
+- 重複(前日と同一URL): 除外
+
+# 冪等性
+同じ日を2回実行しても、投稿は1回のみ(state file で判定)
+
+# 完了報告
+- 投稿メッセージTS: {ts}
+- 取得件数合計: {count}
+- 所要時間(秒): {elapsed}
+</code></pre>
+
+      <h4>実行手順(Claude Code CLI の例)</h4>
+      <pre><code># /schedule スキル経由で登録(2026年1月時点の呼び出し例)
+claude /schedule create \
+  --cron "0 7 * * 1-5" \
+  --name "morning-news" \
+  --prompt-file ~/claude-prompts/morning-news.md \
+  --notify slack:morning-news \
+  --tz "Asia/Tokyo"
+
+# 登録後の確認
+claude /schedule list
+# → morning-news | 0 7 * * 1-5 | active | next: 2026-04-19 07:00
+
+# 停止したくなったら
+claude /schedule delete morning-news
+</code></pre>
+
+      <h4>#3 夜の長時間リファクタ(/loop dynamic)</h4>
+      <pre><code># todo.md に50項目のリファクタ対象を書いておき、
+# 1項目ずつ処理してチェックしていく /loop dynamic
+
+/loop
+
+# 初回プロンプト(Ch07で学んだ形式)
+あなたはリファクタ担当エージェントです。
+
+1. ~/refactor/todo.md を読み、未チェックの先頭1項目を取得
+2. その1項目だけをリファクタしテスト実行
+3. 通ったら [x] にマーク、コミット作成(msg: "refactor: {item}")
+4. 通らなかったら [!] にマークして理由をログに追記
+5. 残項目があれば ScheduleWakeup で30秒後に再起動
+6. 残項目0 or エラー3回連続 で停止し、Slack DMへ完了通知
+
+ルール:
+- 1ターンで1項目のみ(トークン爆発防止)
+- テスト失敗時は3回までリトライ、超えたら次項目へ
+- 現在時刻が 08:00 を過ぎたら即停止(朝のレビュー時間確保)
+</code></pre>
+
+      <h3>4. 実行フロー図</h3>
+
+      <div class="diagram-box">
+        <div class="diagram-title">3つの定期タスクの全体フロー</div>
+        <pre class="mermaid">
+graph TD
+  T1["cron 0 7 * * 1-5"] --> S1["Scheduled: 朝ニュース要約"]
+  T2["cron 30 17 * * 5"] --> S2["Scheduled: 週次PRレポ"]
+  T3["22:00 手動起動"] --> L1["/loop dynamic: 夜リファクタ"]
+  S1 --> C1{"該当記事あり?"}
+  C1 -- Yes --> N1["Slack #morning-news"]
+  C1 -- No --> Skip1["静かに終了"]
+  S2 --> N2["メール(マネージャ宛)"]
+  L1 --> Step["1項目処理→コミット"]
+  Step --> Check{"残項目あり?"}
+  Check -- Yes --> Wake["ScheduleWakeup 30s"]
+  Wake --> Step
+  Check -- No --> N3["Slack DM(完了)"]
+        </pre>
+        <div class="diagram-caption">短(朝)/中(週)/長(夜)でリズムを分散。通知経路も3系統に分けて音量を管理。</div>
+      </div>
+
+      <h3>5. 測定結果(2週間の実測値)</h3>
+
+      <div class="stats-grid">
+        <div class="stat">
+          <div class="stat-num">96<small>%</small></div>
+          <div class="stat-label">実行成功率(3タスク合算)</div>
+          <div class="stat-trend up">↑ 52回中50回が一発成功</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">$22<small>/月</small></div>
+          <div class="stat-label">3タスク合計の実コスト</div>
+          <div class="stat-trend up">↑ 見積$28より16%下振れ</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">4.3<small>/5</small></div>
+          <div class="stat-label">平均満足度</div>
+          <div class="stat-trend up">↑ 満足度4以上が80%</div>
+        </div>
+      </div>
+
+      <!-- 2週間のコスト推移 -->
+      <div class="diagram-box">
+        <div class="diagram-title">2週間の日次API消費(3タスク合算・円換算目安)</div>
+        <canvas id="ch8-line-1" height="180"></canvas>
+        <div class="diagram-caption">金曜(D-5/D-12)に週次レポで跳ねる、週末は朝ニュース停止で谷。想定コスト上限(赤破線)を常に下回り健全。</div>
+      </div>
+
+      <h3>考え方の解説</h3>
+
+      <p>この3つに絞った理由は<strong>3つの設計判断</strong>です。</p>
+
+      <ol>
+        <li><strong>頻度のリズム分散</strong> — 平日毎朝(短)/ 週1(中)/ 月2-4(長)。どれかが使えなくても他が回る。通知疲れを防ぐためにも頻度と経路の分散が効く。</li>
+        <li><strong>Schedule と /loop を両方持つ</strong> — 固定時刻2件は Scheduled Tasks、自己判断しながら進む長時間タスクは /loop dynamic。<strong>2モードを実業務で使い分けるスキル</strong>が身につく。</li>
+        <li><strong>コスト構造を分散</strong> — 小(朝$3)/ 小(週$1)/ 大だが間欠($15)。常時高コストを作らない。月間上限を決めておけば、家計簿的にも安全。</li>
+      </ol>
+
+      <div class="info-box">
+        <span class="label">Insight</span>
+        <p>2週間で最も効いたのは<strong>朝ニュース要約</strong>でした。コスト$3/月で「毎朝の情報収集」という認知負荷が消え、代わりに重要ニュースをSlackで1回見るだけに。時間削減よりも<strong>「気にかけないといけない小さなタスク」を消したこと</strong>の効用が本命だったと後から気づきました。</p>
+      </div>
+
+      <p>この3つを自分の業務で動かせる人は、もう「定期実行を知っている人」から「<strong>定期実行でワークフローを再設計できる人</strong>」に変わっています。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span></p>
+
+    </div>
+  </details>
+
+  <!-- ============================================================ -->
+  <!-- Section 5: 応用課題 -->
+  <!-- ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 応用課題: チーム共有 と コスト最適化</h2>
+
+  <p>最初の3つが定着したら、次は<strong>個人</strong>から<strong>チーム</strong>、<strong>放置</strong>から<strong>最適化</strong>へとフェーズを上げます。</p>
+
+  <div class="exercise-box">
+    <div class="exercise-label">応用 1</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>自分の定期タスクをチームに展開する</h4>
+    <p>2週間動いた3つのうち、<strong>最も効果が高かった1つ</strong>をチームに展開してください。重要なのは、属人化を避け誰でも再現できる形にすることです。</p>
+    <ol>
+      <li>プロンプトを<strong>変数化</strong>(Slackチャンネル名・cron時刻・担当者を env化)して Git にコミット</li>
+      <li>README にセットアップ手順(認証・cron登録・失敗時の連絡先)を書く</li>
+      <li>他メンバー1人に実際に起動してもらい、30分以内で動く状態まで持っていけるか検証</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>MKの実例(朝ニュース要約をチーム共有したケース):</p>
+      <ul>
+        <li><strong>Git化:</strong> `morning-news/` フォルダに `prompt.md` `schedule.json` `.env.example` `README.md` の4ファイル</li>
+        <li><strong>変数化:</strong> `{SLACK_CHANNEL}` `{KEYWORDS}` `{CRON}` `{TZ}` の4つ。`.env.example` に説明コメント</li>
+        <li><strong>検証:</strong> 同僚Aが READMEのみでセットアップ → 22分で動作。詰まった箇所(SlackワークスペースID取得)を README Q&A に追記</li>
+      </ul>
+      <div class="info-box">
+        <span class="label">Insight</span>
+        <p>チーム展開すると「プロンプトの抜け」が可視化されます。自分1人だと気づかなかった暗黙知(例: 特定のキーワードフィルタが社内ドメイン知識に依存していた)が、他人に渡すと必ず露呈する。<strong>展開は最強のプロンプトレビュー手段</strong>と言えます。</p>
+      </div>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">応用 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>月額コストを半分にする最適化</h4>
+    <p>2週間の実測コストを見て、<strong>同等の価値を保ちつつ月額を50%削減</strong>してください。5つの削減テクから最低2つを適用すること。</p>
+    <ol>
+      <li>①状態未変化なら早期終了 ②業務時間内のみ実行 ③安いモデルへのスイッチ ④サマリのキャッシュ ⑤実行間隔の延長 から2つ以上適用</li>
+      <li>適用前後の日次コストを Before/After で計測(最低1週間)</li>
+      <li>満足度が<strong>0.5ポイント以上下がった</strong>ら元に戻し、別の組み合わせを試す</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>MKの最適化実例(朝ニュース要約で検証):</p>
+      <ul>
+        <li><strong>適用した2つ:</strong> ①前日と同じTopURLなら投稿スキップ(状態未変化) + ④取得記事のタイトル/要約をキャッシュし7日間再利用</li>
+        <li><strong>結果:</strong> API呼び出し 約40%削減、コスト $3.1 → $1.7/月(45%減)</li>
+        <li><strong>満足度:</strong> 4.3 → 4.2(ほぼ維持。むしろ重複が減って読みやすくなったとの声)</li>
+      </ul>
+      <p>他の削減パターン例:</p>
+      <table>
+        <thead><tr><th>テク</th><th>典型削減率</th><th>副作用</th></tr></thead>
+        <tbody>
+          <tr><td>①状態未変化で早期終了</td><td>30-80%</td><td>初回通知遅延なし</td></tr>
+          <tr><td>②業務時間内のみ</td><td>50-65%</td><td>深夜の緊急検知を失う</td></tr>
+          <tr><td>③安いモデルへ切替</td><td>40-70%</td><td>要約品質がやや低下</td></tr>
+          <tr><td>④サマリキャッシュ</td><td>20-50%</td><td>鮮度がわずかに落ちる</td></tr>
+          <tr><td>⑤間隔を倍に</td><td>50%</td><td>検知が最大で倍遅れる</td></tr>
+        </tbody>
+      </table>
+      <div class="info-box">
+        <span class="label">Warning</span>
+        <p>「安いモデル」への切替は<strong>効果絶大だが要検証</strong>。2026年1月時点で Claude は Haiku/Sonnet/Opus の階層があり、要約レベルなら Haiku で十分なケースが多いが、判断が絡む業務(CIログの原因特定など)では Sonnet 以上を推奨。満足度で切り戻す運用が安全です。</p>
+      </div>
+    </div>
+  </details>
+
+  <!-- ============================================================ -->
+  <!-- Section 6: 修了 -->
+  <!-- ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 修了のことば</h2>
+
+  <p>おつかれさまでした。8章・4時間の旅、そしてこの最終演習をやり遂げたあなたは、もう「Scheduled Tasks / /loop を知っている」側ではなく「<strong>定期運用で自分の時間を再設計できる</strong>」側の人間です。基礎(Ch01-04)・実戦(Ch05-07)を束ね、最後に自分の仕事に刻み込むところまでやりきりました。</p>
+
+  <div class="quote">
+    定期実行は、時間を盗み返す技術ではない。<strong>気にかけないといけない小さなタスク</strong>を、日常から削除する技術である。
+    <cite>— 本チュートリアルの総括</cite>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-num">8<small>章</small></div>
+      <div class="stat-label">学んだトピック</div>
+      <div class="stat-trend up">完了</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">3<small>→6</small></div>
+      <div class="stat-label">組み込んだ定期タスク</div>
+      <div class="stat-trend up">2周目へ</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">2<small>週間</small></div>
+      <div class="stat-label">運用ログ</div>
+      <div class="stat-trend up">データで判断</div>
+    </div>
+  </div>
+
+  <p>この運用設計書は<strong>作って終わりではなく</strong>、2週間運用してから本当のスタートです。1周目で気づいた「プロンプトの抜け・通知の漏れ・コストの跳ね」を記録し、次の3つに持ち越す。3周やれば、自分専用の定期運用テンプレートが完成します。</p>
+
+  <p>あなたの仕事が、Schedule と /loop の静かな働きで、少しだけ速く、そして大きく静かになりますように。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span></p>
+
+  <div class="info-box">
+    <span class="label">Note</span>
+    <p>本章および本チュートリアル全体の記述は<strong>2026年1月時点</strong>の Claude Code / /schedule / /loop 仕様に基づきます。cron式仕様・通知オプション・コスト単価は変わる可能性があります。必ず<a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">公式ドキュメント</a>で最新を確認してから本番運用してください。</p>
+  </div>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式ドキュメント</a> — Scheduled Tasks / /loop の最新仕様。本番運用前に必ず一次情報を確認。</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://crontab.guru/" target="_blank" rel="noopener">crontab.guru</a> — cron式の対話的な解説。<code>0 7 * * 1-5</code> を貼ると日本語で次回実行時刻が出る。</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://api.slack.com/messaging/webhooks" target="_blank" rel="noopener">Slack Webhook API</a> — 通知経路として最も手軽。Block Kit で構造化メッセージも可能。</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://cli.github.com/" target="_blank" rel="noopener">GitHub CLI (gh)</a> — CI監視・PR取得に必須。定期タスク内で <code>gh run list</code> <code>gh pr list</code> を叩くのが定石。</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener">Claude Code GitHub</a> — CronCreate / ScheduleWakeup のIssue・リリースノート。挙動変更の把握に有用。</li>
+      <li><span class="res-type video">Video</span> <a href="https://www.youtube.com/results?search_query=Claude+Code+scheduled+tasks" target="_blank" rel="noopener">YouTube: Claude Code scheduled tasks</a> — 海外エンジニアの定期タスク運用動画。実速度が体感できる。</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://zenn.dev/topics/claudecode" target="_blank" rel="noopener">Zenn: Claude Code 関連記事</a> — 日本語の実運用事例。他の人の「3つ組み込んだ例」を読むとヒントが増える。</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>全8章の最終演習、おつかれさまでした。下のボタンで完走を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="08">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="07-long-running-loop.html"><span class="direction">&larr; Prev</span>実践：/loop で自走</a>
+    <span></span>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<!-- 視覚化ライブラリ群 -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+<script>
+  window.addEventListener("load", function(){
+    // 候補10業務の評価スコア(棚卸しマトリクス)
+    var ctx1 = document.getElementById('ch8-bar-1');
+    if (ctx1 && window.Chart) {
+      new Chart(ctx1, {
+        type: 'bar',
+        data: {
+          labels: [
+            '朝ニュース要約', '週次PRレポート', '夜リファクタ',
+            'CIビルド監視', '競合ニュース巡回', 'ログ異常検知',
+            '売上ダッシュ巡回', 'Slackまとめ投稿', '依存更新チェック', '日次バックアップ'
+          ],
+          datasets: [
+            { label: '頻度', data: [10,6,4,10,7,8,5,6,3,9], backgroundColor: '#D97757', borderRadius: 4 },
+            { label: '定型度', data: [9,9,7,10,6,7,8,7,9,10], backgroundColor: 'rgba(217,119,87,0.45)', borderRadius: 4 },
+            { label: '痛み', data: [8,9,10,6,5,7,4,5,4,3], backgroundColor: '#cbd5e1', borderRadius: 4 }
+          ]
+        },
+        options: {
+          plugins: { legend: { position: 'bottom' } },
+          scales: {
+            x: { stacked: true },
+            y: { stacked: true, beginAtZero: true, max: 30, title: { display: true, text: 'スコア合計(3軸)' } }
+          }
+        }
+      });
+    }
+
+    // 2週間の日次コスト推移 (line)
+    var ctx2 = document.getElementById('ch8-line-1');
+    if (ctx2 && window.Chart) {
+      new Chart(ctx2, {
+        type: 'line',
+        data: {
+          labels: ['D1','D2','D3','D4','D5','D6','D7','D8','D9','D10','D11','D12','D13','D14'],
+          datasets: [
+            {
+              label: 'After(3タスク合算・円/日)',
+              data: [95, 88, 92, 90, 215, 30, 28, 94, 90, 95, 92, 240, 32, 30],
+              borderColor: '#D97757',
+              backgroundColor: 'rgba(217,119,87,0.2)',
+              tension: 0.3,
+              fill: true,
+              pointRadius: 4,
+              pointBackgroundColor: '#D97757'
+            },
+            {
+              label: '想定上限(月$28 ≒ 日143円換算)',
+              data: [280,280,280,280,280,280,280,280,280,280,280,280,280,280],
+              borderColor: '#dc2626',
+              borderDash: [6, 4],
+              backgroundColor: 'transparent',
+              tension: 0,
+              pointRadius: 0,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          plugins: { legend: { position: 'bottom' } },
+          scales: {
+            y: { beginAtZero: true, title: { display: true, text: '日次コスト(円・目安)' } },
+            x: { title: { display: true, text: '運用日(2週間)' } }
+          }
+        }
+      });
+    }
+  });
+</script>
+</body>
+</html>

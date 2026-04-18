@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>実践：5分ごとのCIチェック - MK's Claude Code Tutorial - Schedule & Loop</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code - Schedule
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav class="active"><span class="phase-name">Practice</span><span class="phase-pct" id="pct-practice">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.05</span>
+    実践：5分ごとのCIチェック
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 8 sections</text>
+    </svg>
+    <div class="progress-info">0h / 4h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-schedule-loop-overview.html"><span class="status-dot" data-chapter="01"></span> Scheduled Tasks & Loop とは</a></li>
+    <li><a href="02-loop-skill.html"><span class="status-dot" data-chapter="02"></span> /loop スキル</a></li>
+    <li><a href="03-cron-schedule.html"><span class="status-dot" data-chapter="03"></span> Scheduled Tasks</a></li>
+    <li><a href="04-prompt-design.html"><span class="status-dot" data-chapter="04"></span> 放置運用プロンプト</a></li>
+  </ul>
+  <div class="section-label">Practice</div>
+  <ul>
+    <li><a href="05-ci-polling.html" class="active"><span class="status-dot" data-chapter="05"></span> 実践：CIチェック</a></li>
+    <li><a href="06-daily-pr-summary.html"><span class="status-dot" data-chapter="06"></span> 実践：PRサマリ通知</a></li>
+    <li><a href="07-long-running-loop.html"><span class="status-dot" data-chapter="07"></span> 実践：/loop で自走</a></li>
+    <li><a href="08-final-exercise.html"><span class="status-dot" data-chapter="08"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 2: Practice &gt; Chapter 05</div>
+  <h1>実践：5分ごとのCIチェック</h1>
+  <p class="subtitle">GitHub Actions のビルド結果を監視し、失敗時だけ Slack に通知する放置運用を作る</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 30分</span>
+    <span class="badge">Phase: Practice</span>
+    <span class="badge">難易度: 中級</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">この章のゴール</span>
+    <p>mainブランチに push した直後の CI (GitHub Actions) を<strong>5分おきに監視</strong>し、失敗したジョブだけ Slack 通知する放置運用を、自分のリポで実装します。Ch02(/loop) と Ch03(Scheduled Tasks) の知識を実戦投入し、<strong>interval vs cron の使い分け</strong>、<span class="term" data-tip="同じ失敗ビルドに対して重複通知が飛ぶのを抑止する仕組み。直近通知ビルドIDをローカルファイルに保存するのが定石">二重通知回避</span>、<strong>コスト見積もり</strong>までを現場レベルで体得するのが目標です。<span class="term" data-tip="2026年1月時点の記述。GitHub Actions / gh CLI / Claude Code の仕様は更新される可能性があります">本章の記述は2026年1月時点</span>。</p>
+  </div>
+
+  <div class="info-box" style="border-left:4px solid #dc2626; background:#fef2f2;">
+    <span class="label" style="color:#dc2626;">コスト警告</span>
+    <p>5分間隔ポーリングは<strong>1日あたり最大288回の Claude 実行</strong>になります。毎回フル起動だとトークンが嵩むので、(1) プロンプトを短く、(2) 失敗時のみ詳しく分析、(3) 夜間や週末は停止、の3つを本章で徹底します。これは Ch04「放置運用プロンプト」で学んだ原則の応用です。</p>
+  </div>
+
+  <!-- ===== Section 1: シナリオ ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> シナリオ: なぜ5分ごとに監視したいのか</h2>
+
+  <p>典型的な開発フロー: mainブランチに push → GitHub Actions で lint/test/build → 失敗したら<strong>できるだけ早く気づきたい</strong>。でも毎回 GitHub のWeb画面を開くのは面倒、しかも失敗通知が GitHub の <span class="term" data-tip="GitHub の通知機能。デフォルトは受信トレイに溜まるだけで、能動的に見に行かないと気づけない。Slack への転送設定が必要">Notifications</span> に埋もれて気づかない問題がよくあります。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">従来ワークフロー vs Claude 放置運用</div>
+    <svg viewBox="0 0 700 300" width="100%" style="max-width:700px; display:block; margin:0 auto;">
+      <!-- 従来 -->
+      <rect x="20" y="20" width="320" height="260" rx="12" fill="#f4f4f5" stroke="#94a3b8" stroke-width="2"/>
+      <text x="180" y="45" text-anchor="middle" font-size="14" font-weight="700" fill="#18181b">従来(人力監視)</text>
+      <rect x="40" y="65" width="280" height="28" rx="4" fill="#ffffff" stroke="#94a3b8"/>
+      <text x="50" y="84" font-size="11" fill="#18181b">1. push する</text>
+      <rect x="40" y="100" width="280" height="28" rx="4" fill="#ffffff" stroke="#94a3b8"/>
+      <text x="50" y="119" font-size="11" fill="#18181b">2. 気が向いたとき GitHub を開く</text>
+      <rect x="40" y="135" width="280" height="28" rx="4" fill="#fef2f2" stroke="#dc2626"/>
+      <text x="50" y="154" font-size="11" fill="#dc2626">3. 失敗に気づくのが数時間後…</text>
+      <rect x="40" y="170" width="280" height="28" rx="4" fill="#fef2f2" stroke="#dc2626"/>
+      <text x="50" y="189" font-size="11" fill="#dc2626">4. 原因調査も手動で log を読む</text>
+      <rect x="40" y="205" width="280" height="28" rx="4" fill="#fef2f2" stroke="#dc2626"/>
+      <text x="50" y="224" font-size="11" fill="#dc2626">5. 深夜の CI 失敗は翌朝まで放置</text>
+      <text x="180" y="260" text-anchor="middle" font-size="11" font-weight="700" fill="#dc2626">平均検知 3時間+</text>
+
+      <!-- 矢印 -->
+      <path d="M 345,150 L 385,150" stroke="#D97757" stroke-width="3" marker-end="url(#arrA)"/>
+      <defs>
+        <marker id="arrA" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#D97757"/>
+        </marker>
+      </defs>
+
+      <!-- Claude -->
+      <rect x="390" y="20" width="290" height="260" rx="12" fill="#D97757" opacity="0.14" stroke="#D97757" stroke-width="2"/>
+      <text x="535" y="45" text-anchor="middle" font-size="14" font-weight="700" fill="#18181b">Claude 放置運用</text>
+      <rect x="410" y="65" width="250" height="28" rx="4" fill="#ffffff" stroke="#D97757"/>
+      <text x="420" y="84" font-size="11" fill="#18181b">1. push する</text>
+      <rect x="410" y="100" width="250" height="28" rx="4" fill="#ffffff" stroke="#D97757"/>
+      <text x="420" y="119" font-size="11" fill="#18181b">2. Claude が 5 分ごとに確認</text>
+      <rect x="410" y="135" width="250" height="28" rx="4" fill="#ecfdf5" stroke="#16a34a"/>
+      <text x="420" y="154" font-size="11" fill="#16a34a">3. 失敗検知 → Slack 即通知</text>
+      <rect x="410" y="170" width="250" height="28" rx="4" fill="#ecfdf5" stroke="#16a34a"/>
+      <text x="420" y="189" font-size="11" fill="#16a34a">4. ログ末尾50行要約も同封</text>
+      <rect x="410" y="205" width="250" height="28" rx="4" fill="#ecfdf5" stroke="#16a34a"/>
+      <text x="420" y="224" font-size="11" fill="#16a34a">5. 二重通知は抑止済み</text>
+      <text x="535" y="260" text-anchor="middle" font-size="11" font-weight="700" fill="#16a34a">平均検知 5分以内</text>
+    </svg>
+    <div class="diagram-caption">検知時間を「数時間」から「数分」に圧縮する単純な改善。実装は30分で終わる。</div>
+  </div>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="clock" width="20" height="20"></i>
+      <div><strong>5分という間隔</strong> — GitHub Actions の典型ジョブは 1〜5分で終わる。5分粒度なら「終わった直後」を拾える。</div>
+    </li>
+    <li>
+      <i data-lucide="bell-off" width="20" height="20"></i>
+      <div><strong>失敗時のみ通知</strong> — 成功まで通知すると狼少年化。Claude に「失敗時のみ Slack」と指示するのが肝。</div>
+    </li>
+    <li>
+      <i data-lucide="file-text" width="20" height="20"></i>
+      <div><strong>ログ要約を同封</strong> — Slack を見た瞬間に「何が壊れたか」が分かる。人間の復旧判断を加速。</div>
+    </li>
+  </ul>
+
+  <!-- ===== Section 2: /loop interval vs CronCreate */5 の比較 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> /loop interval vs CronCreate <code>*/5</code> を比べる</h2>
+
+  <p>「5分ごと」は両方で実現できます。どちらを選ぶか? 結論から言うと<strong>短時間の集中監視は /loop interval、長期の定常監視は CronCreate</strong>。両者の性質を表でまとめます。</p>
+
+  <table>
+    <thead>
+      <tr><th>観点</th><th>/loop interval 5m</th><th>CronCreate <code>*/5 * * * *</code></th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>実行場所</td>
+        <td>手元の Claude Code セッション</td>
+        <td>リモート Claude (<span class="term" data-tip="Anthropic 側で cron をホストして実行するリモート実行環境。ローカルマシンを閉じても動く">RemoteTrigger</span>)</td>
+      </tr>
+      <tr>
+        <td>PC を閉じて良いか</td>
+        <td>NG (セッションが切れると止まる)</td>
+        <td>OK (サーバー側で動く)</td>
+      </tr>
+      <tr>
+        <td>開始のしやすさ</td>
+        <td>`<code>/loop 5m ...</code>` 1行で即開始</td>
+        <td>CronCreate で登録が必要</td>
+      </tr>
+      <tr>
+        <td>停止のしやすさ</td>
+        <td>セッション Ctrl+C / 次ターンで停止</td>
+        <td>CronDelete で明示削除</td>
+      </tr>
+      <tr>
+        <td>コスト粒度</td>
+        <td>手元セッションなので把握しやすい</td>
+        <td>登録しっぱなしで忘れがち(危険)</td>
+      </tr>
+      <tr>
+        <td>キャッシュ効率</td>
+        <td>5分以内なら<span class="term" data-tip="Claude Code のプロンプトキャッシュは約5分のTTL。連続間隔が5分以内ならウォーム状態でコストが大幅に下がる">ウォーム</span>状態維持しやすい</td>
+        <td>毎回コールド(原則)</td>
+      </tr>
+      <tr>
+        <td>向いている用途</td>
+        <td>1〜数時間の集中監視(今日のデプロイ直後など)</td>
+        <td>毎日の定常監視(営業日中ずっとなど)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="diagram-box">
+    <div class="diagram-title">使い分けフロー</div>
+    <pre class="mermaid">
+graph TD
+  Q["5分ごとに CI を見たい"] --> D1{"いつまで回す?"}
+  D1 -->|"数時間のみ"| L["/loop 5m を使う"]
+  D1 -->|"営業日ずっと"| D2{"PC を閉じる可能性は?"}
+  D2 -->|"ある"| C["CronCreate */5 * * * 1-5"]
+  D2 -->|"ない"| L
+  L --> E["即時開始。手元で回す"]
+  C --> E2["リモートで定時実行"]
+    </pre>
+    <div class="diagram-caption">「短期・集中」=/loop、「長期・営業日ずっと」=Cron が基本の切り分け。</div>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: 厳密に5分ぴったりではないことへの注意</summary>
+    <div class="more-body">
+      <p>どちらのモードも<strong>「ぴったり5分」は保証されない</strong>という共通点があります。/loop interval は Claude の応答完了から5分測るため、応答が1分かかったら実質<strong>次は6分後</strong>。CronCreate も内部スケジューラの揺らぎで数秒〜十数秒ずれることがあります。CI 監視用途では「秒単位の厳密さ」は不要なので、これは実用上問題になりません。逆に「外形監視 SLA 計測」のように厳密性が要るなら、Claude ではなく専用の監視ツール(Datadog/Mackerel 等)の方が適しています。</p>
+    </div>
+  </details>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section 3: 前提ツール ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 前提: gh CLI と Slack Webhook を準備</h2>
+
+  <p>Claude に渡す「道具」として以下2つがあれば十分です。ローカルにあれば Claude Code は<span class="term" data-tip="シェルコマンド実行ツール。ghのようなCLIはこれ経由で呼ばれる">Bash tool</span>経由で自力で叩きに行けます。</p>
+
+  <h3>1. gh CLI 最新版をインストール</h3>
+
+  <pre><code># macOS
+brew install gh
+gh --version   # 2.62 以降推奨 (2026年1月時点)
+
+# Linux (Debian/Ubuntu)
+sudo apt install gh
+
+# 認証(一度だけ)
+gh auth login
+# → GitHub.com / HTTPS / Login with a web browser を選択
+
+# 動作確認: 自分のリポの直近 run を取る
+gh run list --repo OWNER/REPO --limit 3</code></pre>
+
+  <h3>2. Slack Incoming Webhook を作る</h3>
+
+  <ol>
+    <li>Slack App を作成: <code>https://api.slack.com/apps</code> → Create New App → From scratch</li>
+    <li>Incoming Webhooks をオン → Add New Webhook to Workspace → 送信先 channel を選ぶ</li>
+    <li>発行された URL (例: <code>https://hooks.slack.com/services/T.../B.../xxx</code>) を環境変数に</li>
+  </ol>
+
+  <pre><code># ~/.zshrc などに追記
+export CI_ALERT_SLACK_URL="https://hooks.slack.com/services/T.../B.../xxx"
+
+# 動作テスト
+curl -X POST -H 'Content-Type: application/json' \
+  --data '{"text":"Claude CI watcher test"}' \
+  "$CI_ALERT_SLACK_URL"</code></pre>
+
+  <div class="info-box">
+    <span class="label">セキュリティ注意</span>
+    <p>Webhook URL は<strong>実質的な投稿権限そのもの</strong>。git コミットしない、Slack に貼らない、ログに出さない。Claude に渡すときも URL を直接プロンプトに書くより、環境変数名で参照させる(例: <code>$CI_ALERT_SLACK_URL</code>)方が安全です。</p>
+  </div>
+
+  <!-- ===== Section 4: プロンプト設計 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> プロンプト設計: self-contained に全部書く</h2>
+
+  <p>Ch04 で学んだ <span class="term" data-tip="呼び出しごとに必要情報を毎回完全に渡すスタイル。前回ターンのコンテキストを当てにしない">self-contained</span> 原則を適用します。放置運用では「<strong>起動した Claude が履歴ゼロで読んでも1人で完遂できる</strong>」ようプロンプトを書きます。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">監視プロンプトの7ブロック構造</div>
+    <svg viewBox="0 0 700 380" width="100%" style="max-width:700px; display:block; margin:0 auto;">
+      <g font-family="inherit" font-size="12">
+        <rect x="20" y="20" width="660" height="44" rx="6" fill="#D97757" opacity="0.22" stroke="#D97757"/>
+        <text x="40" y="40" font-weight="700" fill="#18181b">【1. 目的】</text>
+        <text x="40" y="57" fill="#64748b">OWNER/REPO の main の最新 CI を確認し、失敗なら Slack 通知する。</text>
+
+        <rect x="20" y="70" width="660" height="44" rx="6" fill="#D97757" opacity="0.22" stroke="#D97757"/>
+        <text x="40" y="90" font-weight="700" fill="#18181b">【2. 取得方法】</text>
+        <text x="40" y="107" fill="#64748b">gh run list --repo OWNER/REPO --branch main --limit 1 --json ...</text>
+
+        <rect x="20" y="120" width="660" height="44" rx="6" fill="#D97757" opacity="0.22" stroke="#D97757"/>
+        <text x="40" y="140" font-weight="700" fill="#18181b">【3. 判定ルール】</text>
+        <text x="40" y="157" fill="#64748b">conclusion が failure/cancelled/timed_out の時だけ通知。</text>
+
+        <rect x="20" y="170" width="660" height="44" rx="6" fill="#fef2f2" stroke="#dc2626"/>
+        <text x="40" y="190" font-weight="700" fill="#dc2626">【4. 二重通知回避】</text>
+        <text x="40" y="207" fill="#64748b">~/.ci-watch-state.json の last_notified_run_id と比較。</text>
+
+        <rect x="20" y="220" width="660" height="44" rx="6" fill="#D97757" opacity="0.22" stroke="#D97757"/>
+        <text x="40" y="240" font-weight="700" fill="#18181b">【5. 通知内容】</text>
+        <text x="40" y="257" fill="#64748b">run URL / commit message / 失敗 job 名 / log tail 30 行の要約。</text>
+
+        <rect x="20" y="270" width="660" height="44" rx="6" fill="#D97757" opacity="0.22" stroke="#D97757"/>
+        <text x="40" y="290" font-weight="700" fill="#18181b">【6. 成功時の挙動】</text>
+        <text x="40" y="307" fill="#64748b">何もしない。標準出力に 1行だけ「OK: run_id=...」と出す。</text>
+
+        <rect x="20" y="320" width="660" height="60" rx="6" fill="#f4f4f5" stroke="#18181b"/>
+        <text x="40" y="342" font-weight="700" fill="#18181b">【7. エラー時】</text>
+        <text x="40" y="359" fill="#64748b">gh や curl が落ちたら stderr に出して、loopは止めずに次回へ。</text>
+        <text x="40" y="375" fill="#64748b">(3回連続失敗なら Slack に「watcher自身が壊れた」を送る)</text>
+      </g>
+    </svg>
+    <div class="diagram-caption">「放置で動く」プロンプトは、成功時・失敗時・エラー時の3パスをすべて明記する。</div>
+  </div>
+
+  <h3>完成プロンプト(コピペ可)</h3>
+
+  <pre><code>あなたは CI 監視 watcher です。以下を1回実行してください。
+状態保持には ~/.ci-watch-state.json を使います(なければ作る)。
+
+【目的】
+ OWNER/REPO の main ブランチの最新 GitHub Actions run を確認し、
+ 失敗していれば Slack に通知する。成功なら何もしない。
+
+【対象】
+ - リポ: OWNER/REPO (ここは自分のリポ名に置換)
+ - ブランチ: main
+
+【手順】
+ 1. bash: gh run list --repo OWNER/REPO --branch main \
+      --limit 1 --json databaseId,status,conclusion,headSha,displayTitle,url
+ 2. status == "completed" でない → 何もせず終了(まだ走行中)
+ 3. conclusion が "success" → stdout に 1行だけ
+    「OK: run_id=&lt;id&gt;」と書いて終了。
+ 4. conclusion が "failure" / "cancelled" / "timed_out" のとき:
+    a. ~/.ci-watch-state.json を読み、last_notified_run_id と比較
+    b. 同じ id なら既通知なので何もせず終了
+    c. 新しい id なら:
+       - gh run view &lt;id&gt; --repo OWNER/REPO --log-failed | tail -60
+       - 上記 log tail を 200字以内で要約
+       - 以下 JSON を $CI_ALERT_SLACK_URL に POST
+         {
+           "text": ":rotating_light: CI FAILED: &lt;displayTitle&gt;\n&lt;url&gt;\n\n&lt;log要約&gt;"
+         }
+       - ~/.ci-watch-state.json を { "last_notified_run_id": &lt;id&gt; } で更新
+
+【やらないこと】
+ - 成功時に通知しない
+ - 同じ run_id を2回通知しない
+ - gh / curl が失敗してもループは止めない(stderr出力のみ)
+
+【出力】
+ 標準出力に 1行だけ結果を書く。例:
+ 「OK: run_id=12345」または
+ 「NOTIFIED: run_id=12346 (失敗通知送信)」または
+ 「SKIP: run_id=12346 (既通知)」</code></pre>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section 5: 二重通知回避 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 二重通知回避: 状態ファイルで冪等化</h2>
+
+  <p>単純に「失敗ならSlack」と書くと、同じ失敗ビルドが5分ごとに通知されて<strong>Slack が荒れます</strong>。これを防ぐのが状態ファイル方式です。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">状態ファイルでの重複抑止(シーケンス)</div>
+    <pre class="mermaid">
+sequenceDiagram
+  participant C as Claude(5分おき)
+  participant GH as GitHub API(gh)
+  participant S as ~/.ci-watch-state.json
+  participant Sl as Slack
+  C->>GH: 最新 run 取得
+  GH-->>C: run_id=123 (failure)
+  C->>S: last_notified_run_id を読む
+  S-->>C: 123 (既通知)
+  C->>C: 何もしない(SKIP)
+  Note over C: 5 分後
+  C->>GH: 最新 run 取得
+  GH-->>C: run_id=124 (failure)
+  C->>S: last_notified_run_id を読む
+  S-->>C: 123
+  C->>Sl: 通知を送る
+  C->>S: 124 に更新
+    </pre>
+    <div class="diagram-caption">鍵は「通知送信直後に状態を書き換える」。同じ run_id は二度と通知されない。</div>
+  </div>
+
+  <h3>状態ファイルのスキーマ</h3>
+
+  <pre><code>// ~/.ci-watch-state.json
+{
+  "last_notified_run_id": 12345,
+  "last_notified_at": "2026-01-18T10:05:00Z",
+  "last_checked_at": "2026-01-18T10:10:12Z",
+  "consecutive_errors": 0
+}</code></pre>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="database" width="20" height="20"></i>
+      <div><strong>last_notified_run_id</strong> — 最後に通知した run の databaseId。比較の主キー。</div>
+    </li>
+    <li>
+      <i data-lucide="activity" width="20" height="20"></i>
+      <div><strong>last_checked_at</strong> — 単なる稼働確認用。異常検知に使える。</div>
+    </li>
+    <li>
+      <i data-lucide="alert-triangle" width="20" height="20"></i>
+      <div><strong>consecutive_errors</strong> — gh/curl のエラー回数。3回でメタアラート送信。</div>
+    </li>
+  </ul>
+
+  <details class="more-box">
+    <summary>もっと詳しく: 「再実行された failure」も新 id なら通知される</summary>
+    <div class="more-body">
+      <p>GitHub Actions で同じコミットに対して「Re-run failed jobs」を押すと新しい run_id が発行されます。これは新規 id なので watcher は再通知します。人間としては「また失敗したか」と気づきたい場面なので、この挙動は妥当です。<strong>「同じコミットは1回だけ」にしたいなら headSha で重複排除</strong>する設計に変えれば良いです(状態ファイルに last_notified_sha を持たせる)。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 6: interval 実装 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 実装A: /loop interval で回す</h2>
+
+  <p>まずは<strong>手軽な方</strong>から。手元 Claude Code セッションで /loop を使います。</p>
+
+  <h3>手順</h3>
+
+  <ol>
+    <li>上の「完成プロンプト」を <code>~/ci-watcher-prompt.md</code> に保存(自分のリポ名に置換)</li>
+    <li>Claude Code セッションで以下を実行</li>
+  </ol>
+
+  <pre><code>/loop 5m @~/ci-watcher-prompt.md</code></pre>
+
+  <p>これで5分おきに同じプロンプトが走ります。停止は Claude のセッションを Ctrl+C するか、次ターンで「ループ止めて」と伝えるだけ。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">/loop interval 実行タイムライン(60分)</div>
+    <canvas id="ch5-bar-1" height="160"></canvas>
+    <div class="diagram-caption">5分おきに12回発火。失敗発生時刻(例: 0:23)から最大5分以内に通知が飛ぶ。</div>
+  </div>
+
+  <div class="hands-on-box info-box">
+    <span class="label">今すぐ試す: 最初の1時間を /loop で監視</span>
+    <p>自分の直近 push 後、<strong>1時間だけ</strong>この watcher を走らせてみましょう。成功ビルドだけなら Slack に何も来ない(静かな watcher が正解)。わざと失敗コミット(例: <code>process.exit(1)</code> を仕込む)を push すると、5分以内に Slack へ通知が来るはずです。</p>
+  </div>
+
+  <!-- ===== Section 7: CronCreate 実装 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 実装B: CronCreate で長期運用</h2>
+
+  <p>PC を閉じる or 営業日ずっと回したいなら CronCreate に切り替えます。Ch03 で学んだ手順の実戦適用です。</p>
+
+  <pre><code># /schedule スキル経由(Claude Code セッション内で)
+/schedule create \
+  --cron "*/5 9-18 * * 1-5" \
+  --prompt-file ~/ci-watcher-prompt.md \
+  --name "ci-watch-main"
+
+# cron 式の意味:
+#  */5    -> 5分おき
+#  9-18   -> 9時〜18時だけ
+#  * *    -> 毎日・毎月
+#  1-5    -> 月〜金のみ
+# = 営業日9-18時のみ動く設定 (夜間と土日は静か)</code></pre>
+
+  <h3>cron 式の設計ポイント</h3>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="moon" width="20" height="20"></i>
+      <div><strong>夜間停止</strong> — 「<code>9-18</code>」で営業時間外はコストゼロ。誰も気づかない深夜に実行しても意味薄い。</div>
+    </li>
+    <li>
+      <i data-lucide="calendar-off" width="20" height="20"></i>
+      <div><strong>土日停止</strong> — 「<code>1-5</code>」で月〜金のみ。週末の誤通知抑止。</div>
+    </li>
+    <li>
+      <i data-lucide="zap-off" width="20" height="20"></i>
+      <div><strong>忘れ防止</strong> — 登録したら <code>/schedule list</code> でカレンダーに棚卸し。不要なら即 <code>/schedule delete</code>。</div>
+    </li>
+  </ul>
+
+  <!-- ===== Section 8: コスト試算 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> コスト試算: どれくらいで済むのか</h2>
+
+  <p>放置運用で一番怖いのは<strong>気づいたら月額が跳ねている</strong>こと。事前に試算しておきます。<span class="term" data-tip="2026年1月時点の参考値。実コストは利用プランとモデル価格で変わるので、必ず公式料金表で再確認">以下は2026年1月時点の概算</span>。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">運用パターン別・1ヶ月のおおまかな実行回数</div>
+    <canvas id="ch5-bar-2" height="180"></canvas>
+    <div class="diagram-caption">24/7 ポーリングと営業時間限定では<strong>実行回数が約5倍違う</strong>。</div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-num">2,640<small>回/月</small></div>
+      <div class="stat-label">営業日9-18時(推奨)</div>
+      <div class="stat-trend up">コスト最適</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">8,640<small>回/月</small></div>
+      <div class="stat-label">24/7 ポーリング</div>
+      <div class="stat-trend down">3倍超のコスト</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">80<small>%</small></div>
+      <div class="stat-label">短プロンプト化による削減効果</div>
+      <div class="stat-trend up">キャッシュ効きやすい</div>
+    </div>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: 失敗時のみ詳細分析でコストを抑える</summary>
+    <div class="more-body">
+      <p>ポーリング毎に log tail 60行 を全部要約するのは<strong>無駄</strong>。成功時(全体の95%以上)は「status 取得 → 成功確認 → 即終了」で最小トークンに抑えられます。失敗時だけ log を取りに行き要約する設計にすれば、<span class="term" data-tip="毎回の呼び出しで扱うトークン量。失敗時分岐を使うと平均実トークンが桁違いに減る">平均トークン</span>は 1/5 程度まで下がります。プロンプトに「成功時は log を読まない」と明示するのがコツです。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 9: 失敗検知ロジック詳解 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 失敗検知ロジック: conclusion と status の違い</h2>
+
+  <p>GitHub Actions の <code>gh run list --json</code> は<strong>2つのフィールド</strong>を返します。混同すると誤検知の温床です。</p>
+
+  <table>
+    <thead>
+      <tr><th>フィールド</th><th>値</th><th>意味</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>status</code></td><td><code>queued</code></td><td>まだ走ってない(待機中)</td></tr>
+      <tr><td><code>status</code></td><td><code>in_progress</code></td><td>走行中</td></tr>
+      <tr><td><code>status</code></td><td><code>completed</code></td><td>終わった(成否は conclusion で判定)</td></tr>
+      <tr><td><code>conclusion</code></td><td><code>success</code></td><td>成功</td></tr>
+      <tr><td><code>conclusion</code></td><td><code>failure</code></td><td>失敗 ← 通知対象</td></tr>
+      <tr><td><code>conclusion</code></td><td><code>cancelled</code></td><td>キャンセルされた ← 通知対象</td></tr>
+      <tr><td><code>conclusion</code></td><td><code>timed_out</code></td><td>タイムアウト ← 通知対象</td></tr>
+      <tr><td><code>conclusion</code></td><td><code>skipped</code></td><td>スキップ(通知不要)</td></tr>
+    </tbody>
+  </table>
+
+  <p>つまり正しい判定は<strong>「<code>status == completed</code> かつ <code>conclusion in {failure, cancelled, timed_out}</code>」</strong>。走行中を失敗と誤判定しないため、status の確認を忘れずに。</p>
+
+  <pre><code># jq で綺麗に判定する場合(bash 単体テスト用)
+gh run list --repo OWNER/REPO --branch main --limit 1 \
+  --json databaseId,status,conclusion \
+  | jq -r '.[0] | select(.status=="completed" and (.conclusion=="failure" or .conclusion=="cancelled" or .conclusion=="timed_out")) | .databaseId'
+# → 失敗ならIDを出力、それ以外なら何も出ない</code></pre>
+
+  <!-- ===== Exercises ===== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">中級</span>
+    <h4>自分のリポで watcher を起動する</h4>
+    <p>以下の手順で実際に動作させてください。</p>
+    <ol>
+      <li>gh CLI と Slack Webhook の準備(本章 Section 3)</li>
+      <li>完成プロンプト(Section 4)の <code>OWNER/REPO</code> を自分のリポ名に置換し、<code>~/ci-watcher-prompt.md</code> に保存</li>
+      <li>わざと失敗するコミット(例: test コードに <code>expect(1).toBe(2)</code>)を push</li>
+      <li><code>/loop 5m @~/ci-watcher-prompt.md</code> で起動</li>
+      <li>5分以内に Slack 通知が来ることを確認。さらに次のループでは重複通知が来ないことを確認</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答・確認ポイント</summary>
+    <div class="answer-body">
+      <p>期待される挙動:</p>
+      <ul>
+        <li>1回目: 失敗検知 → Slack 通知 → state ファイル更新 → stdout に <code>NOTIFIED: run_id=XXX</code></li>
+        <li>2回目: 同じ run_id → SKIP(通知しない) → stdout に <code>SKIP: run_id=XXX</code></li>
+        <li>3回目以降: 新しい push が無ければずっと SKIP</li>
+        <li>成功 push 後: 次のループから <code>OK: run_id=YYY</code></li>
+      </ul>
+      <p>うまくいかない場合のチェックリスト:</p>
+      <pre><code># A. gh コマンドが通るか
+gh run list --repo OWNER/REPO --limit 1
+# → 何も出ない場合は repo 名 or 認証を疑う
+
+# B. Slack URL が有効か
+curl -X POST -H 'Content-Type: application/json' \
+  --data '{"text":"test"}' "$CI_ALERT_SLACK_URL"
+# → 200 "ok" 以外なら URL を再確認
+
+# C. 状態ファイルが書けているか
+cat ~/.ci-watch-state.json
+# → last_notified_run_id が最新失敗の ID になっているか</code></pre>
+      <p>ここまで動けば「5分ごとの CI 監視」は完成。あとは運用期間を決めて /loop を止めるか、営業日運用なら CronCreate へ移行。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>CronCreate 版に移行し、コストを営業時間限定で最適化</h4>
+    <p>Exercise 1 の /loop 版を CronCreate に移植し、以下の最適化を加えてください。</p>
+    <ol>
+      <li>営業日 (月-金) の 9-18 時のみ実行する cron 式を設定</li>
+      <li>状態ファイルに <code>consecutive_errors</code> を追加し、3 回連続で gh が落ちたら「watcher 自身が壊れた」を Slack に通知</li>
+      <li>CronList で登録内容を確認し、<strong>不要になった時の削除コマンド</strong>をメモに残す</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答</summary>
+    <div class="answer-body">
+      <pre><code># 1. 登録
+/schedule create \
+  --cron "*/5 9-18 * * 1-5" \
+  --prompt-file ~/ci-watcher-prompt.md \
+  --name "ci-watch-main-biz"
+
+# 2. プロンプトに以下セクションを追記
+【エラー時の挙動】
+ gh 実行が非ゼロ終了した場合:
+  - ~/.ci-watch-state.json の consecutive_errors を +1
+  - 値が 3 以上になった瞬間、Slack に
+    「:warning: CI watcher が3回連続で gh コマンド失敗」
+    を1度だけ送信(以後 consecutive_errors が 0 に戻るまで抑止)
+ gh が成功した場合: consecutive_errors を 0 にリセット
+
+# 3. 棚卸し
+/schedule list
+# → 登録一覧を確認
+
+# 削除(プロジェクト終了時)
+/schedule delete ci-watch-main-biz</code></pre>
+      <p>このレベルまで作ると、<strong>watcher が死んでも気づける</strong>(メタアラート)、<strong>コストが読める</strong>(営業時間限定)、<strong>停止しやすい</strong>(名前管理)という3拍子揃った放置運用になります。ここが Ch05 のゴール地点です。</p>
+    </div>
+  </details>
+
+  <div class="info-box">
+    <span class="label">2026年1月時点の注記</span>
+    <p>gh CLI のサブコマンド、<code>/schedule</code> スキル・CronCreate ツールのオプション、GitHub Actions の返却フィールドは<strong>2026年1月時点</strong>のものです。API は更新される可能性があるため、実装前に <code>gh run list --help</code> と Claude Code の <code>/schedule --help</code> で最新仕様を確認してください。Slack Incoming Webhook の URL 形式も同様です。</p>
+  </div>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span> <a href="https://cli.github.com/manual/gh_run" target="_blank" rel="noopener">gh run コマンドリファレンス</a> — run list / run view のフィールド一覧</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.github.com/en/actions" target="_blank" rel="noopener">GitHub Actions 公式ドキュメント</a> — status/conclusion の正式定義</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://api.slack.com/messaging/webhooks" target="_blank" rel="noopener">Slack Incoming Webhooks</a> — Webhook 発行手順と payload 形式</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://crontab.guru/" target="_blank" rel="noopener">crontab.guru</a> — cron 式を対話的に検証できるサイト</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式ドキュメント</a> — /loop と /schedule の基本</li>
+      <li><span class="res-type article">Article</span> <a href="https://zenn.dev/topics/claudecode" target="_blank" rel="noopener">Zenn: Claude Code タグ</a> — 日本語の実装事例</li>
+      <li><span class="res-type video">Video</span> <a href="https://www.youtube.com/results?search_query=Claude+Code+scheduled+tasks+CI" target="_blank" rel="noopener">YouTube: Claude Code scheduled tasks CI</a> — 動画で学ぶ CI 監視の実例</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="05">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="04-prompt-design.html"><span class="direction">&larr; Prev</span>放置運用プロンプト</a>
+    <a href="06-daily-pr-summary.html"><span class="direction">Next &rarr;</span>実践：PRサマリ通知</a>
+  </div>
+</main>
+
+<script>
+window.addEventListener("load", function(){
+  // Bar 1: /loop 60分タイムライン
+  var ctx1 = document.getElementById('ch5-bar-1');
+  if (ctx1 && window.Chart) {
+    new Chart(ctx1, {
+      type: 'bar',
+      data: {
+        labels: ['0:05','0:10','0:15','0:20','0:25','0:30','0:35','0:40','0:45','0:50','0:55','1:00'],
+        datasets: [{
+          label: 'Claude 実行(分)',
+          data: [1,1,1,1,1,1,1,1,1,1,1,1],
+          backgroundColor: ['#D97757','#D97757','#D97757','#D97757','#D97757','#dc2626','#D97757','#D97757','#D97757','#D97757','#D97757','#D97757'],
+          borderRadius: 4
+        }]
+      },
+      options: {
+        plugins: { legend: { display: false }, title: { display: true, text: '赤 = 失敗検知・Slack 通知が発火したタイミング' } },
+        scales: { y: { display: false }, x: { title: { display: true, text: '経過時間' } } }
+      }
+    });
+  }
+
+  // Bar 2: コスト試算
+  var ctx2 = document.getElementById('ch5-bar-2');
+  if (ctx2 && window.Chart) {
+    new Chart(ctx2, {
+      type: 'bar',
+      data: {
+        labels: ['営業日9-18時','営業日終日(0-24時)','毎日24時間'],
+        datasets: [{
+          label: '1ヶ月の実行回数(概算)',
+          data: [2640, 6336, 8640],
+          backgroundColor: ['#D97757','rgba(217,119,87,0.55)','#cbd5e1'],
+          borderRadius: 6
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        plugins: { legend: { display: false } },
+        scales: { x: { beginAtZero: true, title: { display: true, text: '回 (少ないほどコスト安)' } } }
+      }
+    });
+  }
+});
+</script>
+
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>

@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>Scheduled Tasks (CronCreate) - MK's Claude Code Tutorial - Schedule & Loop</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code - Schedule
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav class="active"><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Practice</span><span class="phase-pct" id="pct-practice">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.03</span>
+    Scheduled Tasks (CronCreate)
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 8 sections</text>
+    </svg>
+    <div class="progress-info">0h / 4h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-schedule-loop-overview.html"><span class="status-dot" data-chapter="01"></span> Scheduled Tasks & Loop とは</a></li>
+    <li><a href="02-loop-skill.html"><span class="status-dot" data-chapter="02"></span> /loop スキル</a></li>
+    <li><a href="03-cron-schedule.html" class="active"><span class="status-dot" data-chapter="03"></span> Scheduled Tasks</a></li>
+    <li><a href="04-prompt-design.html"><span class="status-dot" data-chapter="04"></span> 放置運用プロンプト</a></li>
+  </ul>
+  <div class="section-label">Practice</div>
+  <ul>
+    <li><a href="05-ci-polling.html"><span class="status-dot" data-chapter="05"></span> 実践：CIチェック</a></li>
+    <li><a href="06-daily-pr-summary.html"><span class="status-dot" data-chapter="06"></span> 実践：PRサマリ通知</a></li>
+    <li><a href="07-long-running-loop.html"><span class="status-dot" data-chapter="07"></span> 実践：/loop で自走</a></li>
+    <li><a href="08-final-exercise.html"><span class="status-dot" data-chapter="08"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 1: Basics &gt; Chapter 03</div>
+  <h1>Scheduled Tasks (CronCreate)</h1>
+  <p class="subtitle">cron式・通知・実行スコープ — 定時実行を1本引けるようになる</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 40分</span>
+    <span class="badge">Phase: Basics</span>
+    <span class="badge">難易度: 中級</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">この章のゴール</span>
+    <p>Claude Codeで「毎朝9時にPRサマリをSlackに送る」「1時間後に一度だけバッチを回す」といった<strong>定時・定期実行のタスク</strong>を、自分の手で1本作れるようになります。鍵になるのは <code>CronCreate</code> ツール(<code>/schedule</code> スキル経由)と <span class="term" data-tip="cron式：分 時 日 月 曜 の5フィールドでスケジュールを表現する標準フォーマット">cron式</span>の理解、それに<strong>リモート実行スコープ</strong>と通知経路です。最後は実際に1時間後の1回実行トリガーを作り、出力を <code>TaskOutput</code> で取り出すまで通しでやります。<span class="term" data-tip="2026年1月時点の記述。UIやツール名称は将来変更される可能性あり">本章の記述は2026年1月時点の情報</span>で書かれています。</p>
+  </div>
+
+  <div class="info-box">
+    <span class="label">コスト警告</span>
+    <p>Scheduled Tasks は<strong>放置すると勝手に課金が走り続ける</strong>のが最大の落とし穴です。毎分起動で空回りし続けるトリガーを1つ放置するだけで、月額が数倍に膨らみます。本章の最後で <code>CronList</code> と <code>CronDelete</code> を必ず確認してください。</p>
+  </div>
+
+  <!-- ===== Section 1: CronCreate と /schedule の全体像 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> CronCreate と /schedule スキルの全体像</h2>
+
+  <p>Claude Codeで定時実行をやるには<strong>2つの入口</strong>があります。どちらも最終的には同じ「<span class="term" data-tip="トリガー：スケジュールに従って自動起動されるリモートエージェントの設定単位。1つ1つが個別のcron entryになる">トリガー</span>(リモートエージェント設定)」を作ります。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">CronCreate と /schedule の関係図</div>
+    <svg viewBox="0 0 560 260" width="100%" style="max-width:560px; display:block; margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <rect x="30" y="30" width="160" height="70" rx="10" fill="#D97757" opacity="0.18" stroke="#D97757" stroke-width="1.5"/>
+      <text x="110" y="60" text-anchor="middle" font-size="13" font-weight="700" fill="#18181b">/schedule スキル</text>
+      <text x="110" y="80" text-anchor="middle" font-size="10" fill="#475569">自然文で依頼</text>
+
+      <rect x="30" y="150" width="160" height="70" rx="10" fill="#D97757" opacity="0.28" stroke="#D97757" stroke-width="1.5"/>
+      <text x="110" y="180" text-anchor="middle" font-size="13" font-weight="700" fill="#18181b">CronCreate ツール</text>
+      <text x="110" y="200" text-anchor="middle" font-size="10" fill="#475569">cron式を直接指定</text>
+
+      <rect x="370" y="90" width="160" height="80" rx="10" fill="#D97757" opacity="0.38" stroke="#D97757" stroke-width="1.5"/>
+      <text x="450" y="120" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">トリガー(Remote)</text>
+      <text x="450" y="140" text-anchor="middle" font-size="10" fill="#fff">cron式+プロンプト+通知先</text>
+      <text x="450" y="156" text-anchor="middle" font-size="10" fill="#fff">= 1つのcron entry</text>
+
+      <line x1="190" y1="65" x2="370" y2="115" stroke="#D97757" stroke-width="1.8" marker-end="url(#a)"/>
+      <line x1="190" y1="185" x2="370" y2="145" stroke="#D97757" stroke-width="1.8" marker-end="url(#a)"/>
+      <defs>
+        <marker id="a" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#D97757"/></marker>
+      </defs>
+      <text x="280" y="75" font-size="10" fill="#64748b">ラップ</text>
+      <text x="280" y="175" font-size="10" fill="#64748b">直接API</text>
+    </svg>
+    <div class="diagram-caption">/schedule は親切UI、CronCreate は生ツール。どちらも同じ「トリガー」を作る。</div>
+  </div>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="message-square" width="20" height="20"></i>
+      <div><strong>/schedule スキル</strong> — <span class="term" data-tip="/schedule：Claude Codeに同梱されるスキルで、自然文からトリガー作成・一覧・削除を仲介する">トリガー操作の対話UI</span>。「毎朝9時にPRサマリ送って」のような自然文で依頼できる。内部的には CronCreate/CronList/CronDelete を呼ぶ。</div>
+    </li>
+    <li>
+      <i data-lucide="terminal" width="20" height="20"></i>
+      <div><strong>CronCreate ツール</strong> — 生のツール呼び出し。cron式・プロンプト・通知先を構造化して渡す。<strong>再現性重視</strong>のスクリプト化に向く。</div>
+    </li>
+    <li>
+      <i data-lucide="list" width="20" height="20"></i>
+      <div><strong>CronList / CronDelete</strong> — 登録済みトリガーの一覧と削除。<span class="term" data-tip="trigger_id：各トリガーを一意に識別する文字列ID。CronListで確認しCronDeleteで指定する">trigger_id</span>で指定する。</div>
+    </li>
+    <li>
+      <i data-lucide="play-circle" width="20" height="20"></i>
+      <div><strong>RemoteTrigger / TaskOutput</strong> — 今すぐ手動起動する <code>RemoteTrigger</code>、結果のログを取り出す <code>TaskOutput</code>。セットで使うことが多い。</div>
+    </li>
+  </ul>
+
+  <div class="info-box">
+    <span class="label">まず覚えるのはこの4つ</span>
+    <p><strong>CronCreate(作る) / CronList(見る) / CronDelete(消す) / TaskOutput(結果を取る)</strong>。最初はこの4つだけでOK。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span></p>
+  </div>
+
+  <!-- ===== Section 2: cron式の基本 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> cron式の基本 — 5フィールドの読み方</h2>
+
+  <p>cron式は<strong>スペース区切り5フィールド</strong>で「いつ起動するか」を表現します。覚えるのは位置と記号だけ。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">cron式 5フィールドの構造</div>
+    <svg viewBox="0 0 560 200" width="100%" style="max-width:560px; display:block; margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <g font-family="ui-monospace, monospace" font-size="18">
+        <rect x="40" y="40" width="70" height="50" rx="6" fill="#fff" stroke="#D97757" stroke-width="1.5"/>
+        <text x="75" y="72" text-anchor="middle" font-weight="700" fill="#18181b">分</text>
+        <rect x="130" y="40" width="70" height="50" rx="6" fill="#fff" stroke="#D97757" stroke-width="1.5"/>
+        <text x="165" y="72" text-anchor="middle" font-weight="700" fill="#18181b">時</text>
+        <rect x="220" y="40" width="70" height="50" rx="6" fill="#fff" stroke="#D97757" stroke-width="1.5"/>
+        <text x="255" y="72" text-anchor="middle" font-weight="700" fill="#18181b">日</text>
+        <rect x="310" y="40" width="70" height="50" rx="6" fill="#fff" stroke="#D97757" stroke-width="1.5"/>
+        <text x="345" y="72" text-anchor="middle" font-weight="700" fill="#18181b">月</text>
+        <rect x="400" y="40" width="70" height="50" rx="6" fill="#fff" stroke="#D97757" stroke-width="1.5"/>
+        <text x="435" y="72" text-anchor="middle" font-weight="700" fill="#18181b">曜</text>
+      </g>
+      <g font-size="11" fill="#64748b" text-anchor="middle">
+        <text x="75" y="110">0-59</text>
+        <text x="165" y="110">0-23</text>
+        <text x="255" y="110">1-31</text>
+        <text x="345" y="110">1-12</text>
+        <text x="435" y="110">0-6 (日=0)</text>
+      </g>
+      <g font-size="13" font-family="ui-monospace, monospace" fill="#D97757" text-anchor="middle">
+        <text x="75" y="150">0</text>
+        <text x="165" y="150">9</text>
+        <text x="255" y="150">*</text>
+        <text x="345" y="150">*</text>
+        <text x="435" y="150">1-5</text>
+      </g>
+      <text x="255" y="180" text-anchor="middle" font-size="12" fill="#18181b">例: <tspan font-family="ui-monospace, monospace" font-weight="700">0 9 * * 1-5</tspan> = 平日 月〜金 の 9:00 ちょうど</text>
+    </svg>
+    <div class="diagram-caption">左から順に 分・時・日・月・曜。曜日は 0=日, 1=月, ... 6=土(7=日もOKな実装あり)。</div>
+  </div>
+
+  <h3>よく使う記号4つ</h3>
+
+  <table>
+    <thead>
+      <tr><th>記号</th><th>意味</th><th>例</th><th>読み方</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>*</code></td><td>任意(全部)</td><td><code>* * * * *</code></td><td>毎分</td></tr>
+      <tr><td><code>,</code></td><td>列挙</td><td><code>0 9,12,18 * * *</code></td><td>9時/12時/18時ちょうど</td></tr>
+      <tr><td><code>-</code></td><td>範囲</td><td><code>0 9-17 * * *</code></td><td>9時〜17時の毎時0分</td></tr>
+      <tr><td><code>/</code></td><td>間隔</td><td><code>*/5 * * * *</code></td><td>5分ごと</td></tr>
+    </tbody>
+  </table>
+
+  <h3>頻出パターン早見表</h3>
+
+  <table>
+    <thead>
+      <tr><th>やりたいこと</th><th>cron式</th><th>備考</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>毎分起動</td><td><code>* * * * *</code></td><td>テスト以外で使わない。コスト爆発注意</td></tr>
+      <tr><td>5分ごと</td><td><code>*/5 * * * *</code></td><td>CIポーリングの定番</td></tr>
+      <tr><td>毎時0分</td><td><code>0 * * * *</code></td><td>毎時1回のヘルスチェック</td></tr>
+      <tr><td>平日の朝9時</td><td><code>0 9 * * 1-5</code></td><td>PRサマリ通知の定番</td></tr>
+      <tr><td>毎日の18時</td><td><code>0 18 * * *</code></td><td>退勤前の集計</td></tr>
+      <tr><td>毎週月曜朝10時</td><td><code>0 10 * * 1</code></td><td>週次レポート</td></tr>
+      <tr><td>毎月1日の朝0時</td><td><code>0 0 1 * *</code></td><td>月次集計</td></tr>
+      <tr><td>15分ごと営業時間内</td><td><code>*/15 9-18 * * 1-5</code></td><td>平日 9-18時の15分刻み</td></tr>
+      <tr><td>1時間後に1回だけ</td><td>(1回実行はcron式とは別枠)</td><td>run_at や delay 系パラメータで指定</td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-box">
+    <span class="label">タイムゾーン注意</span>
+    <p>cron式の<strong>時刻はトリガー側のタイムゾーンで解釈</strong>されます。<span class="term" data-tip="リモート実行環境はUTC基準のことが多い。日本時間で書きたい場合はトリガー作成時にtimezone=Asia/Tokyoを明示する">2026年1月時点のリモート実行はデフォルトUTC</span>のことが多いので、「朝9時」は<code>timezone="Asia/Tokyo"</code> 指定を忘れずに。でないとJSTの18時に動いて怒られます。</p>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: crontab.guru で自分の式を検証するクセをつける</summary>
+    <div class="more-body">
+      <p><a href="https://crontab.guru/" target="_blank" rel="noopener">crontab.guru</a> に式を貼ると「この式は次に何時に動く」を<strong>自然文で表示</strong>してくれます。特に <code>*/7</code> のような割り切れない間隔、月末指定、曜日の境界ケースは人力検算だとハマりがち。本番トリガーを作る前に一度貼って確かめるだけで、深夜3時にSlackが鳴る事故が激減します。</p>
+      <p>Claude Codeのリモート実行では<span class="term" data-tip="標準cronより拡張が少なめ。@reboot など特殊指定は通常使えない">標準5フィールド構文に限定</span>されることが多いです。<code>@hourly</code> 等のエイリアスが通らない実装もあるので、<strong>常に5フィールドで書くクセ</strong>をつけておくと安全です。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 3: 実行環境 リモート vs ローカル ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 実行環境 — リモート vs ローカル</h2>
+
+  <p>Scheduled Tasks は<strong>どこで動くか</strong>が結果の信頼性を左右します。2026年1月時点で主な選択肢は2つ。</p>
+
+  <table>
+    <thead>
+      <tr><th>観点</th><th>リモート (Remote Agent)</th><th>ローカル (自PC cron)</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>起動条件</td><td>クラウド側で常時待機</td><td>PCが起きていて Claude Code が起動中</td></tr>
+      <tr><td>PCスリープの影響</td><td>無し(安心)</td><td>スリープ中は動かない</td></tr>
+      <tr><td>ファイル/リポ アクセス</td><td>クラウド側のworkspace</td><td>ローカルの実ファイル</td></tr>
+      <tr><td>秘匿情報の扱い</td><td>クラウドで暗号化管理</td><td>ローカルにそのまま</td></tr>
+      <tr><td>典型用途</td><td>定時通知・CIポーリング</td><td>ローカルプロジェクト専用の集計</td></tr>
+      <tr><td>コスト感</td><td>起動ごと API課金が発生</td><td>同じく API課金発生(加えて自PC電気代)</td></tr>
+      <tr><td>デバッグ</td><td>TaskOutputでログ取得</td><td>ターミナルで直接確認可</td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-box">
+    <span class="label">まず選ぶべきはリモート</span>
+    <p>「通知系」「CI監視」「PRサマリ」みたいに<strong>PCが寝ていても動いてほしいタスク</strong>はリモート一択。ローカル cron を使うのは「このマシンのファイルしか触れない」ケースだけに絞ると迷いがなくなります。</p>
+  </div>
+
+  <!-- ===== Section 4: 通知チャネル ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 通知チャネル — Slack / push / メール</h2>
+
+  <p>無人実行の価値は<strong>通知が届いて初めて</strong>生まれます。主な3経路と使い分け。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">通知チャネルの到達速度と保存性</div>
+    <canvas id="ch3-notify-1" height="240"></canvas>
+  </div>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="slack" width="20" height="20"></i>
+      <div><strong>Slack (Incoming Webhook)</strong> — <span class="term" data-tip="Incoming Webhook：Slackが払い出すURLにPOSTするとチャネルにメッセージが流れる仕組み">Webhook URL</span> を1本もらえば完了。チームで共有・検索しやすい。CIアラート、PRサマリの定番。</div>
+    </li>
+    <li>
+      <i data-lucide="bell" width="20" height="20"></i>
+      <div><strong>push通知(モバイル/デスクトップ)</strong> — 即時性が最強。障害通知や「5分以内に気付きたい」用途。履歴は残りにくい。</div>
+    </li>
+    <li>
+      <i data-lucide="mail" width="20" height="20"></i>
+      <div><strong>メール</strong> — 到達の信頼性が高く、長文も送れる。日次/週次レポートの保存先として優秀。即時性は劣る。</div>
+    </li>
+  </ul>
+
+  <div class="info-box">
+    <span class="label">使い分け3秒ルール</span>
+    <p><strong>「すぐ気付きたい → push / チームで見る → Slack / アーカイブ性優先 → メール」</strong>。同じタスクでも通知先で価値が変わります。Slack+メール の2経路送りも現場では定番。</p>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: 二重通知を避けるチェックポイント</summary>
+    <div class="more-body">
+      <p>CI失敗を5分ごとに見続けるトリガーで<strong>同じ失敗を12回通知する</strong>のは典型的な事故です。回避策は(1) 最終通知した<span class="term" data-tip="SHA：Gitコミットの識別ハッシュ。7〜40文字の16進数。ビルド対象を一意に指す">SHA</span>をファイルに保存し次回起動時に比較、(2) 結果が前回と同じなら通知スキップ、(3) 復旧したときだけもう一度通知——の3点セット。プロンプトに「前回通知した commit SHA を `last_notified.txt` に保存し、同じなら送信しない」と明記するだけで実装できます。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 5: トリガー管理 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> トリガー管理 — CronList / CronDelete / RemoteTrigger</h2>
+
+  <p>作ったトリガーは<strong>必ず一覧化と停止手段を確保</strong>しておきます。放置事故を防ぐ唯一の方法です。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">トリガーライフサイクル</div>
+    <pre class="mermaid">
+graph LR
+  A["CronCreate<br/>作成"] --> B["CronList<br/>一覧確認"]
+  B --> C{"動作OK?"}
+  C -- "はい" --> D["RemoteTrigger<br/>手動起動で検証"]
+  D --> E["TaskOutput<br/>結果取得"]
+  C -- "いいえ" --> F["CronDelete<br/>削除して作り直し"]
+  E --> G["運用継続"]
+  G -.2週に1度.-> B
+  F --> A
+    </pre>
+    <div class="diagram-caption">作って終わりではなく、2週間に1度 CronList で棚卸しすると放置事故が消える。</div>
+  </div>
+
+  <h3>1回実行の手動テスト(超重要)</h3>
+
+  <p>新規トリガーは必ず <code>RemoteTrigger</code> で<strong>手動1回実行→TaskOutput 確認</strong>の順でテストします。cron式が正しくても、プロンプトや通知先がバグっていたら無人実行では気付けません。</p>
+
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">ダメな例</span>
+      <h4>作っていきなり放置</h4>
+      <pre><code>CronCreate(
+  cron="0 9 * * 1-5",
+  prompt="PRを要約してSlackに",
+  slack_webhook="https://..."
+)
+# → 翌朝9時まで動作不明。
+#    通知ミスってたら月曜に気付く</code></pre>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">良い例</span>
+      <h4>作って即手動テスト</h4>
+      <pre><code>t = CronCreate(...)
+# すぐ手動起動
+RemoteTrigger(trigger_id=t.id)
+# 30秒後に結果確認
+TaskOutput(trigger_id=t.id)
+# Slackに届いたか目視</code></pre>
+    </div>
+  </div>
+
+  <!-- ===== Section 6: TaskOutput で出力を取る ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 出力の扱い — TaskOutput</h2>
+
+  <p>Scheduled Tasks は無人実行なので、<strong>「何が起きたか後で見る」手段</strong>がないと運用できません。<code>TaskOutput</code> は最後に起動したタスクの標準出力・応答テキスト・ツール呼び出し履歴を取ってきます。</p>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="scroll-text" width="20" height="20"></i>
+      <div><strong>何を返すか</strong> — <span class="term" data-tip="TaskOutputが返す3要素：(1)最終応答テキスト(2)ツール呼び出し履歴(3)エラーがあれば例外情報">最終応答・ツール履歴・エラー</span>をまとめたログオブジェクト。</div>
+    </li>
+    <li>
+      <i data-lucide="clock" width="20" height="20"></i>
+      <div><strong>保持期間</strong> — 直近N回分までキャッシュ(2026年1月時点)。長期保存したければプロンプト側でファイルやログ外部化を組み込む。</div>
+    </li>
+    <li>
+      <i data-lucide="alert-triangle" width="20" height="20"></i>
+      <div><strong>落とし穴</strong> — 「通知成功」と「タスク成功」は別物。Slackに届いてても中身が空や誤答の可能性あり、<strong>TaskOutputで中身を点検</strong>するクセを。</div>
+    </li>
+  </ul>
+
+  <!-- ===== Section 7: ハンズオン 1時間後の1回実行 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> ハンズオン — 1時間後に1回だけ動くタスク</h2>
+
+  <p>理論はここまで。<strong>実際にトリガーを1つ作って、1時間後に1回だけ動かし、TaskOutputで結果を取る</strong>ところまでやります。最小コストで全サイクルを体感する練習です。</p>
+
+  <div class="info-box">
+    <span class="label">今すぐ試す(コスト最小構成)</span>
+    <p>「1時間後に現在時刻と一言コメントを出力するだけ」の極小タスクを1回だけ走らせます。cron式は「明日の同時刻」など未来の1点に絞るのがコツ。終わったら必ず <code>CronDelete</code> で片付けます。</p>
+  </div>
+
+  <h3>手順(コピペで動く)</h3>
+
+  <pre><code># Step 1: Claude Code で /schedule を呼ぶ
+/schedule
+
+# → 自然文で依頼
+「ちょうど1時間後に1回だけ、現在のUTC時刻と
+ 『hello from scheduled task』という文字列を出力するトリガーを作って。
+ 実行後は手動削除する前提、通知はなし、ログだけ残して」
+
+# Step 2: 戻ってきた trigger_id をメモ
+# 例: trigger_id = "sch_abc123..."
+
+# Step 3: 念のためCronListで登録確認
+/schedule list
+
+# Step 4: (任意) RemoteTriggerで今すぐテスト実行してTaskOutputで確認
+# これで動作検証が早回しでできる
+</code></pre>
+
+  <p>生のツール呼び出しで同じことをやるなら:</p>
+
+  <pre><code># CronCreate 直接呼び出し版
+# (1時間後 = 現在UTC+1h の時刻でcron式を組む例)
+# 例: 現在が 2026-04-18 10:23 UTC なら、11:23 UTC に1回動かしたい
+# 5フィールドで1回だけ動かすのは本質的に苦手なので、
+# 近似として「その時刻の特定日・特定月」で絞る
+
+CronCreate(
+  cron="23 11 18 4 *",           # 4月18日 11:23 UTC(1回きり相当)
+  timezone="UTC",
+  prompt="現在時刻を出力し 'hello from scheduled task' と返す。",
+  notify=null,
+  one_shot=true                   # サポートされていれば一回限りで自動削除
+)
+</code></pre>
+
+  <div class="info-box">
+    <span class="label">1回きり実行の注意</span>
+    <p>cron式は本来「繰り返し」のためのもの。1回きり実行を表現する専用パラメータ(<code>one_shot</code>・<code>run_at</code>・<code>delay</code> 等、実装により名称異なる)が用意されているなら<strong>そちらを使う方が事故りにくい</strong>です。日付フィールドで1点を絞る方法は、<strong>必ず実行後に自分で CronDelete する</strong>ことを忘れずに(翌年同日に勝手に再実行されます)。</p>
+  </div>
+
+  <div class="diagram-box">
+    <div class="diagram-title">ハンズオンの全体フロー</div>
+    <pre class="mermaid">
+sequenceDiagram
+  participant U as あなた
+  participant C as Claude Code
+  participant R as Remote Agent
+  U->>C: /schedule 「1時間後に1回」
+  C->>R: CronCreate(cron, prompt, one_shot)
+  R-->>C: trigger_id を返す
+  U->>C: /schedule list で確認
+  U->>C: RemoteTrigger(trigger_id) 手動検証
+  R-->>C: タスク実行ログ
+  U->>C: TaskOutput(trigger_id) で中身確認
+  Note over U,C: 1時間後、自動実行
+  R->>R: 自動起動してプロンプト実行
+  U->>C: TaskOutput(trigger_id) 本番結果確認
+  U->>C: CronDelete(trigger_id) 片付け
+    </pre>
+    <div class="diagram-caption">作る→手動検証→待つ→結果確認→消す。5ステップが無人運用の基本形。</div>
+  </div>
+
+  <h3>うまくいったかのチェックリスト</h3>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="check-circle" width="20" height="20"></i>
+      <div><strong>trigger_id が返ってきた</strong> — 作成成功。戻り値を必ずメモ。</div>
+    </li>
+    <li>
+      <i data-lucide="check-circle" width="20" height="20"></i>
+      <div><strong>CronList に出る</strong> — 登録が反映されている。</div>
+    </li>
+    <li>
+      <i data-lucide="check-circle" width="20" height="20"></i>
+      <div><strong>RemoteTrigger 手動起動で TaskOutput に期待文字列</strong> — プロンプトが正しく動く。</div>
+    </li>
+    <li>
+      <i data-lucide="check-circle" width="20" height="20"></i>
+      <div><strong>1時間後の自動実行後、再度 TaskOutput で結果確認</strong> — スケジュール部分も正常。</div>
+    </li>
+    <li>
+      <i data-lucide="check-circle" width="20" height="20"></i>
+      <div><strong>CronDelete で完全削除、CronList が空に</strong> — 放置事故ゼロで完了。</div>
+    </li>
+  </ul>
+
+  <p>ここまでできれば、あとは<strong>プロンプトの中身を差し替えるだけ</strong>で「CI監視」「PRサマリ」「週次レポート」すべて同じ型で作れます。Ch04ではこの型を<span class="term" data-tip="無人前提で走らせても結果が再現可能になるプロンプト。文脈・出力形式・異常時動作を明示する">放置運用プロンプト</span>に進化させるコツを学びます。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span></p>
+
+  <details class="more-box">
+    <summary>もっと詳しく: cron式の「1回きり」を安全に運用する2パターン</summary>
+    <div class="more-body">
+      <p>実装に <code>one_shot</code> / <code>run_at</code> が無い環境では、次の2パターンで擬似的に1回実行を作ります。<br>
+      <strong>パターンA(推奨)</strong>: 実行用プロンプトの先頭に「<em>このタスクは1回のみ。実行後 CronDelete(trigger_id=self.id) を必ず呼ぶ</em>」と書く。タスク自身が自分を削除する形。<br>
+      <strong>パターンB</strong>: 日付と月をピンポイント指定(例 <code>23 11 18 4 *</code>)し、カレンダーに「翌日削除」リマインダーを入れる。人力運用の安全網。<br>
+      どちらでも、<strong>作成から24時間以内にCronListで消えているか確認</strong>する習慣を組みにしてください。</p>
+    </div>
+  </details>
+
+  <!-- ===== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>cron式を読み書きする8問</h4>
+    <p>次の(A)は日本語→cron式、(B)はcron式→日本語に変換してください。<strong>全てtimezone=Asia/Tokyo前提</strong>で考えます。</p>
+    <p><strong>(A) 日本語 → cron式</strong></p>
+    <ol>
+      <li>毎日 朝7時ちょうど</li>
+      <li>平日 月〜金 の 18:30</li>
+      <li>10分ごと(毎時0/10/20...分)</li>
+      <li>毎週土曜 深夜0時</li>
+    </ol>
+    <p><strong>(B) cron式 → 日本語</strong></p>
+    <ol start="5">
+      <li><code>*/30 9-18 * * 1-5</code></li>
+      <li><code>0 0 1 * *</code></li>
+      <li><code>15 12 * * 3</code></li>
+      <li><code>0 8,20 * * *</code></li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><strong>(A)</strong></p>
+      <ol>
+        <li><code>0 7 * * *</code></li>
+        <li><code>30 18 * * 1-5</code></li>
+        <li><code>*/10 * * * *</code></li>
+        <li><code>0 0 * * 6</code></li>
+      </ol>
+      <p><strong>(B)</strong></p>
+      <ol start="5">
+        <li>平日 9時〜18時の 30分ごと(9:00, 9:30, ... 18:30)</li>
+        <li>毎月1日の 午前0時ちょうど(月次集計の定番)</li>
+        <li>毎週水曜 12時15分</li>
+        <li>毎日 朝8時と夜8時(1日2回)</li>
+      </ol>
+      <p><strong>コツ</strong>: 左から「分 → 時 → 日 → 月 → 曜」の順で読み上げる。迷ったら <a href="https://crontab.guru/" target="_blank" rel="noopener">crontab.guru</a> に貼って検算。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>自分の環境で1時間後1回実行トリガーを通しでやる</h4>
+    <p>本章のハンズオンを実施し、以下5点を自分の言葉でメモしてください。</p>
+    <ol>
+      <li>作ったトリガーの <code>trigger_id</code> と指定したcron式</li>
+      <li>RemoteTrigger 手動起動時の TaskOutput の抜粋(応答テキストの先頭50字)</li>
+      <li>1時間後の自動実行で、想定通りに動いたかどうか</li>
+      <li>想定外だった点があれば何か(タイムゾーン違い・通知先ズレ・プロンプト不足など)</li>
+      <li>最後に <code>CronDelete</code> で削除し、<code>CronList</code> が空になったか確認</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><strong>典型的な観察例(筆者の環境, 2026年1月):</strong></p>
+      <ul>
+        <li>1. trigger_id = <code>sch_7k2p...</code> / cron=<code>23 11 18 4 *</code>, timezone=UTC, one_shot相当の日付指定</li>
+        <li>2. TaskOutput 先頭 = 「Current UTC: 2026-04-18 11:23 / hello from scheduled task」</li>
+        <li>3. 1時間後の自動実行では、UTCとJSTのズレで最初 9時間ずれて実行された。<strong>timezone 指定を明示</strong>して作り直したら想定通りに</li>
+        <li>4. 想定外: 最初の作成で notify を指定せずに作ったら、TaskOutputに残る以外の痕跡がなかった。無人運用では<strong>Slack or メール必須</strong>と再認識</li>
+        <li>5. CronDelete 実行 → CronList が空になったことを確認して完了</li>
+      </ul>
+      <p><strong>学びの結論例:</strong> cron式の正しさだけでなく「<strong>timezone / 通知 / 削除</strong>」の3点セットで初めて実運用になる。1時間後テストは、本番前の練習として最強のコスパ。</p>
+      <p>※ この演習を<strong>通知先だけ変えて3回</strong>(Slack / メール / 通知なし)やると、Ch05以降の実践シナリオでいちいち調べ直さなくて済むようになります。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式ドキュメント</a> <span class="res-type doc">Doc</span> — CronCreate / /schedule の最新仕様</li>
+      <li><a href="https://crontab.guru/" target="_blank" rel="noopener">crontab.guru</a> <span class="res-type doc">Doc</span> — cron式の自然文変換・検算に必携</li>
+      <li><a href="https://api.slack.com/messaging/webhooks" target="_blank" rel="noopener">Slack Incoming Webhooks</a> <span class="res-type doc">Doc</span> — 通知先URLの発行手順</li>
+      <li><a href="https://cli.github.com/" target="_blank" rel="noopener">GitHub CLI (gh)</a> <span class="res-type doc">Doc</span> — PR/CI情報取得の定番コマンド</li>
+      <li><a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener">Claude Code GitHub リポジトリ</a> <span class="res-type doc">Doc</span> — /schedule スキルの実装を追える</li>
+      <li><a href="https://www.youtube.com/results?search_query=Claude+Code+scheduled+tasks" target="_blank" rel="noopener">YouTube: Claude Code scheduled tasks 検索</a> <span class="res-type video">Video</span> — 他ユーザーの運用例</li>
+      <li><a href="https://zenn.dev/search?q=Claude+Code+%E5%AE%9A%E6%9C%9F%E5%AE%9F%E8%A1%8C" target="_blank" rel="noopener">Zenn: Claude Code 定期実行 検索</a> <span class="res-type doc">Doc</span> — 日本語事例</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="03">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="02-loop-skill.html"><span class="direction">&larr; Prev</span>/loop スキル</a>
+    <a href="04-prompt-design.html"><span class="direction">Next &rarr;</span>放置運用プロンプト</a>
+  </div>
+</main>
+
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+<script>
+  window.addEventListener("load", function(){
+    var ctx = document.getElementById('ch3-notify-1');
+    if (!ctx || !window.Chart) return;
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Slack', 'Push通知', 'メール'],
+        datasets: [
+          {
+            label: '到達速度 (高いほど早い)',
+            data: [85, 98, 55],
+            backgroundColor: 'rgba(217,119,87,0.55)',
+            borderColor: '#D97757',
+            borderWidth: 1
+          },
+          {
+            label: '保存・検索性 (高いほど残る)',
+            data: [80, 30, 95],
+            backgroundColor: 'rgba(24,24,27,0.35)',
+            borderColor: '#18181b',
+            borderWidth: 1
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { position: 'bottom' } },
+        scales: { y: { beginAtZero: true, max: 100 } }
+      }
+    });
+  });
+</script>
+</body>
+</html>

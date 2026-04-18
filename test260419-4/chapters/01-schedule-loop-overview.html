@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>Scheduled Tasks & Loop とは - MK's Claude Code Tutorial - Schedule & Loop</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code - Schedule
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav class="active"><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Practice</span><span class="phase-pct" id="pct-practice">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.01</span>
+    Scheduled Tasks & Loop とは
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 8 sections</text>
+    </svg>
+    <div class="progress-info">0h / 4h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-schedule-loop-overview.html" class="active"><span class="status-dot" data-chapter="01"></span> Scheduled Tasks & Loop とは</a></li>
+    <li><a href="02-loop-skill.html"><span class="status-dot" data-chapter="02"></span> /loop スキル</a></li>
+    <li><a href="03-cron-schedule.html"><span class="status-dot" data-chapter="03"></span> Scheduled Tasks</a></li>
+    <li><a href="04-prompt-design.html"><span class="status-dot" data-chapter="04"></span> 放置運用プロンプト</a></li>
+  </ul>
+  <div class="section-label">Practice</div>
+  <ul>
+    <li><a href="05-ci-polling.html"><span class="status-dot" data-chapter="05"></span> 実践：CIチェック</a></li>
+    <li><a href="06-daily-pr-summary.html"><span class="status-dot" data-chapter="06"></span> 実践：PRサマリ通知</a></li>
+    <li><a href="07-long-running-loop.html"><span class="status-dot" data-chapter="07"></span> 実践：/loop で自走</a></li>
+    <li><a href="08-final-exercise.html"><span class="status-dot" data-chapter="08"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 1: Basics &gt; Chapter 01</div>
+  <h1>Scheduled Tasks & Loop とは</h1>
+  <p class="subtitle">両者の違いと使い分けの全体像</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 25分</span>
+    <span class="badge">Phase: Basics</span>
+    <span class="badge">難易度: 入門</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">この章のゴール</span>
+    <p>Claude Code を「呼んだ時だけ動く対話ツール」から、<strong>「決めた時刻に・あるいは自分のペースで勝手に動き続ける自走ツール」</strong> に変える2つの柱——<strong>Scheduled Tasks</strong>(定時実行)と <strong>/loop</strong>(セルフペーシング)——を区別して、自分の業務のどこに何を当てるかの地図を頭に作ります。25分で全体像を掴み、Ch02以降の各モジュールに進むための土台を揃えます。</p>
+  </div>
+
+  <div class="info-box" style="border-left: 3px solid #D97757;">
+    <span class="label">バージョン注記</span>
+    <p>本章の記述は <strong>2026年1月時点</strong> の Claude Code の挙動に基づきます。<code>CronCreate</code> ツール / <code>/schedule</code> スキル / <code>/loop</code> スキルの仕様は進化するため、コマンドが通らない場合は <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">公式ドキュメント</a> を確認してください。</p>
+  </div>
+
+  <!-- ===== Section 1: 2つのコンセプト ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 2つのコンセプト — 一言で</h2>
+
+  <p><span class="term" data-tip="Scheduled Tasks: cron式で指定した時刻に Claude Code を自動起動する仕組み。CronCreate ツール / /schedule スキル経由で登録する。2026年1月時点">Scheduled Tasks</span> と <span class="term" data-tip="/loop スキル: Claude 自身が次の起動時刻を決めて自走する仕組み。dynamic モードと interval モードがある。2026年1月時点">/loop</span> は似て非なるものです。片方は<strong>時計が駆動</strong>し、もう片方は<strong>Claude自身が駆動</strong>します。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Scheduled Tasks vs /loop の駆動モデル</div>
+    <svg viewBox="0 0 520 280" width="100%" style="max-width:520px; display:block; margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <!-- Scheduled Tasks 左側 -->
+      <rect x="20" y="20" width="230" height="240" rx="12" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="2"/>
+      <text x="135" y="48" text-anchor="middle" font-size="14" font-weight="700" fill="#18181b">Scheduled Tasks</text>
+      <text x="135" y="68" text-anchor="middle" font-size="10" fill="#475569">(定時・cron駆動)</text>
+      <circle cx="135" cy="130" r="40" fill="#ffffff" stroke="#D97757" stroke-width="2"/>
+      <text x="135" y="122" text-anchor="middle" font-size="10" fill="#475569">CRON</text>
+      <text x="135" y="138" text-anchor="middle" font-size="13" font-weight="700">0 9 * * 1-5</text>
+      <text x="135" y="152" text-anchor="middle" font-size="9" fill="#94a3b8">平日9時</text>
+      <text x="135" y="195" text-anchor="middle" font-size="10">外部スケジューラが</text>
+      <text x="135" y="210" text-anchor="middle" font-size="10">時刻通り起動</text>
+      <text x="135" y="235" text-anchor="middle" font-size="10" font-weight="600" fill="#D97757">Claudeは受動</text>
+
+      <!-- /loop 右側 -->
+      <rect x="270" y="20" width="230" height="240" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+      <text x="385" y="48" text-anchor="middle" font-size="14" font-weight="700" fill="#18181b">/loop スキル</text>
+      <text x="385" y="68" text-anchor="middle" font-size="10" fill="#475569">(セルフペーシング)</text>
+      <circle cx="385" cy="130" r="40" fill="#ffffff" stroke="#d97706" stroke-width="2"/>
+      <text x="385" y="122" text-anchor="middle" font-size="10" fill="#475569">next</text>
+      <text x="385" y="138" text-anchor="middle" font-size="13" font-weight="700">+5min</text>
+      <text x="385" y="152" text-anchor="middle" font-size="9" fill="#94a3b8">Claude決定</text>
+      <text x="385" y="195" text-anchor="middle" font-size="10">Claude自身が次ターン</text>
+      <text x="385" y="210" text-anchor="middle" font-size="10">時刻を予約</text>
+      <text x="385" y="235" text-anchor="middle" font-size="10" font-weight="600" fill="#d97706">Claudeは能動</text>
+    </svg>
+    <div class="diagram-caption">左=外部の時計が叩く / 右=Claudeが自分で次を予約する。駆動役が真逆。</div>
+  </div>
+
+  <p>正確には、Scheduled Tasks は <span class="term" data-tip="CronCreate: Claude Code ランタイムに搭載された、定時実行トリガーを登録するツール。リモート Claude Code 環境で動く。2026年1月時点"><code>CronCreate</code> ツール</span>(または <code>/schedule</code> スキル)で cron 式を登録することで起動します。一方 /loop は、Claude が応答の最後に <span class="term" data-tip="ScheduleWakeup: /loop が内部で呼ぶ、次ターンを自分で予約する仕組み。dynamic モードでは Claude 自身が時刻を選び、interval モードは固定秒数が使われる"><code>ScheduleWakeup</code></span> を呼ぶことで「次ターン予約」を自分に入れる仕組みです。<strong>前者は時刻で叩かれる</strong>、<strong>後者は自分で時刻を決めて生き残る</strong>、と覚えると混乱しません。</p>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section 2: 違いを属性比較 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 属性比較 — どこが違うのか</h2>
+
+  <p>両者の<strong>属性を一行で並べて比較</strong>すると、用途の差がはっきりします。</p>
+
+  <table>
+    <thead>
+      <tr><th>観点</th><th>Scheduled Tasks</th><th>/loop</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>駆動</td><td>外部スケジューラ(cron)</td><td>Claude自身の <code>ScheduleWakeup</code></td></tr>
+      <tr><td>時刻決定</td><td>人間が事前に cron 式を書く</td><td>Claudeが動的に決める(dynamic)/固定間隔(interval)</td></tr>
+      <tr><td>実行環境</td><td>リモート Claude Code</td><td>ローカル/リモートどちらでも</td></tr>
+      <tr><td>状態保持</td><td>毎回ゼロから(self-contained)</td><td>ファイル経由で保持可能</td></tr>
+      <tr><td>典型的な間隔</td><td>分〜日〜週(固定)</td><td>秒〜分〜時(可変)</td></tr>
+      <tr><td>停止</td><td><code>CronDelete</code> で明示削除</td><td>次ターン予約を呼ばなければ自然停止</td></tr>
+      <tr><td>向いてる用途</td><td>毎朝9時のPRサマリのような定時業務</td><td>CI完了まで見張る・長文を書き切る等</td></tr>
+      <tr><td>キャッシュ</td><td>基本コールドスタート</td><td><span class="term" data-tip="キャッシュTTL: プロンプトキャッシュの寿命。/loop は次起動までの間隔が短いほどウォーム状態を維持できる。&lt;270秒でウォーム / &gt;1200秒でコールド扱い。2026年1月時点">TTL 5分</span>でウォーム維持可能</td></tr>
+    </tbody>
+  </table>
+
+  <div class="compare-cards">
+    <div class="cc">
+      <span class="cc-label">Scheduled Tasks が得意</span>
+      <h4>決まった時刻・決まった回数</h4>
+      <ul>
+        <li>毎朝9時のニュース要約</li>
+        <li>5分ごとのヘルスチェック(固定間隔)</li>
+        <li>週1回のレポート生成</li>
+        <li>月末の請求書集計</li>
+      </ul>
+    </div>
+    <div class="cc">
+      <span class="cc-label">/loop が得意</span>
+      <h4>終わるまで or 条件成立まで</h4>
+      <ul>
+        <li>「CIが緑になるまで見張る」</li>
+        <li>「長文を章ごとに書き切る」</li>
+        <li>「20個のタスクを1個ずつ処理」</li>
+        <li>「状況次第で次の間隔を変える」</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== Section 3: 使い分けフロー ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 使い分けフロー — 3つの質問で決める</h2>
+
+  <p>迷ったら、以下の3つの質問を順に投げるだけで判断できます。<strong>YES/NO に落とし込む</strong>のがコツ。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Schedule or Loop or どちらも不要 — 判定フロー</div>
+    <pre class="mermaid">
+graph TD
+  Start(["自動化したいタスク"]) --> Q1{"繰り返すか？"}
+  Q1 -- "No・1回だけ" --> Once["通常の対話で依頼<br/>(自動化不要)"]
+  Q1 -- "Yes・複数回" --> Q2{"時刻が決まっているか？"}
+  Q2 -- "Yes・毎朝9時など" --> Sched["Scheduled Tasks<br/>(CronCreate)"]
+  Q2 -- "No・状況次第" --> Q3{"終了条件があるか？"}
+  Q3 -- "Yes・完了まで" --> LoopD["/loop dynamic<br/>(Claudeが次を決める)"]
+  Q3 -- "No・ずっと見張る" --> LoopI["/loop interval<br/>(固定間隔で巡回)"]
+    </pre>
+    <div class="diagram-caption">3つの質問で、Schedule / Loop-dynamic / Loop-interval / 不要 に振り分ける。</div>
+  </div>
+
+  <div class="hands-on-box info-box" style="background: rgba(217,119,87,0.08); border-left: 3px solid #D97757;">
+    <span class="label">今すぐ試す(判別クイズ・30秒)</span>
+    <p>次のタスクはどれに当てはまりますか? 心の中で答えてから下を開いてください。</p>
+    <ol>
+      <li>毎週月曜9時に「週次PR一覧」を Slack に投げる</li>
+      <li>今走っている CI が終わるまで見張って、失敗なら原因要約を返す</li>
+      <li>200記事のブログタイトルを1つずつ生成して、全部できたら止まる</li>
+      <li>いまこの場で「今日のニュース3本」を要約して欲しい</li>
+    </ol>
+    <details class="answer-toggle" style="margin-top:10px;"><summary>答えを見る</summary><div class="answer-body"><p>1 → Scheduled Tasks(定時)、2 → /loop dynamic(完了待ち・間隔可変)、3 → /loop dynamic(終了条件あり)、4 → 自動化不要(通常の対話)。</p></div></details>
+  </div>
+
+  <!-- ===== Section 4: 用途6例 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 具体的な用途 6例</h2>
+
+  <p>「自動化すると効く」典型を <strong>6つ</strong> 並べます。自分の業務で近いものがあれば、そこが最初の導入口。</p>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="activity" width="20" height="20"></i>
+      <div><strong>CI監視</strong>(/loop interval 5分 or Schedule <code>*/5 * * * *</code>) — GitHub Actions のビルドを定期的にチェックし、失敗時のみ通知。<strong>二重通知回避</strong> は要設計(Ch05で扱う)。</div>
+    </li>
+    <li>
+      <i data-lucide="git-pull-request" width="20" height="20"></i>
+      <div><strong>PRサマリ通知</strong>(Schedule <code>0 9 * * 1-5</code>) — 毎朝9時に関係するPR一覧を要約して Slack へ。朝会の準備を Claude がやっておいてくれる(Ch06で実装)。</div>
+    </li>
+    <li>
+      <i data-lucide="newspaper" width="20" height="20"></i>
+      <div><strong>ニュース要約</strong>(Schedule <code>0 7 * * *</code>) — 毎朝7時に特定トピックのRSS/Webを巡回して3行要約。通勤前に読む「ミニ日刊紙」になる。</div>
+    </li>
+    <li>
+      <i data-lucide="heart-pulse" width="20" height="20"></i>
+      <div><strong>ヘルスチェック</strong>(Schedule <code>*/10 * * * *</code>) — 10分ごとにサイト/APIエンドポイントを叩き、ステータスが変わった時だけアラート。</div>
+    </li>
+    <li>
+      <i data-lucide="edit-3" width="20" height="20"></i>
+      <div><strong>長文執筆</strong>(/loop dynamic) — 1万字の記事を章ごとに分割して1時間かけて書き切る。途中で進捗ファイルに保存して再開可能に(Ch07で実装)。</div>
+    </li>
+    <li>
+      <i data-lucide="search" width="20" height="20"></i>
+      <div><strong>定期リサーチ</strong>(Schedule 週次) — 毎週金曜に競合の新着プレスリリースを調査し、サマリをMarkdownで保存。月次/四半期レビューの素材になる。</div>
+    </li>
+  </ul>
+
+  <h3>どのトリガーを選ぶかの早見表</h3>
+
+  <table>
+    <thead>
+      <tr><th>用途</th><th>推奨</th><th>cron / 間隔</th><th>この後の章</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>CI監視</td><td>/loop interval</td><td>5分</td><td>Ch05</td></tr>
+      <tr><td>PRサマリ</td><td>Scheduled Tasks</td><td><code>0 9 * * 1-5</code></td><td>Ch06</td></tr>
+      <tr><td>ニュース要約</td><td>Scheduled Tasks</td><td><code>0 7 * * *</code></td><td>Ch04応用</td></tr>
+      <tr><td>ヘルスチェック</td><td>Scheduled Tasks</td><td><code>*/10 * * * *</code></td><td>Ch03応用</td></tr>
+      <tr><td>長文執筆</td><td>/loop dynamic</td><td>可変(状況次第)</td><td>Ch07</td></tr>
+      <tr><td>定期リサーチ</td><td>Scheduled Tasks</td><td><code>0 10 * * 5</code></td><td>Ch08応用</td></tr>
+    </tbody>
+  </table>
+
+  <div class="hands-on-box info-box" style="background: rgba(217,119,87,0.08); border-left: 3px solid #D97757;">
+    <span class="label">今すぐ試す(最小の Schedule 登録・1分)</span>
+    <p>Claude Code に下記のように依頼してみてください。1時間後に1回だけ動く「動作確認用」のスケジュールを作ります。Ch03で各パラメータの意味を詳説します。</p>
+    <pre><code>次のタスクを Scheduled Tasks として登録してください。
+- 目的: 動作確認
+- スケジュール: いまから1時間後に1回だけ
+- 内容: 「Hello from scheduled Claude」という文字列を返すだけ
+- 通知: 完了したら結果を私にSlackでお知らせ(もしSlack webhook未設定なら、ログだけ残して終了)</code></pre>
+    <p>この <strong>最小の1回実行</strong> を登録しておくと、後ほど CronList で実際に登録されているか、TaskOutput で結果を取れるかを確認できます。</p>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: Scheduled と /loop を組み合わせるパターン</summary>
+    <div class="more-body">
+      <p>どちらか片方だけでなく、<strong>組み合わせて使う</strong>パターンも実用的です。例: 「毎朝9時に Schedule で /loop を起動して、その日の調査が終わったら自動停止」。これは <strong>Schedule=キックオフ</strong> / <strong>/loop=完遂まで自走</strong> の役割分担。朝起動のジョブが夜までに終わればOK、という緩い運用に向きます。Ch07末尾で具体パターンを扱います。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 5: 制約・落とし穴 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 制約と4つの落とし穴</h2>
+
+  <p>「放置運用」は便利ですが、<strong>人が見ていない所で動く</strong>以上、見えないコストやバグが積もりやすい。先に知っておくべき4点。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">4つの落とし穴マップ</div>
+    <svg viewBox="0 0 460 280" width="100%" style="max-width:460px; display:block; margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <rect x="40"  y="20"  width="180" height="115" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="1.5"/>
+      <rect x="230" y="20"  width="180" height="115" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+      <rect x="40"  y="145" width="180" height="115" fill="#fee2e2" stroke="#dc2626" stroke-width="1.5"/>
+      <rect x="230" y="145" width="180" height="115" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+
+      <text x="130" y="44" text-anchor="middle" font-size="12" font-weight="700" fill="#b45309">1. コスト蓄積</text>
+      <text x="130" y="72" text-anchor="middle" font-size="10" fill="#475569">1回$0.05 × 288回</text>
+      <text x="130" y="88" text-anchor="middle" font-size="10" fill="#475569">= 月 &gt; $400の恐れ</text>
+      <text x="130" y="112" text-anchor="middle" font-size="10" fill="#475569">→ 間隔と終了条件を設計</text>
+
+      <text x="320" y="44" text-anchor="middle" font-size="12" font-weight="700" fill="#b45309">2. 状態保持なし</text>
+      <text x="320" y="72" text-anchor="middle" font-size="10" fill="#475569">毎回ゼロから</text>
+      <text x="320" y="88" text-anchor="middle" font-size="10" fill="#475569">前回履歴は不在</text>
+      <text x="320" y="112" text-anchor="middle" font-size="10" fill="#475569">→ ファイルに進捗保存</text>
+
+      <text x="130" y="169" text-anchor="middle" font-size="12" font-weight="700" fill="#b91c1c">3. 時差・タイムゾーン</text>
+      <text x="130" y="197" text-anchor="middle" font-size="10" fill="#475569">cronのTZ設定ミス</text>
+      <text x="130" y="213" text-anchor="middle" font-size="10" fill="#475569">9時→0時に動くなど</text>
+      <text x="130" y="237" text-anchor="middle" font-size="10" fill="#475569">→ Asia/Tokyo明示</text>
+
+      <text x="320" y="169" text-anchor="middle" font-size="12" font-weight="700" fill="#475569">4. サイレント失敗</text>
+      <text x="320" y="197" text-anchor="middle" font-size="10" fill="#475569">誰も気づかず停止</text>
+      <text x="320" y="213" text-anchor="middle" font-size="10" fill="#475569">→ 通知必須</text>
+      <text x="320" y="237" text-anchor="middle" font-size="10" fill="#475569">Ch04で対策</text>
+    </svg>
+    <div class="diagram-caption">4つとも対策は明確。Ch03-Ch05 で各項目の具体手法を扱います。</div>
+  </div>
+
+  <h3>コスト試算(放置運用の怖さを数字で)</h3>
+
+  <p>もっとも見落とされやすい <strong>コスト</strong> を、いくつかの設定で試算してみます。「<span class="term" data-tip="1回あたり目安: 入力+出力のトークンから換算。モデルや内容により大きく変動する。本表はあくまで感覚を掴むための概算">1回あたり</span> $0.05」を仮定した場合の月額コスト(30日換算)。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">間隔ごとの月額コスト試算(1回 $0.05 仮定)</div>
+    <canvas id="ch1-bar-1" height="200"></canvas>
+    <div class="diagram-caption">5分間隔で回すと月 $400 超え。「ずっと動かし続ける」前に一度必ず試算する。</div>
+  </div>
+
+  <div class="info-box">
+    <span class="label">コスト警告</span>
+    <p><strong>放置運用はコストに直結する</strong>。「とりあえず5分ごとに動かしてみよう」を1週間放置すると、想定外の請求につながる可能性があります。<strong>最初は毎時 or 長間隔で始め、必要に応じて間隔を縮める</strong>のが鉄則。/loop には<strong>終了条件の明示</strong>、Schedule には<strong>CronDelete の発動条件</strong>を必ず設計に組み込みましょう(Ch04の中心トピック)。</p>
+  </div>
+
+  <h3>落とし穴ごとの対策一覧</h3>
+
+  <table>
+    <thead>
+      <tr><th>落とし穴</th><th>具体的な症状</th><th>対策</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>コスト蓄積</td><td>5分間隔 × 1ヶ月 = 月 $400超の請求</td><td>間隔を最低限に・終了条件を必ず設ける(Ch04)</td></tr>
+      <tr><td>状態保持なし</td><td>「前回どこまでやったか」を毎回忘れる</td><td><code>todo.md</code> などのファイルで進捗保持(Ch07)</td></tr>
+      <tr><td>時差・TZミス</td><td>9時指定が UTC 扱いで 18時(JST)に発火</td><td>cron登録時に <code>Asia/Tokyo</code> を明示(Ch03)</td></tr>
+      <tr><td>サイレント失敗</td><td>エラーで止まっても誰も気づかない</td><td>成功/失敗のどちらでも通知を送る(Ch04)</td></tr>
+    </tbody>
+  </table>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section 6: ロードマップ ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 本カリキュラムのロードマップ</h2>
+
+  <p>全8章、約4時間で完走する設計。<strong>「読むより動かす時間が長い」</strong>を合言葉に、各章に必ずハンズオンを付けています。</p>
+
+  <div class="compare-cards">
+    <div class="cc">
+      <span class="cc-label">Basics(Ch1-4)</span>
+      <h4>概念と基本構文</h4>
+      <ul>
+        <li>Ch01 Scheduled Tasks & Loop とは(いま)</li>
+        <li>Ch02 /loop スキルの2モード</li>
+        <li>Ch03 Scheduled Tasks (CronCreate)</li>
+        <li>Ch04 放置運用プロンプトのコツ</li>
+      </ul>
+    </div>
+    <div class="cc">
+      <span class="cc-label">Practice(Ch5-8)</span>
+      <h4>実戦で使い倒す</h4>
+      <ul>
+        <li>Ch05 5分ごとのCIチェック</li>
+        <li>Ch06 毎朝9時のPRサマリ通知</li>
+        <li>Ch07 長時間タスクを /loop で自走</li>
+        <li>Ch08 最終演習:自分の業務を3つ自動化</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>学習ペース目安</h3>
+
+  <div class="progress-row">
+    <div class="progress-head"><span>Basics(概念と基本)</span><span>約2h 5min</span></div>
+    <div class="progress-track"><div class="progress-fill" style="width:52%"></div></div>
+  </div>
+  <div class="progress-row">
+    <div class="progress-head"><span>Practice(実戦)</span><span>約1h 55min</span></div>
+    <div class="progress-track"><div class="progress-fill" style="width:48%"></div></div>
+  </div>
+
+  <div class="steps">
+    <div class="step done"><div class="step-num">1</div><div class="step-label">地図</div><div class="step-desc">いまここ</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-label">/loop</div><div class="step-desc">Ch02</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-label">cron</div><div class="step-desc">Ch03</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-label">設計</div><div class="step-desc">Ch04</div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-label">実戦</div><div class="step-desc">Ch05-08</div></div>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: どの章から入るのが効率的?</summary>
+    <div class="more-body">
+      <p><strong>(A) 定時業務の自動化をすぐ始めたい人</strong> → Ch01→Ch03→Ch06(PRサマリ)で朝9時の通知を先に稼働。<strong>(B) 長時間タスクに興味がある人</strong> → Ch01→Ch02→Ch07(/loop自走)で夜まで回す実戦へ。<strong>(C) 業務全体を棚卸しして選びたい人</strong> → 素直に順番通り、Ch04で放置運用の設計原則、Ch08で自分の業務に3つ導入、で完走。どのルートでも Ch01 は地図なのでスキップしないこと。</p>
+    </div>
+  </details>
+
+  <p>では次章から、<strong>/loop スキルの2つのモードと ScheduleWakeup の仕組み</strong>を叩き込んでいきます。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span></p>
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>3つのタスクを Schedule / /loop / 不要 に振り分ける</h4>
+    <p>下記3つのタスクを、本章のフローチャートに従って分類してください。それぞれ「どれを選ぶか」と「その根拠1行」を書き出します。</p>
+    <ol>
+      <li>毎朝8時、今日の天気を Slack に投げる</li>
+      <li>30分後にAPIが復活したか確認し、復活していたらジョブを再開する</li>
+      <li>いま手元のログファイル1本をサマリしてほしい</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>期待される分類と根拠は次の通り。</p>
+      <pre><code>1. Scheduled Tasks
+   根拠: 時刻が決まっている・毎日繰り返す → cron 0 8 * * *
+
+2. /loop dynamic
+   根拠: 終了条件(API復活)があり、次の間隔は状況次第
+        (最初は5分、3回失敗したら間隔を15分に伸ばす等)
+
+3. 自動化不要
+   根拠: 1回だけ・今すぐやりたい → 通常の対話でOK</code></pre>
+      <p><strong>観察ポイント</strong>: 1 と 3 の差は「繰り返しの有無」、1 と 2 の差は「時刻固定 vs 状況駆動」、2 と 3 の差は「条件成立まで動くか」。この3軸で迷わなくなれば、Ch02以降の構文学習が自分事になる。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>自分の業務から「自動化候補」を3つ抽出してコスト試算</h4>
+    <p>Section4の6ユースケース表と、Section5のコスト試算を参考に、<strong>自分の業務</strong> から自動化すると効きそうなタスクを3つ挙げ、それぞれ次を書き出してください。抽象語禁止(「効率化」だけはNG)。</p>
+    <ol>
+      <li>タスク名と、Schedule か /loop かの選択 + cron式(または間隔)</li>
+      <li>1回あたりの実行時間目安と、月額コスト概算(例: $0.05 × 30回/月 = $1.5)</li>
+      <li>停止条件と通知設計(成功時・失敗時に誰がどこで気づくか)</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>例: MK自身の「チュートリアル制作ワークフロー」のケース</p>
+      <pre><code>【1. 毎朝8時のPRサマリ通知】
+  - Scheduled Tasks, cron: 0 8 * * 1-5 (平日)
+  - 1回 $0.05 × 20回/月 = $1.0
+  - 停止: CronDelete、通知: Slack #morning-brief
+
+【2. 新着Issue巡回(30分ごと)】
+  - Scheduled Tasks, cron: */30 * * * *
+  - 1回 $0.03 × 48回/日 × 30 = $43/月
+  - 停止: 新着0件が連続10回で発生頻度半減
+  - 通知: 新着あった時のみSlack
+
+【3. 週次レポート生成(/loop dynamic)】
+  - /loop dynamic, 毎週金曜16時に Schedule でキック
+  - 10章ぶんを1時間かけて自走生成
+  - 1回 $2.0 × 4回/月 = $8/月
+  - 停止: 全章完了 or 1時間経過
+  - 通知: 完成したらSlackにパス通知</code></pre>
+      <p><strong>ポイント</strong>: 最初から「cron式 / コスト概算 / 停止条件 / 通知」の4点セットで言語化しておくと、Ch04以降の実装が<strong>そのまま移植できる形</strong>で残る。最終章 Ch08 で、ここで挙げた3つを実装まで持っていきます。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式ドキュメント</a> — Scheduled Tasks / /loop の一次情報。2026年1月時点は英語中心</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener">Claude Code GitHub リポジトリ</a> — /loop・/schedule スキルのREADMEとIssueが追える</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://crontab.guru/" target="_blank" rel="noopener">crontab.guru</a> — cron式をブラウザで確認。登録前に必ずここで検算する</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://cli.github.com/" target="_blank" rel="noopener">GitHub CLI (gh)</a> — PR/Issue/CI連携で定期タスクから呼ぶ定番ツール</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://api.slack.com/messaging/webhooks" target="_blank" rel="noopener">Slack Incoming Webhooks</a> — 通知の定番受け皿。放置運用の「気づく仕組み」の第一歩</li>
+      <li><span class="res-type video">Video</span> <a href="https://www.youtube.com/results?search_query=Claude+Code+scheduled+tasks+loop" target="_blank" rel="noopener">YouTube: "Claude Code scheduled tasks / loop"</a> — コミュニティの動作デモと放置運用事例</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="01">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <span></span>
+    <a href="02-loop-skill.html"><span class="direction">Next &rarr;</span>/loop スキル</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+
+<!-- Chart.js: コスト試算 -->
+<script>
+window.addEventListener("load", function(){
+  var ctxBar = document.getElementById('ch1-bar-1');
+  if (ctxBar && window.Chart) {
+    new Chart(ctxBar, {
+      type: 'bar',
+      data: {
+        labels: ['5分ごと', '15分ごと', '1時間ごと', '毎朝9時(1日1回)', '毎週月曜9時'],
+        datasets: [
+          {
+            label: '月額コスト概算 (USD)',
+            data: [432, 144, 36, 1.5, 0.2],
+            backgroundColor: ['#D97757', 'rgba(217,119,87,0.65)', 'rgba(217,119,87,0.45)', 'rgba(217,119,87,0.25)', 'rgba(217,119,87,0.15)'],
+            borderColor: '#D97757',
+            borderWidth: 1,
+            borderRadius: 6
+          }
+        ]
+      },
+      options: {
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { beginAtZero: true, title: { display: true, text: '$ / 月(1回$0.05仮定)' } }
+        }
+      }
+    });
+  }
+});
+</script>
+</body>
+</html>

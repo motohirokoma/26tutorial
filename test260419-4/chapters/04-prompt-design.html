@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>放置運用プロンプトのコツ - MK's Claude Code Tutorial - Schedule & Loop</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code - Schedule
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav class="active"><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Practice</span><span class="phase-pct" id="pct-practice">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.04</span>
+    放置運用プロンプトのコツ
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 8 sections</text>
+    </svg>
+    <div class="progress-info">0h / 4h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-schedule-loop-overview.html"><span class="status-dot" data-chapter="01"></span> Scheduled Tasks & Loop とは</a></li>
+    <li><a href="02-loop-skill.html"><span class="status-dot" data-chapter="02"></span> /loop スキル</a></li>
+    <li><a href="03-cron-schedule.html"><span class="status-dot" data-chapter="03"></span> Scheduled Tasks</a></li>
+    <li><a href="04-prompt-design.html" class="active"><span class="status-dot" data-chapter="04"></span> 放置運用プロンプト</a></li>
+  </ul>
+  <div class="section-label">Practice</div>
+  <ul>
+    <li><a href="05-ci-polling.html"><span class="status-dot" data-chapter="05"></span> 実践：CIチェック</a></li>
+    <li><a href="06-daily-pr-summary.html"><span class="status-dot" data-chapter="06"></span> 実践：PRサマリ通知</a></li>
+    <li><a href="07-long-running-loop.html"><span class="status-dot" data-chapter="07"></span> 実践：/loop で自走</a></li>
+    <li><a href="08-final-exercise.html"><span class="status-dot" data-chapter="08"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 1: Basics &gt; Chapter 04</div>
+  <h1>放置運用プロンプトのコツ</h1>
+  <p class="subtitle">無人実行前提でのプロンプト設計 — 自走しても迷わないための5要素</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 30分</span>
+    <span class="badge">Phase: Basics</span>
+    <span class="badge">難易度: 中級</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">この章のゴール</span>
+    <p>Scheduled Tasks や <code>/loop</code> で走るプロンプトは <strong>「寝ている間に1人で動く」</strong> 前提で書く必要があります。対話モードのようにユーザーが途中で補足することはできません。本章では <span class="term" data-tip="外部文脈に依存せず、プロンプトだけ読めば全体像が分かる状態。放置運用の大前提">self-contained</span>・エラー時挙動・必須5要素・Before/After比較を通じて、<strong>コピペで動く定期タスク用プロンプトを1本書き上げる</strong>のがゴールです。本章の記述は<span class="term" data-tip="2026年1月時点の記述。Claude Code は活発に更新されるため最新はオフィシャルDocsを参照">2026年1月時点</span>。</p>
+  </div>
+
+  <!-- ===== Section 1: 放置運用が対話と違う3点 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 対話モードと放置運用の決定的な違い</h2>
+
+  <p>対話モードでは「あれ、ちょっと違うな」と思えば即座に口頭で修正できます。しかし放置運用は <strong>全部Claude任せ</strong>。あとからログを見る人間が<strong>起きた結果を読むだけ</strong>の世界です。プロンプト設計の発想を根本から切り替える必要があります。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">対話モード vs 放置運用のコンテキスト境界</div>
+    <svg viewBox="0 0 700 300" width="100%" style="max-width:700px; display:block; margin:0 auto;">
+      <!-- 対話 側 -->
+      <rect x="20" y="30" width="300" height="240" rx="12" fill="#D97757" opacity="0.12" stroke="#D97757" stroke-width="2"/>
+      <text x="170" y="55" text-anchor="middle" font-size="14" font-weight="700" fill="#18181b">対話モード</text>
+      <rect x="40" y="72" width="260" height="28" rx="4" fill="#ffffff" stroke="#D97757"/>
+      <text x="50" y="91" font-size="11" fill="#18181b">✓ ユーザーが画面を見ている</text>
+      <rect x="40" y="108" width="260" height="28" rx="4" fill="#ffffff" stroke="#D97757"/>
+      <text x="50" y="127" font-size="11" fill="#18181b">✓ 途中で「違う」と止められる</text>
+      <rect x="40" y="144" width="260" height="28" rx="4" fill="#ffffff" stroke="#D97757"/>
+      <text x="50" y="163" font-size="11" fill="#18181b">✓ エラー時にユーザーが判断</text>
+      <rect x="40" y="180" width="260" height="28" rx="4" fill="#ffffff" stroke="#D97757"/>
+      <text x="50" y="199" font-size="11" fill="#18181b">✓ 文脈は会話で積み上がる</text>
+      <rect x="40" y="216" width="260" height="28" rx="4" fill="#ffffff" stroke="#D97757"/>
+      <text x="50" y="235" font-size="11" fill="#18181b">✓ プロンプトは雑でも回復可能</text>
+
+      <!-- 放置 側 -->
+      <rect x="380" y="30" width="300" height="240" rx="12" fill="#f4f4f5" stroke="#18181b" stroke-width="2" stroke-dasharray="6 4"/>
+      <text x="530" y="55" text-anchor="middle" font-size="14" font-weight="700" fill="#18181b">放置運用 (Schedule / Loop)</text>
+      <rect x="400" y="72" width="260" height="28" rx="4" fill="#fef2f2" stroke="#dc2626"/>
+      <text x="410" y="91" font-size="11" fill="#dc2626">✗ 誰も画面を見ていない</text>
+      <rect x="400" y="108" width="260" height="28" rx="4" fill="#fef2f2" stroke="#dc2626"/>
+      <text x="410" y="127" font-size="11" fill="#dc2626">✗ 走り出したら止められない</text>
+      <rect x="400" y="144" width="260" height="28" rx="4" fill="#fef2f2" stroke="#dc2626"/>
+      <text x="410" y="163" font-size="11" fill="#dc2626">✗ エラー時もClaudeが自己判断</text>
+      <rect x="400" y="180" width="260" height="28" rx="4" fill="#fef2f2" stroke="#dc2626"/>
+      <text x="410" y="199" font-size="11" fill="#dc2626">✗ 毎回まっさらから開始</text>
+      <rect x="400" y="216" width="260" height="28" rx="4" fill="#fef2f2" stroke="#dc2626"/>
+      <text x="410" y="235" font-size="11" fill="#dc2626">✗ プロンプトの雑さ = 失敗</text>
+    </svg>
+    <div class="diagram-caption">放置運用では「人間による補正」が一切効かない。プロンプトだけが命綱。</div>
+  </div>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="moon" width="20" height="20"></i>
+      <div><strong>無人前提</strong> — 深夜2時に実行されても誰もいない。エラーを出したときに「放置してよいか/通知するか」は事前に決めておく必要がある。</div>
+    </li>
+    <li>
+      <i data-lucide="refresh-ccw" width="20" height="20"></i>
+      <div><strong>ステートレス起動</strong> — 毎回まっさらなコンテキストで立ち上がる。前回の文脈も「さっき話したこと」も存在しない。</div>
+    </li>
+    <li>
+      <i data-lucide="eye-off" width="20" height="20"></i>
+      <div><strong>後日ログ読者</strong> — 結果を読むのは「あとから見る人間」。出力は単体で理解できる必要がある(どの時刻の・何のタスクで・結果がどうだったか)。</div>
+    </li>
+    <li>
+      <i data-lucide="dollar-sign" width="20" height="20"></i>
+      <div><strong>コスト直結</strong> — 曖昧なプロンプトは試行錯誤を増やし、トークン消費が膨らむ。放置運用は<span class="term" data-tip="実行回数 × 1回あたりのトークン消費。曖昧プロンプトは回数とトークンの両方を増やす">コスト倍率</span>が効くので設計の甘さが直接的な金銭ダメージになる。</div>
+    </li>
+  </ul>
+
+  <div class="info-box">
+    <span class="label">コスト警告</span>
+    <p>5分ごと実行 × 24時間 = 288回/日 × 30日 = <strong>月8640回</strong>。1回あたりのトークンを2000から5000に増やすだけで、月のコスト差は桁違いになります。プロンプトの精度と簡潔さは、そのままコスト最適化に直結します。</p>
+  </div>
+
+  <!-- ===== Section 2: 必須5要素 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 放置運用プロンプト必須5要素</h2>
+
+  <p>放置運用プロンプトは以下の<strong>5要素</strong>を全部含めると安定します。1つでも抜けると、無人時に致命的な詰まり方をします。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">必須5要素チェックリスト</div>
+    <svg viewBox="0 0 700 360" width="100%" style="max-width:700px; display:block; margin:0 auto;">
+      <rect x="10" y="10" width="680" height="340" rx="14" fill="#ffffff" stroke="#D97757" stroke-width="2"/>
+      <text x="350" y="38" text-anchor="middle" font-size="16" font-weight="700" fill="#18181b">Unattended-Ready Prompt Checklist</text>
+
+      <circle cx="45" cy="82" r="16" fill="#D97757"/>
+      <text x="45" y="87" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">1</text>
+      <text x="75" y="78" font-size="13" font-weight="700" fill="#18181b">目的 (Goal)</text>
+      <text x="75" y="96" font-size="11" fill="#64748b">なぜ自動で走らせるのか。判断の拠り所になる上位ゴール。</text>
+
+      <circle cx="45" cy="132" r="16" fill="#D97757"/>
+      <text x="45" y="137" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">2</text>
+      <text x="75" y="128" font-size="13" font-weight="700" fill="#18181b">データ源 (Source)</text>
+      <text x="75" y="146" font-size="11" fill="#64748b">どこから情報を取るか。CLI / API / ファイル / gh / curl を明示。</text>
+
+      <circle cx="45" cy="182" r="16" fill="#D97757"/>
+      <text x="45" y="187" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">3</text>
+      <text x="75" y="178" font-size="13" font-weight="700" fill="#18181b">成功条件 (Success)</text>
+      <text x="75" y="196" font-size="11" fill="#64748b">何を達成すれば「今回はOK」と判定するか。1文で書ける粒度。</text>
+
+      <circle cx="45" cy="232" r="16" fill="#D97757"/>
+      <text x="45" y="237" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">4</text>
+      <text x="75" y="228" font-size="13" font-weight="700" fill="#18181b">出力形式 (Format)</text>
+      <text x="75" y="246" font-size="11" fill="#64748b">Slackメッセージ? ファイル? 通知タイトル? 型を縛って後日読める形に。</text>
+
+      <circle cx="45" cy="282" r="16" fill="#dc2626"/>
+      <text x="45" y="287" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">5</text>
+      <text x="75" y="278" font-size="13" font-weight="700" fill="#18181b">異常時動作 (On Error)</text>
+      <text x="75" y="296" font-size="11" fill="#64748b">止まる / スキップ / リトライ のどれか。無人だから人間に委ねられない。</text>
+
+      <g transform="translate(560,72)"><rect x="0" y="0" width="110" height="22" rx="4" fill="#f4f4f5" stroke="#D97757"/><text x="55" y="15" text-anchor="middle" font-size="11" font-weight="700" fill="#D97757">必須</text></g>
+      <g transform="translate(560,122)"><rect x="0" y="0" width="110" height="22" rx="4" fill="#f4f4f5" stroke="#D97757"/><text x="55" y="15" text-anchor="middle" font-size="11" font-weight="700" fill="#D97757">必須</text></g>
+      <g transform="translate(560,172)"><rect x="0" y="0" width="110" height="22" rx="4" fill="#f4f4f5" stroke="#D97757"/><text x="55" y="15" text-anchor="middle" font-size="11" font-weight="700" fill="#D97757">必須</text></g>
+      <g transform="translate(560,222)"><rect x="0" y="0" width="110" height="22" rx="4" fill="#f4f4f5" stroke="#D97757"/><text x="55" y="15" text-anchor="middle" font-size="11" font-weight="700" fill="#D97757">必須</text></g>
+      <g transform="translate(560,272)"><rect x="0" y="0" width="110" height="22" rx="4" fill="#fef2f2" stroke="#dc2626"/><text x="55" y="15" text-anchor="middle" font-size="11" font-weight="700" fill="#dc2626">最重要</text></g>
+
+      <text x="350" y="335" text-anchor="middle" font-size="11" fill="#64748b">1つ抜けた瞬間に、深夜2時のジョブがスタックする。</text>
+    </svg>
+    <div class="diagram-caption">対話モードより「異常時動作」の比重が上がる。</div>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <details class="more-box">
+    <summary>もっと詳しく: 「目的」が判断の北極星になる理由</summary>
+    <div class="more-body">
+      <p>例: 「毎朝9時にPRサマリを通知」というタスクで、Claude が「該当PRが0件だった」状況に出会ったとき、目的の書き方で挙動が変わります。「<strong>朝会の話題を提供する</strong>」という目的があれば「本日レビュー対象は0件です」と明示的に通知する判断ができる。目的がない場合は Claude が自分で「空通知は迷惑かな?」と忖度してスキップし、結果として「通知が来ない = 故障なのか0件なのか不明」という状態を作り出します。<span class="term" data-tip="LLM が細部で迷ったとき、上位目標を参照して一貫した判断をする性質。CLAUDE.md / prompt に 'Why' を書くと細部が揃う">北極星指示</span>を必ず書きましょう。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 3: エラー時の挙動を選ぶ ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> エラー時の挙動3択: 止まる / スキップ / リトライ</h2>
+
+  <p>定期タスクが失敗したとき、Claude に何をさせたいか? これを<strong>事前に決めて書いておく</strong>のが放置運用の核心です。選択肢は3つ。タスクの性質で使い分けます。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">エラー時動作の選択フロー</div>
+    <pre class="mermaid">
+graph TD
+  Err["エラー発生"] --> Q1{"冪等な<br/>操作か?"}
+  Q1 -- Yes --> Q2{"一過性の<br/>可能性?"}
+  Q1 -- No --> Stop["止まる<br/>(人間に通知)"]
+  Q2 -- Yes --> Retry["リトライ<br/>(3回まで)"]
+  Q2 -- No --> Q3{"次回で<br/>自己回復?"}
+  Q3 -- Yes --> Skip["スキップ<br/>(ログ記録のみ)"]
+  Q3 -- No --> Stop
+    </pre>
+    <div class="diagram-caption">迷ったら「止めて通知」が最も安全。サイレント失敗が一番怖い。</div>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>挙動</th><th>使いどき</th><th>書き方</th><th>リスク</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>止まる</strong> (fail-fast)</td>
+        <td>データ破壊の可能性がある / 判断保留したい</td>
+        <td>「エラー時は作業を中止し、Slack の #alerts にエラー全文を通知」</td>
+        <td>人の対応がボトルネックに</td>
+      </tr>
+      <tr>
+        <td><strong>スキップ</strong> (skip)</td>
+        <td>ニュース要約・サマリ通知など、1回抜けてOK</td>
+        <td>「エラー時は今回の実行をスキップし、次回の定時実行を待つ」</td>
+        <td>継続失敗に気付かない恐れ</td>
+      </tr>
+      <tr>
+        <td><strong>リトライ</strong> (retry)</td>
+        <td>API一過性エラー / ネットワーク不安定</td>
+        <td>「最大3回、指数バックオフでリトライ。全失敗で通知」</td>
+        <td>冪等でないと二重実行</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="info-box">
+    <span class="label">冪等性を先に考える</span>
+    <p><span class="term" data-tip="同じ操作を何回やっても結果が変わらない性質。リトライ安全性の前提">冪等性</span>がないタスク(例: Slackに送信 / GitHubへコメント)をリトライさせると、二重通知や重複コメントが発生します。送信先側にIDで重複チェックを持たせるか、「送信済みフラグ」をファイルに書いてから送る設計にしましょう。</p>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: スキップを選ぶときは「連続失敗検知」もセットで</summary>
+    <div class="more-body">
+      <p>スキップを安易に選ぶと、<span class="term" data-tip="失敗に誰も気づかずにタスクが沈黙し続ける状態。放置運用で最も避けたい">サイレント故障</span>が起きます。対策: 「直近N回連続で失敗したら通知を出す」という簡易ガードをプロンプトに組み込みます。例: <code>state/last-run.json</code> に <code>consecutive_failures</code> を書き、3以上で人間に通知。こうすれば1回のスキップは静かに、3回続けば人を呼べます。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 4: Before/After ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Before / After: 悪い例 → 良い例</h2>
+
+  <p>放置運用で<strong>実際に失敗したプロンプト</strong>を、改善ポイントと一緒に並べます。</p>
+
+  <h3>ケース1: CIチェック通知</h3>
+
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">Before (悪い例)</span>
+      <h4>「ビルドが失敗したら教えて」</h4>
+      <ul>
+        <li>どのリポジトリ? どのブランチ?</li>
+        <li>「失敗」の定義は? FAILURE だけ? timeout も?</li>
+        <li>誰に教える? どこに?</li>
+        <li>同じ失敗が続いたら毎回通知?(通知疲れ)</li>
+        <li>ツール取得失敗時は?</li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">After (良い例)</span>
+      <h4>5要素+重複抑止まで明記</h4>
+      <pre><code>目的: main ブランチのビルド失敗を
+  5分以内に検知しチームに即共有する。
+
+データ源:
+  gh run list --repo acme/web
+    --branch main --limit 5 --json status,conclusion,headSha,url
+
+成功条件: 最新Runがsuccessなら何もせず終了。
+  failure / cancelled / timed_out のいずれかなら通知。
+
+出力形式: Slack Webhook への POST
+  {"text": "[CI Fail] <repo>@<sha短縮>: <url>"}
+
+異常時動作:
+  - gh 呼び出し失敗: 3回リトライ、全失敗で #alerts へ
+    「CI監視ジョブ自体が失敗」と通知
+  - 同じ headSha で既に通知済なら重複送信しない
+    (state/last-notified-sha.txt を確認)
+  - 通知後は last-notified-sha.txt を更新</code></pre>
+    </div>
+  </div>
+
+  <h3>ケース2: 朝のPRサマリ</h3>
+
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">Before (悪い例)</span>
+      <h4>「朝9時にPRまとめて送って」</h4>
+      <ul>
+        <li>自分のPR? レビュー対象? 全PR?</li>
+        <li>優先度の基準なし</li>
+        <li>空の日の挙動不明</li>
+        <li>通知先のSlack channel不明</li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">After (良い例)</span>
+      <h4>対象・並び・空ケースを定義</h4>
+      <pre><code>目的: 朝会の前(9:00)にレビューすべき
+  PRをSlackで共有し、朝会のインプットにする。
+
+データ源:
+  gh pr list --search "review-requested:@me"
+    --state open --json number,title,author,url,updatedAt
+
+成功条件: 0件でも「本日レビュー対象なし」と
+  明示的に通知すること(= 故障と区別可能)。
+
+出力形式:
+  Slack #dev-morning へ以下のMarkdown:
+   *本日のレビュー (YYYY-MM-DD)*
+   1. #123 タイトル - @author (2日前更新)
+   2. ...
+  件数0なら「本日レビュー対象なし ✓」
+
+異常時動作: gh失敗時はスキップ(明日の通知を待つ)。
+  ただし3日連続失敗した場合 #alerts に通知。</code></pre>
+    </div>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <h3>ケース3: 長時間リファクタ (/loop dynamic)</h3>
+
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">Before (悪い例)</span>
+      <h4>「todo.md のタスクを片付けて」</h4>
+      <ul>
+        <li>順番は? 上から?</li>
+        <li>1ターンで何個?</li>
+        <li>終了条件は?</li>
+        <li>エラー時に次タスクに進む? 止まる?</li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">After (良い例)</span>
+      <h4>状態管理と終了条件を明示</h4>
+      <pre><code>目的: docs/todo.md のリファクタ項目を
+  1ターン1項目ずつ完了させる。
+
+データ源: docs/todo.md の先頭から
+  [ ] で始まる未完了項目を1つ取得。
+
+成功条件:
+  1. 項目の指示通りに実装・テスト通過
+  2. 該当行の [ ] を [x] に更新
+  3. 次ターンをScheduleWakeup(即時)で予約
+
+出力形式: git コミット 1件/ターン。
+  メッセージ: "refactor: <項目タイトル>"
+
+異常時動作:
+  - 実装失敗: 該当行を [!] に変更、
+    次項目へ進む (止まらない)
+  - [ ] が1つもない: ScheduleWakeup せず終了
+  - 連続3項目が [!] になった: 自動停止して
+    Slackへ「人間確認が必要」と通知</code></pre>
+    </div>
+  </div>
+
+  <!-- ===== Section 5: 出力形式を後日読者向けに設計 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 出力形式を「後日ログ読者」に向けて設計する</h2>
+
+  <p>放置運用の出力は<strong>後から人間が読むログ</strong>です。単体で意味が分かる密度を持たせます。必ず入れる要素は次の通り。</p>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-num">1<small>行目</small></div>
+      <div class="stat-label">実行時刻 + タスク名</div>
+      <div class="stat-trend up">[2026-01-15 09:00 daily-pr]</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">2<small>行目</small></div>
+      <div class="stat-label">ステータス (OK/NG/SKIP)</div>
+      <div class="stat-trend up">状態が即読める</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">3<small>行目〜</small></div>
+      <div class="stat-label">要点 (3行以内)</div>
+      <div class="stat-trend up">詳細はファイルへ</div>
+    </div>
+  </div>
+
+  <pre><code># 良い出力例(Slack通知)
+[2026-01-15 09:00 daily-pr] OK
+本日のレビュー対象: 3件
+ 1. #421 認証リトライ修正 - @tanaka
+ 2. #419 i18nの肩書き表記統一 - @sato
+ 3. #417 Vercel deploy script - @ito
+詳細: https://.../runs/xyz</code></pre>
+
+  <h3>コスト視点の出力設計</h3>
+
+  <p>出力字数は <span class="term" data-tip="output tokens = モデルが生成した文字数。入力より単価が高い(目安2-5倍)ため、無駄な冗長さはコストに直撃">output tokens</span> に直結します。放置運用の出力は<strong>150字前後で型を縛る</strong>のがベスト。詳細は必ずファイルに書き出してパスだけ通知する。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">出力字数とOutput Tokenコスト(日次 × 30日、モデル別傾向の概算)</div>
+    <canvas id="ch4-bar-1" height="160"></canvas>
+    <div class="diagram-caption">字数を150字前後で型縛りすると、月次コストが大幅に縮む。読みやすさもアップ。</div>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: 詳細をファイルに書き出す利点</summary>
+    <div class="more-body">
+      <p>詳細を <code>logs/2026-01-15/daily-pr.md</code> のようにファイル化する利点は3つ: (1) 通知は短く、概要だけが目に入る → チャンネル汚染しない、(2) 後から詳細を見たい時だけファイルを開く → 認知負荷の最適化、(3) git にコミットすれば履歴が追える → 「いつから失敗が始まったか」の調査が楽。コスト面でも output tokens を節約できます。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 6: 必須5要素テンプレート ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 迷わず書けるテンプレート</h2>
+
+  <p>本章の内容を1枚に凝縮したひな形です。穴を埋めるだけで放置運用可能な水準になります。</p>
+
+  <div class="steps">
+    <div class="step done"><div class="step-num">1</div><div class="step-label">目的1文</div><div class="step-desc">なぜ自動化するか</div></div>
+    <div class="step done"><div class="step-num">2</div><div class="step-label">データ源</div><div class="step-desc">CLI/API/ファイルパス</div></div>
+    <div class="step done"><div class="step-num">3</div><div class="step-label">成功条件</div><div class="step-desc">OK判定の1文</div></div>
+    <div class="step done"><div class="step-num">4</div><div class="step-label">出力形式</div><div class="step-desc">通知先と字数型</div></div>
+    <div class="step done"><div class="step-num">5</div><div class="step-label">異常時</div><div class="step-desc">止/スキップ/リトライ</div></div>
+  </div>
+
+  <pre><code>【目的】 ___(1文で。なぜ自動化するか)___
+
+【データ源】
+ - コマンド: ___ (例: gh pr list --json ...)
+ - または ファイル: ___
+ - 取得失敗時の扱い: ___
+
+【成功条件】
+ - ___ が達成されたら今回はOKとする
+ - 0件 / 空 の時: ___ (通知するか / サイレントか)
+
+【出力形式】
+ - 通知先: Slack #___ / ファイル path/to/log.md
+ - 本文テンプレ(字数制限あり):
+   [YYYY-MM-DD HH:MM <task-name>] <status>
+   <summary 3行以内>
+   詳細: <file-path-or-url>
+
+【異常時動作】
+ - 一過性エラー: 最大3回リトライ(指数バックオフ)
+ - 継続エラー: ___ (スキップ / 停止 / 通知)
+ - 連続N回失敗時: #alerts へ通知
+ - state ファイル: state/___.json に前回結果を保存</code></pre>
+
+  <div class="info-box">
+    <span class="label">再利用のコツ</span>
+    <p>このテンプレートは<strong>埋めたもの自体をリポジトリにコミット</strong>してください。<code>prompts/daily-pr.md</code> のようにプロンプトファイルをレビュー対象に載せると、チームでの運用がスムーズになります。Scheduled Tasks のプロンプトから <code>prompts/daily-pr.md</code> を <code>Read</code> させるだけで呼び出せます。</p>
+  </div>
+
+  <!-- ===== Section 7: 数値で見る設計品質の効果 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 数値で見るプロンプト設計の効果</h2>
+
+  <p>筆者が社内の定期ジョブ5本を Before / After で<span class="term" data-tip="2026年1月時点の計測値。環境・モデル・タスクの内容で変わる参考値">簡易計測</span>した結果です。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">5要素テンプレ適用前後の指標変化(5ジョブ平均)</div>
+    <canvas id="ch4-radar-2" height="220"></canvas>
+    <div class="diagram-caption">5要素適用で、無人成功率・可読性・コストの3軸すべてが改善。特に「サイレント故障の検知」が大きく伸びる。</div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-num">+61<small>%</small></div>
+      <div class="stat-label">無人成功率</div>
+      <div class="stat-trend up">異常時動作の明記効果</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">-55<small>%</small></div>
+      <div class="stat-label">月次トークンコスト</div>
+      <div class="stat-trend up">出力字数縛りの効果</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">3<small>日→0日</small></div>
+      <div class="stat-label">サイレント故障の最長期間</div>
+      <div class="stat-trend up">連続失敗検知の効果</div>
+    </div>
+  </div>
+
+  <!-- ===== Section 8: アンチパターン集 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 放置運用アンチパターン5選</h2>
+
+  <p>筆者が実際に踏んだ地雷を<strong>症状 → 原因 → 対策</strong>で整理します。</p>
+
+  <table>
+    <thead>
+      <tr><th>症状</th><th>原因</th><th>対策</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>通知が全く来ない/気づくと1週間止まってた</td>
+        <td>エラー時スキップのみで連続失敗検知がない</td>
+        <td>state ファイルに <code>consecutive_failures</code> を記録、N回で #alerts へ</td>
+      </tr>
+      <tr>
+        <td>同じエラー通知が深夜に100回届く</td>
+        <td>リトライループ + 冪等でない通知</td>
+        <td>通知先で sha / PR番号で重複検知 or 最大回数で強制停止</td>
+      </tr>
+      <tr>
+        <td>コストが月5万円 → 30万円に跳ねた</td>
+        <td>曖昧プロンプトで毎回試行錯誤 + 冗長出力</td>
+        <td>必須5要素適用 + 出力150字縛り + 詳細ファイル化</td>
+      </tr>
+      <tr>
+        <td>「実行されているのか壊れてるのか分からない」</td>
+        <td>成功時は無音(= 通知なし)の設計</td>
+        <td>0件ヒット時も「本日0件 ✓」を通知。ハートビート代わりに</td>
+      </tr>
+      <tr>
+        <td>エラーログが断片的で原因が追えない</td>
+        <td>出力に時刻・タスク名・入力が無い</td>
+        <td>1行目を <code>[時刻 task-name] status</code> 固定に</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <details class="more-box">
+    <summary>もっと詳しく: ハートビート通知のバランス</summary>
+    <div class="more-body">
+      <p>「毎回何かしら通知する」と「通知疲れ」が起きます。バランス: <strong>毎日タスクなら0件時も通知</strong>・<strong>5分毎の高頻度タスクは失敗時のみ通知 + 週次でハートビート</strong>。目安として<span class="term" data-tip="通知が多すぎてユーザーが無視するようになる状態。重要通知まで埋もれて見逃される">通知疲れ</span>の閾値は「1日10通以上」。これを超えると read 率が激減します。重要度で通知先チャンネルを分けるのも有効。</p>
+    </div>
+  </details>
+
+  <!-- ===== Exercises ===== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>必須5要素で定期タスクプロンプトを1本書く</h4>
+    <p>以下のシナリオで、本章のテンプレートを使って放置運用可能なプロンプトを書き上げてください。</p>
+    <blockquote style="border-left:3px solid #D97757; padding:0.5rem 1rem; background:#fff7ed; margin:0.8rem 0;">
+      シナリオ: 平日毎朝8時に、前日マージされたPR数をSlack #eng-daily に通知したい。
+    </blockquote>
+    <ol>
+      <li>目的・データ源・成功条件・出力形式・異常時動作 の5要素を全て埋める</li>
+      <li>0件の日の挙動を明示する</li>
+      <li>エラー時は「スキップ」扱いとし、3日連続失敗で #alerts に通知する設計にする</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <pre><code>【目的】 前日のチームの開発進捗を朝8時に可視化し、
+   朝会インプットとモメンタム維持に使う。
+
+【データ源】
+ - コマンド: gh pr list --repo acme/web
+     --state merged
+     --search "merged:&gt;=YESTERDAY_DATE"
+     --json number,title,author,mergedAt,url
+ - YESTERDAY_DATE は実行時に 1日前(JST)を算出
+ - gh 失敗時はこのジョブ全体をスキップ扱い
+
+【成功条件】
+ - 前日マージPR件数を取得し通知送信できたらOK
+ - 0件の日も「前日マージPR: 0件(静かな1日でした ✓)」
+   と必ず通知する(故障と区別するため)
+
+【出力形式】
+ - Slack #eng-daily へ:
+   [YYYY-MM-DD 08:00 daily-merge] OK
+   前日マージPR: N件
+   (件があれば)
+    1. #番号 タイトル - @author
+    ...(最大5件、超過は「他X件」と表記)
+ - 本文150字以内、詳細は logs/merged/YYYY-MM-DD.md へ
+
+【異常時動作】
+ - gh 失敗: 今回スキップ
+ - state/daily-merge.json に consecutive_failures を記録
+ - 3回連続失敗で #alerts に「daily-merge が3日連続失敗」
+   と通知し、consecutive_failures はリセットしない
+ - 成功したら consecutive_failures = 0</code></pre>
+      <p>ポイント: 「0件も通知」「連続失敗検知」の2点が<strong>放置運用らしさ</strong>。これを書かないと、静かな日と壊れた日を区別できなくなります。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>既存プロンプトの「異常時動作」を診断する</h4>
+    <p>自分が使っている(または過去に書いた)定期タスクのプロンプトを1つ引っ張り出し、以下3つの観点で診断してください。自前のものがなければ、チームの誰かのプロンプトを見せてもらうか、GitHub で公開されている Scheduled Tasks の例で代用可。</p>
+    <ol>
+      <li><strong>異常時動作</strong>が「止まる / スキップ / リトライ」のどれか明示されているか?</li>
+      <li>0件ヒット / 空データ時の挙動は書かれているか?</li>
+      <li>サイレント故障(連続N回失敗で通知)のガードはあるか?</li>
+    </ol>
+    <p>欠けている要素を補う形でプロンプトを書き直し、<strong>Before → After</strong> の差分を git diff 形式で残してください。次回、実運用で何が変わったかを記録するとなお良いです。</p>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>回答例(診断対象: 「毎時ヘルスチェックURLを叩く」ジョブ):</p>
+      <pre><code># Before
+目的: service.example.com が生きているか確認
+コマンド: curl -sSf https://service.example.com/health
+失敗したらSlackに通知</code></pre>
+      <p><strong>診断結果</strong>:</p>
+      <ol>
+        <li>異常時動作: 「失敗したらSlack通知」のみ。リトライ有無・止まるか継続か不明 → NG</li>
+        <li>空レスポンス / 非200時の扱い: 書かれていない → NG</li>
+        <li>連続失敗検知: なし → サイレント故障リスクあり</li>
+      </ol>
+      <pre><code># After
+【目的】 service.example.com のup状態を毎時確認し、
+      ダウン検知から最大1時間以内にチームへ通知する。
+
+【データ源】 curl -sSf --max-time 10 https://service.example.com/health
+       (exit 0 + body="OK" で正常)
+
+【成功条件】 HTTP 200 + body="OK" なら今回OK。
+       それ以外(非200/timeout/body不一致)は失敗扱い。
+
+【出力形式】
+ - 正常時: state/hc.json を更新するだけ(通知なし)
+ - 異常時: #alerts へ
+   [YYYY-MM-DD HH:00 health-check] NG
+   応答: <status_code> / <first_80chars_of_body>
+   連続失敗: <N>回目
+
+【異常時動作】
+ - curl timeout/非200: その場で最大3回リトライ(3秒/9秒/27秒)
+ - 全失敗なら state/hc.json の fails を +1、通知
+ - 復旧(正常応答)時は「service復旧しました ✓」を1度だけ通知
+   し fails を 0 にリセット
+ - fails >= 5 で PagerDuty にエスカレーション</code></pre>
+      <p>効果の記録例: Before運用時はダウン検知から通知まで平均22分・サイレント失敗1回発生。After では最大7分以内に検知、エスカレーションで夜間も確実に気付けるようになった。</p>
+    </div>
+  </details>
+
+  <div class="info-box">
+    <span class="label">2026年1月時点の注記</span>
+    <p>本章の記述(ScheduleWakeup・<code>/loop</code>・CronCreate の挙動、gh CLI のフラグ等)は<strong>2026年1月時点</strong>のものです。Claude Code は活発に更新されているため、<span class="term" data-tip="2026年1月時点の記述。最新は公式ドキュメント参照">ツール名・パラメータ・デフォルト値</span>は変わる可能性があります。運用投入前に必ず公式ドキュメントで最新挙動を確認してください。</p>
+  </div>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式ドキュメント</a> — Scheduled Tasks / /loop / プロンプト設計の原典</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://crontab.guru/" target="_blank" rel="noopener">crontab.guru</a> — cron式の組み立てと検証に必須</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://cli.github.com/manual/" target="_blank" rel="noopener">GitHub CLI (gh) マニュアル</a> — 放置運用のデータ源として頻出</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://api.slack.com/messaging/webhooks" target="_blank" rel="noopener">Slack Incoming Webhooks</a> — 通知先として定番</li>
+      <li><span class="res-type video">Video</span> <a href="https://www.youtube.com/results?search_query=Claude+Code+scheduled+tasks+prompt" target="_blank" rel="noopener">YouTube: Claude Code scheduled tasks prompt</a> — 動画で学ぶ実例</li>
+      <li><span class="res-type article">Article</span> <a href="https://zenn.dev/topics/claudecode" target="_blank" rel="noopener">Zenn: Claude Code タグ</a> — 日本語での運用事例集</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="04">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="03-cron-schedule.html"><span class="direction">&larr; Prev</span>Scheduled Tasks</a>
+    <a href="05-ci-polling.html"><span class="direction">Next &rarr;</span>実践：CIチェック</a>
+  </div>
+</main>
+
+<script>
+window.addEventListener("load", function(){
+  // Bar 1: 出力字数別コスト
+  var ctx1 = document.getElementById('ch4-bar-1');
+  if (ctx1 && window.Chart) {
+    new Chart(ctx1, {
+      type: 'bar',
+      data: {
+        labels: ['150字(型縛り)', '500字', '1500字', '3000字(縛りなし)'],
+        datasets: [{
+          label: '月次output tokens コスト(相対値)',
+          data: [1.0, 3.3, 10.0, 20.0],
+          backgroundColor: ['#D97757', 'rgba(217,119,87,0.7)', 'rgba(217,119,87,0.4)', '#cbd5e1'],
+          borderRadius: 6
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        plugins: { legend: { display: false } },
+        scales: { x: { beginAtZero: true, title: { display: true, text: '相対コスト(小さいほど健全)' } } }
+      }
+    });
+  }
+
+  // Radar 2: Before/After 指標変化
+  var ctx2 = document.getElementById('ch4-radar-2');
+  if (ctx2 && window.Chart) {
+    new Chart(ctx2, {
+      type: 'radar',
+      data: {
+        labels: ['無人成功率', '出力可読性', 'コスト効率', '故障検知', '再利用性'],
+        datasets: [
+          {
+            label: 'Before(曖昧プロンプト)',
+            data: [35, 40, 30, 20, 25],
+            backgroundColor: 'rgba(203,213,225,0.3)',
+            borderColor: '#cbd5e1',
+            pointBackgroundColor: '#cbd5e1'
+          },
+          {
+            label: 'After(5要素適用)',
+            data: [96, 90, 85, 88, 92],
+            backgroundColor: 'rgba(217,119,87,0.2)',
+            borderColor: '#D97757',
+            pointBackgroundColor: '#D97757'
+          }
+        ]
+      },
+      options: {
+        plugins: { legend: { position: 'bottom' } },
+        scales: { r: { suggestedMin: 0, suggestedMax: 100 } }
+      }
+    });
+  }
+});
+</script>
+
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>

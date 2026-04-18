@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>実践：長時間タスクを /loop で自走 - MK's Claude Code Tutorial - Schedule & Loop</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code - Schedule
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav class="active"><span class="phase-name">Practice</span><span class="phase-pct" id="pct-practice">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.07</span>
+    実践：長時間タスクを /loop で自走
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 8 sections</text>
+    </svg>
+    <div class="progress-info">0h / 4h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-schedule-loop-overview.html"><span class="status-dot" data-chapter="01"></span> Scheduled Tasks & Loop とは</a></li>
+    <li><a href="02-loop-skill.html"><span class="status-dot" data-chapter="02"></span> /loop スキル</a></li>
+    <li><a href="03-cron-schedule.html"><span class="status-dot" data-chapter="03"></span> Scheduled Tasks</a></li>
+    <li><a href="04-prompt-design.html"><span class="status-dot" data-chapter="04"></span> 放置運用プロンプト</a></li>
+  </ul>
+  <div class="section-label">Practice</div>
+  <ul>
+    <li><a href="05-ci-polling.html"><span class="status-dot" data-chapter="05"></span> 実践：CIチェック</a></li>
+    <li><a href="06-daily-pr-summary.html"><span class="status-dot" data-chapter="06"></span> 実践：PRサマリ通知</a></li>
+    <li><a href="07-long-running-loop.html" class="active"><span class="status-dot" data-chapter="07"></span> 実践：/loop で自走</a></li>
+    <li><a href="08-final-exercise.html"><span class="status-dot" data-chapter="08"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 2: Practice &gt; Chapter 07</div>
+  <h1>実践：長時間タスクを /loop で自走</h1>
+  <p class="subtitle">夜まで回すワークフロー — 進捗ファイルで状態を持たせ、1ステップずつ自走させる</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 30分</span>
+    <span class="badge">Phase: Practice</span>
+    <span class="badge">難易度: 中級</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">この章のゴール</span>
+    <p>10項目あるToDoリストを <strong>1時間かけて1つずつ処理</strong> する、現実的な「自走ワークフロー」を組み立てます。鍵は <code>/loop dynamic</code>(Claudeが自分で次の起動を決める)+ <code>todo.md</code> による状態保持 + 明確な停止条件。この3点が揃うと、朝セットして夜戻ってきたら10件のブログ記事が書き上がっている、といった運用が現実になります。</p>
+  </div>
+
+  <div class="info-box" style="border-left: 3px solid #D97757;">
+    <span class="label">バージョン注記</span>
+    <p>本章の記述は <strong>2026年1月時点</strong> の Claude Code(/loop スキル、ScheduleWakeup)の挙動に基づきます。ツール名やパラメータは更新されるため、動かない場合は <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">公式ドキュメント</a> を参照してください。</p>
+  </div>
+
+  <div class="info-box" style="background:#fef3c7; border-left:3px solid #d97706;">
+    <span class="label">コスト警告</span>
+    <p>本章のワークフローは <strong>1時間に10回以上 Claude を起動</strong> します。1ステップあたり数千〜1万トークン消費する想定なら、1セッションで数百円〜数千円規模。<strong>必ず上限(ステップ数・時間)を todo.md と停止条件に書き込み</strong>、暴走しても有限時間で止まる設計にしてください。</p>
+  </div>
+
+  <!-- ===== Section 1: シナリオ ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> シナリオ：夜まで回したいタスクたち</h2>
+
+  <p>「自分が寝ている間に10件ぶん終わってたら助かるなあ」というタスクは、周りに転がっています。<span class="term" data-tip="/loop dynamic: 一定間隔ではなく、Claude自身が次の起動時刻を決めるモード。重いタスクに向く(2026年1月時点)。">/loop dynamic</span> は、こうした <strong>「1ステップの実行時間が大きい／本数が多い／順次に進めたい」</strong> タスクの得意分野です。代表的な3シナリオを見ます。</p>
+
+  <div class="compare-cards">
+    <div class="cc">
+      <span class="cc-label">A. ブログ記事量産</span>
+      <h4>10テーマを夜まで書き上げる</h4>
+      <ul>
+        <li>1本 = リサーチ+構成+執筆で15〜30分</li>
+        <li>10本順次で 2.5〜5時間</li>
+        <li>「朝にテーマ10個用意 → 夜チェック」の運用</li>
+      </ul>
+    </div>
+    <div class="cc">
+      <span class="cc-label">B. コードリファクタ</span>
+      <h4>10ファイルを1件ずつ書き換え</h4>
+      <ul>
+        <li>1ファイル = 読解+修正+テストで10〜20分</li>
+        <li>依存関係があるため順次実行が安全</li>
+        <li>各ファイル毎にコミットを分けたい</li>
+      </ul>
+    </div>
+    <div class="cc">
+      <span class="cc-label">C. 調査レポート</span>
+      <h4>10社を1社ずつ分析</h4>
+      <ul>
+        <li>1社 = 公式+IR+SNSで15分</li>
+        <li>1社ぶんずつMarkdownで書き出し</li>
+        <li>途中でエラーが出ても残り9社は進む</li>
+      </ul>
+    </div>
+  </div>
+
+  <p>いずれも共通するのは <strong>「独立な単位(=1項目)が10個前後」+「全体を一気に1ターンで処理するのは無理」</strong> という特性。ここで <code>/loop dynamic</code> と <span class="term" data-tip="todo.md: 進捗をMarkdownで記録する単純なテキストファイル。1項目1行でチェックボックス付けるだけで、状態保持の最小限になる。">todo.md</span> が効きます。</p>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section 2: /loop dynamic の使い方 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> /loop dynamic の使い方 — 自分で次を予約する</h2>
+
+  <p><code>/loop dynamic</code> は <span class="term" data-tip="ScheduleWakeup: 次のターンを指定時刻に発火させるための内部ツール。dynamic モードの心臓部(2026年1月時点)。">ScheduleWakeup</span> を毎ターン呼ぶことで「自分で次の起動時刻を決める」ループです。これが <code>interval</code> モード(固定間隔)と異なる点。重い1ステップが終わってから次を予約するので、<strong>ステップ間の休み時間を動的に調整</strong> できます。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">/loop dynamic の動き(1サイクル)</div>
+    <pre class="mermaid">
+graph LR
+  A["起床"] --> B["todo.md を読む"]
+  B --> C{"未完の<br/>項目ある?"}
+  C -- "Yes" --> D["1項目処理"]
+  D --> E["todo.md 更新"]
+  E --> F["ScheduleWakeup<br/>次の時刻を予約"]
+  F --> Z["ターン終了"]
+  C -- "No" --> End["完了・予約しない"]
+    </pre>
+    <div class="diagram-caption">各ターンは「読む→1個やる→記録→次を予約」の固定4ステップ。次を予約しなければ自然終了する。</div>
+  </div>
+
+  <h3>interval モードとの違い</h3>
+
+  <table>
+    <thead>
+      <tr><th>観点</th><th>/loop interval</th><th>/loop dynamic</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>次の起動</td><td>固定間隔(5分ごと等)</td><td>Claudeが自分で時刻決定</td></tr>
+      <tr><td>ステップの重さ</td><td>軽い(ポーリング向き)</td><td>重い(1ステップ分単位)</td></tr>
+      <tr><td>完了判定</td><td>CronDelete で手動</td><td>次を予約しない=自然終了</td></tr>
+      <tr><td>向いてる用途</td><td>CI監視・価格監視</td><td>長編執筆・リファクタ</td></tr>
+      <tr><td>Ch05/Ch06との関係</td><td>CIポーリングで使用</td><td>本章のメイン道具</td></tr>
+    </tbody>
+  </table>
+
+  <h3>最小コマンド</h3>
+
+  <p>実運用で使うコマンドはこれだけ。<code>/loop</code> スキル呼び出しに続けて <strong>間隔を省略</strong> すると dynamic モードになります(2026年1月時点)。</p>
+
+  <pre><code># dynamic モード(Claudeが自分で次の時刻を決める)
+/loop 以下のタスクを todo.md に沿って進めてください。
+完了項目にチェックを付け、1つ処理したら次の起動時刻を自分で予約。
+全項目完了したら予約をやめて終了してください。
+
+# interval モード(比較用、Ch05で使用)
+/loop 5m 以下のプロンプト…</code></pre>
+
+  <div class="info-box">
+    <span class="label">ポイント</span>
+    <p>dynamic は <strong>「間隔を書かない」ことで有効化</strong> します。書き忘れと見分けがつきにくいので、プロンプトの冒頭に「<strong>これはdynamicループである</strong>」と明記するとデバッグが楽です。</p>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: ScheduleWakeup の仕組みと次起動の考え方</summary>
+    <div class="more-body">
+      <p><code>ScheduleWakeup</code> は「<strong>N秒後またはT時刻に、このセッションを再度起床させる</strong>」というハーネス側の予約機能です。dynamicループでは毎ターン末尾にこれを呼ぶことで継続します。キャッシュTTLが5分(2026年1月時点)なので、<strong>270秒以内に次を予約すればウォーム状態で再開</strong>、それより長いと <span class="term" data-tip="コールド再開: キャッシュが失効した状態で再起動すること。入力トークンが再計算される分、コストと時間が増える。">コールド再開</span> になります。重い1ステップの直後は数分のクールダウンを入れても構いませんが、「次の項目にすぐ取り掛かる」ならウォーム範囲を狙うのが得。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 3: todo.md で状態保持 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 進捗ファイル todo.md で状態を持たせる</h2>
+
+  <p>ループの各ターンは <strong>独立した会話文脈</strong> です。メモリで状態は引き継げないので、<strong>ディスク上のファイルで状態を表現</strong> する必要があります。最も簡単なのが <code>todo.md</code>。Markdownのチェックボックスを見て「次にやるべき項目」を自己判定させます。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">todo.md テンプレート(ブログ10本のケース)</div>
+    <pre><code># ブログ記事10本自動執筆 todo
+
+## メタ情報
+- 開始時刻: 2026-04-18 09:00
+- デッドライン: 2026-04-18 21:00
+- 最大ステップ: 12(10本 + リトライ2枠)
+- 1ステップ間隔: 5分以内(ウォーム再開狙い)
+
+## タスク
+- [x] 1. 「Claude Code入門」記事を articles/01.md に書く
+- [x] 2. 「サブエージェント活用」記事を articles/02.md に書く
+- [ ] 3. 「/loop で夜まで自走」記事を articles/03.md に書く ← 次
+- [ ] 4. 「CronCreate の使い方」記事を articles/04.md に書く
+- [ ] 5. 「放置運用プロンプト」記事を articles/05.md に書く
+- [ ] 6. 「コスト最適化」記事を articles/06.md に書く
+- [ ] 7. 「エラーからの自己回復」記事を articles/07.md に書く
+- [ ] 8. 「通知設計 Slack連携」記事を articles/08.md に書く
+- [ ] 9. 「dynamic vs interval」記事を articles/09.md に書く
+- [ ] 10. 「最終演習: 自業務3つ自動化」記事を articles/10.md に書く
+
+## ログ(各ターンで追記)
+- 09:00 start: 1件目開始
+- 09:23 done: 1件目 OK(1,540字)
+- 09:27 done: 2件目 OK(1,820字)
+- 09:51 start: 3件目 開始予定
+
+## 停止条件
+- 全項目 [x] → 予約せず終了
+- 21:00 到達 → 未完項目を残して終了
+- 同じ項目で3回エラー → その項目を SKIP としてマーク、次へ</code></pre>
+    <div class="diagram-caption">チェックボックス・メタ情報・ログ・停止条件の4ブロック。これだけで自走に必要な情報が全て揃う。</div>
+  </div>
+
+  <h3>なぜ Markdown で十分なのか</h3>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="eye" width="20" height="20"></i>
+      <div><strong>人間が読める</strong> — 夜中に覗いたら進捗が一目でわかる。JSONやDBは重すぎる</div>
+    </li>
+    <li>
+      <i data-lucide="git-commit" width="20" height="20"></i>
+      <div><strong>git で差分追跡</strong> — 各ターンの終わりに commit すれば、後から「どの項目で何分かけたか」が復元可能</div>
+    </li>
+    <li>
+      <i data-lucide="edit-3" width="20" height="20"></i>
+      <div><strong>Claudeが編集しやすい</strong> — 「<code>- [ ]</code> を <code>- [x]</code> に置換」のような操作はLLMが間違えにくい</div>
+    </li>
+    <li>
+      <i data-lucide="shield" width="20" height="20"></i>
+      <div><strong>壊れても復旧可能</strong> — 最悪手でチェックを付け直せる。バイナリ状態ファイルと違い救済しやすい</div>
+    </li>
+  </ul>
+
+  <div class="info-box" style="background: rgba(217,119,87,0.08); border-left: 3px solid #D97757;">
+    <span class="label">今すぐ試す(空のtodo.mdを作る)</span>
+    <p>今の作業ディレクトリで、次を実行してベースを作ってください。</p>
+    <pre><code>cat &gt; todo.md &lt;&lt;'EOF'
+# 自走 todo
+## メタ情報
+- 開始: (開始時に追記)
+- 最大ステップ: 10
+## タスク
+- [ ] 1. (ここに項目を書く)
+- [ ] 2.
+## ログ
+## 停止条件
+- 全項目完了 → 終了
+- 同じ項目で3回エラー → SKIP で次へ
+EOF</code></pre>
+    <p>プロンプトから参照できるパスが決まると、以降のセクションが一気に具体化します。</p>
+  </div>
+
+  <!-- ===== Section 4: 停止条件 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 停止条件 — 必ず止まるように設計する</h2>
+
+  <p>dynamic ループは <strong>「次を予約しなければ自然終了」</strong> ですが、逆に言うと <strong>予約し続ければ永遠に続く</strong>。暴走を防ぐには、<strong>3つの停止条件</strong> を必ずプロンプトに書き込みます。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">3つの停止条件の関係</div>
+    <svg viewBox="0 0 460 260" width="100%" style="max-width:460px; display:block; margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <rect x="30" y="30" width="130" height="90" rx="10" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="2"/>
+      <text x="95" y="58" text-anchor="middle" font-size="13" font-weight="700">1. 完了</text>
+      <text x="95" y="80" text-anchor="middle" font-size="10" fill="#475569">全 [x]</text>
+      <text x="95" y="98" text-anchor="middle" font-size="10" fill="#475569">→ 予約せず終了</text>
+
+      <rect x="170" y="30" width="130" height="90" rx="10" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+      <text x="235" y="58" text-anchor="middle" font-size="13" font-weight="700" fill="#b91c1c">2. エラー</text>
+      <text x="235" y="80" text-anchor="middle" font-size="10" fill="#475569">同一項目3連敗</text>
+      <text x="235" y="98" text-anchor="middle" font-size="10" fill="#475569">→ SKIP して次へ</text>
+
+      <rect x="310" y="30" width="130" height="90" rx="10" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+      <text x="375" y="58" text-anchor="middle" font-size="13" font-weight="700" fill="#b45309">3. 時間切れ</text>
+      <text x="375" y="80" text-anchor="middle" font-size="10" fill="#475569">デッドライン到達</text>
+      <text x="375" y="98" text-anchor="middle" font-size="10" fill="#475569">→ 未完残して終了</text>
+
+      <rect x="90" y="160" width="280" height="80" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+      <text x="230" y="185" text-anchor="middle" font-size="12" font-weight="700" fill="#334155">すべて todo.md に明記</text>
+      <text x="230" y="205" text-anchor="middle" font-size="10" fill="#475569">Claudeは毎ターン3条件をチェック</text>
+      <text x="230" y="222" text-anchor="middle" font-size="10" fill="#475569">どれか満たせば ScheduleWakeup を呼ばない</text>
+    </svg>
+    <div class="diagram-caption">完了・エラー・時間切れ。この3つのどれかで必ず止まるよう仕組む。</div>
+  </div>
+
+  <h3>3条件を詳しく</h3>
+
+  <table>
+    <thead>
+      <tr><th>条件</th><th>検出</th><th>動作</th><th>todo.md への記録</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>完了</td><td>全項目 [x]</td><td>ScheduleWakeup を呼ばず終了</td><td>「完了: N件」と末尾に追記</td></tr>
+      <tr><td>エラー3連発</td><td>同一項目で3回失敗</td><td>その項目を SKIP にして次へ、最終的に報告</td><td>「SKIP: 項目#K 理由=...」</td></tr>
+      <tr><td>時間切れ</td><td>現在時刻 &gt;= deadline</td><td>未完項目を残し終了</td><td>「中断: 21:00到達、残N件」</td></tr>
+      <tr><td>最大ステップ</td><td>ステップ数が上限</td><td>同上(保険)</td><td>「中断: step limit」</td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-box" style="background:#fef3c7; border-left:3px solid #d97706;">
+    <span class="label">コスト制御の要</span>
+    <p>時間切れと最大ステップは <strong>二重の安全装置</strong>。片方だけだと、項目ごとの実時間が想定より伸びた時に止まらなくなります。両方書き込むのが常道です。</p>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: エラー時の再試行戦略(指数バックオフまで行くか?)</summary>
+    <div class="more-body">
+      <p>個人運用レベルでは <strong>「3連敗で SKIP」</strong> で十分です。指数バックオフ・リトライキューのような重装備は、100項目・24時間運用など規模が大きくなってから検討すれば十分。ポイントは「<strong>エラー項目が原因でループ全体が止まらないこと</strong>」。1件失敗しても残り9件の記事が書き上がる方が、全件止まるより圧倒的に価値が高い。</p>
+    </div>
+  </details>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section 5: ハンズオン ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> ハンズオン：10項目を1時間で1つずつ</h2>
+
+  <p>ここまでの道具を全部使って、<strong>10項目を6分間隔で1つずつ処理する</strong> 最小ワークフローを組みます。題材は「あなたが興味あるブログテーマ10個を1記事500字で書き上げる」。所要1時間の想定。</p>
+
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-label">準備</div><div class="step-desc">todo.md 作成</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-label">起動</div><div class="step-desc">/loop を dynamic で</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-label">監視</div><div class="step-desc">途中で覗く</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-label">回収</div><div class="step-desc">成果物を確認</div></div>
+  </div>
+
+  <h3>Step 1. todo.md を用意</h3>
+
+  <pre><code>mkdir -p blog-run && cd blog-run
+mkdir -p articles
+cat &gt; todo.md &lt;&lt;'EOF'
+# ブログ自走 todo (10本)
+## メタ情報
+- 開始: (開始時刻を記入)
+- デッドライン: 開始時刻 + 1時間
+- 1ステップ間隔: 5分(ウォーム狙い)
+- 最大ステップ: 12
+## タスク
+- [ ] 1. 朝のルーチンで集中力を保つ3つの習慣 → articles/01.md
+- [ ] 2. 在宅勤務で太らない食事術 → articles/02.md
+- [ ] 3. 副業で月5万円稼ぐ最短ルート → articles/03.md
+- [ ] 4. 30代からの資格取得戦略 → articles/04.md
+- [ ] 5. 子育て世代のタイムマネジメント → articles/05.md
+- [ ] 6. 続ける読書のコツ3選 → articles/06.md
+- [ ] 7. 運動嫌いでも続くウォーキング術 → articles/07.md
+- [ ] 8. 貯金ゼロから100万円への道 → articles/08.md
+- [ ] 9. コミュ障でも困らない会議術 → articles/09.md
+- [ ] 10. 睡眠の質を3倍にする環境づくり → articles/10.md
+## ログ
+## 停止条件
+- 全項目 [x] → 予約せず終了
+- デッドライン到達 → 未完を残して終了
+- 同一項目で3回エラー → SKIP して次へ
+EOF</code></pre>
+
+  <h3>Step 2. /loop dynamic を起動</h3>
+
+  <p>Claude Code を開いたディレクトリで、次のプロンプトを送ります。</p>
+
+  <pre><code>/loop 【dynamicループ・自走モード】
+あなたは todo.md に従ってブログ記事を1本ずつ書き上げるループです。
+毎ターン必ず次のフローを実行してください。
+
+1) todo.md を Read する
+2) 停止条件を先にチェック(完了/時間切れ/ステップ上限)
+   - 条件を満たしたら ScheduleWakeup を呼ばず終了(ログに理由を記録)
+3) 未完の最初の項目を1つ選ぶ
+4) その項目を1本の記事として articles/NN.md に書く(500字前後、日本語)
+5) 書けたら todo.md の [ ] を [x] に更新、ログに「HH:MM done: N件目」を追記
+6) 失敗したら連続失敗カウンタを+1(3になったら SKIP にしてログ記録)
+7) ScheduleWakeup で 5分後に次のターンを予約
+8) ターン終了
+
+【重要】
+- 会話の前提に頼らず、毎ターン todo.md だけから状態を復元すること
+- ログは時刻つきで追記、上書きしないこと
+- 成果物は articles/NN.md に書き、チャット上に長文を出さない</code></pre>
+
+  <h3>Step 3. 走らせながら進捗を確認</h3>
+
+  <div class="progress-row">
+    <div class="progress-head"><span>ブログ10本の進捗(想定)</span><span>60分で完走</span></div>
+    <div class="progress-track"><div class="progress-fill" style="width:100%"></div></div>
+  </div>
+
+  <div class="diagram-box">
+    <div class="diagram-title">1時間の自走イメージ(縦=累計記事数)</div>
+    <canvas id="ch7-line-1" height="200"></canvas>
+    <div class="diagram-caption">約6分に1本ペースで10本。3件目で1回エラー→再試行して継続、という現実的な曲線。</div>
+  </div>
+
+  <div class="diagram-box">
+    <div class="diagram-title">1ターンあたり時間の内訳(平均)</div>
+    <canvas id="ch7-donut-1" height="200"></canvas>
+    <div class="diagram-caption">リサーチと執筆でほぼ全部。todo.md 更新は秒単位、間隔待ちは5分の「固定コスト」。</div>
+  </div>
+
+  <h3>Step 4. 回収とふりかえり</h3>
+
+  <p>1時間後、<code>articles/</code> に10本のMarkdownが並びます。<code>todo.md</code> のログで「何件目で何分かかったか」も見えます。うまくいったらそのまま <code>git commit</code>、うまくいかなかった項目は SKIP ログから手動再実行できます。</p>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-num">10<small>本</small></div>
+      <div class="stat-label">成果物</div>
+      <div class="stat-trend up">↑ 1時間で完走</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">~6<small>min</small></div>
+      <div class="stat-label">1本あたり</div>
+      <div class="stat-trend up">↑ 予算内</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">0<small>回</small></div>
+      <div class="stat-label">手動介入</div>
+      <div class="stat-trend up">↑ 完全自走</div>
+    </div>
+  </div>
+
+  <div class="info-box" style="background:#fef3c7; border-left:3px solid #d97706;">
+    <span class="label">コスト見積もり(2026年1月時点の感覚値)</span>
+    <p>1本500字のブログ記事 × 10本。1ターン入出力3〜8Kトークン想定で、<strong>合計数十〜百数十円</strong> 規模。放置時間が伸びるほど積み上がるので、<strong>必ず deadline と max-step の両方を todo.md に書いておく</strong> こと。途中でコストが想定を超えたら Ctrl+C で止めて、次回以降に間隔を長くする・項目数を減らす等で調整します。</p>
+  </div>
+
+  <p>ここまで組めれば、あとは題材を入れ替えるだけで <strong>リファクタ自走・分析レポート自走</strong> に転用できます。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span></p>
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>todo.md を書いて dynamicループを3ターンだけ回す</h4>
+    <p>本章の Step 1-2 を、項目数だけ <strong>3個に減らして</strong> 実行してみましょう。成功基準は「3本の成果物ファイルが articles/ に並ぶこと」と「todo.md のログに3回の done が記録されていること」。</p>
+    <ol>
+      <li>項目は軽いテーマ3つでOK(例: 好きな本 / 好きな映画 / 好きな食べ物を各200字で紹介)</li>
+      <li>間隔は1分に短縮(デバッグしやすさ優先)、max-step は 5 に設定</li>
+      <li>走り終わったら todo.md のログと articles/*.md の両方を確認</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>最小形の todo.md とプロンプトはこの通り。</p>
+      <pre><code># todo.md
+## メタ情報
+- デッドライン: 開始+15分 / 最大ステップ: 5 / 間隔: 1分
+## タスク
+- [ ] 1. 好きな本を200字で紹介 → articles/01.md
+- [ ] 2. 好きな映画を200字で紹介 → articles/02.md
+- [ ] 3. 好きな食べ物を200字で紹介 → articles/03.md
+## ログ
+## 停止条件
+- 全項目 [x] → 終了
+- 15分到達 → 終了
+
+# プロンプト
+/loop 【dynamic】todo.md を読み、未完1項目を処理し、
+成果を articles/NN.md に書き、todo.md を更新し、
+1分後に次を ScheduleWakeup で予約。完了/時間切れで終了。</code></pre>
+      <p><strong>観察ポイント</strong>:(1) 1ターン目で1件目が done になる (2) ログの時刻が約1分間隔で並ぶ (3) 3件終わったら次が予約されず自然停止。ここで「dynamic は予約をやめれば止まる」が体感できる。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>リファクタ自走ワークフローを設計する</h4>
+    <p>自分の業務リポジトリを1つ選び、「<strong>型エラーを1ファイルずつ直していくループ</strong>」を紙の上で設計してください。実装しなくてOK、<strong>設計書だけ</strong>作ります。</p>
+    <ol>
+      <li>対象ファイル10個を todo.md の形で列挙(相対パスで)</li>
+      <li>1ステップで行う処理(Read → 修正 → tsc で検証 → commit)の内訳</li>
+      <li>エラー発生時の扱い(即SKIP vs 2回リトライ、どちらを選ぶか理由つき)</li>
+      <li>コスト見積もり(1ステップ=X円想定、合計Y円まで)</li>
+      <li>「これは dynamic でなく interval の方が適している」ケースがあれば説明</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>模範解答の例(TypeScriptリポジトリを想定)</p>
+      <pre><code>【todo.md】
+- [ ] 1. src/api/user.ts — TS2345 修正
+- [ ] 2. src/api/order.ts — TS2322 修正
+(...以下10件)
+
+【1ステップ】
+1) 対象ファイルを Read
+2) 型エラーを直す(既存ロジック維持)
+3) npx tsc --noEmit で検証(エラー残存なら再試行)
+4) git add + git commit -m "fix(types): {file}"
+5) todo.md 更新・ログ追記
+
+【エラー時】 2回リトライ → ダメなら SKIP
+  理由: 型エラーは原因が複雑な場合があり、1発で直らないことが多い。
+        ただし3回以上はLLMがループしがちなのでSKIPで人間に回す。
+
+【コスト】 1ステップ=約30円想定(長めのファイル含む) × 10 + 余裕2 = 360円。
+
+【interval が向くケース】
+  ・CIの結果を5分おきに見にいく監視(Ch05)
+  ・1ステップが軽く、刻みが重要なポーリング系
+  → 本件は1ステップ自体が重い(tsc含む)ので dynamic 向き。</code></pre>
+      <p><strong>ポイント</strong>: 「1ステップの重さ」で dynamic / interval を選ぶ感覚が身につくと、Ch08の最終演習で自作ワークフローを組む時に設計判断が速くなります。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式ドキュメント</a> — /loop スキルと ScheduleWakeup の一次情報(2026年1月時点)</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener">Claude Code GitHub リポジトリ</a> — /loop スキル README、dynamic/interval の挙動差を追える</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://www.markdownguide.org/extended-syntax/#task-lists" target="_blank" rel="noopener">Markdown Task List 記法</a> — todo.md のチェックボックス表記のリファレンス</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://git-scm.com/docs/git-commit" target="_blank" rel="noopener">git commit ドキュメント</a> — 各ステップでのコミット運用リファレンス</li>
+      <li><span class="res-type video">Video</span> <a href="https://www.youtube.com/results?search_query=Claude+Code+loop+dynamic" target="_blank" rel="noopener">YouTube: "Claude Code loop dynamic"</a> — 自走ワークフローの実演と失敗事例</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://zenn.dev/topics/claudecode" target="_blank" rel="noopener">Zenn: Claude Code タグ</a> — 日本語コミュニティの運用記事、コスト事例が見つかる</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="07">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="06-daily-pr-summary.html"><span class="direction">&larr; Prev</span>実践：PRサマリ通知</a>
+    <a href="08-final-exercise.html"><span class="direction">Next &rarr;</span>最終演習</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+
+<!-- Chart.js: 1時間で10本の自走推移 -->
+<script>
+window.addEventListener("load", function(){
+  var ctxLine = document.getElementById('ch7-line-1');
+  if (ctxLine && window.Chart) {
+    new Chart(ctxLine, {
+      type: 'line',
+      data: {
+        labels: ['0分','6分','12分','18分','24分','30分','36分','42分','48分','54分','60分'],
+        datasets: [{
+          label: '累計完了記事数',
+          data: [0, 1, 2, 2, 3, 4, 5, 6, 7, 8, 10],
+          borderColor: '#D97757',
+          backgroundColor: 'rgba(217,119,87,0.15)',
+          tension: 0.3,
+          fill: true,
+          pointBackgroundColor: '#D97757'
+        }]
+      },
+      options: {
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { beginAtZero: true, max: 10, title: { display: true, text: '累計本数' } }
+        }
+      }
+    });
+  }
+
+  var ctxDonut = document.getElementById('ch7-donut-1');
+  if (ctxDonut && window.Chart) {
+    new Chart(ctxDonut, {
+      type: 'doughnut',
+      data: {
+        labels: ['リサーチ','執筆','todo.md 更新','間隔待ち(固定)'],
+        datasets: [{
+          data: [35, 45, 3, 17],
+          backgroundColor: ['#D97757', 'rgba(217,119,87,0.5)', 'rgba(217,119,87,0.2)', '#cbd5e1']
+        }]
+      },
+      options: { plugins: { legend: { position: 'bottom' } } }
+    });
+  }
+});
+</script>
+</body>
+</html>

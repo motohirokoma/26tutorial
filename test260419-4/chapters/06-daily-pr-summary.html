@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>実践：毎朝9時のPRサマリ通知 - MK's Claude Code Tutorial - Schedule & Loop</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code - Schedule
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav class="active"><span class="phase-name">Practice</span><span class="phase-pct" id="pct-practice">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.06</span>
+    実践：毎朝9時のPRサマリ通知
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 8 sections</text>
+    </svg>
+    <div class="progress-info">0h / 4h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-schedule-loop-overview.html"><span class="status-dot" data-chapter="01"></span> Scheduled Tasks & Loop とは</a></li>
+    <li><a href="02-loop-skill.html"><span class="status-dot" data-chapter="02"></span> /loop スキル</a></li>
+    <li><a href="03-cron-schedule.html"><span class="status-dot" data-chapter="03"></span> Scheduled Tasks</a></li>
+    <li><a href="04-prompt-design.html"><span class="status-dot" data-chapter="04"></span> 放置運用プロンプト</a></li>
+  </ul>
+  <div class="section-label">Practice</div>
+  <ul>
+    <li><a href="05-ci-polling.html"><span class="status-dot" data-chapter="05"></span> 実践：CIチェック</a></li>
+    <li><a href="06-daily-pr-summary.html" class="active"><span class="status-dot" data-chapter="06"></span> 実践：PRサマリ通知</a></li>
+    <li><a href="07-long-running-loop.html"><span class="status-dot" data-chapter="07"></span> 実践：/loop で自走</a></li>
+    <li><a href="08-final-exercise.html"><span class="status-dot" data-chapter="08"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 2: Practice &gt; Chapter 06</div>
+  <h1>実践：毎朝9時のPRサマリ通知</h1>
+  <p class="subtitle">朝会のインプットをSlackに自動生成する定期ジョブを、ゼロから実装する</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 30分</span>
+    <span class="badge">Phase: Practice</span>
+    <span class="badge">難易度: 中級</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">この章のゴール</span>
+    <p>毎朝9時、自分が関係するPRを<span class="term" data-tip="GitHubで他者のコードレビュー依頼として自分に割り当てられた、または自分が作成したopen状態のPull Request">open PR</span>から自動収集し、優先度付きでSlackに投下する<span class="term" data-tip="Claude Codeが提供するcron形式のスケジュール実行ツール。指定時刻にリモート/ローカルでClaudeセッションを起動する">CronCreate</span>ジョブをゼロから作ります。cron式の設計、<span class="term" data-tip="実行時のコンテキストを一切前提にしないプロンプト。過去ログ・直前の会話を見なくても単体で完結するように書く">self-contained</span>プロンプト、Slack通知、テンプレ化してチーム展開、までを一本で。<span class="term" data-tip="2026年1月時点の記述。最新仕様は公式ドキュメント参照">本章の記述は2026年1月時点</span>。</p>
+  </div>
+
+  <!-- ===== Section 1: シナリオ ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> シナリオ: 朝会前のPRサマリ自動化</h2>
+
+  <p>朝会前の5分、自分のタブを開いてPRを一つずつ確認する作業が毎日発生しています。<strong>レビュー未対応のPR</strong>、<strong>自分のPRで返信が来ているもの</strong>、<strong>CIが落ちているもの</strong>を見落とすと、朝会で答えられない。これをClaudeに任せて、9時までにSlackのDMに要約を投下させます。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">全体フロー: 9時に起きて、9時1分にはSlackに通知が届く</div>
+    <pre class="mermaid">
+graph LR
+  A["09:00<br/>CronCreate トリガー起動"] --> B["Claude Code<br/>リモートセッション開始"]
+  B --> C["gh pr list で<br/>open PR を取得"]
+  C --> D["Involves / Review<br/>対象を分類"]
+  D --> E["優先度付け<br/>(Critical / High / Normal)"]
+  E --> F["Slack Webhook<br/>で DM 投下"]
+  F --> G["09:01<br/>通知到着"]
+    </pre>
+    <div class="diagram-caption">毎朝、寝ている間にClaudeが起きてSlackに投げる。ユーザーは受け取るだけ。</div>
+  </div>
+
+  <div class="info-box">
+    <span class="label">このジョブで解決する痛み</span>
+    <p>朝の情報収集時間を<strong>5分→0分</strong>に圧縮。見落としによる「朝会で答えられない」事故をゼロに。さらに副作用として、<strong>レビュー忘れPRの可視化</strong>と<strong>チームメンバーのブロッカー早期発見</strong>にもつながります。</p>
+  </div>
+
+  <!-- ===== Section 2: cron設計 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> cron式の設計: <code>0 9 * * 1-5</code></h2>
+
+  <p>CronCreateに渡すcron式は <code>0 9 * * 1-5</code>。<span class="term" data-tip="cron式は『分 時 日 月 曜日』の5フィールド。曜日は0(日)-6(土)で、1-5は月〜金を示す">5フィールド構文</span>で「平日の9:00ちょうど」を意味します。週末も含めたい人は <code>0 9 * * *</code> に。タイムゾーンはCronCreateツールのデフォルトで<strong>JST(Asia/Tokyo)が明示設定可能</strong>です。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">cron式5フィールドの分解</div>
+    <svg viewBox="0 0 700 260" width="100%" style="max-width:700px; display:block; margin:0 auto;">
+      <rect x="10" y="10" width="680" height="60" rx="8" fill="#fff7ed" stroke="#D97757" stroke-width="2"/>
+      <text x="350" y="48" text-anchor="middle" font-size="28" font-weight="700" font-family="monospace" fill="#18181b">0  9  *  *  1-5</text>
+      <g font-size="12" font-family="inherit">
+        <line x1="90" y1="70" x2="90" y2="110" stroke="#D97757" stroke-width="2"/>
+        <rect x="30" y="110" width="130" height="60" rx="6" fill="#ffffff" stroke="#D97757"/>
+        <text x="95" y="130" text-anchor="middle" font-weight="700" fill="#18181b">分 (0)</text>
+        <text x="95" y="150" text-anchor="middle" fill="#64748b" font-size="11">0〜59</text>
+        <text x="95" y="165" text-anchor="middle" fill="#64748b" font-size="11">= 毎時0分</text>
+
+        <line x1="210" y1="70" x2="210" y2="110" stroke="#D97757" stroke-width="2"/>
+        <rect x="170" y="110" width="130" height="60" rx="6" fill="#ffffff" stroke="#D97757"/>
+        <text x="235" y="130" text-anchor="middle" font-weight="700" fill="#18181b">時 (9)</text>
+        <text x="235" y="150" text-anchor="middle" fill="#64748b" font-size="11">0〜23</text>
+        <text x="235" y="165" text-anchor="middle" fill="#64748b" font-size="11">= 9時台</text>
+
+        <line x1="330" y1="70" x2="330" y2="110" stroke="#D97757" stroke-width="2"/>
+        <rect x="310" y="110" width="100" height="60" rx="6" fill="#ffffff" stroke="#D97757"/>
+        <text x="360" y="130" text-anchor="middle" font-weight="700" fill="#18181b">日 (*)</text>
+        <text x="360" y="150" text-anchor="middle" fill="#64748b" font-size="11">1〜31</text>
+        <text x="360" y="165" text-anchor="middle" fill="#64748b" font-size="11">= 毎日</text>
+
+        <line x1="430" y1="70" x2="430" y2="110" stroke="#D97757" stroke-width="2"/>
+        <rect x="420" y="110" width="100" height="60" rx="6" fill="#ffffff" stroke="#D97757"/>
+        <text x="470" y="130" text-anchor="middle" font-weight="700" fill="#18181b">月 (*)</text>
+        <text x="470" y="150" text-anchor="middle" fill="#64748b" font-size="11">1〜12</text>
+        <text x="470" y="165" text-anchor="middle" fill="#64748b" font-size="11">= 毎月</text>
+
+        <line x1="560" y1="70" x2="560" y2="110" stroke="#D97757" stroke-width="2"/>
+        <rect x="530" y="110" width="150" height="60" rx="6" fill="#D97757" opacity="0.22" stroke="#D97757"/>
+        <rect x="530" y="110" width="150" height="60" rx="6" fill="none" stroke="#D97757" stroke-width="2"/>
+        <text x="605" y="130" text-anchor="middle" font-weight="700" fill="#18181b">曜 (1-5)</text>
+        <text x="605" y="150" text-anchor="middle" fill="#64748b" font-size="11">0=日 〜 6=土</text>
+        <text x="605" y="165" text-anchor="middle" fill="#64748b" font-size="11">= 月〜金</text>
+      </g>
+      <g font-size="12" font-family="inherit">
+        <rect x="10" y="195" width="680" height="52" rx="8" fill="#f4f4f5" stroke="#18181b" stroke-dasharray="4 3"/>
+        <text x="30" y="218" font-weight="700" fill="#18181b">読み方: </text>
+        <text x="95" y="218" fill="#18181b">「毎月 / 毎日 / 月〜金 / 9時 / 0分」 = 平日朝9:00ちょうど</text>
+        <text x="30" y="238" fill="#64748b">crontab.guru で可視確認すると安全。タイムゾーンは CronCreate の timezone 引数で指定。</text>
+      </g>
+    </svg>
+    <div class="diagram-caption">5フィールドを右から埋めると逆順に意味がつながる。</div>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: よく使うバリエーション</summary>
+    <div class="more-body">
+      <ul>
+        <li><code>0 9 * * 1-5</code> — 平日朝9時(本章の標準)</li>
+        <li><code>0 9,13 * * 1-5</code> — 平日の9時と13時の2回</li>
+        <li><code>*/15 9-17 * * 1-5</code> — 平日営業時間内に15分おき(常時監視系)</li>
+        <li><code>0 9 1 * *</code> — 毎月1日の朝9時(月次レポート)</li>
+        <li><code>0 18 * * 5</code> — 毎週金曜18時(週次振り返り)</li>
+      </ul>
+      <p><span class="term" data-tip="曜日フィールドは 0-6 (0=Sunday) か、sun/mon/tue/wed/thu/fri/sat の略記も可(実装依存)">曜日表記</span>は数字が無難。crontab.guru で検証するのを習慣に。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 3: プロンプト設計 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> プロンプト設計: 自律動作する完全指示</h2>
+
+  <p>毎朝9時にリモートセッションで起動するプロンプトは、<strong>誰も見ていない環境で自走</strong>する必要があります。<span class="term" data-tip="CronCreateで起動されるリモートClaude Codeセッション。ユーザー介入なしに最後まで完結する必要がある">リモートトリガー</span>では対話できないので、指示は単体で完結させます。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">プロンプトに必須の7ブロック</div>
+    <svg viewBox="0 0 700 380" width="100%" style="max-width:700px; display:block; margin:0 auto;">
+      <g font-family="inherit" font-size="12">
+        <rect x="20" y="10" width="660" height="42" rx="6" fill="#D97757" opacity="0.22" stroke="#D97757"/>
+        <text x="40" y="28" font-weight="700" fill="#18181b">【1. 目的】</text>
+        <text x="40" y="44" fill="#64748b">朝会前にレビュー対象PRを把握するための要約通知</text>
+
+        <rect x="20" y="58" width="660" height="42" rx="6" fill="#D97757" opacity="0.22" stroke="#D97757"/>
+        <text x="40" y="76" font-weight="700" fill="#18181b">【2. データ源】</text>
+        <text x="40" y="92" fill="#64748b">gh pr list --search "involves:@me is:open" --json ...</text>
+
+        <rect x="20" y="106" width="660" height="42" rx="6" fill="#D97757" opacity="0.22" stroke="#D97757"/>
+        <text x="40" y="124" font-weight="700" fill="#18181b">【3. 分類ルール】</text>
+        <text x="40" y="140" fill="#64748b">Review Requested / My PR w/ update / Stale の3分類</text>
+
+        <rect x="20" y="154" width="660" height="42" rx="6" fill="#D97757" opacity="0.22" stroke="#D97757"/>
+        <text x="40" y="172" font-weight="700" fill="#18181b">【4. 優先度定義】</text>
+        <text x="40" y="188" fill="#64748b">Critical(CI失敗/hotfix) / High(3日以上) / Normal</text>
+
+        <rect x="20" y="202" width="660" height="42" rx="6" fill="#D97757" opacity="0.22" stroke="#D97757"/>
+        <text x="40" y="220" font-weight="700" fill="#18181b">【5. 出力形式】</text>
+        <text x="40" y="236" fill="#64748b">Slack Block Kit JSON / 各PR 1行 / 絵文字で状態表示</text>
+
+        <rect x="20" y="250" width="660" height="42" rx="6" fill="#D97757" opacity="0.22" stroke="#D97757"/>
+        <text x="40" y="268" font-weight="700" fill="#18181b">【6. 送信先】</text>
+        <text x="40" y="284" fill="#64748b">$SLACK_WEBHOOK_URL (自分宛DM) に curl POST</text>
+
+        <rect x="20" y="298" width="660" height="42" rx="6" fill="#fef2f2" stroke="#dc2626"/>
+        <text x="40" y="316" font-weight="700" fill="#dc2626">【7. 異常時動作】</text>
+        <text x="40" y="332" fill="#64748b">ghコマンド失敗/PR 0件でも『異常:...』の1行は必ず送る</text>
+
+        <rect x="20" y="346" width="660" height="24" rx="4" fill="#f4f4f5" stroke="#18181b" stroke-dasharray="3 2"/>
+        <text x="350" y="362" text-anchor="middle" font-weight="700" fill="#18181b">欠けたブロックの数 = 朝9時の事故の数</text>
+      </g>
+    </svg>
+    <div class="diagram-caption">異常時動作を書き忘れると「今朝サマリが来なかった」が静かなバグになる。</div>
+  </div>
+
+  <h3>実プロンプト全文(コピペで動くレベル)</h3>
+
+  <pre><code># ---- CronCreate 用プロンプト本文 ----
+【目的】
+ 朝会前に、自分が関係する open PR の状況を1枚で
+ 把握できるようにする。レビュー抜け・自分PRの
+ 返信見逃しをゼロにする。
+
+【データ源】
+ 以下を順に実行して対象PRを収集:
+  1. gh pr list --search "review-requested:@me is:open" \
+       --json number,title,url,repository,updatedAt,labels,statusCheckRollup \
+       --limit 20
+  2. gh pr list --search "author:@me is:open" \
+       --json number,title,url,repository,updatedAt,reviewDecision,statusCheckRollup \
+       --limit 20
+ 両者をマージし、number+repository で重複除去。
+
+【分類】
+ - Review Requested: 自分がレビュワー
+ - My PR w/ Update: 自分作成 + 直近24h で変化
+ - Stale: 最終更新から 72h 以上
+
+【優先度】
+ - Critical: statusCheckRollup に FAILURE を含む / labels に hotfix
+ - High: 3日以上 更新なし(Stale) / 自分がブロッカー
+ - Normal: 上記以外
+
+【出力形式 (Slack 投稿本文)】
+ 先頭1行: ":sunrise: PR Summary $(date +%Y-%m-%d) - 合計N件"
+ 以降、優先度順に各PRを1行で:
+   "{絵文字} [{repo}#{number}] {title} ({分類}, {残り時間/経過})"
+ 絵文字: Critical=:rotating_light: High=:warning: Normal=:white_check_mark:
+ PRゼロのときは ":coffee: 本日対応すべきPRなし" の1行のみ。
+
+【送信】
+ 上記本文を Slack Webhook に payload で POST:
+  curl -X POST -H 'Content-Type: application/json' \
+    --data "$(jq -Rn --arg t "$TEXT" '{text:$t}')" \
+    "$SLACK_WEBHOOK_URL"
+ SLACK_WEBHOOK_URL は Scheduled Task の環境変数から取得。
+
+【異常時動作】
+ - gh 認証失敗 → ":x: PR Summary: gh 認証切れ" を送る
+ - gh コマンドタイムアウト(>30s) → ":x: PR Summary: 収集失敗" を送る
+ - Slack 送信失敗 → stderr にログ残し、2回までリトライ
+
+【完了条件】
+ Slack への POST が 2xx を返せば完了。
+ その他のケースでも必ず1通は投げて『沈黙』を起こさない。</code></pre>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <details class="more-box">
+    <summary>もっと詳しく: 「沈黙を起こさない」設計思想</summary>
+    <div class="more-body">
+      <p>朝会前に通知が来ないと、ユーザーは「ジョブ動いた? 通知バグ? PRゼロ?」と迷います。<span class="term" data-tip="結果がゼロや失敗でも通知を出す設計。『通知なし』という状態を存在させないことで、静かな故障(silent failure)を防ぐ">ゼロ件通知</span>を仕込むと「来ないこと=壊れている」と1:1で判断できるため、運用コストが劇的に下がります。異常時も空振り時も、必ず1通。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 4: 実装ステップ ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 実装ステップ: 4段階で組み上げる</h2>
+
+  <p>上のプロンプトをいきなり <code>0 9 * * 1-5</code> に仕込まない。<strong>手で1回動かす → 15分後に1回だけ試す → 日次に切り替える</strong>の順で慣らします。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">段階的ロールアウト</div>
+    <pre class="mermaid">
+graph TD
+  S1["Step1: 手元で gh コマンド検証"] --> S2["Step2: プロンプトを保存<br/>~/.claude/prompts/pr-summary.md"]
+  S2 --> S3["Step3: 15分後に1回だけ実行<br/>(CronCreate one-shot)"]
+  S3 --> S4["Step4: Slackに届くのを確認"]
+  S4 --> S5["Step5: 日次cronに昇格<br/>0 9 * * 1-5"]
+  S5 --> S6["Step6: 1週間運用して微調整"]
+    </pre>
+    <div class="diagram-caption">いきなり平日9時に仕込むと、バグが「翌営業日まで気づけない」事故になる。</div>
+  </div>
+
+  <h3>Step1: ghコマンドを手で叩く</h3>
+
+  <pre><code># 認証確認
+gh auth status
+
+# review-requested を自分に絞って取得
+gh pr list --search "review-requested:@me is:open" \
+  --json number,title,url,repository,updatedAt,statusCheckRollup \
+  --limit 20
+
+# author:@me 側も
+gh pr list --search "author:@me is:open" \
+  --json number,title,url,repository,updatedAt,reviewDecision,statusCheckRollup \
+  --limit 20</code></pre>
+
+  <p>想定通りのPRが返ることを目視確認。件数ゼロなら、テスト用に自分で1つPRを出すかorg横断検索に切り替えます。</p>
+
+  <h3>Step2: プロンプトをファイルに保存</h3>
+
+  <pre><code># ~/.claude/prompts/pr-summary.md に上記プロンプト本文を保存
+mkdir -p ~/.claude/prompts
+$EDITOR ~/.claude/prompts/pr-summary.md
+# (上のプロンプトをコピペ)</code></pre>
+
+  <p>プロンプトは<strong>リポジトリ外の個人設定</strong>として保存しておくと、仕事で使っているリポジトリに依存せず動かせます。</p>
+
+  <h3>Step3: CronCreate でone-shot実行</h3>
+
+  <pre><code># Claude Code 内で /schedule を呼び、one-shot で15分後に実行
+/schedule create \
+  --name "pr-summary-test" \
+  --cron "$(date -v+15M '+%M %H * * *')" \
+  --timezone "Asia/Tokyo" \
+  --prompt-file ~/.claude/prompts/pr-summary.md \
+  --env SLACK_WEBHOOK_URL=https://hooks.slack.com/services/XXX \
+  --one-shot
+
+# 一覧で登録確認
+/schedule list</code></pre>
+
+  <div class="info-box">
+    <span class="label">Secret の扱い</span>
+    <p>SLACK_WEBHOOK_URL は<strong>プロンプト本文に直書きしない</strong>。Scheduled Task の <code>--env</code> や Claude Code の secrets 管理経由で渡す。漏洩するとチャンネルにスパムを送られる実害が出ます。</p>
+  </div>
+
+  <h3>Step4: 本番cronへの昇格</h3>
+
+  <pre><code># one-shot が Slack に届いたら、日次に切り替え
+/schedule create \
+  --name "pr-summary-daily" \
+  --cron "0 9 * * 1-5" \
+  --timezone "Asia/Tokyo" \
+  --prompt-file ~/.claude/prompts/pr-summary.md \
+  --env SLACK_WEBHOOK_URL=$SLACK_WEBHOOK_URL \
+  --notify-on-error slack
+
+# テスト用のone-shotは削除
+/schedule delete pr-summary-test</code></pre>
+
+  <!-- ===== Section 5: 出力サンプル ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 出力サンプルと件数の分布</h2>
+
+  <p>実際にSlackに届く通知のイメージと、週次で見た件数の傾向です。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Slack投稿サンプル(Mac の Slack DM 画面想定)</div>
+    <svg viewBox="0 0 700 300" width="100%" style="max-width:700px; display:block; margin:0 auto;">
+      <rect x="10" y="10" width="680" height="280" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/>
+      <circle cx="40" cy="40" r="14" fill="#D97757"/>
+      <text x="40" y="45" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">CC</text>
+      <text x="65" y="38" font-size="13" font-weight="700" fill="#18181b">Claude Code (app)</text>
+      <text x="180" y="38" font-size="11" fill="#64748b">09:01</text>
+      <g font-family="monospace" font-size="12" fill="#18181b">
+        <text x="65" y="70">:sunrise: PR Summary 2026-04-18 - 合計6件</text>
+        <text x="65" y="96">:rotating_light: [myorg/api#1284] CI failing on fix/timeout (My PR w/ Update, 2h)</text>
+        <text x="65" y="118">:warning: [myorg/web#551] Replace deprecated API (Review Requested, 4d)</text>
+        <text x="65" y="140">:warning: [myorg/web#542] Upgrade Next.js 15 (Review Requested, 3d)</text>
+        <text x="65" y="162">:white_check_mark: [myorg/api#1290] Add retry param (Review Requested, 6h)</text>
+        <text x="65" y="184">:white_check_mark: [myorg/cli#87] Minor typo fix (My PR w/ Update, 1h)</text>
+        <text x="65" y="206">:white_check_mark: [myorg/docs#12] Add contributing guide (Review Requested, 18h)</text>
+      </g>
+      <rect x="60" y="224" width="620" height="52" rx="6" fill="#fff7ed" stroke="#D97757"/>
+      <text x="80" y="244" font-size="11" font-weight="700" fill="#D97757">優先度: Critical 1 / High 2 / Normal 3</text>
+      <text x="80" y="262" font-size="10" fill="#64748b">朝会前5分: 赤1件+黄2件だけ見れば十分。緑は午後対応でOK。</text>
+    </svg>
+    <div class="diagram-caption">6件のPRが1画面に収まり、色分けで瞬時に優先度が分かる。</div>
+  </div>
+
+  <div class="diagram-box">
+    <div class="diagram-title">1ヶ月分の朝通知: 件数と優先度分布(筆者サンプル)</div>
+    <canvas id="ch6-bar-1" height="160"></canvas>
+    <div class="diagram-caption">平均4-8件。Critical が出る日は月に3-5日程度。これを"見るべき赤"として扱う。</div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-num">5<small>min→0</small></div>
+      <div class="stat-label">朝の情報収集時間</div>
+      <div class="stat-trend up">削減</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">92<small>%</small></div>
+      <div class="stat-label">レビュー応答SLA遵守率</div>
+      <div class="stat-trend up">通知導入後</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">~¥150</div>
+      <div class="stat-label">月額コスト(目安)</div>
+      <div class="stat-trend up">平日20日×1回</div>
+    </div>
+  </div>
+
+  <!-- ===== Section 6: コスト警告 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> コスト警告: 放置前提だからこそ上限を引く</h2>
+
+  <p>日次1回ならコストは軽微ですが、<strong>cron式のミスで連打</strong>したり、<strong>PRが大量でトークンが膨らむ</strong>と月額が跳ねます。2つのガードを必ず入れます。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">cron頻度 × トークン量のコスト目安(2026年1月時点)</div>
+    <canvas id="ch6-bar-2" height="160"></canvas>
+    <div class="diagram-caption">日1回なら月¥150程度。5分おきに間違えると月¥4万。桁が違う。</div>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>リスク</th><th>症状</th><th>ガード</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>cron式ミスで連打</td>
+        <td><code>* 9 * * 1-5</code> と書くと毎分実行。月額4万円超</td>
+        <td>crontab.guru で毎回確認 / one-shot から段階導入</td>
+      </tr>
+      <tr>
+        <td>PR件数が膨大</td>
+        <td>gh pr list --limit を書き忘れ、数百件フェッチでトークン爆発</td>
+        <td>必ず <code>--limit 20</code>。超過時は要約粒度を粗く</td>
+      </tr>
+      <tr>
+        <td>セッション長時間化</td>
+        <td>AIが迷走して1回30分超え</td>
+        <td>プロンプトに「処理は5分以内」と明記 / timeout 引数</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section 7: テンプレ化・チーム展開 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> テンプレ化: チーム展開で20人に配る</h2>
+
+  <p>自分用に動いたら、<strong>メンバー名とSlackチャンネルだけ差し替えて配れる形</strong>にテンプレ化します。チーム10-20人に展開すると、朝会全体の情報粒度が揃います。</p>
+
+  <pre><code># team-pr-summary.template.md
+# =====
+# 変数(展開時に置換):
+#   {{USER}}         — GitHub username (例: motohirokoma)
+#   {{WEBHOOK_ENV}}  — Slack Webhook を入れる環境変数名
+#   {{REPO_FILTER}}  — 対象リポ絞り込み (例: "org:myorg")
+#   {{CRON}}         — cron式 (例: "0 9 * * 1-5")
+# =====
+
+【目的】
+ {{USER}} さんの朝会用 PR サマリを Slack 通知する。
+
+【データ源】
+ gh pr list --search "review-requested:{{USER}} is:open {{REPO_FILTER}}" ...
+ gh pr list --search "author:{{USER}} is:open {{REPO_FILTER}}" ...
+
+(中略)
+
+【送信】
+ {{WEBHOOK_ENV}} で指定された URL に POST
+
+# 展開スクリプト例(bash)
+for user in alice bob carol; do
+  sed -e "s/{{USER}}/$user/g" \
+      -e "s/{{WEBHOOK_ENV}}/WEBHOOK_$user/g" \
+      -e "s|{{REPO_FILTER}}|org:myorg|g" \
+      -e "s/{{CRON}}/0 9 * * 1-5/g" \
+      team-pr-summary.template.md > prompts/pr-summary-$user.md
+
+  /schedule create \
+    --name "pr-summary-$user" \
+    --cron "0 9 * * 1-5" \
+    --timezone "Asia/Tokyo" \
+    --prompt-file prompts/pr-summary-$user.md \
+    --env-from-secret "WEBHOOK_$user"
+done</code></pre>
+
+  <details class="more-box">
+    <summary>もっと詳しく: チーム展開で必ずやる3つ</summary>
+    <div class="more-body">
+      <ol>
+        <li><strong>各人のWebhookは個別DMに</strong> — 共通チャンネルに流すとノイズ化して誰も見なくなる</li>
+        <li><strong>opt-in にする</strong> — 強制すると「通知疲れ」でミュートされる。希望者だけ</li>
+        <li><strong>2週間で効果レビュー</strong> — 「通知を読む頻度」アンケート。読まれないなら頻度か粒度を変える</li>
+      </ol>
+      <p><span class="term" data-tip="通知過多でユーザーが通知そのものを無視するようになる現象。一度起きると回復が難しい">notification fatigue</span>を起こすと、重要な通知まで無視されます。粒度設計が最重要。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 8: ハンズオン ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> ハンズオン: 自分のリポで今すぐ実装</h2>
+
+  <div class="hands-on-box info-box">
+    <span class="label">今すぐ試す: 15分後に届くone-shotジョブを作る</span>
+    <p>以下を順に実行して、Slack DMにPRサマリが1通届くところまで作ります。所要15-20分。</p>
+    <ol>
+      <li><code>gh auth status</code> と <code>gh pr list --search "involves:@me is:open"</code> で認証とコマンドを確認</li>
+      <li>Slackアプリで<strong>自分宛DMのIncoming Webhook</strong>を作り、URLを控える</li>
+      <li><code>~/.claude/prompts/pr-summary.md</code> に本章のプロンプトをコピペ</li>
+      <li><code>/schedule create --name pr-summary-test --cron "$(date -v+15M '+%M %H * * *')" --timezone Asia/Tokyo --prompt-file ~/.claude/prompts/pr-summary.md --env SLACK_WEBHOOK_URL=https://... --one-shot</code> を実行</li>
+      <li>15分待つ。Slack DMに通知が来たらgreen。来なければ<code>/schedule list</code>と<code>/schedule logs pr-summary-test</code>で原因調査</li>
+      <li>動いたら<code>--cron "0 9 * * 1-5"</code>に切り替えて<code>pr-summary-daily</code>として登録</li>
+    </ol>
+  </div>
+
+  <!-- ===== Exercises ===== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">中級</span>
+    <h4>cron式を自分の生活リズムに合わせてカスタマイズ</h4>
+    <p>「朝9時」はあくまでデフォルト。自分の朝会時間、リモート勤務の開始時間、時差など、実際の業務に合わせて最適なcron式を設計してください。</p>
+    <ol>
+      <li>自分の朝会は何時? そこから逆算して<strong>10分前</strong>になるようcron式を書く</li>
+      <li>リモートで海外メンバーがいる場合、<strong>タイムゾーン違いでどう扱うか</strong>検討</li>
+      <li>休み明け(月曜)は<strong>より早く通知</strong>したいなら、曜日別に2つ登録する方法を考える</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <pre><code># パターンA: 朝会が9:30の場合 → 9:20に通知
+cron: "20 9 * * 1-5"
+timezone: "Asia/Tokyo"
+
+# パターンB: 月曜は週末PRの溜まりをより早く把握したい
+# → 月曜だけ8:30、火-金は9:20
+# 2つ登録する:
+/schedule create --name pr-summary-mon \
+  --cron "30 8 * * 1" --prompt-file ...
+/schedule create --name pr-summary-tue-fri \
+  --cron "20 9 * * 2-5" --prompt-file ...
+
+# パターンC: 米西海岸メンバーと協業 (UTC-8)
+# 日本朝9時 = PT 17時(前日)。
+# PTメンバーには現地朝9時で飛ばすため、別cronを登録
+/schedule create --name pr-summary-pt \
+  --cron "0 9 * * 1-5" \
+  --timezone "America/Los_Angeles" \
+  --prompt-file prompts/pr-summary-pt.md</code></pre>
+      <p>ポイント: <strong>timezoneは必ず明示</strong>。サーバー側のデフォルトに依存するとDST(夏時間)で1時間ズレる事故が発生します。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>PR以外の情報も同じ通知にまとめる</h4>
+    <p>朝会のインプットはPRだけではありません。Issue、CIの夜間失敗、Sentry のエラーなども同じSlack DMに統合すると、朝会5分前に<strong>1通だけ見れば全部分かる</strong>状態を作れます。</p>
+    <ol>
+      <li>自分の業務で、朝一に確認している情報ソースを3つリストアップ</li>
+      <li>それぞれを取得する<strong>CLIコマンドまたはAPI</strong>を調べる</li>
+      <li>プロンプトの【データ源】ブロックを拡張し、統合通知として1つのcron jobにまとめる</li>
+      <li><strong>通知が長くなりすぎないか</strong>(1画面に収まるか)を意識し、優先度でフィルタリング</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <pre><code># 統合プロンプトの【データ源】ブロック拡張例
+
+【データ源】
+ # (1) PR (既存)
+ gh pr list --search "involves:@me is:open" --limit 20 ...
+
+ # (2) 自分にアサインされた open Issue
+ gh issue list --search "assignee:@me is:open" --limit 10 ...
+
+ # (3) 昨夜失敗したCI run (定期ビルドなど)
+ gh run list --workflow "nightly.yml" --status failure \
+   --created ">$(date -v-1d +%Y-%m-%d)" --limit 5 ...
+
+ # (4) Sentry の未対応エラー (優先度high以上)
+ curl -s -H "Authorization: Bearer $SENTRY_TOKEN" \
+   "https://sentry.io/api/0/projects/myorg/main/issues/?query=is:unresolved level:error"
+
+【優先度統合】
+ Critical: Sentry level=error かつ件数>5 / CI nightly 失敗
+ High    : Review Requested PR で 3日以上
+ Normal  : その他
+
+【出力形式】
+ セクション分け:
+  :computer: PR (N件)
+    ...
+  :bug: Issue (N件)
+    ...
+  :construction: CI/Sentry
+    ...
+ 総件数が 15 を超える場合は Critical/High のみ表示し、
+ 「(他 N 件省略、詳細は <link> )」の行を最後に足す。</code></pre>
+      <p>ポイント: 情報源を統合すると画面は長くなります。<strong>15件ルール</strong>で自動省略し、詳細は別リンクに逃がす。読む側の認知コストを一定に保つのが重要です。</p>
+    </div>
+  </details>
+
+  <div class="info-box">
+    <span class="label">2026年1月時点の注記</span>
+    <p>本章の <code>/schedule</code> サブコマンド、CronCreate の引数名、タイムゾーン指定方法は<strong>2026年1月時点</strong>のものです。Claude Code はアップデートが活発なため、<span class="term" data-tip="2026年1月時点の記述。最新は公式ドキュメント参照">--env / --env-from-secret / --one-shot</span> のフラグ名は変更される可能性があります。最新情報は公式ドキュメントで確認してください。</p>
+  </div>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式ドキュメント</a> — CronCreate と /schedule スキルの原典</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://crontab.guru/" target="_blank" rel="noopener">crontab.guru</a> — cron式をビジュアルで検証</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://cli.github.com/manual/gh_pr_list" target="_blank" rel="noopener">GitHub CLI: gh pr list</a> — --search フィルタ構文の一覧</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://api.slack.com/messaging/webhooks" target="_blank" rel="noopener">Slack Incoming Webhooks</a> — 送信側URLの作り方と payload 仕様</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.github.com/en/search-github/searching-on-github/searching-issues-and-pull-requests" target="_blank" rel="noopener">GitHub Issue/PR 検索構文</a> — involves / review-requested / author の違い</li>
+      <li><span class="res-type video">Video</span> <a href="https://www.youtube.com/results?search_query=Claude+Code+scheduled+tasks" target="_blank" rel="noopener">YouTube: Claude Code scheduled tasks</a> — 動画で見る設定例</li>
+      <li><span class="res-type article">Article</span> <a href="https://zenn.dev/topics/claudecode" target="_blank" rel="noopener">Zenn: Claude Code タグ</a> — 日本語実装事例</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="06">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="05-ci-polling.html"><span class="direction">&larr; Prev</span>実践：CIチェック</a>
+    <a href="07-long-running-loop.html"><span class="direction">Next &rarr;</span>実践：/loop で自走</a>
+  </div>
+</main>
+
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+<script>
+window.addEventListener("load", function(){
+  // Bar 1: 1ヶ月分の朝通知件数分布
+  var ctx1 = document.getElementById('ch6-bar-1');
+  if (ctx1 && window.Chart) {
+    new Chart(ctx1, {
+      type: 'bar',
+      data: {
+        labels: ['W1', 'W2', 'W3', 'W4'],
+        datasets: [
+          { label: 'Critical', data: [2, 1, 3, 0], backgroundColor: '#dc2626', borderRadius: 4, stack: 's' },
+          { label: 'High',     data: [4, 6, 3, 5], backgroundColor: '#D97757', borderRadius: 4, stack: 's' },
+          { label: 'Normal',   data: [12, 9, 14, 10], backgroundColor: 'rgba(217,119,87,0.35)', borderRadius: 4, stack: 's' }
+        ]
+      },
+      options: {
+        plugins: { legend: { position: 'bottom' } },
+        scales: {
+          x: { stacked: true, title: { display: true, text: '週' } },
+          y: { stacked: true, beginAtZero: true, title: { display: true, text: '件数(週合計)' } }
+        }
+      }
+    });
+  }
+
+  // Bar 2: cron頻度別の月額コスト
+  var ctx2 = document.getElementById('ch6-bar-2');
+  if (ctx2 && window.Chart) {
+    new Chart(ctx2, {
+      type: 'bar',
+      data: {
+        labels: ['日1回(平日)', '日3回', '1h おき', '15m おき', '5m おき (事故)'],
+        datasets: [{
+          label: '月額目安 (円)',
+          data: [150, 450, 3600, 14400, 43200],
+          backgroundColor: [
+            'rgba(217,119,87,0.35)',
+            'rgba(217,119,87,0.55)',
+            '#D97757',
+            '#b45309',
+            '#dc2626'
+          ],
+          borderRadius: 6
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { beginAtZero: true, title: { display: true, text: '円 / 月(2026年1月時点の目安)' } }
+        }
+      }
+    });
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>/loop スキル - MK's Claude Code Tutorial - Schedule & Loop</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code - Schedule
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav class="active"><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Practice</span><span class="phase-pct" id="pct-practice">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.02</span>
+    /loop スキル
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 8 sections</text>
+    </svg>
+    <div class="progress-info">0h / 4h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-schedule-loop-overview.html"><span class="status-dot" data-chapter="01"></span> Scheduled Tasks & Loop とは</a></li>
+    <li><a href="02-loop-skill.html" class="active"><span class="status-dot" data-chapter="02"></span> /loop スキル</a></li>
+    <li><a href="03-cron-schedule.html"><span class="status-dot" data-chapter="03"></span> Scheduled Tasks</a></li>
+    <li><a href="04-prompt-design.html"><span class="status-dot" data-chapter="04"></span> 放置運用プロンプト</a></li>
+  </ul>
+  <div class="section-label">Practice</div>
+  <ul>
+    <li><a href="05-ci-polling.html"><span class="status-dot" data-chapter="05"></span> 実践：CIチェック</a></li>
+    <li><a href="06-daily-pr-summary.html"><span class="status-dot" data-chapter="06"></span> 実践：PRサマリ通知</a></li>
+    <li><a href="07-long-running-loop.html"><span class="status-dot" data-chapter="07"></span> 実践：/loop で自走</a></li>
+    <li><a href="08-final-exercise.html"><span class="status-dot" data-chapter="08"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 1: Basics &gt; Chapter 02</div>
+  <h1>/loop スキル</h1>
+  <p class="subtitle">dynamic モード vs interval モード、自走パターン</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 30分</span>
+    <span class="badge">Phase: Basics</span>
+    <span class="badge">難易度: 初級</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">この章のゴール</span>
+    <p><code>/loop</code> スキルの<strong>2つの動作モード</strong>(dynamic / interval)の違いを、内部で使われる <code>ScheduleWakeup</code> の仕組みとキャッシュの温度(ウォーム/コールド)とセットで理解します。最後に<strong>3回だけ回る簡単な /loop</strong> をハンズオンで動かして、停止の仕方まで押さえる——ここまでが30分のスコープです。Ch03 (CronCreate) に進む前の土台となる章です。</p>
+  </div>
+
+  <div class="info-box" style="border-left: 3px solid #D97757;">
+    <span class="label">バージョン注記</span>
+    <p>本章の記述は <strong>2026年1月時点</strong> の Claude Code における <code>/loop</code> スキルの挙動に基づきます。<code>ScheduleWakeup</code> ツールのキャッシュ閾値(270s / 1200s)やスキルの起動フローはハーネス側で継続的に調整されているため、動作が微妙に違う場合は <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">公式ドキュメント</a> と <code>~/.claude/skills/loop/SKILL.md</code> を参照してください。</p>
+  </div>
+
+  <div class="info-box" style="border-left: 3px solid #D97757;">
+    <span class="label">コスト警告</span>
+    <p><code>/loop</code> は <strong>回るたびに課金される</strong>。5分間隔で1日回せば 288回、1回 $0.05 相当でも日額 $14。**必ず停止条件**(終了フラグ/最大回数/時間帯)をプロンプトに組み込むこと。「とりあえず回して放置」は絶対にやらない。</p>
+  </div>
+
+  <!-- ===== Section 1: /loop とは ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> /loop とは何か — 自分で自分を起こすスキル</h2>
+
+  <p><span class="term" data-tip="/loop: プロンプトまたはスラッシュコマンドを反復起動する組み込みスキル。2026年1月時点">/loop</span> は、Claude Code に組み込まれているスキルで、<strong>1回動いたあとで「自分を次に起こす予約」を入れ</strong>、間隔を置いて再起動する——これを繰り返すための仕組みです。内部では <span class="term" data-tip="ScheduleWakeup: Claude Code の「次ターン予約」ツール。秒数を指定して自分宛にウェイクアップを仕掛ける">ScheduleWakeup</span> というツールを子スキルから呼び出しています。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">/loop の基本フロー(1ターンごとに「次」を予約)</div>
+    <svg viewBox="0 0 520 200" width="100%" style="max-width:520px; display:block; margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="arr2-1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#D97757"/></marker></defs>
+      <rect x="20" y="70" width="90" height="60" rx="10" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="2"/>
+      <text x="65" y="95" text-anchor="middle" font-size="12" font-weight="700">起動</text>
+      <text x="65" y="112" text-anchor="middle" font-size="10" fill="#475569">/loop 実行</text>
+
+      <rect x="145" y="70" width="110" height="60" rx="10" fill="#ffffff" stroke="#D97757" stroke-width="1.5"/>
+      <text x="200" y="92" text-anchor="middle" font-size="12" font-weight="700">タスク実行</text>
+      <text x="200" y="110" text-anchor="middle" font-size="10" fill="#475569">gh/curl/Read等</text>
+      <text x="200" y="124" text-anchor="middle" font-size="10" fill="#475569">判断・出力</text>
+
+      <rect x="290" y="70" width="130" height="60" rx="10" fill="#ffffff" stroke="#D97757" stroke-width="1.5"/>
+      <text x="355" y="92" text-anchor="middle" font-size="12" font-weight="700">ScheduleWakeup</text>
+      <text x="355" y="110" text-anchor="middle" font-size="10" fill="#475569">N秒後に自分宛</text>
+      <text x="355" y="124" text-anchor="middle" font-size="10" fill="#475569">再起動を予約</text>
+
+      <rect x="450" y="70" width="60" height="60" rx="10" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="2"/>
+      <text x="480" y="98" text-anchor="middle" font-size="11" font-weight="700">待機</text>
+      <text x="480" y="115" text-anchor="middle" font-size="9" fill="#475569">(sleep)</text>
+
+      <path d="M 110 100 L 145 100" stroke="#D97757" stroke-width="2" fill="none" marker-end="url(#arr2-1)"/>
+      <path d="M 255 100 L 290 100" stroke="#D97757" stroke-width="2" fill="none" marker-end="url(#arr2-1)"/>
+      <path d="M 420 100 L 450 100" stroke="#D97757" stroke-width="2" fill="none" marker-end="url(#arr2-1)"/>
+
+      <!-- loop back arrow -->
+      <path d="M 480 130 Q 480 175 265 175 Q 65 175 65 130" stroke="#D97757" stroke-width="1.5" fill="none" stroke-dasharray="4 3" marker-end="url(#arr2-1)"/>
+      <text x="280" y="192" text-anchor="middle" font-size="10" fill="#64748b">ウェイクアップで次ターンへ</text>
+    </svg>
+    <div class="diagram-caption">1ターンは「実行 → 次を予約 → 終了」のワンセット。Claudeは毎回まっさらに起きて、プロンプトとリポジトリ状態から再スタートする。</div>
+  </div>
+
+  <p>ポイントは <strong>「Claudeは回り続けているわけではない」</strong> という点です。<span class="term" data-tip="ターン: Claudeが1回起動して1回応答を返すまでの処理単位">ターン</span> は終わるたび本当に消え、次のターンは <code>ScheduleWakeup</code> の目覚ましで呼び起こされて最初から始まります。状態は会話ログとリポジトリのファイル、それだけです。</p>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section 2: 2モード ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 2つのモード: dynamic と interval</h2>
+
+  <p><code>/loop</code> は同じスキルでありながら、<strong>引数に間隔を渡すかどうかで挙動が丸ごと変わります</strong>。これを覚えるだけで7割です。</p>
+
+  <table>
+    <thead>
+      <tr><th>観点</th><th><span class="term" data-tip="dynamic: Claudeが自分で「次は何秒後に起こすか」を毎ターン決めるモード">dynamic モード</span>(引数なし)</th><th><span class="term" data-tip="interval: 固定秒数を引数で指定し、毎回その間隔で起きるモード">interval モード</span>(引数あり)</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>起動例</td><td><code>/loop /my-task</code></td><td><code>/loop 5m /my-task</code></td></tr>
+      <tr><td>次の間隔を決めるのは</td><td>Claude 自身(毎ターン判断)</td><td>ユーザ(固定)</td></tr>
+      <tr><td>向いてる用途</td><td>進捗が不定(長文執筆/探索/試行錯誤)</td><td>定期監視(CIチェック/PR確認)</td></tr>
+      <tr><td>キャッシュ最適化</td><td>Claudeがウォーム帯を狙える</td><td>固定のためコールドになりやすい</td></tr>
+      <tr><td>停止の仕方</td><td>ScheduleWakeupを呼ばずに終わる</td><td>同じく。あるいは <code>Esc</code> / <code>/stop</code></td></tr>
+      <tr><td>予測しやすさ</td><td>低(Claude次第)</td><td>高(cron的)</td></tr>
+    </tbody>
+  </table>
+
+  <div class="compare-cards">
+    <div class="cc good">
+      <span class="cc-label">dynamic が光る例</span>
+      <h4>自己ペーシング向き</h4>
+      <ul>
+        <li>10章の長文を1章ずつ書いて次を考える</li>
+        <li>大きなリファクタを1ファイルずつ進める</li>
+        <li>探索的リサーチで深さを調整しつつ巡回</li>
+        <li>エラーが出たら間隔を伸ばす自己調整</li>
+      </ul>
+    </div>
+    <div class="cc bad">
+      <span class="cc-label">interval が光る例</span>
+      <h4>定期監視向き</h4>
+      <ul>
+        <li>5分ごとに GitHub Actions の状態を確認</li>
+        <li>15分ごとに Slack 受信箱を要約</li>
+        <li>1時間ごとにサーバヘルスチェック</li>
+        <li>昼休み前後の来客チェック(時間固定)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="hands-on-box info-box" style="background: rgba(217,119,87,0.08); border-left: 3px solid #D97757;">
+    <span class="label">dynamic モードの起動例</span>
+    <pre><code>/loop README の下書きを 1セクションずつ書き進めてください。
+各ターンで次の1セクションだけ書き、
+section-done.md に完了したセクション番号を append。
+全8セクション書き終わったら loop を終了(次のウェイクアップを予約しない)。</code></pre>
+  </div>
+
+  <div class="hands-on-box info-box" style="background: rgba(217,119,87,0.08); border-left: 3px solid #D97757;">
+    <span class="label">interval モードの起動例(5分固定)</span>
+    <pre><code>/loop 5m gh run list --limit 3 --json conclusion,status,name |
+jq を使って最新ビルドの結果を判定。
+FAILED があれば Slack Webhook に投稿、なければ何もせず終わる。
+重複通知を避けるため .loop-state/last-notified.json を参照。</code></pre>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: dynamic での「次は何秒後」をClaudeはどう決めているか</summary>
+    <div class="more-body">
+      <p>dynamic モードでは、スキル内のシステムプロンプトに「次のウェイクアップまでの秒数を合理的に選べ」という指示が入っています。Claudeは<strong>現在のタスク進捗・残量・前回の実行時間・キャッシュの温度</strong>を考慮し、ScheduleWakeupに渡す <code>delay_seconds</code> を決めます。「まだ書くことが多いので60秒後」「待ち時間が欲しいので180秒後」のように調整します。interval モードではこの判断をスキップし、ユーザ指定の秒数をそのまま渡します。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 3: キャッシュTTL ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> キャッシュ TTL 5分の意味 — ウォーム / コールドの境界</h2>
+
+  <p><code>/loop</code> の「間隔」を決めるとき、<strong>Claude API の <span class="term" data-tip="プロンプトキャッシュ: システムプロンプト等の読み込み結果を一定時間サーバ側で再利用する機構。TTLを過ぎるとキャッシュがヒットしない">プロンプトキャッシュ</span></strong>の TTL(有効期限) が挙動と料金に直結します。2026年1月時点の Claude Code では、実効的に以下の3ゾーンで考えるとよい設計になります。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">ウェイクアップ間隔とキャッシュ温度の関係</div>
+    <canvas id="ch2-line-1" height="200"></canvas>
+    <div class="diagram-caption">横軸=ウェイクアップ間隔(秒)、縦軸=相対コスト/レイテンシ。270秒以下はウォーム(ほぼキャッシュヒット)、1200秒(20分)を超えるとコールド(全再読込)。</div>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>ゾーン</th><th>間隔</th><th>状態</th><th>体感</th><th>向き</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><span class="term" data-tip="ウォーム: 直前のキャッシュがまだ生きていて、プロンプト再読込のコストが低い状態">ウォーム</span></td><td>&lt; 270秒</td><td>キャッシュ生存</td><td>高速・安い</td><td>短間隔反復</td></tr>
+      <tr><td>中間</td><td>270s 〜 1200s</td><td>部分ヒット</td><td>徐々に劣化</td><td>中間隔タスク</td></tr>
+      <tr><td><span class="term" data-tip="コールド: キャッシュが失効して、毎回フルにプロンプトを読み直す状態。料金も時間もかかる">コールド</span></td><td>&gt; 1200秒</td><td>キャッシュ失効</td><td>毎回フル読込</td><td>長間隔(CronCreateを検討)</td></tr>
+    </tbody>
+  </table>
+
+  <div class="diagram-box">
+    <div class="diagram-title">3ゾーンの使い分け判断</div>
+    <pre class="mermaid">
+graph TD
+  Start(["タスクの周期は?"]) --> Q1{"次の実行までの間隔"}
+  Q1 -- "4分以内" --> Warm["ウォーム帯: /loop が最適<br/>CIポーリング / 書き進め"]
+  Q1 -- "4-20分" --> Mid["中間帯: /loop 可 だがコスト増<br/>PRチェック等"]
+  Q1 -- "20分以上" --> Cold["コールド帯: CronCreate 推奨<br/>日次/週次バッチ"]
+  Warm --> Tip1["270秒以下ならキャッシュ再利用"]
+  Cold --> Tip2["1200秒超ならCronに移す"]
+    </pre>
+    <div class="diagram-caption">「/loop か CronCreate か」の迷いは、間隔が20分を境に自動的に割り切れる。</div>
+  </div>
+
+  <div class="info-box">
+    <span class="label">Tips</span>
+    <p>厳密な閾値はハーネス実装側の最適化で多少動きます(2026年1月時点、Anthropicはプロンプトキャッシュ TTL を 5分 / 1時間の2段構成で提供)。本章の <code>270s / 1200s</code> は「短間隔ならウォーム、長間隔ならコールド」と覚える目安として使ってください。迷ったら<strong>5分以内=/loop、20分超=Schedule</strong>で概ね外れません。</p>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: なぜ 270秒 や 1200秒 なのか</summary>
+    <div class="more-body">
+      <p>Anthropicのプロンプトキャッシュは標準 TTL が 5分(= 300秒)。実際の読み取りでは直前のターンの読み込み時刻から<strong>タイミング次第で数十秒早く失効する</strong>ため、安全マージンとして 270秒(4分半)を「ウォーム帯の上限」と置くのが現場感覚です。1200秒(20分)は「延長 TTL(1時間)を使っていても3回目以降は確実にコールドになり、/loop のうまみが消える」ラインで、運用上はここで CronCreate に切り替えた方がトータルコストが安くなります。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 4: 典型パターン ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 典型パターン 3種(短/中/長間隔)</h2>
+
+  <p>実戦で使われる /loop の型は、ほぼ3つに分類できます。自分のタスクをこの型に当てはめて、<strong>間隔・停止条件・通知の有無</strong>だけ変えるのが最短ルートです。</p>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="zap" width="20" height="20"></i>
+      <div><strong>短間隔(60-180秒): ビルド監視型</strong> — CI/デプロイの進捗を分単位で追う。<code>/loop 2m</code>、interval 固定、SlackへFAILのみ通知。ウォーム帯で高速・安価。</div>
+    </li>
+    <li>
+      <i data-lucide="activity" width="20" height="20"></i>
+      <div><strong>中間隔(5-15分): 自己ペース進行型</strong> — 長文執筆や段階的リファクタ。<code>/loop</code> の dynamic モードで、Claudeが進捗を見て次の間隔を決める。todo.md に状態を書き出して再開。</div>
+    </li>
+    <li>
+      <i data-lucide="moon" width="20" height="20"></i>
+      <div><strong>長間隔(30分-1時間): アイドル巡回型</strong> — PRサマリ、ニュース要約、営業日初回のヘルスチェック。コールド帯なので <code>CronCreate</code> の方が安いが、状態を跨ぎたい時は /loop も可。</div>
+    </li>
+  </ul>
+
+  <div class="diagram-box">
+    <div class="diagram-title">3パターンのコスト/価値バランス</div>
+    <canvas id="ch2-bar-1" height="180"></canvas>
+    <div class="diagram-caption">短間隔はキャッシュが効いて実コストが想像より低い。長間隔は逆にウォームが効かず、回数のわりに割高。</div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-num">2<small>m</small></div>
+      <div class="stat-label">短間隔の推奨</div>
+      <div class="stat-trend up">ウォーム帯</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">10<small>m</small></div>
+      <div class="stat-label">中間隔の推奨</div>
+      <div class="stat-trend">dynamic向き</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">60<small>m+</small></div>
+      <div class="stat-label">長間隔の推奨</div>
+      <div class="stat-trend down">Cronへ</div>
+    </div>
+  </div>
+
+  <h3>短間隔パターンの具体プロンプト</h3>
+
+  <pre><code>/loop 2m
+現在の gh run list --json conclusion,status,name --limit 3 を取得。
+最新の run.status が "in_progress" なら「ビルド中...」を stdout に1行出して終了。
+"completed" かつ "failure" なら、.loop-state/notified.json を参照し
+同じrun_idがまだ通知されていなければ Slack Webhook に投稿。
+run_id を notified.json に追記。
+completed かつ "success" の場合も同様に1回だけ通知して、次のウェイクアップは予約しない
+(= ループ終了)。</code></pre>
+
+  <h3>中間隔(dynamic)の具体プロンプト</h3>
+
+  <pre><code>/loop todo.md の未完了タスクを上から1つ取り、実行してチェックを入れる。
+タスクが大きいと感じたらサブタスクに分割して todo.md に戻す。
+次のウェイクアップまでの時間は、いま実行したタスクの重さから自分で決める
+(軽い編集なら120秒、重いリサーチなら10分)。
+todo.md が全部完了したらウェイクアップを予約せず終了。</code></pre>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section 5: 停止方法 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> /loop の止め方 — 3通り</h2>
+
+  <p>/loop は「自分で自分を起こし続ける」ので、<strong>明示的に止める手段を用意していないと放置コストが爆発</strong> します。止め方は次の3つ、優先順位の高いものから書きます。</p>
+
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-label">プロンプト側の終了条件</div><div class="step-desc">「全タスク完了 / エラー連続 / 時刻超過 で ScheduleWakeup を呼ばない」を書く</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-label">手動介入</div><div class="step-desc">実行中のターンで Esc、または「/loop を停止」と指示</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-label">強制クリア</div><div class="step-desc">Claude Code を終了、/clear、別セッションで継続せず放棄</div></div>
+  </div>
+
+  <div class="diagram-box">
+    <div class="diagram-title">停止条件の書き分け判定</div>
+    <pre class="mermaid">
+graph LR
+  A(["ターン開始"]) --> B{"状態を読む"}
+  B --> C{"終了条件<br/>に合致?"}
+  C -- "Yes" --> End["ScheduleWakeupを呼ばない<br/>→ loop終了"]
+  C -- "No" --> D["タスク実行"]
+  D --> E["ScheduleWakeup(N秒)"]
+  E --> F(["ターン終了"])
+    </pre>
+    <div class="diagram-caption">停止は「呼ばない」という選択を Claude にさせること。プロンプトに条件を明記することで Claude がその分岐を取る。</div>
+  </div>
+
+  <p>良い <code>/loop</code> プロンプトには、<strong>必ず以下3つの終了条件のどれかが書かれています</strong>:</p>
+
+  <div class="kv-grid">
+    <div class="kv"><div class="kv-key">完了条件</div><div class="kv-val">todo.md が空 / 全チェック済み / 目標ファイル存在</div></div>
+    <div class="kv"><div class="kv-key">失敗打ち切り</div><div class="kv-val">同じエラーが連続3回 / 特定ファイルに "abort" と書かれた</div></div>
+    <div class="kv"><div class="kv-key">時間打ち切り</div><div class="kv-val">現在時刻が指定時刻を超えた / N ターン消化した</div></div>
+  </div>
+
+  <div class="info-box" style="border-left: 3px solid #D97757;">
+    <span class="label">コスト警告(再掲)</span>
+    <p>停止条件のない /loop は <strong>寝ている間に100回以上回って青ざめる</strong> のが定番事故。プロンプト末尾に「XX時になったら終了」「YY回実行したら終了」を機械的に必ず入れる。心配なら <code>.loop-state/turn-count.json</code> にカウンタを置いて参照させるのが確実。</p>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: 手動停止のつもりが「次ターンが既に予約されていた」ケース</summary>
+    <div class="more-body">
+      <p>Esc を押した瞬間、すでに ScheduleWakeup が成功して予約が入っていると、<strong>次のターンは予定通り起きてきます</strong>。確実に止めたいときは、プロンプト側に「停止フラグファイル <code>.loop-state/stop.flag</code> があれば次を予約しない」を仕込んでおき、手動停止したい時は <code>touch .loop-state/stop.flag</code> するのが安全。Ch04 (放置運用プロンプト設計) でこのパターンを詳しくやります。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 6: ハンズオン ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> ハンズオン: 3回だけ回る /loop</h2>
+
+  <p>理屈は以上です。手を動かすのが一番効きます。<strong>3回だけ回って自動停止する、最小の /loop</strong> を動かしましょう。所要5分。</p>
+
+  <div class="hands-on-box info-box" style="background: rgba(217,119,87,0.08); border-left: 3px solid #D97757;">
+    <span class="label">ハンズオン手順</span>
+    <ol>
+      <li>任意の作業ディレクトリで Claude Code を開く</li>
+      <li>下のプロンプトをコピペして送信</li>
+      <li>合計3回のターンでログが書かれ、自動停止するのを観察</li>
+      <li><code>loop-log.txt</code> に3行出ていることを確認</li>
+    </ol>
+    <pre><code>/loop 30s
+以下を毎ターン実行してください。
+
+1. ./loop-log.txt が存在しなければ新規作成
+2. 現在時刻を読み、"turn X at HH:MM:SS" という形式で1行 append
+   (Xはこれまでのターン数+1)
+3. ./loop-log.txt の行数を数える
+4. 行数が 3 以上なら ScheduleWakeup を呼ばず終了
+5. 未満なら次のウェイクアップを30秒後に予約して終了</code></pre>
+  </div>
+
+  <p>このプロンプトで起きるのは次の流れです:</p>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-date">T+0s</div>
+      <div class="tl-title">1回目のターン</div>
+      <div class="tl-body"><code>loop-log.txt</code> を作成、"turn 1 at ..." を append、行数=1なので30秒後を予約して終了。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">T+30s</div>
+      <div class="tl-title">2回目のターン</div>
+      <div class="tl-body">"turn 2 at ..." を append、行数=2なので再度30秒後を予約。ここでもキャッシュがウォーム帯(30s &lt; 270s)なので高速。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">T+60s</div>
+      <div class="tl-title">3回目のターン(最終)</div>
+      <div class="tl-body">"turn 3 at ..." を append、行数=3 ≥ 3 なので <strong>ScheduleWakeup を呼ばずに終了</strong>。loop はここで自然死。</div>
+    </div>
+  </div>
+
+  <p><span class="pulse-dot"></span>終了後、<code>cat loop-log.txt</code> で以下のような3行が見えれば成功です。</p>
+
+  <pre><code>turn 1 at 14:23:05
+turn 2 at 14:23:36
+turn 3 at 14:24:07</code></pre>
+
+  <div class="info-box">
+    <span class="label">次へ</span>
+    <p>この「3回で止まる」経験があると、Ch03(CronCreate)で<strong>「回らないけど定刻に起きる」タスク</strong>が対比で理解しやすくなります。<code>/loop</code> はセルフペース、<code>CronCreate</code> は時刻固定——同じ放置運用でも<strong>能動 vs 受動</strong>の対比を次章で扱います。</p>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>ハンズオンを「5回で停止」に改造する</h4>
+    <p>本文ハンズオンの /loop プロンプトを改造し、<strong>5回ターンで停止</strong> するよう変更してください。さらに、途中の各ターンでログ行に「(残り N 回)」を追記する改造も加えてみましょう。</p>
+    <ol>
+      <li>終了条件を「3回」から「5回」に変える</li>
+      <li>ログ行の形式を <code>turn X at HH:MM:SS (残り N回)</code> に拡張</li>
+      <li>実行して、<code>loop-log.txt</code> が5行になり最終行に「(残り 0回)」が入ることを確認</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>プロンプトは下記のように変えればOK。</p>
+      <pre><code>/loop 30s
+以下を毎ターン実行してください。
+
+1. ./loop-log.txt が存在しなければ新規作成
+2. これまでの行数 L を数え、現在のターン番号を X = L + 1、残りを N = 5 - X とする
+3. 現在時刻を読み、"turn X at HH:MM:SS (残り N回)" を append
+4. X が 5 以上なら ScheduleWakeup を呼ばずに終了
+5. 未満なら 30 秒後を予約して終了</code></pre>
+      <p><strong>ポイント</strong>: 終了判定はプロンプト内の条件分岐で Claude に「呼ぶ/呼ばない」を選ばせる。ここを自分で書けるようになると、任意の停止条件(時刻・ファイル存在・連続失敗)が書けるようになります。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>dynamic モードで「todo.md を1項目ずつ片付ける」/loop を書く</h4>
+    <p>interval ではなく dynamic モードを使い、<strong>手元の <code>todo.md</code></strong> にある未完了タスクを1ターン1項目ずつ処理する /loop を設計してください。中身は任意のタスクでかまいません(例: "READMEに章見出しを追加"、"CHANGELOGに今日の日付を書く" など軽いもの3つ)。</p>
+    <ol>
+      <li><code>todo.md</code> を5行ほど用意(チェックボックス形式 <code>- [ ]</code>)</li>
+      <li>dynamic /loop のプロンプトを書く(間隔は Claude に決めさせる)</li>
+      <li>停止条件(未完了ゼロ / 連続エラー / 時刻超過のどれか)を明記</li>
+      <li>実行してログを確認。全項目にチェックが入ったら /loop が自然終了すること</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>次のようなプロンプトで動きます。</p>
+      <pre><code>/loop todo.md を先頭から読み、最初の "- [ ]" の未完了タスクを1つだけ取り出して実行してください。
+
+- タスクが完了したら、その行を "- [x]" に書き換える
+- タスクが大きいと感じたらサブタスクに分解して todo.md に挿入して良い
+- 次のウェイクアップまでの秒数は自分で決めてください
+  (軽い編集=120秒、重いリサーチ=600秒、など)
+- 以下のいずれかに合致したら ScheduleWakeup を呼ばず終了:
+  (a) todo.md に "- [ ]" が1つもない(全項目完了)
+  (b) 同じタスクで連続3回失敗している(状態は .loop-state/fail.json を参照)
+  (c) 現在時刻が 18:00 を超えた</code></pre>
+      <p><strong>観察ポイント</strong>:(1) dynamic モードでは <code>ScheduleWakeup</code> の <code>delay_seconds</code> がターンごとに変わる(ログで確認できる)。(2) 状態ファイル <code>.loop-state/fail.json</code> を使うことで、ターンをまたいだ失敗カウントができる。(3) 時刻打ち切り(c)が「寝てる間暴走」を防ぐ最重要の安全弁。この3つが揃って初めて「放置運用可能な /loop」。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式ドキュメント</a> — /loop スキルと ScheduleWakeup ツールの一次情報</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener">Claude Code GitHub</a> — /loop スキルのソース・Issue・最新の挙動変更</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching" target="_blank" rel="noopener">Anthropic: Prompt Caching</a> — TTL 5分/1時間 の公式仕様。ウォーム/コールドの根拠</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://cli.github.com/" target="_blank" rel="noopener">GitHub CLI (gh)</a> — /loop と組み合わせる定番ツール。run list / pr list を覚えると幅が広がる</li>
+      <li><span class="res-type video">Video</span> <a href="https://www.youtube.com/results?search_query=Claude+Code+loop+skill" target="_blank" rel="noopener">YouTube: "Claude Code loop"</a> — コミュニティの /loop デモと事例</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="02">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="01-schedule-loop-overview.html"><span class="direction">&larr; Prev</span>Scheduled Tasks & Loop とは</a>
+    <a href="03-cron-schedule.html"><span class="direction">Next &rarr;</span>Scheduled Tasks</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+
+<!-- Chart.js: キャッシュ温度 vs 間隔(折れ線) -->
+<script>
+window.addEventListener("load", function(){
+  var ctxLine = document.getElementById('ch2-line-1');
+  if (ctxLine && window.Chart) {
+    new Chart(ctxLine, {
+      type: 'line',
+      data: {
+        labels: ['30s', '120s', '270s', '600s', '1200s', '1800s', '3600s'],
+        datasets: [
+          {
+            label: '相対コスト(キャッシュ失効で増)',
+            data: [10, 12, 15, 40, 80, 95, 100],
+            borderColor: '#D97757',
+            backgroundColor: 'rgba(217,119,87,0.15)',
+            tension: 0.35,
+            fill: true
+          },
+          {
+            label: '体感レイテンシ',
+            data: [8, 10, 14, 35, 70, 85, 90],
+            borderColor: '#94a3b8',
+            backgroundColor: 'rgba(148,163,184,0.1)',
+            borderDash: [6, 4],
+            tension: 0.35,
+            fill: false
+          }
+        ]
+      },
+      options: {
+        plugins: { legend: { position: 'bottom' } },
+        scales: {
+          y: { beginAtZero: true, max: 100, title: { display: true, text: '相対値(0-100)' } },
+          x: { title: { display: true, text: 'ウェイクアップ間隔' } }
+        }
+      }
+    });
+  }
+
+  var ctxBar = document.getElementById('ch2-bar-1');
+  if (ctxBar && window.Chart) {
+    new Chart(ctxBar, {
+      type: 'bar',
+      data: {
+        labels: ['短間隔(2m)', '中間隔(10m)', '長間隔(60m+)'],
+        datasets: [
+          {
+            label: '1回あたりコスト(相対)',
+            data: [20, 55, 90],
+            backgroundColor: 'rgba(217,119,87,0.35)',
+            borderColor: '#D97757',
+            borderWidth: 1,
+            borderRadius: 6
+          },
+          {
+            label: '1回あたり価値(相対)',
+            data: [75, 70, 45],
+            backgroundColor: '#D97757',
+            borderRadius: 6
+          }
+        ]
+      },
+      options: {
+        plugins: { legend: { position: 'bottom' } },
+        scales: {
+          y: { beginAtZero: true, max: 100, title: { display: true, text: '相対値' } }
+        }
+      }
+    });
+  }
+});
+</script>
+</body>
+</html>
