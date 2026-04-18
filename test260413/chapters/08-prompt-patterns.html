@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>プロンプト設計の型 - MK's Claude Code Tutorial</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code Tutorial
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav class="active"><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="../index.html#phase3" data-nav><span class="phase-name">Advanced</span><span class="phase-pct" id="pct-advanced">0%</span></a></li>
+      <li><a href="../index.html#phase4" data-nav><span class="phase-name">Projects</span><span class="phase-pct" id="pct-projects">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.08</span>
+    プロンプト設計の型
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 26 sections</text>
+    </svg>
+    <div class="progress-info">0h / 24h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-welcome.html"><span class="status-dot" data-chapter="01"></span> ようこそ&セットアップ</a></li>
+    <li><a href="02-communication-basics.html"><span class="status-dot" data-chapter="02"></span> 対話の原則</a></li>
+    <li><a href="03-file-tools.html"><span class="status-dot" data-chapter="03"></span> ファイル操作ツール</a></li>
+    <li><a href="04-bash-safety.html"><span class="status-dot" data-chapter="04"></span> Bashツールと安全</a></li>
+    <li><a href="05-todo-management.html"><span class="status-dot" data-chapter="05"></span> TodoWriteで作業管理</a></li>
+    <li><a href="06-claude-md.html"><span class="status-dot" data-chapter="06"></span> CLAUDE.md</a></li>
+    <li><a href="07-git-workflow.html"><span class="status-dot" data-chapter="07"></span> Git × Claude Code</a></li>
+  </ul>
+  <div class="section-label">Core</div>
+  <ul>
+    <li><a href="08-prompt-patterns.html" class="active"><span class="status-dot" data-chapter="08"></span> プロンプト設計の型</a></li>
+    <li><a href="09-code-review.html"><span class="status-dot" data-chapter="09"></span> コードレビュー依頼</a></li>
+    <li><a href="10-refactor-workflow.html"><span class="status-dot" data-chapter="10"></span> 改修ワークフロー</a></li>
+    <li><a href="11-tdd-with-claude.html"><span class="status-dot" data-chapter="11"></span> テスト駆動</a></li>
+    <li><a href="12-debugging.html"><span class="status-dot" data-chapter="12"></span> デバッグ</a></li>
+    <li><a href="13-plan-mode.html"><span class="status-dot" data-chapter="13"></span> Planモード</a></li>
+    <li><a href="14-context-management.html"><span class="status-dot" data-chapter="14"></span> コンテキスト管理</a></li>
+    <li><a href="15-web-tools.html"><span class="status-dot" data-chapter="15"></span> Web検索・取得</a></li>
+  </ul>
+  <div class="section-label">Advanced</div>
+  <ul>
+    <li><a href="16-subagents-overview.html"><span class="status-dot" data-chapter="16"></span> Subagents</a></li>
+    <li><a href="17-mcp-overview.html"><span class="status-dot" data-chapter="17"></span> MCP</a></li>
+    <li><a href="18-hooks-overview.html"><span class="status-dot" data-chapter="18"></span> Hooks</a></li>
+    <li><a href="19-schedule-loop.html"><span class="status-dot" data-chapter="19"></span> Schedule &amp; Loop</a></li>
+    <li><a href="20-skills-overview.html"><span class="status-dot" data-chapter="20"></span> Skills</a></li>
+    <li><a href="21-worktree.html"><span class="status-dot" data-chapter="21"></span> worktree</a></li>
+    <li><a href="22-pitfalls.html"><span class="status-dot" data-chapter="22"></span> 失敗パターン10</a></li>
+  </ul>
+  <div class="section-label">Projects</div>
+  <ul>
+    <li><a href="23-project-automation.html"><span class="status-dot" data-chapter="23"></span> Project A：業務自動化</a></li>
+    <li><a href="24-project-refactor.html"><span class="status-dot" data-chapter="24"></span> Project B：リファクタ</a></li>
+    <li><a href="25-project-webapp.html"><span class="status-dot" data-chapter="25"></span> Project C：Webアプリ</a></li>
+    <li><a href="26-final-exercise.html"><span class="status-dot" data-chapter="26"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 2: Core &gt; Chapter 08</div>
+  <h1>プロンプト設計の型</h1>
+  <p class="subtitle">5つの型を暗記して、毎回ゼロから考えない</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 60分</span>
+    <span class="badge">Phase: Core</span>
+    <span class="badge">難易度: 中級</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">この章のゴール</span>
+    <p>Claude Code への依頼は、大きく <strong>5つの型</strong>(<span class="term" data-tip="新規作成: ゼロから新しいファイル/機能を作らせる型">新規作成</span> / <span class="term" data-tip="修正: 既存コードの小さな挙動変更を依頼する型">修正</span> / <span class="term" data-tip="調査: コードベース/ドキュメントから事実を拾って報告させる型">調査</span> / <span class="term" data-tip="レビュー: 既存コードや差分に対して観点ごとの指摘を求める型">レビュー</span> / <span class="term" data-tip="デバッグ: バグの再現→仮説→修正を依頼する型">デバッグ</span>)に収まります。この章では型ごとのテンプレート・よくある反例・実際のコピペで使えるプロンプト例を用意しました。<strong>暗記して体に染み込ませる</strong>のがゴール。60分で、毎回頭を白紙から捻る必要がなくなります。</p>
+  </div>
+
+  <div class="info-box" style="border-left: 3px solid #D97757;">
+    <span class="label">バージョン注記</span>
+    <p>本章の記述は <strong>2026年1月時点</strong> の Claude Code の挙動・用語に基づきます。スラッシュコマンドや Agent 周りは進化が速いので、コマンドが通らない時は <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">公式ドキュメント</a> を確認してください。型そのもの(5分類)は1年単位では変わりません。</p>
+  </div>
+
+  <!-- ===== Section 1: なぜ型が必要か ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> なぜ「型」なのか — 毎回ゼロから考えない</h2>
+
+  <p>Ch02 で学んだ <strong>3点セット</strong>(具体性・制約・成功条件)は全プロンプトの土台です。しかし毎回ゼロから「具体性は…制約は…成功条件は…」と組み立てていたら、1リクエストに3分かかって全然捗りません。そこで <span class="term" data-tip="テンプレート: あらかじめ作った穴埋め式のプロンプト雛形。型に沿って埋めるだけで 3点セットが揃う">テンプレート</span> を用意して、型に穴埋めする運用にします。</p>
+
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">素人</span>
+      <h4>毎回ゼロから文を捻る</h4>
+      <ul>
+        <li>1プロンプトに2-3分かかる</li>
+        <li>書き忘れ(制約・成功条件)が多発</li>
+        <li>「なんか期待と違う」で再依頼の往復</li>
+        <li>型の揺れでClaudeも精度にばらつき</li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">パワーユーザー</span>
+      <h4>5型のうち1つに当てはめる</h4>
+      <ul>
+        <li>1プロンプトに20-30秒</li>
+        <li>穴埋めなので欠落が起きにくい</li>
+        <li>一発で意図通りの返答率が上がる</li>
+        <li>型=共通言語なのでチームで再現可能</li>
+      </ul>
+    </div>
+  </div>
+
+  <p>ポイントは <strong>すべての依頼を型に分類する習慣</strong> です。「今から何を頼もうとしているか?」の最初の判断が <em>5択</em> に収まると気付いたら、あとはその型のテンプレをただ埋めるだけ。脳みそのワーキングメモリが空くので、「型に沿う → 型に沿わない例外を見つける」というプロの動き方に移れます。</p>
+
+  <!-- 5型の関係図 (SVG) -->
+  <div class="diagram-box">
+    <div class="diagram-title">5つの型と、依頼の入り口</div>
+    <svg viewBox="0 0 560 300" width="100%" style="max-width:560px; display:block; margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arr8-1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#D97757"/></marker>
+      </defs>
+      <!-- center -->
+      <circle cx="280" cy="150" r="58" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="2"/>
+      <text x="280" y="145" text-anchor="middle" font-size="13" font-weight="700" fill="#18181b">頼みたい</text>
+      <text x="280" y="163" text-anchor="middle" font-size="13" font-weight="700" fill="#18181b">こと</text>
+      <!-- 5 nodes -->
+      <g>
+        <rect x="60" y="20" width="140" height="56" rx="10" fill="#ffffff" stroke="#D97757" stroke-width="1.5"/>
+        <text x="130" y="42" text-anchor="middle" font-size="13" font-weight="700" fill="#D97757">1. 新規作成</text>
+        <text x="130" y="60" text-anchor="middle" font-size="10" fill="#475569">ゼロから書く</text>
+      </g>
+      <g>
+        <rect x="360" y="20" width="140" height="56" rx="10" fill="#ffffff" stroke="#D97757" stroke-width="1.5"/>
+        <text x="430" y="42" text-anchor="middle" font-size="13" font-weight="700" fill="#D97757">2. 修正</text>
+        <text x="430" y="60" text-anchor="middle" font-size="10" fill="#475569">小さな挙動変更</text>
+      </g>
+      <g>
+        <rect x="20" y="224" width="140" height="56" rx="10" fill="#ffffff" stroke="#D97757" stroke-width="1.5"/>
+        <text x="90" y="246" text-anchor="middle" font-size="13" font-weight="700" fill="#D97757">3. 調査</text>
+        <text x="90" y="264" text-anchor="middle" font-size="10" fill="#475569">事実を拾う</text>
+      </g>
+      <g>
+        <rect x="210" y="224" width="140" height="56" rx="10" fill="#ffffff" stroke="#D97757" stroke-width="1.5"/>
+        <text x="280" y="246" text-anchor="middle" font-size="13" font-weight="700" fill="#D97757">4. レビュー</text>
+        <text x="280" y="264" text-anchor="middle" font-size="10" fill="#475569">観点で指摘</text>
+      </g>
+      <g>
+        <rect x="400" y="224" width="140" height="56" rx="10" fill="#ffffff" stroke="#D97757" stroke-width="1.5"/>
+        <text x="470" y="246" text-anchor="middle" font-size="13" font-weight="700" fill="#D97757">5. デバッグ</text>
+        <text x="470" y="264" text-anchor="middle" font-size="10" fill="#475569">バグを直す</text>
+      </g>
+      <!-- arrows -->
+      <path d="M 200 60 L 232 125" stroke="#D97757" stroke-width="1.5" fill="none" marker-end="url(#arr8-1)" opacity="0.6"/>
+      <path d="M 360 60 L 328 125" stroke="#D97757" stroke-width="1.5" fill="none" marker-end="url(#arr8-1)" opacity="0.6"/>
+      <path d="M 160 224 L 235 185" stroke="#D97757" stroke-width="1.5" fill="none" marker-end="url(#arr8-1)" opacity="0.6"/>
+      <path d="M 280 224 L 280 210" stroke="#D97757" stroke-width="1.5" fill="none" marker-end="url(#arr8-1)" opacity="0.6"/>
+      <path d="M 400 224 L 325 185" stroke="#D97757" stroke-width="1.5" fill="none" marker-end="url(#arr8-1)" opacity="0.6"/>
+    </svg>
+    <div class="diagram-caption">依頼が来たら、まずこの5型のどれに入るかを1秒で判定。あとは型のテンプレを埋めるだけ。</div>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section 2: 5型の比較 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 5型の俯瞰 — 「この依頼はどれ?」を秒で判定する</h2>
+
+  <p>いきなり個別の型を見るのではなく、まず俯瞰比較を頭に入れます。<strong>判定の速さ</strong>が、型運用のスピードを決めます。</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>型</th>
+        <th>典型的な依頼</th>
+        <th>主役パラメータ</th>
+        <th>主なツール</th>
+        <th>危険度</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>1. 新規作成</strong></td>
+        <td>「○○を作って」</td>
+        <td>要件 / 参考ファイル / 成功条件</td>
+        <td>Write / Edit / Bash</td>
+        <td>中(暴走に注意)</td>
+      </tr>
+      <tr>
+        <td><strong>2. 修正</strong></td>
+        <td>「この挙動を変えて」</td>
+        <td>対象ファイル / 差分 / 制約</td>
+        <td>Edit / Bash</td>
+        <td>高(既存破壊)</td>
+      </tr>
+      <tr>
+        <td><strong>3. 調査</strong></td>
+        <td>「○○はどこで使われてる?」</td>
+        <td>探す対象 / スコープ / 出力形式</td>
+        <td>Grep / Glob / Read</td>
+        <td>低(読むだけ)</td>
+      </tr>
+      <tr>
+        <td><strong>4. レビュー</strong></td>
+        <td>「このコードをチェックして」</td>
+        <td>対象 / 観点 / 重大度基準</td>
+        <td>Read / Grep</td>
+        <td>低(指摘のみ)</td>
+      </tr>
+      <tr>
+        <td><strong>5. デバッグ</strong></td>
+        <td>「このバグを直して」</td>
+        <td>再現手順 / 期待 / 観察 / 制約</td>
+        <td>Read / Edit / Bash</td>
+        <td>高(表層塞ぎ)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>注目してほしいのは<strong>「主役パラメータ」列</strong>です。型ごとに「絶対に書かないとダメな項目」は決まっている。逆に言えば、この列を暗記しておけば、プロンプトに何を書くべきかで迷いません。</p>
+
+  <div class="info-box">
+    <span class="label">公式ドキュメント必読</span>
+    <p>Claude Code の「効果的なプロンプト設計」のベースは公式ドキュメントにも体系化されています。型を身につけた後、1度は通読して自分の型と照らし合わせてください。<a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式 →</a></p>
+  </div>
+
+  <!-- ===== Section 3: 型1 新規作成 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 型①:新規作成 — ゼロから書かせる</h2>
+
+  <p><strong>使う場面</strong>:まだ存在しない機能・スクリプト・テスト・ドキュメントをゼロから書いてもらう時。<span class="term" data-tip="スキャフォールディング: プロジェクト雛形/足場コードの生成">スキャフォールディング</span> や小物CLIの生成に一番向いています。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">新規作成プロンプトの4要素</div>
+    <pre class="mermaid">
+graph LR
+  A["1. 目的"] --> B["2. 要件 & 制約"]
+  B --> C["3. 参考ファイル"]
+  C --> D["4. 成功条件"]
+  D --> E["Claude が実装"]
+    </pre>
+    <div class="diagram-caption">1-4を1メッセージに畳み込めば、ほぼ一発で期待通りが出る。</div>
+  </div>
+
+  <h3>テンプレート(暗記推奨)</h3>
+
+  <pre><code>【目的】{何のため / どんなユースケース}
+【要件】
+- {機能A}
+- {機能B}
+【制約】
+- 言語: {Python 3.11 / TypeScript strict / ...}
+- 依存: {標準ライブラリのみ / 既存の X を使う}
+- スタイル: {既存の {file} に合わせる}
+【参考】
+- 似た構造の既存ファイル: {path}
+- 関連仕様: {URL or doc path}
+【成功条件】
+- {npm test が通る / "hello" と標準出力 / ...}
+- 完了したら git diff を見せて停止
+</code></pre>
+
+  <h3>Before / After プロンプト例</h3>
+
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">Before(反例)</span>
+      <h4>ベタ依頼</h4>
+      <p><em>「CSV を JSON に変換するスクリプトを書いて」</em></p>
+      <ul>
+        <li>言語・入出力先・エラー処理が不明</li>
+        <li>どこまでで完成かの成功条件がない</li>
+        <li>既存構造との整合が取れない</li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">After(型どおり)</span>
+      <h4>型①を埋めた依頼</h4>
+      <pre style="margin:0;"><code>【目的】運用チームの日次CSVをJSONに変換
+【要件】
+- 引数で入力CSVパス/出力JSONパスを受ける
+- ヘッダ行をキーに
+【制約】Python 3.11 / 標準ライブラリのみ
+【参考】scripts/csv2tsv.py のCLI作法に合わせる
+【成功条件】
+- python convert.py sample.csv out.json で動く
+- 終わったら diff だけ見せて停止</code></pre>
+    </div>
+  </div>
+
+  <details class="more-box"><summary>もっと詳しく:新規作成で暴走させないコツ</summary>
+  <div class="more-body">
+    <ul>
+      <li><strong>成功条件を「止まる条件」として書く</strong>:「○○が出たら停止」「diff 見せて終わり」。これが無いとClaudeはどんどん機能を足してくる。</li>
+      <li><strong>参考ファイルを1つ指定する</strong>:既存コードのスタイルに寄せるだけで、レビュー時間が半分になる。</li>
+      <li><strong>大きな新規作成は Ch13 Plan モードと組み合わせる</strong>:いきなり書かせず、計画を出させる→同意→実装の3段。</li>
+    </ul>
+  </div>
+  </details>
+
+  <div class="hands-on-box info-box" style="background: rgba(217,119,87,0.08); border-left: 3px solid #D97757;">
+    <span class="label">今すぐ試す(90秒)</span>
+    <p>今の自分のプロジェクトで「作りたいけど作ってない小物」を1つ決めて、上のテンプレを埋めて Claude Code に投げてみてください(例:「当日作業ログを .md に書き出す Bash スクリプト」)。テンプレを埋めるだけで、**一発で動くコードが返ってくる確率**が自分でも驚くほど上がるのを体感できます。</p>
+  </div>
+
+  <!-- ===== Section 4: 型2 修正 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 型②:修正 — 既存コードを小さく変える</h2>
+
+  <p><strong>使う場面</strong>:既存挙動を少しだけ変える。メッセージ文言・パラメータ・条件分岐の追加など。<strong>最も事故が起きやすい型</strong>でもあります(既存破壊・余計な周辺修正)。</p>
+
+  <h3>テンプレート</h3>
+
+  <pre><code>【対象】{file:line} または {関数名}
+【現状】{今どうなっているか = 観察事実}
+【変えたいこと】{どうしたいか、なぜか}
+【変えてはいけない】
+- {他の関数 / 他のファイル}
+- {公開APIシグネチャ}
+【制約】
+- {追加依存なし / テストは現状維持 / ...}
+【成功条件】
+- {どのテストが引き続き通る / 差分は N 行以内}
+- 終わったら git diff を見せて停止
+</code></pre>
+
+  <p>ここで大事なのは <strong>「変えてはいけない」</strong> 行。Claude Code は頼まれていない範囲まで親切心で直してしまうことがあります。これを明示的に禁止するのが、修正型で最も効く一行です。</p>
+
+  <!-- Chart.js — 反例比較 -->
+  <div class="diagram-box">
+    <div class="diagram-title">修正型の依頼:書き方別「一発成功率」体感</div>
+    <canvas id="ch8-bar-1" height="140"></canvas>
+    <div class="diagram-caption">MK実測の個人指標(2026/1 時点)。型に「変えてはいけない」行を1行足すだけで一発成功率が大きく変わる。</div>
+  </div>
+
+  <h3>反例:よくある「抜け」</h3>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="alert-triangle" width="20" height="20"></i>
+      <div><strong>対象の粒度が粗い</strong> — 「ログの出し方を変えて」だけだと全ファイル見に行って暴走する。必ずファイル/関数まで指定。</div>
+    </li>
+    <li>
+      <i data-lucide="alert-triangle" width="20" height="20"></i>
+      <div><strong>「現状」を書かない</strong> — Claude 側が現状解釈で失敗する。<code>grep</code> 結果や<code>console.log</code>の抜粋を貼るだけで精度急上昇。</div>
+    </li>
+    <li>
+      <i data-lucide="alert-triangle" width="20" height="20"></i>
+      <div><strong>「変えてはいけない」を書かない</strong> — 周辺コードをリファクタし始めたり、テスト側を書き換える事故の原因。</div>
+    </li>
+  </ul>
+
+  <details class="more-box"><summary>もっと詳しく:修正型 + Plan モードの合わせ技</summary>
+  <div class="more-body">
+    <p>1ファイル以内の修正なら型②だけで十分ですが、複数ファイルに波及しそうな修正は Plan モード(Ch13)と合わせると事故が減ります。「型②のテンプレを Plan モードに投げて、計画に同意したら実装」という2段運用が、パワーユーザーの典型パターンです。</p>
+  </div>
+  </details>
+
+  <!-- ===== Section 5: 型3 調査 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 型③:調査 — 事実を拾って報告させる</h2>
+
+  <p><strong>使う場面</strong>:リポジトリ内の何かを探す・まとめる・仕様を把握する。<strong>書き換えさせないのが肝</strong>。調査依頼で Claude にコードを触らせるとコンテキストだけ食われて損です。</p>
+
+  <h3>テンプレート</h3>
+
+  <pre><code>【知りたいこと】{○○がどこで / どう使われているか}
+【スコープ】
+- 対象ディレクトリ: {src/ 配下のみ}
+- 除外: {tests/ , node_modules/}
+【出力形式】
+- 箇条書き: {file:line — 1行要約}
+- 最後に「全体傾向 3行」
+【禁止】
+- 書き換えない(Read/Grep/Glob のみ使う)
+- 要約で原文を改変しない
+</code></pre>
+
+  <p>調査型の失敗の9割は <strong>「出力形式を指定しない」</strong> こと。形式を指定しないと、Claude は長文の説明を返してきて、あなたはそれを読む時間で消耗します。箇条書き・表・3行サマリなど、欲しい形を先に指定しましょう。</p>
+
+  <!-- Ops flow -->
+  <div class="steps">
+    <div class="step done"><div class="step-num">1</div><div class="step-label">知りたいこと</div><div class="step-desc">Yes/No で答えられるレベルに絞る</div></div>
+    <div class="step done"><div class="step-num">2</div><div class="step-label">スコープ</div><div class="step-desc">対象ディレクトリと除外を明示</div></div>
+    <div class="step done"><div class="step-num">3</div><div class="step-label">出力形式</div><div class="step-desc">箇条書き・表・3行サマリ など</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-label">書き換え禁止</div><div class="step-desc">Read/Grep/Glob のみ許可</div></div>
+  </div>
+
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">Before</span>
+      <h4>ざっくり質問</h4>
+      <p><em>「このコードベースで認証周りはどうなってる?」</em></p>
+      <p>→ 長文の説明 + 勝手にリファクタ提案まで。時間ロス。</p>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">After</span>
+      <h4>型③で依頼</h4>
+      <pre style="margin:0;"><code>【知りたい】認証ミドルウェアの適用箇所
+【スコープ】src/ のみ、tests除外
+【出力】- file:line — 1行要約 の箇条書き
+最後に全体傾向を3行
+【禁止】コード変更・新ファイル作成</code></pre>
+      <p>→ 20秒で読める報告が返ってくる。</p>
+    </div>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section 6: 型4 レビュー ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 型④:レビュー — 観点を指定して辛口にチェックさせる</h2>
+
+  <p><strong>使う場面</strong>:自分が書いたコードや差分、他人のPRを Claude に読ませて指摘を出させる。<strong>観点を指定しない</strong>と「ざっくり良いと思います」みたいな無味乾燥なコメントしか返ってきません(Ch09で深掘り)。</p>
+
+  <h3>テンプレート</h3>
+
+  <pre><code>【対象】{file:line 範囲 / git diff 範囲 / PR URL}
+【観点】(複数指定可)
+- [ ] セキュリティ(SQLi / XSS / 権限)
+- [ ] パフォーマンス(N+1 / 無駄ループ)
+- [ ] 可読性(命名 / 関数長)
+- [ ] テスト(カバレッジ / 境界値)
+- [ ] 設計(責務分離 / 副作用)
+【重大度基準】
+- critical: 本番で即バグ
+- major: 将来確実に詰む
+- minor: 改善余地
+【出力形式】
+- 観点別 × 重大度順で箇条書き
+- 各指摘に「なぜ問題か」「どう直すか」2行
+【禁止】コードを書き換えない(指摘のみ)
+</code></pre>
+
+  <!-- Chart.js — 観点ごとの指摘数変化 -->
+  <div class="diagram-box">
+    <div class="diagram-title">観点指定の有無で出てくる指摘数</div>
+    <canvas id="ch8-radar-1" height="220"></canvas>
+    <div class="diagram-caption">5観点を明示すると、指摘の厚みが各方向に広がる(著者実測・参考値)。</div>
+  </div>
+
+  <div class="info-box">
+    <span class="label">ここがプロの境目</span>
+    <p><strong>型を2〜3個暗記する。毎回ゼロから考えない</strong>。特に「新規作成」「修正」「レビュー」の3つを暗記しておくと、依頼の8割はこれで回る。Claude の返答ばらつきが減り、1日に捌けるタスク数が変わる。<br>
+    <em>試し方:</em> 今日の自分の頻出タスクを1つ選んで、このページの該当型テンプレを埋め直して再依頼してみる(例:「いつもの週次レポート作成」を型①で書き直す)。</p>
+  </div>
+
+  <!-- ===== Section 7: 型5 デバッグ ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 型⑤:デバッグ — 再現→仮説→修正</h2>
+
+  <p><strong>使う場面</strong>:バグを直させる。<strong>表層だけ塞がせない</strong>のが命。Ch12で深掘りしますが、ここでは最低限の型だけ押さえます。</p>
+
+  <h3>テンプレート</h3>
+
+  <pre><code>【バグの概要】1行で {何が起きているか}
+【再現手順】
+1. {手順1}
+2. {手順2}
+3. {ここでエラー}
+【期待動作】{こうなってほしい}
+【観察結果】{実際のメッセージ・ログ・スタック}
+【すでに試したこと】{○○を変えたが効果なし}
+【制約】
+- assertion を緩めない / テストを書き換えない
+- 根本原因を先に仮説3つ挙げてから手を入れる
+【成功条件】
+- 再現手順で発生しないこと
+- 既存テストが全て通ること
+- 修正 diff + 原因仮説を見せて停止
+</code></pre>
+
+  <div class="diagram-box">
+    <div class="diagram-title">デバッグ依頼が暴走する典型パターン</div>
+    <pre class="mermaid">
+graph TD
+  A["バグ報告"] --> B{"仮説を立てた?"}
+  B -- "No" --> C["表層を塞ぐ patch"]
+  C --> D["別バグが再発"]
+  D --> A
+  B -- "Yes / 3個挙げた" --> E["根本原因に到達"]
+  E --> F["再現が消える"]
+    </pre>
+    <div class="diagram-caption">仮説3つを先に挙げさせるだけで、無限ループを抜ける。</div>
+  </div>
+
+  <details class="more-box"><summary>もっと詳しく:デバッグ型でテストを守るフレーズ</summary>
+  <div class="more-body">
+    <p>Claude Code は「テストを通すためにテストを書き換える」ことがあります(Ch11 で詳説)。これを防ぐには、デバッグ型のプロンプトに <strong>必ず</strong> 「<em>assertion を緩めない</em>」「<em>テストを書き換えない</em>」を入れる。Ch11 の先取りですが、型⑤にはこの行を常駐させるのが安全です。</p>
+  </div>
+  </details>
+
+  <!-- ===== Section 8: 汎用コツ ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 全型に共通する3つのコツ</h2>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-num">3</div>
+      <div class="stat-label">コツ①:成功条件を最後に置く</div>
+      <div class="stat-trend up">Claudeが「止まる位置」を知る</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">2</div>
+      <div class="stat-label">コツ②:参考ファイルを先に渡す</div>
+      <div class="stat-trend up">スタイル合わせが無料になる</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">1</div>
+      <div class="stat-label">コツ③:禁止を1行書く</div>
+      <div class="stat-trend up">暴走の8割がここで止まる</div>
+    </div>
+  </div>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="check-circle" width="20" height="20"></i>
+      <div><strong>成功条件を最後に置く</strong> — 「diff を見せて停止」「npm test が緑なら完了」。これが型全共通の最重要フィールド。</div>
+    </li>
+    <li>
+      <i data-lucide="book-open" width="20" height="20"></i>
+      <div><strong>参考ファイルを1つだけ指定</strong> — 「scripts/hello.py のCLI作法に合わせる」の一文で、既存コードとの統一感が勝手に揃う。</div>
+    </li>
+    <li>
+      <i data-lucide="shield" width="20" height="20"></i>
+      <div><strong>禁止事項を1行書く</strong> — 「他のファイルは触らない」「テストを変えない」「READMEは書き換えない」など、目的以外の変更を封じる1行。</div>
+    </li>
+  </ul>
+
+  <!-- 型別の得意不得意 table -->
+  <div class="diagram-box">
+    <div class="diagram-title">型別:主役パラメータ早見表</div>
+    <table>
+      <thead>
+        <tr><th>型</th><th>目的</th><th>現状</th><th>参考</th><th>禁止</th><th>成功条件</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>①新規作成</td><td>必須</td><td>—</td><td>強く推奨</td><td>推奨</td><td>必須</td></tr>
+        <tr><td>②修正</td><td>必須</td><td>必須</td><td>任意</td><td>必須</td><td>必須</td></tr>
+        <tr><td>③調査</td><td>必須</td><td>—</td><td>—</td><td>必須(書換禁止)</td><td>必須(出力形式)</td></tr>
+        <tr><td>④レビュー</td><td>必須(観点)</td><td>任意</td><td>任意</td><td>必須(書換禁止)</td><td>必須(重大度基準)</td></tr>
+        <tr><td>⑤デバッグ</td><td>必須</td><td>必須(再現/期待/観察)</td><td>任意</td><td>必須(テスト保護)</td><td>必須</td></tr>
+      </tbody>
+    </table>
+    <div class="diagram-caption">空欄(—)の箇所は省略OK。必須だけ埋めれば型は成立する。</div>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section 9: 暗記戦略 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 暗記戦略:2〜3個まず体に染み込ませる</h2>
+
+  <p>5型を一気に暗記しようとするのは逆効果。まず<strong>自分の頻度の高い2〜3型</strong>だけを <span class="term" data-tip="マッスルメモリー: 繰り返しで身体が勝手に動く状態。ここでは「テンプレが頭に浮かぶ」意">マッスルメモリー</span> まで落とします。残りは「必要になった時に辞書引き」でOK。</p>
+
+  <div class="kv-grid">
+    <div class="kv"><div class="kv-key">エンジニア系</div><div class="kv-val">②修正 / ⑤デバッグ / ④レビュー</div></div>
+    <div class="kv"><div class="kv-key">PM/企画系</div><div class="kv-val">③調査 / ①新規作成</div></div>
+    <div class="kv"><div class="kv-key">学習/リサーチ</div><div class="kv-val">③調査 / ①新規作成</div></div>
+    <div class="kv"><div class="kv-key">運用/SRE</div><div class="kv-val">⑤デバッグ / ②修正</div></div>
+  </div>
+
+  <p>自分の職種で頻度が高い2-3型だけを <span class="term" data-tip="CLAUDE.md: リポジトリ直下/ユーザ領域に置く設定メモ。Ch06で学んだ">CLAUDE.md</span> または自分のメモに貼り付けて、毎日見る所に置くのが一番早いです。1週間で体に入ります。</p>
+
+  <div class="hands-on-box info-box" style="background: rgba(217,119,87,0.08); border-left: 3px solid #D97757;">
+    <span class="label">今すぐ試す(2分)</span>
+    <p>自分の職種の主要2型を上のテンプレから選び、プロジェクトの <code>CLAUDE.md</code> 末尾に「<em>## 頼み方テンプレ</em>」として貼り付ける。次から「型①で」「型②で」と呼び出せば、Claude側も型に沿った返答をしやすくなります。</p>
+  </div>
+
+  <!-- CSS anim — fade in on prompt ceremony -->
+  <div class="fade-in">
+    <div class="quote">
+      プロの依頼は、<strong>「考えたことがある」文章</strong>に見える。素人の依頼は、<strong>「いま考えている」文章</strong>に見える。型は前者への近道。
+      <cite>— MK</cite>
+    </div>
+  </div>
+
+  <!-- ===== Exercises ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 演習</h2>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>自分の頻出タスクを型①〜⑤で分類</h4>
+    <p>過去1週間に Claude Code に投げた依頼を5件思い出して、それぞれ5型のどれだったかラベリングしてください。分類できないものがあれば、なぜ分類できないか1文で言語化。</p>
+    <ol>
+      <li>過去の依頼を5件メモに列挙</li>
+      <li>各依頼の型を①〜⑤でラベル付け</li>
+      <li>分類不能なものは「なぜ?」を1文で書く</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>MK の場合の例:</p>
+      <pre><code>1. 「このエラーを直して」    → ⑤デバッグ
+2. 「ユーザ削除APIを作って」 → ①新規作成
+3. 「認証はどこで?」         → ③調査
+4. 「このPRをレビューして」   → ④レビュー
+5. 「挨拶文を '拝啓' に変えて」→ ②修正</code></pre>
+      <p><strong>分類不能の典型</strong>:「リファクタして」。これは型②修正と型①新規作成のハイブリッド。その場合は<strong>分解する</strong>のが王道。先に③調査で「何を」→ ②修正を複数回、のように分けると精度が上がる(Ch10で詳説)。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>型にはめて Before/After を作る</h4>
+    <p>あなたの日常で一番ベタに頼みがちなタスクを1つ選び、(a)今まで通りのベタプロンプトで Claude Code に投げる、(b)型①〜⑤のうち該当する型でテンプレを埋めて投げる、の2通りを並べて、返答の質を比較してみてください。</p>
+    <ol>
+      <li>タスク選定(例:「今日のタスクログ集計スクリプトを書いて」)</li>
+      <li>ベタ版を投げる → 結果をメモ</li>
+      <li><code>/clear</code> して同じ内容を型に沿って投げる → 結果をメモ</li>
+      <li>返答の「一発精度」「無駄な説明の有無」「自分のレビュー時間」を比較</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>お題:「今日分の git log を拾って .md に整形するスクリプトを作って」</p>
+      <p><strong>(a) ベタ版</strong>:</p>
+      <pre><code>今日分の git log を拾って .md に整形するスクリプトを作って</code></pre>
+      <p>→ 言語が bash か python か分からず、出力先も想像で決まる。既存スクリプトのスタイルに寄せてくれない。</p>
+      <p><strong>(b) 型①で</strong>:</p>
+      <pre><code>【目的】日次作業ログを chatops 投稿用に .md に整形
+【要件】
+- 今日の git log --since=midnight を対象
+- コミットタイトル + 短いボディ を箇条書きに
+- 出力: ./logs/YYYY-MM-DD.md
+【制約】
+- Bash 単体(python 使わない)
+- 追加依存なし
+【参考】scripts/daily_reports.sh のCLI作法
+【成功条件】
+- ./logs/ に当日の .md が出力される
+- 終わったら diff を見せて停止</code></pre>
+      <p>→ 一発で動く、レビュー時間1分以内、周辺ファイルを触らない。この差を一度体感すると、ベタ依頼には戻れなくなる。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式ドキュメント</a> <span class="res-type doc">Doc</span> — 効果的なプロンプトの一次情報</li>
+      <li><a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener">Claude Code GitHub リポジトリ</a> <span class="res-type doc">Doc</span> — Issues で実例ベストプラクティスが読める</li>
+      <li><a href="https://github.com/anthropics/anthropic-cookbook" target="_blank" rel="noopener">Anthropic Cookbook</a> <span class="res-type doc">Doc</span> — プロンプト設計の体系的レシピ集</li>
+      <li><a href="https://www.anthropic.com/news" target="_blank" rel="noopener">Anthropic Blog</a> <span class="res-type doc">Doc</span> — 新機能発表・プロンプト戦略の更新</li>
+      <li><a href="https://www.youtube.com/results?search_query=Claude+Code+prompt+pattern" target="_blank" rel="noopener">YouTube 検索: "Claude Code prompt pattern"</a> <span class="res-type video">Video</span> — 海外勢のテンプレ実演</li>
+      <li><a href="https://zenn.dev/topics/claudecode" target="_blank" rel="noopener">Zenn: Claude Code タグ</a> <span class="res-type doc">Doc</span> — 日本語圏の型共有事例</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="08">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="07-git-workflow.html"><span class="direction">&larr; Prev</span>Git × Claude Code</a>
+    <a href="09-code-review.html"><span class="direction">Next &rarr;</span>コードレビュー依頼</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<!-- 視覚化ライブラリ群 -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+<script>
+window.addEventListener("load", function(){
+  // Bar: 修正型プロンプト 一発成功率
+  var bar1 = document.getElementById('ch8-bar-1');
+  if (bar1 && window.Chart) {
+    new Chart(bar1, {
+      type: 'bar',
+      data: {
+        labels: ['ベタ依頼', '対象だけ指定', '現状も添付', '変えてはいけない明示', '成功条件まで'],
+        datasets: [{
+          label: '一発成功率(体感%)',
+          data: [20, 40, 55, 78, 92],
+          backgroundColor: '#D97757',
+          borderRadius: 6
+        }]
+      },
+      options: {
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true, max: 100, ticks: { callback: function(v){ return v + '%'; } } } }
+      }
+    });
+  }
+
+  // Radar: レビュー観点指定
+  var radar1 = document.getElementById('ch8-radar-1');
+  if (radar1 && window.Chart) {
+    new Chart(radar1, {
+      type: 'radar',
+      data: {
+        labels: ['セキュリティ','パフォーマンス','可読性','テスト','設計'],
+        datasets: [
+          {
+            label: '観点指定なし',
+            data: [20, 15, 50, 10, 15],
+            backgroundColor: 'rgba(148,163,184,0.25)',
+            borderColor: '#94a3b8',
+            pointBackgroundColor: '#94a3b8'
+          },
+          {
+            label: '5観点を指定',
+            data: [85, 75, 80, 70, 78],
+            backgroundColor: 'rgba(217,119,87,0.2)',
+            borderColor: '#D97757',
+            pointBackgroundColor: '#D97757'
+          }
+        ]
+      },
+      options: {
+        plugins: { legend: { position: 'bottom' } },
+        scales: { r: { suggestedMin: 0, suggestedMax: 100 } }
+      }
+    });
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>ファイル操作ツール4つ (+Glob/Grep) - MK's Claude Code Tutorial</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code Tutorial
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav class="active"><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="../index.html#phase3" data-nav><span class="phase-name">Advanced</span><span class="phase-pct" id="pct-advanced">0%</span></a></li>
+      <li><a href="../index.html#phase4" data-nav><span class="phase-name">Projects</span><span class="phase-pct" id="pct-projects">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.03</span>
+    ファイル操作ツール4つ (+Glob/Grep)
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 26 sections</text>
+    </svg>
+    <div class="progress-info">0h / 24h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-welcome.html"><span class="status-dot" data-chapter="01"></span> ようこそ&セットアップ</a></li>
+    <li><a href="02-communication-basics.html"><span class="status-dot" data-chapter="02"></span> 対話の原則</a></li>
+    <li><a href="03-file-tools.html" class="active"><span class="status-dot" data-chapter="03"></span> ファイル操作ツール</a></li>
+    <li><a href="04-bash-safety.html"><span class="status-dot" data-chapter="04"></span> Bashツールと安全</a></li>
+    <li><a href="05-todo-management.html"><span class="status-dot" data-chapter="05"></span> TodoWriteで作業管理</a></li>
+    <li><a href="06-claude-md.html"><span class="status-dot" data-chapter="06"></span> CLAUDE.md</a></li>
+    <li><a href="07-git-workflow.html"><span class="status-dot" data-chapter="07"></span> Git × Claude Code</a></li>
+  </ul>
+  <div class="section-label">Core</div>
+  <ul>
+    <li><a href="08-prompt-patterns.html"><span class="status-dot" data-chapter="08"></span> プロンプト設計の型</a></li>
+    <li><a href="09-code-review.html"><span class="status-dot" data-chapter="09"></span> コードレビュー依頼</a></li>
+    <li><a href="10-refactor-workflow.html"><span class="status-dot" data-chapter="10"></span> 改修ワークフロー</a></li>
+    <li><a href="11-tdd-with-claude.html"><span class="status-dot" data-chapter="11"></span> テスト駆動</a></li>
+    <li><a href="12-debugging.html"><span class="status-dot" data-chapter="12"></span> デバッグ</a></li>
+    <li><a href="13-plan-mode.html"><span class="status-dot" data-chapter="13"></span> Planモード</a></li>
+    <li><a href="14-context-management.html"><span class="status-dot" data-chapter="14"></span> コンテキスト管理</a></li>
+    <li><a href="15-web-tools.html"><span class="status-dot" data-chapter="15"></span> Web検索・取得</a></li>
+  </ul>
+  <div class="section-label">Advanced</div>
+  <ul>
+    <li><a href="16-subagents-overview.html"><span class="status-dot" data-chapter="16"></span> Subagents</a></li>
+    <li><a href="17-mcp-overview.html"><span class="status-dot" data-chapter="17"></span> MCP</a></li>
+    <li><a href="18-hooks-overview.html"><span class="status-dot" data-chapter="18"></span> Hooks</a></li>
+    <li><a href="19-schedule-loop.html"><span class="status-dot" data-chapter="19"></span> Schedule &amp; Loop</a></li>
+    <li><a href="20-skills-overview.html"><span class="status-dot" data-chapter="20"></span> Skills</a></li>
+    <li><a href="21-worktree.html"><span class="status-dot" data-chapter="21"></span> worktree</a></li>
+    <li><a href="22-pitfalls.html"><span class="status-dot" data-chapter="22"></span> 失敗パターン10</a></li>
+  </ul>
+  <div class="section-label">Projects</div>
+  <ul>
+    <li><a href="23-project-automation.html"><span class="status-dot" data-chapter="23"></span> Project A：業務自動化</a></li>
+    <li><a href="24-project-refactor.html"><span class="status-dot" data-chapter="24"></span> Project B：リファクタ</a></li>
+    <li><a href="25-project-webapp.html"><span class="status-dot" data-chapter="25"></span> Project C：Webアプリ</a></li>
+    <li><a href="26-final-exercise.html"><span class="status-dot" data-chapter="26"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 1: Basics &gt; Chapter 03</div>
+  <h1>ファイル操作ツール4つ (+Glob/Grep)</h1>
+  <p class="subtitle">Read / Write / Edit / Glob / Grep — 探してから読む、壊さず書き換える</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 60分</span>
+    <span class="badge">Phase: Basics</span>
+    <span class="badge">難易度: 初級</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">この章のゴール</span>
+    <p>Claude Code の日常使いで <strong>9割を占める5つのツール</strong> ——<code>Read</code> / <code>Write</code> / <code>Edit</code> / <code>Glob</code> / <code>Grep</code>—— を、いつ・どの順で・どんなパラメータで使うかを体で覚える。60分で<strong>「探してから読む」</strong>の型が染み付くと、これ以降の章の指示が格段にスッと入ります。コピペで動く実プロンプトを 10 個以上載せています。<strong>読むより触る</strong>。</p>
+  </div>
+
+  <div class="info-box" style="border-left: 3px solid #D97757;">
+    <span class="label">バージョン注記</span>
+    <p>本章の記述は <strong>2026年1月時点</strong> の Claude Code 挙動に基づきます。ツール名やパラメータ(<code>offset</code>/<code>limit</code>/<code>replace_all</code> 等)は公式で更新される可能性があるため、動作がおかしい時は <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">公式ドキュメント</a> を確認してください。</p>
+  </div>
+
+  <!-- ============================================================
+       Section 1: 5つのツール一目早見
+       ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 5つのツール — 役割早見</h2>
+
+  <p>まず全体像。<span class="term" data-tip="Claude Code に組み込まれている、ファイル・ディレクトリを操作するための基本ツール5種。">ファイル系ツール</span> は大きく「<strong>探す</strong>」(Glob/Grep)と「<strong>読む/書く/直す</strong>」(Read/Write/Edit)の2グループに分かれます。この分類が、章全体の基礎になります。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">5ツールの守備範囲</div>
+    <svg viewBox="0 0 520 260" width="100%" style="max-width:520px; display:block; margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <!-- 探すゾーン -->
+      <rect x="20" y="30" width="230" height="210" rx="12" fill="rgba(217,119,87,0.08)" stroke="#D97757" stroke-width="2" stroke-dasharray="4 4"/>
+      <text x="135" y="55" text-anchor="middle" font-size="13" font-weight="700" fill="#D97757">探す (discovery)</text>
+      <!-- Glob -->
+      <rect x="40" y="75" width="190" height="65" rx="8" fill="#ffffff" stroke="#D97757" stroke-width="1.5"/>
+      <text x="135" y="98" text-anchor="middle" font-size="12" font-weight="700">Glob</text>
+      <text x="135" y="118" text-anchor="middle" font-size="10" fill="#475569">ファイル名パターン検索</text>
+      <text x="135" y="132" text-anchor="middle" font-size="10" fill="#475569">例: **/*.ts</text>
+      <!-- Grep -->
+      <rect x="40" y="155" width="190" height="65" rx="8" fill="#ffffff" stroke="#D97757" stroke-width="1.5"/>
+      <text x="135" y="178" text-anchor="middle" font-size="12" font-weight="700">Grep</text>
+      <text x="135" y="198" text-anchor="middle" font-size="10" fill="#475569">ファイル中身の正規表現検索</text>
+      <text x="135" y="212" text-anchor="middle" font-size="10" fill="#475569">例: TODO / FIXME</text>
+      <!-- 矢印 -->
+      <path d="M 255 135 L 290 135" stroke="#18181b" stroke-width="2" fill="none" marker-end="url(#arrF)"/>
+      <defs><marker id="arrF" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#18181b"/></marker></defs>
+      <!-- 読む/書くゾーン -->
+      <rect x="295" y="30" width="205" height="210" rx="12" fill="rgba(24,24,27,0.04)" stroke="#18181b" stroke-width="1.5" stroke-dasharray="4 4"/>
+      <text x="397" y="55" text-anchor="middle" font-size="13" font-weight="700" fill="#18181b">読む / 書く / 直す</text>
+      <!-- Read -->
+      <rect x="312" y="75" width="175" height="45" rx="8" fill="#ffffff" stroke="#18181b" stroke-width="1"/>
+      <text x="399" y="93" text-anchor="middle" font-size="11" font-weight="700">Read</text>
+      <text x="399" y="109" text-anchor="middle" font-size="9" fill="#475569">1ファイルを読む(行番号付き)</text>
+      <!-- Edit -->
+      <rect x="312" y="130" width="175" height="45" rx="8" fill="#ffffff" stroke="#18181b" stroke-width="1"/>
+      <text x="399" y="148" text-anchor="middle" font-size="11" font-weight="700">Edit</text>
+      <text x="399" y="164" text-anchor="middle" font-size="9" fill="#475569">既存ファイルの差分編集</text>
+      <!-- Write -->
+      <rect x="312" y="185" width="175" height="45" rx="8" fill="#ffffff" stroke="#18181b" stroke-width="1"/>
+      <text x="399" y="203" text-anchor="middle" font-size="11" font-weight="700">Write</text>
+      <text x="399" y="219" text-anchor="middle" font-size="9" fill="#475569">新規作成 or 全書き換え</text>
+    </svg>
+    <div class="diagram-caption">左で<strong>場所を特定</strong>してから、右で<strong>操作する</strong>。この流れを崩すとコンテキストが溶ける。</div>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>ツール</th><th>一言で</th><th>主なパラメータ</th><th>使うタイミング</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Glob</strong></td><td>ファイル名パターンでリスト</td><td><code>pattern</code>, <code>path</code></td><td>「○○ファイルが何個あるか」を知りたい時</td></tr>
+      <tr><td><strong>Grep</strong></td><td>中身を正規表現で検索</td><td><code>pattern</code>, <code>glob</code>, <code>output_mode</code></td><td>「この文字列を含むファイルはどれ」を知りたい時</td></tr>
+      <tr><td><strong>Read</strong></td><td>1ファイル読む(行番号付き)</td><td><code>file_path</code>, <code>offset</code>, <code>limit</code></td><td>場所を特定した後に<strong>該当1ファイル</strong>の中身を見る時</td></tr>
+      <tr><td><strong>Edit</strong></td><td>既存ファイルを差分編集</td><td><code>old_string</code>, <code>new_string</code>, <code>replace_all</code></td><td>既存行を置き換える(<strong>読んだ後</strong>に使う)</td></tr>
+      <tr><td><strong>Write</strong></td><td>新規作成 or 全書き換え</td><td><code>file_path</code>, <code>content</code></td><td>新ファイル作成。<strong>既存は Edit 優先</strong></td></tr>
+    </tbody>
+  </table>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ============================================================
+       Section 2: ここがプロの境目
+       ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 使い分けフロー — 「探してから読む」が鉄則</h2>
+
+  <p>初心者が最初にやらかすのは「<strong>とりあえず Read してください</strong>」と言って、数百行のファイルや 10 ファイルを丸ごと読ませてしまうパターン。これは <span class="term" data-tip="コンテキストウィンドウ: AIが一度に扱える情報量の上限。超えると古い情報から忘れていく。">コンテキストウィンドウ</span> を食い潰す最悪の選択で、その後の会話の精度が一気に落ちます。正しい順序はこれ。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">ファイル操作の正しい順序</div>
+    <pre class="mermaid">
+graph TD
+  Start([やりたいこと]) --> Q1{"ファイル名は既に分かっている?"}
+  Q1 -- Yes --> Read["Read で1ファイル読む"]
+  Q1 -- No --> Q2{"名前で絞れる?"}
+  Q2 -- Yes --> Glob["Glob でパターン検索"]
+  Q2 -- No --> Grep["Grep で中身検索"]
+  Glob --> Pick["候補から1つ特定"]
+  Grep --> Pick
+  Pick --> Read
+  Read --> Q3{"編集する?"}
+  Q3 -- No --> Done([完了])
+  Q3 -- "一部だけ" --> Edit["Edit で差分編集"]
+  Q3 -- "全書き換え/新規" --> Write["Write"]
+  Edit --> Done
+  Write --> Done
+    </pre>
+    <div class="diagram-caption">Glob/Grep で場所を特定してから Read。Edit は Read の後でしか使えない(実装上の制約)。</div>
+  </div>
+
+  <div class="info-box" style="border-left-color: #D97757;">
+    <span class="label">ここがプロの境目</span>
+    <p><strong>Grep/Glob で探してから Read。絶対に Read で全ファイル読ませない。</strong>コンテキスト浪費の最大の敵は「不要な全文読み込み」。探索は安く、読み込みは高い——この2つの違いを体感することで、長時間セッションでも精度が落ちない使い手になれる。<br>
+    <em>試し方:</em> 手元のリポで <code>このリポで 'TODO' を含むファイル一覧を Grep で出して、そのうち1つだけ Read してください。</code> と頼む。Claude が Grep → Read の順で動くか見る。</p>
+  </div>
+
+  <p>この「<strong>探す → 読む → 直す</strong>」の3ステップは、Ch10 (改修ワークフロー) や Ch12 (デバッグ) でも登場する基本骨格。今のうちに体に染み込ませましょう。</p>
+
+  <!-- ============================================================
+       Section 3: Glob / Grep — 探し方の型
+       ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Glob / Grep — 探し方の型</h2>
+
+  <p><strong>Glob</strong> は <span class="term" data-tip="Glob パターン: ファイル名マッチに使う簡易記法。* は1階層任意文字列、** は任意階層。">Glob パターン</span> でファイル<strong>名</strong>を絞る。<strong>Grep</strong> はファイルの<strong>中身</strong>を正規表現で検索する。両者は補完関係です。</p>
+
+  <h3>Glob の実プロンプト例</h3>
+
+  <pre><code># 最新のTSファイル全部見せて
+src 配下の .ts ファイルを Glob で列挙してください。パターンは src/**/*.ts で。
+
+# テストファイルだけ欲しい
+リポジトリ全体から *.test.ts と *.spec.ts を Glob で出してください。
+
+# 設定ファイルを探す
+ルート直下の package.json / tsconfig*.json / .eslintrc* を Glob で一気に取得。</code></pre>
+
+  <h3>Grep の実プロンプト例</h3>
+
+  <pre><code># TODO コメントの場所を全部出す
+リポ全体から 'TODO|FIXME|HACK' を含む行を Grep してください。output_mode は content、-n で行番号付き。
+
+# 特定関数の定義を探す
+function calculateTotal が定義されている場所を Grep で。*.ts に絞ってください。
+
+# import の依存関係を調べる
+from ['"]lodash['"] を import している箇所を Grep で。output_mode は files_with_matches で充分です。</code></pre>
+
+  <div class="info-box">
+    <span class="label">公式ドキュメント必読</span>
+    <p>Grep/Glob は内部で ripgrep を使っており、<strong>正規表現の記法と出力モード</strong>は公式に詳しく書かれています。特殊文字のエスケープを間違えると検索が 0 件になり、「ないんだな」と誤判断する事故につながるので必ずマスターしてください。<a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式 →</a></p>
+  </div>
+
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">NG</span>
+      <h4>Read から入る</h4>
+      <ul>
+        <li>「src フォルダ全部読んで TODO 探して」</li>
+        <li>→ 数千行を親コンテキストに展開</li>
+        <li>→ その後の対話で肝心の情報を忘れる</li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">OK</span>
+      <h4>Grep から入る</h4>
+      <ul>
+        <li>「src/ で TODO を Grep、hit した行だけ見せて」</li>
+        <li>→ マッチ行 30 行くらいだけ返る</li>
+        <li>→ そこから1ファイルだけ Read で掘る</li>
+      </ul>
+    </div>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: Grep の output_mode 3モードの使い分け</summary>
+    <div class="more-body">
+      <p>Grep には出力モードが3つあります。<strong>用途ごとに選び分けるとコンテキスト消費が大きく変わる</strong>:</p>
+      <ul>
+        <li><code>files_with_matches</code> (デフォルト) — マッチしたファイル<strong>パスのみ</strong>返る。「このエラーメッセージはどのファイルで出る?」系の質問に最小コストで答えられる。</li>
+        <li><code>content</code> — マッチ行そのものを返す。前後行も欲しい時は <code>-A 3</code>/<code>-B 2</code>/<code>-C 2</code>(After/Before/Context)を指定。</li>
+        <li><code>count</code> — ファイルごとのマッチ数。「TODO が何個たまってる?」の棚卸しに便利。</li>
+      </ul>
+      <p>迷ったら <code>files_with_matches</code> → <code>content -C 2</code> → <code>Read</code> の3段階で深掘りするのが黄金パターン。</p>
+    </div>
+  </details>
+
+  <div class="diagram-box">
+    <div class="diagram-title">検索コスト比較(イメージ)</div>
+    <canvas id="ch3-bar-1" height="200"></canvas>
+    <div class="diagram-caption">Glob はファイル名だけ返すので最安。Grep の files_with_matches もほぼ同等。Read で全文ロードすると桁違いに高い。</div>
+  </div>
+  <script>
+  window.addEventListener("load", function(){
+    var ctx = document.getElementById('ch3-bar-1');
+    if (!ctx || !window.Chart) return;
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Glob (名前のみ)', 'Grep files_with_matches', 'Grep content', 'Read 1ファイル', 'Read 10ファイル丸ごと'],
+        datasets: [{
+          label: '消費トークン(相対)',
+          data: [5, 8, 40, 200, 2500],
+          backgroundColor: ['#D97757','#D97757','rgba(217,119,87,0.55)','rgba(217,119,87,0.35)','rgba(217,119,87,0.25)'],
+          borderRadius: 6
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        plugins: { legend: { display: false } },
+        scales: { x: { beginAtZero: true } }
+      }
+    });
+  });
+  </script>
+
+  <div class="hands-on-box info-box" style="background: rgba(217,119,87,0.08); border-left: 3px solid #D97757;">
+    <span class="label">今すぐ試す(2分)</span>
+    <p>自分の作業リポジトリで Claude Code を開き、このまま打ってみてください:</p>
+    <pre><code>このリポジトリで 'TODO' か 'FIXME' を含むファイルの一覧を Grep で出してください。
+output_mode は files_with_matches、glob は '**/*.{js,ts,py,md}' に絞って。
+その後、一番マッチ数が多そうなファイル1つだけを Read で見せてください。</code></pre>
+    <p>Claude が <strong>Grep → 候補特定 → Read 1ファイル</strong> の順で動くのを確認。親コンテキストが軽いまま済む感触を体で覚えておきます。</p>
+  </div>
+
+  <!-- ============================================================
+       Section 4: Read — 行番号・offset/limit
+       ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Read — 大きなファイルは offset/limit で刻む</h2>
+
+  <p><code>Read</code> は指定ファイルを <strong><code>cat -n</code> 形式(行番号付き)</strong> で返します。この行番号は後述の <code>Edit</code> で位置を特定する根拠になるので、<strong>Read せずに Edit はできない</strong>という制約があります。</p>
+
+  <h3>基本の使い方</h3>
+
+  <pre><code># ふつうに1ファイル読む
+src/components/App.tsx を Read してください。
+
+# 特定範囲だけ見たい(大きいファイル対策)
+src/lib/huge-file.ts の 500 行目から 100 行だけ読んでください。offset=500, limit=100 で。</code></pre>
+
+  <div class="info-box">
+    <span class="label">大きなファイルの扱い</span>
+    <p>デフォルトで Read は先頭 2000 行まで読みます。それを超える <span class="term" data-tip="offset: 何行目から読み始めるか。1始まりではなくツール側のお作法に従う。大ファイル対策の必須パラメータ。">offset</span> / <span class="term" data-tip="limit: 読む行数の上限。指定しない場合はツールのデフォルト(2000行前後)が使われる。">limit</span> を活用して部分読みするのがプロの動作。<strong>「全部は読まない」</strong>勇気を持ってください。</p>
+  </div>
+
+  <div class="steps">
+    <div class="step done"><div class="step-num">1</div><div class="step-label">当たりをつける</div><div class="step-desc">Grep で行番号を取得</div></div>
+    <div class="step done"><div class="step-num">2</div><div class="step-label">範囲を絞る</div><div class="step-desc">offset=該当行-20, limit=60</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-label">必要なら拡張</div><div class="step-desc">限定的に前後行を追加 Read</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-label">編集 / 完了</div><div class="step-desc">Edit に進むか報告する</div></div>
+  </div>
+
+  <pre><code># 実例: 5000行のログから該当箇所だけ見る
+logs/server.log の 3200〜3250 行を Read してください。offset=3200, limit=50 で。
+
+# 実例: テスト失敗箇所のスタックトレース付近を見たい
+まず 'TypeError' を tests/ で Grep。ヒット行番号の ±15 行を Read してください。</code></pre>
+
+  <details class="more-box">
+    <summary>もっと詳しく: PDF / 画像 / Jupyter notebook を Read する</summary>
+    <div class="more-body">
+      <p>Read は PDF・画像 (PNG/JPG)・Jupyter notebook (<code>.ipynb</code>) も受け付けます。ただし PDF は 10 ページを超えると <code>pages</code> パラメータ必須(例: <code>pages: "1-5"</code>)。画像は Claude がマルチモーダルで直接「見る」ので、スクリーンショットを手渡しで相談するフローに便利です。notebook はコードセル + 出力 + マークダウンが全部返ってくるので、EDA の文脈共有が楽。</p>
+    </div>
+  </details>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ============================================================
+       Section 5: Edit — 差分編集と replace_all の罠
+       ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Edit — 差分編集と <code>replace_all</code> の落とし穴</h2>
+
+  <p><code>Edit</code> は <code>old_string</code> → <code>new_string</code> の<strong>1対1の置換</strong>。シンプルだけど、<span class="term" data-tip="replace_all: 一致する全箇所を一括置換するオプション。変数名リネーム等で便利だが、意図しない箇所まで変わる事故が多い。">replace_all</span> の扱いに罠があります。</p>
+
+  <h3>基本ルール</h3>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="book-open" width="20" height="20"></i>
+      <div><strong>Read が先</strong> — Edit を使う前に同ファイルを Read しておかなければならない(行番号とファイル状態の整合性担保)。</div>
+    </li>
+    <li>
+      <i data-lucide="target" width="20" height="20"></i>
+      <div><strong>old_string はユニークに</strong> — ファイル内で1箇所にしか一致しない文字列にする。複数ヒットするとエラーで止まる。</div>
+    </li>
+    <li>
+      <i data-lucide="align-left" width="20" height="20"></i>
+      <div><strong>インデントを保つ</strong> — タブ/スペースを含めて<strong>そのまま</strong>コピー。ずれると当たらない。</div>
+    </li>
+    <li>
+      <i data-lucide="refresh-cw" width="20" height="20"></i>
+      <div><strong>replace_all は変数名リネーム用</strong> — 変数名・関数名など「全部変える」時のみ。UIテキストでは絶対使わない。</div>
+    </li>
+  </ul>
+
+  <h3>replace_all の罠 — Before / After</h3>
+
+  <table>
+    <thead>
+      <tr><th>ケース</th><th>Before</th><th>素朴な replace_all の結果</th><th>意図した結果</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>変数名リネーム <code>user</code> → <code>account</code></td>
+        <td><code>const user = ...</code> / コメント <code>// fetch user data</code> / <code>user.name</code> / 関数 <code>parseUser</code></td>
+        <td>全部 account 化(コメントまで<strong>変わる</strong>、<code>parseUser</code> は <code>parseAccount</code> に)</td>
+        <td>変数のみ。関数名・コメントは残す</td>
+      </tr>
+      <tr>
+        <td>定数値 <code>100</code> → <code>200</code></td>
+        <td><code>timeout: 100</code> / <code>limit: 100</code> / <code>1000</code></td>
+        <td>1000 の中の 100 まで書き換わる(<strong>部分一致の事故</strong>)</td>
+        <td><code>timeout</code> の行だけ</td>
+      </tr>
+      <tr>
+        <td>コメント文「TODO:」を一括削除</td>
+        <td>コード + 自然文</td>
+        <td>自然文の TODO まで消える可能性</td>
+        <td>コメント行のみ</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="info-box" style="border-left-color: #D97757;">
+    <span class="label">落とし穴 — replace_all の3大事故</span>
+    <p><strong>(1) 部分一致事故</strong>: <code>100</code> で一括置換すると <code>1000</code>・<code>100%</code> まで侵食。<br>
+    <strong>(2) コメント侵食事故</strong>: 変数名リネームがコメント内の自然文や JSDoc まで書き換える。<br>
+    <strong>(3) テスト壊し事故</strong>: テストファイル内の期待値 (assertion 文字列) まで変わってテストがグリーンになる錯覚。<br>
+    <em>対策:</em> 事前に Grep で<strong>ヒット件数</strong>と<strong>文脈</strong>を確認 → 必要なら <code>old_string</code> に周辺行も含めて<strong>ユニークな文脈</strong>を作る → 疑わしい時は replace_all を使わず<strong>1箇所ずつ Edit</strong> する。</p>
+  </div>
+
+  <h3>実プロンプト例</h3>
+
+  <pre><code># 安全な1箇所置換
+src/config.ts の timeout: 100 という1行を timeout: 200 に Edit してください。
+old_string は周辺2行を含めて一意に。
+
+# 安全な変数名リネーム(事前確認あり)
+まず Grep で 'legacyUser' のヒット件数と出現場所を出してください。
+それが全部「変数としての使用」である事を確認してから、Edit に replace_all=true で一括リネーム。
+コメント内の 'legacyUser' があれば除外対象として報告を。
+
+# 危険な依頼(NG例)
+'user' を 'account' に replace_all で置換して。
+→ NG: user は部分一致の宝庫。必ず Grep で文脈確認してから。</code></pre>
+
+  <div class="hands-on-box info-box" style="background: rgba(217,119,87,0.08); border-left: 3px solid #D97757;">
+    <span class="label">今すぐ試す(3分)</span>
+    <p>適当なリポで、自分のコード中の変数名を1つリネームさせてみてください。ただし順序を以下で指定:</p>
+    <pre><code>(1) まず Grep で対象文字列のヒット件数を出す
+(2) 件数と文脈を自分で確認
+(3) OKなら Edit (replace_all=true) で一括置換
+(4) 最後に Grep で「もう残っていない」事を確認</code></pre>
+    <p>この <strong>「Grep → 確認 → Edit → Grep 確認」</strong> の 4 ステップが、replace_all 事故を根絶する唯一の型です。</p>
+  </div>
+
+  <!-- ============================================================
+       Section 6: Write — 新規作成と上書きの境界
+       ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Write — 新規 OK、既存ファイルは Edit 優先</h2>
+
+  <p><code>Write</code> は「<strong>指定パスに全文を書き込む</strong>」ツール。既存ファイルを指定するとそのまま<strong>上書き</strong>されます。だから鉄則は:</p>
+
+  <div class="quote">
+    既存ファイルの修正は <strong>Edit</strong>、新規ファイルの作成は <strong>Write</strong>。
+    迷ったら Edit を優先する。
+  </div>
+
+  <h3>使い分けの判断</h3>
+
+  <table>
+    <thead>
+      <tr><th>状況</th><th>使うツール</th><th>理由</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>新しい設定ファイルを置く</td><td><code>Write</code></td><td>存在しないから差分編集できない</td></tr>
+      <tr><td>README に1段落追記</td><td><code>Edit</code></td><td>既存部分を壊さずピンポイント変更</td></tr>
+      <tr><td>大規模リファクタで関数全書き換え</td><td><code>Edit</code>(大きな old/new で)</td><td>意図しない周辺破壊を避ける</td></tr>
+      <tr><td>生成スクリプトの出力ファイル更新</td><td><code>Write</code></td><td>毎回全文生成なので Edit 不要</td></tr>
+      <tr><td>テンプレートから新ファイル1個作成</td><td><code>Write</code></td><td>そもそも元がない</td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-box">
+    <span class="label">Write を使う前のお作法</span>
+    <p>既存パスに対して <code>Write</code> を使うとツール側が<strong>「先に Read していないと拒否」</strong>してくるケースがあります(上書き事故防止のガード)。新規以外では、まず Read で現状確認 → 全書き換えの必然性を確認 → それでも Write、という流れが安全。</p>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: 「ドキュメントは勝手に作らない」原則</summary>
+    <div class="more-body">
+      <p>Claude Code のデフォルト動作として、<strong>ユーザが明示的に頼まない限り README や summary の .md ファイルを勝手に作らない</strong>、という方針が推奨されます。Write で新規 .md ファイルを生成する前に「これは本当に必要か」を1拍考える癖を。自分のリポに <strong>report.md</strong>・<strong>summary.md</strong> が散らばっていたら、この原則を伝えきれていないサインです(Ch06 の CLAUDE.md で明文化可能)。</p>
+    </div>
+  </details>
+
+  <!-- ============================================================
+       Section 7: 統合ハンズオン — 「この機能を追加する」
+       ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 統合ハンズオン — 5ツールの連携</h2>
+
+  <p>実務では<strong>1タスクで5ツール全部</strong>を使うことが珍しくありません。典型的な「設定値を変えてテスト追加」の流れをトレースします。</p>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-date">Step 1 · Glob</div>
+      <div class="tl-title">関連ファイルを特定</div>
+      <div class="tl-body"><code>config/**/*.ts</code> を Glob。3 ファイルヒット。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">Step 2 · Grep</div>
+      <div class="tl-title">該当定数の使用箇所を調査</div>
+      <div class="tl-body"><code>MAX_RETRY</code> を Grep (<code>content</code>, <code>-C 2</code>)。5 箇所で使用。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">Step 3 · Read</div>
+      <div class="tl-title">定義元を 1 ファイルだけ読む</div>
+      <div class="tl-body"><code>config/retry.ts</code> を Read(offset/limit なし、80 行程度なので全読みOK)。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">Step 4 · Edit</div>
+      <div class="tl-title">値を変更(周辺文脈付き old_string で)</div>
+      <div class="tl-body"><code>export const MAX_RETRY = 3;</code> → <code>export const MAX_RETRY = 5;</code>。replace_all なし(定数定義は1箇所のみなので不要)。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">Step 5 · Write</div>
+      <div class="tl-title">新規テストファイル作成</div>
+      <div class="tl-body"><code>tests/retry.test.ts</code> を Write で新規作成。境界値テストを含む。</div>
+    </div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-num">5</div>
+      <div class="stat-label">使ったツール種別</div>
+      <div class="stat-trend up">↑ 全ツール活用</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">~3<small>%</small></div>
+      <div class="stat-label">消費コンテキスト(リポ全体比)</div>
+      <div class="stat-trend up">↑ 効率的</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">0</div>
+      <div class="stat-label">意図しない破壊</div>
+      <div class="stat-trend up">↑ 型通りの安全運用</div>
+    </div>
+  </div>
+
+  <pre><code># このタスクを Claude に頼む実プロンプト例
+config/ 配下から MAX_RETRY という定数を使っている場所を確認したい。
+
+手順:
+1. config/**/*.ts を Glob で列挙
+2. その中で 'MAX_RETRY' を Grep (content, -C 2)
+3. 定義元 (多分 config/retry.ts) を Read
+4. 値を 3 から 5 に Edit(old_string は2〜3行含めて一意に)
+5. tests/retry.test.ts を Write で新規作成。境界値(0, 1, 5, 6)をカバー
+
+各ステップの結果を都度見せてから次に進んでください。</code></pre>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ============================================================
+       Section 8: よくある失敗パターン
+       ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 失敗パターン 5つ — 症状と処方箋</h2>
+
+  <table>
+    <thead>
+      <tr><th>症状</th><th>原因</th><th>処方箋</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Claude が話してるうちに過去の文脈を忘れる</td>
+        <td>Read で全ファイル読ませすぎ</td>
+        <td>Grep から入る習慣。<code>/compact</code> で途中圧縮(Ch14)</td>
+      </tr>
+      <tr>
+        <td>Edit がエラーで止まる</td>
+        <td><code>old_string</code> が複数ヒット or 不一致</td>
+        <td>周辺2〜3行を含めて一意に。インデントをそのまま貼る</td>
+      </tr>
+      <tr>
+        <td>replace_all 後にテストが謎の緑色</td>
+        <td>テスト内期待値まで一括置換</td>
+        <td>事前 Grep で影響範囲確認。テストディレクトリは<code>glob</code>で除外</td>
+      </tr>
+      <tr>
+        <td>Grep でヒットしない</td>
+        <td>正規表現の特殊文字未エスケープ、<code>.</code> の扱い</td>
+        <td>リテラル検索は <code>\.</code> <code>\(</code> 等エスケープ。まず簡易パターンで試す</td>
+      </tr>
+      <tr>
+        <td>Write で既存ファイルが消えた</td>
+        <td>新規のつもりが既存パスを指定</td>
+        <td>Write の前に <code>ls</code> or Glob で存在確認。既存なら Edit に切替</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="info-box" style="border-left-color: #D97757;">
+    <span class="label">復旧の基本</span>
+    <p>Claude Code での操作は Git と組み合わせると<strong>ロールバックが簡単</strong>。重要な変更前は必ず <code>git status</code> と <code>git diff</code> を挟み、replace_all のような広範囲変更は<strong>こまめなコミット</strong>で守ります(Ch07 で詳しく)。</p>
+  </div>
+
+  <!-- ============================================================
+       Exercises
+       ============================================================ -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>自リポで「探してから読む」を実演する</h4>
+    <p>あなたの手元のリポジトリ(どんな言語でも可)で、以下を Claude Code にやらせてください。<strong>Read を使わず Grep から始めること</strong>が条件。</p>
+    <ol>
+      <li>リポジトリ全体から <code>TODO</code> または <code>FIXME</code> を含む行を Grep(<code>output_mode=content</code>, <code>-n</code>)</li>
+      <li>ヒット件数を集計してもらう</li>
+      <li>最も多いファイル1つだけを、該当行 ±10 行の範囲で Read(<code>offset</code>/<code>limit</code> 活用)</li>
+      <li>内容を3行で要約してもらう</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>Claude Code に送る実プロンプト:</p>
+      <pre><code>このリポジトリで TODO と FIXME の棚卸しをしたいです。手順:
+
+1. Grep で 'TODO|FIXME' を検索。output_mode=content、-n で行番号付き、
+   glob は '**/*.{js,ts,py,md,go}' に絞ってください。
+
+2. ファイルごとのヒット件数を table で報告してください(多い順)。
+
+3. 一番ヒット数が多いファイルを特定したら、そのファイル全体は読まず、
+   最初のヒット行を中心に offset=(ヒット行-10), limit=20 で Read してください。
+
+4. 読んだ範囲の内容を3行で要約してください。
+
+途中経過を逐次見せてから進めてください。</code></pre>
+      <p>ポイント:</p>
+      <ul>
+        <li><code>glob</code> で対象拡張子を絞ると検索高速化&ノイズ削減(<code>node_modules</code>/<code>.git</code> はripgrepが自動除外)</li>
+        <li><code>-n</code>(line number)を付けさせると、後の Read の <code>offset</code> 指定に直結</li>
+        <li>「全体は読まず」と明示しないと、つい Read で全文を取りに行きがち</li>
+        <li>「逐次見せて」と書くと、各ステップで止まって確認してくれる</li>
+      </ul>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>安全な変数名リネームフローを設計する</h4>
+    <p>自リポの適当な変数名(2〜3文字のものは NG、部分一致事故が起きやすいので 6 文字以上推奨)を別名にリネームするタスクを、<strong>replace_all 事故を起こさない 4 ステップ</strong>で Claude に実行させてください。Grep の出力モード選択を必ず使い分けること。</p>
+    <ol>
+      <li>ヒット件数と出現ファイルをまず確認する(何モード?)</li>
+      <li>各出現箇所が「変数としての使用」か「コメント/文字列リテラル」かを確認する(何モード?)</li>
+      <li>replace_all で一括置換するか、Edit を複数回に分けるかを判断する</li>
+      <li>置換後の<strong>残存チェック</strong>を行う</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>手順とモード選択:</p>
+      <pre><code>(1) Grep で対象名を output_mode=count で検索
+    → ファイルごとのヒット数が分かる(全体規模を把握)
+
+(2) 同じ対象名を output_mode=content, -C 2 で検索
+    → 前後2行の文脈付きで、変数か文字列リテラルかを目視判断できる
+
+(3-A) 全箇所が「変数としての使用」で、テストや自然文に混ざっていない場合:
+      → Edit を replace_all=true で一発。old_string は対象名そのもの
+
+(3-B) コメントや文字列リテラルに混在している場合:
+      → Edit を複数回に分ける。各回で old_string に周辺2〜3行の文脈を含め、
+         ファイル内でユニークに特定できる形にする
+      → テストファイルや docs/ 配下は意図的に除外
+
+(4) 置換後、もう一度 Grep (count) で対象名を検索 → 0件になっているか確認
+    もし想定より残っていたら、残った箇所を個別に Read して意図を確認</code></pre>
+      <p>この型は <strong>Ch10(改修ワークフロー)</strong> や <strong>Ch22(失敗パターン10)</strong> にも繋がる基本骨格です。「変更前に測る・変更後に測る」の癖は、Claude Code のパワーユーザー全員が持っています。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式ドキュメント</a> <span class="res-type doc">Doc</span> — 各ツールの最新パラメータ・挙動の一次情報</li>
+      <li><a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener">Claude Code GitHub</a> <span class="res-type doc">Doc</span> — Issue/Discussion で挙動の細部を追える</li>
+      <li><a href="https://github.com/BurntSushi/ripgrep/blob/master/GUIDE.md" target="_blank" rel="noopener">ripgrep ユーザーガイド</a> <span class="res-type doc">Doc</span> — Grep ツール内部で使われる ripgrep の正規表現とフラグ</li>
+      <li><a href="https://github.com/anthropics/anthropic-cookbook" target="_blank" rel="noopener">Anthropic Cookbook</a> <span class="res-type doc">Doc</span> — ファイル探索・編集パターンの実例集</li>
+      <li><a href="https://www.anthropic.com/news" target="_blank" rel="noopener">Anthropic News</a> <span class="res-type doc">Doc</span> — 新ツール追加・破壊的変更の告知</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="03">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="02-communication-basics.html"><span class="direction">&larr; Prev</span>対話の原則</a>
+    <a href="04-bash-safety.html"><span class="direction">Next &rarr;</span>Bashツールと安全</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>

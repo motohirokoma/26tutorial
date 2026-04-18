@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>worktreeで安全に実験 - MK's Claude Code Tutorial</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code Tutorial
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="../index.html#phase3" data-nav class="active"><span class="phase-name">Advanced</span><span class="phase-pct" id="pct-advanced">0%</span></a></li>
+      <li><a href="../index.html#phase4" data-nav><span class="phase-name">Projects</span><span class="phase-pct" id="pct-projects">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.21</span>
+    worktreeで安全に実験
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 26 sections</text>
+    </svg>
+    <div class="progress-info">0h / 24h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-welcome.html"><span class="status-dot" data-chapter="01"></span> ようこそ&セットアップ</a></li>
+    <li><a href="02-communication-basics.html"><span class="status-dot" data-chapter="02"></span> 対話の原則</a></li>
+    <li><a href="03-file-tools.html"><span class="status-dot" data-chapter="03"></span> ファイル操作ツール</a></li>
+    <li><a href="04-bash-safety.html"><span class="status-dot" data-chapter="04"></span> Bashツールと安全</a></li>
+    <li><a href="05-todo-management.html"><span class="status-dot" data-chapter="05"></span> TodoWriteで作業管理</a></li>
+    <li><a href="06-claude-md.html"><span class="status-dot" data-chapter="06"></span> CLAUDE.md</a></li>
+    <li><a href="07-git-workflow.html"><span class="status-dot" data-chapter="07"></span> Git × Claude Code</a></li>
+  </ul>
+  <div class="section-label">Core</div>
+  <ul>
+    <li><a href="08-prompt-patterns.html"><span class="status-dot" data-chapter="08"></span> プロンプト設計の型</a></li>
+    <li><a href="09-code-review.html"><span class="status-dot" data-chapter="09"></span> コードレビュー依頼</a></li>
+    <li><a href="10-refactor-workflow.html"><span class="status-dot" data-chapter="10"></span> 改修ワークフロー</a></li>
+    <li><a href="11-tdd-with-claude.html"><span class="status-dot" data-chapter="11"></span> テスト駆動</a></li>
+    <li><a href="12-debugging.html"><span class="status-dot" data-chapter="12"></span> デバッグ</a></li>
+    <li><a href="13-plan-mode.html"><span class="status-dot" data-chapter="13"></span> Planモード</a></li>
+    <li><a href="14-context-management.html"><span class="status-dot" data-chapter="14"></span> コンテキスト管理</a></li>
+    <li><a href="15-web-tools.html"><span class="status-dot" data-chapter="15"></span> Web検索・取得</a></li>
+  </ul>
+  <div class="section-label">Advanced</div>
+  <ul>
+    <li><a href="16-subagents-overview.html"><span class="status-dot" data-chapter="16"></span> Subagents</a></li>
+    <li><a href="17-mcp-overview.html"><span class="status-dot" data-chapter="17"></span> MCP</a></li>
+    <li><a href="18-hooks-overview.html"><span class="status-dot" data-chapter="18"></span> Hooks</a></li>
+    <li><a href="19-schedule-loop.html"><span class="status-dot" data-chapter="19"></span> Schedule &amp; Loop</a></li>
+    <li><a href="20-skills-overview.html"><span class="status-dot" data-chapter="20"></span> Skills</a></li>
+    <li><a href="21-worktree.html" class="active"><span class="status-dot" data-chapter="21"></span> worktree</a></li>
+    <li><a href="22-pitfalls.html"><span class="status-dot" data-chapter="22"></span> 失敗パターン10</a></li>
+  </ul>
+  <div class="section-label">Projects</div>
+  <ul>
+    <li><a href="23-project-automation.html"><span class="status-dot" data-chapter="23"></span> Project A：業務自動化</a></li>
+    <li><a href="24-project-refactor.html"><span class="status-dot" data-chapter="24"></span> Project B：リファクタ</a></li>
+    <li><a href="25-project-webapp.html"><span class="status-dot" data-chapter="25"></span> Project C：Webアプリ</a></li>
+    <li><a href="26-final-exercise.html"><span class="status-dot" data-chapter="26"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 3: Advanced &gt; Chapter 21</div>
+  <h1>worktreeで安全に実験</h1>
+  <p class="subtitle">git worktree で本流から実験を切り離し、失敗してもゴミ箱に捨てられる構造を作る</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 30分</span>
+    <span class="badge">Phase: Advanced</span>
+    <span class="badge">難易度: 中級</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">この章のゴール</span>
+    <p><strong>git worktree</strong> を「Claude Code の実験用サンドボックス」として即座に使えるようになる。Agent tool の <code>isolation=worktree</code> の使い所、危ない変更を本流から隔離する作法、失敗した時に <strong>worktree を削除すれば全部リセット</strong> できる安心感——この3点を30分で体に染み込ませます。主ブランチを壊す恐怖から解放されると、Claude に任せる仕事のスケールが一段上がります。</p>
+  </div>
+
+  <div class="info-box" style="border-left: 3px solid #D97757;">
+    <span class="label">バージョン注記</span>
+    <p>本章の記述は <strong>2026年1月時点</strong> の Claude Code および git (2.45以降) の挙動に基づきます。Agent tool の <code>isolation</code> パラメータ名・既定値は進化するので、挙動が違う時は <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式ドキュメント</a> と <a href="https://git-scm.com/docs/git-worktree" target="_blank" rel="noopener">git-worktree 公式</a> を突き合わせて確認してください。</p>
+  </div>
+
+  <!-- ===== Section 1: worktree とは ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> git worktree とは — 一言で</h2>
+
+  <p><span class="term" data-tip="git worktree: 1つのリポジトリから複数の作業ディレクトリ(ブランチ)を同時に展開できる git の機能。ローカルに物理的な別フォルダが増える。">git worktree</span> は、<strong>1つのリポジトリに対して複数の作業ディレクトリを並行して持つ</strong> ための git 標準機能です。普段 <code>main</code> で作業している <code>repo/</code> と同時に、<code>repo-experiment/</code> という別フォルダに <code>experiment</code> ブランチをチェックアウトできる、という理解で十分です。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">通常のclone vs worktree の構造</div>
+    <svg viewBox="0 0 520 260" width="100%" style="max-width:520px; display:block; margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <!-- Clone -->
+      <text x="130" y="20" text-anchor="middle" font-size="12" font-weight="700" fill="#64748b">通常のclone(2つ)</text>
+      <rect x="40" y="30" width="180" height="80" rx="8" fill="#f1f5f9" stroke="#94a3b8"/>
+      <text x="130" y="55" text-anchor="middle" font-size="11" font-weight="700">repo/ (.git ①)</text>
+      <text x="130" y="75" text-anchor="middle" font-size="10" fill="#475569">main ブランチ</text>
+      <text x="130" y="92" text-anchor="middle" font-size="9" fill="#64748b">履歴・設定を独立保持</text>
+      <rect x="40" y="140" width="180" height="80" rx="8" fill="#f1f5f9" stroke="#94a3b8"/>
+      <text x="130" y="165" text-anchor="middle" font-size="11" font-weight="700">repo-copy/ (.git ②)</text>
+      <text x="130" y="185" text-anchor="middle" font-size="10" fill="#475569">experiment ブランチ</text>
+      <text x="130" y="202" text-anchor="middle" font-size="9" fill="#64748b">履歴が別管理(同期が手間)</text>
+
+      <!-- Worktree -->
+      <text x="400" y="20" text-anchor="middle" font-size="12" font-weight="700" fill="#D97757">worktree(共有)</text>
+      <rect x="310" y="30" width="180" height="80" rx="8" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="2"/>
+      <text x="400" y="55" text-anchor="middle" font-size="11" font-weight="700">repo/</text>
+      <text x="400" y="75" text-anchor="middle" font-size="10" fill="#18181b">main ブランチ</text>
+      <text x="400" y="92" text-anchor="middle" font-size="9" fill="#475569">.git (本体)</text>
+      <rect x="310" y="140" width="180" height="80" rx="8" fill="#ffffff" stroke="#D97757" stroke-width="2"/>
+      <text x="400" y="165" text-anchor="middle" font-size="11" font-weight="700">repo-experiment/</text>
+      <text x="400" y="185" text-anchor="middle" font-size="10" fill="#18181b">experiment ブランチ</text>
+      <text x="400" y="202" text-anchor="middle" font-size="9" fill="#475569">.git (本体を参照)</text>
+      <path d="M 400 110 L 400 140" stroke="#D97757" stroke-width="2" stroke-dasharray="4 4" fill="none"/>
+      <text x="440" y="128" font-size="9" fill="#D97757">履歴共有</text>
+
+      <text x="260" y="245" text-anchor="middle" font-size="10" fill="#64748b">→ worktree は「同じ履歴・別フォルダ・別ブランチ」</text>
+    </svg>
+    <div class="diagram-caption">clone で2つ持つと履歴が離れる。worktree は <code>.git</code> 本体を共有するので、片方でのコミットは <code>git fetch</code> 不要で即もう片方から見える。</div>
+  </div>
+
+  <p>つまり worktree は <strong>「同じリポジトリの別作業場」</strong>。<span class="term" data-tip="ブランチ: git で並行して育てられるコミット履歴の枝。普段は main/feature などが代表例。">ブランチ</span> と似ていますが、<strong>物理的に別フォルダ</strong> なので、main で IDE を開いたまま、隣で experiment を走らせる、といった芸当ができます。</p>
+
+  <div class="hands-on-box info-box" style="background: rgba(217,119,87,0.08); border-left: 3px solid #D97757;">
+    <span class="label">今すぐ試す(1分)</span>
+    <p>適当な git リポジトリで、experiment 用の worktree を1本生やしてみましょう。</p>
+    <pre><code># いまのリポジトリルートで実行
+git worktree add ../myrepo-experiment -b experiment
+
+# 別フォルダが出来たことを確認
+ls ../myrepo-experiment
+
+# 現在の worktree 一覧を表示
+git worktree list</code></pre>
+    <p>2つの worktree が並んでいるのが見えたら成功。main 側で開いているエディタを一切閉じずに、<code>../myrepo-experiment</code> に <code>cd</code> して自由に実験できます。</p>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section 2: なぜ Claude Code で効くか ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> なぜ Claude Code と worktree は相性がいいのか</h2>
+
+  <p>Claude Code は、あなたが <code>Edit</code> や <code>Bash</code> ツールの実行を承認すると、<strong>その作業ディレクトリのファイルを本当に書き換え</strong>ます。<code>rm -rf</code>、<code>git reset --hard</code>、巨大リファクタなど、失敗した時の巻き戻しコストが大きい操作で、main ディレクトリに居るのは危険です。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">worktree を使う / 使わないの意思決定フロー</div>
+    <pre class="mermaid">
+graph TD
+  Start(["Claude に依頼する作業が発生"]) --> Q1{"戻せなくなる<br/>可能性がある?"}
+  Q1 -- "Yes" --> Use["worktree を作る"]
+  Q1 -- "No" --> Q2{"30分以上かかる<br/>大きな変更?"}
+  Q2 -- "Yes" --> Q3{"main で動作<br/>確認しながらやりたい?"}
+  Q2 -- "No・小さい" --> Direct["ブランチだけでOK"]
+  Q3 -- "Yes" --> Use
+  Q3 -- "No" --> Direct
+  Use --> Safe(["失敗したら削除で済む"])
+  Direct --> Normal(["通常のブランチ運用"])
+    </pre>
+    <div class="diagram-caption">判断のコアは「戻せなくなる系か」「main と同時に見たいか」の2問。</div>
+  </div>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="shield" width="20" height="20"></i>
+      <div><strong>隔離(isolation)</strong> — Claude が壊せるのは worktree フォルダのみ。main フォルダは一切触れられない。</div>
+    </li>
+    <li>
+      <i data-lucide="zap" width="20" height="20"></i>
+      <div><strong>並行性</strong> — main で動作確認しながら、worktree で Claude に大きな改修を任せられる。文脈切替なし。</div>
+    </li>
+    <li>
+      <i data-lucide="trash-2" width="20" height="20"></i>
+      <div><strong>使い捨てしやすさ</strong> — 実験が失敗しても <code>git worktree remove</code> でフォルダごと消せる。気持ちがラク。</div>
+    </li>
+    <li>
+      <i data-lucide="git-branch" width="20" height="20"></i>
+      <div><strong>ブランチ整合</strong> — worktree ごとに1ブランチ紐付け。同じブランチを二重チェックアウトできないので混線しない。</div>
+    </li>
+  </ul>
+
+  <details class="more-box">
+    <summary>もっと詳しく: branch だけで十分では? worktree の必要性</summary>
+    <div class="more-body">
+      <p>単に <code>git switch -c experiment</code> で別ブランチに切り替えるだけでも隔離はできます。ただし <strong>同じフォルダ</strong> の中身が実験ブランチの内容に置き換わるため、main を <strong>同時に</strong> 見る・動かす・比較することができません。worktree は「main を一切止めずに実験」を実現する差分です。さらに Agent tool の <code>isolation=worktree</code> が選べるのは、worktree が <strong>fs 的に独立</strong> しているからこそ。ブランチ切替だけでは Claude の破壊からの物理的な隔離にはなりません。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 3: 基本コマンド ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 覚えるべき worktree 基本コマンド 5つ</h2>
+
+  <p>実運用で使うのは <strong>5つだけ</strong>。この表を写経して手元のリポで叩けば、worktree は完全に自分の道具になります。</p>
+
+  <table>
+    <thead>
+      <tr><th>コマンド</th><th>何をする</th><th>いつ使う</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>git worktree add &lt;path&gt; -b &lt;branch&gt;</code></td><td>新規ブランチで worktree を作成</td><td>実験を始める時(基本)</td></tr>
+      <tr><td><code>git worktree add &lt;path&gt; &lt;existing-branch&gt;</code></td><td>既存ブランチを別フォルダで展開</td><td>他人のPRをローカル確認など</td></tr>
+      <tr><td><code>git worktree list</code></td><td>現在の全 worktree を一覧</td><td>「何がどこにあるか」確認</td></tr>
+      <tr><td><code>git worktree remove &lt;path&gt;</code></td><td>worktree を削除(フォルダも消える)</td><td>実験失敗 or マージ完了後</td></tr>
+      <tr><td><code>git worktree prune</code></td><td>既に消えたフォルダのメタ情報を整理</td><td>手で rm -rf してしまった後始末</td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-box">
+    <span class="label">公式ドキュメント必読</span>
+    <p><code>git worktree</code> のオプション(<code>--detach</code>、<code>--lock</code>、<code>--force</code> 等)は、本番作業で迷ったら必ず公式で裏を取ってください。特に <code>--force</code> は文字通り強制なので誤用で履歴を壊しかねません。<a href="https://git-scm.com/docs/git-worktree" target="_blank" rel="noopener">git-worktree 公式 →</a></p>
+  </div>
+
+  <div class="hands-on-box info-box" style="background: rgba(217,119,87,0.08); border-left: 3px solid #D97757;">
+    <span class="label">今すぐ試す(2分)ライフサイクル一周</span>
+    <p>worktree の作成 → 実験 → 削除を1分で体験します。</p>
+    <pre><code># 1. worktree を作る(experiment ブランチ新設)
+git worktree add ../myrepo-exp -b experiment
+
+# 2. そちらへ移動して、試しに何か壊す
+cd ../myrepo-exp
+echo "壊れてもOK" &gt; DANGER.txt
+rm -rf src/  # 大胆な変更を試す
+
+# 3. 戻って、丸ごと捨てる
+cd ../myrepo
+git worktree remove ../myrepo-exp --force
+
+# 4. main は無傷を確認
+ls src/  # 元通り</code></pre>
+    <p>この「<strong>作って、壊して、捨てる</strong>」のリズムが体に入れば、Claude への依頼もワンランク大胆にできます。</p>
+  </div>
+
+  <!-- ===== Section 4: Agent tool isolation=worktree ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Agent tool の isolation=worktree</h2>
+
+  <p>Claude Code の Agent tool には、起動する子エージェント(<span class="term" data-tip="Subagent: Ch16で詳しく扱った、独立文脈で動く子Claude。Agent tool経由で起動する。">Subagent</span>)の作業場所を <strong>worktree に隔離する</strong> オプションがあります(2026年1月時点)。子が触っていいのは worktree フォルダの中だけになり、main から物理的に切り離されます。</p>
+
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">isolation なし</span>
+      <h4>親と同じフォルダで動く</h4>
+      <ul>
+        <li>子が <code>Edit</code> すると main のファイルが直接変わる</li>
+        <li>リファクタ失敗=main が壊れる</li>
+        <li>複数子が同じファイルを触ると競合</li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">isolation=worktree</span>
+      <h4>子専用 worktree で動く</h4>
+      <ul>
+        <li>子の変更は worktree の中だけに閉じる</li>
+        <li>失敗したら worktree を捨てて終わり</li>
+        <li>並列子もフォルダ別で干渉しない</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="diagram-box">
+    <div class="diagram-title">isolation=worktree の動作イメージ</div>
+    <svg viewBox="0 0 520 260" width="100%" style="max-width:520px; display:block; margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <!-- Main -->
+      <rect x="30" y="90" width="140" height="80" rx="10" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="2"/>
+      <text x="100" y="115" text-anchor="middle" font-size="12" font-weight="700">Main Agent</text>
+      <text x="100" y="135" text-anchor="middle" font-size="10" fill="#475569">repo/ (main)</text>
+      <text x="100" y="152" text-anchor="middle" font-size="9" fill="#475569">触られない = 安全</text>
+
+      <!-- Arrow -->
+      <path d="M 175 130 L 260 70" stroke="#D97757" stroke-width="2" marker-end="url(#a21)" fill="none"/>
+      <path d="M 175 130 L 260 130" stroke="#D97757" stroke-width="2" marker-end="url(#a21)" fill="none"/>
+      <path d="M 175 130 L 260 190" stroke="#D97757" stroke-width="2" marker-end="url(#a21)" fill="none"/>
+      <defs><marker id="a21" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#D97757"/></marker></defs>
+
+      <!-- Sub worktrees -->
+      <rect x="270" y="40" width="220" height="60" rx="8" fill="#ffffff" stroke="#D97757"/>
+      <text x="380" y="62" text-anchor="middle" font-size="11" font-weight="700">Subagent A</text>
+      <text x="380" y="80" text-anchor="middle" font-size="9" fill="#475569">repo-A/ (refactor-A ブランチ)</text>
+      <rect x="270" y="105" width="220" height="60" rx="8" fill="#ffffff" stroke="#D97757"/>
+      <text x="380" y="127" text-anchor="middle" font-size="11" font-weight="700">Subagent B</text>
+      <text x="380" y="145" text-anchor="middle" font-size="9" fill="#475569">repo-B/ (refactor-B ブランチ)</text>
+      <rect x="270" y="170" width="220" height="60" rx="8" fill="#ffffff" stroke="#D97757"/>
+      <text x="380" y="192" text-anchor="middle" font-size="11" font-weight="700">Subagent C</text>
+      <text x="380" y="210" text-anchor="middle" font-size="9" fill="#475569">repo-C/ (refactor-C ブランチ)</text>
+
+      <text x="260" y="252" text-anchor="middle" font-size="10" fill="#64748b">各子は別 worktree = 物理的に隔離</text>
+    </svg>
+    <div class="diagram-caption">3つの子が同時に大改修をしても互いに干渉しない。main は無傷のまま「どの結果が一番良いか」を比較できる。</div>
+  </div>
+
+  <div class="hands-on-box info-box" style="background: rgba(217,119,87,0.08); border-left: 3px solid #D97757;">
+    <span class="label">今すぐ試す(Claude へのプロンプト例)</span>
+    <p>次のような頼み方で、Claude に「worktree 隔離で実験」させられます。</p>
+    <pre><code>Agent tool で subagent_type=general-purpose を使い、isolation=worktree で
+別フォルダに experiment ブランチを切ってから、src/auth/ のリファクタを
+実施してください。テストが通ったら差分のサマリだけ返してください。</code></pre>
+    <p>オプション名が通らない版では、代わりに「まず <code>git worktree add</code> で別フォルダを作ってからそこで作業して」と <strong>自然言語で依頼</strong>すれば同じ効果が出ます。</p>
+  </div>
+
+  <!-- ===== Section 5: プロの境目 + 運用 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> プロの境目と運用のコツ</h2>
+
+  <div class="info-box" style="border-left-color: #D97757;">
+    <span class="label">ここがプロの境目</span>
+    <p><strong>「戻せなくなる系の実験」は絶対 worktree で</strong>。大規模リファクタ・破壊的マイグレーション・依存パッケージ大更新・AIが自分でブランチ切る系——これらは main で走らせた瞬間、失敗時のリカバリ時間が跳ね上がります。worktree に隔離しておけば、最悪でも <code>git worktree remove --force</code> で5秒リセット。<br>
+    <em>試し方：</em> 今週やろうとしているリファクタを、まず <code>git worktree add ../repo-exp -b refactor</code> してから始めてみる。</p>
+  </div>
+
+  <div class="diagram-box">
+    <div class="diagram-title">worktree で潰せる「戻せない系」リスクの頻度感</div>
+    <canvas id="ch21-bar-1" height="200"></canvas>
+    <div class="diagram-caption">実務で実際に遭遇しがちな「戻せない事故」の頻度イメージ。各リスクは worktree 運用で概ね無害化できる。</div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-num">5<small>秒</small></div>
+      <div class="stat-label">worktree 削除の所要時間</div>
+      <div class="stat-trend up">↑ 失敗コストが体感ゼロ</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">0<small>回</small></div>
+      <div class="stat-label">main が壊れる回数</div>
+      <div class="stat-trend up">↑ 実験が積極的になる</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">3+<small>個</small></div>
+      <div class="stat-label">並行できる実験数</div>
+      <div class="stat-trend up">↑ A/B/C比較が可能</div>
+    </div>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: worktree の落とし穴と対処</summary>
+    <div class="more-body">
+      <ul>
+        <li><strong>同じブランチを2つの worktree で開けない</strong> — git が拒否する。片方を <code>remove</code> してから再度 <code>add</code>。</li>
+        <li><strong>手で <code>rm -rf</code> したら幽霊が残る</strong> — <code>git worktree list</code> に消したはずの worktree が出続ける。<code>git worktree prune</code> で成仏。</li>
+        <li><strong><code>node_modules</code> 問題</strong> — worktree 側でも <code>npm install</code> が必要。シンボリックリンクで共有する手もあるが、2026年1月時点は素直に別インストールが無難。</li>
+        <li><strong>IDE のインデックス再構築</strong> — VS Code 等で別フォルダを開くと初回インデックス時間がかかる。その代わり main のインデックスは汚れない。</li>
+      </ul>
+    </div>
+  </details>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section 6: ワークフロー ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 実験ワークフローのテンプレ</h2>
+
+  <p>worktree を使う「一連の流れ」をテンプレ化しておくと、毎回迷いなく実行できます。下は 30分〜数時間の実験に使える定型。</p>
+
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-label">切る</div><div class="step-desc"><code>git worktree add ../repo-exp -b exp-YYYYMMDD</code></div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-label">依頼</div><div class="step-desc">Claude に worktree 内で作業させる</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-label">検証</div><div class="step-desc">worktree 内でテスト・動作確認</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-label">判定</div><div class="step-desc">採用 / 見送りを人間が決める</div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-label">処分</div><div class="step-desc">merge か remove で片付け</div></div>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>判定結果</th><th>次の操作</th><th>コマンド例</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>採用 (main へ取り込む)</td><td>main で merge → worktree 削除</td><td><code>cd ../repo &amp;&amp; git merge exp-20260118 &amp;&amp; git worktree remove ../repo-exp</code></td></tr>
+      <tr><td>採用 (PR経由)</td><td>push して PR 作成、PR merge後に削除</td><td><code>git push -u origin exp-20260118 &amp;&amp; gh pr create</code></td></tr>
+      <tr><td>見送り</td><td>worktree 丸ごと削除、ブランチも消す</td><td><code>git worktree remove ../repo-exp --force &amp;&amp; git branch -D exp-20260118</code></td></tr>
+      <tr><td>保留</td><td>worktree はそのまま放置(履歴共有なので軽い)</td><td>—</td></tr>
+    </tbody>
+  </table>
+
+  <div class="quote">
+    worktree は「失敗する権利」をあなたに返してくれる道具だ。<strong>安全に失敗できる場所がある</strong>人は、大胆な実験を続けられる。
+    <cite>— 本章のメッセージ</cite>
+  </div>
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>worktree のライフサイクルを一周する</h4>
+    <p>手元の任意の git リポジトリで、以下を実行してください。</p>
+    <ol>
+      <li><code>git worktree add</code> で <code>experiment</code> ブランチの worktree を作る</li>
+      <li>worktree 内で任意のファイルを1つ削除・1つ追加する</li>
+      <li><code>git worktree list</code> で2つの worktree が並んでいることを確認</li>
+      <li><code>git worktree remove --force</code> で worktree を削除</li>
+      <li>main 側が完全に無傷であることを <code>git status</code> で確認</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>以下をそのまま実行すればOKです(<code>myrepo</code> 部分は自分のリポ名に置換)。</p>
+      <pre><code># 1. 作成
+cd ~/path/to/myrepo
+git worktree add ../myrepo-exp -b experiment
+
+# 2. 実験
+cd ../myrepo-exp
+rm README.md        # 削除テスト
+echo "hello" &gt; HELLO.txt  # 追加テスト
+
+# 3. 一覧確認
+git worktree list
+# /Users/you/path/to/myrepo        abc1234 [main]
+# /Users/you/path/to/myrepo-exp    abc1234 [experiment]
+
+# 4. 削除
+cd ../myrepo
+git worktree remove ../myrepo-exp --force
+git branch -D experiment  # ブランチも消す
+
+# 5. main 無傷確認
+git status  # nothing to commit, working tree clean
+ls README.md  # ちゃんと存在</code></pre>
+      <p>このリズムが体に入れば、以降の「戻せなくなる系」タスクで worktree を反射的に手が伸びるようになります。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>Claude に worktree で大きめの改修を任せる</h4>
+    <p>自分のプロジェクト(または任意の OSS)で、下記を Claude Code に依頼してください。</p>
+    <ol>
+      <li>まず人間側で <code>git worktree add ../repo-exp -b refactor</code> を実行</li>
+      <li>Claude に「<code>../repo-exp</code> に <code>cd</code> してから、<code>src/</code> 配下の関数名を ○○ 命名規則に揃えるリファクタをしてください。テストが通ったら差分のサマリを返してください」と依頼</li>
+      <li>返ってきた差分が期待通りなら main に merge、そうでなければ worktree を破棄</li>
+      <li>どちらの結果になったか、なぜそう判断したかを2行で振り返る</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><strong>推奨プロンプト(コピペ可)</strong>:</p>
+      <pre><code>次の作業を worktree 隔離で実行してください。
+
+1. `cd ../repo-exp` で worktree に移動
+2. `src/` 配下のユーティリティ関数名を snake_case → camelCase に統一
+3. 既存テストを実行し、全部通ることを確認
+4. 失敗したテストがあれば修正(ただしassertionは触らない)
+5. 最後に `git diff --stat` の結果と、変更した関数の一覧(最大10件)を返す
+
+なお main ディレクトリのファイルは一切触らないでください。</code></pre>
+      <p><strong>判定例</strong>: 差分が期待通り(関数名変更のみ、ロジック無変更)なら <code>cd ../repo &amp;&amp; git merge refactor</code> で取り込み、<code>git worktree remove ../repo-exp</code> で片付ける。もし想定外の変更(コメント消失・ロジック改変)があれば <code>git worktree remove --force</code> で破棄。振り返り例: 「差分が <code>--stat</code> で8ファイル・改変ロジックなしと確認できたので採用。worktree 隔離のおかげで main ブランチのエディタを開いたまま差分を比較できた」。</p>
+      <p>この経験をすると、worktree なしで同じ事をやる気が起きなくなります。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式ドキュメント</a> <span class="res-type doc">Doc</span> — Agent tool / isolation 周辺の最新仕様</li>
+      <li><a href="https://git-scm.com/docs/git-worktree" target="_blank" rel="noopener">git-worktree 公式 man page</a> <span class="res-type doc">Doc</span> — 全オプションの一次ソース</li>
+      <li><a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener">Claude Code GitHub リポジトリ</a> <span class="res-type doc">Doc</span> — Issue/Discussion で挙動の裏取り</li>
+      <li><a href="https://www.anthropic.com/news" target="_blank" rel="noopener">Anthropic Blog</a> <span class="res-type doc">Doc</span> — isolation/worktree 関連のアップデート発表</li>
+      <li><a href="https://github.com/anthropics/anthropic-cookbook" target="_blank" rel="noopener">Anthropic Cookbook</a> <span class="res-type doc">Doc</span> — 実運用パターン集</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="21">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="20-skills-overview.html"><span class="direction">&larr; Prev</span>Skills</a>
+    <a href="22-pitfalls.html"><span class="direction">Next &rarr;</span>失敗パターン10</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+<script>
+window.addEventListener("load", function() {
+  var ctx = document.getElementById('ch21-bar-1');
+  if (!ctx || !window.Chart) return;
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['誤 rm -rf', 'reset --hard 暴発', '依存大更新の事故', '大規模リファクタ崩壊', 'AI自動コミット事故'],
+      datasets: [{
+        label: '実務で遭遇する体感頻度(相対)',
+        data: [35, 55, 45, 70, 40],
+        backgroundColor: '#D97757',
+        borderRadius: 6
+      }]
+    },
+    options: {
+      plugins: { legend: { display: false } },
+      scales: { y: { beginAtZero: true, max: 100 } }
+    }
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>対話の原則：上手な頼み方 - MK's Claude Code Tutorial</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code Tutorial
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav class="active"><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="../index.html#phase3" data-nav><span class="phase-name">Advanced</span><span class="phase-pct" id="pct-advanced">0%</span></a></li>
+      <li><a href="../index.html#phase4" data-nav><span class="phase-name">Projects</span><span class="phase-pct" id="pct-projects">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.02</span>
+    対話の原則：上手な頼み方
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 26 sections</text>
+    </svg>
+    <div class="progress-info">0h / 24h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-welcome.html"><span class="status-dot" data-chapter="01"></span> ようこそ&セットアップ</a></li>
+    <li><a href="02-communication-basics.html" class="active"><span class="status-dot" data-chapter="02"></span> 対話の原則</a></li>
+    <li><a href="03-file-tools.html"><span class="status-dot" data-chapter="03"></span> ファイル操作ツール</a></li>
+    <li><a href="04-bash-safety.html"><span class="status-dot" data-chapter="04"></span> Bashツールと安全</a></li>
+    <li><a href="05-todo-management.html"><span class="status-dot" data-chapter="05"></span> TodoWriteで作業管理</a></li>
+    <li><a href="06-claude-md.html"><span class="status-dot" data-chapter="06"></span> CLAUDE.md</a></li>
+    <li><a href="07-git-workflow.html"><span class="status-dot" data-chapter="07"></span> Git × Claude Code</a></li>
+  </ul>
+  <div class="section-label">Core</div>
+  <ul>
+    <li><a href="08-prompt-patterns.html"><span class="status-dot" data-chapter="08"></span> プロンプト設計の型</a></li>
+    <li><a href="09-code-review.html"><span class="status-dot" data-chapter="09"></span> コードレビュー依頼</a></li>
+    <li><a href="10-refactor-workflow.html"><span class="status-dot" data-chapter="10"></span> 改修ワークフロー</a></li>
+    <li><a href="11-tdd-with-claude.html"><span class="status-dot" data-chapter="11"></span> テスト駆動</a></li>
+    <li><a href="12-debugging.html"><span class="status-dot" data-chapter="12"></span> デバッグ</a></li>
+    <li><a href="13-plan-mode.html"><span class="status-dot" data-chapter="13"></span> Planモード</a></li>
+    <li><a href="14-context-management.html"><span class="status-dot" data-chapter="14"></span> コンテキスト管理</a></li>
+    <li><a href="15-web-tools.html"><span class="status-dot" data-chapter="15"></span> Web検索・取得</a></li>
+  </ul>
+  <div class="section-label">Advanced</div>
+  <ul>
+    <li><a href="16-subagents-overview.html"><span class="status-dot" data-chapter="16"></span> Subagents</a></li>
+    <li><a href="17-mcp-overview.html"><span class="status-dot" data-chapter="17"></span> MCP</a></li>
+    <li><a href="18-hooks-overview.html"><span class="status-dot" data-chapter="18"></span> Hooks</a></li>
+    <li><a href="19-schedule-loop.html"><span class="status-dot" data-chapter="19"></span> Schedule &amp; Loop</a></li>
+    <li><a href="20-skills-overview.html"><span class="status-dot" data-chapter="20"></span> Skills</a></li>
+    <li><a href="21-worktree.html"><span class="status-dot" data-chapter="21"></span> worktree</a></li>
+    <li><a href="22-pitfalls.html"><span class="status-dot" data-chapter="22"></span> 失敗パターン10</a></li>
+  </ul>
+  <div class="section-label">Projects</div>
+  <ul>
+    <li><a href="23-project-automation.html"><span class="status-dot" data-chapter="23"></span> Project A：業務自動化</a></li>
+    <li><a href="24-project-refactor.html"><span class="status-dot" data-chapter="24"></span> Project B：リファクタ</a></li>
+    <li><a href="25-project-webapp.html"><span class="status-dot" data-chapter="25"></span> Project C：Webアプリ</a></li>
+    <li><a href="26-final-exercise.html"><span class="status-dot" data-chapter="26"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 1: Basics &gt; Chapter 02</div>
+  <h1>対話の原則：上手な頼み方</h1>
+  <p class="subtitle">3点セット(具体性 / 制約 / 成功条件)で、Claudeの返答が別物になる</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 45分</span>
+    <span class="badge">Phase: Basics</span>
+    <span class="badge">難易度: 入門</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">この章のゴール</span>
+    <p>Claude Codeへの頼み方を<strong>「なんとなく」から「型」に変える</strong>。同じタスクでも、頼み方次第で返答の質は2倍〜10倍変わる。本章は<strong>5セット以上のBefore/After</strong>で「型」を身体にしみこませ、最後に自分のリアル業務で試すまでを45分で体験する。読んで終わりではなく、<em>いまのターミナルでコピペして試す</em>を合言葉に進めます。</p>
+  </div>
+
+  <div class="info-box" style="border-left: 3px solid #D97757;">
+    <span class="label">バージョン注記</span>
+    <p>本章の記述は <strong>2026年1月時点</strong> の Claude Code (CLI) を前提としています。プロンプトのコツは長期的に安定していますが、スラッシュコマンドやモード名は変わることがあるため、動かない時は <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">公式ドキュメント</a> で確認してください。</p>
+  </div>
+
+  <!-- ===== Section 1: なぜ頼み方で差がつくか ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> なぜ「頼み方」だけで結果が変わるのか</h2>
+
+  <p>Claudeは、あなたの頭の中を読めません。<span class="term" data-tip="プロンプト：AIへの入力テキスト。質問・指示・文脈・制約すべて含む。">プロンプト</span>に書いていない情報はすべて<strong>空白</strong>で、その空白をClaudeは<em>もっとも一般的な解釈</em>で埋めます。空白が多いほど、あなたの意図から逸れた回答が返る。逆に、空白を埋める情報=<span class="term" data-tip="コンテキスト：タスクを解くための周辺情報。プロジェクトの状況、技術制約、目的、好み等。">コンテキスト</span>を明示すれば、Claudeは「あなたの意図」という特定の一点を狙って答えます。</p>
+
+  <p>下図は同じ「ログイン機能を作って」というお題が、<strong>情報量によってどれだけ結果のブレが変わるか</strong>を示したものです。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">頼み方の情報量と、回答の「当たり範囲」の関係</div>
+    <svg viewBox="0 0 500 260" width="100%" style="max-width:500px; display:block; margin:0 auto;">
+      <!-- 左: 曖昧な依頼 -->
+      <text x="110" y="30" text-anchor="middle" font-size="13" font-weight="700">曖昧な依頼</text>
+      <text x="110" y="48" text-anchor="middle" font-size="11" fill="#64748b">「ログイン作って」</text>
+      <circle cx="110" cy="150" r="70" fill="#fee2e2" opacity="0.6" stroke="#dc2626" stroke-dasharray="4 3"/>
+      <circle cx="110" cy="150" r="6" fill="#D97757"/>
+      <text x="110" y="240" text-anchor="middle" font-size="11" fill="#64748b">広い = 当たる確率 低</text>
+
+      <!-- 中央: 矢印 -->
+      <path d="M 200 150 L 250 150" stroke="#475569" stroke-width="2" marker-end="url(#arr)"/>
+      <defs><marker id="arr" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#475569"/></marker></defs>
+
+      <!-- 右: 3点セット -->
+      <text x="390" y="30" text-anchor="middle" font-size="13" font-weight="700">3点セット付き依頼</text>
+      <text x="390" y="48" text-anchor="middle" font-size="11" fill="#64748b">具体性/制約/成功条件</text>
+      <circle cx="390" cy="150" r="24" fill="rgba(217,119,87,0.25)" stroke="#D97757" stroke-width="2"/>
+      <circle cx="390" cy="150" r="6" fill="#D97757"/>
+      <text x="390" y="240" text-anchor="middle" font-size="11" fill="#64748b">狭い = 意図通り</text>
+    </svg>
+    <div class="diagram-caption">情報を絞るほど、Claudeの「当たり範囲」が縮む。</div>
+  </div>
+
+  <p>ここで言いたいのはシンプルです：<strong>プロンプトとは、Claudeの探索範囲を絞るためのフィルタ</strong>。フィルタが緩いと望まない結果も通るし、キツすぎると動けない。ちょうど良い絞りが<span class="term" data-tip="3点セット：具体性・制約・成功条件の3つで、これだけ押さえれば8割のプロンプトは及第点。">3点セット</span>です。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span></p>
+
+  <!-- ===== Section 2: 3点セット ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 3点セット — これだけで8割いける</h2>
+
+  <p>本章で最初に覚えるべき型がこれ。毎回<strong>3つ</strong>だけ書けばいい。</p>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="target" width="20" height="20"></i>
+      <div><strong>具体性 (Concreteness)</strong> — 何を作る/直す/調べるのか、<em>対象</em>を名詞で指す。「ログイン画面」ではなく「<code>src/pages/login.tsx</code> のEmail入力フォーム」。</div>
+    </li>
+    <li>
+      <i data-lucide="shield" width="20" height="20"></i>
+      <div><strong>制約 (Constraints)</strong> — 使う技術、避けるべきこと、性能・互換性・トーンなどの「枠」。「<code>React 18</code>で」「新しいライブラリは入れないで」。</div>
+    </li>
+    <li>
+      <i data-lucide="check-circle" width="20" height="20"></i>
+      <div><strong>成功条件 (Done Criteria)</strong> — どうなったら終わりか。「<code>npm test</code>がグリーン」「<code>git diff</code>が10行以内」「ユーザーがEnterで送信できる」。</div>
+    </li>
+  </ul>
+
+  <div class="diagram-box">
+    <div class="diagram-title">3点セットのベン図 — 交点に「意図通りの成果」がある</div>
+    <svg viewBox="0 0 420 260" width="100%" style="max-width:420px; display:block; margin:0 auto;">
+      <circle cx="170" cy="110" r="80" fill="#D97757" opacity="0.28" stroke="#D97757"/>
+      <circle cx="250" cy="110" r="80" fill="#D97757" opacity="0.28" stroke="#D97757"/>
+      <circle cx="210" cy="180" r="80" fill="#D97757" opacity="0.28" stroke="#D97757"/>
+      <text x="110" y="80"  text-anchor="middle" font-size="12" font-weight="700">具体性</text>
+      <text x="310" y="80"  text-anchor="middle" font-size="12" font-weight="700">制約</text>
+      <text x="210" y="235" text-anchor="middle" font-size="12" font-weight="700">成功条件</text>
+      <text x="210" y="145" text-anchor="middle" font-size="12" font-weight="700">意図通り</text>
+    </svg>
+    <div class="diagram-caption">どれか1つ抜けるだけで、結果はずれ始める。</div>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>要素</th><th>これを書かないと起きること</th><th>書くためのヒント</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>具体性</td><td>対象ファイルを推測で開き、関係ないところまで触る</td><td>ファイルパス/関数名/スクリーンショットを貼る</td></tr>
+      <tr><td>制約</td><td>勝手に新ライブラリ追加、巨大リファクタ化</td><td>「使ってよい技術」「触らない範囲」を明記</td></tr>
+      <tr><td>成功条件</td><td>いつまでも編集し続ける／途中で止める</td><td>テスト名、コマンド、見た目の状態で定義</td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-box" style="border-left-color: #D97757;">
+    <span class="label">ここがプロの境目</span>
+    <p><strong>成功条件 (done criteria) を渡すと、Claudeは「どこで止まればいいか」分かる</strong>。これを書かない初心者が一番多いが、ここの効果が一番大きい。「テストが通ったら終わり」「<code>git diff</code>表示して手を止めて」と一言添えるだけで、やりすぎも、やり残しも消える。<br>
+    <em>試し方：</em> 次の頼み事の末尾に「<code>npm test</code>がすべてグリーンになったら報告して終わり」を付けてみる。</p>
+  </div>
+
+  <!-- ===== Section 3: Before/After 5セット ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Before/After を5セット、体に刷り込む</h2>
+
+  <p>ここが本章の中核。<strong>悪い頼み方と良い頼み方</strong>を並べて読むのが最速の学習です。全部「そのままコピペして試せる」形で書いています。自分のプロジェクトに置き換えて1つは必ず実行してください。</p>
+
+  <!-- Set 1 -->
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">Before</span>
+      <h4>セット1: バグ修正</h4>
+      <pre><code>ログインが動かない。直して。</code></pre>
+      <ul>
+        <li>対象ファイルが分からない</li>
+        <li>「動かない」の意味が不明</li>
+        <li>どこまで直すか分からない</li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">After</span>
+      <h4>セット1: バグ修正</h4>
+      <pre><code>src/pages/login.tsx のEmailフォーム
+で、空欄送信時にエラーが出ない。
+期待: 「Emailを入力してください」を
+表示。React 18, 既存の useForm 使用。
+成功条件: npm test の login.test.tsx
+がパスしたら終わり。</code></pre>
+    </div>
+  </div>
+
+  <!-- Set 2 -->
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">Before</span>
+      <h4>セット2: 新機能</h4>
+      <pre><code>ダークモード欲しい。</code></pre>
+      <ul>
+        <li>どの画面に？</li>
+        <li>CSS変数？Tailwind？</li>
+        <li>切替方法は？</li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">After</span>
+      <h4>セット2: 新機能</h4>
+      <pre><code>全ページにダークモード切替を追加。
+src/styles/theme.css のCSS変数を使い
+ --bg, --text を切替。Header右上に
+☀/🌙 ボタン。localStorage保存。
+制約: 新ライブラリなし、Tailwind不可。
+完了: リロード後も状態保持されること
+を確認して終わり。</code></pre>
+    </div>
+  </div>
+
+  <!-- Set 3 -->
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">Before</span>
+      <h4>セット3: 調査</h4>
+      <pre><code>このコードベース見てまとめて。</code></pre>
+      <ul>
+        <li>規模不明で全読みされる</li>
+        <li>何の観点でまとめるか不明</li>
+        <li>長文が返ってきて使えない</li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">After</span>
+      <h4>セット3: 調査</h4>
+      <pre><code>src/ 配下の主要ディレクトリ構造を
+Grepでエントリポイント (main/index)
+を探してから把握。目的: 新人引継ぎ
+資料。出力: Markdown 箇条書き30行
+以内。制約: src/__tests__ は除外。
+完了: Markdownを output.md に保存
+して終わり。</code></pre>
+    </div>
+  </div>
+
+  <!-- Set 4 -->
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">Before</span>
+      <h4>セット4: リファクタ</h4>
+      <pre><code>user.service.ts が長いので短くして。</code></pre>
+      <ul>
+        <li>挙動保証なし</li>
+        <li>どこまで分けていいか不明</li>
+        <li>関連ファイル全部書き換えられる可能性</li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">After</span>
+      <h4>セット4: リファクタ</h4>
+      <pre><code>src/services/user.service.ts (320行)
+の責務を3つに分割: auth系/profile系
+/preference系。まず Plan モードで
+分割案を提示して承認を取ってから実装。
+制約: public APIは変えない。テストは
+既存のまま通る必要あり。完了: npm test
+グリーン + git diff レビュー可能な
+粒度で stage して終わり。</code></pre>
+    </div>
+  </div>
+
+  <!-- Set 5 -->
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">Before</span>
+      <h4>セット5: レビュー</h4>
+      <pre><code>このPRレビューして。</code></pre>
+      <ul>
+        <li>観点が広すぎて薄い指摘しか来ない</li>
+        <li>優先順位が分からない</li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">After</span>
+      <h4>セット5: レビュー</h4>
+      <pre><code>gh pr diff 42 を取得してレビュー。
+観点: (1) セキュリティ(認証・XSS)
+(2) エラーハンドリング漏れ
+(3) 命名の一貫性。
+各観点で「Must/Should/Nice」に分類。
+成功条件: Must 指摘ゼロなら approve、
+あれば理由と修正案を添えて返す。</code></pre>
+    </div>
+  </div>
+
+  <!-- Set 6 -->
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">Before</span>
+      <h4>セット6: 実験</h4>
+      <pre><code>TypeScript strict 化して。</code></pre>
+      <ul>
+        <li>既存コードが大量にエラー化する</li>
+        <li>どこまで直すか不明で延々続く</li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">After</span>
+      <h4>セット6: 実験</h4>
+      <pre><code>tsconfig.json を strict: true にした
+時の影響を試算してほしい。実装は
+しない。手順: (1) 有効化 (2) tsc で
+エラー件数カウント (3) 多い順にTop5
+ファイル報告。完了: レポートを返し
+たら tsconfig.json を元に戻して終わり。</code></pre>
+    </div>
+  </div>
+
+  <p>どうでしょう。Afterは長く見えても<strong>読解コストはBeforeの1.5倍</strong>くらい。その代わり、返答の的中率は一気に上がり、追加のやり取り3-5往復が省ける。結局Afterの方が<em>速い</em>のです。</p>
+
+  <details class="more-box">
+    <summary>もっと詳しく: なぜAfterが速く感じないのに、結果は速いのか</summary>
+    <div class="more-body">
+      <p>人は「書く時間」に敏感ですが、「やり取りの往復回数」には鈍感です。Beforeは3秒で書けても、そこから「どのファイル？」「何が動かないの？」と3往復発生し、合計5分かかります。Afterは書くのに1分かかっても、返答は1発で着地する。目安は<strong>やり取り往復2回以下</strong>。3回以上になるなら<span class="term" data-tip="3点セット：具体性・制約・成功条件の3つで及第点プロンプト。">3点セット</span>のどれかが抜けています。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 4: 「なぜ」を伝える ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 「なぜ」を1行添えると、Claudeは最適解を選ぶ</h2>
+
+  <p>3点セットは「何を」「どう」「どこまで」の問いに答えますが、もう一つ強力な情報がある。<strong>「なぜ」</strong>です。目的が分かるとClaudeは手段を賢く選びます。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">「なぜ」があると、ツール選択が自動で変わる</div>
+    <pre class="mermaid">
+graph LR
+  A["頼み事: ログ整形"] --> B{"なぜ?"}
+  B -->|"顧客デモで5分後に見せる"| C["最小変更 / 既存ライブラリ流用"]
+  B -->|"本番運用で毎日動かす"| D["エラーハンドリング強化 / テスト追加"]
+  B -->|"自分の学習用に試したい"| E["シンプル実装 / コメント多め"]
+    </pre>
+    <div class="diagram-caption">同じ依頼でも、目的によってClaudeが選ぶ「正解」は変わる。</div>
+  </div>
+
+  <p>例えば「このAPIを高速化して」。なぜ高速化したいかで解が変わる：</p>
+
+  <table>
+    <thead><tr><th>「なぜ」</th><th>Claudeが選びがちな解</th></tr></thead>
+    <tbody>
+      <tr><td>レスポンスが2秒→500ms欲しい(UX)</td><td>キャッシュ追加、N+1解消</td></tr>
+      <tr><td>コスト削減したい(月額)</td><td>クエリ回数削減、不要呼び出し排除</td></tr>
+      <tr><td>ピーク時に落ちる(安定性)</td><td>タイムアウト、リトライ、レート制限</td></tr>
+      <tr><td>学習目的(勉強)</td><td>各改善案を比較レポート</td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-box">
+    <span class="label">Tips</span>
+    <p>書き方テンプレ: <strong>「<em>(目的)</em>のため、<em>(対象)</em>を<em>(制約)</em>で<em>(成功条件)</em>まで」</strong>。1文でも強力。例:「本番の月額コスト削減のため、/api/search のN+1を解消し、既存テストが通ったら終わり」。</p>
+  </div>
+
+  <!-- ===== Section 5: 文脈の与え方 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 文脈の与え方 — パスを貼る vs 中身を貼る</h2>
+
+  <p>文脈の渡し方には3段階あります。状況に応じて使い分ける。</p>
+
+  <div class="steps">
+    <div class="step done"><div class="step-num">1</div><div class="step-label">パスだけ</div><div class="step-desc">Claudeに Read させる</div></div>
+    <div class="step done"><div class="step-num">2</div><div class="step-label">抜粋貼付</div><div class="step-desc">関連部分だけペースト</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-label">検索指示</div><div class="step-desc">Grep/Globから探させる</div></div>
+  </div>
+
+  <p>判断基準は<strong>「ファイルが50行以内か、自分でもどこか分からないか」</strong>。小さくて明確ならパス指定、大きくて自分も分からないなら<span class="term" data-tip="Grep: 指定パターンで全ファイル検索するツール(ripgrep相当)。Ch03で詳説。">Grep</span>/<span class="term" data-tip="Glob: ファイル名パターンマッチ(例: **/*.test.ts)。Ch03で詳説。">Glob</span>からClaudeに探させる。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">ファイル共有の3段階フロー</div>
+    <pre class="mermaid">
+graph TD
+  Q["Claudeに頼みたい"] --> S1{"対象ファイルは?"}
+  S1 -->|"明確"| A["パスだけ指定"]
+  S1 -->|"不明"| S2{"規模は?"}
+  S2 -->|"小さい"| B["関連部分を抜粋して貼る"]
+  S2 -->|"大きい / 分からない"| C["Grep/Glob で探させる"]
+  A --> OK["Claude が Read"]
+  B --> OK
+  C --> OK
+    </pre>
+  </div>
+
+  <p>「今すぐ試す」用のサンプルプロンプト：</p>
+
+  <pre><code># パスだけ (小さく明確)
+src/utils/date.ts を読んで、
+formatDate の戻り値を "YYYY-MM-DD" に統一して。
+
+# 抜粋貼付 (関連部分だけ見せたい)
+以下のエラーログを元に、原因仮説を3つ。
+```
+TypeError: cannot read 'map' of undefined
+  at line 42, components/List.tsx
+```
+
+# 検索指示 (どこにあるか自分も分からない)
+プロジェクト内で useAuth を呼んでいる箇所を
+Grep で列挙し、引数パターンを3種類以下にまとめて報告して。</code></pre>
+
+  <div class="info-box">
+    <span class="label">公式ドキュメント必読</span>
+    <p>ファイル操作とコンテキスト管理は、Claude Codeを効率よく使う上で最重要。全ファイル Read はコスト的に致命的なので、Grep/Glob ワークフローは必ずマスターしてください。<a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式 →</a></p>
+  </div>
+
+  <!-- ===== Section 6: 反復と修正の作法 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 反復の型 — 1発で終わらせようとしない</h2>
+
+  <p>「1発で完璧」を狙うと、プロンプトが膨らみ読むのも書くのも遅くなる。パワーユーザーは<strong>2-3ラウンドの対話</strong>で確度を上げる設計をします。</p>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="search" width="20" height="20"></i>
+      <div><strong>ラウンド1: 把握</strong> — 「まず現状の構造を3点にまとめて。実装はしない」</div>
+    </li>
+    <li>
+      <i data-lucide="clipboard-list" width="20" height="20"></i>
+      <div><strong>ラウンド2: 計画</strong> — 「この変更プランでいい？ファイル単位で教えて」(<span class="term" data-tip="Planモード: 計画のみ立てて実装は止めるモード。Ch13で詳説。">Planモード</span>が有効)</div>
+    </li>
+    <li>
+      <i data-lucide="hammer" width="20" height="20"></i>
+      <div><strong>ラウンド3: 実装</strong> — 「ではその計画で進めて。テストグリーンで止まって」</div>
+    </li>
+  </ul>
+
+  <div class="diagram-box">
+    <div class="diagram-title">1発完璧型 vs 3段階型 — 総所要時間の比較(体感値)</div>
+    <canvas id="ch2-bar-1" height="160"></canvas>
+  </div>
+
+  <p>途中で路線を変えたい時の言い方も重要。「さっきの話は忘れて」より、<strong>「X についてだけ方針変更。Y はそのまま」</strong>と差分で指示するとClaudeの<span class="term" data-tip="コンテキストウィンドウ：Claudeが一度に覚えていられる会話の総量。Ch14で詳説。">コンテキスト</span>が混乱しません。</p>
+
+  <details class="more-box">
+    <summary>もっと詳しく: やり直しが必要になった時の3つの選択肢</summary>
+    <div class="more-body">
+      <ol>
+        <li><strong>差分修正</strong>: 「AについてBに変更」。最も軽量、文脈保持。</li>
+        <li><strong>/compact</strong>: 長くなった会話を要約圧縮。必要な情報だけ残す。Ch14参照。</li>
+        <li><strong>/clear + 再投入</strong>: セッションを綺麗にリセット。路線が大幅に変わる時に。</li>
+      </ol>
+      <p>「今のトピックと無関係になった」と感じたら迷わず <code>/clear</code>。古いコンテキストが残ると別の問題の原因になります。</p>
+    </div>
+  </details>
+
+  <p class="fade-in">ここまでで基礎パターンは揃いました。<strong>書いて→確かめて→差分で修正する</strong>。この3拍子がClaude Codeとの対話のリズムです。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span></p>
+
+  <!-- ===== Section 7: よくある失敗と回避 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> よくある失敗 5つと回避</h2>
+
+  <table>
+    <thead><tr><th>症状</th><th>原因</th><th>回避</th></tr></thead>
+    <tbody>
+      <tr><td>思ったファイルと違うところを触られた</td><td>具体性不足、ファイルパス未指定</td><td>パス or Grep指示を添える</td></tr>
+      <tr><td>ライブラリが勝手に追加された</td><td>制約未指定</td><td>「新規依存追加禁止」を明記</td></tr>
+      <tr><td>延々と改修が続く</td><td>成功条件なし</td><td>テスト名 or コマンドで定義</td></tr>
+      <tr><td>テストが都合よく書き換えられた</td><td>「テスト変更禁止」を言っていない</td><td>「テストは触らず実装側で合わせて」と添える</td></tr>
+      <tr><td>長い会話で話が噛み合わなくなる</td><td>コンテキスト汚染</td><td><code>/compact</code> か <code>/clear</code></td></tr>
+    </tbody>
+  </table>
+
+  <details class="more-box">
+    <summary>もっと詳しく: テストを緩められる問題 (Ch11の先取り)</summary>
+    <div class="more-body">
+      <p>「テスト通して」と頼むと、Claudeは「テストを通すためにテストを書き換える」という解を選ぶことがあります。実装にバグがあっても assertion を緩めれば通る——これは技術的には正解だが、意味的にはアウト。</p>
+      <p>回避策はシンプル: <strong>「テストを通すためにテストを変えない。実装側を直して」</strong>と毎回添える。Ch11 でTDDと合わせて深掘りします。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 8: 今すぐ試す ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 今すぐ試す — 15分ハンズオン</h2>
+
+  <p>読むだけで終わらせない。以下の順で手を動かしてください。</p>
+
+  <div class="kv-grid">
+    <div class="kv"><div class="kv-key">所要</div><div class="kv-val">15分</div></div>
+    <div class="kv"><div class="kv-key">用意するもの</div><div class="kv-val">自分のリポジトリ 1つ</div></div>
+    <div class="kv"><div class="kv-key">ゴール</div><div class="kv-val">3点セット入りプロンプトを3つ試す</div></div>
+  </div>
+
+  <div class="info-box">
+    <span class="label">手順</span>
+    <p>
+      <strong>Step 1.</strong> 自分のプロジェクトで「ちょっと気になっている」タスクを1つ選ぶ(小さめ)。<br>
+      <strong>Step 2.</strong> 下のテンプレに当てはめて <code>claude</code> に投げる。<br>
+      <strong>Step 3.</strong> 返答を読み、<em>やり取り往復が2回以内</em>で着地したかチェック。3回以上なら3点セットのどこが抜けたか振り返る。
+    </p>
+  </div>
+
+  <pre><code># 3点セット テンプレ
+目的: {なぜ}
+対象: {ファイルパス or 検索指示}
+制約: {使っていい技術 / 触らない範囲}
+成功条件: {テスト名 or コマンド or 見た目の状態}
+</code></pre>
+
+  <div class="quote">
+    頼み方は、努力ではなく<strong>習慣</strong>。3点セットを30回書けば、もう考えずに出てくる。
+    <cite>— 本章からのひとこと</cite>
+  </div>
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>Before/After を自作する</h4>
+    <p>以下の「悪い依頼」を、3点セット(具体性/制約/成功条件)入りの「良い依頼」に書き直してください。自分のプロジェクト前提で考えてOK。</p>
+    <ol>
+      <li>「README 書いて」</li>
+      <li>「テスト足して」</li>
+      <li>「このバグ直して」</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>例(自分のWebアプリ前提):</p>
+      <pre><code>1. README 書いて
+→ 目的: 新しい協力者が5分でセットアップできる導線。
+   対象: プロジェクトルートの README.md (現在空)。
+   制約: 日本語、100行以内、絵文字なし。
+   成功条件: セットアップ手順/使い方/コントリビュート
+   の3セクションが埋まったら終わり。
+
+2. テスト足して
+→ 目的: ログイン周りのリグレッション検知。
+   対象: src/pages/login.tsx の Email バリデーション。
+   制約: Jest + React Testing Library、新規依存不可。
+   成功条件: 3ケース(正常/空欄/不正形式)で
+   npm test がグリーンなら終わり。
+
+3. このバグ直して
+→ 目的: ユーザー報告「送信ボタンが押せない」の解消。
+   対象: src/components/SubmitButton.tsx, 再現手順は
+   空入力+日本語IME変換中に Enter 押下。
+   制約: Chrome/Safari両対応、他コンポーネントは触らない。
+   成功条件: 手動再現で解消 + 既存テスト通過。</code></pre>
+      <p>ポイント: <strong>目的を先に書く</strong>、<strong>ファイルパスを具体的に</strong>、<strong>どうなったら終わりか</strong>を明記。3つが揃うだけでClaudeの返答は別物になります。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>成功条件だけで止まる依頼を試す</h4>
+    <p>「プロの境目」を体感する演習。以下の2通りで同じタスクを Claude Code に投げ、結果を比較してください。</p>
+    <ol>
+      <li>自分のリポジトリで小さな機能追加 or バグ修正を選ぶ</li>
+      <li>パターンA: 成功条件を<strong>書かず</strong>に依頼 → 何が起きるか観察</li>
+      <li>パターンB: 同じ依頼に「<code>npm test</code>がグリーンになったら報告して終わり」を<strong>末尾に追加</strong> → 比較</li>
+      <li>差分(Claudeの停止タイミング/出力量/追加質問の数)を3行でメモ</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>典型的な差分観察例:</p>
+      <ul>
+        <li><strong>停止タイミング</strong> — A: 実装後もリファクタ提案やREADME追記を続ける / B: テスト通過で即停止</li>
+        <li><strong>出力量</strong> — A: 冗長、関係ないファイルにまで手を伸ばす / B: 必要最小の変更で終わる</li>
+        <li><strong>追加質問</strong> — A: 「これも直しますか？」が2-3回発生 / B: ゼロ、あってもエラー時のみ</li>
+      </ul>
+      <p>実コードでの例:</p>
+      <pre><code># パターンB (成功条件あり)
+src/utils/validate.ts の isEmail に TLD 制約を追加。
+制約: 既存の他ユーティリティ関数は触らない。
+成功条件: tests/validate.test.ts の全ケースがグリーンに
+なったら git diff を表示して終わり。次の提案は不要。</code></pre>
+      <p>「次の提案は不要」「 git diff を表示して終わり」のような<strong>停止シグナル</strong>を末尾に置くのがコツ。Claudeは「終わっていい」と明示されないと、善意で仕事を増やし続けます。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式ドキュメント</a> <span class="res-type doc">Doc</span> — インストールからCLIの全体像まで</li>
+      <li><a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener">Claude Code GitHub リポジトリ</a> <span class="res-type doc">Doc</span> — ソース・Issue・更新履歴</li>
+      <li><a href="https://github.com/anthropics/anthropic-cookbook" target="_blank" rel="noopener">Anthropic Cookbook</a> <span class="res-type doc">Doc</span> — プロンプト実例の宝庫</li>
+      <li><a href="https://www.anthropic.com/news" target="_blank" rel="noopener">Anthropic Blog</a> <span class="res-type doc">Doc</span> — 最新機能・事例</li>
+      <li><a href="https://www.youtube.com/results?search_query=Claude+Code+tutorial" target="_blank" rel="noopener">YouTube: Claude Code tutorial 検索</a> <span class="res-type video">Video</span> — 画面付きハンズオン</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="02">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="01-welcome.html"><span class="direction">&larr; Prev</span>ようこそ&セットアップ</a>
+    <a href="03-file-tools.html"><span class="direction">Next &rarr;</span>ファイル操作ツール</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+<script>
+  window.addEventListener("load", function() {
+    var ctx = document.getElementById('ch2-bar-1');
+    if (!ctx || !window.Chart) return;
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['1発完璧型(曖昧)', '3段階型(把握→計画→実装)'],
+        datasets: [{
+          label: '総所要分数(体感値)',
+          data: [22, 12],
+          backgroundColor: ['#cbd5e1', '#D97757'],
+          borderRadius: 6
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        plugins: { legend: { display: false }, title: { display: true, text: '中規模タスク(リファクタ系)の平均所要時間' } },
+        scales: { x: { beginAtZero: true, title: { display: true, text: '分' } } }
+      }
+    });
+  });
+</script>
+</body>
+</html>

@@ -4,6 +4,10 @@
  *
  * Note: apiKey is safe to expose publicly — Firebase enforces security via
  * Firestore rules + Authentication, not via secret keys.
+ *
+ * Shared Firebase project "mk-claude-tutorial" is used across all MK tutorials.
+ * Per-tutorial isolation is achieved via Firestore document paths
+ * (see progress.js: tutorials/{SLUG}/users/{uid}).
  */
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js';
 import {

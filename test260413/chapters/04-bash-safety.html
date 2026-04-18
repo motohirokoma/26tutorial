@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>Bashツールと安全な使い方 - MK's Claude Code Tutorial</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code Tutorial
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav class="active"><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="../index.html#phase3" data-nav><span class="phase-name">Advanced</span><span class="phase-pct" id="pct-advanced">0%</span></a></li>
+      <li><a href="../index.html#phase4" data-nav><span class="phase-name">Projects</span><span class="phase-pct" id="pct-projects">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.04</span>
+    Bashツールと安全な使い方
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 26 sections</text>
+    </svg>
+    <div class="progress-info">0h / 24h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-welcome.html"><span class="status-dot" data-chapter="01"></span> ようこそ&セットアップ</a></li>
+    <li><a href="02-communication-basics.html"><span class="status-dot" data-chapter="02"></span> 対話の原則</a></li>
+    <li><a href="03-file-tools.html"><span class="status-dot" data-chapter="03"></span> ファイル操作ツール</a></li>
+    <li><a href="04-bash-safety.html" class="active"><span class="status-dot" data-chapter="04"></span> Bashツールと安全</a></li>
+    <li><a href="05-todo-management.html"><span class="status-dot" data-chapter="05"></span> TodoWriteで作業管理</a></li>
+    <li><a href="06-claude-md.html"><span class="status-dot" data-chapter="06"></span> CLAUDE.md</a></li>
+    <li><a href="07-git-workflow.html"><span class="status-dot" data-chapter="07"></span> Git × Claude Code</a></li>
+  </ul>
+  <div class="section-label">Core</div>
+  <ul>
+    <li><a href="08-prompt-patterns.html"><span class="status-dot" data-chapter="08"></span> プロンプト設計の型</a></li>
+    <li><a href="09-code-review.html"><span class="status-dot" data-chapter="09"></span> コードレビュー依頼</a></li>
+    <li><a href="10-refactor-workflow.html"><span class="status-dot" data-chapter="10"></span> 改修ワークフロー</a></li>
+    <li><a href="11-tdd-with-claude.html"><span class="status-dot" data-chapter="11"></span> テスト駆動</a></li>
+    <li><a href="12-debugging.html"><span class="status-dot" data-chapter="12"></span> デバッグ</a></li>
+    <li><a href="13-plan-mode.html"><span class="status-dot" data-chapter="13"></span> Planモード</a></li>
+    <li><a href="14-context-management.html"><span class="status-dot" data-chapter="14"></span> コンテキスト管理</a></li>
+    <li><a href="15-web-tools.html"><span class="status-dot" data-chapter="15"></span> Web検索・取得</a></li>
+  </ul>
+  <div class="section-label">Advanced</div>
+  <ul>
+    <li><a href="16-subagents-overview.html"><span class="status-dot" data-chapter="16"></span> Subagents</a></li>
+    <li><a href="17-mcp-overview.html"><span class="status-dot" data-chapter="17"></span> MCP</a></li>
+    <li><a href="18-hooks-overview.html"><span class="status-dot" data-chapter="18"></span> Hooks</a></li>
+    <li><a href="19-schedule-loop.html"><span class="status-dot" data-chapter="19"></span> Schedule &amp; Loop</a></li>
+    <li><a href="20-skills-overview.html"><span class="status-dot" data-chapter="20"></span> Skills</a></li>
+    <li><a href="21-worktree.html"><span class="status-dot" data-chapter="21"></span> worktree</a></li>
+    <li><a href="22-pitfalls.html"><span class="status-dot" data-chapter="22"></span> 失敗パターン10</a></li>
+  </ul>
+  <div class="section-label">Projects</div>
+  <ul>
+    <li><a href="23-project-automation.html"><span class="status-dot" data-chapter="23"></span> Project A：業務自動化</a></li>
+    <li><a href="24-project-refactor.html"><span class="status-dot" data-chapter="24"></span> Project B：リファクタ</a></li>
+    <li><a href="25-project-webapp.html"><span class="status-dot" data-chapter="25"></span> Project C：Webアプリ</a></li>
+    <li><a href="26-final-exercise.html"><span class="status-dot" data-chapter="26"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 1: Basics &gt; Chapter 04</div>
+  <h1>Bashツールと安全な使い方</h1>
+  <p class="subtitle">強力なシェル実行と、取り返しのつかない事故を防ぐための作法</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 45分</span>
+    <span class="badge">Phase: Basics</span>
+    <span class="badge">難易度: 初級</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">この章のゴール</span>
+    <p>Claude Code の <code>Bash</code> ツールは、あなたの端末と同じ権限でコマンドを実行する<strong>最も強力で最も危険な</strong>ツールです。この章の45分で、(1)実行モデルを掴む、(2)<span class="term" data-tip="destructive action: 削除・上書き・履歴改変など、元に戻すのが難しい操作。Bashでは特に rm/git reset/push --force が代表格。">destructive action</span> の見分け方を覚える、(3)「<strong>確認 → 実行</strong>」を分ける型を身体に染み込ませる——ここまでを目指します。読むより手を動かす時間を長く。</p>
+  </div>
+
+  <div class="info-box" style="border-left: 3px solid #D97757;">
+    <span class="label">バージョン注記</span>
+    <p>本章の記述は <strong>2026年1月時点</strong> の Claude Code (CLI / Agent SDK) の挙動に基づきます。<span class="term" data-tip="permission mode: Claude Code がコマンドを実行する前にユーザに確認を求めるかどうかの設定モード。default / acceptEdits / bypassPermissions / plan の4種類。">permission mode</span> の名称や挙動は進化するため、違和感を感じたら <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">公式ドキュメント</a> で最新を確認してください。</p>
+  </div>
+
+  <!-- ===== Section 1: Bashツールの実行モデル ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 1. Bash ツールの実行モデル</h2>
+
+  <p>まず押さえるべき事実は1つ。Claude Code の <code>Bash</code> ツールは、<strong>あなたが今いるシェルと同じ権限・同じ作業ディレクトリ・同じ環境変数</strong>でコマンドを走らせます。つまり「Claude が動かしたコマンド」は「あなたが自分の手で叩いたコマンド」と等価です。これを忘れると <code>rm -rf</code> 一発で週末が消えます。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">「Claude が動かす」= 「あなたが動かす」</div>
+    <svg viewBox="0 0 520 240" width="100%" style="max-width:520px; display:block; margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <rect x="20" y="40" width="140" height="160" rx="10" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="2"/>
+      <text x="90" y="70" text-anchor="middle" font-size="13" font-weight="700" fill="#18181b">あなた</text>
+      <text x="90" y="92" text-anchor="middle" font-size="10" fill="#475569">"build して"</text>
+      <text x="90" y="120" text-anchor="middle" font-size="10">承認/拒否</text>
+      <rect x="190" y="40" width="140" height="160" rx="10" fill="#ffffff" stroke="#D97757" stroke-width="1.5"/>
+      <text x="260" y="70" text-anchor="middle" font-size="13" font-weight="700">Claude</text>
+      <text x="260" y="92" text-anchor="middle" font-size="10" fill="#475569">Bashツール</text>
+      <text x="260" y="120" text-anchor="middle" font-size="10">コマンドを組み立て</text>
+      <text x="260" y="138" text-anchor="middle" font-size="10">permission 判定</text>
+      <rect x="360" y="40" width="140" height="160" rx="10" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+      <text x="430" y="70" text-anchor="middle" font-size="13" font-weight="700" fill="#991b1b">あなたのシェル</text>
+      <text x="430" y="92" text-anchor="middle" font-size="10" fill="#475569">同じ権限・同じCWD</text>
+      <text x="430" y="120" text-anchor="middle" font-size="10">rm が通れば消える</text>
+      <text x="430" y="138" text-anchor="middle" font-size="10">git reset も通る</text>
+      <path d="M 160 110 L 190 110" stroke="#D97757" stroke-width="2" marker-end="url(#arrA)"/>
+      <path d="M 330 110 L 360 110" stroke="#D97757" stroke-width="2" marker-end="url(#arrA)"/>
+      <defs><marker id="arrA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#D97757"/></marker></defs>
+      <text x="260" y="225" text-anchor="middle" font-size="10" fill="#64748b">「依頼」→「権限チェック」→「本物のシェルで実行」</text>
+    </svg>
+    <div class="diagram-caption">サンドボックスではない。Claude が動かした結果は自分で叩いたのと全く同じ。</div>
+  </div>
+
+  <p>もう1つ重要な性質は、<strong>Bash コールごとに状態がリセットされる</strong>ことです。<code>cd /tmp</code> しても、次の Bash コールでは元の CWD に戻っています。<code>export FOO=1</code> も同じく消えます。だから Claude は絶対パスを使ったり、<code>cd /foo &amp;&amp; bar</code> のように1行でチェーンしたりします。</p>
+
+  <div class="info-box">
+    <span class="label">公式ドキュメント必読</span>
+    <p>ここは公式ドキュメントにも書いていますし、実務で間違えると致命的なので必ずマスターしてください。特に permission mode と設定ファイル <code>settings.json</code> の許可ルールは、誤設定すると <code>rm</code> が確認なしで走ります。<a href="https://docs.claude.com/en/docs/claude-code/security" target="_blank" rel="noopener">Claude Code 公式: Security &amp; Permissions →</a></p>
+  </div>
+
+  <h3>今すぐ試す: Bash の「状態リセット」を体感</h3>
+  <p>Claude に以下のようにお願いしてみてください。</p>
+<pre><code>/tmp に移動して "hello" と書かれた test.txt を作って。
+そのあと、別のBashコールで同じファイルを cat して中身を確認して。</code></pre>
+  <p>Claude は <code>cd /tmp &amp;&amp; echo hello &gt; test.txt</code> と <code>cat /tmp/test.txt</code> のように、<strong>2コール目でも絶対パスで参照</strong>しているはずです。この挙動が身体に入ると、後のデバッグで詰まりません。</p>
+
+  <!-- ===== Section 2: permission mode ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 2. permission mode と許可ルール</h2>
+
+  <p>Claude Code には4つの <span class="term" data-tip="permission mode: Claude Code の権限モード。起動時 --permission-mode で指定、実行中は Shift+Tab でトグル可能。">permission mode</span> があり、危険度別に「どこまで自動で走らせるか」を決めます。迷ったら<strong>default</strong>から抜け出さないこと。</p>
+
+  <table>
+    <thead><tr><th>モード</th><th>ファイル編集</th><th>Bash 実行</th><th>向いてる場面</th></tr></thead>
+    <tbody>
+      <tr><td><code>default</code></td><td>毎回確認</td><td>毎回確認</td><td>通常作業・初学者</td></tr>
+      <tr><td><code>acceptEdits</code></td><td>自動承認</td><td>毎回確認</td><td>大量編集で承認が面倒な時</td></tr>
+      <tr><td><code>bypassPermissions</code></td><td>自動承認</td><td>自動承認</td><td>使い捨て環境・CI・<strong>自分の母艦では避ける</strong></td></tr>
+      <tr><td><code>plan</code></td><td>禁止(計画のみ)</td><td>読取のみ許可</td><td>設計・調査フェーズ</td></tr>
+    </tbody>
+  </table>
+
+  <p><span class="term" data-tip="settings.json: Claude Code の設定ファイル。~/.claude/settings.json(ユーザー全体)と .claude/settings.json(プロジェクト)の2段で上書き。">settings.json</span> の <code>permissions.allow</code> / <code>permissions.deny</code> に個別のコマンドパターンを書くと、モードに関係なく「これは常に確認なし」「これは絶対ブロック」が作れます。<strong>deny の方が優先</strong>です。</p>
+
+<pre><code>{
+  "permissions": {
+    "allow": [
+      "Bash(npm test:*)",
+      "Bash(git status)",
+      "Bash(git diff:*)"
+    ],
+    "deny": [
+      "Bash(rm -rf:*)",
+      "Bash(git push --force:*)",
+      "Bash(git reset --hard:*)"
+    ]
+  }
+}</code></pre>
+
+  <div class="info-box" style="border-left-color: #D97757;">
+    <span class="label">ここがプロの境目</span>
+    <p><strong>危ない操作は「確認 → 実行」を分ける</strong>。いきなり <code>rm -rf ./build</code> と頼むのではなく、先に <code>ls ./build</code> で中身を確認してから削除する。<code>git reset --hard</code> も同じで、まず <code>git stash</code> を検討するか <code>git log --oneline -5</code> で戻り先を目視してから。<br>
+    <em>試し方：</em> 次に削除を頼む時、プロンプトの1行目に「まず対象を ls で見せて、私が承認したら削除」と書き足す。この1行で90%の事故は防げます。</p>
+  </div>
+
+  <!-- ===== Section 3: 危険度マトリクス ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 3. コマンドの危険度マトリクス</h2>
+
+  <p>頭の中で常に動かしたい四象限。「復元可能?」×「影響範囲」の2軸で考えます。<strong>右上(復元不能 × 広範囲)</strong>は原則 <code>plan</code> モードで議論してから実行。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Bashコマンド 危険度マトリクス</div>
+    <svg viewBox="0 0 480 340" width="100%" style="max-width:480px; display:block; margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <!-- quadrant backgrounds -->
+      <rect x="60" y="30" width="180" height="140" fill="#dcfce7" stroke="#16a34a"/>
+      <rect x="240" y="30" width="180" height="140" fill="#fef3c7" stroke="#d97706"/>
+      <rect x="60" y="170" width="180" height="140" fill="#fef3c7" stroke="#d97706"/>
+      <rect x="240" y="170" width="180" height="140" fill="#fee2e2" stroke="#dc2626" stroke-width="1.8"/>
+      <!-- quadrant labels -->
+      <text x="150" y="52" text-anchor="middle" font-size="12" font-weight="700" fill="#15803d">安全</text>
+      <text x="330" y="52" text-anchor="middle" font-size="12" font-weight="700" fill="#a16207">注意</text>
+      <text x="150" y="192" text-anchor="middle" font-size="12" font-weight="700" fill="#a16207">局所リスク</text>
+      <text x="330" y="192" text-anchor="middle" font-size="12" font-weight="700" fill="#b91c1c">致命傷</text>
+      <!-- commands -->
+      <text x="150" y="80" text-anchor="middle" font-size="10.5">ls / cat</text>
+      <text x="150" y="98" text-anchor="middle" font-size="10.5">git status</text>
+      <text x="150" y="116" text-anchor="middle" font-size="10.5">grep / find</text>
+      <text x="150" y="134" text-anchor="middle" font-size="10.5">npm test</text>
+      <text x="330" y="80" text-anchor="middle" font-size="10.5">npm install</text>
+      <text x="330" y="98" text-anchor="middle" font-size="10.5">git pull</text>
+      <text x="330" y="116" text-anchor="middle" font-size="10.5">migrate:up</text>
+      <text x="330" y="134" text-anchor="middle" font-size="10.5">docker build</text>
+      <text x="150" y="220" text-anchor="middle" font-size="10.5">rm ファイル単体</text>
+      <text x="150" y="238" text-anchor="middle" font-size="10.5">git commit --amend</text>
+      <text x="150" y="256" text-anchor="middle" font-size="10.5">git stash drop</text>
+      <text x="150" y="274" text-anchor="middle" font-size="10.5">mv 上書き</text>
+      <text x="330" y="220" text-anchor="middle" font-size="10.5" font-weight="600">rm -rf /</text>
+      <text x="330" y="238" text-anchor="middle" font-size="10.5" font-weight="600">git reset --hard</text>
+      <text x="330" y="256" text-anchor="middle" font-size="10.5" font-weight="600">git push --force</text>
+      <text x="330" y="274" text-anchor="middle" font-size="10.5" font-weight="600">DROP TABLE</text>
+      <!-- axes -->
+      <text x="240" y="330" text-anchor="middle" font-size="11" fill="#64748b">影響範囲 大 →</text>
+      <text x="30" y="175" text-anchor="middle" font-size="11" fill="#64748b" transform="rotate(-90 30 175)">← 復元不能</text>
+    </svg>
+    <div class="diagram-caption">右下(赤)は <strong>必ず確認→実行の2ステップ</strong>。plan モードで議論してから default に戻って実行。</div>
+  </div>
+
+  <p>もう少し具体的に、「この操作が失敗したら何を失うか?」の観点でも整理しておきましょう。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">destructive command 一覧と「失うもの」</div>
+    <canvas id="ch4-bar-1" height="220"></canvas>
+  </div>
+  <script>
+  window.addEventListener("load", function(){
+    var ctx = document.getElementById('ch4-bar-1');
+    if (!ctx || !window.Chart) return;
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['rm -rf','git reset --hard','git push --force','npm publish 誤','DROP TABLE','キャッシュ clean'],
+        datasets: [{
+          label: '失われる可能性スコア (10=致命)',
+          data: [10, 8, 9, 7, 10, 3],
+          backgroundColor: ['#D97757','#D97757','#D97757','#d97706','#D97757','#60a5fa'],
+          borderRadius: 6
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        plugins: { legend: { display: false } },
+        scales: { x: { beginAtZero: true, max: 10 } }
+      }
+    });
+  });
+  </script>
+
+  <details class="more-box">
+    <summary>もっと詳しく: なぜ <code>git push --force</code> が「致命傷」側なのか</summary>
+    <div class="more-body">
+      <p>ローカルで <code>git reset --hard</code> した時点では、<code>git reflog</code> に履歴が残っているので60-90日は戻せる可能性があります。しかし <code>git push --force</code> でリモートを上書きすると、<strong>他メンバーが pull していないコミット</strong>は消失し、CI に残ったビルド成果物・リリースタグも参照が切れます。個人リポでは <code>--force-with-lease</code> を、共有リポでは原則禁止(PR 経由)が鉄則です。</p>
+      <p>本章の後半でフロー化しますが、「force系は事前に <code>git log --oneline @{u}..</code> で相手のコミットを確認」「PR化して同僚の目を通す」「タグを打ってから実行」の3つが現実的な防波堤です。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 4: 「確認→実行」フロー ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 4. 「確認 → 実行」を分けるフロー</h2>
+
+  <p>これが本章のコアです。<span class="term" data-tip="ドライラン: 実際には変更せず、「何が起こるか」だけを表示すること。--dry-run や ls / diff がこれに相当。">ドライラン</span> を挟む癖をつければ、事故は激減します。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">安全なBash依頼のデフォルトフロー</div>
+    <pre class="mermaid">
+graph LR
+  A([依頼を思いつく]) --> B{"destructive?"}
+  B -- No --> E[そのまま実行]
+  B -- Yes --> C["対象を ls / diff / log で確認"]
+  C --> D{"想定と一致?"}
+  D -- Yes --> F["実行 (必要なら stash/tag で保険)"]
+  D -- No --> G[依頼を修正]
+  G --> C
+    </pre>
+    <div class="diagram-caption">Yes分岐では必ず「確認ステップ」を挟む。この1手間が未来の自分を救う。</div>
+  </div>
+
+  <p>実際の頼み方を Before/After で見てみます。</p>
+
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">Before</span>
+      <h4>"build フォルダ消して"</h4>
+      <ul>
+        <li>Claude はいきなり <code>rm -rf build</code></li>
+        <li>実は別プロジェクトの build だった</li>
+        <li>2時間の作業が消える</li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">After</span>
+      <h4>"build の中身を ls してから削除"</h4>
+      <ul>
+        <li>まず <code>ls -la build/</code> で一覧</li>
+        <li>想定外のファイルがあれば中断</li>
+        <li>OKなら <code>rm -rf build/</code></li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>今すぐ試す: 3ステップお守りプロンプト</h3>
+  <p>次に重めの掃除・リセットを頼む時は、この型をコピペして使ってください。</p>
+<pre><code>以下の順で進めてください。各ステップで私の承認を待つこと。
+
+1. 対象を読み取り専用で見せる (ls / git status / cat など)
+2. 実行する予定のコマンドを箇条書きで提示(まだ実行しない)
+3. 私が「GO」と返したら実行、1コマンドずつ結果を見せる</code></pre>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section 5: git系の地雷集 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 5. git 系の定番地雷と回避策</h2>
+
+  <p>Claude に一番多く頼むのはおそらく git 操作です。ここだけは特別に覚えましょう。</p>
+
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-label">reset --hard の前に</div><div class="step-desc">git stash か git tag backup-YYYYMMDD を打つ</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-label">push --force の前に</div><div class="step-desc">git log --oneline @{u}.. で相手のコミット確認</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-label">rebase の前に</div><div class="step-desc">作業ブランチを別名でコピー(git branch backup HEAD)</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-label">branch -D の前に</div><div class="step-desc">git branch --contains HEAD でどのブランチに属するか確認</div></div>
+  </div>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="shield" width="20" height="20"></i>
+      <div><strong>force系は必ず <code>--force-with-lease</code></strong> — リモートが自分の知っている状態と一致する時だけ上書きする、事故防止機構。</div>
+    </li>
+    <li>
+      <i data-lucide="history" width="20" height="20"></i>
+      <div><strong><code>git reflog</code> を味方にする</strong> — reset や rebase で消したつもりのコミットも、reflog から <code>git reset --hard HEAD@{3}</code> のように戻せる(60-90日有効)。</div>
+    </li>
+    <li>
+      <i data-lucide="git-branch" width="20" height="20"></i>
+      <div><strong>危ない作業は別ブランチ or worktree</strong> — Ch21で詳説。失敗したらブランチごと削除して終わり。</div>
+    </li>
+    <li>
+      <i data-lucide="alert-triangle" width="20" height="20"></i>
+      <div><strong>本番環境の git pull は禁止</strong> — 「main に戻しました」と軽く言う前に、CI/CDパイプライン経由かを必ず確認。</div>
+    </li>
+  </ul>
+
+  <details class="more-box">
+    <summary>もっと詳しく: <code>--force-with-lease</code> の挙動</summary>
+    <div class="more-body">
+      <p><code>git push --force</code> は「リモートの状態を無視して上書き」しますが、<code>--force-with-lease</code> は「自分が最後に fetch した時点のリモートと、現在のリモートが一致している場合のみ上書き」します。つまり<strong>他人のコミットを知らずに踏むと拒否される</strong>ため、個人リポやPR運用の自分ブランチでは常にこちらを使うのが安全です。</p>
+      <p>Claude に頼む時も「push するなら必ず --force-with-lease」と CLAUDE.md に書いておくと、毎回聞かずに済みます(Ch06参照)。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 6: 対処フロー(事故った時) ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 6. 事故った時の対処フロー</h2>
+
+  <p>それでも事故は起きます。大事なのは「追加で壊さないこと」。以下の順で冷静に。</p>
+
+  <table>
+    <thead><tr><th>症状</th><th>まずやる</th><th>次にやる</th><th>やってはいけない</th></tr></thead>
+    <tbody>
+      <tr><td>rm でファイル消した</td><td>作業を止める</td><td>エディタの未保存バッファ / タイムマシン / IDE履歴を探す</td><td>上書き保存・git commit</td></tr>
+      <tr><td>git reset --hard した</td><td>落ち着く</td><td><code>git reflog</code> → <code>git reset --hard HEAD@{N}</code></td><td>新しい commit を重ねる</td></tr>
+      <tr><td>push --force 事故</td><td>チームに即共有</td><td>他メンバーの最新 local から強制 push で復元</td><td>黙って pull し直す</td></tr>
+      <tr><td>DB を誤更新</td><td>アプリを止める</td><td>最新バックアップから復元 / PITR を発動</td><td>本番で直接SQL調整</td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-box">
+    <span class="label">Tips: Claude に「止まって」と言う</span>
+    <p>作業中に「あれ、これまずい?」と感じた瞬間、<strong>Esc キー</strong>で即停止できます。<code>Ctrl+C</code> だと実行中のコマンドを止めるだけで次の行動は続くので、<strong>Esc のほうが確実</strong>。落ち着いてから状況を整理して再開してください。</p>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section 7: まとめ ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 7. この章のまとめ</h2>
+
+  <div class="kv-grid">
+    <div class="kv"><div class="kv-key">Bashの実行主体</div><div class="kv-val">あなたのシェルそのもの</div></div>
+    <div class="kv"><div class="kv-key">状態保持</div><div class="kv-val">コールごとにリセット</div></div>
+    <div class="kv"><div class="kv-key">デフォルトmode</div><div class="kv-val">default から動かさない</div></div>
+    <div class="kv"><div class="kv-key">致命3点セット</div><div class="kv-val">rm -rf / reset --hard / push --force</div></div>
+    <div class="kv"><div class="kv-key">守りの型</div><div class="kv-val">確認 → 承認 → 実行</div></div>
+    <div class="kv"><div class="kv-key">保険</div><div class="kv-val">stash / tag / reflog / worktree</div></div>
+  </div>
+
+  <p>次章 <a href="05-todo-management.html">Ch05 TodoWrite で作業管理</a> では、この「確認→実行」の型をさらに拡張して、<strong>長い作業を途中で見失わない</strong>仕組みを学びます。<span class="term" data-tip="TodoWrite: Claude Code の作業タスク管理ツール。手順を宣言させ、in_progress / completed で進捗を見える化。">TodoWrite</span> と Bash を組み合わせると、Claude の動きが劇的に予測可能になります。</p>
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>自分の settings.json に deny ルールを足す</h4>
+    <p>もっとも致命的な3コマンドを、あなたの環境で <strong>常にブロック</strong> するよう設定しましょう。</p>
+    <ol>
+      <li><code>~/.claude/settings.json</code> を開く(なければ作る)</li>
+      <li><code>permissions.deny</code> に <code>rm -rf:*</code> / <code>git push --force:*</code> / <code>git reset --hard:*</code> の3パターンを追加</li>
+      <li>Claude Code を再起動して、「プロジェクトの build フォルダを rm -rf して」と頼んでみる</li>
+      <li>ブロックされる挙動を確認する</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><code>~/.claude/settings.json</code> に以下のように追記します(既存の他キーは残す)。</p>
+<pre><code>{
+  "permissions": {
+    "deny": [
+      "Bash(rm -rf:*)",
+      "Bash(git push --force:*)",
+      "Bash(git reset --hard:*)"
+    ]
+  }
+}</code></pre>
+      <p>再起動後、Claude に削除系を頼むと「このコマンドは deny ルールでブロックされています」と返ってきて実行されません。<strong>本当に必要な時だけ</strong>ルールを一時的に外す、という運用に切り替えると事故ゼロに近づきます。<code>--force-with-lease</code> は通したいので、<code>Bash(git push --force:*)</code> は <code>--force</code> パターンにマッチさせ、<code>--force-with-lease</code> は明示的に allow に入れておくのがおすすめ。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>「確認→実行」プロンプトテンプレを自作する</h4>
+    <p>自分の日常ワークフロー(例: リリース準備・キャッシュクリア・DB マイグレーション) を1つ選び、<strong>3ステップのお守りプロンプト</strong>をカスタマイズして、実際にClaudeに走らせてみましょう。</p>
+    <ol>
+      <li>対象ワークフローを1つ選ぶ</li>
+      <li>「読取ステップ / 計画提示ステップ / 実行ステップ」の3段に分解</li>
+      <li>各段で Claude が使うべきコマンドを明記</li>
+      <li>Claudeに走らせ、途中で「待った」を入れて修正できるか確認</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>例「npm のキャッシュと node_modules を綺麗にする」フローの場合:</p>
+<pre><code>node_modules まわりを掃除したい。以下の順で進めて。
+
+1. まず現状を確認:
+   - du -sh node_modules
+   - ls -la | head
+   - git status
+
+2. 実行予定のコマンドを箇条書きで提示(まだ走らせない):
+   - rm -rf node_modules
+   - npm cache clean --force
+   - npm install
+
+3. 私が「GO」と返したら1コマンドずつ実行し、各コマンド後に結果を見せて。
+   node_modules の削除前に、pwd が期待通りか必ず show して。</code></pre>
+      <p>ポイントは <strong>「計画提示で止まる」</strong> を明示すること。これを書かないと、Claude は "賢く" 一気に進めてしまいます。また「pwd を見せて」の1行で、想定外ディレクトリで rm を打つ事故が消えます。慣れてきたら、このテンプレを <span class="term" data-tip="CLAUDE.md: プロジェクトやユーザー単位で Claude に毎回読ませる指示書。Ch06で詳説。">CLAUDE.md</span> や <a href="20-skills-overview.html">Skill(Ch20)</a> に外出しすると、毎回コピペする必要がなくなります。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式ドキュメント</a> <span class="res-type doc">Doc</span> — Bashツール / permission mode の正本</li>
+      <li><a href="https://docs.claude.com/en/docs/claude-code/security" target="_blank" rel="noopener">Claude Code Security &amp; Permissions</a> <span class="res-type doc">Doc</span> — settings.json の allow/deny 仕様</li>
+      <li><a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener">Claude Code GitHub</a> <span class="res-type doc">Doc</span> — 挙動の追跡・Issueで地雷事例を検索</li>
+      <li><a href="https://git-scm.com/docs/git-reflog" target="_blank" rel="noopener">git-reflog 公式</a> <span class="res-type doc">Doc</span> — 事故からの復旧の最後の砦</li>
+      <li><a href="https://www.anthropic.com/news" target="_blank" rel="noopener">Anthropic Blog</a> <span class="res-type doc">Doc</span> — 権限モデルの変更アナウンス</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="04">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="03-file-tools.html"><span class="direction">&larr; Prev</span>ファイル操作ツール</a>
+    <a href="05-todo-management.html"><span class="direction">Next &rarr;</span>TodoWriteで作業管理</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>

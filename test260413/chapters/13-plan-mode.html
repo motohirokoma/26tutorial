@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>Planモードの使い所 - MK's Claude Code Tutorial</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code Tutorial
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav class="active"><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="../index.html#phase3" data-nav><span class="phase-name">Advanced</span><span class="phase-pct" id="pct-advanced">0%</span></a></li>
+      <li><a href="../index.html#phase4" data-nav><span class="phase-name">Projects</span><span class="phase-pct" id="pct-projects">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.13</span>
+    Planモードの使い所
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 26 sections</text>
+    </svg>
+    <div class="progress-info">0h / 24h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-welcome.html"><span class="status-dot" data-chapter="01"></span> ようこそ&セットアップ</a></li>
+    <li><a href="02-communication-basics.html"><span class="status-dot" data-chapter="02"></span> 対話の原則</a></li>
+    <li><a href="03-file-tools.html"><span class="status-dot" data-chapter="03"></span> ファイル操作ツール</a></li>
+    <li><a href="04-bash-safety.html"><span class="status-dot" data-chapter="04"></span> Bashツールと安全</a></li>
+    <li><a href="05-todo-management.html"><span class="status-dot" data-chapter="05"></span> TodoWriteで作業管理</a></li>
+    <li><a href="06-claude-md.html"><span class="status-dot" data-chapter="06"></span> CLAUDE.md</a></li>
+    <li><a href="07-git-workflow.html"><span class="status-dot" data-chapter="07"></span> Git × Claude Code</a></li>
+  </ul>
+  <div class="section-label">Core</div>
+  <ul>
+    <li><a href="08-prompt-patterns.html"><span class="status-dot" data-chapter="08"></span> プロンプト設計の型</a></li>
+    <li><a href="09-code-review.html"><span class="status-dot" data-chapter="09"></span> コードレビュー依頼</a></li>
+    <li><a href="10-refactor-workflow.html"><span class="status-dot" data-chapter="10"></span> 改修ワークフロー</a></li>
+    <li><a href="11-tdd-with-claude.html"><span class="status-dot" data-chapter="11"></span> テスト駆動</a></li>
+    <li><a href="12-debugging.html"><span class="status-dot" data-chapter="12"></span> デバッグ</a></li>
+    <li><a href="13-plan-mode.html" class="active"><span class="status-dot" data-chapter="13"></span> Planモード</a></li>
+    <li><a href="14-context-management.html"><span class="status-dot" data-chapter="14"></span> コンテキスト管理</a></li>
+    <li><a href="15-web-tools.html"><span class="status-dot" data-chapter="15"></span> Web検索・取得</a></li>
+  </ul>
+  <div class="section-label">Advanced</div>
+  <ul>
+    <li><a href="16-subagents-overview.html"><span class="status-dot" data-chapter="16"></span> Subagents</a></li>
+    <li><a href="17-mcp-overview.html"><span class="status-dot" data-chapter="17"></span> MCP</a></li>
+    <li><a href="18-hooks-overview.html"><span class="status-dot" data-chapter="18"></span> Hooks</a></li>
+    <li><a href="19-schedule-loop.html"><span class="status-dot" data-chapter="19"></span> Schedule &amp; Loop</a></li>
+    <li><a href="20-skills-overview.html"><span class="status-dot" data-chapter="20"></span> Skills</a></li>
+    <li><a href="21-worktree.html"><span class="status-dot" data-chapter="21"></span> worktree</a></li>
+    <li><a href="22-pitfalls.html"><span class="status-dot" data-chapter="22"></span> 失敗パターン10</a></li>
+  </ul>
+  <div class="section-label">Projects</div>
+  <ul>
+    <li><a href="23-project-automation.html"><span class="status-dot" data-chapter="23"></span> Project A：業務自動化</a></li>
+    <li><a href="24-project-refactor.html"><span class="status-dot" data-chapter="24"></span> Project B：リファクタ</a></li>
+    <li><a href="25-project-webapp.html"><span class="status-dot" data-chapter="25"></span> Project C：Webアプリ</a></li>
+    <li><a href="26-final-exercise.html"><span class="status-dot" data-chapter="26"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 2: Core &gt; Chapter 13</div>
+  <h1>Planモードの使い所</h1>
+  <p class="subtitle">大きな変更は「計画への同意」から入る。ロールバック保険としての Plan</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 30分</span>
+    <span class="badge">Phase: Core</span>
+    <span class="badge">難易度: 中級</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">この章のゴール</span>
+    <p>Claude Code の <strong>Plan モード</strong>が「何のために存在するのか」を腹落ちさせて、自分の業務で<strong>いつ発動するかを即断できる</strong>状態になることです。大きな変更・複数ファイル横断・取り返しのつかない操作は、すべて Plan から入るのがパワーユーザーの基本姿勢。30分で判断フローまで落とし込みます。</p>
+  </div>
+
+  <div class="info-box" style="border-left: 3px solid #D97757;">
+    <span class="label">2026年1月時点の情報</span>
+    <p>本章の記述は <strong>2026年1月時点</strong> の Claude Code の Plan モード仕様 (<code>ExitPlanMode</code> ツール含む) に基づきます。UI のキーバインドやモード切替の細部は変わる可能性があるため、動作が異なる場合は <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">公式ドキュメント</a> を確認してください。</p>
+  </div>
+
+  <!-- ===== Section 1: Plan モードとは ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Plan モードとは — 一言で</h2>
+
+  <p><span class="term" data-tip="Plan モード: Claude Code が「書き込み/実行」を一切行わず、まず計画だけ立てるモード。ユーザが同意するまでは安全。">Plan モード</span>は、Claude が<strong>読み取り専用</strong>で情報を集め、「これから何をやるつもりか」を<strong>計画として提示するだけ</strong>のモードです。あなたが計画に OK を出さない限り、ファイルは1行も書き換わらず、<code>Bash</code> も実行されません。</p>
+
+  <p>通常モードでは Claude は「考える → 書く → 実行する」を一気通貫でやります。Plan モードはその真ん中に<strong>同意ゲート</strong>を差し込む仕組み。いわば<span class="term" data-tip="dry-run: 本番実行せずに、何が起きるかだけシミュレートする走行">dry-run</span>と契約書レビューを合体させたようなものです。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">通常モード vs Plan モード</div>
+    <svg viewBox="0 0 520 260" width="100%" style="max-width:520px; display:block; margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <!-- 通常モード -->
+      <text x="130" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#475569">通常モード</text>
+      <rect x="30" y="35" width="80" height="40" rx="6" fill="rgba(217,119,87,0.15)" stroke="#D97757"/>
+      <text x="70" y="60" text-anchor="middle" font-size="11">考える</text>
+      <rect x="130" y="35" width="80" height="40" rx="6" fill="rgba(217,119,87,0.15)" stroke="#D97757"/>
+      <text x="170" y="60" text-anchor="middle" font-size="11">書く</text>
+      <rect x="230" y="35" width="80" height="40" rx="6" fill="#fee2e2" stroke="#dc2626"/>
+      <text x="270" y="60" text-anchor="middle" font-size="11">実行</text>
+      <path d="M 110 55 L 128 55" stroke="#64748b" stroke-width="1.5" marker-end="url(#a1)"/>
+      <path d="M 210 55 L 228 55" stroke="#64748b" stroke-width="1.5" marker-end="url(#a1)"/>
+      <text x="170" y="100" text-anchor="middle" font-size="10" fill="#dc2626">壊れたら戻すのが大変</text>
+
+      <!-- Planモード -->
+      <text x="130" y="140" text-anchor="middle" font-size="12" font-weight="700" fill="#475569">Plan モード</text>
+      <rect x="30" y="155" width="80" height="40" rx="6" fill="rgba(217,119,87,0.15)" stroke="#D97757"/>
+      <text x="70" y="180" text-anchor="middle" font-size="11">調べる</text>
+      <rect x="130" y="155" width="80" height="40" rx="6" fill="rgba(217,119,87,0.15)" stroke="#D97757"/>
+      <text x="170" y="180" text-anchor="middle" font-size="11">計画提示</text>
+      <rect x="230" y="155" width="100" height="40" rx="6" fill="#dcfce7" stroke="#16a34a"/>
+      <text x="280" y="180" text-anchor="middle" font-size="11" font-weight="700">同意ゲート</text>
+      <rect x="350" y="155" width="80" height="40" rx="6" fill="rgba(217,119,87,0.15)" stroke="#D97757"/>
+      <text x="390" y="175" text-anchor="middle" font-size="10">書く</text>
+      <text x="390" y="188" text-anchor="middle" font-size="10">+ 実行</text>
+      <path d="M 110 175 L 128 175" stroke="#64748b" stroke-width="1.5" marker-end="url(#a1)"/>
+      <path d="M 210 175 L 228 175" stroke="#64748b" stroke-width="1.5" marker-end="url(#a1)"/>
+      <path d="M 330 175 L 348 175" stroke="#64748b" stroke-width="1.5" marker-end="url(#a1)"/>
+      <text x="280" y="215" text-anchor="middle" font-size="10" fill="#16a34a">ここで NO なら何も起きない</text>
+      <text x="280" y="230" text-anchor="middle" font-size="10" fill="#475569">= ロールバック不要</text>
+
+      <defs><marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker></defs>
+    </svg>
+    <div class="diagram-caption">Plan モードの本質は「実行前に一度止まる」こと。壊れてから戻すより、壊れる前に止めるほうが圧倒的に安い。</div>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section 2: ExitPlanMode ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> ExitPlanMode の意味 — 「同意ゲート」の正体</h2>
+
+  <p>Plan モード中に Claude が計画をまとめ終わると、内部で <span class="term" data-tip="ExitPlanMode: Plan モードを抜けて実行モードに移るためのツール。ユーザ承認を要求する。">ExitPlanMode</span> というツールを呼びます。これが実質的に「<strong>ここまでが計画です、進めていいですか?</strong>」という<span class="term" data-tip="承認プロンプト: ユーザに Yes/No を求める UI">承認プロンプト</span>を出す仕組み。あなたが承認するまで、実行系ツール(<code>Write</code> / <code>Edit</code> / <code>Bash</code>)は一切走りません。</p>
+
+  <div class="info-box">
+    <span class="label">公式ドキュメント必読</span>
+    <p>Plan モードの挙動、特に<strong>どのツールがブロックされるか</strong>は公式ドキュメントにも明記されていて、ここを勘違いすると「Plan 中なのに書き換わった」という事故につながります。実務で使う前に必ず一次情報を見てください。<a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式 →</a></p>
+  </div>
+
+  <p>ユーザ側の行動は2択です:</p>
+
+  <div class="compare-cards">
+    <div class="cc good">
+      <span class="cc-label">Approve</span>
+      <h4>計画に同意する</h4>
+      <ul>
+        <li>そのまま実行フェーズへ</li>
+        <li>計画通りに <code>Edit</code> / <code>Write</code> が走る</li>
+        <li>計画にないことはやらない前提</li>
+      </ul>
+    </div>
+    <div class="cc bad">
+      <span class="cc-label">Reject</span>
+      <h4>差し戻す</h4>
+      <ul>
+        <li>何も書き換わらない(安全に戻る)</li>
+        <li>追加要望を伝える</li>
+        <li>Claude は計画を更新して再度 ExitPlanMode</li>
+      </ul>
+    </div>
+  </div>
+
+  <p>ここで重要なのは、<strong>Reject のコストがほぼゼロ</strong>である点です。通常モードで「ちょっと違った、戻して」を発動したら、ファイル差分を確認し <code>git reset</code> や <code>git checkout --</code> を叩く必要がある。Plan モードなら単に「No」だけでいい。これが<strong>計画への同意=ロールバックの保険</strong>という発想です。</p>
+
+  <!-- ===== Section 3: Plan に含めるべきこと ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Plan に含めるべき5要素</h2>
+
+  <p>同意ゲートが機能するのは、<strong>計画が読みやすく、判断しやすい</strong>時だけ。Claude に Plan を作らせるなら、<strong>5つの要素</strong>が揃っているかを毎回チェックしてください。</p>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="list-checks" width="20" height="20"></i>
+      <div><strong>変更するファイルの列挙</strong> — どのパスに触るか、具体的に。<code>src/**</code> のような曖昧な範囲は不可</div>
+    </li>
+    <li>
+      <i data-lucide="git-branch" width="20" height="20"></i>
+      <div><strong>各ファイルで何をやるか</strong> — 「追加」「削除」「関数名のリネーム」などアクション動詞で</div>
+    </li>
+    <li>
+      <i data-lucide="target" width="20" height="20"></i>
+      <div><strong>成功条件(done criteria)</strong> — テストが通る / ビルドが成功する / 特定の挙動が確認できる、など判定可能な形で</div>
+    </li>
+    <li>
+      <i data-lucide="alert-triangle" width="20" height="20"></i>
+      <div><strong>リスクと未解決の前提</strong> — 「この API 仕様が想定と違ったら計画変更」など、変動要因を先に出す</div>
+    </li>
+    <li>
+      <i data-lucide="shield" width="20" height="20"></i>
+      <div><strong>スコープ外の明示</strong> — 「今回はリファクタしない」「DB マイグレーションは別回」など、やらないことを固定</div>
+    </li>
+  </ul>
+
+  <details class="more-box">
+    <summary>もっと詳しく: 「スコープ外の明示」がなぜ最重要か</summary>
+    <div class="more-body">
+      <p>Claude は親切で働き者なので、計画中に「ついでにここも直しておきますね」をやりがちです。これが積もると PR が肥大化し、レビュアがキレ、ロールバック単位が崩れます。Plan モードで「やらないこと」を明記することで、<strong>同意した範囲の中だけで動く契約</strong>が結べる。スコープ外は Ch10(改修ワークフロー)とも直結する考え方です。</p>
+      <p>具体的には <code>## Out of Scope</code> セクションを Plan 末尾に必ず持たせるようプロンプトで指示するのが確実です。</p>
+    </div>
+  </details>
+
+  <h3>実際の Plan 例(リファクタ案件)</h3>
+
+  <p>以下は「<code>UserService</code> の責務を分割する」依頼に対して Claude が返した Plan の形。この粒度・書式がテンプレートです。</p>
+
+  <pre><code># Plan: UserService の責務分割
+
+## 背景
+- UserService に認証・プロフィール更新・通知送信が混在
+- テストが膨らみ、認証部分だけを差し替えたい需要がある
+
+## 変更するファイル
+1. src/services/UserService.ts — 認証ロジックを抽出、プロフィール系のみ残す
+2. src/services/AuthService.ts — 新規作成、login/logout/verify を移動
+3. src/services/UserService.test.ts — 認証系テストを AuthService.test.ts に移動
+4. src/services/AuthService.test.ts — 新規作成、移動したテストを配置
+5. src/index.ts — DI コンテナに AuthService を登録
+
+## 成功条件
+- `npm test` が全部 green
+- `npm run build` がエラーなく通る
+- UserService から `import { authenticate }` が消えている (grep 確認)
+
+## リスクと前提
+- UserService を参照している他モジュールに破壊的変更が波及する可能性
+  → 事前に grep で呼び出し元を列挙(調査フェーズで実施済み: 3ファイル)
+- Notification 送信は今回触らない(次回へ)
+
+## Out of Scope
+- 通知機能のリファクタ
+- DB スキーマ変更
+- API レスポンス形式の変更</code></pre>
+
+  <div class="info-box" style="background: rgba(217,119,87,0.08); border-left: 3px solid #D97757;">
+    <span class="label">今すぐ試す</span>
+    <p>Claude Code で自分のリポを開いて、次のように頼んでみてください。</p>
+    <pre><code>Plan モードで、このリポの README.md と CONTRIBUTING.md を再整理する計画を作って。
+変更ファイル・各ファイルのアクション・成功条件・Out of Scope を明記して。</code></pre>
+    <p>出てきた Plan の5要素が揃っているかチェック。欠けていたら「Out of Scope が抜けてる」と追記要求するだけで、Plan の質が一段上がります。</p>
+  </div>
+
+  <!-- ===== Section 4: 使う/使わない判定フロー ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 使う・使わないの判定フロー</h2>
+
+  <p>毎回 Plan を挟むと遅くなるし、軽い作業で Plan を挟むと逆に冗長です。次のフローを<strong>身体で覚える</strong>のが目標。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Plan を使う/使わない 判定フロー</div>
+    <pre class="mermaid">
+graph TD
+  Start([依頼が来た]) --> Q1{"触るファイル数は?"}
+  Q1 -- "3 以上" --> Plan["Plan モード必須"]
+  Q1 -- "1-2" --> Q2{"取り返しのつかない操作を含む?"}
+  Q2 -- "Yes - delete/migrate/force" --> Plan
+  Q2 -- "No" --> Q3{"本番・共有コードに影響?"}
+  Q3 -- "Yes" --> Plan
+  Q3 -- "No" --> Q4{"初見のコードベース?"}
+  Q4 -- "Yes" --> Plan
+  Q4 -- "No" --> Direct["通常モードで直行OK"]
+  Plan --> Approve["計画レビュー → 同意 → 実行"]
+    </pre>
+    <div class="diagram-caption">「3ファイル以上触る作業は Plan 必須」の1行ルールを徹底すると、事故の9割は事前に潰せる。</div>
+  </div>
+
+  <h3>使うべき典型シーン / 使わないべきシーン</h3>
+
+  <table>
+    <thead>
+      <tr><th>シーン</th><th>Plan 推奨度</th><th>理由</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>3ファイル以上のリファクタ</td><td>★★★ 必須</td><td>影響範囲が広く、レビュー単位が必要</td></tr>
+      <tr><td>DB マイグレーション / スキーマ変更</td><td>★★★ 必須</td><td>取り返しがつかない、データ損失リスク</td></tr>
+      <tr><td><code>rm -rf</code> / <code>git reset --hard</code> 系</td><td>★★★ 必須</td><td>実行後のロールバック不可</td></tr>
+      <tr><td>新機能の初期実装</td><td>★★☆ 推奨</td><td>設計段階で方向修正できる</td></tr>
+      <tr><td>初めて触るコードベース</td><td>★★☆ 推奨</td><td>把握のために調査フェーズが必要</td></tr>
+      <tr><td>typo 1箇所修正</td><td>☆☆☆ 不要</td><td>直接やるのが速い、計画書の方が長くなる</td></tr>
+      <tr><td>README の文言微調整</td><td>☆☆☆ 不要</td><td>軽量な変更は直行で</td></tr>
+      <tr><td>ログ追加・console.log 系</td><td>☆☆☆ 不要</td><td>戻すのが容易、試行錯誤フェーズ</td></tr>
+    </tbody>
+  </table>
+
+  <details class="more-box">
+    <summary>もっと詳しく: 「中間領域」の判断に迷った時</summary>
+    <div class="more-body">
+      <p>「2ファイルだけど片方がコアロジック」「新機能だけど既存部分には一切触らない」のような中間ケースで迷った時は、<strong>迷った時点で Plan を挟む</strong>を原則にしてください。理由は2つ:</p>
+      <ul>
+        <li>Plan を挟むコストは 2-3分、やり直しコストは 30分〜数時間。非対称すぎる。</li>
+        <li>「判断を保留する」こと自体が、自分のコードベース理解度が浅いサインなので、Plan の調査フェーズで埋まる。</li>
+      </ul>
+      <p>慣れてくると「Plan いらないな」が即判断できるようになります。それまでは<strong>保険多めで動く</strong>のが上位20%への最短ルート。</p>
+    </div>
+  </details>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section 5: Plan が効くメカニズム ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> なぜ Plan が「ロールバック保険」になるのか</h2>
+
+  <p>Plan が保険として機能する本質は「<strong>同意した瞬間、以降の変更に責任の境界線が引かれる</strong>」点です。同意前の計画書は、あなたと Claude の間の<span class="term" data-tip="契約: お互いの合意でスコープを固定する行為">契約</span>。この契約に沿わない変更が起きたら差し戻せば済む、という姿勢が取れます。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Plan ありなしの手戻りコスト (相対値)</div>
+    <canvas id="ch13-bar-1" height="180"></canvas>
+  </div>
+  <script>
+    window.addEventListener("load", function(){
+      var ctx = document.getElementById('ch13-bar-1');
+      if(!ctx || !window.Chart) return;
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['typo修正','1ファイル改修','3ファイル改修','新機能実装','リファクタ大','DB移行'],
+          datasets: [
+            { label: 'Plan なし (手戻りコスト)', data: [1, 3, 12, 25, 40, 60], backgroundColor: '#D97757', borderRadius: 6 },
+            { label: 'Plan あり (手戻りコスト)', data: [2, 4, 7, 10, 14, 18], backgroundColor: 'rgba(217,119,87,0.35)', borderRadius: 6 }
+          ]
+        },
+        options: {
+          plugins: { legend: { position: 'bottom' } },
+          scales: { y: { beginAtZero: true, title: { display: true, text: '相対コスト' } } }
+        }
+      });
+    });
+  </script>
+
+  <p>小さな変更では Plan の方がむしろ重い(左2本)。しかし変更が広がるほど Plan ありのコスト曲線は緩やかで、<strong>Plan なしは指数的に膨らむ</strong>のがポイント。損益分岐点は経験的に「3ファイルあたり」です。</p>
+
+  <div class="info-box" style="border-left-color: #D97757;">
+    <span class="label">ここがプロの境目</span>
+    <p><strong>大きな変更は Plan から入る。計画への同意がロールバックの保険になる</strong>。壊れてから git 操作で戻すより、壊れる前に Reject する方が<strong>桁違いに安い</strong>。責任の境界線が明示されるため、Claude に「計画外の提案」を抑制する効果もある。<br>
+    <em>試し方:</em> 今日から「3ファイル以上触る作業は Plan 必須」を自分ルール化して、Claude Code を開いたら最初に<code>プランモードで計画作って</code>と打つクセをつける。</p>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section 6: よくある失敗と回避 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> よくある失敗と回避策</h2>
+
+  <div class="kv-grid">
+    <div class="kv"><div class="kv-key">Plan を読まずに同意</div><div class="kv-val">変更ファイル数だけは必ず目視</div></div>
+    <div class="kv"><div class="kv-key">同意後に「ついで」追加</div><div class="kv-val">範囲外は新セッションで</div></div>
+    <div class="kv"><div class="kv-key">計画が抽象的すぎる</div><div class="kv-val">パス名と行動詞を要求</div></div>
+    <div class="kv"><div class="kv-key">毎回 Plan で冗長</div><div class="kv-val">typoや1行修正は直行</div></div>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: 「Plan 後に追加要求」が一番やりがちな罠</summary>
+    <div class="more-body">
+      <p>Plan に同意したあと、実行中に「そういえばここも直して」と追加すると、<strong>Plan の同意範囲が崩れて保険が無効化</strong>します。追加したい時は2択:</p>
+      <ul>
+        <li>(a) 一度完了させて commit、そのあと次の Plan を作る(推奨)</li>
+        <li>(b) 実行を止めて Plan を更新し、再度 ExitPlanMode で同意を取り直す</li>
+      </ul>
+      <p>「口頭で途中追加」だけは避けること。これをやると Ch22(失敗パターン)の典型 #7 に落ちます。</p>
+    </div>
+  </details>
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>Plan モードを発動して5要素をチェック</h4>
+    <p>自分のリポジトリ(どれでも可)を開き、以下を Claude Code に頼んでみてください。</p>
+    <ol>
+      <li>Plan モードで「README.md と package.json のバージョン表記を揃える」計画を作らせる</li>
+      <li>返ってきた Plan に 5要素(変更ファイル/アクション/成功条件/リスク/Out of Scope)が揃っているかチェック</li>
+      <li>欠けている項目があれば補うよう追加指示</li>
+      <li>計画を承認して実行させる</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>典型的な初回 Plan は「Out of Scope」と「リスク」が抜けていることが多いです。追加指示は次のテンプレで:</p>
+      <pre><code>Plan に以下を追加してください:
+- Out of Scope セクション (CHANGELOG は今回触らない、など)
+- リスクセクション (バージョン表記のフォーマットが2ファイルで違うなら事前に揃える必要があるか)</code></pre>
+      <p>こうして Plan の質を一段上げた状態で同意する習慣が付きます。実務では「Out of Scope が書かれていない Plan は差し戻し」をルール化しているチームもあります。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>「3ファイルルール」を自分の業務に組み込む</h4>
+    <p>自分の最近の Claude Code セッションを振り返って、以下を書き出してください。</p>
+    <ol>
+      <li>直近1週間で「3ファイル以上触った作業」を3つ列挙</li>
+      <li>その中で Plan モードを使わなかったものにチェック</li>
+      <li>使わなかった結果「手戻り・やり直し」が発生した作業を特定</li>
+      <li>次回同じ作業が来たら Plan をどう書くか、テンプレ化してプロジェクトの CLAUDE.md に追記</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>CLAUDE.md に追記する形の例:</p>
+      <pre><code># Plan モード運用ルール (本プロジェクト)
+
+## Plan 必須の作業
+- 3ファイル以上を同時に触る
+- DB マイグレーション、スキーマ変更
+- 認証・権限系コードの変更
+- 外部 API の契約に関わる変更
+
+## Plan に必ず含める
+1. 変更ファイル (パス列挙)
+2. 各ファイルのアクション (追加/削除/リネーム等)
+3. 成功条件 (テスト・ビルド・grep 確認)
+4. リスクと前提
+5. Out of Scope</code></pre>
+      <p>CLAUDE.md に書いておくと、Claude が Plan を作る際に自動でこのルールに沿ってくれるため、毎回口頭で指示する必要がなくなります。Ch06(CLAUDE.md)との合わせ技がパワーユーザーの基本装備です。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式ドキュメント</a> <span class="res-type doc">Doc</span> — Plan モードの正式仕様と ExitPlanMode の挙動</li>
+      <li><a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener">Claude Code GitHub</a> <span class="res-type doc">Doc</span> — 最新の Issue / リリースノートで Plan 周りの更新を追える</li>
+      <li><a href="https://www.anthropic.com/news" target="_blank" rel="noopener">Anthropic Blog</a> <span class="res-type doc">Doc</span> — Plan モード関連の発表・活用事例</li>
+      <li><a href="https://github.com/anthropics/anthropic-cookbook" target="_blank" rel="noopener">Anthropic Cookbook</a> <span class="res-type doc">Doc</span> — 実務で使われるプロンプト・ワークフローのサンプル</li>
+      <li><a href="https://zenn.dev/topics/claudecode" target="_blank" rel="noopener">Zenn: Claude Code タグ</a> <span class="res-type doc">Doc</span> — 日本語での Plan モード活用記事が集まる</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="13">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="12-debugging.html"><span class="direction">&larr; Prev</span>デバッグ</a>
+    <a href="14-context-management.html"><span class="direction">Next &rarr;</span>コンテキスト管理</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>

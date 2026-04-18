@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>Hooksで自動化 - MK's Claude Code Tutorial</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code Tutorial
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="../index.html#phase3" data-nav class="active"><span class="phase-name">Advanced</span><span class="phase-pct" id="pct-advanced">0%</span></a></li>
+      <li><a href="../index.html#phase4" data-nav><span class="phase-name">Projects</span><span class="phase-pct" id="pct-projects">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.18</span>
+    Hooksで自動化
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 26 sections</text>
+    </svg>
+    <div class="progress-info">0h / 24h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-welcome.html"><span class="status-dot" data-chapter="01"></span> ようこそ&セットアップ</a></li>
+    <li><a href="02-communication-basics.html"><span class="status-dot" data-chapter="02"></span> 対話の原則</a></li>
+    <li><a href="03-file-tools.html"><span class="status-dot" data-chapter="03"></span> ファイル操作ツール</a></li>
+    <li><a href="04-bash-safety.html"><span class="status-dot" data-chapter="04"></span> Bashツールと安全</a></li>
+    <li><a href="05-todo-management.html"><span class="status-dot" data-chapter="05"></span> TodoWriteで作業管理</a></li>
+    <li><a href="06-claude-md.html"><span class="status-dot" data-chapter="06"></span> CLAUDE.md</a></li>
+    <li><a href="07-git-workflow.html"><span class="status-dot" data-chapter="07"></span> Git × Claude Code</a></li>
+  </ul>
+  <div class="section-label">Core</div>
+  <ul>
+    <li><a href="08-prompt-patterns.html"><span class="status-dot" data-chapter="08"></span> プロンプト設計の型</a></li>
+    <li><a href="09-code-review.html"><span class="status-dot" data-chapter="09"></span> コードレビュー依頼</a></li>
+    <li><a href="10-refactor-workflow.html"><span class="status-dot" data-chapter="10"></span> 改修ワークフロー</a></li>
+    <li><a href="11-tdd-with-claude.html"><span class="status-dot" data-chapter="11"></span> テスト駆動</a></li>
+    <li><a href="12-debugging.html"><span class="status-dot" data-chapter="12"></span> デバッグ</a></li>
+    <li><a href="13-plan-mode.html"><span class="status-dot" data-chapter="13"></span> Planモード</a></li>
+    <li><a href="14-context-management.html"><span class="status-dot" data-chapter="14"></span> コンテキスト管理</a></li>
+    <li><a href="15-web-tools.html"><span class="status-dot" data-chapter="15"></span> Web検索・取得</a></li>
+  </ul>
+  <div class="section-label">Advanced</div>
+  <ul>
+    <li><a href="16-subagents-overview.html"><span class="status-dot" data-chapter="16"></span> Subagents</a></li>
+    <li><a href="17-mcp-overview.html"><span class="status-dot" data-chapter="17"></span> MCP</a></li>
+    <li><a href="18-hooks-overview.html" class="active"><span class="status-dot" data-chapter="18"></span> Hooks</a></li>
+    <li><a href="19-schedule-loop.html"><span class="status-dot" data-chapter="19"></span> Schedule &amp; Loop</a></li>
+    <li><a href="20-skills-overview.html"><span class="status-dot" data-chapter="20"></span> Skills</a></li>
+    <li><a href="21-worktree.html"><span class="status-dot" data-chapter="21"></span> worktree</a></li>
+    <li><a href="22-pitfalls.html"><span class="status-dot" data-chapter="22"></span> 失敗パターン10</a></li>
+  </ul>
+  <div class="section-label">Projects</div>
+  <ul>
+    <li><a href="23-project-automation.html"><span class="status-dot" data-chapter="23"></span> Project A：業務自動化</a></li>
+    <li><a href="24-project-refactor.html"><span class="status-dot" data-chapter="24"></span> Project B：リファクタ</a></li>
+    <li><a href="25-project-webapp.html"><span class="status-dot" data-chapter="25"></span> Project C：Webアプリ</a></li>
+    <li><a href="26-final-exercise.html"><span class="status-dot" data-chapter="26"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 3: Advanced &gt; Chapter 18</div>
+  <h1>Hooksで自動化</h1>
+  <p class="subtitle">「毎回頼むこと」を settings.json で自動発火させる</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 60分</span>
+    <span class="badge">Phase: Advanced</span>
+    <span class="badge">難易度: 中級</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">この章のゴール</span>
+    <p><strong>Hooks</strong> は、Claude Code の動作の「継ぎ目」に自分のスクリプトを差し込める仕組み。ファイル保存のたびに Prettier を走らせる、テストが通ったら通知を鳴らす、危ないコマンドは実行前に止める——といった自動化が <code>settings.json</code> 数行で実現します。<br>この章では、<strong>発想→構造→主要イベント→定番レシピ3つ→セキュリティ</strong> を60分で通し、終わるころには「毎日繰り返している手動作業」を1つ消せる状態にします。</p>
+  </div>
+
+  <div class="info-box" style="border-left: 3px solid #D97757;">
+    <span class="label">2026年1月時点の情報</span>
+    <p>本章は <strong>2026年1月時点</strong> の Claude Code Hooks(<code>PreToolUse</code> / <code>PostToolUse</code> / <code>Stop</code> / <code>Notification</code> / <code>SessionStart</code> など)挙動に基づきます。イベント名や JSON スキーマは更新される可能性があるので、動かない時は <a href="https://docs.claude.com/en/docs/claude-code/hooks" target="_blank" rel="noopener">公式ドキュメント</a> を見るのが最速です。</p>
+  </div>
+
+  <!-- ===== Section 1: Hooksの発想 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Hooksの発想 — 「頼まなくても動く」世界へ</h2>
+
+  <p><span class="term" data-tip="Hooks: Claude Code のイベントに紐づくユーザー定義スクリプト。settings.json で宣言する。">Hooks</span> は、Claude が「これからツールを使う瞬間」「使った直後」「応答を返し終わった瞬間」など特定の継ぎ目を <strong>フック(引っ掛けて)</strong> 、あなたのシェルコマンドを自動実行する仕組みです。Claude に毎回お願いしていた「保存したら Prettier かけて」を、Claude が忘れようが気絶しようが確実に実行してくれます。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">依頼主導 vs Hook主導 — 自動化の境目</div>
+    <svg viewBox="0 0 560 260" width="100%" style="max-width:600px; display:block; margin:0 auto;">
+      <!-- 左: 依頼主導 -->
+      <rect x="20" y="20" width="240" height="220" fill="#f4f4f5" stroke="#94a3b8" rx="10"/>
+      <text x="140" y="45" text-anchor="middle" font-size="13" font-weight="700" fill="#475569">依頼主導(従来)</text>
+      <rect x="50" y="70" width="180" height="30" fill="white" stroke="#cbd5e1" rx="6"/>
+      <text x="140" y="90" text-anchor="middle" font-size="11">「保存したらPrettierかけて」</text>
+      <rect x="50" y="110" width="180" height="30" fill="white" stroke="#cbd5e1" rx="6"/>
+      <text x="140" y="130" text-anchor="middle" font-size="11">「テスト走らせて」</text>
+      <rect x="50" y="150" width="180" height="30" fill="white" stroke="#cbd5e1" rx="6"/>
+      <text x="140" y="170" text-anchor="middle" font-size="11">「終わったら通知して」</text>
+      <text x="140" y="215" text-anchor="middle" font-size="11" fill="#dc2626" font-weight="600">毎回人間が依頼 → 抜ける</text>
+      <!-- 矢印 -->
+      <path d="M 280,130 L 310,130" stroke="#D97757" stroke-width="3" marker-end="url(#arr1)"/>
+      <defs><marker id="arr1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#D97757"/></marker></defs>
+      <!-- 右: Hook主導 -->
+      <rect x="320" y="20" width="220" height="220" fill="rgba(217,119,87,0.15)" stroke="#D97757" rx="10"/>
+      <text x="430" y="45" text-anchor="middle" font-size="13" font-weight="700" fill="#D97757">Hook主導</text>
+      <rect x="340" y="70" width="180" height="110" fill="white" stroke="#D97757" rx="6"/>
+      <text x="430" y="95" text-anchor="middle" font-size="11" font-weight="600">settings.json</text>
+      <text x="430" y="115" text-anchor="middle" font-size="10">PostToolUse → Prettier</text>
+      <text x="430" y="133" text-anchor="middle" font-size="10">Stop → 通知音</text>
+      <text x="430" y="151" text-anchor="middle" font-size="10">PreToolUse → rm確認</text>
+      <text x="430" y="169" text-anchor="middle" font-size="10" fill="#64748b">一度書けば永続</text>
+      <text x="430" y="215" text-anchor="middle" font-size="11" fill="#16a34a" font-weight="600">勝手に動く → 抜けない</text>
+    </svg>
+    <div class="diagram-caption">依頼を忘れても/Claudeが忘れても、Hook は静かに確実に動く。</div>
+  </div>
+
+  <p>ポイントは <strong>「お願い」から「契約」への昇格</strong>。お願いは揺れる(Claude の機嫌、自分の疲労度)。契約は揺れない(<code>settings.json</code> に書いた瞬間に確定)。これが自動化の本質です<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>。</p>
+
+  <div class="info-box" style="border-left-color: #D97757;">
+    <span class="label">ここがプロの境目</span>
+    <p><strong>「毎回頼むこと」を1つ Hook 化するだけで、1日に5回は手間が消える</strong>。1日5回 × 20営業日 = 月100回。3秒の依頼でも累計5分、認知負荷で見ればもっと大きい。上位20%は「同じ依頼3回目」で即 Hook 化する。<br>
+    <em>試し方：</em> 今日やった繰り返し手動作業(保存→lint・コミット前チェック・終了通知のどれか)を1つ選び、本章末の「Recipe 1」を丸コピして5分で体験する。</p>
+  </div>
+
+  <!-- ===== Section 2: settings.json の構造 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> settings.json の構造を頭に入れる</h2>
+
+  <p>Hooks は Claude Code の <span class="term" data-tip="Claude Code 設定ファイル。ユーザー/プロジェクト/ローカルの3階層でマージされる。">settings.json</span> に書きます。配置場所は3階層:</p>
+
+  <table>
+    <thead><tr><th>配置</th><th>パス</th><th>用途</th><th>Git管理</th></tr></thead>
+    <tbody>
+      <tr><td>User(全プロジェクト共通)</td><td><code>~/.claude/settings.json</code></td><td>個人の通知音・ログ等</td><td>対象外</td></tr>
+      <tr><td>Project(チーム共有)</td><td><code>.claude/settings.json</code></td><td>Prettier/Lint/テスト等チーム標準</td><td>コミットする</td></tr>
+      <tr><td>Local(個人オーバーライド)</td><td><code>.claude/settings.local.json</code></td><td>一時的な実験・個人ツール</td><td><code>.gitignore</code></td></tr>
+    </tbody>
+  </table>
+
+  <p>Hooks の JSON 骨格はこう。<strong>イベント名 → matcher(ツール名パターン) → hooks 配列 → command</strong> の4層です。</p>
+
+  <pre><code>{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          { "type": "command", "command": "npx prettier --write $CLAUDE_FILE_PATHS" }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+
+  <div class="diagram-box">
+    <div class="diagram-title">settings.json Hooks の構造</div>
+    <svg viewBox="0 0 520 280" width="100%" style="max-width:560px; display:block; margin:0 auto;">
+      <rect x="20" y="20" width="480" height="240" fill="rgba(217,119,87,0.15)" stroke="#D97757" rx="10"/>
+      <text x="40" y="50" font-size="13" font-weight="700" fill="#D97757">"hooks": {</text>
+      <rect x="60" y="65" width="420" height="180" fill="white" stroke="#cbd5e1" rx="8"/>
+      <text x="80" y="90" font-size="12" font-weight="700" fill="#18181b">"PostToolUse": [ ... ] ← イベント名</text>
+      <rect x="100" y="105" width="360" height="130" fill="#f4f4f5" stroke="#94a3b8" rx="6"/>
+      <text x="120" y="128" font-size="11" font-weight="600">{ "matcher": "Write|Edit", ← 対象ツール</text>
+      <text x="140" y="152" font-size="11">  "hooks": [</text>
+      <text x="160" y="174" font-size="11">    { "type": "command",</text>
+      <text x="180" y="193" font-size="11" fill="#D97757" font-weight="600">      "command": "npx prettier ..." }</text>
+      <text x="140" y="215" font-size="11">  ]</text>
+      <text x="120" y="233" font-size="11" font-weight="600">}</text>
+    </svg>
+    <div class="diagram-caption">イベント名 → matcher → hooks[] → command の4層を覚える。</div>
+  </div>
+
+  <h3>matcher の書き方</h3>
+  <p><code>matcher</code> は <strong>どのツールに反応するか</strong> を決める正規表現風の文字列。<code>"Write|Edit"</code> は OR、<code>""</code>(空) は全ツール、<code>"Bash"</code> なら Bash 実行のみ。ツール名を知らない時は、一旦 <code>""</code> で全取りして <code>$CLAUDE_TOOL_NAME</code> をログに吐き出すのが早いです。</p>
+
+  <details class="more-box"><summary>もっと詳しく: 使える環境変数一覧</summary><div class="more-body">
+    <table>
+      <thead><tr><th>環境変数</th><th>意味</th><th>例</th></tr></thead>
+      <tbody>
+        <tr><td><code>$CLAUDE_TOOL_NAME</code></td><td>実行されたツール名</td><td><code>Write</code> / <code>Bash</code></td></tr>
+        <tr><td><code>$CLAUDE_FILE_PATHS</code></td><td>対象ファイルパス(スペース区切り)</td><td><code>src/app.ts src/index.ts</code></td></tr>
+        <tr><td><code>$CLAUDE_PROJECT_DIR</code></td><td>プロジェクトのルート</td><td><code>/Users/me/proj</code></td></tr>
+        <tr><td><code>$CLAUDE_SESSION_ID</code></td><td>現在のセッションID</td><td>UUID 文字列</td></tr>
+      </tbody>
+    </table>
+    <p>JSON で入力を受けたい時は、<code>command</code> の代わりに <code>stdin</code> 経由で tool input をパースする(<code>jq</code> との組み合わせが鉄板)。詳細は公式 hooks リファレンス参照。</p>
+  </div></details>
+
+  <div class="info-box">
+    <span class="label">公式ドキュメント必読</span>
+    <p>Hooks のイベント名・matcher 文法・stdin スキーマは、誤ると <strong>無限ループや破壊的操作</strong> を招きます。ここは必ず公式で正確な最新仕様を押さえてください。<a href="https://docs.claude.com/en/docs/claude-code/hooks" target="_blank" rel="noopener">Claude Code 公式 Hooks リファレンス →</a></p>
+  </div>
+
+  <!-- ===== Section 3: 主要イベント ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 主要イベント — Pre/PostToolUse と Stop</h2>
+
+  <p>全イベントのうち <strong>まず覚えるのは3つ</strong> だけで十分。これで9割の自動化が書けます。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">1ターン内の Hook 発火フロー</div>
+    <pre class="mermaid">
+graph LR
+  U([ユーザー入力]) --> M[Claude 応答生成]
+  M --> Pre["PreToolUse Hook"]
+  Pre -->|許可| T[ツール実行]
+  Pre -->|block| Stop1([中断])
+  T --> Post["PostToolUse Hook"]
+  Post --> M
+  M --> End["Stop Hook"]
+  End --> Done([次の入力待ち])
+    </pre>
+    <div class="diagram-caption">PreToolUse は「ツール実行の前」、PostToolUse は「直後」、Stop は「ターン終了時」。</div>
+  </div>
+
+  <table>
+    <thead><tr><th>イベント</th><th>発火タイミング</th><th>得意な用途</th><th>注意</th></tr></thead>
+    <tbody>
+      <tr><td><code>PreToolUse</code></td><td>ツール実行 <strong>直前</strong></td><td>危険コマンド検知・block / 入力補正</td><td>exit 2 で blockできる</td></tr>
+      <tr><td><code>PostToolUse</code></td><td>ツール実行 <strong>直後</strong></td><td>Prettier / Lint / テスト / ログ</td><td>ツールが失敗でも発火する設計に注意</td></tr>
+      <tr><td><code>Stop</code></td><td>Claude がターンを <strong>終えた時</strong></td><td>通知音・Slack通知・git status</td><td>長いスクリプトは非推奨</td></tr>
+      <tr><td><code>Notification</code></td><td>Claude が <strong>注意を引きたい</strong> 時(パーミッション要求等)</td><td>OS通知連携</td><td>発火タイミングが特殊</td></tr>
+      <tr><td><code>SessionStart</code></td><td>セッション <strong>開始時</strong></td><td>環境情報注入・コンテキスト先出し</td><td>出力が大きいとコスト増</td></tr>
+    </tbody>
+  </table>
+
+  <h3>exit code でフローを制御</h3>
+  <p><code>PreToolUse</code> の Hook コマンドが <strong>exit 2 で終了</strong> すると、Claude Code はそのツール実行を <strong>block</strong> し、標準エラー出力を Claude に見せます。つまり「このコマンドは危険なのでやり直させる」ができる。これが Hooks の最大の武器の一つです。</p>
+
+  <ul class="icon-list">
+    <li><i data-lucide="check-circle" width="20" height="20"></i><div><strong>exit 0</strong> — 何も言わず通す(デフォルト成功)</div></li>
+    <li><i data-lucide="alert-triangle" width="20" height="20"></i><div><strong>exit 2</strong> — <code>PreToolUse</code> では block、<code>PostToolUse</code> では stderr を Claude に feedback</div></li>
+    <li><i data-lucide="x-circle" width="20" height="20"></i><div><strong>その他の exit code</strong> — エラーとしてログ、実行は止めない</div></li>
+  </ul>
+
+  <!-- ===== Section 4: 定番レシピ3つ ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 定番レシピ3つ — コピペで動く</h2>
+
+  <p>まずは以下3本を <code>.claude/settings.json</code> に入れて、Claude Code を再起動。これだけで今日から体感が変わります。</p>
+
+  <h3>Recipe 1: 保存時に Prettier 自動整形</h3>
+
+  <div class="info-box">
+    <span class="label">今すぐ試す (5分)</span>
+    <p><strong>ステップ:</strong> (1) プロジェクトルートに <code>.claude/settings.json</code> を作成 → (2) 下記を貼り付け → (3) Claude に「何か <code>.ts</code> ファイルを編集して」と頼む → (4) 保存後に整形されていれば成功。</p>
+  </div>
+
+  <pre><code>{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "for f in $CLAUDE_FILE_PATHS; do case \"$f\" in *.ts|*.tsx|*.js|*.jsx|*.json|*.md) npx prettier --write \"$f\" 2&gt;/dev/null ;; esac; done"
+          }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+
+  <p><strong>ポイント</strong>: <code>case</code> 文で拡張子をガードするのがコツ。バイナリや画像まで Prettier に食わせると警告で画面が荒れます。</p>
+
+  <h3>Recipe 2: Stop 時にテスト走らせて通知</h3>
+
+  <pre><code>{
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd $CLAUDE_PROJECT_DIR &amp;&amp; npm test --silent &amp;&amp; osascript -e 'display notification \"tests green\" with title \"Claude Code\" sound name \"Glass\"' || osascript -e 'display notification \"tests RED\" with title \"Claude Code\" sound name \"Basso\"'"
+          }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+
+  <p><strong>ポイント</strong>: macOS の <code>osascript</code> で通知+音。Linux なら <code>notify-send</code>、WSL なら PowerShell の <code>BurntToast</code> に置き換え。テスト失敗でも Claude を止めない(情報提供のみ)のがポイント。</p>
+
+  <h3>Recipe 3: PreToolUse で危険コマンドを止める</h3>
+
+  <pre><code>{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.command // empty' | grep -E '(rm -rf /|git push --force|:\\(\\)\\{|dd if=)' &amp;&amp; { echo 'BLOCKED: destructive pattern' &gt;&amp;2; exit 2; } || exit 0"
+          }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+
+  <p><strong>ポイント</strong>: stdin から JSON でツール入力が渡ってくるので <code>jq</code> で抽出。危険パターンにマッチしたら <code>exit 2</code> で block + stderr で Claude にフィードバック。Claude は「このコマンドは止められた、別の手段を考えよう」と挙動を変えます。</p>
+
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">Hook なし</span>
+      <h4>反応的ワークフロー</h4>
+      <ul>
+        <li>保存のたびに「Prettierかけて」</li>
+        <li>テストを走らせるのを忘れる</li>
+        <li>危ないコマンドは目視で気づく</li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">Hook あり</span>
+      <h4>自動ワークフロー</h4>
+      <ul>
+        <li>保存=整形が自動で揃う</li>
+        <li>ターン終了で必ず test → 通知</li>
+        <li>破壊的コマンドは block</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-num">3<small>本</small></div>
+      <div class="stat-label">最小スタート</div>
+      <div class="stat-trend up">&uarr; 今日から導入</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">~5<small>回/日</small></div>
+      <div class="stat-label">消える手動依頼数</div>
+      <div class="stat-trend up">&uarr; 月100回相当</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">0<small>s</small></div>
+      <div class="stat-label">Claudeが忘れるリスク</div>
+      <div class="stat-trend up">&uarr; 確定動作</div>
+    </div>
+  </div>
+
+  <!-- ===== Section 5: Hook化候補の見つけ方(チャート) ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> どの手動作業を Hook 化するか</h2>
+
+  <p>「繰り返し × 定型 × 低リスク」が Hook 化の3条件。下のレーダーで自分の依頼を採点して、80点以上を超えた作業から順に Hook 化しましょう。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Hook化候補スコアリング(例: 保存時Prettier)</div>
+    <canvas id="ch18-radar-1" height="220"></canvas>
+  </div>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Hook化による時間削減(週次シミュレーション)</div>
+    <canvas id="ch18-bar-2" height="180"></canvas>
+  </div>
+
+  <details class="more-box"><summary>もっと詳しく: Hook化してはいけない作業</summary><div class="more-body">
+    <ul>
+      <li><strong>デプロイ・本番反映</strong> — Stop 発火で勝手にデプロイは絶対NG。必ず手動トリガーに</li>
+      <li><strong>金銭が動くAPI</strong> — LLM課金・外部SaaS課金系は Hook で連打すると破産</li>
+      <li><strong>判断が要る作業</strong> — 「このPRレビューOKですか?」→ 人間が読むべき</li>
+      <li><strong>他人の環境への影響</strong> — 共通DB更新・共有サーバ再起動等</li>
+    </ul>
+  </div></details>
+
+  <!-- ===== Section 6: セキュリティ ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> セキュリティ — Hooks は刃物</h2>
+
+  <div class="info-box" style="border-left: 4px solid #dc2626; background: #fef2f2;">
+    <span class="label" style="color:#dc2626;">⚠️ セキュリティ警告</span>
+    <p>Hooks は <strong>あなたのシェル権限で何でも実行できます</strong>。信用できない <code>settings.json</code>(他人の git clone、怪しい gist 貼り付け)を読み込むと、<strong>PCが乗っ取られます</strong>。必ず内容を目視し、初見の Hook は <code>echo</code> に置き換えてから試すこと。</p>
+  </div>
+
+  <ul class="icon-list">
+    <li><i data-lucide="shield" width="20" height="20"></i><div><strong>他人のsettings.jsonを読む前に目視</strong> — <code>git clone</code> 時は <code>.claude/settings.json</code> を先に確認</div></li>
+    <li><i data-lucide="lock" width="20" height="20"></i><div><strong>シークレットを echo しない</strong> — <code>env</code> 丸ごと log すると <code>.zsh_history</code> に漏れる</div></li>
+    <li><i data-lucide="repeat" width="20" height="20"></i><div><strong>無限ループに注意</strong> — <code>PostToolUse</code> で Write を呼ぶ Hook は自分を再発火させうる(Ch22 で詳述)</div></li>
+    <li><i data-lucide="clock" width="20" height="20"></i><div><strong>長すぎるHookはタイムアウトで切る</strong> — <code>timeout 30 ...</code> を頭に付ける癖を</div></li>
+    <li><i data-lucide="git-branch" width="20" height="20"></i><div><strong>チーム共有はプロジェクトsettings.jsonのみ</strong> — <code>settings.local.json</code> は絶対コミットしない</div></li>
+  </ul>
+
+  <div class="quote">
+    Hook は契約。契約書を読まずにサインするな。<strong>コピペ前に1行ずつ何をするか言語化できる</strong>ことだけコピペする。
+    <cite>— 共有settings.jsonで社内事故を起こした人の言葉</cite>
+  </div>
+
+  <details class="more-box"><summary>もっと詳しく: Hook debugのベストプラクティス</summary><div class="more-body">
+    <ol>
+      <li><strong>まず echo でドライラン</strong> — <code>"command": "echo [PostToolUse] $CLAUDE_FILE_PATHS &gt;&gt; /tmp/claude-hooks.log"</code></li>
+      <li><strong>ログをtail</strong> — 別ターミナルで <code>tail -f /tmp/claude-hooks.log</code></li>
+      <li><strong>単発で手動テスト</strong> — <code>CLAUDE_FILE_PATHS="test.ts" sh -c "コマンド"</code></li>
+      <li><strong>本番コマンドに置換</strong> — 動作確認してから Prettier なり何なりに差し替え</li>
+    </ol>
+    <p>「いきなり本番ツールをHookに入れない」「必ず一度は log だけ吐かせる」——この2つで事故の9割は防げます。</p>
+  </div></details>
+
+  <!-- ===== Section 7: 専門編誘導 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> もっと深く学ぶ — 専門編へ</h2>
+
+  <div class="info-box" style="border-left: 4px solid #D97757; background: rgba(217,119,87,0.08);">
+    <span class="label" style="color:#D97757;">📚 専門編への誘導</span>
+    <p>本章はHooksの<strong>エッセンス60分</strong>。実務で「テスト結果を PR コメントに自動投稿」「複数Hookの合成」「Notification/SessionStart/SubagentStop の応用」「チーム横展開」まで踏み込むには、専用カリキュラムで<strong>もう一段深く</strong>学ぶのが最短です。<br><br>
+    <strong>もっと深く → <a href="https://motohirokoma.github.io/26tutorial/test260419-3/" target="_blank" rel="noopener">MK's Claude Code Tutorial - Hooks Workshop</a></strong>(ワークショップ型・実レシピ集付き)</p>
+  </div>
+
+  <p>本章で「3本コピペ」ができたあなたは、すでに Hooks 利用者の上位30%です。残り70%の差——つまり <strong>自分用レシピを毎週1個増やす習慣</strong>——を身につけると、半年で業務の見え方が変わります<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>。
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>Recipe 1 を動かす</h4>
+    <p>自分のプロジェクトに Recipe 1(Prettier 自動整形)を導入し、実際に動作を確認してください。</p>
+    <ol>
+      <li>プロジェクトルートで <code>mkdir -p .claude &amp;&amp; touch .claude/settings.json</code></li>
+      <li>Recipe 1 の JSON をコピペして保存</li>
+      <li>Claude Code を再起動(必要なら <code>/exit</code> → 再起動)</li>
+      <li>Claude に「<code>sample.ts</code> を作って。中身は整形されていない関数1つ」と頼む</li>
+      <li>生成されたファイルが Prettier で整形されていることを確認</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>以下の手順で5分以内に確認できます。</p>
+      <pre><code>mkdir -p .claude
+cat &gt; .claude/settings.json &lt;&lt;'EOF'
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          { "type": "command",
+            "command": "for f in $CLAUDE_FILE_PATHS; do case \"$f\" in *.ts|*.tsx|*.js|*.jsx|*.json|*.md) npx prettier --write \"$f\" 2&gt;/dev/null ;; esac; done" }
+        ]
+      }
+    ]
+  }
+}
+EOF</code></pre>
+      <p><strong>確認ポイント</strong>: ファイル保存後に <code>git status</code> を見ると、同じファイルが Prettier の整形で変わっているはず。<code>npx prettier</code> を使うので初回は依存が取得されるまで1-2秒遅延します。</p>
+      <p><strong>詰まった時</strong>: <code>which npx</code> で npx が PATH にあるか確認。モノレポ等で <code>.prettierrc</code> が無い時は <code>prettier --check</code> でエラーが出るので、事前に <code>npm i -D prettier</code> しておくと確実です。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>自分専用Hookを1つ設計して実装する</h4>
+    <p>今日あなたが Claude Code に <strong>2回以上同じことを頼んだ</strong> 作業を1つ選び、Hook 化してください。下の手順に沿って進めます。</p>
+    <ol>
+      <li>今日の依頼を書き出し、繰り返し3条件(繰り返し/定型/低リスク)で10点満点評価</li>
+      <li>最高得点の作業を PreToolUse / PostToolUse / Stop のどれで動かすか決める</li>
+      <li>まず <code>echo</code> でドライラン Hook を書き、<code>/tmp/claude-hooks.log</code> に書き出す</li>
+      <li>ログで発火タイミングが正しいことを確認してから、本番コマンドに置き換える</li>
+      <li>1週間運用してみて「誤発火」「忘れていたケース」があれば <code>matcher</code> を調整</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><strong>例: 「commit 前に TypeScript の型チェック走らせて」を毎回頼んでいる人</strong></p>
+      <p>→ これは <code>PreToolUse</code> の <code>Bash</code> + <code>git commit</code> パターンをフックするのが正解。</p>
+      <pre><code>{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.command // empty' | grep -q 'git commit' &amp;&amp; { cd $CLAUDE_PROJECT_DIR &amp;&amp; npx tsc --noEmit || { echo 'tsc failed — commit blocked' &gt;&amp;2; exit 2; }; } ; exit 0"
+          }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+      <p><strong>設計メモ</strong>:</p>
+      <ul>
+        <li>matcher を <code>Bash</code> に絞る(Write/Editで発火させない)</li>
+        <li>jq で <code>tool_input.command</code> から <code>git commit</code> を検出</li>
+        <li>tsc 失敗時は <code>exit 2</code> で block + stderr にメッセージ → Claude が「型を直してから commit しよう」と軌道修正してくれる</li>
+        <li>最後の <code>; exit 0</code> は他の Bash コマンド(ls 等)を巻き込まないため</li>
+      </ul>
+      <p><strong>ドライラン版</strong> (先にこれで発火を確認):</p>
+      <pre><code>"command": "jq -r '.tool_input.command // empty' &gt;&gt; /tmp/claude-hooks.log; exit 0"</code></pre>
+      <p>1週間運用して誤発火がなければ本番版に差し替える、が鉄板フロー。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式ドキュメント</a> <span class="res-type doc">Doc</span></li>
+      <li><a href="https://docs.claude.com/en/docs/claude-code/hooks" target="_blank" rel="noopener">Claude Code Hooks リファレンス</a> <span class="res-type doc">Doc</span></li>
+      <li><a href="https://docs.claude.com/en/docs/claude-code/settings" target="_blank" rel="noopener">Claude Code Settings (settings.json)</a> <span class="res-type doc">Doc</span></li>
+      <li><a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener">Claude Code GitHub リポジトリ</a> <span class="res-type doc">Doc</span></li>
+      <li><a href="https://www.anthropic.com/news" target="_blank" rel="noopener">Anthropic Blog (最新機能の告知)</a> <span class="res-type doc">Doc</span></li>
+      <li><a href="https://motohirokoma.github.io/26tutorial/test260419-3/" target="_blank" rel="noopener">MK's Claude Code Tutorial - Hooks Workshop(専門編)</a> <span class="res-type doc">Doc</span></li>
+      <li><a href="https://jqlang.github.io/jq/manual/" target="_blank" rel="noopener">jq manual (Hookのstdinパースに必携)</a> <span class="res-type doc">Doc</span></li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="18">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="17-mcp-overview.html"><span class="direction">&larr; Prev</span>MCP</a>
+    <a href="19-schedule-loop.html"><span class="direction">Next &rarr;</span>Schedule &amp; Loop</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+<script>
+window.addEventListener("load", function(){
+  var ctx1 = document.getElementById('ch18-radar-1');
+  if (ctx1 && window.Chart) {
+    new Chart(ctx1, {
+      type: 'radar',
+      data: {
+        labels: ['繰り返し頻度','定型度','低リスク','時間節約','Claudeが忘れがち'],
+        datasets: [{
+          label: '保存時Prettier',
+          data: [95, 100, 90, 70, 85],
+          backgroundColor: 'rgba(217,119,87,0.2)',
+          borderColor: '#D97757',
+          pointBackgroundColor: '#D97757'
+        }]
+      },
+      options: { plugins: { legend: { display: false } }, scales: { r: { suggestedMin: 0, suggestedMax: 100 } } }
+    });
+  }
+  var ctx2 = document.getElementById('ch18-bar-2');
+  if (ctx2 && window.Chart) {
+    new Chart(ctx2, {
+      type: 'bar',
+      data: {
+        labels: ['Prettier依頼','テスト依頼','通知の見落とし','危険コマンド確認','lint再実行'],
+        datasets: [
+          { label: 'Hook無 (回/週)', data: [25, 15, 10, 8, 12], backgroundColor: '#cbd5e1', borderRadius: 6 },
+          { label: 'Hook有 (回/週)', data: [0, 0, 1, 0, 1], backgroundColor: '#D97757', borderRadius: 6 }
+        ]
+      },
+      options: { plugins: { legend: { position: 'bottom' } }, scales: { y: { beginAtZero: true } } }
+    });
+  }
+});
+</script>
+</body>
+</html>

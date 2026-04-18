@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>デバッグ：バグを直させる頼み方 - MK's Claude Code Tutorial</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code Tutorial
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav class="active"><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="../index.html#phase3" data-nav><span class="phase-name">Advanced</span><span class="phase-pct" id="pct-advanced">0%</span></a></li>
+      <li><a href="../index.html#phase4" data-nav><span class="phase-name">Projects</span><span class="phase-pct" id="pct-projects">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.12</span>
+    デバッグ：バグを直させる頼み方
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 26 sections</text>
+    </svg>
+    <div class="progress-info">0h / 24h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-welcome.html"><span class="status-dot" data-chapter="01"></span> ようこそ&セットアップ</a></li>
+    <li><a href="02-communication-basics.html"><span class="status-dot" data-chapter="02"></span> 対話の原則</a></li>
+    <li><a href="03-file-tools.html"><span class="status-dot" data-chapter="03"></span> ファイル操作ツール</a></li>
+    <li><a href="04-bash-safety.html"><span class="status-dot" data-chapter="04"></span> Bashツールと安全</a></li>
+    <li><a href="05-todo-management.html"><span class="status-dot" data-chapter="05"></span> TodoWriteで作業管理</a></li>
+    <li><a href="06-claude-md.html"><span class="status-dot" data-chapter="06"></span> CLAUDE.md</a></li>
+    <li><a href="07-git-workflow.html"><span class="status-dot" data-chapter="07"></span> Git × Claude Code</a></li>
+  </ul>
+  <div class="section-label">Core</div>
+  <ul>
+    <li><a href="08-prompt-patterns.html"><span class="status-dot" data-chapter="08"></span> プロンプト設計の型</a></li>
+    <li><a href="09-code-review.html"><span class="status-dot" data-chapter="09"></span> コードレビュー依頼</a></li>
+    <li><a href="10-refactor-workflow.html"><span class="status-dot" data-chapter="10"></span> 改修ワークフロー</a></li>
+    <li><a href="11-tdd-with-claude.html"><span class="status-dot" data-chapter="11"></span> テスト駆動</a></li>
+    <li><a href="12-debugging.html" class="active"><span class="status-dot" data-chapter="12"></span> デバッグ</a></li>
+    <li><a href="13-plan-mode.html"><span class="status-dot" data-chapter="13"></span> Planモード</a></li>
+    <li><a href="14-context-management.html"><span class="status-dot" data-chapter="14"></span> コンテキスト管理</a></li>
+    <li><a href="15-web-tools.html"><span class="status-dot" data-chapter="15"></span> Web検索・取得</a></li>
+  </ul>
+  <div class="section-label">Advanced</div>
+  <ul>
+    <li><a href="16-subagents-overview.html"><span class="status-dot" data-chapter="16"></span> Subagents</a></li>
+    <li><a href="17-mcp-overview.html"><span class="status-dot" data-chapter="17"></span> MCP</a></li>
+    <li><a href="18-hooks-overview.html"><span class="status-dot" data-chapter="18"></span> Hooks</a></li>
+    <li><a href="19-schedule-loop.html"><span class="status-dot" data-chapter="19"></span> Schedule &amp; Loop</a></li>
+    <li><a href="20-skills-overview.html"><span class="status-dot" data-chapter="20"></span> Skills</a></li>
+    <li><a href="21-worktree.html"><span class="status-dot" data-chapter="21"></span> worktree</a></li>
+    <li><a href="22-pitfalls.html"><span class="status-dot" data-chapter="22"></span> 失敗パターン10</a></li>
+  </ul>
+  <div class="section-label">Projects</div>
+  <ul>
+    <li><a href="23-project-automation.html"><span class="status-dot" data-chapter="23"></span> Project A：業務自動化</a></li>
+    <li><a href="24-project-refactor.html"><span class="status-dot" data-chapter="24"></span> Project B：リファクタ</a></li>
+    <li><a href="25-project-webapp.html"><span class="status-dot" data-chapter="25"></span> Project C：Webアプリ</a></li>
+    <li><a href="26-final-exercise.html"><span class="status-dot" data-chapter="26"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 2: Core &gt; Chapter 12</div>
+  <h1>デバッグ：バグを直させる頼み方</h1>
+  <p class="subtitle">「動かない」と投げるな。3点セットで渡し、仮説3つから始めさせる。</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 45min</span>
+    <span class="badge">Phase: Core</span>
+    <span class="badge">難易度: 中級</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">2026年1月時点の情報</span>
+    <p>本章は 2026年1月時点の Claude Code (Opus 4.7) の挙動を前提に書いています。エラー再現能力やWeb取得仕様はアップデートで進化する可能性があるため、最新仕様は <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">公式ドキュメント</a> で確認してください。</p>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>なぜ「動きません」では直らないのか</h2>
+
+  <p>デバッグを頼む時にやりがちな悪手の筆頭が、<strong>「動きません、直してください」</strong>と投げること。<span class="term" data-tip="バグの発生を再現できる最小限の環境・入力・手順のセット">再現環境</span> が無いままClaudeはコードを眺めて<strong>推測で直し始める</strong>。結果、関係ない場所を書き換えたり、真の原因ではなく症状だけ塞いだコードが返ってくる。</p>
+
+  <p>熟練のエンジニアは、バグ修正依頼に最低限これを渡す — <strong>再現手順 / 期待動作 / 観察結果</strong>。<span class="term" data-tip="Reproduction steps / Expected behavior / Observed behavior の3点セット。GitHub Issueテンプレの定番">3点セット</span>と呼ぶ。これが揃うだけで、Claudeの命中率は体感で2〜3倍になる。</p>
+
+  <svg class="anim-svg" viewBox="0 0 400 100" width="100%" style="max-width:400px; display:block; margin: 8px auto;">
+    <path d="M 10,50 C 100,10 300,90 390,50" fill="none" stroke="#D97757" stroke-width="3"/>
+  </svg>
+
+  <div class="diagram-box">
+    <div class="diagram-title">3点セット — バグ報告の基本形</div>
+    <svg viewBox="0 0 560 240" width="100%" style="max-width:560px; display:block; margin:0 auto;">
+      <!-- 3 columns -->
+      <rect x="20"  y="30" width="160" height="180" rx="12" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="2"/>
+      <rect x="200" y="30" width="160" height="180" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+      <rect x="380" y="30" width="160" height="180" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+
+      <text x="100" y="60"  text-anchor="middle" font-size="14" font-weight="700" fill="#D97757">1. 再現手順</text>
+      <text x="280" y="60"  text-anchor="middle" font-size="14" font-weight="700" fill="#15803d">2. 期待動作</text>
+      <text x="460" y="60"  text-anchor="middle" font-size="14" font-weight="700" fill="#b91c1c">3. 観察結果</text>
+
+      <text x="100" y="95"  text-anchor="middle" font-size="11">npm run dev 起動</text>
+      <text x="100" y="115" text-anchor="middle" font-size="11">/login を開く</text>
+      <text x="100" y="135" text-anchor="middle" font-size="11">メール入力→Tab</text>
+      <text x="100" y="155" text-anchor="middle" font-size="11">パスワード入力</text>
+      <text x="100" y="175" text-anchor="middle" font-size="11">送信ボタン</text>
+      <text x="100" y="200" text-anchor="middle" font-size="10" fill="#64748b" font-style="italic">どう操作すれば出るか</text>
+
+      <text x="280" y="95"  text-anchor="middle" font-size="11">/home に遷移</text>
+      <text x="280" y="115" text-anchor="middle" font-size="11">ユーザ名が表示</text>
+      <text x="280" y="135" text-anchor="middle" font-size="11">セッションCookie設定</text>
+      <text x="280" y="200" text-anchor="middle" font-size="10" fill="#64748b" font-style="italic">本来どうあるべきか</text>
+
+      <text x="460" y="95"  text-anchor="middle" font-size="11">/login にとどまる</text>
+      <text x="460" y="115" text-anchor="middle" font-size="11">console に TypeError</text>
+      <text x="460" y="135" text-anchor="middle" font-size="11">"Cannot read 'id'"</text>
+      <text x="460" y="155" text-anchor="middle" font-size="11">Network: 200 OK</text>
+      <text x="460" y="200" text-anchor="middle" font-size="10" fill="#64748b" font-style="italic">実際に何が起きたか</text>
+    </svg>
+    <div class="diagram-caption">この3点が揃って初めて、Claudeは「あてずっぽう」を卒業する。</div>
+  </div>
+
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">Before(死亡パターン)</span>
+      <h4>「ログインが動きません。直して。」</h4>
+      <ul>
+        <li>再現手順なし</li>
+        <li>期待動作なし</li>
+        <li>エラーログなし</li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">After(3点セット)</span>
+      <h4>「ログインで <code>TypeError: Cannot read 'id'</code>」</h4>
+      <ul>
+        <li>再現: /login → email/password 送信</li>
+        <li>期待: /home にリダイレクト</li>
+        <li>観察: Console に TypeError、Network は200</li>
+      </ul>
+    </div>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>エラーメッセージの正しい渡し方</h2>
+
+  <p>観察結果の核は <span class="term" data-tip="エラー発生時にランタイムが出力する、関数呼び出しの履歴。どこで何が起きたかの地図">スタックトレース</span> と <span class="term" data-tip="実行時に出るエラー種別(TypeError/ReferenceError等)と本文">エラーメッセージ全文</span>。<strong>要約せず、丸ごと貼る</strong>のがコツ。「TypeErrorっぽいの」ではなく、最低10行コピペする。</p>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="clipboard-copy" width="20" height="20"></i>
+      <div><strong>スタックトレースは丸ごと</strong> — 「at xxx.js:42」の1行目だけでなく、最低5-10段までコピペ。どの関数から来たかが原因特定の鍵</div>
+    </li>
+    <li>
+      <i data-lucide="globe" width="20" height="20"></i>
+      <div><strong>ブラウザ系ならNetwork/Console両方</strong> — Console のエラー + Network タブの失敗リクエスト(status/response body)の両方を渡す</div>
+    </li>
+    <li>
+      <i data-lucide="terminal" width="20" height="20"></i>
+      <div><strong>サーバ系は前後20行も</strong> — エラー行だけでなく、その直前のログも文脈になる</div>
+    </li>
+    <li>
+      <i data-lucide="git-compare" width="20" height="20"></i>
+      <div><strong>「いつから」情報も添える</strong> — 「昨日まで動いていた」「v1.3.2にアップデートしてから」— これだけで git log や diff から疑わしい変更を絞り込める</div>
+    </li>
+  </ul>
+
+  <div class="info-box">
+    <span class="label">公式ドキュメント必読</span>
+    <p>Claude Code はログやエラー全文を大量に渡してもきちんと読み解きます。ただし巨大ログは <span class="term" data-tip="会話の中で使えるトークン数の上限。これを超えると古い情報が追い出される">コンテキスト</span>を食うので、関連部分に絞ってから貼る習慣を。<a href="https://docs.claude.com/en/docs/claude-code/overview" target="_blank" rel="noopener">Claude Code 公式 →</a></p>
+  </div>
+
+  <h3>今すぐ試す #1：エラー貼り付けテンプレ</h3>
+
+  <pre><code>## バグ報告
+
+### 再現手順
+1. `npm run dev` でローカル起動
+2. http://localhost:3000/dashboard を開く
+3. 「保存」ボタンを押す
+
+### 期待動作
+- トースト "保存しました" が出る
+- DB の records テーブルに新しい行が追加される
+
+### 観察結果
+- トーストは出ない
+- Network タブで POST /api/records が 500 を返している
+- サーバログ(最新20行を貼り付け)：
+
+```
+2026-01-18 10:32:11 [error] TypeError: Cannot read properties of undefined (reading 'id')
+    at createRecord (src/api/records.ts:42:18)
+    at async Object.handler (src/api/records.ts:15:12)
+    at async /node_modules/next/...
+```
+
+### 追加情報
+- 昨日まで動いていた
+- 昨日のコミット: abc1234 (feature/user-auth マージ)
+
+## 依頼
+まず原因候補を3つ挙げてから、最も可能性の高いものから検証する手順を書いてください。
+修正はそのあと頼みます。</code></pre>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>仮説 → 検証 → 記録のループ</h2>
+
+  <p>3点セットが揃ったら、いきなり修正させず <strong>仮説→検証→記録</strong>のループを回す。これが本章で一番伝えたいこと。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">デバッグの黄金フロー</div>
+    <pre class="mermaid">
+graph LR
+  A([3点セット]) --> B["仮説を3つ出す"]
+  B --> C{"最有力から検証"}
+  C -- "当たり" --> D["原因確定"]
+  C -- "外れ" --> E["次の仮説へ"]
+  E --> C
+  D --> F["最小修正"]
+  F --> G["再現手順で再テスト"]
+  G --> H["学びを記録"]
+    </pre>
+    <div class="diagram-caption">「当てずっぽう」ではなく、候補を並べて一つずつ潰す。これが科学的デバッグ。</div>
+  </div>
+
+  <div class="info-box" style="border-left-color: #D97757;">
+    <span class="label">ここがプロの境目</span>
+    <p><strong>「仮説3つ立ててから直して」と頼む</strong>。Claudeに直接修正をやらせる前に、<strong>原因候補を3つ挙げさせ、優先度と検証方法を添えさせる</strong>。こうするとClaudeは表層だけを塞がず、本質に向かう。「null チェック追加」「APIレスポンス型変更」「auth middleware漏れ」のような異なる抽象レイヤーの仮説が並ぶと、どこを直すべきか人間側も判断できる。<br>
+    <em>試し方：</em> 次にバグ報告する時、プロンプト末尾に「<strong>まず原因候補を3つ挙げてから、最も可能性の高いものから修正</strong>」と1行だけ追加してみて。</p>
+  </div>
+
+  <h3>今すぐ試す #2：仮説ドリブンプロンプト</h3>
+
+  <pre><code>以下のバグについて、いきなり修正せず：
+
+1. 原因候補を3つ挙げてください（異なる抽象レイヤーで）
+2. それぞれの「もしこれが原因なら何が観察されるはず」を書いてください
+3. 最も検証が安いものから順に並べてください
+4. 最優先の仮説を検証する Bash コマンド or Read する箇所を提示してください
+
+（ここに3点セット）</code></pre>
+
+  <details class="more-box">
+    <summary>もっと詳しく: なぜ「3つ」なのか — 1つや5つではダメか</summary>
+    <div class="more-body">
+      <p><strong>1つだと直感に引きずられる。</strong>最初に頭に浮かんだ仮説だけで走ると、それが外れた時に方向転換の気力がなくなる。<strong>5つ以上だと雑になる。</strong>無理やり数を揃えようとしてあり得ない候補を混ぜる。</p>
+      <p>3つが「複数の選択肢を比較する」下限で、かつ「質を保ったまま出せる」上限。経験的にも研究的(<span class="term" data-tip="心理学の意思決定研究で、選択肢3つが最も質の高い判断を生むとの知見">意思決定研究</span>)にも妥当なバランス。</p>
+      <p>Claudeにとっても「3つ出せ」という制約は強力で、思考の幅を強制的に広げる。1つだけだと最頻出の原因しか出さないが、3つと言うと構造的に違う層(DB / アプリ / 環境)から出してくれる。</p>
+    </div>
+  </details>
+
+  <div class="steps">
+    <div class="step done"><div class="step-num">1</div><div class="step-label">3点セット</div><div class="step-desc">再現/期待/観察を渡す</div></div>
+    <div class="step done"><div class="step-num">2</div><div class="step-label">仮説3つ</div><div class="step-desc">原因候補を列挙</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-label">検証</div><div class="step-desc">安い順に潰す</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-label">最小修正</div><div class="step-desc">本質だけ直す</div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-label">記録</div><div class="step-desc">再発防止メモ</div></div>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>典型例：window.load 系の落とし穴</h2>
+
+  <p>本章の締めは <span class="term" data-tip="ブラウザでページ全要素(画像・script・CSS含む)の読み込み完了時に発火するイベント">window.load</span> / <span class="term" data-tip="DOMツリーの構築完了時に発火。load より早い。外部リソース待ちなし">DOMContentLoaded</span> 系の頻出バグ。Claudeに Chart.js や Mermaid の図を書かせた時、<strong>「描画されない」</strong>という症状で必ず一度はハマる。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">なぜ Chart.js が描画されないか</div>
+    <pre class="mermaid">
+sequenceDiagram
+  participant M as main 内 inline script
+  participant L as body末尾の chart.js
+  participant C as Chart クラス
+  M->>C: new Chart(ctx, ...) 呼び出し
+  Note over M,C: window.Chart はまだ未定義
+  M-->>M: 早期return（図描画されず）
+  L->>C: Chart クラス読み込み完了
+  Note over L,C: もう誰も呼ばない
+    </pre>
+    <div class="diagram-caption">body末尾のライブラリ読み込みより、main内のinline scriptが先に実行される。典型的な時系列バグ。</div>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>症状</th><th>誤った修正(表層)</th><th>正しい修正(本質)</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Chart.js の canvas が空白</td>
+        <td><code>if (!window.Chart) return;</code> で早期return</td>
+        <td><code>window.addEventListener("load", () =&gt; { ... })</code> で包む</td>
+      </tr>
+      <tr>
+        <td>Lucideアイコンが文字のまま</td>
+        <td>アイコン名を疑う</td>
+        <td>動的挿入後に <code>lucide.createIcons()</code> を再実行</td>
+      </tr>
+      <tr>
+        <td>rough.js 図が出ない</td>
+        <td>optionを変える</td>
+        <td>SVG要素DOM挿入 → スクリプト即時実行 に変更</td>
+      </tr>
+      <tr>
+        <td>Mermaid が文字列のまま</td>
+        <td>CSSを疑う</td>
+        <td>ラベルの特殊文字を <code>["..."]</code> でクォート</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <details class="more-box">
+    <summary>もっと詳しく: このパターンの修正コード例</summary>
+    <div class="more-body">
+      <p>Chart.js の例。<strong>Bad</strong>:</p>
+      <pre><code>&lt;script&gt;
+(function() {
+  var ctx = document.getElementById('ch12-chart-1');
+  if (!ctx || !window.Chart) return;  // ← ここで早期return、図描画されない
+  new Chart(ctx, { ... });
+})();
+&lt;/script&gt;</code></pre>
+      <p><strong>Good</strong>:</p>
+      <pre><code>&lt;script&gt;
+window.addEventListener("load", function() {
+  var ctx = document.getElementById('ch12-chart-1');
+  if (!ctx || !window.Chart) return;
+  new Chart(ctx, { ... });
+});
+&lt;/script&gt;</code></pre>
+      <p><code>load</code>イベントは全リソース読み込み後に発火するので、その時点ではChart.jsは必ず利用可能。<code>DOMContentLoaded</code>でも不十分(body末尾scriptはまだ評価中の可能性)なので<code>load</code>を使う。</p>
+    </div>
+  </details>
+
+  <div class="diagram-box">
+    <div class="diagram-title">デバッグ工程別の時間配分(熟練者の実データ)</div>
+    <canvas id="ch12-donut-1" height="200"></canvas>
+  </div>
+  <script>
+  window.addEventListener("load", function() {
+    var ctx = document.getElementById('ch12-donut-1');
+    if (!ctx || !window.Chart) return;
+    new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: ['再現・観察','仮説立案','検証','修正','記録・テスト'],
+        datasets: [{
+          data: [35, 15, 25, 15, 10],
+          backgroundColor: ['#D97757','#f59e0b','rgba(217,119,87,0.45)','#60a5fa','#cbd5e1']
+        }]
+      },
+      options: { plugins: { legend: { position: 'bottom' } } }
+    });
+  });
+  </script>
+
+  <div class="diagram-box">
+    <div class="diagram-title">「直させ方」による命中率の違い</div>
+    <canvas id="ch12-bar-1" height="140"></canvas>
+  </div>
+  <script>
+  window.addEventListener("load", function() {
+    var ctx = document.getElementById('ch12-bar-1');
+    if (!ctx || !window.Chart) return;
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['「動きません」','3点セットのみ','3点セット+仮説3つ'],
+        datasets: [{
+          label: '1回目で本質修正できた%',
+          data: [18, 52, 84],
+          backgroundColor: ['#cbd5e1','rgba(217,119,87,0.55)','#D97757'],
+          borderRadius: 6
+        }]
+      },
+      options: {
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true, max: 100, ticks: { callback: function(v){ return v + '%'; } } } }
+      }
+    });
+  });
+  </script>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>記録する：次のバグは過去のバグから学ぶ</h2>
+
+  <p>直ったら<strong>CLAUDE.mdか専用ファイルに1〜3行だけ学びを記録</strong>する。自分のためでもあり、次セッションのClaudeのためでもある。<span class="term" data-tip="過去の失敗/学びを短く記録した知識ベース。プロジェクトCLAUDE.mdに書くと毎セッション自動で読まれる">学びノート</span> が溜まると、同じ種類のバグは2度と踏まない。</p>
+
+  <div class="kv-grid">
+    <div class="kv"><div class="kv-key">バグ種別</div><div class="kv-val">Chart.js 空白</div></div>
+    <div class="kv"><div class="kv-key">原因</div><div class="kv-val">body末load順</div></div>
+    <div class="kv"><div class="kv-key">対策</div><div class="kv-val">window.load で包む</div></div>
+    <div class="kv"><div class="kv-key">再発防止</div><div class="kv-val">テンプレ化</div></div>
+  </div>
+
+  <div class="info-box">
+    <span class="label">Tips: 記録の落とし所</span>
+    <p><code>docs/lessons.md</code> のようなファイルに日付+症状+本質+修正の4列で積む。100行を超えたら "カテゴリ別" に分割。CLAUDE.md から <code>@docs/lessons.md</code> で参照すれば、Claude が勝手に学びを反映してくれる。</p>
+  </div>
+
+  <!-- ===================== Exercises ===================== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>演習問題</h2>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>3点セットを整える</h4>
+    <p>次の雑な依頼文を、3点セットに書き直してください(Claudeに送る前に自分で整理する練習)。</p>
+    <blockquote style="border-left: 3px solid #ccc; padding-left: 12px; color: #555;">「ログインボタン押しても何も起きないんだけど。直して。」</blockquote>
+    <ol>
+      <li>不足している情報は何か列挙する</li>
+      <li>仮に自分のプロジェクトで起きたと想定し、3点セット形式で書き直す</li>
+      <li>最後に「原因候補を3つ挙げて」と付け足す</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><strong>不足情報</strong>: 環境(ブラウザ/OS)・再現手順・期待動作・観察結果(console/networkログ)・いつから発生したか。</p>
+      <p><strong>書き直し例</strong>:</p>
+      <pre><code>## 再現手順
+1. Chrome 131 / macOS 15 で https://myapp.local を開く
+2. email: test@example.com / password: password123 を入力
+3. 「ログイン」ボタンをクリック
+
+## 期待動作
+- /dashboard にリダイレクト
+- ヘッダーにユーザ名が出る
+
+## 観察結果
+- ボタンは押せた(disabled 外れる)
+- URL は変わらず /login のまま
+- Chrome Console: (エラーなし、警告もなし)
+- Network タブ: POST /api/login は送られていない(リクエスト自体が発火していない)
+
+## 追加
+- 昨日 tailwind を v3 → v4 にアップデートした
+- フォームは &lt;form onSubmit={handleSubmit}&gt; で書いている
+
+## 依頼
+まず原因候補を3つ挙げてから、最も検証が安いものから順に検証手順を提示してください。修正はそのあと頼みます。</code></pre>
+      <p>ポイント: 「Networkにリクエストが飛んでない」は強いヒント(handleSubmitが呼ばれていない可能性)。この情報があるだけで仮説の質が跳ね上がる。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>自分の環境で仮説3つ運用をやる</h4>
+    <p>自分が今扱っているプロジェクトで、<strong>過去1週間で遭遇したバグを1つ</strong>思い出す(軽微でOK)。それを題材に、Claude Code でこのフローを実体験する。</p>
+    <ol>
+      <li>3点セットでバグを書き起こす(再現/期待/観察)</li>
+      <li>Claudeに「原因候補3つ + 検証順」を依頼(修正はまだ頼まない)</li>
+      <li>返ってきた3つの仮説を見て、自分の直感と合うもの/違うものを評価</li>
+      <li>最も安い検証から実行(コマンド実行/Read)</li>
+      <li>原因が確定したら「最小の修正を提案して」と依頼</li>
+      <li>CLAUDE.md か docs/lessons.md に学びを1-3行で記録</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>このExerciseは「やってみる」が本体なので模範解答は流れの例示。</p>
+      <p><strong>実例(筆者の体験)</strong>:</p>
+      <ul>
+        <li><strong>バグ</strong>: Next.js プロジェクトで画像が本番だけ404</li>
+        <li><strong>3点セットで投げた</strong>: next.config.js の images設定、Vercel のBuild Logs、ローカル/本番の比較スクショ</li>
+        <li><strong>Claudeの3仮説</strong>: (1)<code>basePath</code>設定ミス (2)画像パスの絶対/相対の不一致 (3)Vercelキャッシュ</li>
+        <li><strong>検証順</strong>: (3)キャッシュは再デプロイで即判定(一番安い) → 変わらず → (1)<code>next.config.js</code> Read → basePath設定あり、ローカルで再現できたので確定</li>
+        <li><strong>修正</strong>: 画像src を <code>next/image</code> で basePath を自動付加する形に統一(2箇所の変更)</li>
+        <li><strong>学び</strong>: <code>docs/lessons.md</code> に「basePath を設定したら全<code>&lt;img&gt;</code>を <code>next/image</code> 経由にする」と1行追記</li>
+      </ul>
+      <p><strong>学びのコツ</strong>: 1週間後にまた読むので、<strong>3秒で意味がわかる1行</strong>に研ぐ。「困った話」ではなく「今後のチェックリスト」として書く。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式ドキュメント</a> <span class="res-type doc">Doc</span> — 本章の前提となる基本仕様</li>
+      <li><a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener">Claude Code GitHub</a> <span class="res-type doc">Doc</span> — Issueテンプレが3点セット形式で参考になる</li>
+      <li><a href="https://github.com/anthropics/anthropic-cookbook" target="_blank" rel="noopener">Anthropic Cookbook</a> <span class="res-type doc">Doc</span> — デバッグ系プロンプトのレシピ集</li>
+      <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/load_event" target="_blank" rel="noopener">MDN: window.load イベント</a> <span class="res-type doc">Doc</span> — window.load 系ハマりの参考</li>
+      <li><a href="https://www.anthropic.com/news" target="_blank" rel="noopener">Anthropic Blog</a> <span class="res-type doc">Doc</span> — 最新機能のアップデート情報</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="12">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="11-tdd-with-claude.html"><span class="direction">&larr; Prev</span>テスト駆動</a>
+    <a href="13-plan-mode.html"><span class="direction">Next &rarr;</span>Planモード</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>

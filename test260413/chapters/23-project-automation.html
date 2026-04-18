@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>Project A：業務自動化ツールを作る - MK's Claude Code Tutorial</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code Tutorial
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="../index.html#phase3" data-nav><span class="phase-name">Advanced</span><span class="phase-pct" id="pct-advanced">0%</span></a></li>
+      <li><a href="../index.html#phase4" data-nav class="active"><span class="phase-name">Projects</span><span class="phase-pct" id="pct-projects">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.23</span>
+    Project A：業務自動化ツールを作る
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 26 sections</text>
+    </svg>
+    <div class="progress-info">0h / 24h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-welcome.html"><span class="status-dot" data-chapter="01"></span> ようこそ&amp;セットアップ</a></li>
+    <li><a href="02-communication-basics.html"><span class="status-dot" data-chapter="02"></span> 対話の原則</a></li>
+    <li><a href="03-file-tools.html"><span class="status-dot" data-chapter="03"></span> ファイル操作ツール</a></li>
+    <li><a href="04-bash-safety.html"><span class="status-dot" data-chapter="04"></span> Bashツールと安全</a></li>
+    <li><a href="05-todo-management.html"><span class="status-dot" data-chapter="05"></span> TodoWriteで作業管理</a></li>
+    <li><a href="06-claude-md.html"><span class="status-dot" data-chapter="06"></span> CLAUDE.md</a></li>
+    <li><a href="07-git-workflow.html"><span class="status-dot" data-chapter="07"></span> Git × Claude Code</a></li>
+  </ul>
+  <div class="section-label">Core</div>
+  <ul>
+    <li><a href="08-prompt-patterns.html"><span class="status-dot" data-chapter="08"></span> プロンプト設計の型</a></li>
+    <li><a href="09-code-review.html"><span class="status-dot" data-chapter="09"></span> コードレビュー依頼</a></li>
+    <li><a href="10-refactor-workflow.html"><span class="status-dot" data-chapter="10"></span> 改修ワークフロー</a></li>
+    <li><a href="11-tdd-with-claude.html"><span class="status-dot" data-chapter="11"></span> テスト駆動</a></li>
+    <li><a href="12-debugging.html"><span class="status-dot" data-chapter="12"></span> デバッグ</a></li>
+    <li><a href="13-plan-mode.html"><span class="status-dot" data-chapter="13"></span> Planモード</a></li>
+    <li><a href="14-context-management.html"><span class="status-dot" data-chapter="14"></span> コンテキスト管理</a></li>
+    <li><a href="15-web-tools.html"><span class="status-dot" data-chapter="15"></span> Web検索・取得</a></li>
+  </ul>
+  <div class="section-label">Advanced</div>
+  <ul>
+    <li><a href="16-subagents-overview.html"><span class="status-dot" data-chapter="16"></span> Subagents</a></li>
+    <li><a href="17-mcp-overview.html"><span class="status-dot" data-chapter="17"></span> MCP</a></li>
+    <li><a href="18-hooks-overview.html"><span class="status-dot" data-chapter="18"></span> Hooks</a></li>
+    <li><a href="19-schedule-loop.html"><span class="status-dot" data-chapter="19"></span> Schedule &amp; Loop</a></li>
+    <li><a href="20-skills-overview.html"><span class="status-dot" data-chapter="20"></span> Skills</a></li>
+    <li><a href="21-worktree.html"><span class="status-dot" data-chapter="21"></span> worktree</a></li>
+    <li><a href="22-pitfalls.html"><span class="status-dot" data-chapter="22"></span> 失敗パターン10</a></li>
+  </ul>
+  <div class="section-label">Projects</div>
+  <ul>
+    <li><a href="23-project-automation.html" class="active"><span class="status-dot" data-chapter="23"></span> Project A：業務自動化</a></li>
+    <li><a href="24-project-refactor.html"><span class="status-dot" data-chapter="24"></span> Project B：リファクタ</a></li>
+    <li><a href="25-project-webapp.html"><span class="status-dot" data-chapter="25"></span> Project C：Webアプリ</a></li>
+    <li><a href="26-final-exercise.html"><span class="status-dot" data-chapter="26"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 4: Projects &gt; Chapter 23</div>
+  <h1>Project A：業務自動化ツールを作る</h1>
+  <p class="subtitle">日次レポート生成CLIを90分で0→完成。Ch05/08/07/11/17/18を一気に統合する</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 90分</span>
+    <span class="badge">Phase: Projects</span>
+    <span class="badge">難易度: 応用</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">この章のゴール</span>
+    <p>この章は <strong>読む章ではなく作る章</strong> です。お題は「<strong>日次レポート生成CLI</strong>」——GitHubの <span class="term" data-tip="GitHub Issue: リポジトリに紐づく課題/タスクの単位。タイトル・本文・ラベル・担当者を持つ。">Issue一覧</span> を取得し、ラベル別に整形して <code>daily-report-YYYY-MM-DD.md</code> を吐く小さなツールを、<strong>90分で0から完成+自動化</strong>まで持っていきます。途中で Ch05(TodoWrite) / Ch07(Git) / Ch08(プロンプト設計) / Ch11(TDD) / Ch17(MCP) / Ch18(Hooks) を <strong>一気に統合</strong>。この章が終わると、自分のチームの反復業務を1つ自動化できる状態になります。</p>
+  </div>
+
+  <div class="info-box" style="border-left: 3px solid #D97757;">
+    <span class="label">バージョン注記</span>
+    <p>本章の記述は <strong>2026年1月時点</strong> の Claude Code(Agent SDK/CLI)挙動に基づきます。<code>gh</code> CLI / GitHub MCP / Hooks の <code>settings.json</code> スキーマは進化します。コマンドが通らない時は <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">公式ドキュメント</a> と <a href="https://cli.github.com/manual/" target="_blank" rel="noopener">gh CLI manual</a> を確認してください。</p>
+  </div>
+
+  <!-- ===== ここがプロの境目 ===== -->
+  <div class="info-box" style="border-left-color: #D97757;">
+    <span class="label">ここがプロの境目</span>
+    <p><strong>毎日の反復業務は、90分の初期投資で年間数百時間取り戻せる</strong>。1日10分の手作業×250営業日 = 年41時間。それを「書く・捨てる・自動化する」サイクルに乗せるのが、Claude Codeの本当の元を取る使い方です。<br>
+    <em>試し方：</em> この章の完成物を Slack の #dev-tools に流し、「使いたい人いる?」と聞いてみる。1人でも乗ったら社内Skill化の合図。</p>
+  </div>
+
+  <!-- ===== アーキテクチャ図 ===== -->
+  <div class="diagram-box">
+    <div class="diagram-title">完成物のアーキテクチャ</div>
+    <svg viewBox="0 0 640 300" width="100%" style="max-width:640px; display:block; margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="ch23-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#D97757"/></marker></defs>
+      <rect x="20" y="30" width="130" height="60" rx="10" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="2"/>
+      <text x="85" y="55" text-anchor="middle" font-size="12" font-weight="700" fill="#18181b">cron / Hook</text>
+      <text x="85" y="73" text-anchor="middle" font-size="10" fill="#475569">毎朝 08:30</text>
+      <rect x="200" y="30" width="180" height="240" rx="12" fill="#ffffff" stroke="#D97757" stroke-width="2"/>
+      <text x="290" y="55" text-anchor="middle" font-size="13" font-weight="700" fill="#18181b">daily-report CLI</text>
+      <text x="290" y="73" text-anchor="middle" font-size="10" fill="#475569">Node.js / TypeScript</text>
+      <rect x="215" y="90" width="150" height="40" rx="6" fill="#f4f4f5" stroke="#cbd5e1"/>
+      <text x="290" y="114" text-anchor="middle" font-size="11">1. fetchIssues()</text>
+      <rect x="215" y="140" width="150" height="40" rx="6" fill="#f4f4f5" stroke="#cbd5e1"/>
+      <text x="290" y="164" text-anchor="middle" font-size="11">2. groupByLabel()</text>
+      <rect x="215" y="190" width="150" height="40" rx="6" fill="#f4f4f5" stroke="#cbd5e1"/>
+      <text x="290" y="214" text-anchor="middle" font-size="11">3. renderMarkdown()</text>
+      <rect x="430" y="30" width="190" height="80" rx="10" fill="#ffffff" stroke="#18181b" stroke-width="1.5"/>
+      <text x="525" y="55" text-anchor="middle" font-size="12" font-weight="700">GitHub API</text>
+      <text x="525" y="75" text-anchor="middle" font-size="10" fill="#475569">gh CLI or</text>
+      <text x="525" y="93" text-anchor="middle" font-size="10" fill="#475569">GitHub MCP</text>
+      <rect x="430" y="130" width="190" height="70" rx="10" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="2"/>
+      <text x="525" y="157" text-anchor="middle" font-size="12" font-weight="700" fill="#18181b">out/*.md</text>
+      <text x="525" y="177" text-anchor="middle" font-size="10" fill="#475569">daily-report-2026-01-18.md</text>
+      <rect x="430" y="220" width="190" height="50" rx="10" fill="#ffffff" stroke="#94a3b8" stroke-dasharray="4 4"/>
+      <text x="525" y="242" text-anchor="middle" font-size="11" fill="#475569">(発展) Slack 通知</text>
+      <text x="525" y="258" text-anchor="middle" font-size="9" fill="#94a3b8">webhook POST</text>
+      <path d="M 150 60 L 200 60" stroke="#D97757" stroke-width="2" fill="none" marker-end="url(#ch23-arr)"/>
+      <path d="M 380 110 L 430 80" stroke="#D97757" stroke-width="2" fill="none" marker-end="url(#ch23-arr)"/>
+      <path d="M 430 60 L 390 90" stroke="#D97757" stroke-width="2" fill="none" marker-end="url(#ch23-arr)"/>
+      <path d="M 380 210 L 430 165" stroke="#D97757" stroke-width="2" fill="none" marker-end="url(#ch23-arr)"/>
+      <path d="M 525 200 L 525 220" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3 3" fill="none" marker-end="url(#ch23-arr)"/>
+    </svg>
+    <div class="diagram-caption">Hookで毎朝起動 → GitHub APIからIssue取得 → 整形して .md 出力。発展課題でSlack通知を足す。</div>
+  </div>
+
+  <!-- ===== 章の進行ステップ ===== -->
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-label">Part 1: 設計</div><div class="step-desc">15-20min / 要件・プロンプト・Todo</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-label">Part 2: 実装</div><div class="step-desc">50-60min / TDD+MCP+Hooks</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-label">Part 3: 検証</div><div class="step-desc">15-20min / 動作確認+改善</div></div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- Part 1: 設計 -->
+  <!-- ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Part 1 — 設計(15〜20分)</h2>
+
+  <p>「ツールを作る」と聞くと、いきなり <code>mkdir</code> と <code>npm init</code> から入りたくなりますが、90分でしっかり完成させる鍵は <strong>最初の15分を設計に使う</strong> こと。ここでは3ステップだけやります: <strong>要件整理 → プロンプト設計 → TodoWrite</strong>。</p>
+
+  <h3>1-1. 要件を「3つの箱」で整理する</h3>
+
+  <p>要件を無限に膨らませないための実務的な型が、<span class="term" data-tip="入力/処理/出力の3箱で最小仕様を固定する、実務で鉄板の要件整理手法。">I/P/O フレーム</span> です。今回の「日次レポートCLI」を当てはめるとこうなります。</p>
+
+  <table>
+    <thead>
+      <tr><th>箱</th><th>中身</th><th>決めること</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Input</strong></td><td>GitHub Issue(open状態、直近24h更新)</td><td>repo指定方法 / 日付境界</td></tr>
+      <tr><td><strong>Process</strong></td><td>ラベルで分類 → 整形</td><td>対象ラベル / 並び順</td></tr>
+      <tr><td><strong>Output</strong></td><td><code>out/daily-report-YYYY-MM-DD.md</code></td><td>ファイル名規則 / セクション順</td></tr>
+    </tbody>
+  </table>
+
+  <p>この3箱だけ確定すれば、あとは Claude に丸投げしても軸がぶれません。「入力形式も出力形式も決まっている」状態は、AIコーディングの成功率を体感3倍にします。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span></p>
+
+  <h3>1-2. 初手プロンプトを設計する(Ch08の型を使う)</h3>
+
+  <p>Ch08で学んだ <span class="term" data-tip="新規作成プロンプトの型: 役割 / ゴール / 制約 / 成功条件 / 環境 の5要素で構成する。">新規作成プロンプトの型</span> に当てはめます。<strong>何を成功と呼ぶか(done criteria)</strong> を必ず書くのがコツ。</p>
+
+  <div class="info-box">
+    <span class="label">今すぐ試す: 初手プロンプト</span>
+    <p>以下をそのままコピペして、あなたのローカルで <code>claude</code> に流してみてください。</p>
+<pre><code>あなたはNode.js/TypeScriptに詳しいシニアエンジニアです。
+「日次レポート生成CLI」を新規作成します。
+
+# 目的
+GitHubリポジトリのIssue(open, 直近24h更新)を取得し、
+ラベル別に整形して out/daily-report-YYYY-MM-DD.md を出力する。
+
+# 制約
+- ランタイム: Node.js 20+ / TypeScript / tsx 実行
+- Issue取得は gh CLI をchild_processで叩く方式(MCP版は後で差し替える)
+- 対象ラベル: bug / feature / question / その他
+- 出力ファイルは out/ 配下。既存なら上書き
+- テストは vitest で書く(TDDで進める)
+
+# 成功条件(done criteria)
+1. `npm test` が全通る
+2. `npx tsx src/index.ts --repo owner/name` で out/*.md が生成される
+3. Markdown 内にラベル別4セクション + 件数サマリが含まれる
+4. README.md に使い方が3行で書いてある
+
+# 進め方
+まず TodoWrite で作業計画を立ててください。
+最初のステップは「package.json + vitest のセットアップ + 最初の失敗するテスト1本」です。
+いきなり実装しないでください。</code></pre>
+  </div>
+
+  <p>このプロンプトの急所は4つ:</p>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="target" width="20" height="20"></i>
+      <div><strong>成功条件を4つ明記</strong> — <span class="term" data-tip="done criteria: 何をもって完了とするかを事前に決めた条件。AIが「どこで止まるか」を知るための命綱。">done criteria</span> があると、Claude が勝手に機能を追加し続けるのを止められる</div>
+    </li>
+    <li>
+      <i data-lucide="layers" width="20" height="20"></i>
+      <div><strong>段階の指示</strong> — 「いきなり実装しない」「最初はテスト1本」と書くことで Ch11 の <span class="term" data-tip="TDD: テストを先に書いて失敗させ、通す最小実装→リファクタのループで開発する方法論。">TDD</span> モードに入らせる</div>
+    </li>
+    <li>
+      <i data-lucide="shuffle" width="20" height="20"></i>
+      <div><strong>差し替え前提の記述</strong> — 「MCP版は後で差し替える」で、最初はgh CLIの簡易実装、後で Ch17 の MCP に置き換える流れを設計段階で確保</div>
+    </li>
+    <li>
+      <i data-lucide="list-checks" width="20" height="20"></i>
+      <div><strong>TodoWrite 指定</strong> — Ch05 の原則「3ステップ以上は TodoWrite」をここで発動させる</div>
+    </li>
+  </ul>
+
+  <h3>1-3. TodoWrite に投げ込ませる(Ch05)</h3>
+
+  <p>初手プロンプトを投げると、Claude が最初に <code>TodoWrite</code> を叩いてくれる想定です。そこで出てくる Todo の典型例がこちら。</p>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-date">Todo 1</div>
+      <div class="tl-title">プロジェクト初期化 + vitest導入</div>
+      <div class="tl-body"><code>npm init -y</code> / <code>npm i -D typescript tsx vitest @types/node</code> / <code>tsconfig.json</code> / <code>vitest.config.ts</code></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">Todo 2</div>
+      <div class="tl-title">Red: groupByLabel() の失敗テストを書く</div>
+      <div class="tl-body">モックIssue配列→4カテゴリ分類の期待値を先に固定。<strong>テストから書く</strong>のが鉄則。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">Todo 3</div>
+      <div class="tl-title">Green: 最小実装で通す</div>
+      <div class="tl-body">Ch11の原則「テストを通すためにテストを変えるな」を最初に念押し。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">Todo 4</div>
+      <div class="tl-title">fetchIssues + renderMarkdown 実装</div>
+      <div class="tl-body">gh CLIを child_process.execFileSync で叩く。stdin/stdoutの取り扱いに注意。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">Todo 5</div>
+      <div class="tl-title">CLIエントリポイント + README</div>
+      <div class="tl-body"><code>src/index.ts</code> で argv 処理 → 3関数をオーケストレーション → ファイル書き出し。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">Todo 6</div>
+      <div class="tl-title">git commit を段階的に積む</div>
+      <div class="tl-body">Ch07の「小さなcommitを細かく」を発動。各Todo完了時にcommit。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">Todo 7</div>
+      <div class="tl-title">Hook 登録(毎朝08:30)</div>
+      <div class="tl-body">Ch18で学んだ <code>settings.json</code> にスケジュール登録、またはOSのcron/launchd。</div>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <span class="label">なぜ設計に15分使うのか</span>
+    <p>急いで実装から入ると、途中で「あれも要る、これも要る」が発生して2時間経っても終わりません。<strong>要件3箱+プロンプト+Todo7件</strong> を最初に固定すると、残り70分はほぼ迷いなく手が動きます。「設計15分は投資、実装60分はリターン」の感覚を体で覚えてください。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span></p>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: I/P/Oに When/Who/Why を足す</summary>
+    <div class="more-body">
+      <p>余裕があれば I/P/O に <strong>When(毎営業日08:30)/Who(チーム6名)/Why(朝会で3分把握)</strong> を足します。Whyが決まると、Markdownのセクション順が自然に決まる(「今日やるもの」先頭、「完了済み」は後ろ)。要件は <code>README.md</code> 冒頭6行に凝縮しておくと、将来のメンテ時に「何のために作ったか」が失われません。</p>
+    </div>
+  </details>
+
+  <!-- ============================================================ -->
+  <!-- Part 2: 実装 -->
+  <!-- ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Part 2 — 実装(50〜60分)</h2>
+
+  <p>ここからはコードを書いてもらいます。TDDループを回しつつ、段階的にgit commitを積む。最後に Hook で自動化するのがゴール。</p>
+
+  <h3>2-1. セットアップ(5分)</h3>
+
+  <div class="info-box">
+    <span class="label">今すぐ試す: プロジェクトの足回り</span>
+<pre><code>mkdir daily-report && cd daily-report
+npm init -y
+npm i -D typescript tsx vitest @types/node
+npx tsc --init --target es2022 --module esnext --moduleResolution bundler \
+  --strict --esModuleInterop --outDir dist
+mkdir -p src tests out
+git init && git add -A && git commit -m "chore: init project"</code></pre>
+  </div>
+
+  <p><code>package.json</code> に最低限のscriptsを追加してもらいましょう。</p>
+
+<pre><code>// package.json (scriptsの抜粋)
+{
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "start": "tsx src/index.ts",
+    "build": "tsc"
+  }
+}
+</code></pre>
+
+  <h3>2-2. Red → Green: groupByLabel のTDDサイクル(Ch11)</h3>
+
+  <p>ここが一番「AIに頼んで差が出る」局面。<strong>テストを先に書かせて、実装を後で書かせる</strong>。Claudeに依頼する時のプロンプトはこうです。</p>
+
+  <div class="info-box">
+    <span class="label">依頼プロンプト(Red フェーズ)</span>
+<pre><code>次のシグネチャで tests/groupByLabel.test.ts を書いてください。
+実装はまだ書かないでください。テストが失敗することを確認するだけです。
+
+型:
+  type Issue = { number: number; title: string; labels: string[]; url: string };
+  function groupByLabel(issues: Issue[]): {
+    bug: Issue[]; feature: Issue[]; question: Issue[]; other: Issue[];
+  };
+
+テストケース(最低4つ):
+1. 空配列 → 全カテゴリ空配列
+2. labels=['bug'] のIssue → bug に入る
+3. 複数ラベルで bug と feature 両方あるIssue → bug 優先(先に書かれた方)
+4. 未知のラベルのみ → other に入る
+
+注意: 後でテストを通すためにassertionを緩めないでください。
+    期待値は今ここで確定します。</code></pre>
+  </div>
+
+  <p>テストが書けたら <code>npm test</code> で <strong>必ず赤(失敗)を確認</strong> してから実装に進むのが鉄則。Claudeに「テストが落ちているのを確認できましたか? 出力を貼ってください」と明示的に聞くと、サボられません。</p>
+
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">アンチパターン</span>
+      <h4>「一気に書いて」</h4>
+      <ul>
+        <li>テストと実装を同時に書かせる</li>
+        <li>結果: assertionが実装に合わせて書かれて、実はバグが通る</li>
+        <li>TDDの <span class="term" data-tip="Red→Green→Refactor。まず失敗するテストを書き、最小実装で通し、洗練する3ステップ。">Red-Green-Refactor</span> の意味が消える</li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">推奨</span>
+      <h4>「Red確認 → 実装」</h4>
+      <ul>
+        <li>まずテストだけ書かせて <code>npm test</code> で失敗を目視</li>
+        <li>その後「Greenにしてください、テストは触らないで」と依頼</li>
+        <li>テストを緩めようとしたら即ストップ</li>
+      </ul>
+    </div>
+  </div>
+
+  <p>参考: <code>groupByLabel</code> の最終的な実装例はこんなサイズに収まります(20行弱)。</p>
+
+<pre><code>// src/groupByLabel.ts
+import type { Issue } from "./types.js";
+
+const PRIMARY = ["bug", "feature", "question"] as const;
+type Bucket = typeof PRIMARY[number] | "other";
+
+export function groupByLabel(issues: Issue[]) {
+  const out: Record&lt;Bucket, Issue[]&gt; = { bug: [], feature: [], question: [], other: [] };
+  for (const iss of issues) {
+    const hit = PRIMARY.find(p =&gt; iss.labels.includes(p));
+    (hit ? out[hit] : out.other).push(iss);
+  }
+  return out;
+}
+</code></pre>
+
+  <h3>2-3. fetchIssues: gh CLI を child_process で叩く(15分)</h3>
+
+  <p>まずは手っ取り早い gh CLI 版。後で MCP 版に差し替えます。</p>
+
+<pre><code>// src/fetchIssues.ts
+import { execFileSync } from "node:child_process";
+import type { Issue } from "./types.js";
+
+export function fetchIssues(repo: string, sinceIso: string): Issue[] {
+  // gh issue list --repo owner/name --state open --json number,title,labels,url
+  //   --search "updated:&gt;=SINCE"
+  const raw = execFileSync("gh", [
+    "issue", "list",
+    "--repo", repo,
+    "--state", "open",
+    "--search", `updated:&gt;=${sinceIso}`,
+    "--json", "number,title,labels,url",
+    "--limit", "200",
+  ], { encoding: "utf8" });
+  const parsed = JSON.parse(raw) as Array&lt;{
+    number: number; title: string; url: string;
+    labels: { name: string }[];
+  }&gt;;
+  return parsed.map(p =&gt; ({
+    number: p.number, title: p.title, url: p.url,
+    labels: p.labels.map(l =&gt; l.name),
+  }));
+}
+</code></pre>
+
+  <div class="info-box">
+    <span class="label">公式ドキュメント必読</span>
+    <p><code>gh issue list</code> の <code>--json</code> と <code>--search</code> フラグは挙動が細かく、間違えると意図しないIssueを取得します。実務で使う前に必ず一度マスターしてください。<a href="https://cli.github.com/manual/gh_issue_list" target="_blank" rel="noopener">gh issue list manual →</a></p>
+  </div>
+
+  <h3>2-4. renderMarkdown: 整形(10分)</h3>
+
+  <p>「見た目」はここで決まります。<strong>最初に出力例を1個書いて、それに向けて実装させる</strong> のがスムーズ。</p>
+
+<pre><code># 日次レポート 2026-01-18
+
+- open 合計: **23** 件(前日比 +2)
+
+## Bug (5)
+- [#142 ログイン後のリダイレクト崩れ](https://github.com/...) — owner/repo
+- ...
+
+## Feature (11)
+- [#148 ダークモード対応](https://github.com/...)
+- ...
+
+## Question (3)
+- [#151 API v2 の認証方式](https://github.com/...)
+
+## Other (4)
+- [#150 README typo](https://github.com/...)
+</code></pre>
+
+  <p>この出力例を Claude に見せて「このフォーマットで <code>renderMarkdown(groups, meta)</code> を書いて」と頼めば、50行弱で実装が返ってきます。<span class="term" data-tip="例示先行プロンプト: 求めるアウトプットのサンプルを先に見せて、それを再現させるプロンプト技法。">例示先行プロンプト</span> はAIコーディングの基本動作です。</p>
+
+  <h3>2-5. CLIエントリ + 動作確認(10分)</h3>
+
+<pre><code>// src/index.ts
+import { writeFileSync, mkdirSync } from "node:fs";
+import { fetchIssues } from "./fetchIssues.js";
+import { groupByLabel } from "./groupByLabel.js";
+import { renderMarkdown } from "./renderMarkdown.js";
+
+const args = process.argv.slice(2);
+const repo = args[args.indexOf("--repo") + 1];
+if (!repo) { console.error("usage: tsx src/index.ts --repo owner/name"); process.exit(1); }
+
+const today = new Date().toISOString().slice(0, 10);
+const since = new Date(Date.now() - 24 * 3600e3).toISOString();
+
+const issues = fetchIssues(repo, since);
+const groups = groupByLabel(issues);
+const md = renderMarkdown(groups, { date: today, repo, total: issues.length });
+
+mkdirSync("out", { recursive: true });
+const path = `out/daily-report-${today}.md`;
+writeFileSync(path, md, "utf8");
+console.log(`✓ wrote ${path} (${issues.length} issues)`);
+</code></pre>
+
+  <div class="info-box">
+    <span class="label">今すぐ試す: 実行してみる</span>
+<pre><code># 自分のリポで試す
+gh auth login  # 初回のみ
+npx tsx src/index.ts --repo motohirokoma/26tutorial
+cat out/daily-report-$(date +%F).md</code></pre>
+    <p>ここで一度 <code>git add -A && git commit -m "feat: initial daily-report CLI"</code> を忘れずに。Ch07の原則「動いた瞬間にcommit」。</p>
+  </div>
+
+  <h3>2-6. MCP 版に差し替える(Ch17 / 10分)</h3>
+
+  <p>gh CLI 版は動きますが、プロダクション運用を考えるなら <strong>GitHub MCP</strong> に切り替えると Claude Code 自身がIssue操作を扱えるようになり、同じ仕組みで「コメント追加」「ラベル変更」などに拡張できます。</p>
+
+<pre><code>// .mcp.json(プロジェクトルート)
+{
+  "mcpServers": {
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": { "GITHUB_TOKEN": "${GITHUB_TOKEN}" }
+    }
+  }
+}
+</code></pre>
+
+  <p>CLIコードから直接MCPを呼ぶ必要はなく、「Claude Codeセッション内から <code>daily-report</code> を叩く」ワークフローに組み替えます。運用上のメリットは下表。</p>
+
+  <table>
+    <thead>
+      <tr><th>観点</th><th>gh CLI 版</th><th>GitHub MCP 版</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>セットアップ</td><td>`gh auth login` 1回</td><td><code>.mcp.json</code> + トークン環境変数</td></tr>
+      <tr><td>認証スコープ</td><td>gh CLI の設定</td><td>トークンで細かく制御可能</td></tr>
+      <tr><td>拡張性</td><td>コマンド単位</td><td>Claude内からIssue全操作OK</td></tr>
+      <tr><td>運用環境</td><td>手元/サーバーどこでも</td><td>Claude Codeが動く環境で</td></tr>
+      <tr><td>オフライン対応</td><td>◎(キャッシュしやすい)</td><td>△(MCPサーバー経由)</td></tr>
+    </tbody>
+  </table>
+
+  <p>実務判断: <strong>単発のcron実行なら gh CLI、Claude Code内の連続操作で使うなら MCP</strong>。今回のツールは cron/Hook からの叩きがメインなので、<em>gh CLI版を本番、MCP版はClaude Code内からの臨時操作用に両方残す</em>のがベストです。</p>
+
+  <h3>2-7. Hooks で毎朝自動実行(Ch18 / 10分)</h3>
+
+  <p>最後の仕上げ。Claude Code の <span class="term" data-tip="Hooks: 特定イベント(ツール実行前後など)で任意コマンドを起動するClaude Codeの拡張機能。settings.jsonで定義する。">Hooks</span> 機能、もしくはOS標準の cron/launchd で自動化します。</p>
+
+<pre><code>// .claude/settings.json (プロジェクトローカル)
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'if [[ \"$CLAUDE_TOOL_INPUT\" == *\"git commit\"* ]]; then npx tsx src/index.ts --repo motohirokoma/26tutorial; fi'"
+          }
+        ]
+      }
+    ]
+  }
+}
+</code></pre>
+
+  <p>上は「commit のたびに日次レポートを再生成」する例。<strong>毎朝決まった時間に動かしたい</strong>なら、素直にOSのスケジューラを使うのが確実です。</p>
+
+<pre><code># crontab -e に追記(毎営業日 08:30)
+30 8 * * 1-5 cd ~/work/daily-report && /usr/local/bin/npx tsx src/index.ts --repo motohirokoma/26tutorial &gt;&gt; cron.log 2&gt;&amp;1
+
+# macOS なら launchd の .plist を ~/Library/LaunchAgents/ に置く方法もある
+</code></pre>
+
+  <div class="info-box">
+    <span class="label">公式ドキュメント必読</span>
+    <p>Hooksは <code>settings.json</code> の構造ミスで無限ループに陥ると、Claude Code セッションが暴走します(Ch22の失敗パターン10の1つ)。<strong>matcher の範囲</strong> と <strong>PostToolUse の再帰</strong> は公式を必ずマスターしてから。<a href="https://docs.claude.com/en/docs/claude-code/hooks" target="_blank" rel="noopener">Hooks 公式 →</a></p>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: Hook か cron か、どう選ぶか</summary>
+    <div class="more-body">
+      <p>判断基準はシンプル:</p>
+      <ul>
+        <li><strong>「Claude Codeを使っている時に付随的に動いてほしい」</strong>(保存時にprettier・commit後にテスト等) → <strong>Hook</strong></li>
+        <li><strong>「時刻で絶対に動いてほしい、人がClaude Codeを開いていなくても」</strong>(毎朝08:30のレポート等) → <strong>cron / launchd / Scheduled Tasks(Ch19)</strong></li>
+      </ul>
+      <p>今回のレポートは「毎朝必ず」なので本命は cron。Hookは副次的に「commitしたら最新版を再生成」で補助。両方を組み合わせるのがパワーユーザーの定番ワークフローです。</p>
+    </div>
+  </details>
+
+  <!-- ============================================================ -->
+  <!-- Part 3: 検証 -->
+  <!-- ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Part 3 — 検証と改善(15〜20分)</h2>
+
+  <p>動いたからといって終わりではありません。最後の20分で「信頼できるツール」に磨きます。やることは3つだけ。</p>
+
+  <h3>3-1. 動作確認 3パターン</h3>
+
+  <div class="kv-grid">
+    <div class="kv"><div class="kv-key">パターン1</div><div class="kv-val">Issueが0件のリポで走らせる</div></div>
+    <div class="kv"><div class="kv-key">パターン2</div><div class="kv-val">ラベル無しIssueだけ</div></div>
+    <div class="kv"><div class="kv-key">パターン3</div><div class="kv-val">100件超のリポ(--limit 超過)</div></div>
+  </div>
+
+  <p>0件と大量件が壊れやすい。この3パターンでそれぞれ <code>out/*.md</code> が妥当に出力されることを確認してください。<strong>壊れたらすぐテストに足す</strong>のがCh11の原則。</p>
+
+  <h3>3-2. セルフコードレビュー(Ch09)</h3>
+
+  <p>完成直後の自分のコードを Claude に批判的にレビューさせます。</p>
+
+  <div class="info-box">
+    <span class="label">レビュー依頼プロンプト</span>
+<pre><code>src/ 以下のコードを次の5観点でレビューしてください。
+各観点で「具体的な問題+該当行」を最低1つ挙げ、なければ「問題なし」と明記:
+
+1. セキュリティ(子プロセス実行、トークン露出、ファイル書き込み先)
+2. エラー処理(gh コマンド失敗時、JSONパース失敗時)
+3. 境界値(Issue 0件、200件超、ラベル重複)
+4. 可読性(関数の責務分離、命名)
+5. テスタビリティ(副作用が分離されているか)
+
+「問題なし」の連発は信用しません。少なくとも3つは改善点を出してください。</code></pre>
+  </div>
+
+  <h3>3-3. 改善ループを回す</h3>
+
+  <p>レビュー結果を見て、上位3つだけ直します。全部直そうとすると時間切れになるので、<strong>ROI順でトップ3</strong>。典型的な改善は次の分布になりがち。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">改善工数の配分(経験則)</div>
+    <canvas id="ch23-donut-1" height="200"></canvas>
+  </div>
+
+  <h3>3-4. 90分でどこまで進むか(実測感覚)</h3>
+
+  <div class="diagram-box">
+    <div class="diagram-title">フェーズごとの時間配分(目安)</div>
+    <canvas id="ch23-bar-1" height="120"></canvas>
+  </div>
+
+  <p>多くの読者は<strong>Part 2の後半(MCP差し替え・Hook登録)</strong>で時間切れになります。それでもOK。完成形(CLI+テスト)まで到達していれば、Hook と MCP は「後日10分」で追加できるからです。</p>
+
+  <!-- ============================================================ -->
+  <!-- 発展課題 -->
+  <!-- ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 発展課題</h2>
+
+  <p>90分で完成まで行けた人は、この2つのどちらかに挑戦してください。どちらも「社内展開」を視野に入れた一歩進んだ課題です。</p>
+
+  <div class="exercise-box">
+    <div class="exercise-label">発展 1</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>Slack に自動通知する</h4>
+    <p>生成した Markdown の要約(件数サマリだけ)を、Slack の <span class="term" data-tip="Incoming Webhook: Slackに外部からメッセージを投稿できるURL。チャンネル単位で発行する。">Incoming Webhook</span> に POST する機能を足してください。</p>
+    <ol>
+      <li>SlackでWebhook URLを発行し、<code>.env</code> に <code>SLACK_WEBHOOK_URL</code> として保存</li>
+      <li><code>src/notifySlack.ts</code> を新規作成。<code>fetch(url, {method:"POST", body:JSON.stringify({text}) })</code></li>
+      <li><code>src/index.ts</code> の末尾で呼び出し。環境変数が無ければスキップ</li>
+      <li>既存テストを壊さないこと(通知処理はモック可能な関数として分離)</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>ヒント・実装方針を見る</summary>
+    <div class="answer-body">
+      <p>副作用(HTTPリクエスト)は <strong>引数でinject</strong> できる形にすると、vitestで差し替えやすくなります。</p>
+<pre><code>// src/notifySlack.ts
+export type Poster = (url: string, body: string) =&gt; Promise&lt;void&gt;;
+
+export async function notifySlack(
+  text: string,
+  url: string | undefined,
+  post: Poster = defaultPost,
+) {
+  if (!url) return;   // Webhook未設定ならno-op
+  await post(url, JSON.stringify({ text }));
+}
+
+async function defaultPost(url: string, body: string) {
+  const res = await fetch(url, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body,
+  });
+  if (!res.ok) throw new Error(`Slack post failed: ${res.status}`);
+}
+</code></pre>
+      <p>テスト側では <code>post</code> にモック関数を渡せば、ネットワーク無しで検証できます。Webhook URLは絶対にリポジトリにコミットしないこと(<code>.env</code> は <code>.gitignore</code> 済みか再確認)。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">発展 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>Skill化してチームに展開する</h4>
+    <p>このCLIを Claude Code の <span class="term" data-tip="Skill: Claude Codeが特定の目的のために呼び出せる、frontmatter付きMarkdownで定義する再利用可能ワークフロー。">Skill</span> として切り出し、チームメンバーが <code>/daily-report &lt;owner/repo&gt;</code> のように呼べるようにしてください。</p>
+    <ol>
+      <li><code>~/.claude/skills/daily-report/SKILL.md</code> を新規作成</li>
+      <li>frontmatterに <code>name</code> と <code>description</code>(いつ使うかをはっきり書く)</li>
+      <li>使い方・入力・出力・内部でどんなコマンドが走るかを本文に明記</li>
+      <li>READMEに「チームへの展開方法」を3行で書く</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>ヒント・実装方針を見る</summary>
+    <div class="answer-body">
+      <p>Skill化のコツは <strong>「いつ使うか」の description を具体的に書く</strong> こと。抽象的な説明だとClaudeが自動発動してくれません。</p>
+<pre><code>---
+name: daily-report
+description: Generate a daily Markdown report of GitHub Issues (open, updated within 24h)
+  grouped by label. Use this when the user asks for "日次レポート", "今日のIssue", or
+  wants a morning summary of recent issue activity on a given repo.
+---
+
+# daily-report Skill
+
+## 使い方
+`/daily-report owner/repo` と呼ばれたら、以下を実行:
+
+1. 対象リポで `npx tsx ~/tools/daily-report/src/index.ts --repo owner/repo` を実行
+2. 生成された out/daily-report-YYYY-MM-DD.md を読んで要約を返す
+3. ユーザーが「Slackに流して」と言ったら発展1のnotifySlackを起動
+</code></pre>
+      <p>チーム展開は「この SKILL.md を <code>~/.claude/skills/</code> に置いてください」と Slack でワンメッセージ流すだけ。Skillの中身(実装コード本体)は各自で <code>~/tools/daily-report</code> にcloneしてもらう流れにすると、バージョン管理が楽です。</p>
+    </div>
+  </details>
+
+  <!-- ============================================================ -->
+  <!-- 締め -->
+  <!-- ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Project A で何が身についたか</h2>
+
+  <p>90分で統合した学びを振り返りましょう。</p>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-num">6<small>章</small></div>
+      <div class="stat-label">統合した章</div>
+      <div class="stat-trend up">Ch05/07/08/11/17/18</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">~400<small>h/年</small></div>
+      <div class="stat-label">取り戻せる見積り</div>
+      <div class="stat-trend up">5人チームなら</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">7<small>件</small></div>
+      <div class="stat-label">TodoWrite のタスク</div>
+      <div class="stat-trend up">全て完了</div>
+    </div>
+  </div>
+
+  <p>ここまで来たら、あなたの手には<strong>「動く・テストされた・自動実行される・チームに渡せる」業務ツールのテンプレ</strong>が残りました。同じ型で「週次の障害サマリ」「PR滞留リスト」「顧客チケットのラベル別集計」も30分で複製できます。これが、90分の初期投資が年400時間になる算数の正体です。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span></p>
+
+  <details class="more-box">
+    <summary>もっと詳しく: 次の候補10件を出すワーク(10分)</summary>
+    <div class="more-body">
+      <p>この章を終えた勢いのまま、<strong>自分の業務で自動化候補になりそうな反復作業を10個</strong>書き出してください。基準は「週1回以上やる + 30分以上かかる + 判断が定型」。出し切ったら「自動化ROI = 節約時間/月 × 12 ÷ 初期構築時間」で順位付け。上位3つが Project B, C, そして最終章(Ch26)の素材になります。</p>
+    </div>
+  </details>
+
+  <!-- ===================== Resources ===================== -->
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式ドキュメント</a> — CLI・Hooks・Skillの最新仕様</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://cli.github.com/manual/" target="_blank" rel="noopener">GitHub CLI (gh) Manual</a> — <code>gh issue list</code> の <code>--json</code> / <code>--search</code> 詳細</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://github.com/modelcontextprotocol/servers" target="_blank" rel="noopener">MCP 公式 servers</a> — GitHub MCP・Filesystem MCP の実装</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://vitest.dev/guide/" target="_blank" rel="noopener">Vitest Guide</a> — TDDで使う最小構成</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://api.slack.com/messaging/webhooks" target="_blank" rel="noopener">Slack Incoming Webhooks</a> — 発展1で使用</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://github.com/anthropics/anthropic-cookbook" target="_blank" rel="noopener">Anthropic Cookbook</a> — 業務自動化のレシピ集</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="23">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="22-pitfalls.html"><span class="direction">&larr; Prev</span>失敗パターン10</a>
+    <a href="24-project-refactor.html"><span class="direction">Next &rarr;</span>Project B：リファクタ</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<!-- 視覚化ライブラリ群 -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+<!-- Chart.js instances -->
+<script>
+window.addEventListener("load", function(){
+  var c1 = document.getElementById('ch23-donut-1');
+  if (c1 && window.Chart) {
+    new Chart(c1, {
+      type: 'doughnut',
+      data: {
+        labels: ['エラー処理追加','命名リネーム','テスト追加','その他'],
+        datasets: [{ data: [40, 20, 30, 10], backgroundColor: ['#D97757','#60a5fa','rgba(217,119,87,0.35)','#cbd5e1'] }]
+      },
+      options: { plugins: { legend: { position: 'bottom' } } }
+    });
+  }
+  var c2 = document.getElementById('ch23-bar-1');
+  if (c2 && window.Chart) {
+    new Chart(c2, {
+      type: 'bar',
+      data: {
+        labels: ['Part 1 設計','Part 2-1 セットアップ','Part 2-2 TDD','Part 2-3 fetch','Part 2-4 render','Part 2-5 CLI','Part 2-6 MCP','Part 2-7 Hook','Part 3 検証'],
+        datasets: [{ label: '分', data: [17, 5, 12, 10, 8, 8, 10, 5, 15], backgroundColor: '#D97757', borderRadius: 6 }]
+      },
+      options: {
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true, title: { display: true, text: '分' } } },
+        indexAxis: 'y'
+      }
+    });
+  }
+});
+</script>
+</body>
+</html>

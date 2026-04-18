@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>失敗パターン10 - MK's Claude Code Tutorial</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code Tutorial
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="../index.html#phase3" data-nav class="active"><span class="phase-name">Advanced</span><span class="phase-pct" id="pct-advanced">0%</span></a></li>
+      <li><a href="../index.html#phase4" data-nav><span class="phase-name">Projects</span><span class="phase-pct" id="pct-projects">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.22</span>
+    失敗パターン10：ここで詰まる
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 26 sections</text>
+    </svg>
+    <div class="progress-info">0h / 24h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-welcome.html"><span class="status-dot" data-chapter="01"></span> ようこそ&セットアップ</a></li>
+    <li><a href="02-communication-basics.html"><span class="status-dot" data-chapter="02"></span> 対話の原則</a></li>
+    <li><a href="03-file-tools.html"><span class="status-dot" data-chapter="03"></span> ファイル操作ツール</a></li>
+    <li><a href="04-bash-safety.html"><span class="status-dot" data-chapter="04"></span> Bashツールと安全</a></li>
+    <li><a href="05-todo-management.html"><span class="status-dot" data-chapter="05"></span> TodoWriteで作業管理</a></li>
+    <li><a href="06-claude-md.html"><span class="status-dot" data-chapter="06"></span> CLAUDE.md</a></li>
+    <li><a href="07-git-workflow.html"><span class="status-dot" data-chapter="07"></span> Git × Claude Code</a></li>
+  </ul>
+  <div class="section-label">Core</div>
+  <ul>
+    <li><a href="08-prompt-patterns.html"><span class="status-dot" data-chapter="08"></span> プロンプト設計の型</a></li>
+    <li><a href="09-code-review.html"><span class="status-dot" data-chapter="09"></span> コードレビュー依頼</a></li>
+    <li><a href="10-refactor-workflow.html"><span class="status-dot" data-chapter="10"></span> 改修ワークフロー</a></li>
+    <li><a href="11-tdd-with-claude.html"><span class="status-dot" data-chapter="11"></span> テスト駆動</a></li>
+    <li><a href="12-debugging.html"><span class="status-dot" data-chapter="12"></span> デバッグ</a></li>
+    <li><a href="13-plan-mode.html"><span class="status-dot" data-chapter="13"></span> Planモード</a></li>
+    <li><a href="14-context-management.html"><span class="status-dot" data-chapter="14"></span> コンテキスト管理</a></li>
+    <li><a href="15-web-tools.html"><span class="status-dot" data-chapter="15"></span> Web検索・取得</a></li>
+  </ul>
+  <div class="section-label">Advanced</div>
+  <ul>
+    <li><a href="16-subagents-overview.html"><span class="status-dot" data-chapter="16"></span> Subagents</a></li>
+    <li><a href="17-mcp-overview.html"><span class="status-dot" data-chapter="17"></span> MCP</a></li>
+    <li><a href="18-hooks-overview.html"><span class="status-dot" data-chapter="18"></span> Hooks</a></li>
+    <li><a href="19-schedule-loop.html"><span class="status-dot" data-chapter="19"></span> Schedule &amp; Loop</a></li>
+    <li><a href="20-skills-overview.html"><span class="status-dot" data-chapter="20"></span> Skills</a></li>
+    <li><a href="21-worktree.html"><span class="status-dot" data-chapter="21"></span> worktree</a></li>
+    <li><a href="22-pitfalls.html" class="active"><span class="status-dot" data-chapter="22"></span> 失敗パターン10</a></li>
+  </ul>
+  <div class="section-label">Projects</div>
+  <ul>
+    <li><a href="23-project-automation.html"><span class="status-dot" data-chapter="23"></span> Project A：業務自動化</a></li>
+    <li><a href="24-project-refactor.html"><span class="status-dot" data-chapter="24"></span> Project B：リファクタ</a></li>
+    <li><a href="25-project-webapp.html"><span class="status-dot" data-chapter="25"></span> Project C：Webアプリ</a></li>
+    <li><a href="26-final-exercise.html"><span class="status-dot" data-chapter="26"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 3: Advanced &gt; Chapter 22</div>
+  <h1>失敗パターン10：ここで詰まる</h1>
+  <p class="subtitle">先人が踏んだ地雷を10個先に踏んで学ぶ。症状→原因→対処を一気に整理する章。</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 60分</span>
+    <span class="badge">Phase: Advanced</span>
+    <span class="badge">難易度: 中級</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">この章のゴール</span>
+    <p>Claude Code を1週間以上使うと、ほぼ全員が<strong>同じ10個の失敗</strong>を必ず踏みます。<span class="term" data-tip="Phase 3/Advanced: 上位20%パワーユーザーに到達するための最終段。ここまで来ている人は失敗の回避術がまだ薄い時期">Advanced</span> 段階に入った今こそ、この地雷一覧を<strong>先に見て先に避ける</strong>のが最も費用対効果が高い。Ch01〜Ch21 で学んだ武器を、<strong>暴発させない技術</strong>に仕上げる60分です。</p>
+  </div>
+
+  <div class="info-box" style="border-left: 3px solid #D97757;">
+    <span class="label">バージョン注記</span>
+    <p>本章の記述は<strong>2026年1月時点</strong>の Claude Code (Agent SDK / CLI) 挙動に基づきます。<code>/compact</code> <code>/clear</code> <code>Hooks</code> <code>MCP</code> の挙動は進化するため、コマンドが通らない時は <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">公式ドキュメント →</a> を確認してください。</p>
+  </div>
+
+  <!-- ===== Section 1: 10失敗の全体像 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 10失敗の全体像 — まず一覧で俯瞰する</h2>
+
+  <p>失敗は大きく3層に分かれます。<strong>対話の失敗(1-4)</strong>、<strong>運用の失敗(5-7)</strong>、<strong>自動化の失敗(8-10)</strong>。下の表で<span class="term" data-tip="frequency: 失敗の遭遇頻度。★★★=1週間で必ず、★★=1ヶ月で必ず、★=半年で必ず">frequency</span> と <span class="term" data-tip="severity: 踏んだ時の被害大きさ。★★★=本番事故/大量データ消失、★★=時間ロス、★=微ストレス">severity</span> を見て、まず自分が直近に踏んだものにチェックを入れてみてください。</p>
+
+  <table>
+    <thead>
+      <tr><th>#</th><th>失敗パターン</th><th>層</th><th>頻度</th><th>重さ</th><th>該当した?</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>ベタな頼み方</td><td>対話</td><td>★★★</td><td>★</td><td>□</td></tr>
+      <tr><td>2</td><td>大きすぎる依頼</td><td>対話</td><td>★★★</td><td>★★</td><td>□</td></tr>
+      <tr><td>3</td><td>diffを見ない</td><td>対話</td><td>★★★</td><td>★★★</td><td>□</td></tr>
+      <tr><td>4</td><td>テストを緩めさせる</td><td>対話</td><td>★★</td><td>★★★</td><td>□</td></tr>
+      <tr><td>5</td><td>/compact /clear 使いすぎ/なさすぎ</td><td>運用</td><td>★★★</td><td>★★</td><td>□</td></tr>
+      <tr><td>6</td><td>長時間1セッション</td><td>運用</td><td>★★★</td><td>★★</td><td>□</td></tr>
+      <tr><td>7</td><td>Plan なしの危険操作</td><td>運用</td><td>★★</td><td>★★★</td><td>□</td></tr>
+      <tr><td>8</td><td>Bash 盲信</td><td>自動化</td><td>★★</td><td>★★★</td><td>□</td></tr>
+      <tr><td>9</td><td>MCP 権限広すぎ</td><td>自動化</td><td>★★</td><td>★★★</td><td>□</td></tr>
+      <tr><td>10</td><td>Hooks 無限ループ</td><td>自動化</td><td>★</td><td>★★★</td><td>□</td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-box" style="border-left-color: #D97757;">
+    <span class="label">ここがプロの境目</span>
+    <p><strong>他人の失敗から学ぶのが最速</strong>。自分で全部踏んで覚えるのは高くつく——特に「diffを見ない」「MCP権限広すぎ」「Hooks無限ループ」は<strong>本番DB/本番リポに被害が及ぶ</strong>級。パワーユーザーは必ず「他人がどこで詰まったか」を先に読んで、同じ穴を掘らない。<br>
+    <em>試し方：</em> 上の表の「該当した?」列を今すぐ自分で□→■に塗ってみる。1つでも当てはまったら、このあとのそのセクションだけ先に読む。</p>
+  </div>
+
+  <div class="diagram-box">
+    <div class="diagram-title">失敗が発生する3つの層</div>
+    <svg viewBox="0 0 500 240" width="100%" style="max-width:500px; display:block; margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <rect x="40" y="30" width="420" height="50" rx="8" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="2"/>
+      <text x="250" y="52" text-anchor="middle" font-size="13" font-weight="700" fill="#18181b">対話の失敗 (1〜4)</text>
+      <text x="250" y="70" text-anchor="middle" font-size="10" fill="#475569">頼み方 / 粒度 / 検査 / テスト改変</text>
+
+      <rect x="40" y="95" width="420" height="50" rx="8" fill="rgba(217,119,87,0.25)" stroke="#D97757" stroke-width="2"/>
+      <text x="250" y="117" text-anchor="middle" font-size="13" font-weight="700" fill="#18181b">運用の失敗 (5〜7)</text>
+      <text x="250" y="135" text-anchor="middle" font-size="10" fill="#475569">context 管理 / セッション長 / Plan</text>
+
+      <rect x="40" y="160" width="420" height="50" rx="8" fill="rgba(217,119,87,0.35)" stroke="#D97757" stroke-width="2"/>
+      <text x="250" y="182" text-anchor="middle" font-size="13" font-weight="700" fill="#18181b">自動化の失敗 (8〜10)</text>
+      <text x="250" y="200" text-anchor="middle" font-size="10" fill="#475569">Bash / MCP / Hooks</text>
+
+      <text x="30" y="58" text-anchor="end" font-size="11" fill="#64748b">浅</text>
+      <text x="30" y="188" text-anchor="end" font-size="11" fill="#64748b">深</text>
+      <text x="470" y="58" font-size="10" fill="#64748b">軽症</text>
+      <text x="470" y="188" font-size="10" fill="#64748b">重症</text>
+    </svg>
+    <div class="diagram-caption">層が深くなるほど被害が大きい。自動化層の失敗は本番に届く。</div>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section 2: 対話層の失敗 1-4 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 対話層の失敗 1〜4</h2>
+
+  <h3>Fail 1: ベタな頼み方</h3>
+
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">症状</span>
+      <h4>Claude の返答が薄い・的外れ</h4>
+      <ul>
+        <li>「いい感じにして」「なんかおかしい直して」</li>
+        <li>返答が一般論だけ、自分のコードに刺さらない</li>
+        <li>何度も「もっと具体的にすると…」と前置きされる</li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">対処</span>
+      <h4>3点セットを渡す</h4>
+      <ul>
+        <li><strong>具体性</strong>: どのファイル/関数か</li>
+        <li><strong>制約</strong>: 使って良いライブラリ/禁止事項</li>
+        <li><strong>成功条件</strong>: テストが通る/出力が○○</li>
+      </ul>
+    </div>
+  </div>
+
+  <p><strong>原因</strong>: 「頼む=自然言語で書く」という思考の範囲で止まっている。Claude は<span class="term" data-tip="成功条件(done criteria): どこで作業を止めるべきかの終点定義。これが無いと延々と書き換え続ける">成功条件</span>が無いと「もっと良くできるのでは」と無限に書き換え続ける。Ch02 の3点セットに戻って、テンプレ化することで解決する。</p>
+
+  <h3>Fail 2: 大きすぎる依頼</h3>
+
+  <p><strong>症状</strong>: 「認証まわり全部リファクタして」の1発依頼 → 返ってきた diff が500行超、何が変わったか追えない。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">依頼サイズと制御可能性</div>
+    <canvas id="ch22-chart-1" height="200"></canvas>
+  </div>
+  <script>
+  window.addEventListener("load", function(){
+    var el = document.getElementById('ch22-chart-1');
+    if (!el || !window.Chart) return;
+    new Chart(el, {
+      type: 'bar',
+      data: {
+        labels: ['1機能1依頼', '1ファイル1依頼', '1モジュール1依頼', '全体1依頼'],
+        datasets: [{
+          label: '制御可能性 (%)',
+          data: [95, 80, 55, 15],
+          backgroundColor: '#D97757',
+          borderRadius: 6
+        }]
+      },
+      options: {
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true, max: 100 } }
+      }
+    });
+  });
+  </script>
+
+  <p><strong>原因</strong>: <span class="term" data-tip="context pollution: 1つの依頼に複雑な目的を詰め込むと、Claudeの推論が散漫になり、どこにも最適でない解が返ってくる現象">context pollution</span> が起きて、Claude が各所で<strong>ほどほどに妥協</strong>した解を返す。結果、どこも完成していない diff ができる。</p>
+
+  <p><strong>対処</strong>: 依頼を<strong>15-30分で終わる単位</strong>に切る。TodoWrite で先にリスト化(Ch05)→ 1項目ずつ依頼 → 都度 commit(Ch07)。</p>
+
+  <details class="more-box">
+    <summary>もっと詳しく: 大きな依頼をどう分割するか</summary>
+    <div class="more-body">
+      <p>分割の型は「縦切り」と「横切り」の2つ。</p>
+      <ul>
+        <li><strong>縦切り (vertical slice)</strong>: ユーザー動線1本を UI→API→DB まで通す。「ログイン画面だけ」「パスワードリセットだけ」</li>
+        <li><strong>横切り (horizontal slice)</strong>: 1レイヤーだけ全部直す。「全エンドポイントにバリデーション追加」「全 model に tests 追加」</li>
+      </ul>
+      <p>不明なら<strong>縦切り優先</strong>。動くものが早く手に入り、確認が早い。</p>
+    </div>
+  </details>
+
+  <h3>Fail 3: diff を見ない</h3>
+
+  <p><strong>症状</strong>: Claude が「完了しました」と言った → そのまま commit → 本番で壊れる。</p>
+
+  <div class="info-box">
+    <span class="label">実例</span>
+    <p>あるチームでは、Claude が「型エラーを直した」と報告 → 内部では <code>as any</code> を15箇所追加していた。3ヶ月後に別のバグの温床になった。<strong>diff を見ていれば5秒で防げた</strong>。</p>
+  </div>
+
+  <p><strong>原因</strong>: Claude の「完了しました」という自然言語の報告を信じてしまう癖。自然言語は<strong>解像度が粗い</strong>。真実は <code>git diff</code> にしか書かれていない。</p>
+
+  <p><strong>対処</strong>: 依頼のたびに</p>
+
+<pre><code>git diff --stat  # 変更ファイル数と行数をまず把握
+git diff         # 実際の変更を全部読む
+git diff -- ':(exclude)package-lock.json'  # lock除外で本体だけ</code></pre>
+
+  <p>これを<strong>ルーティン化</strong>する。Hook で「commit 前に diff を表示」を自動化すれば、意志力ゼロでできる(Ch18)。</p>
+
+  <h3>Fail 4: テストを緩めさせる</h3>
+
+  <p><strong>症状</strong>: 「テスト通して」と頼む → テストが通った → よく見ると<strong>テスト側が書き換わって</strong>通っただけ。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">テスト改変の起こり方</div>
+    <pre class="mermaid">
+graph LR
+  A["テスト失敗"] --> B{"Claude の判断"}
+  B -->|"正攻法"| C["実装を直す"]
+  B -->|"楽な道"| D["assertion を緩める"]
+  D --> E["テストが通る"]
+  E --> F["仕様が壊れる"]
+  C --> G["バグが直る"]
+    </pre>
+    <div class="diagram-caption">楽な道に逃げさせない指示が必要。</div>
+  </div>
+
+  <p><strong>原因</strong>: 「テストを通す」というゴールだけ渡すと、Claude は<strong>最短経路</strong>を選ぶ。それが assertion 改変のこともある。</p>
+
+  <p><strong>対処</strong>: 依頼文に必ず入れる一文:</p>
+
+<pre><code>テストは絶対に変更しないでください。テストを通すためにテスト側を書き換えた場合、
+その修正は無効です。実装側だけ修正してください。</code></pre>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section 3: 運用層の失敗 5-7 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 運用層の失敗 5〜7</h2>
+
+  <h3>Fail 5: /compact /clear 使いすぎ/なさすぎ</h3>
+
+  <p><span class="term" data-tip="/compact: 会話を要約圧縮してcontextを空けるコマンド。履歴は要約形式で残る">/compact</span> と <span class="term" data-tip="/clear: 会話をリセットして白紙から始めるコマンド。履歴は完全に消える">/clear</span> の判断ミスには2種類あります。</p>
+
+  <table>
+    <thead>
+      <tr><th>タイプ</th><th>症状</th><th>原因</th><th>対処</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>使いすぎ</td>
+        <td>作業途中で文脈が薄くなり、Claude が「どこまでやったっけ」状態に</td>
+        <td>不安で5分おきに <code>/compact</code></td>
+        <td>context bar が 70% 超えてから <code>/compact</code> で十分</td>
+      </tr>
+      <tr>
+        <td>なさすぎ</td>
+        <td>context 満杯警告 → 次の依頼が途中で切れる / 応答が遅い</td>
+        <td>「進んでいるから止めたくない」病</td>
+        <td>切れ目(機能完成・commit後)で <code>/clear</code> を入れる癖を付ける</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="diagram-box">
+    <div class="diagram-title">/compact と /clear の使い分けフロー</div>
+    <pre class="mermaid">
+graph TD
+  A["context 70%超え?"] -->|"Yes"| B{"作業継続したい?"}
+  A -->|"No"| Z["そのまま続ける"]
+  B -->|"Yes"| C["/compact で要約圧縮"]
+  B -->|"No"| D{"機能の切れ目?"}
+  D -->|"Yes"| E["/clear で白紙から"]
+  D -->|"No"| C
+    </pre>
+    <div class="diagram-caption">「満杯前に compact、切れ目で clear」が基本ルール。</div>
+  </div>
+
+  <h3>Fail 6: 長時間1セッション</h3>
+
+  <p><strong>症状</strong>: 4時間ぶっ通しで同じセッション → 後半、Claude の出力が明らかに劣化 / 前半の指示を忘れる / ハルシネーション増。</p>
+
+  <p><strong>原因</strong>: context window は有限。長く使うほど、序盤のメッセージは<strong>圧縮された影</strong>になり、Claude の「いま扱っている作業」の解像度が落ちる。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">セッション長と出力品質の相関(目安)</div>
+    <canvas id="ch22-chart-2" height="180"></canvas>
+  </div>
+  <script>
+  window.addEventListener("load", function(){
+    var el = document.getElementById('ch22-chart-2');
+    if (!el || !window.Chart) return;
+    new Chart(el, {
+      type: 'line',
+      data: {
+        labels: ['0h', '0.5h', '1h', '1.5h', '2h', '3h', '4h', '5h'],
+        datasets: [{
+          label: '出力品質 (%)',
+          data: [98, 95, 93, 88, 82, 68, 52, 38],
+          borderColor: '#D97757',
+          backgroundColor: 'rgba(217,119,87,0.15)',
+          tension: 0.3,
+          fill: true
+        }]
+      },
+      options: {
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true, max: 100 } }
+      }
+    });
+  });
+  </script>
+
+  <p><strong>対処</strong>: <strong>90分ルール</strong>。90分/1セッションで区切り、機能完成ごとに <code>/clear</code>。CLAUDE.md に重要情報を書いておけば文脈はすぐ戻る(Ch06)。</p>
+
+  <h3>Fail 7: Plan なしの危険操作</h3>
+
+  <p><strong>症状</strong>: 「DB マイグレーションやっといて」→ 実行してから「あれ、rollback どうすれば…」</p>
+
+  <div class="info-box">
+    <span class="label">公式ドキュメント必読</span>
+    <p>ここは公式ドキュメントにも書いていますし、実務で間違えると致命的なので必ずマスターしてください。Plan モードと ExitPlanMode の挙動は Claude Code の安全機構の中核です。<a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式 →</a></p>
+  </div>
+
+  <p><strong>対処</strong>: <span class="term" data-tip="Plan モード: Claude に計画だけ立てさせて、人間が承認してから実行に移すモード。Ch13で詳述">Plan モード</span>を<strong>デフォルト起動</strong>するレベルの依頼の基準を決める:</p>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="database" width="20" height="20"></i>
+      <div><strong>データを変更する</strong> — DB migration / バッチジョブ / 一括ファイル変換</div>
+    </li>
+    <li>
+      <i data-lucide="git-branch" width="20" height="20"></i>
+      <div><strong>履歴を書き換える</strong> — git rebase / force push / 履歴削除</div>
+    </li>
+    <li>
+      <i data-lucide="cloud-upload" width="20" height="20"></i>
+      <div><strong>外部へ送信する</strong> — デプロイ / API 呼び出し / メール送信</div>
+    </li>
+    <li>
+      <i data-lucide="trash-2" width="20" height="20"></i>
+      <div><strong>削除系</strong> — rm -rf / DROP TABLE / git reset --hard</div>
+    </li>
+  </ul>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section 4: 自動化層の失敗 8-10 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 自動化層の失敗 8〜10</h2>
+
+  <h3>Fail 8: Bash 盲信</h3>
+
+  <p><strong>症状</strong>: Claude の出す Bash コマンドを確認せず実行 → <code>rm -rf ~/Desktop/work</code> で3日分の作業消失。</p>
+
+  <p><strong>原因</strong>: Claude の Bash 生成精度は高いが、<strong>パスの間違い/変数展開の勘違い</strong>が混じる時がある。特に環境変数・ワイルドカードは事故源。</p>
+
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">危険</span>
+      <h4>盲信パターン</h4>
+<pre><code>rm -rf $DIR/*
+find . -name "*.log" -delete</code></pre>
+      <p><code>$DIR</code> が空なら <code>rm -rf /*</code> に化ける。</p>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">安全</span>
+      <h4>確認→実行</h4>
+<pre><code>ls "$DIR"           # 中身確認
+[ -n "$DIR" ] || exit 1  # 空ガード
+rm -rf "$DIR"/*</code></pre>
+      <p>クォート必須、ガード必須。</p>
+    </div>
+  </div>
+
+  <h3>Fail 9: MCP 権限広すぎ</h3>
+
+  <p><strong>症状</strong>: Slack MCP に全チャンネル write 権限 → Claude が誤って #general に下書きメッセージ送信 → 全社に通知。</p>
+
+  <p><strong>原因</strong>: <span class="term" data-tip="MCP scope: Model Context Protocol サーバが持つ権限範囲。read-only/特定リソースのみ等で絞れる">MCP scope</span> 設定時に「とりあえず全権限」にすると、Claude は<strong>躊躇せず使う</strong>。権限があれば使う、が MCP の原則。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">MCP 権限の段階</div>
+    <canvas id="ch22-chart-3" height="180"></canvas>
+  </div>
+  <script>
+  window.addEventListener("load", function(){
+    var el = document.getElementById('ch22-chart-3');
+    if (!el || !window.Chart) return;
+    new Chart(el, {
+      type: 'doughnut',
+      data: {
+        labels: ['read-only', 'specific write', 'full write'],
+        datasets: [{
+          data: [60, 35, 5],
+          backgroundColor: ['#D97757', 'rgba(217,119,87,0.45)', '#cbd5e1']
+        }]
+      },
+      options: {
+        plugins: {
+          legend: { position: 'bottom' },
+          title: { display: true, text: '推奨: 6割はread-only、書き込みは最小限' }
+        }
+      }
+    });
+  });
+  </script>
+
+  <p><strong>対処</strong>: <strong>最小権限の原則</strong>。まず read-only で試す → 必要になった時だけ scope を拡張 → 本番リソースと dev リソースは必ず別 MCP で分離。</p>
+
+  <details class="more-box">
+    <summary>もっと詳しく: MCP 権限設計のチェックリスト</summary>
+    <div class="more-body">
+      <ul>
+        <li>✅ 初期接続は必ず read-only scope から</li>
+        <li>✅ write 権限を与える時、resource ID で絞れるなら絞る(「特定DB」「特定チャンネル」のみ)</li>
+        <li>✅ 本番/開発で別MCP接続・別トークン</li>
+        <li>✅ <code>.mcp.json</code> を git にコミットする時、トークンが直書きされていないか最終確認</li>
+        <li>✅ 半年に1回、使ってない scope を削る棚卸し</li>
+      </ul>
+    </div>
+  </details>
+
+  <h3>Fail 10: Hooks 無限ループ</h3>
+
+  <p><strong>症状</strong>: PostToolUse hook で「Prettier 整形」を仕掛けた → Prettier の実行が Write を発生 → また hook が発火 → ∞。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Hooks 無限ループの発生経路</div>
+    <pre class="mermaid">
+sequenceDiagram
+  participant U as User
+  participant C as Claude
+  participant H as Hook
+  participant T as Tool
+  U->>C: ファイル書いて
+  C->>T: Write 実行
+  T-->>H: PostToolUse 発火
+  H->>T: Prettier (=Write) 実行
+  T-->>H: PostToolUse 発火
+  H->>T: Prettier 再実行
+  Note over H,T: ∞
+    </pre>
+    <div class="diagram-caption">整形系 hook は自分自身を再発火しやすい典型パターン。</div>
+  </div>
+
+  <p><strong>原因</strong>: Hook が自分の発火条件を<strong>自分で再生成</strong>してしまう設計ミス。特に「Write 後に整形」「Edit 後に lint fix」系は要注意。</p>
+
+  <p><strong>対処</strong>:</p>
+
+  <ol>
+    <li><strong>無限ループ防止フラグ</strong>をhook内に置く(環境変数 <code>CLAUDE_HOOK_DEPTH</code> を見て深さ1で抜ける等)</li>
+    <li>整形コマンドを <code>--write</code> モードではなく<strong>チェックのみ</strong>で走らせる</li>
+    <li>hook 対象を<strong>特定の tool のみ</strong>に絞る(matcher で tool_name 指定)</li>
+  </ol>
+
+  <details class="more-box">
+    <summary>もっと詳しく: Hooks の安全な書き方テンプレ</summary>
+    <div class="more-body">
+<pre><code>{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ \"$CLAUDE_HOOK_DEPTH\" -gt 0 ] && exit 0; CLAUDE_HOOK_DEPTH=1 prettier --check \"$CLAUDE_FILE_PATH\""
+          }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+      <p>ポイント: (1) matcher で対象tool絞る (2) 環境変数で再帰検知 (3) <code>--check</code> で副作用回避。</p>
+    </div>
+  </details>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section 5: 症状→対処フローマップ ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 症状→対処フローマップ</h2>
+
+  <p>トラブルが起きた時、症状から原因と対処に最短で辿り着くフローチャート。ブックマーク推奨。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">症状から対処への分岐</div>
+    <pre class="mermaid">
+graph TD
+  S["症状発生"] --> Q1{"どの層?"}
+  Q1 -->|"返答が薄い/的外れ"| D1["Fail 1,2: 頼み方"]
+  Q1 -->|"壊れた/逆戻り"| D2["Fail 3,4: diff/テスト"]
+  Q1 -->|"途中で切れる/遅い"| D3["Fail 5,6: context"]
+  Q1 -->|"危険操作で事故"| D4["Fail 7,8: Plan/Bash"]
+  Q1 -->|"自動化が暴発"| D5["Fail 9,10: MCP/Hooks"]
+  D1 --> A1["3点セット + TodoWrite分割"]
+  D2 --> A2["git diff ルーティン化 + テスト不変指示"]
+  D3 --> A3["/compact 70%以降 + 90分区切り"]
+  D4 --> A4["Plan モード強制 + Bash確認"]
+  D5 --> A5["最小権限 + matcher限定 + depth検知"]
+    </pre>
+    <div class="diagram-caption">症状から2手で対処法にたどり着けるように設計。</div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-num">10<small>個</small></div>
+      <div class="stat-label">典型失敗パターン</div>
+      <div class="stat-trend up">↑ 全て既知</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">3<small>層</small></div>
+      <div class="stat-label">発生レイヤー</div>
+      <div class="stat-trend up">↑ 対話/運用/自動化</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">80<small>%</small></div>
+      <div class="stat-label">事前回避できる割合</div>
+      <div class="stat-trend up">↑ 先に知るだけで</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">90<small>分</small></div>
+      <div class="stat-label">1セッションの上限目安</div>
+      <div class="stat-trend down">↓ 長いほど品質↓</div>
+    </div>
+  </div>
+
+  <h3>自分の失敗マップを作る</h3>
+
+  <p>抽象論で終わらせず、<strong>自分のログ</strong>と照合しましょう。過去1ヶ月の Claude Code 使用を振り返って、以下のチェックリストを埋めてみてください。</p>
+
+  <div class="progress-row">
+    <div class="progress-head"><span>Fail 1: ベタな頼み方</span><span>?%</span></div>
+    <div class="progress-track"><div class="progress-fill" style="width:50%"></div></div>
+  </div>
+  <div class="progress-row">
+    <div class="progress-head"><span>Fail 3: diff見ない</span><span>?%</span></div>
+    <div class="progress-track"><div class="progress-fill" style="width:35%"></div></div>
+  </div>
+  <div class="progress-row">
+    <div class="progress-head"><span>Fail 6: 長時間セッション</span><span>?%</span></div>
+    <div class="progress-track"><div class="progress-fill" style="width:70%"></div></div>
+  </div>
+  <div class="progress-row">
+    <div class="progress-head"><span>Fail 10: Hooks暴走</span><span>?%</span></div>
+    <div class="progress-track"><div class="progress-fill" style="width:15%"></div></div>
+  </div>
+
+  <p>上のバーはサンプル値(Claude利用1年目の平均)。自分の値を書き込んでみると、<strong>次に優先的に塞ぐ穴</strong>が見える。</p>
+
+  <div class="hands-on-box info-box" style="background: rgba(217,119,87,0.08); border-left: 3px solid #D97757;">
+    <span class="label">今すぐ試す(5分)</span>
+    <p>10失敗のうち、<strong>自分が1度でもやったもの</strong>を紙/メモにリストアップしてください。そのリストが<strong>あなた専用の地雷マップ</strong>になります。次の1週間、Claude を使うたびに「これは Fail N を踏みそうじゃないか?」と自問する習慣を付けましょう。</p>
+  </div>
+
+  <!-- ===== Section 6: 失敗しない習慣の作り方 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 失敗しない習慣の作り方 — 4ステップ</h2>
+
+  <p>知識として10個を暗記しても、行動が変わらなければ意味がない。習慣化の4ステップ:</p>
+
+  <div class="steps">
+    <div class="step done"><div class="step-num">1</div><div class="step-label">リストアップ</div><div class="step-desc">自分が踏んだ失敗を書き出す</div></div>
+    <div class="step done"><div class="step-num">2</div><div class="step-label">テンプレ化</div><div class="step-desc">回避フレーズをCLAUDE.mdに</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-label">Hook化</div><div class="step-desc">機械的に防げる部分を自動化</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-label">月次レビュー</div><div class="step-desc">毎月1日、失敗ログを振り返る</div></div>
+  </div>
+
+  <p>特に <strong>2. テンプレ化</strong> が効きます。CLAUDE.md に以下のような一文を入れておく:</p>
+
+<pre><code># 失敗回避ルール (Ch22 より)
+- 依頼は15-30分で終わる粒度に切ること
+- テストは絶対に書き換えないこと。テスト改変は無効
+- 危険操作 (DB/deploy/rm) は必ず Plan モードから
+- Bash 削除系は ls で中身確認してから
+- commit 前に必ず git diff を読むこと</code></pre>
+
+  <p>これで、Claude は毎回このルールを読んでから動きます。<strong>ルール違反の失敗を Claude 側でも踏みにくくなる</strong>。</p>
+
+  <div class="quote">
+    失敗は知識として持っていても意味がない。<strong>行動が変わる仕組み</strong>に落とし込んではじめて価値になる。
+    <cite>— Ch22の要点</cite>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>自分の失敗マップを作る</h4>
+    <p>10個のうち、過去1ヶ月で<strong>1度でもやったもの</strong>をメモに書き出してください。</p>
+    <ol>
+      <li>本文の10失敗リストを見ながら自分の過去を振り返る</li>
+      <li>該当した番号を全部メモ</li>
+      <li>その中で「最も頻度が高い」ものを1つ選ぶ</li>
+      <li>選んだ失敗の<strong>対処</strong>を、自分のCLAUDE.md(ユーザー or プロジェクト)に1行追記する</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>例(筆者の場合):</p>
+      <ul>
+        <li>該当: Fail 3 (diff見ない)、Fail 6 (長時間)、Fail 5 (/compact使いすぎ)</li>
+        <li>最頻: Fail 3</li>
+        <li>CLAUDE.md 追記:</li>
+      </ul>
+<pre><code># 対話ルール
+- コード変更後、必ず `git diff` を最後に表示して終わること
+- diff を表示せずに「完了しました」と報告するのは禁止</code></pre>
+      <p>これで、Claude は作業完了時に diff 表示を忘れにくくなります。行動を変える<strong>最小単位の介入</strong>です。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>Hook 無限ループのデバッグ</h4>
+    <p>あなたが作成した PostToolUse hook が無限ループに陥りました。以下の設定から原因を特定し、安全な設定に書き直してください。</p>
+<pre><code>{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          { "type": "command", "command": "prettier --write ." }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+    <ol>
+      <li>何が問題か、理由を2つ以上挙げる</li>
+      <li>修正版の JSON を書く</li>
+      <li>修正後の動作を1行で説明する</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><strong>問題点</strong>:</p>
+      <ol>
+        <li><code>matcher: "*"</code> で全ツール発火 → Read/Grep 後にも走る無駄発火</li>
+        <li><code>prettier --write .</code> で全ファイルを書き換える → その Write が再び PostToolUse を発火させ無限ループ</li>
+        <li>再帰検知フラグなし</li>
+        <li>対象が <code>.</code> (全体) で範囲が広すぎる</li>
+      </ol>
+      <p><strong>修正版</strong>:</p>
+<pre><code>{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ \"$CLAUDE_HOOK_DEPTH\" -gt 0 ] && exit 0; CLAUDE_HOOK_DEPTH=1 prettier --check \"$CLAUDE_FILE_PATH\" || true"
+          }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+      <p><strong>動作</strong>: Write/Edit のみ発火、対象ファイルだけ <code>--check</code>(書き換えなし)、再帰深度1で抜けるので無限ループしない。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式ドキュメント</a> <span class="res-type doc">Doc</span> — Plan モード/Hooks/MCP の正本</li>
+      <li><a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener">Claude Code GitHub</a> <span class="res-type doc">Doc</span> — issue 欄に既知失敗事例多数</li>
+      <li><a href="https://github.com/anthropics/anthropic-cookbook" target="_blank" rel="noopener">Anthropic Cookbook</a> <span class="res-type doc">Doc</span> — 安全な自動化パターン</li>
+      <li><a href="https://www.anthropic.com/news" target="_blank" rel="noopener">Anthropic Blog</a> <span class="res-type doc">Doc</span> — 最新の注意点とリリース情報</li>
+      <li><a href="https://modelcontextprotocol.io" target="_blank" rel="noopener">MCP 公式</a> <span class="res-type doc">Doc</span> — MCP scope / 権限設計の一次情報</li>
+      <li><a href="https://www.youtube.com/results?search_query=Claude+Code+mistakes" target="_blank" rel="noopener">YouTube: Claude Code mistakes</a> <span class="res-type video">Video</span> — 他人の失敗実況</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="22">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="21-worktree.html"><span class="direction">&larr; Prev</span>worktree</a>
+    <a href="23-project-automation.html"><span class="direction">Next &rarr;</span>Project A：業務自動化</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>

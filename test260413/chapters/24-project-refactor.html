@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>Project B：既存コードの大規模リファクタ - MK's Claude Code Tutorial</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code Tutorial
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="../index.html#phase3" data-nav><span class="phase-name">Advanced</span><span class="phase-pct" id="pct-advanced">0%</span></a></li>
+      <li><a href="../index.html#phase4" data-nav class="active"><span class="phase-name">Projects</span><span class="phase-pct" id="pct-projects">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.24</span>
+    Project B：既存コードの大規模リファクタ
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 26 sections</text>
+    </svg>
+    <div class="progress-info">0h / 24h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-welcome.html"><span class="status-dot" data-chapter="01"></span> ようこそ&セットアップ</a></li>
+    <li><a href="02-communication-basics.html"><span class="status-dot" data-chapter="02"></span> 対話の原則</a></li>
+    <li><a href="03-file-tools.html"><span class="status-dot" data-chapter="03"></span> ファイル操作ツール</a></li>
+    <li><a href="04-bash-safety.html"><span class="status-dot" data-chapter="04"></span> Bashツールと安全</a></li>
+    <li><a href="05-todo-management.html"><span class="status-dot" data-chapter="05"></span> TodoWriteで作業管理</a></li>
+    <li><a href="06-claude-md.html"><span class="status-dot" data-chapter="06"></span> CLAUDE.md</a></li>
+    <li><a href="07-git-workflow.html"><span class="status-dot" data-chapter="07"></span> Git × Claude Code</a></li>
+  </ul>
+  <div class="section-label">Core</div>
+  <ul>
+    <li><a href="08-prompt-patterns.html"><span class="status-dot" data-chapter="08"></span> プロンプト設計の型</a></li>
+    <li><a href="09-code-review.html"><span class="status-dot" data-chapter="09"></span> コードレビュー依頼</a></li>
+    <li><a href="10-refactor-workflow.html"><span class="status-dot" data-chapter="10"></span> 改修ワークフロー</a></li>
+    <li><a href="11-tdd-with-claude.html"><span class="status-dot" data-chapter="11"></span> テスト駆動</a></li>
+    <li><a href="12-debugging.html"><span class="status-dot" data-chapter="12"></span> デバッグ</a></li>
+    <li><a href="13-plan-mode.html"><span class="status-dot" data-chapter="13"></span> Planモード</a></li>
+    <li><a href="14-context-management.html"><span class="status-dot" data-chapter="14"></span> コンテキスト管理</a></li>
+    <li><a href="15-web-tools.html"><span class="status-dot" data-chapter="15"></span> Web検索・取得</a></li>
+  </ul>
+  <div class="section-label">Advanced</div>
+  <ul>
+    <li><a href="16-subagents-overview.html"><span class="status-dot" data-chapter="16"></span> Subagents</a></li>
+    <li><a href="17-mcp-overview.html"><span class="status-dot" data-chapter="17"></span> MCP</a></li>
+    <li><a href="18-hooks-overview.html"><span class="status-dot" data-chapter="18"></span> Hooks</a></li>
+    <li><a href="19-schedule-loop.html"><span class="status-dot" data-chapter="19"></span> Schedule &amp; Loop</a></li>
+    <li><a href="20-skills-overview.html"><span class="status-dot" data-chapter="20"></span> Skills</a></li>
+    <li><a href="21-worktree.html"><span class="status-dot" data-chapter="21"></span> worktree</a></li>
+    <li><a href="22-pitfalls.html"><span class="status-dot" data-chapter="22"></span> 失敗パターン10</a></li>
+  </ul>
+  <div class="section-label">Projects</div>
+  <ul>
+    <li><a href="23-project-automation.html"><span class="status-dot" data-chapter="23"></span> Project A：業務自動化</a></li>
+    <li><a href="24-project-refactor.html" class="active"><span class="status-dot" data-chapter="24"></span> Project B：リファクタ</a></li>
+    <li><a href="25-project-webapp.html"><span class="status-dot" data-chapter="25"></span> Project C：Webアプリ</a></li>
+    <li><a href="26-final-exercise.html"><span class="status-dot" data-chapter="26"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 4: Projects &gt; Chapter 24</div>
+  <h1>Project B：既存コードの大規模リファクタ</h1>
+  <p class="subtitle">テスト追加 → リファクタ → 安全な置き換えを90分で体験する</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 90分</span>
+    <span class="badge">Phase: Projects</span>
+    <span class="badge">難易度: 応用</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">この章のゴール</span>
+    <p>サンプルリポ(あるいは自分のリポ)を舞台に、<strong>「壊れない大規模リファクタ」</strong>を90分で1周します。Ch10の改修ワークフロー・Ch11のTDD・Ch13のPlanモード・Ch16のSubagents・Ch21のworktree——ここまでの武器を全部同時に使う、**統合ハンズオン**です。読む時間は最小、<strong>手を動かす時間を最大</strong>に取ってください。</p>
+  </div>
+
+  <div class="info-box" style="border-left: 3px solid #D97757;">
+    <span class="label">バージョン注記</span>
+    <p>本章の記述は <strong>2026年1月時点</strong> の Claude Code (Agent SDK/CLI) 挙動に基づきます。<code>git worktree</code> の挙動・<code>Plan mode</code> の UI・<code>Agent tool</code> の <code>subagent_type</code> ラインナップは進化するため、コマンドが通らない場合は <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">公式ドキュメント</a> を確認してください。</p>
+  </div>
+
+  <!-- ===== Section: 全体像 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 全体像 — 90分の地図</h2>
+
+  <p>このプロジェクトは3つのパートで構成されます。<span class="term" data-tip="既存コードの振る舞いを変えずに内部構造だけを改善すること。外から見た動作は同じまま、読みやすさ・テスタビリティ・再利用性を上げる。">リファクタ</span>は「振る舞いを変えない改修」なので、<strong>先にテストで振る舞いを固定する</strong>のが鉄則です。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Project B の90分タイムライン</div>
+    <svg viewBox="0 0 720 200" width="100%" style="max-width:720px; display:block; margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <!-- baseline -->
+      <line x1="40" y1="120" x2="680" y2="120" stroke="#cbd5e1" stroke-width="2"/>
+      <!-- Part 1 -->
+      <rect x="40" y="90" width="140" height="60" rx="8" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="2"/>
+      <text x="110" y="115" text-anchor="middle" font-size="12" font-weight="700">Part 1: 設計</text>
+      <text x="110" y="132" text-anchor="middle" font-size="11" fill="#475569">15-20min</text>
+      <text x="110" y="80" text-anchor="middle" font-size="10" fill="#64748b">worktree / Explore / Plan</text>
+      <!-- Part 2 -->
+      <rect x="190" y="70" width="320" height="100" rx="8" fill="rgba(217,119,87,0.28)" stroke="#D97757" stroke-width="2"/>
+      <text x="350" y="115" text-anchor="middle" font-size="13" font-weight="700">Part 2: 実装</text>
+      <text x="350" y="135" text-anchor="middle" font-size="11" fill="#475569">50-60min</text>
+      <text x="350" y="60" text-anchor="middle" font-size="10" fill="#64748b">Test追加 → Refactor → Green</text>
+      <!-- Part 3 -->
+      <rect x="520" y="90" width="160" height="60" rx="8" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="2"/>
+      <text x="600" y="115" text-anchor="middle" font-size="12" font-weight="700">Part 3: 検証</text>
+      <text x="600" y="132" text-anchor="middle" font-size="11" fill="#475569">15-20min</text>
+      <text x="600" y="80" text-anchor="middle" font-size="10" fill="#64748b">Review / Merge判断</text>
+      <!-- arrows -->
+      <path d="M 180 120 L 190 120" stroke="#D97757" stroke-width="2" marker-end="url(#ar24-1)"/>
+      <path d="M 510 120 L 520 120" stroke="#D97757" stroke-width="2" marker-end="url(#ar24-1)"/>
+      <defs><marker id="ar24-1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#D97757"/></marker></defs>
+      <!-- milestones -->
+      <circle cx="40" cy="120" r="5" fill="#D97757"/>
+      <circle cx="680" cy="120" r="5" fill="#D97757"/>
+      <text x="40" y="180" text-anchor="middle" font-size="10" fill="#64748b">0min</text>
+      <text x="680" y="180" text-anchor="middle" font-size="10" fill="#64748b">90min</text>
+    </svg>
+    <div class="diagram-caption">中央のPart 2(実装)が最重量。前後の設計・検証が「壊さない」ための盾になる。</div>
+  </div>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="git-branch" width="20" height="20"></i>
+      <div><strong>Part 1: 設計(15-20min)</strong> — <code>git worktree</code> で作業空間を隔離し、Explore agent でコード把握、Planモードで変更計画に合意する。</div>
+    </li>
+    <li>
+      <i data-lucide="test-tube" width="20" height="20"></i>
+      <div><strong>Part 2: 実装(50-60min)</strong> — 先にテストを足して振る舞いを固定 → リファクタ実施 → テスト全通過を確認。</div>
+    </li>
+    <li>
+      <i data-lucide="check-circle" width="20" height="20"></i>
+      <div><strong>Part 3: 検証(15-20min)</strong> — Ch09のコードレビュー技でdiffを批判的に読み、本流マージの可否を自分で判断する。</div>
+    </li>
+  </ul>
+
+  <div class="info-box" style="border-left-color: #D97757;">
+    <span class="label">ここがプロの境目</span>
+    <p><strong>「テストを書いてから」のリファクタは絶対に壊れない</strong>。既存の振る舞いをテストで固定してしまえば、あとは内部をいくらいじってもテストが壊れなければ正解だと保証される。<br>
+    <em>試し方：</em> 対象モジュールの<code>git log --oneline -n 20</code>を見てテストカバレッジが薄い箇所を探し、<strong>リファクタ前に先にテストを2-3本書かせる</strong>。</p>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section: 題材の準備 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 題材の準備 — サンプル or 自リポ</h2>
+
+  <p>リファクタ対象は2択です。どちらも90分で1周できる規模に絞ります。</p>
+
+  <table>
+    <thead>
+      <tr><th>選択</th><th>対象</th><th>向いている人</th><th>注意</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>A. サンプル</strong></td><td><code>Ch23</code>で作った日次レポCLIツール</td><td>まず型を覚えたい人</td><td>手元に<code>23-project-automation</code>の成果物が必要</td></tr>
+      <tr><td><strong>B. 自リポ</strong></td><td>自分の業務/個人プロジェクトの1ファイル</td><td>いま困っているコードがある人</td><td>事前に<code>main</code>へ<code>push</code>しておく</td></tr>
+    </tbody>
+  </table>
+
+  <p>どちらも <strong>「300-600行の1ファイル」くらいの単位</strong> を選ぶとちょうどいい。大きすぎると90分で回しきれず、小さすぎるとリファクタの効果が見えにくい。</p>
+
+  <div class="info-box">
+    <span class="label">公式ドキュメント必読</span>
+    <p><code>git worktree</code> は1つのリポジトリから複数のワーキングツリーを生やす、Git標準機能です。本章でも多用するので挙動を誤解すると<strong>作業が別ブランチで迷子</strong>になります。公式を一読しておいてください。<a href="https://git-scm.com/docs/git-worktree" target="_blank" rel="noopener">git-worktree 公式 →</a></p>
+  </div>
+
+  <!-- ===== Section: Part 1 設計 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Part 1: 設計 — worktree / Explore / Plan (15-20min)</h2>
+
+  <p>最初の20分は <strong>触らない時間</strong> です。いきなり書き換えさせると、壊れる確率がぐっと上がる——Ch10で学んだ通り、<span class="term" data-tip="改修ワークフロー: 理解→計画→実装→検証の4ステップ。Ch10参照">改修ワークフロー</span>の頭2ステップを丁寧に踏みます。</p>
+
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-label">worktree作成</div><div class="step-desc">本流を汚さない隔離空間</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-label">Explore agent</div><div class="step-desc">コード把握を子に任せる</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-label">Planモード</div><div class="step-desc">計画への合意</div></div>
+  </div>
+
+  <h3>Step 1: worktree で作業空間を隔離する</h3>
+
+  <p><span class="term" data-tip="git worktree: 1つのリポから複数のブランチを別ディレクトリで同時にチェックアウトできるGit標準機能。Ch21参照。">worktree</span>を使うと、<code>main</code>をそのまま手元に残したまま、<strong>別ディレクトリで別ブランチ</strong>を触れます。リファクタが失敗しても、<code>main</code>は無傷です。</p>
+
+  <div class="hands-on-box info-box" style="background: rgba(217,119,87,0.08); border-left: 3px solid #D97757;">
+    <span class="label">今すぐ試す(2分)</span>
+    <p>対象リポジトリのルートでこのコマンドを実行:</p>
+    <pre><code># リポのルートで
+git fetch origin
+git worktree add ../myrepo-refactor -b refactor/ch24 origin/main
+cd ../myrepo-refactor
+pwd   # 新しい作業ディレクトリにいるはず</code></pre>
+    <p>これで<code>../myrepo-refactor</code>に<strong>別ブランチ<code>refactor/ch24</code></strong>がチェックアウトされました。元のディレクトリは<code>main</code>のまま温存されます。</p>
+  </div>
+
+  <h3>Step 2: Explore agent でコード把握</h3>
+
+  <p>コード把握はメインのClaudeでやってもいいですが、<strong>ファイル数本以上読ませると親のコンテキストが汚れます</strong>。そこで<span class="term" data-tip="Explore subagent: ファイル探索・読解に特化した子エージェント。親に要約だけ返すのでコンテキストを食わない。Ch16参照。">Explore subagent</span>に任せます。</p>
+
+  <div class="hands-on-box info-box" style="background: rgba(217,119,87,0.08); border-left: 3px solid #D97757;">
+    <span class="label">実プロンプト(コピペ可)</span>
+    <pre><code>Agent tool で subagent_type="general-purpose" として以下を実行してください。
+
+prompt:
+「src/ 配下の report_generator.py を読み、以下を要約してください：
+(1) モジュールの責務を1行で
+(2) 公開関数とその入出力
+(3) 内部で抱えている "長すぎる関数" "重複コード" "テストしづらい箇所" を3つまで
+(4) リファクタ候補の優先度(高/中/低)を付ける
+出力は markdown 箇条書きで 30行以内。」</code></pre>
+    <p>子が要約だけ返してくるので、親は<strong>要約を読むだけで全体像を掴める</strong>。親のコンテキスト消費は最小限です。</p>
+  </div>
+
+  <h3>Step 3: Planモードで計画に合意する</h3>
+
+  <p>Explore の要約を見たら、<span class="term" data-tip="Planモード: 実行ではなく計画提案だけを返させるモード。ExitPlanMode でユーザーが承認して初めて実装に進む。Ch13参照。">Planモード</span>に入ってリファクタ計画を立てさせます。大きな変更こそPlanから入る——これがロールバックの保険になります。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Planモードの流れ</div>
+    <pre class="mermaid">
+graph LR
+  A["Exploreの要約"] --> B["Planモード起動"]
+  B --> C{"計画に納得?"}
+  C -- Yes --> D["ExitPlanMode承認"]
+  C -- No --> E["修正要求"]
+  E --> B
+  D --> F["実装フェーズへ"]
+    </pre>
+    <div class="diagram-caption">Planモードは「同意してから実装」を強制する。気に入らない計画は必ず差し戻す。</div>
+  </div>
+
+  <div class="hands-on-box info-box" style="background: rgba(217,119,87,0.08); border-left: 3px solid #D97757;">
+    <span class="label">実プロンプト(Planモードで)</span>
+    <pre><code>/plan
+
+report_generator.py に対して次のリファクタ計画を立ててください。
+
+前提：
+- 振る舞いは変えない(=同じ入力で同じ出力)
+- 1ファイル内で完結(新しいファイルを作らない)
+- テストは先に追加してから改修する
+
+観点：
+- 長すぎる関数(30行超)の分割候補
+- 重複の括り出し
+- I/O と純関数の分離
+- 変数名の明瞭化
+
+出力：
+1. 変更前後の構造差分(ASCIIで)
+2. リファクタ順序(テスト追加 → Step1 → Step2 → ...)
+3. 各Stepの予想コミットメッセージ</code></pre>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: Plan に含めるべき「成功条件」</summary>
+    <div class="more-body">
+      <p>Planには<strong>「どこで終わるか」</strong>を必ず入れてください。Ch02で学んだ通り、<code>done criteria</code>がないとClaudeは止まるタイミングを見失います。例:</p>
+      <ul>
+        <li>全テストが<code>pytest -q</code>で緑</li>
+        <li><code>git diff main...HEAD --stat</code>で±20%以内の変化</li>
+        <li>対象関数の最大長が30行以下</li>
+      </ul>
+      <p>この3点セットを渡すと、Claudeは「リファクタ頑張り続ける」ループに入らず、きっぱり止まります。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section: Part 2 実装 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Part 2: 実装 — Test → Refactor → Green (50-60min)</h2>
+
+  <p>ここがプロジェクトの心臓部です。<strong>順序が命</strong>——先にテスト、次にリファクタ、最後に確認。順番を間違えると「何が壊れたか分からない」地獄に落ちます。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Before(いきなり改修) vs After(テスト先行)</div>
+    <svg viewBox="0 0 720 260" width="100%" style="max-width:720px; display:block; margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <!-- before -->
+      <text x="180" y="25" text-anchor="middle" font-size="12" font-weight="700" fill="#b91c1c">Before: いきなり改修</text>
+      <rect x="40" y="40" width="80" height="40" rx="6" fill="#fee2e2" stroke="#dc2626"/>
+      <text x="80" y="65" text-anchor="middle" font-size="11">既存コード</text>
+      <rect x="140" y="40" width="80" height="40" rx="6" fill="#fef3c7" stroke="#d97706"/>
+      <text x="180" y="65" text-anchor="middle" font-size="11">書き換え</text>
+      <rect x="240" y="40" width="80" height="40" rx="6" fill="#fee2e2" stroke="#dc2626"/>
+      <text x="280" y="65" text-anchor="middle" font-size="11">バグ混入?</text>
+      <text x="180" y="110" text-anchor="middle" font-size="11" fill="#b91c1c">検出できない → 本番で発覚</text>
+      <path d="M 120 60 L 140 60" stroke="#94a3b8" stroke-width="2" marker-end="url(#ar24-2)"/>
+      <path d="M 220 60 L 240 60" stroke="#94a3b8" stroke-width="2" marker-end="url(#ar24-2)"/>
+      <!-- after -->
+      <text x="540" y="25" text-anchor="middle" font-size="12" font-weight="700" fill="#15803d">After: テスト先行</text>
+      <rect x="360" y="40" width="70" height="40" rx="6" fill="#dcfce7" stroke="#16a34a"/>
+      <text x="395" y="65" text-anchor="middle" font-size="10">既存コード</text>
+      <rect x="440" y="40" width="70" height="40" rx="6" fill="#D97757" stroke="#b45309"/>
+      <text x="475" y="58" text-anchor="middle" font-size="10" fill="white" font-weight="700">Test追加</text>
+      <text x="475" y="72" text-anchor="middle" font-size="10" fill="white">(振る舞い固定)</text>
+      <rect x="520" y="40" width="70" height="40" rx="6" fill="#fef3c7" stroke="#d97706"/>
+      <text x="555" y="65" text-anchor="middle" font-size="10">リファクタ</text>
+      <rect x="600" y="40" width="80" height="40" rx="6" fill="#dcfce7" stroke="#16a34a"/>
+      <text x="640" y="58" text-anchor="middle" font-size="10">テスト緑</text>
+      <text x="640" y="72" text-anchor="middle" font-size="10">= 安全</text>
+      <path d="M 430 60 L 440 60" stroke="#16a34a" stroke-width="2" marker-end="url(#ar24-3)"/>
+      <path d="M 510 60 L 520 60" stroke="#16a34a" stroke-width="2" marker-end="url(#ar24-3)"/>
+      <path d="M 590 60 L 600 60" stroke="#16a34a" stroke-width="2" marker-end="url(#ar24-3)"/>
+      <text x="540" y="110" text-anchor="middle" font-size="11" fill="#15803d">壊れた瞬間に赤 → 直ちに気づける</text>
+      <defs>
+        <marker id="ar24-2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#94a3b8"/></marker>
+        <marker id="ar24-3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/></marker>
+      </defs>
+      <!-- divider -->
+      <line x1="340" y1="30" x2="340" y2="130" stroke="#cbd5e1" stroke-dasharray="4 4"/>
+      <!-- metrics -->
+      <rect x="40" y="150" width="280" height="90" rx="8" fill="#fee2e2" stroke="#dc2626"/>
+      <text x="180" y="175" text-anchor="middle" font-size="12" font-weight="700" fill="#b91c1c">Before のコスト</text>
+      <text x="180" y="195" text-anchor="middle" font-size="11">バグ検出: リリース後</text>
+      <text x="180" y="213" text-anchor="middle" font-size="11">調査時間: 数時間〜1日</text>
+      <text x="180" y="231" text-anchor="middle" font-size="11">精神的コスト: 高</text>
+      <rect x="360" y="150" width="320" height="90" rx="8" fill="#dcfce7" stroke="#16a34a"/>
+      <text x="520" y="175" text-anchor="middle" font-size="12" font-weight="700" fill="#15803d">After の安心</text>
+      <text x="520" y="195" text-anchor="middle" font-size="11">バグ検出: リファクタ直後</text>
+      <text x="520" y="213" text-anchor="middle" font-size="11">調査時間: 数分</text>
+      <text x="520" y="231" text-anchor="middle" font-size="11">精神的コスト: 低</text>
+    </svg>
+    <div class="diagram-caption">テスト先行は「いま書き換えたこの瞬間」に壊れたかどうかを教えてくれる。</div>
+  </div>
+
+  <h3>Step 4: テストを先に追加する(RED)</h3>
+
+  <p>Ch11のTDDで学んだ通り、<span class="term" data-tip="Red-Green-Refactor: TDDの基本サイクル。失敗するテストを書き(Red)、最小コードで通し(Green)、整理する(Refactor)。">Red-Green-Refactor</span>のRedから入ります。ただしリファクタの場合は<strong>既存コードが既にGreenに相当</strong>するので、「既存の振る舞いを固定するテスト」を足すのが目的です。</p>
+
+  <div class="hands-on-box info-box" style="background: rgba(217,119,87,0.08); border-left: 3px solid #D97757;">
+    <span class="label">実プロンプト(コピペ可)</span>
+    <pre><code>report_generator.py のリファクタに先立ち、現状の振る舞いを固定するテストを追加してください。
+
+要件：
+1. 公開関数(generate_report, format_row, load_issues)それぞれに最低1本
+2. 正常系 + 境界値(空リスト / 100件 / 特殊文字を含むタイトル)
+3. テストは tests/test_report_generator.py に配置
+4. アサーションは「既存コードが実際に返している値」を基準にする
+5. テスト内の入力は fixture として切り出す
+6. pytest -q で全緑になることを確認してから終了
+
+禁止事項：
+- 既存コードの挙動を変えない
+- 「本当はこうあるべき」という理想で assertion を書かない(今の挙動を固定するのが目的)</code></pre>
+    <p><strong>この禁止事項を必ず入れる</strong>のが今回のコツ。理想を書かせるとテストが既存挙動と食い違い、その後のリファクタが永遠に赤いまま終わらなくなります。</p>
+  </div>
+
+  <h3>Step 5: リファクタを実施する(REFACTOR)</h3>
+
+  <p>テストが緑になったら、Planで合意した順序で1Stepずつ進めます。<strong>1Step終わるごとに<code>pytest</code>を走らせ、<code>git commit</code>で区切る</strong>のが最大の保険です。</p>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-date">Step 5-1</div>
+      <div class="tl-title">長すぎる関数を分割</div>
+      <div class="tl-body"><code>generate_report</code>を<code>collect_issues</code> / <code>sort_issues</code> / <code>render_markdown</code>の3つに分解。各関数を Claude に抜き出させる。テスト実行 → 緑 → コミット。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">Step 5-2</div>
+      <div class="tl-title">重複を関数に括り出す</div>
+      <div class="tl-body">日付フォーマット処理が3箇所に散らばっていたら、<code>format_date</code>ヘルパに集約。テスト緑 → コミット。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">Step 5-3</div>
+      <div class="tl-title">I/O と純関数を分離</div>
+      <div class="tl-body">ファイル書き込みは<code>save_report</code>に集め、残りは入力→出力の純関数化。テスタビリティが劇的に上がる。テスト緑 → コミット。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">Step 5-4</div>
+      <div class="tl-title">変数名の明瞭化</div>
+      <div class="tl-body"><code>d</code>→<code>due_date</code>、<code>tmp</code>→<code>formatted_row</code>など。IDEのrenameで機械的に。テスト緑 → コミット。</div>
+    </div>
+  </div>
+
+  <div class="hands-on-box info-box" style="background: rgba(217,119,87,0.08); border-left: 3px solid #D97757;">
+    <span class="label">実プロンプト(1Stepずつ)</span>
+    <pre><code>Plan の Step 5-1 を実施してください。
+
+やること：generate_report を collect_issues / sort_issues / render_markdown に分割
+
+制約：
+- 1ステップで完結(他のリファクタは次以降)
+- テストを絶対に緩めない(assertion を一切変えない)
+- 実装後に pytest -q を必ず実行し、結果をそのまま貼る
+- 緑なら git add -p で変更を確認し、「refactor: split generate_report into 3 funcs」でコミット
+- 赤なら直ちに revert して原因を報告</code></pre>
+  </div>
+
+  <h3>Step 6: コンテキストが重くなったら /compact</h3>
+
+  <p>50-60分も作業するとセッションが長くなります。Ch14で学んだ<span class="term" data-tip="/compact: 過去の会話を要約圧縮してコンテキスト消費を下げるコマンド。満杯前が使い時。">/compact</span>を、<strong>リファクタの区切り(Step 5-2 終了時など)</strong>で1回入れるとちょうどいい。</p>
+
+  <div class="info-box">
+    <span class="label">Tips</span>
+    <p><code>/compact</code>の前に「<strong>ここまでの差分と残タスクを3行で要約して</strong>」と頼むと、圧縮前に自分で確認できて安心です。</p>
+  </div>
+
+  <h3>Step 6の視覚化：リファクタ前後のコード複雑度</h3>
+
+  <div class="diagram-box">
+    <div class="diagram-title">関数ごとの行数(Before/After 想定値)</div>
+    <canvas id="ch24-bar-1" height="220"></canvas>
+  </div>
+  <script>
+  window.addEventListener("load", function(){
+    var el = document.getElementById('ch24-bar-1');
+    if (!el || !window.Chart) return;
+    new Chart(el, {
+      type: 'bar',
+      data: {
+        labels: ['generate_report','format_row','load_issues','render_md','save_report','format_date'],
+        datasets: [
+          { label: 'Before', data: [82, 24, 31, 0, 0, 0], backgroundColor: 'rgba(220,38,38,0.7)', borderRadius: 6 },
+          { label: 'After',  data: [18, 14, 16, 22, 12, 8], backgroundColor: '#D97757', borderRadius: 6 }
+        ]
+      },
+      options: { plugins: { legend: { position: 'bottom' } }, scales: { y: { beginAtZero: true, title: { display: true, text: '行数' } } } }
+    });
+  });
+  </script>
+
+  <p>大きな関数1個が消えて、20行前後の小さな関数が5-6個になる。<strong>これが「小さく分ける」の成果</strong>です。</p>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section: Part 3 検証 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Part 3: 検証 — Review と Merge判断 (15-20min)</h2>
+
+  <p>実装が終わってテストも緑——ですが、<strong>ここで本流に入れるかはまだ保留</strong>。最後の20分で自分の目と、Claudeの批判的レビューを通します。</p>
+
+  <h3>Step 7: 差分を批判的にレビューさせる</h3>
+
+  <p>Ch09の型通り、観点を指定してレビューを依頼します。「レビューして」だけでは薄い指摘しか返りません。</p>
+
+  <div class="hands-on-box info-box" style="background: rgba(217,119,87,0.08); border-left: 3px solid #D97757;">
+    <span class="label">実プロンプト(コピペ可)</span>
+    <pre><code>git diff main...HEAD を読み、以下の観点で辛口レビューしてください。
+
+観点(必ず全て触れること)：
+1. 振る舞い保存 — 既存の挙動が本当に同じか(テストがカバーしていない分岐は?)
+2. 可読性 — 関数名・変数名・コメントは意図を表しているか
+3. 責務の分離 — I/Oと純関数の分離は徹底されているか
+4. 過剰リファクタ — 不要な抽象化や早すぎる最適化がないか
+5. テスト品質 — 追加したテストは本当に振る舞いを固定しているか(assertion が緩くないか)
+
+出力形式：
+- 各観点で「OK / 懸念 / NG」を1つずつ
+- NG/懸念があれば具体的な行番号と修正案
+- 最後に「main にマージして良いか(Yes/No + 理由)」を1行で</code></pre>
+  </div>
+
+  <h3>Step 8: マージ判断</h3>
+
+  <p>Claudeのレビューと自分の判断を照らし合わせます。ここで <strong>「Yesと言われても自分が納得していなければマージしない」</strong> のが鉄則です。AIは<strong>誤って太鼓判を押すこともある</strong>。</p>
+
+  <div class="compare-cards">
+    <div class="cc good">
+      <span class="cc-label">マージしていい</span>
+      <h4>安心サイン</h4>
+      <ul>
+        <li>全テスト緑 + 追加テストあり</li>
+        <li>レビュー全観点 OK</li>
+        <li>自分でdiffを全行読んで納得</li>
+        <li>各コミットが小さく戻せる</li>
+      </ul>
+    </div>
+    <div class="cc bad">
+      <span class="cc-label">保留すべき</span>
+      <h4>警戒サイン</h4>
+      <ul>
+        <li>「多分大丈夫」「たぶん同じ」がレビューにある</li>
+        <li>1コミットが500行超</li>
+        <li>テストが assertion 緩めに書かれている</li>
+        <li>自分がdiffの意味を説明できない</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="hands-on-box info-box" style="background: rgba(217,119,87,0.08); border-left: 3px solid #D97757;">
+    <span class="label">マージ手順(安心サイン全Yesの時)</span>
+    <pre><code># 1. worktreeからpush
+git push -u origin refactor/ch24
+
+# 2. PR作成(Ch07のgh pr createパターン)
+gh pr create --title "refactor: report_generator.py を責務分離" \
+             --body "テスト追加 → 関数分割 → 重複括り出し。振る舞い変更なし。"
+
+# 3. マージ後、worktreeを片付ける
+cd ..
+git worktree remove myrepo-refactor
+git worktree list   # 消えたか確認</code></pre>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: worktree を残す選択肢</summary>
+    <div class="more-body">
+      <p><code>worktree remove</code>せずに残せば、次のリファクタ時に<code>git pull</code>して再利用できます。チーム開発では「リファクタ専用worktree」をメンバー各自が持つ運用もアリ。ただし<strong>ブランチが古くなる</strong>ので、週に1回は<code>main</code>に追随させるのを忘れずに。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section: 統合した5章の振り返り ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 統合した5つの武器 — 振り返り</h2>
+
+  <p>90分で5章分の武器を同時に使いました。<strong>どこでどれが効いたか</strong>を振り返っておくと、明日の自分の業務で再現できます。</p>
+
+  <table>
+    <thead>
+      <tr><th>章</th><th>技術</th><th>本章での役割</th><th>効いた瞬間</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Ch10</td><td>改修ワークフロー</td><td>4ステップの大枠</td><td>Part1で「触らない」時間を確保できた</td></tr>
+      <tr><td>Ch11</td><td>TDD</td><td>テスト先行で振る舞い固定</td><td>Step 5-1〜5-4のすべてで壊れ検知</td></tr>
+      <tr><td>Ch13</td><td>Planモード</td><td>変更計画への合意</td><td>ロールバックの境界を作れた</td></tr>
+      <tr><td>Ch16</td><td>Subagents</td><td>Exploreでコード把握を外注</td><td>親コンテキストを汚さず全体像を得た</td></tr>
+      <tr><td>Ch21</td><td>worktree</td><td>作業空間の隔離</td><td>main を汚さずに実験できた</td></tr>
+    </tbody>
+  </table>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-num">5<small>章</small></div>
+      <div class="stat-label">統合した武器</div>
+      <div class="stat-trend up">↑ 相乗効果</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">4<small>+</small></div>
+      <div class="stat-label">最低限のテスト本数</div>
+      <div class="stat-trend up">↑ 振る舞い固定</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">0<small>件</small></div>
+      <div class="stat-label">本番バグ想定</div>
+      <div class="stat-trend up">↑ テストが盾</div>
+    </div>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section: 発展課題 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 発展課題 — もう一段深く</h2>
+
+  <p>90分でPart1-3を回し終えた人は、次の2問で応用幅を広げてください。どちらも<strong>自分の実リポ</strong>でやるのが理想です。</p>
+
+  <div class="exercise-box">
+    <div class="exercise-label">発展課題 1</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>複数ファイル横断リファクタ</h4>
+    <p>1ファイル内で閉じるリファクタに慣れたら、<strong>3-5ファイルにまたがるリファクタ</strong>に挑戦しましょう。例: 共通ヘルパの抽出、ドメインモデルの切り出し、循環依存の解消など。</p>
+    <ol>
+      <li>Explore agent を<strong>2つ並列</strong>で飛ばし、モジュール関係図を作らせる(Ch16)</li>
+      <li>Planモードで「どのファイルをどの順で触るか」を決める</li>
+      <li>各ファイルに先にテストを追加 → 1ファイルずつリファクタ → 毎回 pytest 緑を確認</li>
+      <li>最後に全ファイルのdiffを1つのPRにまとめる</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><strong>成功の鍵は「並列 Explore」+「直列 Refactor」</strong>。</p>
+      <pre><code># 並列Explore(2つの観点で同時に飛ばす)
+Agent tool 並列起動:
+  agent1 prompt: "src/ 配下のモジュール間の import 関係を列挙して、循環依存があるか調べて"
+  agent2 prompt: "src/ 配下で3回以上重複している処理を見つけて、括り出し候補をリストアップして"
+
+# 直列Refactor(1ファイル1コミット)
+1. shared/helpers.py を新設(空)
+2. moduleA から重複処理を helpers.py に移動 → pytest → commit
+3. moduleB から同様に移動 → pytest → commit
+4. moduleC から同様に移動 → pytest → commit
+5. 最終的に重複がないことを確認</code></pre>
+      <p>並列と直列を<strong>使い分ける</strong>のが本章の肝。調査は並列、書き換えは直列。並列で書き換えるとマージ競合で破綻します。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">発展課題 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>チームメンバー用のworktreeハンドオフ手順書化</h4>
+    <p>本章でやったworktree運用を、<strong>チームの他のメンバーが再現できるMarkdown手順書</strong>に落とし込んでください。</p>
+    <ol>
+      <li><code>docs/refactor-playbook.md</code>を作成</li>
+      <li>「前提 / 手順 / よくある失敗 / 戻し方」の4セクション</li>
+      <li>コマンドは全てコピペで動く形で(環境変数やパスは<code>$REPO_PATH</code>のように変数化)</li>
+      <li>Claudeに「新入社員が読んでも迷わないか」視点でレビューさせる</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><strong>手順書の骨子例:</strong></p>
+      <pre><code># Refactor Playbook (worktree運用)
+
+## 前提
+- git 2.30以上、Claude Code導入済み
+- 対象ブランチは必ず `main` 由来の新規ブランチ
+
+## 手順
+1. `git fetch origin && git worktree add ../${REPO}-refactor -b refactor/$(date +%Y%m%d) origin/main`
+2. `cd ../${REPO}-refactor`
+3. Claude Codeを起動し、本章のPart 1-3に従う
+4. PR作成 → マージ後に `git worktree remove` で掃除
+
+## よくある失敗
+- 元のディレクトリで作業してしまう → `pwd` で確認
+- worktree掃除し忘れ → `git worktree list` で週次監査
+- 古いworktreeでmain追随を忘れる → `git pull origin main` を週1で
+
+## 戻し方
+- PR前: `git worktree remove --force ../${REPO}-refactor`
+- PR後: 通常の `git revert`</code></pre>
+      <p>チーム展開する時は、<strong>「戻し方」セクションが最重要</strong>。何かあった時にパニックにならず戻せる手順が、心理的安全性を生みます。</p>
+    </div>
+  </details>
+
+  <!-- ===== Resources ===== -->
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式</a> <span class="res-type doc">Doc</span> — Agent tool / Plan mode / Hooksの最新仕様</li>
+      <li><a href="https://git-scm.com/docs/git-worktree" target="_blank" rel="noopener">git-worktree 公式</a> <span class="res-type doc">Doc</span> — worktreeのコマンドリファレンス</li>
+      <li><a href="https://martinfowler.com/books/refactoring.html" target="_blank" rel="noopener">Refactoring (Martin Fowler)</a> <span class="res-type doc">Doc</span> — リファクタ手法のバイブル</li>
+      <li><a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener">Claude Code GitHub</a> <span class="res-type doc">Doc</span> — Issueやexamples</li>
+      <li><a href="https://github.com/anthropics/anthropic-cookbook" target="_blank" rel="noopener">Anthropic Cookbook</a> <span class="res-type doc">Doc</span> — リファクタ/TDDの実例</li>
+      <li><a href="https://www.anthropic.com/news" target="_blank" rel="noopener">Anthropic Blog</a> <span class="res-type doc">Doc</span> — Claude Codeの新機能アナウンス</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="24">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="23-project-automation.html"><span class="direction">&larr; Prev</span>Project A：業務自動化</a>
+    <a href="25-project-webapp.html"><span class="direction">Next &rarr;</span>Project C：Webアプリ</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>

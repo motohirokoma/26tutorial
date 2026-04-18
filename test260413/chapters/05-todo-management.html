@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>TodoWriteで作業管理 - MK's Claude Code Tutorial</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code Tutorial
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav class="active"><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="../index.html#phase3" data-nav><span class="phase-name">Advanced</span><span class="phase-pct" id="pct-advanced">0%</span></a></li>
+      <li><a href="../index.html#phase4" data-nav><span class="phase-name">Projects</span><span class="phase-pct" id="pct-projects">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.05</span>
+    TodoWriteで作業管理
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 26 sections</text>
+    </svg>
+    <div class="progress-info">0h / 24h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-welcome.html"><span class="status-dot" data-chapter="01"></span> ようこそ&セットアップ</a></li>
+    <li><a href="02-communication-basics.html"><span class="status-dot" data-chapter="02"></span> 対話の原則</a></li>
+    <li><a href="03-file-tools.html"><span class="status-dot" data-chapter="03"></span> ファイル操作ツール</a></li>
+    <li><a href="04-bash-safety.html"><span class="status-dot" data-chapter="04"></span> Bashツールと安全</a></li>
+    <li><a href="05-todo-management.html" class="active"><span class="status-dot" data-chapter="05"></span> TodoWriteで作業管理</a></li>
+    <li><a href="06-claude-md.html"><span class="status-dot" data-chapter="06"></span> CLAUDE.md</a></li>
+    <li><a href="07-git-workflow.html"><span class="status-dot" data-chapter="07"></span> Git × Claude Code</a></li>
+  </ul>
+  <div class="section-label">Core</div>
+  <ul>
+    <li><a href="08-prompt-patterns.html"><span class="status-dot" data-chapter="08"></span> プロンプト設計の型</a></li>
+    <li><a href="09-code-review.html"><span class="status-dot" data-chapter="09"></span> コードレビュー依頼</a></li>
+    <li><a href="10-refactor-workflow.html"><span class="status-dot" data-chapter="10"></span> 改修ワークフロー</a></li>
+    <li><a href="11-tdd-with-claude.html"><span class="status-dot" data-chapter="11"></span> テスト駆動</a></li>
+    <li><a href="12-debugging.html"><span class="status-dot" data-chapter="12"></span> デバッグ</a></li>
+    <li><a href="13-plan-mode.html"><span class="status-dot" data-chapter="13"></span> Planモード</a></li>
+    <li><a href="14-context-management.html"><span class="status-dot" data-chapter="14"></span> コンテキスト管理</a></li>
+    <li><a href="15-web-tools.html"><span class="status-dot" data-chapter="15"></span> Web検索・取得</a></li>
+  </ul>
+  <div class="section-label">Advanced</div>
+  <ul>
+    <li><a href="16-subagents-overview.html"><span class="status-dot" data-chapter="16"></span> Subagents</a></li>
+    <li><a href="17-mcp-overview.html"><span class="status-dot" data-chapter="17"></span> MCP</a></li>
+    <li><a href="18-hooks-overview.html"><span class="status-dot" data-chapter="18"></span> Hooks</a></li>
+    <li><a href="19-schedule-loop.html"><span class="status-dot" data-chapter="19"></span> Schedule &amp; Loop</a></li>
+    <li><a href="20-skills-overview.html"><span class="status-dot" data-chapter="20"></span> Skills</a></li>
+    <li><a href="21-worktree.html"><span class="status-dot" data-chapter="21"></span> worktree</a></li>
+    <li><a href="22-pitfalls.html"><span class="status-dot" data-chapter="22"></span> 失敗パターン10</a></li>
+  </ul>
+  <div class="section-label">Projects</div>
+  <ul>
+    <li><a href="23-project-automation.html"><span class="status-dot" data-chapter="23"></span> Project A：業務自動化</a></li>
+    <li><a href="24-project-refactor.html"><span class="status-dot" data-chapter="24"></span> Project B：リファクタ</a></li>
+    <li><a href="25-project-webapp.html"><span class="status-dot" data-chapter="25"></span> Project C：Webアプリ</a></li>
+    <li><a href="26-final-exercise.html"><span class="status-dot" data-chapter="26"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 1: Basics &gt; Chapter 05</div>
+  <h1>TodoWriteで作業管理</h1>
+  <p class="subtitle">3ステップ以上の仕事は「見える化」から始める</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 30分</span>
+    <span class="badge">Phase: Basics</span>
+    <span class="badge">難易度: 入門</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">この章のゴール</span>
+    <p><strong>TodoWrite</strong> というツールを使って、Claude Code に「計画を立ててから実行してもらう」感覚を身につけます。これをやると<strong>長い作業でも途中で迷子にならない</strong>し、あなたも進捗を目で追えるようになる。30分で、TodoWriteがいつ効くか/いつ不要か/どの粒度で書くべきかを押さえて、今日から自分の仕事に持ち込めるようにしましょう。</p>
+  </div>
+
+  <div class="info-box" style="border-left: 3px solid #D97757;">
+    <span class="label">バージョン注記</span>
+    <p>本章の記述は<strong>2026年1月時点</strong>の Claude Code 挙動に基づきます。TodoWriteの状態名(<code>pending</code>/<code>in_progress</code>/<code>completed</code>)やフィールド仕様は進化する可能性があるため、動作が想定と異なる場合は<a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">公式ドキュメント</a>を確認してください。</p>
+  </div>
+
+  <!-- ===== Section 1: TodoWriteとは ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> TodoWriteとは — 一言で</h2>
+
+  <p><span class="term" data-tip="TodoWrite: Claude Code 内蔵ツール。タスクリストを作成/更新する。状態はpending/in_progress/completed。">TodoWrite</span>は、Claude Code が自分の頭の中で「これから何をやるか」を<strong>リスト化して外に出す</strong>ためのツールです。プロジェクト管理ツール(Jira, Notion 等)ではなく、<strong>その会話のためだけの一時的なチェックリスト</strong>だと考えてください。作ったリストはUIに表示され、進捗がリアルタイムに更新されていきます。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">TodoWriteの役割 — 頭の中→見える化</div>
+    <svg viewBox="0 0 520 240" width="100%" style="max-width:520px; display:block; margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <!-- left: Without todo -->
+      <rect x="20" y="30" width="200" height="180" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+      <text x="120" y="55" text-anchor="middle" font-size="12" font-weight="700" fill="#b45309">Without TodoWrite</text>
+      <text x="120" y="90" text-anchor="middle" font-size="11">思考が全部</text>
+      <text x="120" y="110" text-anchor="middle" font-size="11">Claudeの頭の中</text>
+      <text x="120" y="140" text-anchor="middle" font-size="10" fill="#64748b">→ 途中で脱線</text>
+      <text x="120" y="160" text-anchor="middle" font-size="10" fill="#64748b">→ 抜け漏れ発生</text>
+      <text x="120" y="180" text-anchor="middle" font-size="10" fill="#64748b">→ あなたも読めない</text>
+      <!-- arrow -->
+      <path d="M 225 120 L 295 120" stroke="#D97757" stroke-width="3" fill="none" marker-end="url(#arr05a)"/>
+      <defs><marker id="arr05a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#D97757"/></marker></defs>
+      <!-- right: With todo -->
+      <rect x="300" y="30" width="200" height="180" rx="12" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="2"/>
+      <text x="400" y="55" text-anchor="middle" font-size="12" font-weight="700" fill="#18181b">With TodoWrite</text>
+      <text x="320" y="85" font-size="11">☐ ステップ1</text>
+      <text x="320" y="105" font-size="11" fill="#2563eb" font-weight="600">◐ ステップ2 (作業中)</text>
+      <text x="320" y="125" font-size="11">☐ ステップ3</text>
+      <text x="320" y="145" font-size="11" text-decoration="line-through" fill="#94a3b8">☑ ステップ0 (完了)</text>
+      <text x="400" y="180" text-anchor="middle" font-size="10" fill="#64748b">→ あなたもClaudeも全体像が見える</text>
+    </svg>
+    <div class="diagram-caption">リストを「外に出す」ことで、人間も Claude も迷子にならない。</div>
+  </div>
+
+  <p>TodoWriteが効く理由は2つあります: <strong>(1)Claude自身の思考の足場になる</strong>(人間が付箋に書くと整理できるのと同じ)、<strong>(2)あなたがリアルタイムに進捗を追える</strong>(放置していても「今どこ?」が一目で分かる)。逆にこのツールが不要な場面もある——それは後述します。</p>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section 2: いつ使う/使わない ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> いつ使う、いつ使わない</h2>
+
+  <p>基準はシンプル: <strong>3ステップ以上で、かつ順番や依存がある仕事</strong>なら必ず使う。それ以外は不要。紋切り型で「全てに書け」ではないので注意してください。</p>
+
+  <div class="compare-cards">
+    <div class="cc good">
+      <span class="cc-label">使うべき</span>
+      <h4>TodoWriteが効く仕事</h4>
+      <ul>
+        <li>複数ファイルの一括リファクタ</li>
+        <li>新機能の実装(設計→実装→テスト→ドキュメント)</li>
+        <li>バグ調査(再現→仮説→検証→修正→テスト)</li>
+        <li>5つの観点で順番にレビュー</li>
+        <li>プロジェクト初期設定(複数のsetup)</li>
+      </ul>
+    </div>
+    <div class="cc bad">
+      <span class="cc-label">不要</span>
+      <h4>書かなくていい仕事</h4>
+      <ul>
+        <li>「このファイルを読んで」で済む単発作業</li>
+        <li>1〜2ステップの軽い修正</li>
+        <li>会話ベースの相談・ブレスト</li>
+        <li>情報検索や質問への回答</li>
+        <li>即レス系の「何がエラー?」</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="info-box" style="border-left-color: #D97757;">
+    <span class="label">ここがプロの境目</span>
+    <p><strong>3ステップ以上の仕事は必ず最初に TodoWrite を立てさせる</strong>。人間もClaudeも、全体像が見えた瞬間に精度が上がります。逆にこれを怠ると、途中で「何やってたんだっけ」になって手戻りが発生する。<br>
+    <em>試し方:</em> 次のセッションで「今日の自分の予定を TodoWrite で立てて」とだけ頼んでみる。1分で体感できます。</p>
+  </div>
+
+  <!-- ===== Section 3: 状態遷移 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 3つの状態と遷移ルール</h2>
+
+  <p>TodoWriteのタスクは常に以下3状態のどれかです。<span class="term" data-tip="pending: まだ着手していない状態。デフォルト。">pending</span>(未着手) → <span class="term" data-tip="in_progress: 作業中の状態。同時に1つだけが原則。">in_progress</span>(作業中) → <span class="term" data-tip="completed: 完了した状態。もう戻れない前提で扱う。">completed</span>(完了)。原則として <strong>in_progress は常に1つだけ</strong>。複数並行すると、あなたも Claude も注意が拡散してしまいます。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">状態遷移図</div>
+    <svg viewBox="0 0 560 200" width="100%" style="max-width:560px; display:block; margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <!-- pending -->
+      <circle cx="90" cy="100" r="55" fill="#f4f4f5" stroke="#94a3b8" stroke-width="2"/>
+      <text x="90" y="95" text-anchor="middle" font-size="13" font-weight="700" fill="#475569">pending</text>
+      <text x="90" y="115" text-anchor="middle" font-size="10" fill="#64748b">未着手</text>
+      <!-- arrow to in_progress -->
+      <path d="M 148 100 L 228 100" stroke="#D97757" stroke-width="2.5" fill="none" marker-end="url(#arr05b)"/>
+      <text x="188" y="90" text-anchor="middle" font-size="10" fill="#D97757">着手</text>
+      <defs><marker id="arr05b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#D97757"/></marker></defs>
+      <!-- in_progress -->
+      <circle cx="280" cy="100" r="55" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="2.5"/>
+      <text x="280" y="95" text-anchor="middle" font-size="12" font-weight="700" fill="#18181b">in_progress</text>
+      <text x="280" y="115" text-anchor="middle" font-size="10" fill="#64748b">作業中</text>
+      <!-- arrow to completed -->
+      <path d="M 338 100 L 418 100" stroke="#16a34a" stroke-width="2.5" fill="none" marker-end="url(#arr05c)"/>
+      <text x="378" y="90" text-anchor="middle" font-size="10" fill="#16a34a">完了</text>
+      <defs><marker id="arr05c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/></marker></defs>
+      <!-- completed -->
+      <circle cx="470" cy="100" r="55" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+      <text x="470" y="95" text-anchor="middle" font-size="12" font-weight="700" fill="#15803d">completed</text>
+      <text x="470" y="115" text-anchor="middle" font-size="10" fill="#64748b">完了</text>
+      <!-- backward warning -->
+      <path d="M 430 155 Q 280 180 130 155" stroke="#dc2626" stroke-width="1.5" fill="none" stroke-dasharray="4 3" marker-end="url(#arr05d)"/>
+      <text x="280" y="185" text-anchor="middle" font-size="10" fill="#dc2626">⚠ 原則として逆戻りしない</text>
+      <defs><marker id="arr05d" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker></defs>
+    </svg>
+    <div class="diagram-caption">pending → in_progress → completed の一方通行。completedにしたら「もう触らない」が原則。</div>
+  </div>
+
+  <p>completed にするタイミングは<strong>「そのステップが本当に終わった時」</strong>です。テストが通っていない、検証が残っている状態で completed にしてはいけません。「<span class="term" data-tip="done criteria: 完了条件。何をもって終わりと見なすかの基準。Ch02参照。">done criteria</span>」をタスクごとに明確にするのが鍵——これはCh02「対話の原則」の延長線上にあります。</p>
+
+  <table>
+    <thead>
+      <tr><th>状態</th><th>意味</th><th>このタイミングで更新</th><th>原則</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>pending</code></td><td>未着手</td><td>タスク作成時のデフォルト</td><td>並列で複数あってOK</td></tr>
+      <tr><td><code>in_progress</code></td><td>作業中</td><td>そのタスクに取り掛かる瞬間</td><td>同時に1つだけ</td></tr>
+      <tr><td><code>completed</code></td><td>完了</td><td>done criteria を満たした瞬間</td><td>逆戻りしない</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ===== Section 4: 粒度 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 粒度の決め方 — 大きすぎず、細かすぎず</h2>
+
+  <p>TodoWriteの質はほぼ粒度で決まります。<strong>1タスクは15〜30分で完了できる大きさ</strong>が理想。これより大きいと中で迷子になるし、これより細かいと管理コストが増えるだけ。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">粒度の3段階</div>
+    <canvas id="ch5-bar-1" height="140"></canvas>
+    <div class="diagram-caption">細かすぎ(単調)・粗すぎ(迷子)を避けた「ちょうどいい」ゾーンが15〜30分。</div>
+  </div>
+  <script>
+  window.addEventListener("load", function() {
+    var el = document.getElementById('ch5-bar-1');
+    if (!el || !window.Chart) return;
+    new Chart(el, {
+      type: 'bar',
+      data: {
+        labels: ['細かすぎ (1-5分)', 'ちょうど良い (15-30分)', '粗すぎ (60分超)'],
+        datasets: [{
+          label: '実用度',
+          data: [35, 95, 40],
+          backgroundColor: ['#cbd5e1', '#D97757', '#cbd5e1'],
+          borderRadius: 6
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        plugins: { legend: { display: false } },
+        scales: { x: { beginAtZero: true, max: 100, ticks: { callback: function(v){ return v + '%'; } } } }
+      }
+    });
+  });
+  </script>
+
+  <h3>実例で見る — 同じ仕事、3つの粒度</h3>
+
+  <p>お題: 「ログイン機能を作る」</p>
+
+  <table>
+    <thead>
+      <tr><th>粒度</th><th>タスク例</th><th>評価</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>細かすぎ</td><td>ファイルを開く / 関数名を決める / import文を書く / ...</td><td>❌ 管理コスト過多</td></tr>
+      <tr><td><strong>ちょうど良い</strong></td><td>1. Login UI作成 / 2. 認証API実装 / 3. テスト追加 / 4. エラーハンドリング</td><td>✅ 進捗が読める</td></tr>
+      <tr><td>粗すぎ</td><td>1. ログイン機能を作る</td><td>❌ 中で迷子</td></tr>
+    </tbody>
+  </table>
+
+  <details class="more-box">
+    <summary>もっと詳しく: 粒度に迷った時の3つの質問</summary>
+    <div class="more-body">
+      <ol>
+        <li><strong>このタスクを15分で終わらせられそう?</strong> — Noなら分割を検討</li>
+        <li><strong>タスク名を見ただけで完了判定できる?</strong> — 「○○を書く」より「○○が××を返すようにする」の方が良い</li>
+        <li><strong>もし途中で中断したら、再開しやすい?</strong> — タスクを閉じるポイント(ファイル保存/コミット等)で区切る</li>
+      </ol>
+      <p>この3問を満たすと、自然と「15〜30分・完了条件明確・再開可能」な粒度になります。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 5: 実例 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 実際のTodoWrite使用例</h2>
+
+  <p>あなたが Claude Code にこう頼んだとします:</p>
+
+  <pre><code>ユーザー認証機能にパスワードリセットを追加して。
+メール送信 → トークン検証 → 新パスワード保存の流れで、
+既存のテストも壊さないように。</code></pre>
+
+  <p>Claude は内部で TodoWrite を呼び、次のようなリストを立てます(UIに表示される形):</p>
+
+  <div class="steps">
+    <div class="step done">
+      <div class="step-num">1</div>
+      <div class="step-label">既存認証コード把握</div>
+      <div class="step-desc">Grep/Readで関連ファイル調査</div>
+    </div>
+    <div class="step done">
+      <div class="step-num">2</div>
+      <div class="step-label">リセット要求API実装</div>
+      <div class="step-desc">トークン発行+メール送信</div>
+    </div>
+    <div class="step" style="border-color:#D97757; background: rgba(217,119,87,0.08);">
+      <div class="step-num" style="background:#D97757;">3</div>
+      <div class="step-label">トークン検証API実装</div>
+      <div class="step-desc">in_progress</div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-label">新パスワード保存</div>
+      <div class="step-desc">バリデーション + ハッシュ化</div>
+    </div>
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-label">テスト追加&既存確認</div>
+      <div class="step-desc">pytest通し</div>
+    </div>
+  </div>
+
+  <p>これを眺めるだけで、「今ステップ3、残り2つ、あと30分ぐらい」と見積れます。<strong>放置運用</strong>(別作業しつつチラ見)でも安心できる理由です。</p>
+
+  <h3>TodoWrite の呼び出しイメージ(内部APIの雰囲気)</h3>
+
+  <pre><code>// Claude が内部で呼ぶ(あなたが書くコードではない)
+TodoWrite({
+  todos: [
+    { content: "既存認証コードを把握",       status: "completed",   activeForm: "把握中" },
+    { content: "リセット要求API実装",        status: "completed",   activeForm: "実装中" },
+    { content: "トークン検証API実装",        status: "in_progress", activeForm: "実装中" },
+    { content: "新パスワード保存",           status: "pending",     activeForm: "実装中" },
+    { content: "テスト追加&amp;既存テスト確認", status: "pending",     activeForm: "検証中" }
+  ]
+})</code></pre>
+
+  <div class="info-box">
+    <span class="label">Tips: activeForm とは</span>
+    <p><code>activeForm</code> は「作業中」と表示するときの<strong>現在進行形ラベル</strong>です。タスク名が名詞句でも、進行中の時は動詞句にしたいので別フィールドになっています。ユーザが意識する必要はありませんが、「今XXX中」という表示が綺麗になる裏側の仕組みです。</p>
+  </div>
+
+  <!-- ===== Section 6: 迷子防止 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 迷子防止メカニズム — なぜTodoWriteは効くのか</h2>
+
+  <p>長時間の作業で Claude が「何やってるんだっけ」になるのは、<span class="term" data-tip="コンテキストウィンドウ: モデルが一度に見られるテキスト量の上限。Ch14参照。">コンテキストウィンドウ</span>の末尾に近い情報に注意が引っ張られるから。リストを途中で見直せる形で置くと、<strong>「本来の目的」に定期的に引き戻せる</strong>。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">迷子発生のメカニズム</div>
+    <pre class="mermaid">
+graph LR
+  A["長い作業開始"] --> B["途中で脱線<br/>(エラー対処等)"]
+  B --> C{"TodoWriteあり?"}
+  C -- Yes --> D["リスト見直し"]
+  D --> E["本筋に復帰"]
+  C -- No --> F["脱線先で深掘り"]
+  F --> G["本来の目的を喪失"]
+    </pre>
+    <div class="diagram-caption">脱線は避けられないが、復帰経路の有無で結果が変わる。</div>
+  </div>
+
+  <h3>迷子パターン3つ</h3>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="shuffle" width="20" height="20"></i>
+      <div><strong>脱線型</strong> — エラーに遭遇して、その解決に没頭。気づいたら「何のために今これを?」となる</div>
+    </li>
+    <li>
+      <i data-lucide="repeat" width="20" height="20"></i>
+      <div><strong>ループ型</strong> — 同じ箇所を何度も直し続ける。全体像がないと「ここはもう手をつけた」の記憶が薄れる</div>
+    </li>
+    <li>
+      <i data-lucide="flag-off" width="20" height="20"></i>
+      <div><strong>完了判定曖昧型</strong> — 「だいたい動いてる」で止まる。done criteria をリストに書いておけば防げる</div>
+    </li>
+  </ul>
+
+  <details class="more-box">
+    <summary>もっと詳しく: 長時間セッションでTodoWriteが特に光る場面</summary>
+    <div class="more-body">
+      <p>30分を超える作業、特に以下は TodoWrite なしだと事故率が跳ね上がります:</p>
+      <ul>
+        <li>複数ファイルにまたがるリファクタ(Ch10で詳説)</li>
+        <li>「Red-Green-Refactor」のTDDループ(Ch11)</li>
+        <li>5観点以上の並列レビュー(Ch09/Ch16)</li>
+        <li>バグ調査の「仮説3つ→順に検証」(Ch12)</li>
+      </ul>
+      <p>これらの章で TodoWrite は当たり前に使われます。ここで慣れておくと後がラク。</p>
+    </div>
+  </details>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section 7: 今すぐ試す ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 今すぐ試す — TodoWriteで今日の予定を立てさせる</h2>
+
+  <p>5分で体感できる超簡単なハンズオン。ターミナルで <code>claude</code> を起動して、以下をそのままコピペしてください:</p>
+
+  <pre><code>今日の僕の予定をTodoWriteで立てて。
+
+・午前: 昨日のPRレビュー、新機能の設計会議
+・午後: 認証バグの修正、デプロイ準備、退勤前にSlack整理
+
+各タスクの完了条件も書いて。</code></pre>
+
+  <p>Claude は TodoWrite を呼び出して、5-6個のタスクをリスト化してくれます。表示されたリストを眺めて、以下を観察:</p>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="eye" width="20" height="20"></i>
+      <div><strong>粒度</strong> — 各タスクが15〜30分で完了できる大きさか?</div>
+    </li>
+    <li>
+      <i data-lucide="check-square" width="20" height="20"></i>
+      <div><strong>done criteria</strong> — 「終わった」と判定できる基準が各タスクにあるか?</div>
+    </li>
+    <li>
+      <i data-lucide="git-branch" width="20" height="20"></i>
+      <div><strong>順序</strong> — 依存関係のあるタスクが正しい順になっているか?</div>
+    </li>
+  </ul>
+
+  <p>気に入らなければ「もっと細かく」「このタスクを2つに分けて」と指示して更新させる——これが TodoWrite の使い方の全てです。</p>
+
+  <!-- ===== Section 8: 後続章との接続 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> TodoWriteは「パワーユーザーへの入口」</h2>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-num">3<small>+</small></div>
+      <div class="stat-label">ステップ以上なら必ず立てる</div>
+      <div class="stat-trend up">↑ 精度が跳ね上がる</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">15-30<small>分</small></div>
+      <div class="stat-label">1タスクの理想粒度</div>
+      <div class="stat-trend up">↑ 迷子ゼロ</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">1<small>つ</small></div>
+      <div class="stat-label">in_progress は常に</div>
+      <div class="stat-trend up">↑ 集中が守られる</div>
+    </div>
+  </div>
+
+  <p>TodoWrite は地味に見えますが、Ch10(改修ワークフロー)・Ch11(TDD)・Ch13(Plan モード)・Ch16(Subagents)・Ch23-25(Project群)で<strong>当たり前に使う土台</strong>です。ここで慣れておくと、後の章で「Plan モードと TodoWrite の違い」「Subagent に TodoWrite を立てさせる」等の高等技に自然につながります。</p>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>今日の自分のタスクを TodoWrite で立てさせる</h4>
+    <p>Claude Code を起動して、今日の自分の予定(仕事・家事・なんでも)を TodoWrite で立てさせてください。以下を確認します。</p>
+    <ol>
+      <li>Claude に「今日の予定をTodoWriteで立てて。完了条件も書いて」と頼む</li>
+      <li>出力されたリストをチェック — 粒度は15-30分? done criteriaは明確?</li>
+      <li>気になる部分があれば「このタスクを2つに分けて」「もっと具体的に」と指示して修正させる</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>良いリストの例(朝10時からの想定):</p>
+      <pre><code>☐ 10:00-10:30 PRレビュー (#234, #235) → 承認 or コメント付きで返す
+☐ 10:30-11:30 新機能の設計会議準備 → 論点3つをメモ化
+☐ 13:00-14:00 認証バグ修正 → 再現テスト追加+緑
+☐ 14:00-14:30 デプロイ手順確認 → checklist完成
+☐ 17:30-18:00 Slackメンション整理 → 未返信ゼロ</code></pre>
+      <p><strong>評価ポイント</strong>: 各タスクに(a)時間枠 (b)具体的な成果物・完了条件 がある。もし「バグ修正」だけならdone criteriaがなく迷子になりやすい。模範は「再現テスト追加+緑」で<strong>何をもって完了か</strong>が自明。</p>
+      <p>逆に悪い例は「仕事する」「メールを見る」のように粒度粗すぎ・完了条件不明なもの。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>実プロジェクトで「3ステップ以上の改修」を TodoWrite させる</h4>
+    <p>自分のコード(or 練習リポ)で、以下のような複数ステップを含む依頼を出し、Claude が自発的に TodoWrite を立てるか観察してください。</p>
+    <ol>
+      <li>お題例: 「READMEを更新して、最新のCLIオプションを反映し、セットアップ手順の誤字を直して、例コードを1つ追加して」(4ステップ)</li>
+      <li>Claude が TodoWrite を立てたか確認(立てなかったら「TodoWriteで計画立てて」と追加指示)</li>
+      <li>in_progress が常に1つだけか、completed が順番に増えるかを観察</li>
+      <li>完了後、リストの質を振り返り: done criteriaは? 粒度は? 脱線はなかった?</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>理想的な挙動:</p>
+      <ol>
+        <li>Claude が自発的に TodoWrite を呼ぶ (3-4ステップの依頼で通常は自動)</li>
+        <li>タスクは例えば: (1)現状のREADME読解 (2)CLIオプション最新化 (3)誤字修正 (4)例コード追加 (5)git diff で最終確認</li>
+        <li>実行中は「進行中: トークン検証API実装」のようにUI表示が更新される</li>
+        <li>最後に全て completed になって作業完了</li>
+      </ol>
+      <p><strong>もし TodoWrite を立てなかった場合</strong>: Claude の判断で「2ステップ程度」と見積もった可能性があります。明示的に「計画を立ててから始めて」と頼むと、次回以降も立てる傾向が強まります。これは<strong>Ch02「成功条件を渡す」の応用形</strong>です。</p>
+      <p><strong>振り返りのポイント</strong>: 脱線があった場合、TodoWriteのおかげで「残りXX個」が見えることで早く復帰できたはず。逆にリストなしだと同じ時間でも達成率が低くなりやすい——これを体感するのがこの Exercise の目的です。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式ドキュメント</a> — TodoWriteツールの一次情報</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener">Claude Code GitHub</a> — 最新のIssue/例</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://www.anthropic.com/news" target="_blank" rel="noopener">Anthropic Blog</a> — アップデート情報</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://github.com/anthropics/anthropic-cookbook" target="_blank" rel="noopener">Anthropic Cookbook</a> — 実践パターン集</li>
+      <li><span class="res-type video">Video</span> <a href="https://www.youtube.com/results?search_query=Claude+Code+TodoWrite" target="_blank" rel="noopener">YouTube検索「Claude Code TodoWrite」</a> — 他ユーザーの使用例</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="05">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="04-bash-safety.html"><span class="direction">&larr; Prev</span>Bashツールと安全</a>
+    <a href="06-claude-md.html"><span class="direction">Next &rarr;</span>CLAUDE.md</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>

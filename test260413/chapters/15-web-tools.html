@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>Web検索・取得の活用 - MK's Claude Code Tutorial</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code Tutorial
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav class="active"><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="../index.html#phase3" data-nav><span class="phase-name">Advanced</span><span class="phase-pct" id="pct-advanced">0%</span></a></li>
+      <li><a href="../index.html#phase4" data-nav><span class="phase-name">Projects</span><span class="phase-pct" id="pct-projects">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.15</span>
+    Web検索・取得の活用
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 26 sections</text>
+    </svg>
+    <div class="progress-info">0h / 24h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-welcome.html"><span class="status-dot" data-chapter="01"></span> ようこそ&セットアップ</a></li>
+    <li><a href="02-communication-basics.html"><span class="status-dot" data-chapter="02"></span> 対話の原則</a></li>
+    <li><a href="03-file-tools.html"><span class="status-dot" data-chapter="03"></span> ファイル操作ツール</a></li>
+    <li><a href="04-bash-safety.html"><span class="status-dot" data-chapter="04"></span> Bashツールと安全</a></li>
+    <li><a href="05-todo-management.html"><span class="status-dot" data-chapter="05"></span> TodoWriteで作業管理</a></li>
+    <li><a href="06-claude-md.html"><span class="status-dot" data-chapter="06"></span> CLAUDE.md</a></li>
+    <li><a href="07-git-workflow.html"><span class="status-dot" data-chapter="07"></span> Git × Claude Code</a></li>
+  </ul>
+  <div class="section-label">Core</div>
+  <ul>
+    <li><a href="08-prompt-patterns.html"><span class="status-dot" data-chapter="08"></span> プロンプト設計の型</a></li>
+    <li><a href="09-code-review.html"><span class="status-dot" data-chapter="09"></span> コードレビュー依頼</a></li>
+    <li><a href="10-refactor-workflow.html"><span class="status-dot" data-chapter="10"></span> 改修ワークフロー</a></li>
+    <li><a href="11-tdd-with-claude.html"><span class="status-dot" data-chapter="11"></span> テスト駆動</a></li>
+    <li><a href="12-debugging.html"><span class="status-dot" data-chapter="12"></span> デバッグ</a></li>
+    <li><a href="13-plan-mode.html"><span class="status-dot" data-chapter="13"></span> Planモード</a></li>
+    <li><a href="14-context-management.html"><span class="status-dot" data-chapter="14"></span> コンテキスト管理</a></li>
+    <li><a href="15-web-tools.html" class="active"><span class="status-dot" data-chapter="15"></span> Web検索・取得</a></li>
+  </ul>
+  <div class="section-label">Advanced</div>
+  <ul>
+    <li><a href="16-subagents-overview.html"><span class="status-dot" data-chapter="16"></span> Subagents</a></li>
+    <li><a href="17-mcp-overview.html"><span class="status-dot" data-chapter="17"></span> MCP</a></li>
+    <li><a href="18-hooks-overview.html"><span class="status-dot" data-chapter="18"></span> Hooks</a></li>
+    <li><a href="19-schedule-loop.html"><span class="status-dot" data-chapter="19"></span> Schedule &amp; Loop</a></li>
+    <li><a href="20-skills-overview.html"><span class="status-dot" data-chapter="20"></span> Skills</a></li>
+    <li><a href="21-worktree.html"><span class="status-dot" data-chapter="21"></span> worktree</a></li>
+    <li><a href="22-pitfalls.html"><span class="status-dot" data-chapter="22"></span> 失敗パターン10</a></li>
+  </ul>
+  <div class="section-label">Projects</div>
+  <ul>
+    <li><a href="23-project-automation.html"><span class="status-dot" data-chapter="23"></span> Project A：業務自動化</a></li>
+    <li><a href="24-project-refactor.html"><span class="status-dot" data-chapter="24"></span> Project B：リファクタ</a></li>
+    <li><a href="25-project-webapp.html"><span class="status-dot" data-chapter="25"></span> Project C：Webアプリ</a></li>
+    <li><a href="26-final-exercise.html"><span class="status-dot" data-chapter="26"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 2: Core &gt; Chapter 15</div>
+  <h1>Web検索・取得の活用</h1>
+  <p class="subtitle">WebFetch と WebSearch を正しく使い分けて、自分の記憶の外へ出る</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 30分</span>
+    <span class="badge">Phase: Core</span>
+    <span class="badge">難易度: 中級</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">この章のゴール</span>
+    <p><strong>「最新の公式仕様」「昨日リリースされたパッケージの挙動」「バージョン差分」</strong>——こういう情報は、Claude の学習データに<strong>載っていない、または古い</strong>可能性が高い。本章で <code>WebFetch</code> と <code>WebSearch</code> の使い分けを手に染み込ませて、<strong>「記憶で答える Claude」から「取ってきて答える Claude」</strong> に運転席から切り替えられるようになります。<br>30分でこの差を体感できれば、回答品質は目に見えて上がります。</p>
+  </div>
+
+  <div class="info-box" style="border-left: 3px solid #D97757;">
+    <span class="label">バージョン注記</span>
+    <p>本章の記述は <strong>2026年1月時点</strong> の Claude Code 挙動に基づきます。<code>WebFetch</code> / <code>WebSearch</code> の仕様・レート制限・許可ドメインの扱いは変わりうるため、動かない時はまず <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">公式ドキュメント</a> を見てください(まさに本章の教えの実践です)。</p>
+  </div>
+
+  <!-- ===== Section 1: 2つのツールの違い ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> WebFetch と WebSearch は別物 — 役割を1行で</h2>
+
+  <p>まず混同を殺します。<span class="term" data-tip="WebFetch: 指定したURLのページをClaudeが取得して中身を読み取るツール。URLが既に決まっている時に使う。">WebFetch</span> は<strong>「URLを知っている前提で、そのページの中身を取ってくる」</strong>ツール。<span class="term" data-tip="WebSearch: 検索クエリを投げて関連するWebページの一覧(タイトル+スニペット+URL)を返すツール。URLが分からない時に使う。">WebSearch</span> は<strong>「URLを知らないので、まず検索して候補を出す」</strong>ツール。片方ずつ役割を固定すれば迷いません。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">WebFetch vs WebSearch の役割分担</div>
+    <svg viewBox="0 0 520 260" width="100%" style="max-width:520px; display:block; margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arrW" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#D97757"/></marker>
+      </defs>
+      <rect x="30" y="30" width="200" height="90" rx="10" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="2"/>
+      <text x="130" y="55" text-anchor="middle" font-size="14" font-weight="700" fill="#18181b">WebSearch</text>
+      <text x="130" y="78" text-anchor="middle" font-size="11">キーワード → 候補URL一覧</text>
+      <text x="130" y="96" text-anchor="middle" font-size="10" fill="#475569">「探す」フェーズ</text>
+      <text x="130" y="112" text-anchor="middle" font-size="10" fill="#475569">スニペット+タイトル</text>
+
+      <rect x="290" y="30" width="200" height="90" rx="10" fill="#ffffff" stroke="#D97757" stroke-width="2"/>
+      <text x="390" y="55" text-anchor="middle" font-size="14" font-weight="700" fill="#18181b">WebFetch</text>
+      <text x="390" y="78" text-anchor="middle" font-size="11">URL → ページ本文</text>
+      <text x="390" y="96" text-anchor="middle" font-size="10" fill="#475569">「深掘る」フェーズ</text>
+      <text x="390" y="112" text-anchor="middle" font-size="10" fill="#475569">全文を読み取り</text>
+
+      <path d="M 230 75 L 290 75" stroke="#D97757" stroke-width="2" fill="none" marker-end="url(#arrW)"/>
+      <text x="260" y="68" text-anchor="middle" font-size="10" fill="#64748b">候補を渡す</text>
+
+      <rect x="150" y="160" width="220" height="70" rx="10" fill="#fafafa" stroke="#18181b" stroke-width="1.5" stroke-dasharray="4 3"/>
+      <text x="260" y="188" text-anchor="middle" font-size="12" font-weight="700">最新情報に根拠を持った回答</text>
+      <text x="260" y="210" text-anchor="middle" font-size="10" fill="#475569">自分の記憶ではなく、取ってきた事実で答える</text>
+
+      <path d="M 130 120 Q 200 150 230 160" stroke="#D97757" stroke-width="1.5" fill="none" marker-end="url(#arrW)"/>
+      <path d="M 390 120 Q 330 150 300 160" stroke="#D97757" stroke-width="1.5" fill="none" marker-end="url(#arrW)"/>
+    </svg>
+    <div class="diagram-caption">「探す→深掘る」の2段階。まず Search で候補を集め、確信があるURLだけ Fetch で全文読む。</div>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>観点</th><th>WebSearch</th><th>WebFetch</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>入力</td><td>クエリ文字列 (例: <code>"Claude Code WebFetch docs"</code>)</td><td>URL (例: <code>https://docs.claude.com/...</code>)</td></tr>
+      <tr><td>出力</td><td>ヒット一覧(タイトル+URL+短いスニペット)</td><td>ページ本文を解析済みテキスト化</td></tr>
+      <tr><td>用途</td><td>公式URLが分からない / 最新記事を探す</td><td>URLが決まっている仕様書・PR・README を読む</td></tr>
+      <tr><td>想定コスト</td><td>比較的軽い(一覧だけ)</td><td>中〜重い(本文全文を取り込む)</td></tr>
+      <tr><td>先に使う</td><td>ほぼ常に Search が先</td><td>Search の結果を1-2個選んで Fetch</td></tr>
+      <tr><td>弱点</td><td>検索精度に依存・広告/ノイズが混ざる</td><td>JS描画/認証必須サイトは取れないことがある</td></tr>
+    </tbody>
+  </table>
+
+  <div class="hands-on-box info-box" style="background: rgba(217,119,87,0.08); border-left: 3px solid #D97757;">
+    <span class="label">今すぐ試す(60秒)</span>
+    <p>Claude Code に以下の1行を投げてみてください。WebSearch → WebFetch の連鎖が自然に起こるはずです。</p>
+    <pre><code>Claude Code の WebFetch ツールの公式仕様を、WebSearch で探して、
+ヒットした docs.claude.com のページを WebFetch で読んで、
+パラメータ名と戻り値の形式だけ要点を3行で教えて。</code></pre>
+    <p>結果が自分の記憶と食い違ったら、<strong>取ってきた方が正しい</strong>と思ってください。それが本章で身につける第一の感覚です。</p>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section 2: ここがプロの境目 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> ここがプロの境目 — 記憶ではなく取得で答えさせる</h2>
+
+  <p>初級者は「Claudeは物知りだから聞けば教えてくれる」と考えがちです。しかしLLMには<span class="term" data-tip="ナレッジカットオフ: モデルが学習した最後の日付。それ以降の情報はモデルの記憶には存在しない。">ナレッジカットオフ</span>があり、<strong>数カ月〜1年前までの情報しか記憶にありません</strong>。特にAPI仕様やSDKのバージョン差分、リリースされたばかりの機能は記憶ベースの答えが平気で嘘を言います。</p>
+
+  <div class="info-box" style="border-left-color: #D97757;">
+    <span class="label">ここがプロの境目</span>
+    <p><strong>「最新仕様は WebFetch で取ってきて」と頼む</strong>。自分の記憶に頼らず、Claudeにも頼らせない。ナレッジカットオフ以降の情報は、依頼の中で毎回 <code>WebFetch &lt;公式URL&gt;</code> を明示するのが、上位20%の基本動作です。記憶で書かれた間違った関数名やdeprecated API を追いかけるより、1回の Fetch で済ませた方が圧倒的に速い。<br>
+    <em>試し方：</em> <code>「X の最新仕様を、記憶ではなく WebFetch https://公式URL で確認してから答えて」</code> と書き換えるだけ。</p>
+  </div>
+
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">Before(記憶依存)</span>
+      <h4>「Claude Code の WebFetch の使い方教えて」</h4>
+      <ul>
+        <li>Claudeが記憶で答える</li>
+        <li>半年前の古い仕様を返すリスク</li>
+        <li>関数名 typo / パラメータ欠落</li>
+        <li>実行すると動かない</li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">After(取得依存)</span>
+      <h4>「WebFetch <code>https://docs.claude.com/...</code> で公式を読んで、使い方を教えて」</h4>
+      <ul>
+        <li>取得した本文を根拠に回答</li>
+        <li>2026年1月時点の最新挙動</li>
+        <li>パラメータ名が正確</li>
+        <li>コピペで動くサンプルが出る</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== Section 3: 使い分けのフローチャート ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 迷った時の判定フローと実コマンド</h2>
+
+  <p>実務では「これ Search? Fetch?」と悩む時間がそのままロスです。以下の分岐を頭に入れて、即断できるようにします。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">WebFetch / WebSearch 判定フロー</div>
+    <pre class="mermaid">
+graph TD
+  Start(["最新情報が欲しい"]) --> Q1{"公式URLを<br/>知っているか?"}
+  Q1 -- "Yes" --> F["WebFetch そのURL"]
+  Q1 -- "No" --> S["WebSearch で<br/>検索クエリを投げる"]
+  S --> Q2{"公式ドメインが<br/>ヒットしたか?"}
+  Q2 -- "Yes" --> F
+  Q2 -- "No" --> Q3{"信頼できる<br/>情報源があるか?"}
+  Q3 -- "Yes" --> F2["WebFetch<br/>(ブログ等)"]
+  Q3 -- "No" --> Ask["追加の検索語を考え直す"]
+  Ask --> S
+  F --> Done(["取得した本文で回答"])
+  F2 --> Done
+    </pre>
+    <div class="diagram-caption">URLが既にあるなら迷わず WebFetch。無いなら必ず WebSearch が先。</div>
+  </div>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="link" width="20" height="20"></i>
+      <div><strong>URLが分かっている</strong> — 即 <code>WebFetch https://docs.claude.com/...</code>。検索は不要。</div>
+    </li>
+    <li>
+      <i data-lucide="search" width="20" height="20"></i>
+      <div><strong>「○○のドキュメント」しか分からない</strong> — まず <code>WebSearch "Claude Code WebFetch documentation"</code> で候補を出す。</div>
+    </li>
+    <li>
+      <i data-lucide="git-compare" width="20" height="20"></i>
+      <div><strong>バージョン差分の比較</strong> — v1と v2 の CHANGELOG URL 2本をそれぞれ WebFetch し、並列で比較。</div>
+    </li>
+    <li>
+      <i data-lucide="shield-alert" width="20" height="20"></i>
+      <div><strong>ニュース性のあるトピック</strong> — WebSearch に日付限定で (例: <code>"2026"</code>) を含めて新しい情報だけ拾う。</div>
+    </li>
+  </ul>
+
+  <div class="hands-on-box info-box" style="background: rgba(217,119,87,0.08); border-left: 3px solid #D97757;">
+    <span class="label">今すぐ試す(2分) — バージョン差分の検証</span>
+    <p>自分が使っているパッケージ(例: <code>react</code>, <code>next</code>, <code>vitest</code> のどれか)で、こう頼んでみてください。</p>
+    <pre><code>私のプロジェクトの package.json にある &lt;パッケージ名&gt; のバージョンは X.Y.Z。
+最新の X.Y.Z を WebSearch → WebFetch で公式 changelog から確認して、
+私のバージョンと最新との差分で注目すべき breaking change を3つだけ教えて。</code></pre>
+    <p>これが<strong>「記憶ではなく取得」</strong>のリアル応用例です。返ってくる3点は、Claudeの記憶ではなく本物の changelog から抽出されたもので、信頼度が段違いです。</p>
+  </div>
+
+  <!-- ===== Section 4: 公式docs取得の型 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 公式docs取得の定型フレーズ</h2>
+
+  <p>「取ってきて」と頼む日本語は、型を決めておくと毎回迷いません。以下3つを暗記しましょう。</p>
+
+  <div class="steps">
+    <div class="step done">
+      <div class="step-num">1</div>
+      <div class="step-label">公式フェッチ型</div>
+      <div class="step-desc"><code>WebFetch &lt;URL&gt; で公式を読んで、X について答えて</code></div>
+    </div>
+    <div class="step done">
+      <div class="step-num">2</div>
+      <div class="step-label">検索→フェッチ型</div>
+      <div class="step-desc"><code>WebSearch で "Y" を探し、公式ドメインのURLを WebFetch して答えて</code></div>
+    </div>
+    <div class="step done">
+      <div class="step-num">3</div>
+      <div class="step-label">差分検証型</div>
+      <div class="step-desc"><code>A と B の CHANGELOG を両方 WebFetch し、差分だけ一覧化して</code></div>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <span class="label">公式ドキュメント必読</span>
+    <p>WebFetch / WebSearch の<strong>パラメータ名・取得サイズの上限・許可ドメインリスト</strong>は実務で間違えると致命的なので、1回は公式を通読してください。<a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式 →</a></p>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: WebFetchの挙動の細かい話</summary>
+    <div class="more-body">
+      <p>WebFetch は対象ページを HTTP GET で取得し、HTMLをテキストに近い形へ解析してから <code>prompt</code> 引数と組み合わせてClaudeに渡します。<strong>JavaScript で動的に描画されるSPAの中身</strong>は取れないことが多く、その場合はAPIエンドポイント(例: <code>/api/...</code>)を直接叩くURLに変える、あるいは<span class="term" data-tip="WARC: Webアーカイブ保存形式。Wayback Machineなどが使う。">WARC</span>化されたミラー(Wayback Machine等)のURLを使うと成功率が上がります。<br>また、取得は<strong>キャッシュされる</strong>ことがあるので、変わったばかりのページを再取得したい時は <code>prompt</code> の中で「キャッシュを無視して最新を取って」と明示すると有効です(モデルの判断で再フェッチを促す)。</p>
+    </div>
+  </details>
+
+  <details class="more-box">
+    <summary>もっと詳しく: WebSearchの精度を上げるコツ</summary>
+    <div class="more-body">
+      <p>検索精度は<strong>クエリの具体性</strong>で決まります。単に <code>"Claude Code"</code> と投げると数千件ヒットしてノイズ地獄。<code>"Claude Code" WebFetch "subagent_type" site:docs.claude.com</code> のように <strong>固有名詞 + 絞り込み + site演算子</strong> を組み合わせると一撃で公式に当たります。日本語サイトが欲しい時は <code>site:zenn.dev</code> や <code>site:qiita.com</code> を、英語の質問回答が欲しい時は <code>site:stackoverflow.com</code> を使い分け。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 5: プライバシー意識 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> プライバシーと落とし穴</h2>
+
+  <p>Web系ツールには独特の落とし穴があります。特に<span class="term" data-tip="内部URL: 社内イントラやローカルホスト、認証必須の管理画面など、外部から到達できないURL。">内部URL</span>と<span class="term" data-tip="PII: Personally Identifiable Information。個人を特定できる情報(氏名・メール・住所等)。">PII</span>の扱いです。</p>
+
+  <table>
+    <thead><tr><th>落とし穴</th><th>症状</th><th>対処</th></tr></thead>
+    <tbody>
+      <tr><td>認証必須ページ</td><td>ログイン画面のHTMLだけ返ってくる</td><td>API key付きエンドポイントを直接指定 / MCP化する(Ch17)</td></tr>
+      <tr><td>社内URL</td><td>Claudeから到達不可</td><td>本文をコピペで貼る or <span class="term" data-tip="VPN: 仮想プライベートネットワーク。社内リソースへの安全な接続手段。">VPN</span>経由の代替URLを使う</td></tr>
+      <tr><td>PII入りURL</td><td>クエリ文字列に氏名・メールが入る</td><td>URLをマスク(<code>?email=***</code>)してから渡す</td></tr>
+      <tr><td>レート制限</td><td>同一ドメインの連続取得で失敗</td><td>並列数を絞る / 間をあける / キャッシュ活用</td></tr>
+    </tbody>
+  </table>
+
+  <div class="diagram-box">
+    <div class="diagram-title">取得前チェックリスト(30秒でできる)</div>
+    <canvas id="ch15-bar-1" height="160"></canvas>
+  </div>
+  <script>
+  window.addEventListener("load", function(){
+    var el = document.getElementById('ch15-bar-1');
+    if(!el || !window.Chart) return;
+    new Chart(el, {
+      type: 'bar',
+      data: {
+        labels: ['公式ドメインか', 'PIIが含まれないか', 'サイズが巨大すぎないか', '認証なしで開けるか', 'レート制限に当たらないか'],
+        datasets: [{ label: 'チェック重要度', data: [95, 90, 70, 80, 60], backgroundColor: '#D97757', borderRadius: 6 }]
+      },
+      options: {
+        indexAxis: 'y',
+        plugins: { legend: { display: false } },
+        scales: { x: { beginAtZero: true, max: 100 } }
+      }
+    });
+  });
+  </script>
+
+  <div class="info-box">
+    <span class="label">Tips: 社内情報は基本「貼る」運用</span>
+    <p>社内のConfluenceやGoogle Docs、社内Wikiは Claude のWebFetchから原則到達できません。無理にURLを投げるより、<strong>該当部分のテキストをチャットに貼る</strong>方が10倍早い。PII を含む場合は <code>XXX</code> にマスクしてから貼るのを習慣化しましょう。</p>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section 6: まとめ ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 30分で身につけたこと</h2>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-num">2<small>tools</small></div>
+      <div class="stat-label">WebFetch / WebSearch を使い分ける</div>
+      <div class="stat-trend up">↑ 役割が明確に</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">3<small>型</small></div>
+      <div class="stat-label">依頼文の定型を暗記</div>
+      <div class="stat-trend up">↑ 考える時間ゼロ</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">0<small>記憶</small></div>
+      <div class="stat-label">最新情報は記憶に頼らない</div>
+      <div class="stat-trend up">↑ 嘘回答ゼロに</div>
+    </div>
+  </div>
+
+  <p>次章 Ch16「Subagentsで並列思考」では、<strong>複数の WebFetch を並列 subagent で飛ばす</strong>パターンに踏み込みます。本章で覚えた「取ってきて」を、5個同時にやらせる技です。</p>
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>WebFetch を明示して公式を読ませる</h4>
+    <p>Claude Code で、以下の指示を投げて結果を観察してください。</p>
+    <ol>
+      <li>まず <code>Claude Code の WebFetch ツールの使い方を教えて</code> と素で聞く</li>
+      <li>次に <code>WebFetch https://docs.claude.com/en/docs/claude-code で公式を読んで、WebFetch ツールの使い方を教えて</code> と頼む</li>
+      <li>2つの回答の<strong>「情報の鮮度・正確さ・根拠の出し方」</strong>を比較する</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>1回目(素聞き)は Claude のナレッジカットオフ時点の記憶で答えるため、パラメータ名や戻り値のフォーマットが<strong>微妙に古い/不正確</strong>になりがちです。2回目(WebFetch明示)は取得した公式本文を根拠に答えるため、<strong>「公式によると〜」</strong>という引用つきで、コピペで動くサンプルが返ってきます。</p>
+      <p>観察ポイント: 2回目の回答は具体的なバージョン注記や<strong>「2026-XX-XX時点の公式ページ」</strong>といった日付が付くことが多い。1回目は「たぶん」「だったはず」と曖昧語が多い。</p>
+      <pre><code># 良い頼み方のテンプレ
+WebFetch &lt;公式URL&gt; を読んで、
+- 関数シグネチャ
+- パラメータの必須/任意
+- 戻り値の型
+の3点だけ、引用符付きで答えて。</code></pre>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>自プロジェクトの依存ライブラリのバージョン差分を検証</h4>
+    <p>自分の手元の <code>package.json</code> / <code>requirements.txt</code> / <code>Gemfile</code> いずれかを開いて、1つ選んだライブラリについて:</p>
+    <ol>
+      <li>現在のバージョンを確認</li>
+      <li>Claude Code に <code>WebSearch で最新の安定版を調べ、公式changelogを WebFetch して、私のバージョンから最新までの breaking change を時系列で教えて</code> と依頼</li>
+      <li>得られた回答を元に、<strong>アップグレードの価値があるかどうか</strong>の判断メモを3行で書く</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>この演習の目的は「記憶ではなく取得で answer する」を実体験することです。うまくいけば、以下のような回答が返ります(Reactの例)。</p>
+      <pre><code># 期待される回答の骨格
+- 現在: react@18.2.0 / 最新: react@19.x.y (WebFetch 結果より)
+- Breaking Changes (changelog 抜粋):
+  1. Automatic batching の挙動変更 (18.0)
+  2. useEffect のcleanup タイミング変更 (18.2)
+  3. 新しい JSX Transform が必須に (19.0)
+- 判断メモ:
+  1. 影響面: ○○ コンポーネントで useEffect 多用 → 要レビュー
+  2. 緊急度: セキュリティfix は minor で配布済み、急がなくてよい
+  3. 推奨: 次sprint で v19 の compat layer 経由で段階移行</code></pre>
+      <p>ここで大事なのは、「breaking change を3つ」と<strong>数を指定</strong>していること。数を指定しないと、Claudeはダラダラ長い回答を返して読む気が失せます。Ch08「プロンプト設計の型」で学んだ「制約を渡す」がここでも効きます。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span><a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式ドキュメント</a> — WebFetch / WebSearch のパラメータ仕様</li>
+      <li><span class="res-type doc">Doc</span><a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener">Claude Code GitHub</a> — Issue / Release Notes で最新挙動を追う</li>
+      <li><span class="res-type doc">Doc</span><a href="https://www.anthropic.com/news" target="_blank" rel="noopener">Anthropic Blog</a> — ツール系のアップデートはここで先にアナウンスされる</li>
+      <li><span class="res-type doc">Doc</span><a href="https://github.com/anthropics/anthropic-cookbook" target="_blank" rel="noopener">Anthropic Cookbook</a> — WebFetch を組み合わせたサンプルあり</li>
+      <li><span class="res-type doc">Doc</span><a href="https://web.archive.org/" target="_blank" rel="noopener">Wayback Machine</a> — SPA系サイトで WebFetch が失敗した時の代替URL源</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="15">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="14-context-management.html"><span class="direction">&larr; Prev</span>コンテキスト管理</a>
+    <a href="16-subagents-overview.html"><span class="direction">Next &rarr;</span>Subagents</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>

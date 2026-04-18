@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>コードレビュー依頼の作法 - MK's Claude Code Tutorial</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code Tutorial
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav class="active"><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="../index.html#phase3" data-nav><span class="phase-name">Advanced</span><span class="phase-pct" id="pct-advanced">0%</span></a></li>
+      <li><a href="../index.html#phase4" data-nav><span class="phase-name">Projects</span><span class="phase-pct" id="pct-projects">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.09</span>
+    コードレビュー依頼の作法
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 26 sections</text>
+    </svg>
+    <div class="progress-info">0h / 24h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-welcome.html"><span class="status-dot" data-chapter="01"></span> ようこそ&セットアップ</a></li>
+    <li><a href="02-communication-basics.html"><span class="status-dot" data-chapter="02"></span> 対話の原則</a></li>
+    <li><a href="03-file-tools.html"><span class="status-dot" data-chapter="03"></span> ファイル操作ツール</a></li>
+    <li><a href="04-bash-safety.html"><span class="status-dot" data-chapter="04"></span> Bashツールと安全</a></li>
+    <li><a href="05-todo-management.html"><span class="status-dot" data-chapter="05"></span> TodoWriteで作業管理</a></li>
+    <li><a href="06-claude-md.html"><span class="status-dot" data-chapter="06"></span> CLAUDE.md</a></li>
+    <li><a href="07-git-workflow.html"><span class="status-dot" data-chapter="07"></span> Git × Claude Code</a></li>
+  </ul>
+  <div class="section-label">Core</div>
+  <ul>
+    <li><a href="08-prompt-patterns.html"><span class="status-dot" data-chapter="08"></span> プロンプト設計の型</a></li>
+    <li><a href="09-code-review.html" class="active"><span class="status-dot" data-chapter="09"></span> コードレビュー依頼</a></li>
+    <li><a href="10-refactor-workflow.html"><span class="status-dot" data-chapter="10"></span> 改修ワークフロー</a></li>
+    <li><a href="11-tdd-with-claude.html"><span class="status-dot" data-chapter="11"></span> テスト駆動</a></li>
+    <li><a href="12-debugging.html"><span class="status-dot" data-chapter="12"></span> デバッグ</a></li>
+    <li><a href="13-plan-mode.html"><span class="status-dot" data-chapter="13"></span> Planモード</a></li>
+    <li><a href="14-context-management.html"><span class="status-dot" data-chapter="14"></span> コンテキスト管理</a></li>
+    <li><a href="15-web-tools.html"><span class="status-dot" data-chapter="15"></span> Web検索・取得</a></li>
+  </ul>
+  <div class="section-label">Advanced</div>
+  <ul>
+    <li><a href="16-subagents-overview.html"><span class="status-dot" data-chapter="16"></span> Subagents</a></li>
+    <li><a href="17-mcp-overview.html"><span class="status-dot" data-chapter="17"></span> MCP</a></li>
+    <li><a href="18-hooks-overview.html"><span class="status-dot" data-chapter="18"></span> Hooks</a></li>
+    <li><a href="19-schedule-loop.html"><span class="status-dot" data-chapter="19"></span> Schedule &amp; Loop</a></li>
+    <li><a href="20-skills-overview.html"><span class="status-dot" data-chapter="20"></span> Skills</a></li>
+    <li><a href="21-worktree.html"><span class="status-dot" data-chapter="21"></span> worktree</a></li>
+    <li><a href="22-pitfalls.html"><span class="status-dot" data-chapter="22"></span> 失敗パターン10</a></li>
+  </ul>
+  <div class="section-label">Projects</div>
+  <ul>
+    <li><a href="23-project-automation.html"><span class="status-dot" data-chapter="23"></span> Project A：業務自動化</a></li>
+    <li><a href="24-project-refactor.html"><span class="status-dot" data-chapter="24"></span> Project B：リファクタ</a></li>
+    <li><a href="25-project-webapp.html"><span class="status-dot" data-chapter="25"></span> Project C：Webアプリ</a></li>
+    <li><a href="26-final-exercise.html"><span class="status-dot" data-chapter="26"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 2: Core &gt; Chapter 09</div>
+  <h1>コードレビュー依頼の作法</h1>
+  <p class="subtitle">「観点」を指定して、浅いレビューから脱出する</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 45分</span>
+    <span class="badge">Phase: Core</span>
+    <span class="badge">難易度: 中級</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">この章のゴール</span>
+    <p><strong>「レビューして」だけで止めるのをやめる</strong>章。セキュリティ・パフォーマンス・可読性・テスト・設計の <strong>5観点</strong> 指定を身につけ、<code>gh pr diff</code> と組んで <span class="term" data-tip="Pull Request：変更提案の単位。">PR</span> 全体 / 部分レビューを使い分けられるようにします。<strong>最初の5分で手を動かします</strong>。</p>
+  </div>
+
+  <div class="info-box" style="border-left: 3px solid #D97757;">
+    <span class="label">バージョン注記</span>
+    <p>本章は <strong>2026年1月時点</strong> の Claude Code CLI (v2.x) と GitHub CLI (<code>gh</code>) v2.70+ の挙動で検証しています。フラグ名や出力形式は進化するため、挙動が違ったら <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式</a> と <a href="https://cli.github.com/manual/" target="_blank" rel="noopener">gh CLI マニュアル</a> を確認してください。</p>
+  </div>
+
+  <!-- ===== Section 1: なぜ「観点」なのか ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> なぜ「観点」指定で劇的に変わるのか</h2>
+
+  <p>「レビューして」だけの依頼は Claude にとって <strong>無限の自由度</strong>。返ってくるのは「ネーミングが…」「コメント足したら…」という<strong>薄い一般論</strong>になりがち。逆に「<span class="term" data-tip="Authn / Authz / Input validation / Secrets / Injection 等の具体チェックリスト。">セキュリティ観点</span>だけで」と絞ると、該当分野の <span class="term" data-tip="内部的な参照知識。プロンプトで明示的に喚起される。">チェックリスト</span> に沿って深く掘る挙動に切り替わります。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">観点の有無で返ってくるレビューの質</div>
+    <svg viewBox="0 0 520 260" width="100%" style="max-width:520px; display:block; margin:0 auto;">
+      <!-- Left: 観点なし -->
+      <rect x="20" y="30" width="220" height="210" rx="10" fill="#f4f4f5" stroke="#cbd5e1"/>
+      <text x="130" y="55" text-anchor="middle" font-size="13" font-weight="700" fill="#475569">「レビューして」だけ</text>
+      <rect x="40" y="75" width="180" height="22" rx="4" fill="#e2e8f0"/>
+      <text x="130" y="91" text-anchor="middle" font-size="11" fill="#475569">命名が微妙</text>
+      <rect x="40" y="105" width="180" height="22" rx="4" fill="#e2e8f0"/>
+      <text x="130" y="121" text-anchor="middle" font-size="11" fill="#475569">コメント少ない</text>
+      <rect x="40" y="135" width="180" height="22" rx="4" fill="#e2e8f0"/>
+      <text x="130" y="151" text-anchor="middle" font-size="11" fill="#475569">テスト書いたら？</text>
+      <text x="130" y="195" text-anchor="middle" font-size="11" fill="#94a3b8">浅い・一般論</text>
+      <text x="130" y="215" text-anchor="middle" font-size="12" font-weight="700" fill="#ef4444">指摘3件／深さ1</text>
+
+      <!-- Right: 観点あり -->
+      <rect x="280" y="30" width="220" height="210" rx="10" fill="rgba(217,119,87,0.08)" stroke="#D97757"/>
+      <text x="390" y="55" text-anchor="middle" font-size="13" font-weight="700" fill="#D97757">観点: セキュリティ</text>
+      <rect x="300" y="75" width="180" height="22" rx="4" fill="rgba(217,119,87,0.18)"/>
+      <text x="390" y="91" text-anchor="middle" font-size="11" fill="#7c2d12">SQLインジェクション箇所</text>
+      <rect x="300" y="105" width="180" height="22" rx="4" fill="rgba(217,119,87,0.18)"/>
+      <text x="390" y="121" text-anchor="middle" font-size="11" fill="#7c2d12">秘密情報のログ出力</text>
+      <rect x="300" y="135" width="180" height="22" rx="4" fill="rgba(217,119,87,0.18)"/>
+      <text x="390" y="151" text-anchor="middle" font-size="11" fill="#7c2d12">認可チェック漏れ</text>
+      <rect x="300" y="165" width="180" height="22" rx="4" fill="rgba(217,119,87,0.18)"/>
+      <text x="390" y="181" text-anchor="middle" font-size="11" fill="#7c2d12">CSRFトークン未検証</text>
+      <text x="390" y="215" text-anchor="middle" font-size="12" font-weight="700" fill="#16a34a">指摘8件／深さ3</text>
+    </svg>
+    <div class="diagram-caption">観点を1つに絞るだけで、指摘の密度と深さが体感2-3倍になる。</div>
+  </div>
+
+  <div class="info-box" style="border-left-color: #D97757;">
+    <span class="label">ここがプロの境目</span>
+    <p><strong>観点を指定してレビューを頼む</strong>。「レビューして」だけだと薄い指摘しか返らない。セキュリティ／パフォーマンス／可読性／テスト／設計——どれか1つ、または複数を明示的に渡すと、Claude は該当分野のチェックリストを走り切る。<br>
+    <em>試し方：</em> 自分の直近PRに対して「セキュリティ観点だけでレビューして。入力検証・認可・秘密情報の3つを最優先で」と依頼してみる。</p>
+  </div>
+
+  <!-- ===== Section 2: 5つの観点と具体プロンプト ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 5つの観点 — 暗記する5枚のカード</h2>
+
+  <p>まずは <span class="term" data-tip="レビューの切り口。1PRに対して複数回呼べる。">観点(viewpoint)</span> の全体像を押さえます。この5枚を頭に入れておくと、PRを見た瞬間「今回は設計と可読性」「これは<span class="term" data-tip="N+1問題：ループ内でDBクエリを発行し件数×回になる典型的パフォーマンスバグ。">N+1</span>最優先」と即決できます。</p>
+
+  <div class="stats-grid">
+    <div class="stat"><div class="stat-num">5<small>観点</small></div><div class="stat-label">覚えるべき切り口</div><div class="stat-trend up">全部の起点</div></div>
+    <div class="stat"><div class="stat-num">2-3<small>倍</small></div><div class="stat-label">指摘密度の向上</div><div class="stat-trend up">観点あり vs なし</div></div>
+    <div class="stat"><div class="stat-num">45<small>秒</small></div><div class="stat-label">1観点の追加コスト</div><div class="stat-trend up">再依頼で済む</div></div>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>観点</th><th>主な問い</th><th>Claudeが強い作業</th><th>使う頻度</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>セキュリティ</strong></td><td>入力検証／認可／秘密情報／注入攻撃</td><td>パターンマッチによる抜け発見</td><td>PR毎</td></tr>
+      <tr><td><strong>パフォーマンス</strong></td><td>N+1／アルゴリズム計算量／無駄な再計算</td><td>ホットループ・クエリの指摘</td><td>大きな変更時</td></tr>
+      <tr><td><strong>可読性</strong></td><td>命名／関数長／ネスト／マジックナンバー</td><td>機械的な基準で一貫適用</td><td>PR毎</td></tr>
+      <tr><td><strong>テスト</strong></td><td>境界値／エラーパス／モック妥当性</td><td>抜けているケースの列挙</td><td>テストを含むPR</td></tr>
+      <tr><td><strong>設計</strong></td><td>責務分離／依存方向／公開APIの形</td><td>類似コードとの比較</td><td>新規モジュール時</td></tr>
+    </tbody>
+  </table>
+
+  <h3>観点別・コピペで動くプロンプト例</h3>
+
+  <p>以下は <code>claude</code> CLI に直接投げて動く形です。対象ファイルは自分のリポで置き換えてください。</p>
+
+  <pre><code># 1. セキュリティ観点
+claude "src/api/ 配下をセキュリティ観点だけでレビューして。
+優先順位: (1)入力検証 (2)認可チェック (3)秘密情報の扱い。
+各指摘は {ファイル:行} + 理由 + 修正提案の3点で返して。
+該当なしの項目は『該当なし』と明記して。"</code></pre>
+
+  <pre><code># 2. パフォーマンス観点
+claude "src/services/order.ts をパフォーマンス観点でレビュー。
+特に (a)DBクエリのN+1 (b)O(n^2) 以上のループ (c)同期I/Oの直列化 を探して。
+『疑わしい』レベルでもいいから列挙して、計測方法も添えて。"</code></pre>
+
+  <pre><code># 3. 可読性観点
+claude "この diff を可読性だけで見て:
+- 命名が意図を伝えているか
+- 関数は1画面に収まるか（40行超を指摘）
+- ネストが3段超えていないか
+- マジックナンバーが残っていないか
+機械的にチェックして、違反を全部出して。"</code></pre>
+
+  <pre><code># 4. テスト観点
+claude "このPRのテストを観点レビューして:
+- 正常系 / 異常系 / 境界値の3分類でカバレッジを評価
+- 抜けているケースを『シナリオ: 入力 → 期待動作』で5件以上提案
+- モックが実装を固定しすぎていないか"</code></pre>
+
+  <pre><code># 5. 設計観点
+claude "新規モジュール src/payment/ を設計観点でレビュー:
+- 責務分離（1モジュール1責務か）
+- 依存方向（外→内、抽象→具象になっているか）
+- 公開API（export している関数の粒度は適切か）
+類似の src/user/ と比較して、一貫性の崩れも指摘して。"</code></pre>
+
+  <details class="more-box">
+    <summary>もっと詳しく: 5観点を「一度に」頼むべきか？</summary>
+    <div class="more-body">
+      <p>結論: <strong>一度に頼まない方が深くなる</strong>。観点を5つ束ねて一発で投げると、Claudeは平均的に各観点を薄く撫でる傾向があります。45分の章時間内なら、<strong>観点ごとに別プロンプト</strong>で3-5回呼び直す方が、累計トークンは増えても指摘の質が圧倒的に高い。</p>
+      <p>例外は「超小さなPR」(差分50行以下)。この場合は「セキュリティ・可読性・テストの3観点で」と束ねても質が落ちにくい。</p>
+      <p>また、Ch16(Subagents)で学ぶ <code>Agent</code> ツールを使えば、5観点を<strong>並列</strong>に走らせて最後に集約することも可能です。これが本章の先にある上位技。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 3: PR全体 vs 部分レビュー ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> PR全体レビュー vs 部分レビューの使い分け</h2>
+
+  <p><strong>1000行の巨大PR丸投げ</strong>は最悪パターン。コンテキストが薄まり指摘密度が下がります。<span class="term" data-tip="レビュー粒度。全体把握→重要ファイル深掘りの2段階が基本。">レビュー粒度</span> を意識的に切り替え、<span class="term" data-tip="diff：変更前後の差分。パッチとも呼ぶ。">diff</span> を分割して渡しましょう。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">PRレビューの2段階フロー</div>
+    <pre class="mermaid">
+graph LR
+  A[PR到着] --> B{"差分行数?"}
+  B -->|"< 200行"| C["全体レビュー 1回"]
+  B -->|">= 200行"| D["全体 概要レビュー"]
+  D --> E["重要ファイル抽出"]
+  E --> F["ファイル単位 深掘り"]
+  F --> G["観点別 個別レビュー"]
+  C --> H["gh pr comment"]
+  G --> H
+    </pre>
+    <div class="diagram-caption">まず全体で地形を把握 → 深掘りする場所を決める、が王道。</div>
+  </div>
+
+  <h3>今すぐ試す：gh pr diff と組む3行コマンド</h3>
+
+  <p><code>gh pr diff</code> で PR の差分をテキストとして取り出し、Claude に渡します。自分のリポで番号を置き換えて実行してください。</p>
+
+  <pre><code># ① PR全体の概要レビュー (200行未満なら一発)
+gh pr diff 123 | claude "この差分を可読性＋設計の2観点でレビュー。
+大項目3つに絞って、各項目に代表箇所1つだけ挙げて。"
+
+# ② 重要ファイルだけ部分レビュー
+gh pr diff 123 -- src/auth/login.ts | claude "セキュリティ観点で精読して。
+認可・入力検証・エラーハンドリングの3軸で指摘して。"
+
+# ③ commit単位でレビュー
+gh pr view 123 --json commits --jq '.commits[].oid' | \
+  xargs -I{} sh -c 'git show {} | claude "このcommit単体を設計観点で。"'</code></pre>
+
+  <div class="info-box">
+    <span class="label">公式ドキュメント必読</span>
+    <p><code>gh pr diff</code> のパス指定・<code>--name-only</code>・<code>--color=never</code> などの組み合わせは、Claudeと組む時の生産性を桁で変えます。ここは公式を一度通読しておくと投資回収が早い。<a href="https://cli.github.com/manual/gh_pr_diff" target="_blank" rel="noopener">gh pr diff マニュアル →</a></p>
+  </div>
+
+  <h3>粒度判定のスタッツ</h3>
+
+  <div class="compare-cards">
+    <div class="cc good">
+      <span class="cc-label">全体レビュー向き</span>
+      <h4>小さな一貫PR</h4>
+      <ul><li>差分 200行以下</li><li>1機能 / 1バグ修正</li><li>同じレイヤに集中</li><li>テスト付き</li></ul>
+    </div>
+    <div class="cc bad">
+      <span class="cc-label">部分レビュー必須</span>
+      <h4>大きな混ざりPR</h4>
+      <ul><li>差分 500行超</li><li>複数機能・レイヤ横断</li><li>自動生成ファイル混在</li><li>リファクタ＋機能追加</li></ul>
+    </div>
+  </div>
+
+  <!-- ===== Section 4: 自コードを批判的にレビューさせる ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 自コードを「批判的に」レビューさせる</h2>
+
+  <p>Claudeにはデフォルトで <strong>褒める圧</strong> がかかっています。「<span class="term" data-tip="LGTM: Looks Good To Me。承認コメントの慣用。">LGTM</span>！」で終わらせないために、<span class="term" data-tip="批判モード：役割と禁止事項を明示して厳しいフィードバックを引き出すプロンプト戦略。">批判モード</span> に切り替える魔法の言葉を覚えましょう。</p>
+
+  <div class="quote">
+    「このコードを<strong>厳しい先輩レビュアー</strong>として見てください。<strong>褒めはいらない、問題点だけ列挙</strong>してください。<strong>妥協点も明示</strong>してください。指摘が5個未満なら『真面目に見ていない』と判断します。」
+    <cite>— 批判モード起動フレーズ</cite>
+  </div>
+
+  <h3>批判モードのチェックリスト</h3>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="shield-alert" width="20" height="20"></i>
+      <div><strong>役割を固定する</strong> — 「厳しい先輩」「セキュリティ監査人」「パフォーマンスエンジニア」など具体ロールを与える</div>
+    </li>
+    <li>
+      <i data-lucide="x-circle" width="20" height="20"></i>
+      <div><strong>褒めを禁止する</strong> — 「良い点は書かなくていい」と明示するだけで出力の80%が問題点に変わる</div>
+    </li>
+    <li>
+      <i data-lucide="list-checks" width="20" height="20"></i>
+      <div><strong>最低指摘数を指定する</strong> — 「最低5件」「10件探して」と数を渡すと、表面で止まらず深掘りする</div>
+    </li>
+    <li>
+      <i data-lucide="scale" width="20" height="20"></i>
+      <div><strong>トレードオフを語らせる</strong> — 「この設計で捨てている選択肢は？」と聞くと、妥協箇所が浮かぶ</div>
+    </li>
+    <li>
+      <i data-lucide="bug" width="20" height="20"></i>
+      <div><strong>シナリオ攻撃を依頼</strong> — 「悪意のある入力で壊すシナリオを5つ挙げて」は特にセキュリティで強力</div>
+    </li>
+  </ul>
+
+  <h3>今すぐ試す：批判モード・フルテンプレ</h3>
+
+  <pre><code>claude "以下のコードを厳しい先輩レビュアーとして見てください。
+
+【役割】10年目のシニアエンジニア、本番障害を何度も経験している
+【観点】セキュリティ + パフォーマンス + エラーハンドリング
+【ルール】
+- 褒めは書かない
+- 最低8件、問題点を列挙
+- 各指摘に「最悪のシナリオ」を添える
+- トレードオフで妥協した箇所も明示
+- 深刻度 (Critical / High / Medium / Low) でタグ付け
+
+【対象コード】
+$(cat src/api/payment.ts)
+"</code></pre>
+
+  <div class="info-box" style="border-left: 3px solid #D97757;">
+    <span class="label">Tip</span>
+    <p>自分が書いたコード（Claude に書かせたコードを含む）を投げる前に、<strong>「これはあなた自身が書いたものです」と伝えない</strong>のがコツ。Claudeは自分の出力を甘く評価する傾向がごくわずかにあります。「先輩エンジニアが書いた」「チームメイトが書いた」の体で投げると、より客観的に見てくれます。</p>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section 5: 深刻度・集計・集約 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 指摘の深刻度と集計の流儀</h2>
+
+  <p>指摘を受け取ったら、<strong>全部直す必要はない</strong>。深刻度で仕分けて、今回のPRで直すもの／別Issueにするもの／見送るものに分類します。Claudeにそのまま<strong>仕分けさせる</strong>のが一番早い。</p>
+
+  <h3>深刻度レーダー(観点 × 指摘数)</h3>
+
+  <div class="diagram-box">
+    <div class="diagram-title">直近PRの観点別レビュー結果(サンプル)</div>
+    <canvas id="ch9-radar-1" height="220"></canvas>
+  </div>
+
+  <h3>深刻度ドーナツ</h3>
+
+  <div class="diagram-box">
+    <div class="diagram-title">指摘の深刻度配分(典型パターン)</div>
+    <canvas id="ch9-donut-1" height="200"></canvas>
+  </div>
+
+  <h3>仕分けプロンプト</h3>
+
+  <pre><code>claude "先ほどのレビュー結果を以下に仕分けて:
+
+(A) このPRで必ず直す — Critical + High 全件
+(B) 別Issueに切り出す — Medium で設計に関わるもの
+(C) 今回は見送る — Low + 好み問題
+
+各カテゴリごとに gh issue create コマンドも作って。
+タイトルは '[review] ...' で統一。"</code></pre>
+
+  <div class="steps">
+    <div class="step done"><div class="step-num">1</div><div class="step-label">観点指定</div><div class="step-desc">5観点から選ぶ</div></div>
+    <div class="step done"><div class="step-num">2</div><div class="step-label">粒度決定</div><div class="step-desc">全体 or 部分</div></div>
+    <div class="step done"><div class="step-num">3</div><div class="step-label">批判モード</div><div class="step-desc">役割＋ルール</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-label">深刻度タグ</div><div class="step-desc">4段階</div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-label">仕分け/反映</div><div class="step-desc">Issue化→コメント</div></div>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: 「LGTM」で済ませていい時はあるか？</summary>
+    <div class="more-body">
+      <p>あります。以下の3条件すべて揃った時:</p>
+      <ol>
+        <li>差分が <strong>50行以下</strong> かつ<strong>単純</strong>（typo修正、定数値の更新、ドキュメント追加など）</li>
+        <li>テストが通っている（CIが緑）</li>
+        <li>本番影響度が低い（設定ファイルのコメント、READMEの誤字など）</li>
+      </ol>
+      <p>これ以外では必ず最低1観点でClaudeを通す。5分の投資で1時間のトラブルを防げる。</p>
+    </div>
+  </details>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section 6: 落とし穴 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> よくある落とし穴と対処</h2>
+
+  <table>
+    <thead>
+      <tr><th>症状</th><th>原因</th><th>対処</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>指摘が3件で止まる</td><td>最低数の指定なし</td><td>「最低8件」と明示</td></tr>
+      <tr><td>褒め言葉ばかり</td><td>批判モード未起動</td><td>役割＋「褒めない」宣言</td></tr>
+      <tr><td>同じ指摘が繰り返される</td><td>文脈窓が飽和</td><td><code>/compact</code> か新セッション</td></tr>
+      <tr><td>抽象論だけ返る</td><td>{ファイル:行} 指定忘れ</td><td>「{file:line}形式で」と書く</td></tr>
+      <tr><td>diffが大きすぎて失敗</td><td>PR全体を丸投げ</td><td>ファイル単位に分割</td></tr>
+      <tr><td>実装と違う指摘</td><td>旧リビジョンを参照</td><td><code>gh pr diff</code> で最新を渡す</td></tr>
+    </tbody>
+  </table>
+
+  <p>レビューと修正を<strong>同じセッションで混ぜない</strong>のも予防策。「ついでに直して」と続けるとClaudeは指摘の検証を飛ばして書き換えに走り、レビューの独立性が失われます。<strong>(1)レビュー → (2)仕分け → (3)別セッションで修正</strong> の3段階に分けるのが安全。(3) は Ch10 で深掘りします。</p>
+
+  <!-- ===== Exercises ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Exercise</h2>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>セキュリティ観点だけで1PRを見る</h4>
+    <p>自分の手元にある直近のPR(なければサンプルリポの<code>gh pr list</code>から1件選ぶ)に対して、<strong>セキュリティ観点のみ</strong>でレビューさせてください。</p>
+    <ol>
+      <li><code>gh pr diff {番号}</code> で差分を取得</li>
+      <li>Claudeに「セキュリティ観点だけでレビュー。入力検証・認可・秘密情報の3軸で。各指摘は{ファイル:行}+理由+修正提案」と依頼</li>
+      <li>返ってきた指摘のうち、<strong>Critical 相当</strong>だと思うものを1つ抜き出して書き留める</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>以下のワンライナーが最短コース:</p>
+      <pre><code>gh pr diff 42 | claude "この差分をセキュリティ観点だけでレビュー。
+優先順位は (1)入力検証 (2)認可チェック (3)秘密情報の扱い。
+各指摘は以下の形式で:
+- {ファイル:行} Critical|High|Medium|Low
+- 問題: ...
+- 攻撃シナリオ: ...
+- 修正案: ...
+
+該当なしの観点は『該当なし』と明記。最低5件出して。"</code></pre>
+      <p>返答例 (抜粋):</p>
+      <pre><code>- src/api/login.ts:34 Critical
+  問題: パスワードを平文のままログ出力している
+  攻撃シナリオ: ログ収集基盤に侵入された攻撃者が全パスワードを取得
+  修正案: logger.info の引数から password を除外、あるいは '[REDACTED]' 置換</code></pre>
+      <p>実運用では、Criticalと判定された指摘だけは<strong>その日のうちに</strong>修正すること。別Issueに回すのは High 以下に留める。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>自分のコードを3観点×批判モードで吊るし上げる</h4>
+    <p>自分が最近書いた1ファイル(100-300行程度のもの)に対して、<strong>セキュリティ + パフォーマンス + 設計</strong>の3観点×批判モードで連続レビューを掛け、結果を <strong>Critical/High/Medium/Low</strong> で仕分けて <code>gh issue create</code> コマンドまで生成させてください。</p>
+    <ol>
+      <li>観点ごとに別プロンプトでレビューを実行(3回)</li>
+      <li>最後に統合セッションで「3観点の指摘を深刻度でマージして仕分けして」と依頼</li>
+      <li>Critical + High を <code>gh issue create</code> 用のコマンド列に変換させる</li>
+      <li>生成されたコマンドのうち1つを、ドライランで確認してから実際に実行してみる</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>3回のレビュー→統合→Issue化の流れを1セッションで回すサンプル:</p>
+      <pre><code># Step 1: 観点別レビューを3回
+FILE=src/payment/charge.ts
+
+claude "$(cat $FILE) を厳しい先輩として<strong>セキュリティ</strong>観点だけで見て。最低5件、{ファイル:行}+深刻度+シナリオ+修正案で。"
+
+claude "$(cat $FILE) を<strong>パフォーマンス</strong>観点だけで見て。N+1・計算量・同期I/Oの3軸で最低5件、深刻度タグ付きで。"
+
+claude "$(cat $FILE) を<strong>設計</strong>観点だけで見て。責務分離・依存方向・公開APIの粒度の3軸で最低5件、深刻度タグ付きで。"
+
+# Step 2: 統合仕分け
+claude "上記3観点の指摘を統合して、Critical/High/Medium/Low で仕分けて。
+重複する指摘は1件にマージ。最終出力は表形式で。"
+
+# Step 3: Issue化コマンド生成
+claude "Critical と High のみを対象に gh issue create コマンドを生成して。
+タイトルは '[review] {深刻度}: {一行要約}'、body に 問題/シナリオ/修正案 を入れて。
+各コマンドは echo で始まる dry-run バージョンも併記して。"</code></pre>
+      <p>ポイント:</p>
+      <ul>
+        <li>観点を束ねず<strong>3回分けて呼ぶ</strong>ことで、各観点の掘り下げ密度を確保</li>
+        <li>統合仕分けで<strong>重複マージ</strong>をClaudeに任せる(人間でやると眠くなる作業)</li>
+        <li>Issue化コマンドは必ず<strong>dry-run版も併記</strong>させる。いきなり <code>gh issue create</code> を連発すると事故る</li>
+      </ul>
+      <p>この流れを1Skill化しておくと、以後のPRレビューが10倍楽になります(Ch20でSkill化を学びます)。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式ドキュメント</a> <span class="res-type doc">Doc</span></li>
+      <li><a href="https://cli.github.com/manual/gh_pr_diff" target="_blank" rel="noopener">gh pr diff マニュアル (GitHub CLI)</a> <span class="res-type doc">Doc</span></li>
+      <li><a href="https://cli.github.com/manual/gh_pr_review" target="_blank" rel="noopener">gh pr review マニュアル</a> <span class="res-type doc">Doc</span></li>
+      <li><a href="https://owasp.org/www-project-top-ten/" target="_blank" rel="noopener">OWASP Top 10 (セキュリティ観点の基礎チェックリスト)</a> <span class="res-type doc">Doc</span></li>
+      <li><a href="https://google.github.io/eng-practices/review/reviewer/" target="_blank" rel="noopener">Google Engineering Practices — Code Review Guide</a> <span class="res-type doc">Doc</span></li>
+      <li><a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener">Claude Code GitHub (Issue/Discussions)</a> <span class="res-type doc">Doc</span></li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="09">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="08-prompt-patterns.html"><span class="direction">&larr; Prev</span>プロンプト設計の型</a>
+    <a href="10-refactor-workflow.html"><span class="direction">Next &rarr;</span>改修ワークフロー</a>
+  </div>
+</main>
+
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+<script>
+window.addEventListener("load", function() {
+  var r1 = document.getElementById('ch9-radar-1');
+  if (r1 && window.Chart) {
+    new Chart(r1, {
+      type: 'radar',
+      data: {
+        labels: ['セキュリティ','パフォーマンス','可読性','テスト','設計'],
+        datasets: [{
+          label: '指摘数',
+          data: [8, 3, 6, 5, 4],
+          backgroundColor: 'rgba(217,119,87,0.20)',
+          borderColor: '#D97757',
+          pointBackgroundColor: '#D97757'
+        }]
+      },
+      options: {
+        plugins: { legend: { display: false } },
+        scales: { r: { suggestedMin: 0, suggestedMax: 10 } }
+      }
+    });
+  }
+
+  var d1 = document.getElementById('ch9-donut-1');
+  if (d1 && window.Chart) {
+    new Chart(d1, {
+      type: 'doughnut',
+      data: {
+        labels: ['Critical','High','Medium','Low'],
+        datasets: [{
+          data: [2, 5, 12, 7],
+          backgroundColor: ['#dc2626','#D97757','rgba(217,119,87,0.45)','#cbd5e1']
+        }]
+      },
+      options: { plugins: { legend: { position: 'bottom' } } }
+    });
+  }
+});
+</script>
+</body>
+</html>

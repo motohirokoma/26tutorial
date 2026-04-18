@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>コンテキスト管理 - MK's Claude Code Tutorial</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code Tutorial
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav class="active"><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="../index.html#phase3" data-nav><span class="phase-name">Advanced</span><span class="phase-pct" id="pct-advanced">0%</span></a></li>
+      <li><a href="../index.html#phase4" data-nav><span class="phase-name">Projects</span><span class="phase-pct" id="pct-projects">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.14</span>
+    コンテキスト管理
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 26 sections</text>
+    </svg>
+    <div class="progress-info">0h / 24h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-welcome.html"><span class="status-dot" data-chapter="01"></span> ようこそ&セットアップ</a></li>
+    <li><a href="02-communication-basics.html"><span class="status-dot" data-chapter="02"></span> 対話の原則</a></li>
+    <li><a href="03-file-tools.html"><span class="status-dot" data-chapter="03"></span> ファイル操作ツール</a></li>
+    <li><a href="04-bash-safety.html"><span class="status-dot" data-chapter="04"></span> Bashツールと安全</a></li>
+    <li><a href="05-todo-management.html"><span class="status-dot" data-chapter="05"></span> TodoWriteで作業管理</a></li>
+    <li><a href="06-claude-md.html"><span class="status-dot" data-chapter="06"></span> CLAUDE.md</a></li>
+    <li><a href="07-git-workflow.html"><span class="status-dot" data-chapter="07"></span> Git × Claude Code</a></li>
+  </ul>
+  <div class="section-label">Core</div>
+  <ul>
+    <li><a href="08-prompt-patterns.html"><span class="status-dot" data-chapter="08"></span> プロンプト設計の型</a></li>
+    <li><a href="09-code-review.html"><span class="status-dot" data-chapter="09"></span> コードレビュー依頼</a></li>
+    <li><a href="10-refactor-workflow.html"><span class="status-dot" data-chapter="10"></span> 改修ワークフロー</a></li>
+    <li><a href="11-tdd-with-claude.html"><span class="status-dot" data-chapter="11"></span> テスト駆動</a></li>
+    <li><a href="12-debugging.html"><span class="status-dot" data-chapter="12"></span> デバッグ</a></li>
+    <li><a href="13-plan-mode.html"><span class="status-dot" data-chapter="13"></span> Planモード</a></li>
+    <li><a href="14-context-management.html" class="active"><span class="status-dot" data-chapter="14"></span> コンテキスト管理</a></li>
+    <li><a href="15-web-tools.html"><span class="status-dot" data-chapter="15"></span> Web検索・取得</a></li>
+  </ul>
+  <div class="section-label">Advanced</div>
+  <ul>
+    <li><a href="16-subagents-overview.html"><span class="status-dot" data-chapter="16"></span> Subagents</a></li>
+    <li><a href="17-mcp-overview.html"><span class="status-dot" data-chapter="17"></span> MCP</a></li>
+    <li><a href="18-hooks-overview.html"><span class="status-dot" data-chapter="18"></span> Hooks</a></li>
+    <li><a href="19-schedule-loop.html"><span class="status-dot" data-chapter="19"></span> Schedule &amp; Loop</a></li>
+    <li><a href="20-skills-overview.html"><span class="status-dot" data-chapter="20"></span> Skills</a></li>
+    <li><a href="21-worktree.html"><span class="status-dot" data-chapter="21"></span> worktree</a></li>
+    <li><a href="22-pitfalls.html"><span class="status-dot" data-chapter="22"></span> 失敗パターン10</a></li>
+  </ul>
+  <div class="section-label">Projects</div>
+  <ul>
+    <li><a href="23-project-automation.html"><span class="status-dot" data-chapter="23"></span> Project A：業務自動化</a></li>
+    <li><a href="24-project-refactor.html"><span class="status-dot" data-chapter="24"></span> Project B：リファクタ</a></li>
+    <li><a href="25-project-webapp.html"><span class="status-dot" data-chapter="25"></span> Project C：Webアプリ</a></li>
+    <li><a href="26-final-exercise.html"><span class="status-dot" data-chapter="26"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 2: Core &gt; Chapter 14</div>
+  <h1>コンテキスト管理</h1>
+  <p class="subtitle">/compact と /clear を使い分け、長セッションを潰さないパワーユーザーの基本動作</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 45分</span>
+    <span class="badge">Phase: Core</span>
+    <span class="badge">難易度: 中級</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">この章のゴール</span>
+    <p>Claude Code の<strong>コンテキストウィンドウ</strong>という有限資源をどう扱うかを、手を動かしながら体で覚えます。<code>/compact</code> で要約圧縮して続ける、<code>/clear</code> で思い切ってリセットする、<code>CLAUDE.md</code> や <code>memory</code> で「毎回必要な文脈」は常駐させる——この3つの使い分けができるだけで、長時間セッションの品質が一気に安定します。</p>
+  </div>
+
+  <div class="info-box" style="border-left: 3px solid #D97757;">
+    <span class="label">2026年1月時点の情報</span>
+    <p>本章の記述は <strong>2026年1月時点</strong> の Claude Code の挙動に基づきます。<code>/compact</code> のアルゴリズムや context window の上限は機種・プランで異なり、今後アップデートで変わる可能性があります。スラッシュコマンドが期待どおり動かない時は <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">公式ドキュメント</a> と <code>claude --version</code> をまず確認してください。</p>
+  </div>
+
+  <!-- ===== Section 1: Context Window とは ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> コンテキストウィンドウという「作業机」</h2>
+
+  <p>Claude には<span class="term" data-tip="context window: Claudeが一度に参照できるトークンの総量。会話履歴・システムプロンプト・ツール出力・添付ファイルをすべてここに積む。">コンテキストウィンドウ</span>という有限の「作業机」があります。あなたの質問、Claude の返答、<code>Read</code> で読んだファイル、<code>Bash</code> の出力——<strong>すべてが机の上に積まれ続け、机からはみ出した瞬間にセッションは破綻</strong>します。</p>
+
+  <p>モデルごとの目安は <span class="term" data-tip="Sonnet/Opus などモデルごとに上限が異なる。2026年1月時点で Opus 4.7 の 1M context 版など大容量モデルも存在するが、普段使いは 200K 前後が中心。">200K〜1M トークン</span>。1トークン ≒ 日本語0.5〜1文字・英語0.75単語の粗い感覚で、<strong>200K トークン = 日本語で原稿用紙500枚前後</strong>。分厚い本1冊を机の上に開きっぱなしにできるサイズ、と思うと体感に近いです。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">コンテキストウィンドウの中身(イメージ)</div>
+    <svg viewBox="0 0 520 260" width="100%" style="max-width:520px; display:block; margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <rect x="20" y="20" width="480" height="220" rx="10" fill="#fafafa" stroke="#18181b" stroke-width="1.5"/>
+      <text x="260" y="42" text-anchor="middle" font-size="12" font-weight="700" fill="#18181b">Context Window (例: 200K tokens)</text>
+      <!-- segments -->
+      <rect x="35"  y="60"  width="90"  height="160" fill="rgba(217,119,87,0.35)" stroke="#D97757"/>
+      <rect x="130" y="60"  width="70"  height="160" fill="rgba(217,119,87,0.20)" stroke="#D97757"/>
+      <rect x="205" y="60"  width="140" height="160" fill="rgba(217,119,87,0.15)" stroke="#D97757"/>
+      <rect x="350" y="60"  width="80"  height="160" fill="#fde68a" stroke="#d97706"/>
+      <rect x="435" y="60"  width="55"  height="160" fill="#f1f5f9" stroke="#94a3b8" stroke-dasharray="4 3"/>
+      <!-- labels -->
+      <text x="80"  y="145" text-anchor="middle" font-size="11" font-weight="700">System</text>
+      <text x="80"  y="162" text-anchor="middle" font-size="9"  fill="#475569">+ CLAUDE.md</text>
+      <text x="165" y="145" text-anchor="middle" font-size="11" font-weight="700">Tools</text>
+      <text x="165" y="162" text-anchor="middle" font-size="9"  fill="#475569">定義</text>
+      <text x="275" y="140" text-anchor="middle" font-size="11" font-weight="700">会話履歴</text>
+      <text x="275" y="158" text-anchor="middle" font-size="9"  fill="#475569">User &amp; Assistant</text>
+      <text x="275" y="176" text-anchor="middle" font-size="9"  fill="#475569">ツール入出力</text>
+      <text x="390" y="140" text-anchor="middle" font-size="11" font-weight="700">直近の</text>
+      <text x="390" y="158" text-anchor="middle" font-size="11" font-weight="700">Read/Bash出力</text>
+      <text x="462" y="145" text-anchor="middle" font-size="11" font-weight="700" fill="#475569">残り</text>
+      <text x="462" y="162" text-anchor="middle" font-size="9"  fill="#475569">余白</text>
+    </svg>
+    <div class="diagram-caption">机の多くは「過去の会話」と「ツールが吐いた大量の出力」で埋まる。余白が尽きる前に圧縮するのが仕事。</div>
+  </div>
+
+  <p>実務上、<strong>一番太るのはツール出力</strong>です。<code>Read</code> で大きなファイルを丸ごと読んだ、<code>Bash</code> で <code>npm test</code> のログを取った、<code>WebFetch</code> で HTML を丸呑みした——こうした出力が積み重なり、<strong>読者が気付かないうちに「残り10%」になる</strong>のがあるあるのパターン。</p>
+
+  <div class="info-box">
+    <span class="label">公式ドキュメント必読</span>
+    <p>コンテキストウィンドウの正確な上限・<code>/compact</code> と <code>/clear</code> の正式な挙動・memory 機能のスコープは、モデルとプランで変わる上、誤解したまま使うと「圧縮したつもりが全部消えた」事故につながります。ここは公式ドキュメントに書いてあり、実務で間違えると致命的なので必ずマスターしてください。<a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式 →</a></p>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section 2: 使用率の推移 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 使用率は「こう推移する」</h2>
+
+  <p>新品の机は当然スカスカ。そこから会話とツール実行を重ねるたびに埋まっていき、どこかで天井に到達します。下のグラフは、実際の長時間セッションでありがちな推移パターン。<strong>70%が第一警報、90%が赤</strong>——この体内時計を持つのが今日のゴールです。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">コンテキスト使用率の推移 (長セッション模擬・45分)</div>
+    <canvas id="ch14-line-1" height="220"></canvas>
+    <div class="diagram-caption">70% で /compact を実行すると、約30-40% まで縮んで再び伸びていく。無策だと100% で頭打ち → 応答劣化。</div>
+  </div>
+
+  <script>
+  window.addEventListener("load", function(){
+    var el = document.getElementById('ch14-line-1');
+    if(!el || !window.Chart) return;
+    new Chart(el, {
+      type: 'line',
+      data: {
+        labels: ['開始','5分','10分','15分','20分','25分','30分','35分','40分','45分'],
+        datasets: [
+          {
+            label: '無策(何もしない)',
+            data: [5, 18, 32, 48, 62, 74, 85, 94, 99, 100],
+            borderColor: '#94a3b8',
+            backgroundColor: 'rgba(148,163,184,0.12)',
+            borderDash: [6,4],
+            tension: 0.25,
+            fill: true
+          },
+          {
+            label: '/compact を満杯前に実行',
+            data: [5, 18, 32, 48, 62, 74, 38, 50, 62, 72],
+            borderColor: '#D97757',
+            backgroundColor: 'rgba(217,119,87,0.15)',
+            tension: 0.25,
+            fill: true
+          }
+        ]
+      },
+      options: {
+        plugins: { legend: { position: 'bottom' } },
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 110,
+            title: { display: true, text: 'Context usage (%)' },
+            ticks: {
+              callback: function(v){ return v + '%'; }
+            }
+          },
+          x: { title: { display: true, text: '経過時間' } }
+        }
+      }
+    });
+  });
+  </script>
+
+  <p>赤の実線(<code>/compact</code> を挟んだ方)を見てください。<strong>70%時点で圧縮を掛けた瞬間に 40%台まで下がって、続きが普通にこなせている</strong>。灰色点線(無策)は 100% に張り付いた後、返答の品質が崩れはじめるゾーンに入ります。</p>
+
+  <h3>「いま何%か」を体感する3つのサイン</h3>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="gauge" width="20" height="20"></i>
+      <div><strong>返答が妙に短くなる / 省略が増える</strong> — 机が埋まって要約モードに入ったサイン。70%超え濃厚。</div>
+    </li>
+    <li>
+      <i data-lucide="history" width="20" height="20"></i>
+      <div><strong>さっき話したはずの内容を忘れる</strong> — 古い履歴から押し出されている。80%以上を疑う。</div>
+    </li>
+    <li>
+      <i data-lucide="alert-triangle" width="20" height="20"></i>
+      <div><strong>ツール呼び出しが途中で止まる / タイムアウト</strong> — 残量ギリギリ。90%以上。即 <code>/compact</code> か <code>/clear</code>。</div>
+    </li>
+  </ul>
+
+  <!-- ===== Section 3: /compact vs /clear ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> <code>/compact</code> と <code>/clear</code> — どっちを使う?</h2>
+
+  <p>最重要の2つのスラッシュコマンド。混同されがちですが、<strong>目的がまったく違います</strong>。</p>
+
+  <div class="compare-cards">
+    <div class="cc good">
+      <span class="cc-label">/compact</span>
+      <h4>要約して「続ける」</h4>
+      <ul>
+        <li>過去の会話を Claude が要約して圧縮</li>
+        <li>作業の流れ・意思決定・重要な結論は残す</li>
+        <li><strong>タスクの途中で机を広げたい</strong>時に使う</li>
+        <li>30-60% まで縮むのが典型</li>
+        <li>満杯(90%+)になってからでは遅い</li>
+      </ul>
+    </div>
+    <div class="cc bad">
+      <span class="cc-label">/clear</span>
+      <h4>全部捨てて「仕切り直す」</h4>
+      <ul>
+        <li>会話履歴を完全リセット(<code>CLAUDE.md</code>は残る)</li>
+        <li>過去の文脈は一切残らない</li>
+        <li><strong>タスクの切れ目・別件に移る</strong>時に使う</li>
+        <li>使用率は即5%前後に戻る</li>
+        <li>誤爆するとやり直し不可能</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="info-box" style="border-left-color: #D97757;">
+    <span class="label">ここがプロの境目</span>
+    <p><strong>/compact は満杯前、/clear は切れ目で</strong>。タイミングを読むのがパワーユーザーの条件です。<code>/compact</code> は満杯 (&gt;90%) になってからでは「圧縮前の情報を参照できない」事故が起きやすく、<code>/clear</code> はタスクを跨がずに使うと文脈ごと消えて二度手間になる。どちらも<strong>早すぎず遅すぎず</strong>。<br>
+    <em>試し方：</em> 長時間セッションで context 70% になったら迷わず <code>/compact</code>。タスクが1つ終わって別件に入る前に <code>/clear</code>。これを1週間やるだけで事故が激減します。</p>
+  </div>
+
+  <h3>判断フロー</h3>
+
+  <div class="diagram-box">
+    <div class="diagram-title">/compact と /clear の分岐</div>
+    <pre class="mermaid">
+graph TD
+  Start([context 70% 超えた / 区切りがついた]) --> Q1{"同じタスクを続けたい?"}
+  Q1 -- "Yes" --> Q2{"使用率は?"}
+  Q1 -- "No (別タスク)" --> Clear["/clear で仕切り直し"]
+  Q2 -- "70-85%" --> Compact["/compact で圧縮継続"]
+  Q2 -- "90% 以上" --> Warn["要警戒: まず結論を保存してから /compact"]
+  Compact --> Cont[作業続行]
+  Clear --> New[新しいセッション]
+  Warn --> Save["重要な結果を .md / コメントに保存"]
+  Save --> Compact
+    </pre>
+    <div class="diagram-caption">同タスク継続なら compact、別件なら clear。90% 超えは「先に結果を外に逃がす」が鉄則。</div>
+  </div>
+
+  <div class="hands-on-box info-box" style="background: rgba(217,119,87,0.08); border-left: 3px solid #D97757;">
+    <span class="label">今すぐ試す(2分)</span>
+    <p>手元の Claude Code で、わざと大きなファイルを2-3個 <code>Read</code> させてから以下をそれぞれ実行してみてください。</p>
+    <pre><code># 1. まずは要約圧縮
+/compact
+
+# 2. もしくは完全リセット
+/clear</code></pre>
+    <p><code>/compact</code> の後、Claude に「さっきまで何をしていた?」と聞くと、要約された文脈で答えが返ってきます。一方 <code>/clear</code> の後は「何も覚えていません」と返ってくるはず。<strong>この違いを体感するのが本章最大の投資</strong>です。</p>
+  </div>
+
+  <!-- ===== Section 4: memory と CLAUDE.md ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> <code>memory</code> と CLAUDE.md — セッションを跨ぐ記憶</h2>
+
+  <p><code>/clear</code> で消えない記憶が2つあります。<strong>CLAUDE.md</strong>(プロジェクト/ユーザースコープの定常メモリ) と、<span class="term" data-tip="memory: 2026年1月時点の Claude Code で段階的に導入されている、セッションを跨ぐ永続メモ機能。ユーザーの好みやプロジェクトのルールを Claude が覚えておく仕組み。実装・挙動はバージョンで差異あり。">memory</span> です。</p>
+
+  <table>
+    <thead>
+      <tr><th>記憶場所</th><th>スコープ</th><th>/compact で</th><th>/clear で</th><th>使うもの</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>会話履歴</td><td>このセッション</td><td>要約される</td><td>全消去</td><td>いま話してる内容すべて</td></tr>
+      <tr><td>ツール出力</td><td>このセッション</td><td>要約される</td><td>全消去</td><td>Read/Bash/WebFetch の結果</td></tr>
+      <tr><td><code>CLAUDE.md</code> (project)</td><td>このリポジトリ</td><td>残る</td><td>残る</td><td>プロジェクトのルール・構成</td></tr>
+      <tr><td><code>~/.claude/CLAUDE.md</code> (user)</td><td>全プロジェクト</td><td>残る</td><td>残る</td><td>自分の好み・デフォルト作法</td></tr>
+      <tr><td><code>memory</code></td><td>ユーザー横断 (*)</td><td>残る</td><td>残る</td><td>長期的な嗜好・学習事項</td></tr>
+    </tbody>
+  </table>
+
+  <p class="note" style="font-size:13px;color:#64748b;">(*) memory 機能の具体的スコープ・保存場所は 2026年1月時点でバージョン依存。公式ドキュメントで最新を確認すること。</p>
+
+  <h3>使い分けの原則</h3>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="book-open" width="20" height="20"></i>
+      <div><strong>毎回必要な情報</strong>(プロジェクト固有のコマンド・ビルド手順など) → <code>CLAUDE.md</code> に書く。会話で毎回説明しない。</div>
+    </li>
+    <li>
+      <i data-lucide="user" width="20" height="20"></i>
+      <div><strong>自分のクセ・好み</strong>(TypeScript 派・日本語で返事して等) → <code>~/.claude/CLAUDE.md</code>。どのプロジェクトでも効く。</div>
+    </li>
+    <li>
+      <i data-lucide="refresh-ccw" width="20" height="20"></i>
+      <div><strong>この会話だけの一時的な文脈</strong> → 会話でそのまま。<code>/compact</code> で要約、<code>/clear</code> で捨てる。</div>
+    </li>
+  </ul>
+
+  <details class="more-box">
+    <summary>もっと詳しく: memory と CLAUDE.md はどう違う?</summary>
+    <div class="more-body">
+      <p><code>CLAUDE.md</code> は<strong>あなたが書くマークダウン</strong>で、Claude は毎セッション読み直します。明示的・制御可能・diff で見える——<strong>「教える記憶」</strong>です。</p>
+      <p>対して <code>memory</code> は<strong>Claude が自動で覚えようとする機能</strong>で、ユーザーの好みや過去の判断を学習して保持する仕組み(2026年1月時点で段階的に展開中)。暗黙的・制御が難しい——<strong>「育つ記憶」</strong>に近い。</p>
+      <p>現実的な使い分け: <strong>ルール・仕様・コマンドは CLAUDE.md、嗜好・プロファイルは memory に任せる</strong>。memory の内容がズレてきたら、公式の手順で内容確認/削除できます(バージョンにより異なる)。<a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">公式 →</a></p>
+    </div>
+  </details>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section 5: 長セッションを潰さないコツ ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 長セッションを潰さない5つのコツ</h2>
+
+  <p>ここまでの <code>/compact</code> と <code>/clear</code> を「反応的」に使うだけでなく、<strong>そもそも机を太らせない</strong>予防策のほうが効きが大きい。実務で効く5つを紹介します。</p>
+
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-label">Grep→Readの順</div><div class="step-desc">いきなり全文 Read しない。場所を絞ってから部分 Read。</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-label">offset/limit 活用</div><div class="step-desc">大きなファイルは必要な範囲だけ切り出す。</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-label">Subagent に逃がす</div><div class="step-desc">重い調査は子エージェントへ。要約だけ親に返る。</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-label">節目で結果を保存</div><div class="step-desc">重要な結論は .md や commit に外出ししてから /compact。</div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-label">タスクを切る</div><div class="step-desc">45-60分を目安にいったん /clear して仕切り直す。</div></div>
+  </div>
+
+  <h3>使い方マトリクス — 状況別ベスト</h3>
+
+  <table>
+    <thead>
+      <tr><th>状況</th><th>使用率</th><th>推奨アクション</th><th>理由</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>長い実装の途中、あと1-2ステップで完了</td><td>70-85%</td><td><code>/compact</code></td><td>流れを保って最後まで走る</td></tr>
+      <tr><td>調査が終わって、実装フェーズに入る</td><td>50-80%</td><td>結論保存 → <code>/clear</code></td><td>頭を切り替えて品質を保つ</td></tr>
+      <tr><td>Read で 3000行級のコードを読んだ直後</td><td>急に60%+</td><td>Subagent に逃がすべきだった</td><td>次回は最初から分業</td></tr>
+      <tr><td>90%超え + 重要結論未保存</td><td>90%+</td><td>まず結果を外出し → <code>/compact</code></td><td>圧縮で重要情報が削られるリスク回避</td></tr>
+      <tr><td>別プロジェクトに切り替え</td><td>何%でも</td><td><code>/clear</code></td><td>混在の方が事故のもと</td></tr>
+    </tbody>
+  </table>
+
+  <details class="more-box">
+    <summary>もっと詳しく: /compact に「何を残してほしいか」を指示できる</summary>
+    <div class="more-body">
+      <p><code>/compact</code> は単独で打つと自動で要約されますが、<strong>事前に「次に必要な情報を1段落でまとめて」とお願いしてから打つ</strong>と、要約の質がぐっと上がります。</p>
+      <pre><code># 圧縮直前プロンプトの例
+いったん /compact で圧縮する前に、これまでの作業を次の形式で要約してください:
+- 確定した仕様
+- 残タスク
+- 関わっているファイル
+- 次に取るべき最初のアクション
+
+そのうえで /compact を実行します。</code></pre>
+      <p>こうするとメインに「要約済み要約」が残り、圧縮後も手戻りがほぼゼロになります。</p>
+    </div>
+  </details>
+
+  <details class="more-box">
+    <summary>もっと詳しく: /clear のあと何を復元すべきか</summary>
+    <div class="more-body">
+      <p><code>/clear</code> 直後は完全に記憶ゼロなので、続きで同じタスクをやるつもりなら<strong>再起動用プロンプト</strong>を1つ用意しておくと神業的に効率化します。</p>
+      <pre><code># /clear 直後の再起動テンプレ
+前回の続きです。今日のゴールは「XXXX」。参照すべきファイルは
+ - path/to/A.ts
+ - path/to/B.test.ts
+現状はYYY までできていて、次のタスクはZZZです。
+まず path/to/A.ts を Read して現状を確認してください。</code></pre>
+      <p>毎回同じ形式で書けるように、この骨組みを自分の <code>CLAUDE.md</code> や Skill に入れておくとさらに速い。</p>
+    </div>
+  </details>
+
+  <div class="hands-on-box info-box" style="background: rgba(217,119,87,0.08); border-left: 3px solid #D97757;">
+    <span class="label">今すぐ試す(3分)</span>
+    <p>自分の普段のプロジェクトで、以下の流れを1サイクル回してください。</p>
+    <ol>
+      <li>大きめのファイル2-3個を <code>Read</code> させて、体感で机を太らせる</li>
+      <li>Claude に「現状と残タスクを1段落で要約して」と依頼</li>
+      <li><code>/compact</code> を実行</li>
+      <li>圧縮後に「続きから再開してください」と伝える</li>
+    </ol>
+    <p>うまく行くと、コンテキストは縮んだのに作業は途切れない感覚が得られます。これが本章の到達点です。</p>
+  </div>
+
+  <!-- ===== Section 6: アンチパターン ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> よくあるアンチパターン3選</h2>
+
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">NG 1</span>
+      <h4><code>/compact</code> を打ちすぎる</h4>
+      <ul>
+        <li>30% 時点で連打する人がいる</li>
+        <li>圧縮のたびに細部が削れる</li>
+        <li>結果: 話が浅くなる</li>
+      </ul>
+    </div>
+    <div class="cc bad">
+      <span class="cc-label">NG 2</span>
+      <h4>満杯で初めて慌てる</h4>
+      <ul>
+        <li>99% でツールが動かなくなって気付く</li>
+        <li>この時点では要約も質が落ちる</li>
+        <li>結果: セッション破綻</li>
+      </ul>
+    </div>
+    <div class="cc bad">
+      <span class="cc-label">NG 3</span>
+      <h4>別件でも <code>/clear</code> しない</h4>
+      <ul>
+        <li>プロジェクトAの文脈にBが混ざる</li>
+        <li>Claude が違うリポの話を持ち出す</li>
+        <li>結果: 誤った修正を提案される</li>
+      </ul>
+    </div>
+  </div>
+
+  <p>この3つを避けるだけで、<strong>長セッションの9割は安定します</strong>。残りの1割は次章(Web検索・取得)で触れる「外部から情報を取ってくる量をコントロールする」系のテクニックでカバーします。</p>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===================== Exercises ===================== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Exercises — 手を動かして定着させる</h2>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>「要約保存 → /compact → 続行」を1サイクル回す</h4>
+    <p>自分の普段のリポジトリで、次の流れを実際にやってみましょう。</p>
+    <ol>
+      <li>Claude Code を開き、大きめのファイル(1000行以上)を2つ <code>Read</code> させる</li>
+      <li>「ここまでの作業を『確定仕様 / 残タスク / 次のアクション』の3項目で要約して」と依頼</li>
+      <li>返ってきた要約を確認したら <code>/compact</code> を実行</li>
+      <li>「続きから再開してください」と伝えて、作業が途切れずに進むか確認</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><strong>期待される挙動</strong>: <code>/compact</code> 後も、先ほど依頼した3項目の要約は<strong>「確定仕様」「残タスク」「次のアクション」として</strong>引き継がれる。大きなファイルの全文は消えているが、Claude は「どのファイルが関係しているか」を覚えているので、必要なら再 Read すれば続けられる。</p>
+      <pre><code># 圧縮前プロンプト例
+ここまでの作業を次の形式で要約してください:
+【確定仕様】このセッションで決まったこと
+【残タスク】まだ手を付けていない作業
+【次のアクション】再開時に最初にやるべきこと
+
+要約が返ったら /compact を実行します。</code></pre>
+      <p><strong>ポイント</strong>: 圧縮の直前に「<strong>何を残したいか</strong>」を会話で明示すると、要約の質が上がる。<code>/compact</code> を無策で打つより、この1手間が結果を劇的に変えます。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>CLAUDE.md に「圧縮運用ルール」を書き込む</h4>
+    <p>自プロジェクトの <code>CLAUDE.md</code>(または <code>~/.claude/CLAUDE.md</code>)に、本章の学びを<strong>1ブロック分</strong>追記してください。次回以降、Claude がこのルールを踏まえて動いてくれます。</p>
+    <ol>
+      <li>70% を超えた時の挙動ルール</li>
+      <li>タスクの切れ目で <code>/clear</code> を提案させる条件</li>
+      <li>圧縮前の要約フォーマット</li>
+    </ol>
+    <p>書いたあと、適当な長セッションを動かしてみて、Claude 自身が「そろそろ要約しましょうか?」と提案してくるか観察しましょう。</p>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><code>CLAUDE.md</code> に追加するブロック例:</p>
+      <pre><code>## コンテキスト管理ルール
+
+- context 使用率が 70% を超えたと判断したら、自発的に
+  「そろそろ /compact を推奨します」と提案してください。
+- タスクが完結し別件に移る時は、「/clear で仕切り直しますか?」と確認してください。
+- /compact 直前には必ず次の3項目を返してから圧縮に進みます:
+  【確定仕様】 / 【残タスク】 / 【次のアクション】
+- 大きなファイルの全文 Read は避け、Grep→部分Read の順を基本にします。</code></pre>
+      <p><strong>効果</strong>: これを入れておくと、Claude 側から能動的に「圧縮しますか?」を提案してきます。自分が機械になって毎回判定する必要がなくなり、<strong>体内時計が CLAUDE.md に移った</strong>状態。これぞ Top 20% の作法です。</p>
+      <p><strong>注意</strong>: ルールを増やしすぎると CLAUDE.md 自体が肥大化してコンテキストを食います。本章ルールは<strong>10-15行以内に収める</strong>のが目安。Ch06 の「CLAUDE.md は最小限に」の原則を忘れずに。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式ドキュメント</a> <span class="res-type doc">Doc</span> — context window / slash commands の正式な仕様</li>
+      <li><a href="https://docs.claude.com/en/docs/claude-code/memory" target="_blank" rel="noopener">Claude Code - Memory &amp; CLAUDE.md</a> <span class="res-type doc">Doc</span> — memory 機能と CLAUDE.md のスコープ仕様</li>
+      <li><a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener">Claude Code GitHub</a> <span class="res-type doc">Doc</span> — リリースノートで /compact の挙動変更を追う</li>
+      <li><a href="https://www.anthropic.com/news" target="_blank" rel="noopener">Anthropic Blog</a> <span class="res-type doc">Doc</span> — context window 拡張・memory 機能の公式発表</li>
+      <li><a href="https://github.com/anthropics/anthropic-cookbook" target="_blank" rel="noopener">Anthropic Cookbook</a> <span class="res-type doc">Doc</span> — プロンプト圧縮・長文処理のパターン集</li>
+      <li><a href="https://www.youtube.com/results?search_query=Claude+Code+compact+clear" target="_blank" rel="noopener">YouTube: "Claude Code compact clear"</a> <span class="res-type video">Video</span> — 実演動画で操作感を掴む</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="14">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="13-plan-mode.html"><span class="direction">&larr; Prev</span>Planモード</a>
+    <a href="15-web-tools.html"><span class="direction">Next &rarr;</span>Web検索・取得</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<!-- 視覚化ライブラリ群 -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>

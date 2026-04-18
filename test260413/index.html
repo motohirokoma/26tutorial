@@ -8,24 +8,20 @@
 <link rel="stylesheet" href="style.css">
 <style>
   :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
-
   main { margin-left: 0; max-width: 960px; margin: 52px auto 0; padding: 48px 40px 120px; }
-
   .hero { text-align: center; padding: 40px 0 48px; }
   .hero h1 { font-size: 42px; letter-spacing: -1px; margin-bottom: 16px; }
-  .hero .subtitle { max-width: 600px; margin: 0 auto 36px; font-size: 17px; }
-
+  .hero .subtitle { max-width: 640px; margin: 0 auto 18px; font-size: 17px; }
+  .hero .version-note { display: inline-block; font-size: 12px; color: var(--text-secondary); padding: 4px 12px; background: var(--accent-light); border-radius: 999px; margin-bottom: 24px; letter-spacing: 0.04em; }
   .stats-row { display: flex; justify-content: center; gap: 48px; margin-bottom: 20px; }
-  .stat { text-align: center; background: transparent; border: none; padding: 0; }
-  .stat .num { font-size: 36px; font-weight: 700; letter-spacing: -1px; color: var(--text); }
+  .stat { text-align: center; }
+  .stat .num { font-size: 36px; font-weight: 700; letter-spacing: -1px; }
   .stat .label { font-size: 13px; color: var(--text-secondary); }
-
   .phase-section { margin: 40px 0 24px; }
   .phase-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
   .phase-num { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; background: var(--accent); color: white; border-radius: 8px; font-size: 14px; font-weight: 700; }
   .phase-header h2 { margin: 0; border: none; padding: 0; font-size: 20px; }
   .phase-header .hours { margin-left: auto; font-size: 13px; color: var(--text-secondary); font-weight: 500; }
-
   .chapter-list { list-style: none; margin: 0; padding: 0; }
   .chapter-list li { margin: 0; }
   .chapter-list a { display: flex; align-items: center; gap: 16px; padding: 16px 20px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; text-decoration: none; color: var(--text); margin-bottom: 8px; box-shadow: var(--shadow); transition: all 0.15s; }
@@ -35,24 +31,6 @@
   .chapter-list .ch-title { font-size: 15px; font-weight: 600; margin-bottom: 2px; }
   .chapter-list .ch-desc { font-size: 13px; color: var(--text-secondary); }
   .chapter-list .ch-time { font-size: 12px; color: var(--text-secondary); font-weight: 500; flex-shrink: 0; padding: 4px 10px; background: var(--accent-light); border-radius: 6px; }
-
-  .parent-group {
-    background: #fafafa;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 14px 14px 6px;
-    margin: 12px 0;
-  }
-  .parent-group .sub-header {
-    font-size: 13px; font-weight: 700; color: var(--text);
-    margin: 0 2px 10px; display: flex; align-items: center; gap: 8px;
-  }
-  .parent-group .sub-header .sub-badge {
-    display: inline-flex; padding: 2px 8px; background: var(--accent-light);
-    color: var(--text); border-radius: 4px; font-size: 11px; font-weight: 700;
-    letter-spacing: 0.5px;
-  }
-  .parent-group .chapter-list a { background: #fff; }
 </style>
 </head>
 <body>
@@ -61,7 +39,7 @@
   <div class="topbar-main">
     <a href="index.html" class="logo">
       <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
-      &gt;_ MK's Claude Code Tutorial
+      &gt;_ MK's Claude Code
     </a>
     <ul class="nav-links">
       <li><a href="#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
@@ -74,11 +52,7 @@
       <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
       <div class="auth-box">
         <button class="auth-btn" id="sign-in-btn">Sign in</button>
-        <div class="auth-user" id="auth-user">
-          <img id="auth-avatar" alt="">
-          <span id="auth-name"></span>
-          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
-        </div>
+        <div class="auth-user" id="auth-user"><img id="auth-avatar" alt=""><span id="auth-name"></span><button class="auth-btn-small" id="sign-out-btn">Sign out</button></div>
         <span class="sync-badge" id="sync-badge">Synced</span>
       </div>
     </div>
@@ -88,166 +62,101 @@
 
 <main>
   <div class="hero">
-    <div class="badge-row" style="justify-content:center; margin-bottom:20px;">
-      <span class="badge">26-Hour Complete Curriculum</span>
-    </div>
+    <div class="badge-row" style="justify-content:center; margin-bottom:20px;"><span class="badge">24-Hour Complete Curriculum</span></div>
     <h1>MK's Claude Code Tutorial <span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="22" height="22" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span></h1>
-    <p class="subtitle">ターミナル初心者から、Claude Codeで個人/チーム開発を回せるレベルまで。基礎・実装・運用・プロジェクト演習の26時間で「相棒として使いこなす」を完成させます。</p>
+    <p class="subtitle">CLIの基礎はあるけれど Claude Code は初めて、という人を24時間で<strong>上位20%のパワーユーザー</strong>に引き上げるフル技能カリキュラム。手を動かして試すハンズオン重視、毎章に「<strong>ここがプロの境目</strong>」コーナー付き。最後には自社業務を Claude Code で自動化する実戦演習まで。</p>
+    <div class="version-note">2026年1月時点の情報に基づく</div>
     <div class="stats-row">
-      <div class="stat"><div class="num">26</div><div class="label">hours</div></div>
-      <div class="stat"><div class="num">19</div><div class="label">chapters</div></div>
-      <div class="stat"><div class="num">19</div><div class="label">sections</div></div>
-    </div>
-    <div style="margin-top: 28px; padding: 14px 20px; background: var(--accent-light); border-radius: 10px; display: inline-block;">
-      <span style="font-size: 13px; color: var(--text-secondary);">初学者の方へ:</span>
-      <a href="chapters/00-prerequisites.html" style="margin-left: 8px; font-weight: 600; text-decoration: none; color: var(--text);">はじめての方へ (前提知識) &rarr;</a>
+      <div class="stat"><div class="num">24</div><div class="label">hours</div></div>
+      <div class="stat"><div class="num">26</div><div class="label">chapters</div></div>
+      <div class="stat"><div class="num">26</div><div class="label">sections</div></div>
     </div>
   </div>
 
   <div class="index-progress">
     <div class="progress-header">
       <div class="title">Your Progress</div>
-      <div class="index-progress-count" style="font-size:13px; color:var(--text-secondary);">0 / 19 sections completed</div>
+      <div class="index-progress-count" style="font-size:13px; color:var(--text-secondary);">0 / 26 sections completed</div>
     </div>
-    <div class="progress-bar-track">
-      <div class="index-progress-fill" style="width:0%"></div>
-    </div>
-    <div class="progress-meta">
-      <span class="index-progress-time">0h / 26h</span>
-    </div>
+    <div class="progress-bar-track"><div class="index-progress-fill" style="width:0%"></div></div>
+    <div class="progress-meta"><span class="index-progress-time">0.0h / 24h</span></div>
   </div>
 
   <div class="chart-card">
     <div class="chart-title">Time Distribution</div>
-    <div class="bar-row"><div class="bar-label">Phase 1: Basics</div><div class="bar-track"><div class="bar-fill c1" style="width:19%">5h</div></div></div>
-    <div class="bar-row"><div class="bar-label">Phase 2: Core</div><div class="bar-track"><div class="bar-fill c2" style="width:27%">7h</div></div></div>
-    <div class="bar-row"><div class="bar-label">Phase 3: Advanced</div><div class="bar-track"><div class="bar-fill c3" style="width:15%">4h</div></div></div>
-    <div class="bar-row"><div class="bar-label">Phase 4: Projects</div><div class="bar-track"><div class="bar-fill c4" style="width:38%">10h</div></div></div>
+    <div class="bar-row"><div class="bar-label">Phase 1: Basics</div><div class="bar-track"><div class="bar-fill c1" style="width:22%">5h</div></div></div>
+    <div class="bar-row"><div class="bar-label">Phase 2: Core</div><div class="bar-track"><div class="bar-fill c2" style="width:27%">6.25h</div></div></div>
+    <div class="bar-row"><div class="bar-label">Phase 3: Advanced</div><div class="bar-track"><div class="bar-fill c3" style="width:26%">6h</div></div></div>
+    <div class="bar-row"><div class="bar-label">Phase 4: Projects</div><div class="bar-track"><div class="bar-fill c4" style="width:26%">6h</div></div></div>
   </div>
 
   <div class="phase-section" id="phase1">
-    <div class="phase-header">
-      <div class="phase-num">1</div><h2>Basics - 基礎編</h2><div class="hours">5 hours</div>
-    </div>
+    <div class="phase-header"><div class="phase-num">1</div><h2>Basics - 土台を固める</h2><div class="hours">5 hours</div></div>
     <ul class="chapter-list">
-      <li><a href="chapters/01-introduction.html" class="chapter-link" data-chapter="01"><div class="ch-num">01</div><div class="ch-info"><div class="ch-title">Introduction</div><div class="ch-desc">Claude Codeとは何か。全体像と「これ使えそう!」を体感する</div></div><div class="ch-time">1h</div><div class="ch-checkbox" data-chapter="01"></div></a></li>
-      <li><a href="chapters/02-installation.html" class="chapter-link" data-chapter="02"><div class="ch-num">02</div><div class="ch-info"><div class="ch-title">Installation</div><div class="ch-desc">Node.js・Claude Codeのインストール、認証、初回起動まで</div></div><div class="ch-time">1h</div><div class="ch-checkbox" data-chapter="02"></div></a></li>
-      <li><a href="chapters/03-basic-commands.html" class="chapter-link" data-chapter="03"><div class="ch-num">03</div><div class="ch-info"><div class="ch-title">Basic Commands</div><div class="ch-desc">起動、スラッシュコマンド、権限モード、ショートカットキー</div></div><div class="ch-time">1.5h</div><div class="ch-checkbox" data-chapter="03"></div></a></li>
-      <li><a href="chapters/04-prompt-design.html" class="chapter-link" data-chapter="04"><div class="ch-num">04</div><div class="ch-info"><div class="ch-title">Prompt Design</div><div class="ch-desc">指示の書き方で結果は劇的に変わる。良いプロンプトの4原則</div></div><div class="ch-time">1.5h</div><div class="ch-checkbox" data-chapter="04"></div></a></li>
+      <li><a href="chapters/01-welcome.html" class="chapter-link" data-chapter="01"><div class="ch-num">01</div><div class="ch-info"><div class="ch-title">ようこそ&セットアップ再確認</div><div class="ch-desc">初回起動・スラッシュコマンド・ファーストインプレッション</div></div><div class="ch-time">30min</div><div class="ch-checkbox" data-chapter="01"></div></a></li>
+      <li><a href="chapters/02-communication-basics.html" class="chapter-link" data-chapter="02"><div class="ch-num">02</div><div class="ch-info"><div class="ch-title">対話の原則：上手な頼み方</div><div class="ch-desc">具体性・制約・成功条件の3点セット</div></div><div class="ch-time">45min</div><div class="ch-checkbox" data-chapter="02"></div></a></li>
+      <li><a href="chapters/03-file-tools.html" class="chapter-link" data-chapter="03"><div class="ch-num">03</div><div class="ch-info"><div class="ch-title">ファイル操作ツール4つ</div><div class="ch-desc">Read / Write / Edit / Glob / Grep の使い分け</div></div><div class="ch-time">60min</div><div class="ch-checkbox" data-chapter="03"></div></a></li>
+      <li><a href="chapters/04-bash-safety.html" class="chapter-link" data-chapter="04"><div class="ch-num">04</div><div class="ch-info"><div class="ch-title">Bashツールと安全な使い方</div><div class="ch-desc">実行権限・確認・危険な操作への構え</div></div><div class="ch-time">45min</div><div class="ch-checkbox" data-chapter="04"></div></a></li>
+      <li><a href="chapters/05-todo-management.html" class="chapter-link" data-chapter="05"><div class="ch-num">05</div><div class="ch-info"><div class="ch-title">TodoWriteで作業管理</div><div class="ch-desc">進捗の見える化と迷子防止</div></div><div class="ch-time">30min</div><div class="ch-checkbox" data-chapter="05"></div></a></li>
+      <li><a href="chapters/06-claude-md.html" class="chapter-link" data-chapter="06"><div class="ch-num">06</div><div class="ch-info"><div class="ch-title">CLAUDE.mdで環境を教える</div><div class="ch-desc">プロジェクトの文脈を最小労力で伝える</div></div><div class="ch-time">45min</div><div class="ch-checkbox" data-chapter="06"></div></a></li>
+      <li><a href="chapters/07-git-workflow.html" class="chapter-link" data-chapter="07"><div class="ch-num">07</div><div class="ch-info"><div class="ch-title">Git × Claude Code 基本ワークフロー</div><div class="ch-desc">コミット・ブランチ・PR作成の黄金コンボ</div></div><div class="ch-time">45min</div><div class="ch-checkbox" data-chapter="07"></div></a></li>
     </ul>
   </div>
 
   <div class="phase-section" id="phase2">
-    <div class="phase-header">
-      <div class="phase-num">2</div><h2>Core - 実装編</h2><div class="hours">7 hours</div>
-    </div>
+    <div class="phase-header"><div class="phase-num">2</div><h2>Core - 中核技能</h2><div class="hours">6.25 hours</div></div>
     <ul class="chapter-list">
-      <li><a href="chapters/05-file-operations.html" class="chapter-link" data-chapter="05"><div class="ch-num">05</div><div class="ch-info"><div class="ch-title">File Operations</div><div class="ch-desc">Read / Edit / Write / Glob / Grep。ツールの使い分けと意図伝達</div></div><div class="ch-time">1.5h</div><div class="ch-checkbox" data-chapter="05"></div></a></li>
-      <li><a href="chapters/06-git-integration.html" class="chapter-link" data-chapter="06"><div class="ch-num">06</div><div class="ch-info"><div class="ch-title">Git Integration</div><div class="ch-desc">/commit /pr /review、コンフリクト解決、危険な操作への注意</div></div><div class="ch-time">1.5h</div><div class="ch-checkbox" data-chapter="06"></div></a></li>
+      <li><a href="chapters/08-prompt-patterns.html" class="chapter-link" data-chapter="08"><div class="ch-num">08</div><div class="ch-info"><div class="ch-title">プロンプト設計の型</div><div class="ch-desc">再現性のある頼み方を身体化する</div></div><div class="ch-time">60min</div><div class="ch-checkbox" data-chapter="08"></div></a></li>
+      <li><a href="chapters/09-code-review.html" class="chapter-link" data-chapter="09"><div class="ch-num">09</div><div class="ch-info"><div class="ch-title">コードレビュー依頼の作法</div><div class="ch-desc">観点を指定して質の高いレビューを得る</div></div><div class="ch-time">45min</div><div class="ch-checkbox" data-chapter="09"></div></a></li>
+      <li><a href="chapters/10-refactor-workflow.html" class="chapter-link" data-chapter="10"><div class="ch-num">10</div><div class="ch-info"><div class="ch-title">既存コードの改修ワークフロー</div><div class="ch-desc">理解→計画→実装→検証の4ステップ</div></div><div class="ch-time">60min</div><div class="ch-checkbox" data-chapter="10"></div></a></li>
+      <li><a href="chapters/11-tdd-with-claude.html" class="chapter-link" data-chapter="11"><div class="ch-num">11</div><div class="ch-info"><div class="ch-title">テスト駆動での依頼</div><div class="ch-desc">Red→Green→Refactor を Claude と回す</div></div><div class="ch-time">60min</div><div class="ch-checkbox" data-chapter="11"></div></a></li>
+      <li><a href="chapters/12-debugging.html" class="chapter-link" data-chapter="12"><div class="ch-num">12</div><div class="ch-info"><div class="ch-title">デバッグ：バグを直させる頼み方</div><div class="ch-desc">再現手順・期待動作・観察結果を渡す</div></div><div class="ch-time">45min</div><div class="ch-checkbox" data-chapter="12"></div></a></li>
+      <li><a href="chapters/13-plan-mode.html" class="chapter-link" data-chapter="13"><div class="ch-num">13</div><div class="ch-info"><div class="ch-title">Planモードの使い所</div><div class="ch-desc">大きな変更の前に必ず計画を立てる</div></div><div class="ch-time">30min</div><div class="ch-checkbox" data-chapter="13"></div></a></li>
+      <li><a href="chapters/14-context-management.html" class="chapter-link" data-chapter="14"><div class="ch-num">14</div><div class="ch-info"><div class="ch-title">コンテキスト管理</div><div class="ch-desc">/compact・/clear・メモリの使い分け</div></div><div class="ch-time">45min</div><div class="ch-checkbox" data-chapter="14"></div></a></li>
+      <li><a href="chapters/15-web-tools.html" class="chapter-link" data-chapter="15"><div class="ch-num">15</div><div class="ch-info"><div class="ch-title">Web検索・取得の活用</div><div class="ch-desc">WebFetch と WebSearch の賢い使い方</div></div><div class="ch-time">30min</div><div class="ch-checkbox" data-chapter="15"></div></a></li>
     </ul>
-    <div class="parent-group">
-      <div class="sub-header"><span class="sub-badge">Ch.07</span> GitHub Workflow</div>
-      <ul class="chapter-list">
-        <li><a href="chapters/07-1-github-workflow.html" class="chapter-link" data-chapter="07-1"><div class="ch-num">07-1</div><div class="ch-info"><div class="ch-title">GitHub: Issues &amp; PR</div><div class="ch-desc">gh CLIによるIssue管理、PR作成・レビューの実践運用</div></div><div class="ch-time">1h</div><div class="ch-checkbox" data-chapter="07-1"></div></a></li>
-        <li><a href="chapters/07-2-github-workflow.html" class="chapter-link" data-chapter="07-2"><div class="ch-num">07-2</div><div class="ch-info"><div class="ch-title">GitHub: Actions &amp; Team</div><div class="ch-desc">CI/CDの自動生成、リポジトリ運用、チーム開発のベストプラクティス</div></div><div class="ch-time">1h</div><div class="ch-checkbox" data-chapter="07-2"></div></a></li>
-      </ul>
-    </div>
-    <div class="parent-group">
-      <div class="sub-header"><span class="sub-badge">Ch.08</span> Debugging &amp; Testing</div>
-      <ul class="chapter-list">
-        <li><a href="chapters/08-1-debugging.html" class="chapter-link" data-chapter="08-1"><div class="ch-num">08-1</div><div class="ch-info"><div class="ch-title">Debugging</div><div class="ch-desc">エラー報告から原因特定、修正までを構造化する</div></div><div class="ch-time">1h</div><div class="ch-checkbox" data-chapter="08-1"></div></a></li>
-        <li><a href="chapters/08-2-testing.html" class="chapter-link" data-chapter="08-2"><div class="ch-num">08-2</div><div class="ch-info"><div class="ch-title">Testing &amp; TDD</div><div class="ch-desc">テスト自動生成、TDDサイクル、カバレッジとCI連携</div></div><div class="ch-time">1h</div><div class="ch-checkbox" data-chapter="08-2"></div></a></li>
-      </ul>
-    </div>
   </div>
 
   <div class="phase-section" id="phase3">
-    <div class="phase-header">
-      <div class="phase-num">3</div><h2>Advanced - 拡張編</h2><div class="hours">4 hours</div>
-    </div>
+    <div class="phase-header"><div class="phase-num">3</div><h2>Advanced - パワーユーザー技</h2><div class="hours">6 hours</div></div>
     <ul class="chapter-list">
-      <li><a href="chapters/09-claude-md-settings.html" class="chapter-link" data-chapter="09"><div class="ch-num">09</div><div class="ch-info"><div class="ch-title">CLAUDE.md &amp; Settings</div><div class="ch-desc">プロジェクト固有の振る舞いを宣言する。設定ファイルの全貌</div></div><div class="ch-time">1.5h</div><div class="ch-checkbox" data-chapter="09"></div></a></li>
-      <li><a href="chapters/10-skills-hooks.html" class="chapter-link" data-chapter="10"><div class="ch-num">10</div><div class="ch-info"><div class="ch-title">Skills &amp; Hooks</div><div class="ch-desc">Skill自作と Hook による自動化。ワークフローを再利用可能に</div></div><div class="ch-time">1.5h</div><div class="ch-checkbox" data-chapter="10"></div></a></li>
-      <li><a href="chapters/11-mcp-agents.html" class="chapter-link" data-chapter="11"><div class="ch-num">11</div><div class="ch-info"><div class="ch-title">MCP &amp; Agents</div><div class="ch-desc">MCPサーバーで外部連携、サブエージェントで作業分担</div></div><div class="ch-time">1h</div><div class="ch-checkbox" data-chapter="11"></div></a></li>
+      <li><a href="chapters/16-subagents-overview.html" class="chapter-link" data-chapter="16"><div class="ch-num">16</div><div class="ch-info"><div class="ch-title">Subagentsで並列思考</div><div class="ch-desc">独立タスクを並列に飛ばす ／ 専門編→Subagents Mastery へ</div></div><div class="ch-time">60min</div><div class="ch-checkbox" data-chapter="16"></div></a></li>
+      <li><a href="chapters/17-mcp-overview.html" class="chapter-link" data-chapter="17"><div class="ch-num">17</div><div class="ch-info"><div class="ch-title">MCPで主戦場ツールと繋ぐ</div><div class="ch-desc">GitHub/Slack/Filesystem 連携 ／ 専門編→MCP Guide</div></div><div class="ch-time">60min</div><div class="ch-checkbox" data-chapter="17"></div></a></li>
+      <li><a href="chapters/18-hooks-overview.html" class="chapter-link" data-chapter="18"><div class="ch-num">18</div><div class="ch-info"><div class="ch-title">Hooksで自動化</div><div class="ch-desc">ESLint/テスト/通知の自動化 ／ 専門編→Hooks Workshop</div></div><div class="ch-time">60min</div><div class="ch-checkbox" data-chapter="18"></div></a></li>
+      <li><a href="chapters/19-schedule-loop.html" class="chapter-link" data-chapter="19"><div class="ch-num">19</div><div class="ch-info"><div class="ch-title">Scheduled Tasks &amp; /loop</div><div class="ch-desc">放置運用・自走 ／ 専門編→Schedule &amp; Loop</div></div><div class="ch-time">45min</div><div class="ch-checkbox" data-chapter="19"></div></a></li>
+      <li><a href="chapters/20-skills-overview.html" class="chapter-link" data-chapter="20"><div class="ch-num">20</div><div class="ch-info"><div class="ch-title">Skillsで自分のワークフローを作る</div><div class="ch-desc">繰り返し業務を Skill 化 ／ 専門編→Skill Craft</div></div><div class="ch-time">45min</div><div class="ch-checkbox" data-chapter="20"></div></a></li>
+      <li><a href="chapters/21-worktree.html" class="chapter-link" data-chapter="21"><div class="ch-num">21</div><div class="ch-info"><div class="ch-title">worktreeで安全に実験</div><div class="ch-desc">危ない変更を本流から隔離して試す</div></div><div class="ch-time">30min</div><div class="ch-checkbox" data-chapter="21"></div></a></li>
+      <li><a href="chapters/22-pitfalls.html" class="chapter-link" data-chapter="22"><div class="ch-num">22</div><div class="ch-info"><div class="ch-title">失敗パターン10：ここで詰まる</div><div class="ch-desc">パワーユーザーが通る道・通らない道</div></div><div class="ch-time">60min</div><div class="ch-checkbox" data-chapter="22"></div></a></li>
     </ul>
   </div>
 
   <div class="phase-section" id="phase4">
-    <div class="phase-header">
-      <div class="phase-num">4</div><h2>Projects - 実践編</h2><div class="hours">10 hours</div>
-    </div>
-    <div class="parent-group">
-      <div class="sub-header"><span class="sub-badge">Ch.12</span> 静的Webサイトを作る</div>
-      <ul class="chapter-list">
-        <li><a href="chapters/12-1-project-website.html" class="chapter-link" data-chapter="12-1"><div class="ch-num">12-1</div><div class="ch-info"><div class="ch-title">Website: 設計と土台</div><div class="ch-desc">要件整理・ページ構成・HTML/CSSの土台をClaude Codeと組む</div></div><div class="ch-time">1.5h</div><div class="ch-checkbox" data-chapter="12-1"></div></a></li>
-        <li><a href="chapters/12-2-project-website.html" class="chapter-link" data-chapter="12-2"><div class="ch-num">12-2</div><div class="ch-info"><div class="ch-title">Website: デプロイと改善</div><div class="ch-desc">GitHub Pages 公開、Lighthouse改善、SEO/Analytics導入</div></div><div class="ch-time">1.5h</div><div class="ch-checkbox" data-chapter="12-2"></div></a></li>
-      </ul>
-    </div>
-    <div class="parent-group">
-      <div class="sub-header"><span class="sub-badge">Ch.13</span> Webアプリを作る</div>
-      <ul class="chapter-list">
-        <li><a href="chapters/13-1-project-app.html" class="chapter-link" data-chapter="13-1"><div class="ch-num">13-1</div><div class="ch-info"><div class="ch-title">App: バックエンド</div><div class="ch-desc">API設計・DB・認証まわりをClaudeと一気に組み立てる</div></div><div class="ch-time">1.5h</div><div class="ch-checkbox" data-chapter="13-1"></div></a></li>
-        <li><a href="chapters/13-2-project-app.html" class="chapter-link" data-chapter="13-2"><div class="ch-num">13-2</div><div class="ch-info"><div class="ch-title">App: フロントエンド</div><div class="ch-desc">UIコンポーネント、状態管理、APIつなぎ込みからデプロイまで</div></div><div class="ch-time">1.5h</div><div class="ch-checkbox" data-chapter="13-2"></div></a></li>
-      </ul>
-    </div>
-    <div class="parent-group">
-      <div class="sub-header"><span class="sub-badge">Ch.14</span> iOSアプリを作る</div>
-      <ul class="chapter-list">
-        <li><a href="chapters/14-1-project-ios.html" class="chapter-link" data-chapter="14-1"><div class="ch-num">14-1</div><div class="ch-info"><div class="ch-title">iOS: データ層</div><div class="ch-desc">SwiftDataモデル設計、リポジトリ・ViewModelのテストまで</div></div><div class="ch-time">1.5h</div><div class="ch-checkbox" data-chapter="14-1"></div></a></li>
-        <li><a href="chapters/14-2-project-ios.html" class="chapter-link" data-chapter="14-2"><div class="ch-num">14-2</div><div class="ch-info"><div class="ch-title">iOS: UI層と仕上げ</div><div class="ch-desc">SwiftUIでの画面実装、アニメ、ビルド・実機確認</div></div><div class="ch-time">1.5h</div><div class="ch-checkbox" data-chapter="14-2"></div></a></li>
-      </ul>
-    </div>
+    <div class="phase-header"><div class="phase-num">4</div><h2>Projects - 実戦</h2><div class="hours">6 hours</div></div>
+    <ul class="chapter-list">
+      <li><a href="chapters/23-project-automation.html" class="chapter-link" data-chapter="23"><div class="ch-num">23</div><div class="ch-info"><div class="ch-title">Project A：業務自動化ツールを作る</div><div class="ch-desc">CLIツールをゼロから90分で</div></div><div class="ch-time">90min</div><div class="ch-checkbox" data-chapter="23"></div></a></li>
+      <li><a href="chapters/24-project-refactor.html" class="chapter-link" data-chapter="24"><div class="ch-num">24</div><div class="ch-info"><div class="ch-title">Project B：既存コードの大規模リファクタ</div><div class="ch-desc">テストで守りながら段階的に直す</div></div><div class="ch-time">90min</div><div class="ch-checkbox" data-chapter="24"></div></a></li>
+      <li><a href="chapters/25-project-webapp.html" class="chapter-link" data-chapter="25"><div class="ch-num">25</div><div class="ch-info"><div class="ch-title">Project C：ゼロからWebアプリ→デプロイ</div><div class="ch-desc">設計→実装→GitHub Pages 公開まで</div></div><div class="ch-time">90min</div><div class="ch-checkbox" data-chapter="25"></div></a></li>
+      <li><a href="chapters/26-final-exercise.html" class="chapter-link" data-chapter="26"><div class="ch-num">26</div><div class="ch-info"><div class="ch-title">最終演習：自社業務を1つClaude Code化</div><div class="ch-desc">学んだ全てを統合して実戦に持ち込む</div></div><div class="ch-time">90min</div><div class="ch-checkbox" data-chapter="26"></div></a></li>
+    </ul>
   </div>
 
   <div class="section-deco"><span class="deco-line"></span><span class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span><span class="deco-line"></span></div>
 
   <div class="info-box" style="margin-top:24px;">
     <div class="label">Prerequisites</div>
-    <p>ターミナル(コマンドライン)の基本操作、ファイル/フォルダの概念、テキストエディタの操作経験があるとスムーズです。プログラミング未経験でも進められますが、何らかの言語(Python/JS/Swift など)に触れた経験があると Phase 4 の理解が早まります。Ch00「はじめての方へ」で前提知識をフォローしているので、不安な方はそこから読んでください。</p>
+    <p>ターミナル・シェル・Git の基本操作ができること (cd, ls, grep, git commit 程度)。Claude Code のインストールは Ch01 で確認します。本カリキュラムの記述は<strong>2026年1月時点の情報</strong>に基づきます。最新仕様は <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式ドキュメント</a> で確認してください。</p>
   </div>
 </main>
 
 <script type="module" src="progress.js"></script>
 <script type="module">
   import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
-  mermaid.initialize({
-    startOnLoad: true,
-    theme: 'base',
-    themeVariables: {
-      primaryColor: '#f4f4f5',
-      primaryTextColor: '#1a1a1a',
-      primaryBorderColor: '#18181b',
-      lineColor: '#18181b',
-      secondaryColor: '#f5f5f5',
-      tertiaryColor: '#fafafa',
-      fontFamily: 'inherit',
-      fontSize: '14px'
-    },
-    flowchart: { curve: 'basis', htmlLabels: true },
-    sequence: { useMaxWidth: true }
-  });
+  mermaid.initialize({ startOnLoad: true, theme: 'base', themeVariables: { primaryColor: 'rgba(217,119,87,0.15)', primaryTextColor: '#1a1a1a', primaryBorderColor: '#D97757', lineColor: '#D97757', secondaryColor: '#f5f5f5', tertiaryColor: '#fafafa', fontFamily: 'inherit', fontSize: '14px' }, flowchart: { curve: 'basis', htmlLabels: true }, sequence: { useMaxWidth: true } });
 </script>
 <script>
-(function () {
-  var navLinks = document.querySelectorAll('[data-nav]');
-  var sections = [];
-  navLinks.forEach(function (link) {
-    var id = link.getAttribute('href').replace('#', '');
-    var el = document.getElementById(id);
-    if (el) sections.push({ el: el, link: link });
-  });
-  function update() {
-    var scrollY = window.scrollY + 120;
-    var current = sections[0];
-    for (var i = 0; i < sections.length; i++) {
-      if (sections[i].el.offsetTop <= scrollY) current = sections[i];
-    }
-    navLinks.forEach(function (l) { l.classList.remove('active'); });
-    if (current) current.link.classList.add('active');
-  }
-  window.addEventListener('scroll', update, { passive: true });
-  update();
-})();
+(function(){var nav=document.querySelectorAll('[data-nav]'),ss=[]; nav.forEach(function(l){var id=l.getAttribute('href').replace('#',''),e=document.getElementById(id); if(e)ss.push({el:e,link:l});});
+function u(){var sY=window.scrollY+120,c=ss[0]; for(var i=0;i<ss.length;i++)if(ss[i].el.offsetTop<=sY)c=ss[i]; nav.forEach(function(l){l.classList.remove('active');}); if(c)c.link.classList.add('active');}
+window.addEventListener('scroll',u,{passive:true}); u();})();
 </script>
 </body>
 </html>

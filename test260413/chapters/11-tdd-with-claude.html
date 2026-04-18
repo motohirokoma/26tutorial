@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>テスト駆動での依頼 - MK's Claude Code Tutorial</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code Tutorial
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav class="active"><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="../index.html#phase3" data-nav><span class="phase-name">Advanced</span><span class="phase-pct" id="pct-advanced">0%</span></a></li>
+      <li><a href="../index.html#phase4" data-nav><span class="phase-name">Projects</span><span class="phase-pct" id="pct-projects">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.11</span>
+    テスト駆動での依頼
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 26 sections</text>
+    </svg>
+    <div class="progress-info">0h / 24h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-welcome.html"><span class="status-dot" data-chapter="01"></span> ようこそ&セットアップ</a></li>
+    <li><a href="02-communication-basics.html"><span class="status-dot" data-chapter="02"></span> 対話の原則</a></li>
+    <li><a href="03-file-tools.html"><span class="status-dot" data-chapter="03"></span> ファイル操作ツール</a></li>
+    <li><a href="04-bash-safety.html"><span class="status-dot" data-chapter="04"></span> Bashツールと安全</a></li>
+    <li><a href="05-todo-management.html"><span class="status-dot" data-chapter="05"></span> TodoWriteで作業管理</a></li>
+    <li><a href="06-claude-md.html"><span class="status-dot" data-chapter="06"></span> CLAUDE.md</a></li>
+    <li><a href="07-git-workflow.html"><span class="status-dot" data-chapter="07"></span> Git × Claude Code</a></li>
+  </ul>
+  <div class="section-label">Core</div>
+  <ul>
+    <li><a href="08-prompt-patterns.html"><span class="status-dot" data-chapter="08"></span> プロンプト設計の型</a></li>
+    <li><a href="09-code-review.html"><span class="status-dot" data-chapter="09"></span> コードレビュー依頼</a></li>
+    <li><a href="10-refactor-workflow.html"><span class="status-dot" data-chapter="10"></span> 改修ワークフロー</a></li>
+    <li><a href="11-tdd-with-claude.html" class="active"><span class="status-dot" data-chapter="11"></span> テスト駆動</a></li>
+    <li><a href="12-debugging.html"><span class="status-dot" data-chapter="12"></span> デバッグ</a></li>
+    <li><a href="13-plan-mode.html"><span class="status-dot" data-chapter="13"></span> Planモード</a></li>
+    <li><a href="14-context-management.html"><span class="status-dot" data-chapter="14"></span> コンテキスト管理</a></li>
+    <li><a href="15-web-tools.html"><span class="status-dot" data-chapter="15"></span> Web検索・取得</a></li>
+  </ul>
+  <div class="section-label">Advanced</div>
+  <ul>
+    <li><a href="16-subagents-overview.html"><span class="status-dot" data-chapter="16"></span> Subagents</a></li>
+    <li><a href="17-mcp-overview.html"><span class="status-dot" data-chapter="17"></span> MCP</a></li>
+    <li><a href="18-hooks-overview.html"><span class="status-dot" data-chapter="18"></span> Hooks</a></li>
+    <li><a href="19-schedule-loop.html"><span class="status-dot" data-chapter="19"></span> Schedule &amp; Loop</a></li>
+    <li><a href="20-skills-overview.html"><span class="status-dot" data-chapter="20"></span> Skills</a></li>
+    <li><a href="21-worktree.html"><span class="status-dot" data-chapter="21"></span> worktree</a></li>
+    <li><a href="22-pitfalls.html"><span class="status-dot" data-chapter="22"></span> 失敗パターン10</a></li>
+  </ul>
+  <div class="section-label">Projects</div>
+  <ul>
+    <li><a href="23-project-automation.html"><span class="status-dot" data-chapter="23"></span> Project A：業務自動化</a></li>
+    <li><a href="24-project-refactor.html"><span class="status-dot" data-chapter="24"></span> Project B：リファクタ</a></li>
+    <li><a href="25-project-webapp.html"><span class="status-dot" data-chapter="25"></span> Project C：Webアプリ</a></li>
+    <li><a href="26-final-exercise.html"><span class="status-dot" data-chapter="26"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 2: Core &gt; Chapter 11</div>
+  <h1>テスト駆動での依頼</h1>
+  <p class="subtitle">Red → Green → Refactor を Claude と回す。assertion は絶対に緩めさせない。</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 60min</span>
+    <span class="badge">Phase: Core</span>
+    <span class="badge">難易度: 中級</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">2026年1月時点の情報</span>
+    <p>本章は2026年1月時点の Claude Code (Sonnet/Opus系) の挙動を前提としています。テスト生成の精度・プロンプト感度は改善が続いているため、assertion を緩められる症状は弱まっていく可能性がありますが、<strong>人間側が期待値を握る</strong>原則は変わりません。</p>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>なぜ Claude には TDD が効くのか</h2>
+
+  <p>Claude Code に実装を頼むと、しばしば「<em>それっぽいコード</em>」が返ってきます。動きそうに見えて、境界値や例外ケースで崩れる。これを防ぐ最強の手段が <span class="term" data-tip="Test-Driven Development。先にテストを書き、それを通すように実装する開発手法。Red/Green/Refactor の3ステップで回す">TDD</span> です。Claude に「<strong>このテストを通して</strong>」と渡せば、<em>成功条件</em>が数式のように定義され、曖昧さが消えます。</p>
+
+  <p>逆に言えば、テストを渡さずに「○○機能を作って」と頼むのは、<strong>採点基準なしにテスト答案を書かせる</strong>ようなもの。Claude は親切なので「たぶんこういう意味だろう」と想像で埋めますが、それは高確率で外れます。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Red → Green → Refactor の3色サイクル</div>
+    <svg viewBox="0 0 520 220" width="100%" style="max-width:520px; display:block; margin:0 auto;">
+      <circle cx="90"  cy="110" r="62" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+      <text x="90" y="100" text-anchor="middle" font-size="18" font-weight="700" fill="#b91c1c">Red</text>
+      <text x="90" y="122" text-anchor="middle" font-size="11" fill="#7f1d1d">失敗するテストを書く</text>
+      <text x="90" y="138" text-anchor="middle" font-size="11" fill="#7f1d1d">(期待値を固定)</text>
+
+      <path d="M 152 95 Q 200 70 248 95" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arr11)"/>
+
+      <circle cx="260" cy="110" r="62" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+      <text x="260" y="100" text-anchor="middle" font-size="18" font-weight="700" fill="#15803d">Green</text>
+      <text x="260" y="122" text-anchor="middle" font-size="11" fill="#14532d">最小実装で通す</text>
+      <text x="260" y="138" text-anchor="middle" font-size="11" fill="#14532d">(Claude に任せる)</text>
+
+      <path d="M 322 95 Q 370 70 418 95" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arr11)"/>
+
+      <circle cx="430" cy="110" r="62" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="2"/>
+      <text x="430" y="100" text-anchor="middle" font-size="18" font-weight="700" fill="#D97757">Refactor</text>
+      <text x="430" y="122" text-anchor="middle" font-size="11" fill="#9a3412">構造を整える</text>
+      <text x="430" y="138" text-anchor="middle" font-size="11" fill="#9a3412">(テストは青のまま)</text>
+
+      <path d="M 420 172 Q 260 210 100 172" fill="none" stroke="#64748b" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#arr11)"/>
+      <text x="260" y="205" text-anchor="middle" font-size="11" fill="#64748b" font-style="italic">次の要件へ</text>
+
+      <defs>
+        <marker id="arr11" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+        </marker>
+      </defs>
+    </svg>
+    <div class="diagram-caption">赤→緑→オレンジ。Claude は主に Green フェーズで働き、Red と Refactor の判断は人間が握る。</div>
+  </div>
+
+  <p>3色それぞれの「<strong>誰がやるか</strong>」を分けて覚えてください。Red は<em>人間</em>、Green は<em>Claude</em>、Refactor は<em>Claude + 人間レビュー</em>。<span class="term" data-tip="分業のこと。Claudeに何でもやらせると、期待値そのものを書き換えられる危険がある">役割分担</span>を明確にするだけで事故が激減します。</p>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>書かせるテスト vs 自分で書くテスト</h2>
+
+  <p>「テストは全部 Claude に書かせれば早いじゃん」と思った方、そこが最初の落とし穴です。<strong>採点者を受験者に選ばせたら、甘くなる</strong>。核心の assertion は自分で書き、周辺の定型文を Claude に任せるのが鉄則。</p>
+
+  <table>
+    <thead>
+      <tr><th>種類</th><th>誰が書く</th><th>理由</th><th>例</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>核心テスト</strong>(仕様)</td><td>人間</td><td>期待値は仕様そのもの。外に出すと甘くなる</td><td>「金額<strong>以上</strong>なら配送無料」</td></tr>
+      <tr><td>境界値テスト</td><td>人間(指定) + Claude(展開)</td><td>境界の定義は人間、N件展開は機械的</td><td>0/1/最大-1/最大/最大+1</td></tr>
+      <tr><td>例外・エラー系</td><td>Claude(生成) + 人間(レビュー)</td><td>網羅は機械が強い、取捨選択は人間</td><td>null/空配列/型違い</td></tr>
+      <tr><td>定型セットアップ</td><td>Claude</td><td>beforeEach / fixture は退屈な繰り返し</td><td>mock DB・テストデータ</td></tr>
+      <tr><td>snapshot テスト</td><td>Claude</td><td>UIの現状記録。レビューだけすればOK</td><td>React component の DOM</td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-box" style="border-left-color: #D97757;">
+    <span class="label">ここがプロの境目</span>
+    <p><strong>「テストを通すためにテストを変えない」とあらかじめ明示する</strong>。これを忘れると Claude は実装で詰まった瞬間、assertion を緩めたりテストをスキップしたりして「Green になった」と報告します。テストは仕様書であり、仕様を勝手に下げられたら無意味。<br>
+    <em>試し方：</em> 依頼プロンプトの最後に <code>テストの期待値は変更不可。通らないなら実装を直して、それでも無理なら止まって相談して。</code> と必ず書く。</p>
+  </div>
+
+  <h3>2つの失敗パターンを可視化</h3>
+
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">やりがち (NG)</span>
+      <h4>全部お任せ</h4>
+      <ul>
+        <li>「テストも実装も書いて」と丸投げ</li>
+        <li>Claude が自分で書いた assertion を自分で通す</li>
+        <li>採点者=受験者で合格率100%</li>
+        <li>本番で境界値が落ちる</li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">プロ (OK)</span>
+      <h4>核心を握って任せる</h4>
+      <ul>
+        <li>仕様の assertion は自分で3-5本書く</li>
+        <li>「これを通して。期待値は変更不可」と渡す</li>
+        <li>Claude が実装する</li>
+        <li>境界値展開と mock を追加で依頼</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>実例：送料計算関数を TDD で作る</h2>
+
+  <p>例題:「注文金額が 5000円以上なら送料無料、未満なら 500円」という仕様。これを Red → Green → Refactor で回します。</p>
+
+  <h3>今すぐ試す: Red フェーズ — 人間がテストを書く</h3>
+
+  <p>まず自分でテストファイル <code>shipping.test.js</code> を書きます。これは<strong>Claudeに書かせない</strong>。仕様の境界(5000円ちょうど)を<span class="term" data-tip="入力のエッジ。ちょうどの値、1つ手前、1つ後。バグが集中する場所">境界値</span>として明示します。</p>
+
+  <pre><code>// shipping.test.js — 人間が書く
+import { calcShipping } from './shipping.js';
+
+describe('calcShipping', () =&gt; {
+  test('5000円ちょうどは送料無料', () =&gt; {
+    expect(calcShipping(5000)).toBe(0);
+  });
+  test('4999円は送料500円', () =&gt; {
+    expect(calcShipping(4999)).toBe(500);
+  });
+  test('5001円は送料無料', () =&gt; {
+    expect(calcShipping(5001)).toBe(0);
+  });
+  test('0円(空カート)は500円', () =&gt; {
+    expect(calcShipping(0)).toBe(500);
+  });
+  test('負の金額は例外', () =&gt; {
+    expect(() =&gt; calcShipping(-1)).toThrow();
+  });
+});</code></pre>
+
+  <p>ここがミソ。<strong>5000以上</strong>なのか<strong>5000超</strong>なのか、仕様が「境界でどっち側か」を assertion で凍結しています。この5本があれば、実装の曖昧さは消えます。</p>
+
+  <h3>今すぐ試す: Green フェーズ — Claude に実装を頼む</h3>
+
+  <p>テストを添付(もしくは Read させて)、以下のプロンプトを投げます。</p>
+
+  <pre><code>@shipping.test.js のテストを全て通す calcShipping を
+shipping.js に実装してください。
+
+制約:
+- テストの期待値は変更不可。テストファイルは触らないこと
+- 通らないなら実装を直す。それでも無理なら止まって相談
+- JSDoc も付けて</code></pre>
+
+  <p>Claude は最小実装を返してきます:</p>
+
+  <pre><code>// shipping.js — Claude 生成
+/**
+ * 注文金額から送料を計算
+ * @param {number} amount 注文金額(円)
+ * @returns {number} 送料(円)。5000円以上で0円、未満で500円
+ * @throws {RangeError} amount が負の場合
+ */
+export function calcShipping(amount) {
+  if (amount &lt; 0) throw new RangeError('amount must be non-negative');
+  return amount &gt;= 5000 ? 0 : 500;
+}</code></pre>
+
+  <div class="info-box">
+    <span class="label">公式ドキュメント必読</span>
+    <p>テストファイルを Claude に添付する方法・context で渡す方法は公式ドキュメントで必ず押さえてください。ファイル参照の作法はプロジェクト全体のコスト効率に直結します。<a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式 →</a></p>
+  </div>
+
+  <h3>今すぐ試す: Refactor フェーズ — 構造を整える</h3>
+
+  <p>テストが青のまま、以下を追加で頼みます:</p>
+
+  <pre><code>Refactor フェーズに入ります。
+以下の観点で shipping.js を整えて。ただし:
+- shipping.test.js は絶対に変更しない
+- 全テストが通ったまま終えること
+- 変更後に npm test を走らせて結果を貼って
+
+観点:
+1. 5000 と 500 をマジックナンバーにせず定数化
+2. 境界条件(FREE_THRESHOLD)の意味をコメントで補足</code></pre>
+
+  <div class="steps">
+    <div class="step done"><div class="step-num">1</div><div class="step-label">Red</div><div class="step-desc">人間がテスト5本</div></div>
+    <div class="step done"><div class="step-num">2</div><div class="step-label">Green</div><div class="step-desc">Claude が実装</div></div>
+    <div class="step done"><div class="step-num">3</div><div class="step-label">Refactor</div><div class="step-desc">Claude が整形</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-label">次の仕様へ</div><div class="step-desc">新しい Red から再開</div></div>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>テストのスコープと境界値の指定</h2>
+
+  <p>Claude に境界値を「察して」もらえません。<span class="term" data-tip="正常系と異常系、エッジケースの3種。仕様境界の前後1つずつを必ずカバーする">境界値分析</span>は依頼プロンプトに明示的に書くと効きます。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">テストスコープの4象限(入力 × 系統)</div>
+    <svg viewBox="0 0 400 300" width="100%" style="max-width:420px; display:block; margin:0 auto;">
+      <rect x="50"  y="30"  width="160" height="110" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+      <rect x="210" y="30"  width="160" height="110" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="1.5"/>
+      <rect x="50"  y="140" width="160" height="110" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+      <rect x="210" y="140" width="160" height="110" fill="#fee2e2" stroke="#dc2626" stroke-width="1.5"/>
+
+      <text x="130" y="55"  text-anchor="middle" font-size="12" font-weight="700" fill="#15803d">正常系</text>
+      <text x="290" y="55"  text-anchor="middle" font-size="12" font-weight="700" fill="#D97757">境界値(最重要)</text>
+      <text x="130" y="165" text-anchor="middle" font-size="12" font-weight="700" fill="#a16207">例外系</text>
+      <text x="290" y="165" text-anchor="middle" font-size="12" font-weight="700" fill="#b91c1c">想定外入力</text>
+
+      <text x="130" y="80"  text-anchor="middle" font-size="10">3000円 → 500</text>
+      <text x="130" y="95"  text-anchor="middle" font-size="10">8000円 → 0</text>
+      <text x="290" y="80"  text-anchor="middle" font-size="10">4999 / 5000 / 5001</text>
+      <text x="290" y="95"  text-anchor="middle" font-size="10">0 / Number.MAX</text>
+      <text x="130" y="190" text-anchor="middle" font-size="10">null → throw</text>
+      <text x="130" y="205" text-anchor="middle" font-size="10">"500" → throw</text>
+      <text x="290" y="190" text-anchor="middle" font-size="10">-1 / NaN</text>
+      <text x="290" y="205" text-anchor="middle" font-size="10">Infinity</text>
+
+      <text x="210" y="285" text-anchor="middle" font-size="11" fill="#64748b">← 頻度高　 入力の希少度 　頻度低 →</text>
+    </svg>
+    <div class="diagram-caption">オレンジ=境界値が最重要。「5000円」のような仕様値は必ず ±1 でテスト。</div>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: 境界値をプロンプトで指定するテンプレ</summary>
+    <div class="more-body">
+      <p>以下をコピーして使ってください。「○○」を仕様値に置き換えるだけ。</p>
+      <pre><code>テストを追加してください。境界値観点で下記を必ずカバー:
+
+1. 仕様境界値 ○○ のちょうど、-1、+1 の3パターン
+2. 型境界(null, undefined, 空配列, 空文字, 型違い)
+3. 数値境界(0, 負数, Number.MAX_SAFE_INTEGER, NaN, Infinity)
+4. コレクション境界(要素0, 1, 最大想定数, 最大+1)
+
+ルール:
+- 既存のテストは変更しない(追加のみ)
+- describe で境界値カテゴリごとにまとめる
+- 各 test に「なぜこれを確認するか」を1行コメント</code></pre>
+    </div>
+  </details>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>「テスト改変」を防ぐ仕組み化</h2>
+
+  <p>口頭で「テスト変えないで」と言うだけでは弱い。<strong>仕組み</strong>で防ぎます。以下4つをレイヤーとして積むと、assertion が緩められるリスクがほぼ消えます。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">テスト保護の4層防御</div>
+    <pre class="mermaid">
+graph TD
+  A["依頼プロンプト<br/>期待値は変更不可と明記"] --> B["CLAUDE.md<br/>テスト改変禁止ルール"]
+  B --> C["git diff 確認<br/>テストファイル変更を検出"]
+  C --> D["pre-commit hook<br/>機械的ブロック"]
+  D --> E["安全なTDDループ"]
+    </pre>
+    <div class="diagram-caption">上から下に進むほど強制力が上がる。最上位の「プロンプト」だけでは忘れる。</div>
+  </div>
+
+  <h3>レイヤー1: プロンプト明記(毎回)</h3>
+
+  <pre><code>【厳守】
+- テスト(*.test.js, __tests__/)は touch しないこと
+- assertion 変更, skip, xdescribe, todo 化 すべて禁止
+- 通らないなら実装を直すか、止まって報告</code></pre>
+
+  <h3>レイヤー2: CLAUDE.md に恒久ルール</h3>
+
+  <pre><code># CLAUDE.md (抜粋)
+
+## テスト方針
+- テストファイルの期待値(expect/assert)は、**明示的に依頼された時のみ**変更可能
+- 実装が通らない時、テストを緩めて通すのは禁止。必ず相談すること
+- skip / xdescribe / .todo は新規追加禁止</code></pre>
+
+  <p>これで毎回書かなくても、プロジェクト単位で効くようになります(CLAUDE.md は Ch06 参照)。</p>
+
+  <h3>レイヤー3: git diff 後レビュー</h3>
+
+  <p>実装が通ったと Claude が報告してきたら、<strong>必ず</strong> <code>git diff -- '*.test.*'</code> でテストの差分を確認。空なら OK、何か出たら警戒。</p>
+
+  <h3>レイヤー4: pre-commit hook で機械的ブロック</h3>
+
+  <details class="more-box">
+    <summary>もっと詳しく: テストファイル改変を検出する pre-commit フック例</summary>
+    <div class="more-body">
+      <p><code>.husky/pre-commit</code> に以下を追加:</p>
+      <pre><code>#!/bin/sh
+CHANGED_TESTS=$(git diff --cached --name-only | grep -E '\.(test|spec)\.(js|ts|tsx)$')
+if [ -n "$CHANGED_TESTS" ]; then
+  echo "⚠️  テストファイルの変更が含まれています:"
+  echo "$CHANGED_TESTS"
+  echo "意図的な変更なら 'git commit --no-verify' で通してください"
+  exit 1
+fi</code></pre>
+      <p>これで Claude が勝手にテストを触って commit しようとしても、フックで止まります。commit を分けて「人間が意図的にテスト変更 → --no-verify」「実装のみ commit は素通り」と運用できます。</p>
+    </div>
+  </details>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>効果の可視化：TDDで欠陥はどれだけ減るか</h2>
+
+  <p>体感ではなく数字で見ておきましょう。筆者が社内プロジェクトで TDD を導入する前後で、<span class="term" data-tip="ReleaseしてからUserが検出するまでのバグ件数。事後修正コストが最大">本番検出バグ</span>がどう動いたかのサンプルです(サンプルサイズ小なので傾向として)。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">TDD導入前後の本番検出バグ数(月次)</div>
+    <canvas id="ch11-bar-1" height="180"></canvas>
+  </div>
+  <script>
+  window.addEventListener("load", function() {
+    var el = document.getElementById('ch11-bar-1');
+    if (!el || !window.Chart) return;
+    new Chart(el, {
+      type: 'bar',
+      data: {
+        labels: ['1月(前)','2月(前)','3月(前)','4月(導入)','5月(後)','6月(後)'],
+        datasets: [{
+          label: '本番検出バグ数',
+          data: [14, 11, 15, 8, 4, 3],
+          backgroundColor: ['#cbd5e1','#cbd5e1','#cbd5e1','#fbbf24','#D97757','#D97757'],
+          borderRadius: 6
+        }]
+      },
+      options: {
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true, title: { display: true, text: 'バグ数' } } }
+      }
+    });
+  });
+  </script>
+
+  <p>4月の導入月から緩やかに減り、3ヶ月で1/4以下に。TDDは<strong>予防医療</strong>です。治療より安い。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">TDDで守られる5つの側面(レーダー)</div>
+    <canvas id="ch11-radar-2" height="220"></canvas>
+  </div>
+  <script>
+  window.addEventListener("load", function() {
+    var el = document.getElementById('ch11-radar-2');
+    if (!el || !window.Chart) return;
+    new Chart(el, {
+      type: 'radar',
+      data: {
+        labels: ['仕様明確化','回帰防止','境界値カバー','リファクタ安全性','レビュー効率'],
+        datasets: [
+          { label: 'TDDなし', data: [40, 30, 25, 35, 45], backgroundColor: 'rgba(148,163,184,0.2)', borderColor: '#94a3b8', pointBackgroundColor: '#94a3b8' },
+          { label: 'TDDあり', data: [90, 85, 85, 90, 75], backgroundColor: 'rgba(217,119,87,0.2)', borderColor: '#D97757', pointBackgroundColor: '#D97757' }
+        ]
+      },
+      options: {
+        plugins: { legend: { position: 'bottom' } },
+        scales: { r: { suggestedMin: 0, suggestedMax: 100 } }
+      }
+    });
+  });
+  </script>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>プロンプト・テンプレ集(保存推奨)</h2>
+
+  <p>ここまでの内容を<span class="term" data-tip="コピペで使える型。毎回ゼロから書かず、型に当てはめるのが上位20%の共通項">テンプレ化</span>しておきます。スニペット管理ツールに登録してください。</p>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="flask-conical" width="20" height="20"></i>
+      <div><strong>T1: Red テスト依頼</strong> — 自分が書ききれない定型部分だけ任せる</div>
+    </li>
+    <li>
+      <i data-lucide="check-circle" width="20" height="20"></i>
+      <div><strong>T2: Green 実装依頼</strong> — 期待値変更不可を必ず添える</div>
+    </li>
+    <li>
+      <i data-lucide="sparkles" width="20" height="20"></i>
+      <div><strong>T3: Refactor 依頼</strong> — テスト青のまま・観点リスト付き</div>
+    </li>
+    <li>
+      <i data-lucide="shield-alert" width="20" height="20"></i>
+      <div><strong>T4: 境界値展開</strong> — 仕様値を±1で自動展開</div>
+    </li>
+  </ul>
+
+  <details class="more-box">
+    <summary>もっと詳しく: T1-T4 のフルテンプレ</summary>
+    <div class="more-body">
+      <p><strong>T1: Red テスト依頼(定型部分のみ)</strong></p>
+      <pre><code>下記の assertion を含むテストファイルを作って。
+describe/beforeEach/import 文は定型で埋めてくれてOK。
+ただし assertion 本体は私が書いたまま変更しないこと。
+
+[assertion のペースト]</code></pre>
+      <p><strong>T2: Green 実装依頼</strong></p>
+      <pre><code>@path/to/test.js のテストを全て通す実装を @path/to/impl.js に。
+
+制約:
+- テストファイルは touch しない
+- 期待値変更/skip/todo 化 禁止
+- 通らないなら実装を直す、それでも無理なら止まって相談
+- 完了後に npm test の結果を貼ること</code></pre>
+      <p><strong>T3: Refactor 依頼</strong></p>
+      <pre><code>Refactor フェーズ。テストは全て青のまま、以下を整える:
+1. マジックナンバーを定数化
+2. ネスト深さ3以内
+3. 関数1つは20行以内
+テスト変更禁止。完了後 npm test を流して結果添付。</code></pre>
+      <p><strong>T4: 境界値展開</strong></p>
+      <pre><code>仕様値 ○○ について境界値テストを追加して:
+- ちょうど / -1 / +1 / 0 / 負数 / null / 型違い
+既存テストは触らない。describe('境界値: ○○') でまとめる。</code></pre>
+    </div>
+  </details>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>TDDが向く場面・向かない場面</h2>
+
+  <table>
+    <thead>
+      <tr><th>シチュエーション</th><th>TDD適性</th><th>代わりに</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>純粋関数(計算・変換・バリデーション)</td><td>◎ 最強</td><td>—</td></tr>
+      <tr><td>バグ修正(再現テスト→修正)</td><td>◎ 回帰防止が同時に手に入る</td><td>—</td></tr>
+      <tr><td>ビジネスロジック・API契約</td><td>○ スナップショット併用</td><td>—</td></tr>
+      <tr><td>UIの見た目微調整</td><td>△ snapshotのみで可</td><td>目視 + snapshot</td></tr>
+      <tr><td>プロトタイプ・使い捨てスクリプト</td><td>× オーバースペック</td><td>手動確認</td></tr>
+      <tr><td>探索的データ分析(Jupyter系)</td><td>× 仕様が走りながら決まる</td><td>対話的検証</td></tr>
+    </tbody>
+  </table>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-num">5<small>分</small></div>
+      <div class="stat-label">核心テストを書く時間</div>
+      <div class="stat-trend up">↑ 一番の投資</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">3<small>×</small></div>
+      <div class="stat-label">assertion を緩められるリスクが消える</div>
+      <div class="stat-trend up">↑ 仕組み化の効果</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">1/4</div>
+      <div class="stat-label">本番バグ数(3ヶ月運用)</div>
+      <div class="stat-trend up">↑ 予防医療</div>
+    </div>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>よくある落とし穴と回避策</h2>
+
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">落とし穴1</span>
+      <h4>テストを書きすぎる</h4>
+      <ul>
+        <li>全関数に3本ずつ → 保守コスト爆発</li>
+        <li>実装の中身までテストして結合テストみたいになる</li>
+      </ul>
+      <p><strong>回避:</strong> 境界値と核心仕様に絞る。カバレッジ100%は目的ではない。</p>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">回避1</span>
+      <h4>仕様1つに assertion 3-5本</h4>
+      <ul>
+        <li>境界値の両側 + 正常系1本</li>
+        <li>足りないと感じたら追加すればいい</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">落とし穴2</span>
+      <h4>mock しすぎ</h4>
+      <ul>
+        <li>Claude に頼むと何でも mock しがち</li>
+        <li>実装が変わっても mock が追従せず偽Green</li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">回避2</span>
+      <h4>mock は境界だけ</h4>
+      <ul>
+        <li>DB/外部API/時刻 のみ mock</li>
+        <li>自分で書いた純粋関数は mock しない</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>calcDiscount の Red を自分で書く</h4>
+    <p>仕様:「会員ランクが gold なら20%OFF、silver なら10%OFF、それ以外は0%」。以下を行ってください。</p>
+    <ol>
+      <li><code>calcDiscount.test.js</code> を自分で書く(最低5本)</li>
+      <li>「期待値変更不可」を明記したプロンプトで Claude に実装を依頼</li>
+      <li><code>git diff -- '*.test.*'</code> でテストが触られていないことを確認</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><strong>テスト(人間が書く)</strong>:</p>
+      <pre><code>import { calcDiscount } from './calcDiscount.js';
+
+describe('calcDiscount', () =&gt; {
+  test('gold は 20% OFF', () =&gt; {
+    expect(calcDiscount(1000, 'gold')).toBe(800);
+  });
+  test('silver は 10% OFF', () =&gt; {
+    expect(calcDiscount(1000, 'silver')).toBe(900);
+  });
+  test('bronze は割引なし', () =&gt; {
+    expect(calcDiscount(1000, 'bronze')).toBe(1000);
+  });
+  test('未指定ランクは割引なし', () =&gt; {
+    expect(calcDiscount(1000, 'unknown')).toBe(1000);
+  });
+  test('負の金額は例外', () =&gt; {
+    expect(() =&gt; calcDiscount(-100, 'gold')).toThrow();
+  });
+});</code></pre>
+      <p><strong>Claudeへの依頼プロンプト</strong>:</p>
+      <pre><code>@calcDiscount.test.js の全テストを通す実装を calcDiscount.js に。
+テスト変更禁止。通らなかったら実装を直す。無理なら止まって相談。</code></pre>
+      <p><strong>期待される実装</strong>:</p>
+      <pre><code>const RATES = { gold: 0.2, silver: 0.1 };
+export function calcDiscount(amount, rank) {
+  if (amount &lt; 0) throw new RangeError('amount must be non-negative');
+  const rate = RATES[rank] ?? 0;
+  return Math.round(amount * (1 - rate));
+}</code></pre>
+      <p>ポイント: <code>Math.round</code>の有無で落ちるケースがあります。テストで <code>1000 * 0.8 = 800</code> のような整数になる値を選んで曖昧さを消しておくのがコツ。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>既存バグをRed-firstで直す</h4>
+    <p>自分の過去のプロジェクト(なければ小さな関数を1つ用意)で、1つバグを見つけて以下のフローで直してください。</p>
+    <ol>
+      <li>バグを<strong>再現する</strong>テストを1本書く(これが Red)</li>
+      <li>CLAUDE.md にテスト保護ルールを追記</li>
+      <li>Claude にバグ修正を依頼(テスト変更禁止を明記)</li>
+      <li>pre-commit フックを追加してテスト改変を検出する仕組みを作る</li>
+      <li>修正前後で <code>git log</code> を追い、ロールバック可能性を確認する</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><strong>ステップ1: 再現テスト</strong></p>
+      <pre><code>// parseDate.test.js
+test('バグ再現: 2026-02-29 (閏年でない) は null を返すべき', () =&gt; {
+  expect(parseDate('2026-02-29')).toBeNull();  // ← 今は new Date(...) が返ってしまう
+});</code></pre>
+      <p><strong>ステップ2: CLAUDE.md 追記</strong></p>
+      <pre><code># CLAUDE.md
+## テスト保護
+- *.test.js のassertionは明示的指示がない限り不変更
+- 実装が通らない時はテストを緩めず、必ず止まって相談すること</code></pre>
+      <p><strong>ステップ3: 修正依頼</strong></p>
+      <pre><code>@parseDate.test.js に再現テストを追加しました。
+これが通るよう @parseDate.js を修正して。
+テストファイルは変更しない。失敗したら止まって相談。</code></pre>
+      <p><strong>ステップ4: pre-commit フック</strong> — 前述の husky パターンを採用。</p>
+      <p><strong>ステップ5: git 確認</strong> — <code>git log --oneline -- parseDate.js</code> と <code>git log --oneline -- parseDate.test.js</code> を別々に確認。テスト側の commit が「追加のみ」で変更が無ければ安全。</p>
+      <p><strong>学び</strong>: バグを直すと同時に<em>回帰テスト</em>が手に入ります。TDDは最初の投資より、<span style="color:#D97757;font-weight:600;">2回目以降の安心感</span>の方が大きいです。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式ドキュメント</a> <span class="res-type doc">Doc</span> — テストとの連携・ファイル参照の作法</li>
+      <li><a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener">Claude Code GitHub</a> <span class="res-type doc">Doc</span> — 実装例・issue から学ぶ</li>
+      <li><a href="https://github.com/anthropics/anthropic-cookbook" target="_blank" rel="noopener">Anthropic Cookbook</a> <span class="res-type doc">Doc</span> — TDDサンプルやテスト連携レシピ</li>
+      <li><a href="https://jestjs.io/docs/getting-started" target="_blank" rel="noopener">Jest 公式</a> <span class="res-type doc">Doc</span> — JavaScript テスティングフレームワークの定番</li>
+      <li><a href="https://www.anthropic.com/news" target="_blank" rel="noopener">Anthropic Blog</a> <span class="res-type doc">Doc</span> — Claude の最新挙動・モデル更新情報</li>
+      <li><a href="https://www.youtube.com/results?search_query=Claude+Code+TDD" target="_blank" rel="noopener">YouTube: Claude Code TDD</a> <span class="res-type video">Video</span> — 実演動画を横断検索</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="11">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="10-refactor-workflow.html"><span class="direction">&larr; Prev</span>改修ワークフロー</a>
+    <a href="12-debugging.html"><span class="direction">Next &rarr;</span>デバッグ</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<!-- 視覚化ライブラリ群 -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>

@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>既存コードの改修ワークフロー - MK's Claude Code Tutorial</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code Tutorial
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav class="active"><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="../index.html#phase3" data-nav><span class="phase-name">Advanced</span><span class="phase-pct" id="pct-advanced">0%</span></a></li>
+      <li><a href="../index.html#phase4" data-nav><span class="phase-name">Projects</span><span class="phase-pct" id="pct-projects">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.10</span>
+    既存コードの改修ワークフロー
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 26 sections</text>
+    </svg>
+    <div class="progress-info">0h / 24h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-welcome.html"><span class="status-dot" data-chapter="01"></span> ようこそ&セットアップ</a></li>
+    <li><a href="02-communication-basics.html"><span class="status-dot" data-chapter="02"></span> 対話の原則</a></li>
+    <li><a href="03-file-tools.html"><span class="status-dot" data-chapter="03"></span> ファイル操作ツール</a></li>
+    <li><a href="04-bash-safety.html"><span class="status-dot" data-chapter="04"></span> Bashツールと安全</a></li>
+    <li><a href="05-todo-management.html"><span class="status-dot" data-chapter="05"></span> TodoWriteで作業管理</a></li>
+    <li><a href="06-claude-md.html"><span class="status-dot" data-chapter="06"></span> CLAUDE.md</a></li>
+    <li><a href="07-git-workflow.html"><span class="status-dot" data-chapter="07"></span> Git × Claude Code</a></li>
+  </ul>
+  <div class="section-label">Core</div>
+  <ul>
+    <li><a href="08-prompt-patterns.html"><span class="status-dot" data-chapter="08"></span> プロンプト設計の型</a></li>
+    <li><a href="09-code-review.html"><span class="status-dot" data-chapter="09"></span> コードレビュー依頼</a></li>
+    <li><a href="10-refactor-workflow.html" class="active"><span class="status-dot" data-chapter="10"></span> 改修ワークフロー</a></li>
+    <li><a href="11-tdd-with-claude.html"><span class="status-dot" data-chapter="11"></span> テスト駆動</a></li>
+    <li><a href="12-debugging.html"><span class="status-dot" data-chapter="12"></span> デバッグ</a></li>
+    <li><a href="13-plan-mode.html"><span class="status-dot" data-chapter="13"></span> Planモード</a></li>
+    <li><a href="14-context-management.html"><span class="status-dot" data-chapter="14"></span> コンテキスト管理</a></li>
+    <li><a href="15-web-tools.html"><span class="status-dot" data-chapter="15"></span> Web検索・取得</a></li>
+  </ul>
+  <div class="section-label">Advanced</div>
+  <ul>
+    <li><a href="16-subagents-overview.html"><span class="status-dot" data-chapter="16"></span> Subagents</a></li>
+    <li><a href="17-mcp-overview.html"><span class="status-dot" data-chapter="17"></span> MCP</a></li>
+    <li><a href="18-hooks-overview.html"><span class="status-dot" data-chapter="18"></span> Hooks</a></li>
+    <li><a href="19-schedule-loop.html"><span class="status-dot" data-chapter="19"></span> Schedule &amp; Loop</a></li>
+    <li><a href="20-skills-overview.html"><span class="status-dot" data-chapter="20"></span> Skills</a></li>
+    <li><a href="21-worktree.html"><span class="status-dot" data-chapter="21"></span> worktree</a></li>
+    <li><a href="22-pitfalls.html"><span class="status-dot" data-chapter="22"></span> 失敗パターン10</a></li>
+  </ul>
+  <div class="section-label">Projects</div>
+  <ul>
+    <li><a href="23-project-automation.html"><span class="status-dot" data-chapter="23"></span> Project A：業務自動化</a></li>
+    <li><a href="24-project-refactor.html"><span class="status-dot" data-chapter="24"></span> Project B：リファクタ</a></li>
+    <li><a href="25-project-webapp.html"><span class="status-dot" data-chapter="25"></span> Project C：Webアプリ</a></li>
+    <li><a href="26-final-exercise.html"><span class="status-dot" data-chapter="26"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 2: Core &gt; Chapter 10</div>
+  <h1>既存コードの改修ワークフロー</h1>
+  <p class="subtitle">理解 → 計画 → 実装 → 検証 — 4ステップで壊さず直す</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 60分</span>
+    <span class="badge">Phase: Core</span>
+    <span class="badge">難易度: 中級</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">この章のゴール</span>
+    <p>既存コードベースの改修を、<strong>いきなり書き換えさせず</strong>「<strong>理解 → 計画 → 実装 → 検証</strong>」の4ステップに分解して Claude に頼めるようになります。<span class="term" data-tip="Explore subagent: コードベースを読んで要約して返す子エージェント。Agent toolでsubagent_type=Exploreを指定して起動する。2026年1月時点の記述。">Explore subagent</span> で現状を把握し、<span class="term" data-tip="Plan モード: 実装せず計画だけ立てて ExitPlanMode で同意を取るモード。2026/1時点。">Plan モード</span> で計画を固めてから、段階的に実装・テストで担保する流れを、実リポで手を動かしながら身につけます。</p>
+  </div>
+
+  <div class="info-box" style="border-left: 3px solid #D97757;">
+    <span class="label">2026年1月時点の情報</span>
+    <p>本章の挙動・ツール名・コマンドは <strong>2026年1月時点</strong>の Claude Code に基づきます。<code>subagent_type</code> のラインナップ、Plan モードのUI、TodoWriteの仕様は更新される可能性があるため、詰まったら <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">公式ドキュメント</a> を確認してください。</p>
+  </div>
+
+  <!-- ============ Section 1: なぜ4ステップか ============ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> なぜ改修は「いきなり書き換えさせる」と壊れるのか</h2>
+
+  <p>新規作成と違い、<strong>既存コードの改修</strong>は地雷原です。関数は他の場所から呼ばれているし、テストが暗黙の仕様になっているし、コメントに書いていない「なぜそうなっているか」が積み重なっている。Claude に「ここをこう直して」とだけ頼むと、<strong>目の前の1行だけ</strong>綺麗に直して周辺を壊す——という事故が起こります。</p>
+
+  <p>これを防ぐための型が、今日学ぶ <strong>4ステップ改修ワークフロー</strong> です。「書き換え」を一番最後に置く、ただそれだけの思想です。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">4ステップ改修ワークフロー</div>
+    <svg viewBox="0 0 640 220" width="100%" style="max-width:640px; display:block; margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arrRef" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#D97757"/></marker>
+      </defs>
+      <!-- Step 1 -->
+      <rect x="20" y="60" width="130" height="100" rx="10" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="2"/>
+      <text x="85" y="85" text-anchor="middle" font-size="12" font-weight="700" fill="#18181b">1. 理解</text>
+      <text x="85" y="105" text-anchor="middle" font-size="10" fill="#475569">Explore subagent</text>
+      <text x="85" y="122" text-anchor="middle" font-size="10" fill="#475569">で全体像把握</text>
+      <text x="85" y="145" text-anchor="middle" font-size="9" fill="#64748b">責務/呼び出し元</text>
+      <!-- Step 2 -->
+      <rect x="180" y="60" width="130" height="100" rx="10" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="2"/>
+      <text x="245" y="85" text-anchor="middle" font-size="12" font-weight="700" fill="#18181b">2. 計画</text>
+      <text x="245" y="105" text-anchor="middle" font-size="10" fill="#475569">Plan モードで</text>
+      <text x="245" y="122" text-anchor="middle" font-size="10" fill="#475569">手順に分解</text>
+      <text x="245" y="145" text-anchor="middle" font-size="9" fill="#64748b">ExitPlanMode で合意</text>
+      <!-- Step 3 -->
+      <rect x="340" y="60" width="130" height="100" rx="10" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="2"/>
+      <text x="405" y="85" text-anchor="middle" font-size="12" font-weight="700" fill="#18181b">3. 実装</text>
+      <text x="405" y="105" text-anchor="middle" font-size="10" fill="#475569">段階的 commit</text>
+      <text x="405" y="122" text-anchor="middle" font-size="10" fill="#475569">TodoWrite で追跡</text>
+      <text x="405" y="145" text-anchor="middle" font-size="9" fill="#64748b">1手順=1コミット</text>
+      <!-- Step 4 -->
+      <rect x="500" y="60" width="130" height="100" rx="10" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="2"/>
+      <text x="565" y="85" text-anchor="middle" font-size="12" font-weight="700" fill="#18181b">4. 検証</text>
+      <text x="565" y="105" text-anchor="middle" font-size="10" fill="#475569">テスト / diff</text>
+      <text x="565" y="122" text-anchor="middle" font-size="10" fill="#475569">で担保</text>
+      <text x="565" y="145" text-anchor="middle" font-size="9" fill="#64748b">挙動が同じか確認</text>
+      <!-- arrows -->
+      <path d="M 150 110 L 180 110" stroke="#D97757" stroke-width="2" marker-end="url(#arrRef)"/>
+      <path d="M 310 110 L 340 110" stroke="#D97757" stroke-width="2" marker-end="url(#arrRef)"/>
+      <path d="M 470 110 L 500 110" stroke="#D97757" stroke-width="2" marker-end="url(#arrRef)"/>
+      <!-- feedback loop -->
+      <path d="M 565 160 Q 565 195 325 195 Q 85 195 85 160" stroke="#94a3b8" stroke-width="1.5" fill="none" stroke-dasharray="4 4" marker-end="url(#arrRef)"/>
+      <text x="325" y="212" text-anchor="middle" font-size="9" fill="#64748b">検証で失敗 → 理解に戻る</text>
+      <text x="325" y="30" text-anchor="middle" font-size="11" font-weight="600" fill="#475569">書き換え (step 3) は最後。</text>
+    </svg>
+    <div class="diagram-caption">各ステップの主役ツールは異なる。step 3 より前に3/4の時間を使うのが「プロの改修」。</div>
+  </div>
+
+  <div class="info-box" style="border-left-color: #D97757;">
+    <span class="label">ここがプロの境目</span>
+    <p><strong>改修前に必ず「理解フェーズ」を置く</strong>。いきなり書き換えさせると、Claude は呼び出し元・テスト・仕様を見ずに「その1行」だけ綺麗にして周辺を壊す。理解に30%の時間を投下するだけで、差し戻し率が体感で半分以下になる。<br>
+    <em>試し方:</em> 次に改修を頼むとき、最初のメッセージは必ず「このモジュールの責務を3行でまとめて、呼び出し元を列挙して」だけにする。</p>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ============ Section 2: Step 1 理解 ============ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Step 1 — 理解:Explore subagent で現状を押さえる</h2>
+
+  <p>最初のステップは「書き換える前に知る」こと。ポイントは <strong>メイン文脈を汚さず</strong> に情報を取ることです。ここで <span class="term" data-tip="Explore: Agent tool の subagent_type の1つ。コードベースを読んで要約のみ返す、読み取り専用の子エージェント。">Explore subagent</span> が主役になります。</p>
+
+  <p>通常の <code>Read</code> でファイルを全部読ませると、メインの <span class="term" data-tip="コンテキストウィンドウ: Claude が1セッションで保持できる文脈の量。消費しきると /compact が必要になる。">コンテキスト</span> がどんどん減る。Explore は子文脈で読んで、<strong>要約1つ</strong>だけ親に返してくれるので、メインは疲れずに判断だけに集中できます。</p>
+
+  <h3>理解フェーズで聞くべき5つの質問</h3>
+
+  <ul class="icon-list">
+    <li><i data-lucide="target" width="20" height="20"></i><div><strong>責務</strong> — このモジュール/関数は「何をする」のが仕事? 3行で。</div></li>
+    <li><i data-lucide="git-branch" width="20" height="20"></i><div><strong>呼び出し元</strong> — どこから呼ばれている? Grep 結果のファイル一覧で。</div></li>
+    <li><i data-lucide="shield" width="20" height="20"></i><div><strong>既存テスト</strong> — 何が assertion されている? テスト名を列挙して。</div></li>
+    <li><i data-lucide="alert-triangle" width="20" height="20"></i><div><strong>副作用</strong> — DB書き込み、ファイルIO、ネットワーク呼び出しは?</div></li>
+    <li><i data-lucide="help-circle" width="20" height="20"></i><div><strong>暗黙の仕様</strong> — コメントにないが守られている約束(例: null許容、空配列時の挙動)は?</div></li>
+  </ul>
+
+  <div class="hands-on-box info-box" style="background: rgba(217,119,87,0.08); border-left: 3px solid #D97757;">
+    <span class="label">今すぐ試す(3分)</span>
+    <p>自分のリポジトリで、これから改修したい関数を1つ選んで、Claude Code にこう頼んでください。</p>
+    <pre><code>Agent tool を subagent_type="Explore" で起動して、以下を調べて要約だけ返して:
+1. src/xxx/yyy.ts の関数 fooBar() の責務を3行で
+2. fooBar() を呼んでいる箇所をファイル単位で列挙
+3. fooBar() に対する既存テストを列挙(テスト名だけでOK)
+4. 副作用(IO/DB/network)があればその種類を明記
+5. コメントに書かれていないが守られていそうな暗黙仕様を2つ推測</code></pre>
+    <p>返ってきた要約を、そのまま次のステップ(計画)の入力にします。ここで「全ファイルを読んでまとめました」ではなく <strong>Explore 子経由で要約だけ</strong>取るのが重要。</p>
+  </div>
+
+  <h3>Explore vs 通常 Read の使い分け</h3>
+
+  <table>
+    <thead>
+      <tr><th>場面</th><th>Explore subagent</th><th>通常 Read/Grep</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>ファイル数が5以上</td><td>◎ 推奨</td><td>× 文脈浪費</td></tr>
+      <tr><td>「要約だけ欲しい」</td><td>◎ 要約が本業</td><td>△ メイン文脈に全文が残る</td></tr>
+      <tr><td>1ファイルを細かく編集したい</td><td>× 編集権限ない</td><td>◎ 推奨</td></tr>
+      <tr><td>改修実行の直前</td><td>△ 要約は粗い</td><td>◎ 正確な行番号が必要</td></tr>
+      <tr><td>並列に複数観点で調査</td><td>◎ 観点別に複数起動</td><td>× 逐次実行になる</td></tr>
+    </tbody>
+  </table>
+
+  <details class="more-box"><summary>もっと詳しく: Explore 子が苦手なこと</summary>
+    <div class="more-body">
+      <p>Explore は「読む専門」のため、編集は一切できません。また、返すのは<strong>要約テキスト1つ</strong>なので、正確な行番号・完全な関数本体が欲しいときはメインで改めて <code>Read</code> する必要があります。</p>
+      <p>運用的な目安として、<strong>「調査 → 要約 → それを元にメインで該当箇所だけ Read」</strong>の2段構えが最も文脈効率が良いです。Explore は地図を描く役、Read は目的地でシャベルを入れる役。</p>
+    </div>
+  </details>
+
+  <!-- ============ Section 3: Step 2 計画 ============ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Step 2 — 計画:Plan モードで手順に分解する</h2>
+
+  <p>理解が取れたら、<strong>書き始める前に計画</strong>を作ります。<span class="term" data-tip="Plan モード: 実装せず計画だけ立てる Claude Code の特別モード。ExitPlanMode で承認後に実装に移る。2026/1時点。">Plan モード</span> を使うと、Claude は「編集せずに計画だけ提示」して、ユーザが <span class="term" data-tip="ExitPlanMode: Plan モードで提示された計画を承認して実装フェーズに移すための合図。">ExitPlanMode</span> で OK を出すまで書き換えません。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Plan モードで起きる3つのこと</div>
+    <pre class="mermaid">
+graph LR
+  A["1. 計画提示"] --> B["2. ユーザが読む"]
+  B --> C{"OK?"}
+  C -->|"はい"| D["ExitPlanMode → 実装開始"]
+  C -->|"いいえ"| E["計画を修正"]
+  E --> B
+    </pre>
+    <div class="diagram-caption">合意が取れてから手が動くので、ロールバックの保険になる。</div>
+  </div>
+
+  <h3>良い Plan の条件 — 4つの型</h3>
+
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">悪い Plan</span>
+      <h4>曖昧 / 粒度バラバラ</h4>
+      <ul>
+        <li>「fooBar を直す」</li>
+        <li>「テストも更新」</li>
+        <li>「PR を出す」</li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">良い Plan</span>
+      <h4>段階的 / 検証可能</h4>
+      <ul>
+        <li>(1) fooBar に失敗する新テストを追加 — red</li>
+        <li>(2) fooBar の分岐を extract — 既存テスト緑維持</li>
+        <li>(3) 新分岐を実装 — 新テスト緑</li>
+        <li>(4) 重複を削除 — 全テスト緑 + diff レビュー</li>
+      </ul>
+    </div>
+  </div>
+
+  <p>良い Plan は<strong>「各ステップ完了時点でリポジトリがビルド可能・テスト通過」</strong>であること。途中でコケても前ステップに戻れる「階段状」の計画です。</p>
+
+  <div class="hands-on-box info-box" style="background: rgba(217,119,87,0.08); border-left: 3px solid #D97757;">
+    <span class="label">今すぐ試す(2分)</span>
+    <p>Step 1 で取った要約を貼り付けて、こう頼んでみてください。</p>
+    <pre><code>上の要約をもとに、fooBar() の改修プランを Plan モードで作って。
+条件:
+- 各ステップ完了時点でテストが全部緑であること
+- 1ステップ = 1コミット想定
+- 最後のステップに「diff 全体を人間がレビュー」を必ず入れる
+- 破壊的な置き換えは最後。途中は追加のみ。</code></pre>
+    <p>Claude から ExitPlanMode で計画が提示されたら、<strong>読んで納得してから</strong> Approve。ここで違和感があれば修正要求を1-2回繰り返します。</p>
+  </div>
+
+  <div class="info-box">
+    <span class="label">公式ドキュメント必読</span>
+    <p>Plan モードの挙動・ExitPlanMode の UI は公式ドキュメントに根幹仕様があります。特に「Plan 中に編集されないツール一覧」は実務で間違えると致命的なので必ず確認してください。<a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式 →</a></p>
+  </div>
+
+  <details class="more-box"><summary>もっと詳しく: Plan を使わない方が良い場面</summary>
+    <div class="more-body">
+      <p>Plan モードは「大きな変更」向けのツール。typo修正、ログ1行追加、README の誤字など<strong>1ファイルの軽微な編集</strong>では、逆に冗長で時間が溶けます。</p>
+      <p>目安: 編集が3ファイル以上 or 100行以上 or テスト修正を伴う → Plan 使う。それ以下 → 直接実装で OK。</p>
+    </div>
+  </details>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ============ Section 4: Step 3 実装 ============ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Step 3 — 実装:段階的コミットで壊さず進める</h2>
+
+  <p>計画に合意したら、ようやく書き始めます。肝は <strong>1ステップ1コミット</strong>。途中で失敗しても、直前の緑の状態に戻れる「セーブポイント」を積み上げる発想です。</p>
+
+  <div class="steps">
+    <div class="step done"><div class="step-num">1</div><div class="step-label">ブランチ</div><div class="step-desc">feature/refactor-xxx を切る</div></div>
+    <div class="step done"><div class="step-num">2</div><div class="step-label">TodoWrite</div><div class="step-desc">Plan の各ステップをToDoに</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-label">実装→テスト</div><div class="step-desc">1ステップずつ進めて緑を確認</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-label">commit</div><div class="step-desc">緑の瞬間にすぐ commit</div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-label">diff レビュー</div><div class="step-desc">自分の目で git diff を確認</div></div>
+  </div>
+
+  <h3>実装段階の変化 — 時間配分の理想</h3>
+
+  <div class="diagram-box">
+    <div class="diagram-title">60分改修の時間配分(理想 vs 初心者)</div>
+    <canvas id="ch10-bar-1" height="150"></canvas>
+  </div>
+  <script>
+    window.addEventListener("load", function() {
+      var el = document.getElementById('ch10-bar-1');
+      if (!el || !window.Chart) return;
+      new Chart(el, {
+        type: 'bar',
+        data: {
+          labels: ['1. 理解', '2. 計画', '3. 実装', '4. 検証'],
+          datasets: [
+            { label: '初心者(分)', data: [5, 5, 40, 10], backgroundColor: '#cbd5e1', borderRadius: 6 },
+            { label: '上位20%(分)', data: [15, 15, 20, 10], backgroundColor: '#D97757', borderRadius: 6 }
+          ]
+        },
+        options: {
+          plugins: { legend: { position: 'bottom' } },
+          scales: { y: { beginAtZero: true, title: { display: true, text: '分' } } }
+        }
+      });
+    });
+  </script>
+
+  <p>初心者は <strong>実装に40分</strong> 溶かして残り20分で事故対応。上位20%は <strong>前半に投資</strong>し、実装自体は短く終わる。実装が速いのではなく、実装前に事故要因を潰している。</p>
+
+  <h3>TodoWrite で進捗を見失わない</h3>
+
+  <p>Plan の各ステップを <span class="term" data-tip="TodoWrite: Claude Code の作業リスト管理ツール。in_progress / completed を Claude が自分で更新する。">TodoWrite</span> に落とすと、Claude 自身が「今どのステップか」を見失わなくなります。Ch05 で詳しく扱いましたが、改修では <strong>絶対に</strong> 最初に立てるクセを付けてください。</p>
+
+  <pre><code># 良い TodoWrite 例(Plan から自動展開できる)
+[
+  { content: "fooBar の失敗テスト追加", status: "in_progress" },
+  { content: "分岐ロジックを extractFoo() に抽出", status: "pending" },
+  { content: "新挙動を extractFoo() に実装", status: "pending" },
+  { content: "重複コード削除 + 全テスト", status: "pending" },
+  { content: "git diff を人間がレビュー", status: "pending" }
+]</code></pre>
+
+  <div class="info-box">
+    <span class="label">Tips</span>
+    <p>commit メッセージは「何を変えたか」ではなく <strong>「なぜ変えたか」</strong>。Plan の各ステップ名がそのままコミットメッセージの「何」になるので、「なぜ」の1行を足すだけで良いコミットログになります。</p>
+  </div>
+
+  <!-- ============ Section 5: Step 4 検証 ============ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Step 4 — 検証:テストと diff で「壊れてない」を担保する</h2>
+
+  <p>最後のステップは検証。改修の<strong>成功条件は「機能が増えた/変わった」かつ「それ以外は何も変わってない」</strong>こと。後者が抜けがちです。</p>
+
+  <h3>3層の検証</h3>
+
+  <table>
+    <thead>
+      <tr><th>層</th><th>やること</th><th>見つかる事故</th><th>頼み方</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>自動テスト</td><td>既存 + 新規テスト全部走らせる</td><td>仕様破壊・回帰バグ</td><td>「npm test を走らせて、失敗があれば原因を3行で」</td></tr>
+      <tr><td>diff レビュー</td><td>git diff main を人間が読む</td><td>意図しない編集・余計な削除</td><td>「git diff main...HEAD を機能ブロックごとに要約して」</td></tr>
+      <tr><td>手動動作確認</td><td>実際に動かす(UIなら画面、CLIなら実行)</td><td>テストで拾えない UX 退行</td><td>(人間が自分でやる)</td></tr>
+    </tbody>
+  </table>
+
+  <div class="hands-on-box info-box" style="background: rgba(217,119,87,0.08); border-left: 3px solid #D97757;">
+    <span class="label">今すぐ試す(4分)</span>
+    <p>検証ターンで Claude にこう頼んでみてください(テストがあるリポで)。</p>
+    <pre><code>以下の順で実行して結果を報告して:
+1. 現在のブランチでテスト全部走らせる (例: npm test or pytest)
+2. main との diff を gh pr diff 風に出して、変更を機能ブロック単位で要約
+3. 「意図に沿っていない変更」が1つでもあれば、その diff 断片だけ引用して指摘
+4. 結論を 3行で: テスト OK か / diff に想定外はないか / マージ可否の意見</code></pre>
+    <p>ここで「結論3行」を必ず求めるのがコツ。Claude が<strong>自分の仕事を自分で採点する</strong>モードになります。</p>
+  </div>
+
+  <h3>検証で拾える典型事故</h3>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-num">42<small>%</small></div>
+      <div class="stat-label">テスト改変</div>
+      <div class="stat-trend down">↓ assertion を緩めた</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">28<small>%</small></div>
+      <div class="stat-label">隠れた削除</div>
+      <div class="stat-trend down">↓ 使用中コードの消去</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">18<small>%</small></div>
+      <div class="stat-label">スコープ膨張</div>
+      <div class="stat-trend down">↓ 頼んでない所も直した</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">12<small>%</small></div>
+      <div class="stat-label">副作用漏れ</div>
+      <div class="stat-trend down">↓ ログ/メトリクス欠落</div>
+    </div>
+  </div>
+  <p style="text-align:center; color:#64748b; font-size:12px;">※ 筆者が観測した Claude Code 改修の事故内訳(2026/1サンプル)</p>
+
+  <details class="more-box"><summary>もっと詳しく: Claude に「テストを緩めさせない」交渉術</summary>
+    <div class="more-body">
+      <p>最大の罠は、Claude が「テストを通すためにテストを変える」こと。最初の依頼時点で明示的に禁止するのが鉄則です:</p>
+      <pre><code>重要: テストを通すために assertion や期待値を変更しないで。
+テストが落ちたら、まずコードを直す。どうしてもテストが間違っている
+と判断した場合のみ、理由を1段落で説明してから変更許可を求めて。</code></pre>
+      <p>これを CLAUDE.md に書いておくとプロジェクト全体で効きます(Ch06参照)。詳細は Ch11(テスト駆動)で扱います。</p>
+    </div>
+  </details>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ============ Section 6: 実リポ ハンズオン ============ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 実リポハンズオン:4ステップを15分でなぞる</h2>
+
+  <p>ここまで抽象論で説明してきました。次は実リポで1周回してみます。<strong>自分のリポジトリが無ければ</strong>、下のシェル1行で練習用のミニ Python CLI を作ってください。</p>
+
+  <pre><code># 練習用リポ作成(コピペで動く)
+mkdir -p ~/tmp/refactor-demo && cd ~/tmp/refactor-demo
+git init -q
+cat > greet.py &lt;&lt; 'PY'
+def greet(name, lang="en"):
+    if lang == "en":
+        return "Hello, " + name + "!"
+    elif lang == "ja":
+        return "こんにちは、" + name + "さん!"
+    else:
+        return "Hi, " + name
+PY
+cat > test_greet.py &lt;&lt; 'PY'
+from greet import greet
+def test_en():  assert greet("Ada") == "Hello, Ada!"
+def test_ja():  assert greet("凛", "ja") == "こんにちは、凛さん!"
+def test_unk(): assert greet("Bob", "fr") == "Hi, Bob"
+PY
+git add -A &amp;&amp; git commit -q -m "init: greet.py"
+echo "done. now: claude"</code></pre>
+
+  <p>この <code>greet()</code> を「<strong>f-string で書き換え + 新言語 fr を追加 + 辞書ベースにリファクタ</strong>」するのが今回のお題。あなたは Claude Code にこう頼みます(各ステップで別プロンプトを投げる):</p>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-date">Step 1 (5分)</div>
+      <div class="tl-title">理解</div>
+      <div class="tl-body"><code>Agent tool で Explore 起動。greet.py の責務 / 呼び出し元 / 既存テストの assertion / 暗黙仕様 を要約して</code></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">Step 2 (3分)</div>
+      <div class="tl-title">計画</div>
+      <div class="tl-body"><code>Plan モードで、(1) fr テスト追加 (2) 辞書化 (3) 新言語対応 (4) diffレビュー、の階段型プランを提示して</code></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">Step 3 (5分)</div>
+      <div class="tl-title">実装</div>
+      <div class="tl-body"><code>ExitPlanMode で承認 → TodoWrite に4項目登録 → 1ステップずつ実装&amp; pytest → 緑のたびに git commit</code></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">Step 4 (2分)</div>
+      <div class="tl-title">検証</div>
+      <div class="tl-body"><code>pytest 全緑確認 → git diff main..HEAD を要約 → 意図外変更があれば指摘 → 結論3行</code></div>
+    </div>
+  </div>
+
+  <div class="quote">
+    同じ改修を、<strong>いきなり「辞書化して fr 足して」</strong>と頼むのと、<strong>4ステップに分けて頼む</strong>のとでやってみてください。差し戻しの回数、コミットの粒度、diff の読みやすさ——全部違うはずです。
+    <cite>— この差が 60分 × 週5日 × 50週 で効いてきます</cite>
+  </div>
+
+  <!-- ============ Section 7: アンチパターン ============ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> アンチパターン4選 — これをやると壊れる</h2>
+
+  <div class="diagram-box">
+    <div class="diagram-title">改修の危険な道と安全な道</div>
+    <pre class="mermaid">
+graph TD
+  A["改修を依頼"] --> B{"理解を省いたか?"}
+  B -->|"はい"| C["表面的な修正"]
+  C --> D["呼び出し元が壊れる"]
+  D --> E["差し戻し / 事故"]
+  B -->|"いいえ"| F["責務を3行でまとめる"]
+  F --> G["Plan で手順化"]
+  G --> H["段階コミット + テスト"]
+  H --> I["安全に完了"]
+    </pre>
+    <div class="diagram-caption">分岐は1箇所。「理解を省いたか?」の Yes / No で運命が分かれる。</div>
+  </div>
+
+  <ol>
+    <li><strong>「このファイル全部読んで直して」</strong> — メイン文脈がパンクする。Explore 子で要約だけ取る。</li>
+    <li><strong>Plan 無しで大規模変更</strong> — ロールバックポイントが無く、途中で迷子に。</li>
+    <li><strong>1コミットに全部詰める</strong> — 事故ったときに戻る場所がない。1ステップ1コミットを死守。</li>
+    <li><strong>テスト落ちたら assertion を緩める</strong> — 最悪。CLAUDE.md に禁止ルールを書く。</li>
+  </ol>
+
+  <div class="info-box" style="border-left-color: #D97757;">
+    <span class="label">リマインダ</span>
+    <p>4ステップの中で一番カットしたくなるのが <strong>Step 1(理解)</strong>。でもここを15分ケチると、Step 3 で45分失う。「急がば理解」を合言葉に。</p>
+  </div>
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>自分のリポで「3行責務まとめ」</h4>
+    <p>手持ちのリポジトリから、最近触った関数/クラスを1つ選び、<strong>書き換える前に</strong>Claude Code に以下を頼んでください。</p>
+    <ol>
+      <li>Agent tool を <code>subagent_type="Explore"</code> で起動</li>
+      <li>対象の「責務を3行」「呼び出し元のファイルリスト」「既存テスト一覧」「暗黙仕様の推測」を要約で返させる</li>
+      <li>返ってきた要約を読み、自分が知っている情報と <strong>食い違う箇所</strong> が1つでもあれば、それがこれまで見落としてきた「地雷」</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>プロンプト例(そのままコピペ可):</p>
+      <pre><code>Agent tool を subagent_type="Explore" で起動して、以下だけを要約で返して。
+対象: src/billing/invoice.ts の Invoice クラス
+
+返してほしい内容:
+1. このクラスの責務を「何を」「何のために」で3行
+2. new Invoice(...) / Invoice.xxx を呼んでいるファイルの一覧(パスだけ)
+3. Invoice に対する既存テスト(describe/it 名だけ)
+4. コメントには書かれていないが、コードを読むと守られていそうな
+   暗黙の約束(null 許容、空入力時の挙動など)を2つ推測
+
+出力はマークダウン見出し付きで簡潔に。ソース引用は最小限で。</code></pre>
+      <p>注目ポイント: (4) の「暗黙仕様の推測」が最も価値が高い。ここに「え、そんな約束あったの?」が1つでもあれば、<strong>あなたはそれを知らずに改修しようとしていた</strong>ということ。Explore を挟んだ意味が出ています。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>4ステップを貫通:段階的な実リファクタ</h4>
+    <p>Section 6 の練習リポ(または自分のリポ)で、以下を<strong>すべて4ステップで</strong>実施してください。</p>
+    <ol>
+      <li>feature ブランチを切る</li>
+      <li>Step 1: Explore で現状把握 → 要約を貰う</li>
+      <li>Step 2: Plan モードで階段型プラン(各ステップ終了時にテスト緑)</li>
+      <li>Step 3: TodoWrite で進捗追跡 + 1ステップ1コミット</li>
+      <li>Step 4: 全テスト緑確認 + git diff main..HEAD の要約 + 結論3行</li>
+    </ol>
+    <p>終わった後、<strong>commit 数とプランの手順数が一致している</strong> か、<strong>assertion が1つも緩められていない</strong> かをセルフチェック。</p>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>Section 6 の greet.py を題材にした場合の流れ全体(ターン別):</p>
+      <pre><code># ターン1(理解)
+Agent tool で Explore 起動: greet.py の責務 / 呼び出し元 / 既存テストの
+assertion / 暗黙仕様 を要約して返して。
+
+# ターン2(計画)
+上の要約を踏まえ、Plan モードで以下の条件に従う計画を作って:
+- (1) test_fr を追加(現状 red)
+- (2) 言語→挨拶 の辞書化(既存テスト全緑のまま)
+- (3) fr 対応を辞書経由で実装(test_fr を green に)
+- (4) 冗長コード削除 + 全テスト緑 + diff 人間レビュー
+各ステップ完了時点で pytest が緑であること。
+
+# ターン3(実装)
+ExitPlanMode で承認。TodoWrite に4項目登録。
+1ステップずつ実装 → pytest → 緑なら git commit -m "step N: xxx" を繰り返して。
+
+# ターン4(検証)
+pytest を全部走らせた結果 / git diff main..HEAD を機能単位で要約 /
+テスト assertion が緩められた箇所の有無 / 結論3行(マージ可否の意見)
+を報告して。</code></pre>
+      <p>期待される出力: 4コミット、全テスト緑、diff には辞書化リファクタ+fr追加の2機能ブロックのみ、assertion は一切変更なし、結論は「マージ可、リスクなし」。</p>
+      <p>もし commit 数が1-2個に固まってたら、<strong>段階的コミットが身についていない</strong>サイン。次の改修から意識的に commit 単位を細かくしてください。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式ドキュメント</a> <span class="res-type doc">Doc</span> — Plan モード / Agent tool の正式仕様</li>
+      <li><a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener">Claude Code GitHub</a> <span class="res-type doc">Doc</span> — Issue / Discussion で実例を追える</li>
+      <li><a href="https://github.com/anthropics/anthropic-cookbook" target="_blank" rel="noopener">Anthropic Cookbook</a> <span class="res-type doc">Doc</span> — 改修 / リファクタのサンプルプロンプト</li>
+      <li><a href="https://www.anthropic.com/news" target="_blank" rel="noopener">Anthropic Blog</a> <span class="res-type doc">Doc</span> — 最新のツール/モデル更新情報</li>
+      <li><a href="https://martinfowler.com/books/refactoring.html" target="_blank" rel="noopener">Refactoring (Martin Fowler)</a> <span class="res-type doc">Doc</span> — 段階的改修の古典。Claude にも効く考え方</li>
+      <li><a href="https://www.youtube.com/results?search_query=Claude+Code+refactor+workflow" target="_blank" rel="noopener">YouTube「Claude Code refactor workflow」</a> <span class="res-type video">Video</span></li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="10">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="09-code-review.html"><span class="direction">&larr; Prev</span>コードレビュー依頼</a>
+    <a href="11-tdd-with-claude.html"><span class="direction">Next &rarr;</span>テスト駆動</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>

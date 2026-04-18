@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>Git × Claude Code 基本ワークフロー - MK's Claude Code Tutorial</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code Tutorial
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav class="active"><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="../index.html#phase3" data-nav><span class="phase-name">Advanced</span><span class="phase-pct" id="pct-advanced">0%</span></a></li>
+      <li><a href="../index.html#phase4" data-nav><span class="phase-name">Projects</span><span class="phase-pct" id="pct-projects">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.07</span>
+    Git × Claude Code 基本ワークフロー
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 26 sections</text>
+    </svg>
+    <div class="progress-info">0h / 24h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-welcome.html"><span class="status-dot" data-chapter="01"></span> ようこそ&セットアップ</a></li>
+    <li><a href="02-communication-basics.html"><span class="status-dot" data-chapter="02"></span> 対話の原則</a></li>
+    <li><a href="03-file-tools.html"><span class="status-dot" data-chapter="03"></span> ファイル操作ツール</a></li>
+    <li><a href="04-bash-safety.html"><span class="status-dot" data-chapter="04"></span> Bashツールと安全</a></li>
+    <li><a href="05-todo-management.html"><span class="status-dot" data-chapter="05"></span> TodoWriteで作業管理</a></li>
+    <li><a href="06-claude-md.html"><span class="status-dot" data-chapter="06"></span> CLAUDE.md</a></li>
+    <li><a href="07-git-workflow.html" class="active"><span class="status-dot" data-chapter="07"></span> Git × Claude Code</a></li>
+  </ul>
+  <div class="section-label">Core</div>
+  <ul>
+    <li><a href="08-prompt-patterns.html"><span class="status-dot" data-chapter="08"></span> プロンプト設計の型</a></li>
+    <li><a href="09-code-review.html"><span class="status-dot" data-chapter="09"></span> コードレビュー依頼</a></li>
+    <li><a href="10-refactor-workflow.html"><span class="status-dot" data-chapter="10"></span> 改修ワークフロー</a></li>
+    <li><a href="11-tdd-with-claude.html"><span class="status-dot" data-chapter="11"></span> テスト駆動</a></li>
+    <li><a href="12-debugging.html"><span class="status-dot" data-chapter="12"></span> デバッグ</a></li>
+    <li><a href="13-plan-mode.html"><span class="status-dot" data-chapter="13"></span> Planモード</a></li>
+    <li><a href="14-context-management.html"><span class="status-dot" data-chapter="14"></span> コンテキスト管理</a></li>
+    <li><a href="15-web-tools.html"><span class="status-dot" data-chapter="15"></span> Web検索・取得</a></li>
+  </ul>
+  <div class="section-label">Advanced</div>
+  <ul>
+    <li><a href="16-subagents-overview.html"><span class="status-dot" data-chapter="16"></span> Subagents</a></li>
+    <li><a href="17-mcp-overview.html"><span class="status-dot" data-chapter="17"></span> MCP</a></li>
+    <li><a href="18-hooks-overview.html"><span class="status-dot" data-chapter="18"></span> Hooks</a></li>
+    <li><a href="19-schedule-loop.html"><span class="status-dot" data-chapter="19"></span> Schedule &amp; Loop</a></li>
+    <li><a href="20-skills-overview.html"><span class="status-dot" data-chapter="20"></span> Skills</a></li>
+    <li><a href="21-worktree.html"><span class="status-dot" data-chapter="21"></span> worktree</a></li>
+    <li><a href="22-pitfalls.html"><span class="status-dot" data-chapter="22"></span> 失敗パターン10</a></li>
+  </ul>
+  <div class="section-label">Projects</div>
+  <ul>
+    <li><a href="23-project-automation.html"><span class="status-dot" data-chapter="23"></span> Project A：業務自動化</a></li>
+    <li><a href="24-project-refactor.html"><span class="status-dot" data-chapter="24"></span> Project B：リファクタ</a></li>
+    <li><a href="25-project-webapp.html"><span class="status-dot" data-chapter="25"></span> Project C：Webアプリ</a></li>
+    <li><a href="26-final-exercise.html"><span class="status-dot" data-chapter="26"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 1: Basics &gt; Chapter 07</div>
+  <h1>Git × Claude Code 基本ワークフロー</h1>
+  <p class="subtitle">コミット単位、ブランチ、diffレビュー、PR作成、ロールバックまで — Claudeと安全に開発する基礎</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 45分</span>
+    <span class="badge">Phase: Basics</span>
+    <span class="badge">難易度: 初級</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">この章のゴール</span>
+    <p>Claude Code に実装を任せる時、<strong>Git が安全網</strong>になります。この章では「1機能=1コミット」の粒度感、ブランチ作成と diff レビューのリズム、<code>gh pr create</code> での PR 作成、そして <strong>失敗コミットからの戻し方</strong>までを45分で身につけます。これが無いまま大きな変更を依頼すると、壊れた時に戻せなくなる——Claude を本気で使うなら Git の型が先です。</p>
+  </div>
+
+  <div class="info-box" style="border-left: 3px solid #D97757;">
+    <span class="label">バージョン注記</span>
+    <p>本章の記述は <strong>2026年1月時点</strong> の Claude Code と <code>gh</code> CLI (v2.x 系) の挙動に基づきます。<code>gh pr create</code> のオプションや PR テンプレート機能は進化するため、コマンドが通らない時は <a href="https://cli.github.com/manual/" target="_blank" rel="noopener">gh CLI 公式マニュアル</a> を参照してください。</p>
+  </div>
+
+  <!-- ===== Section 1: なぜ Git × Claude Code か ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> なぜ Git × Claude Code か — 3つの理由</h2>
+
+  <p>Claude Code は便利ですが、<strong>時々ファイルを意図せぬ方向に書き換えます</strong>。大きな変更を1発で指示した時、テストが消えていた・別ファイルが壊れていた・意図と違う方針で書かれていた——そんな事故を回復可能にするのが Git の役割です。</p>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-num">1<small>機能</small></div>
+      <div class="stat-label">1コミットの粒度</div>
+      <div class="stat-trend up">↑ ロールバック容易</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">30<small>秒</small></div>
+      <div class="stat-label">diff レビュー所要時間</div>
+      <div class="stat-trend up">↑ 壊れてたら即気付く</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">3<small>秒</small></div>
+      <div class="stat-label">git revert で復旧</div>
+      <div class="stat-trend up">↑ 小さなコミットの恩恵</div>
+    </div>
+  </div>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="shield" width="20" height="20"></i>
+      <div><strong>安全網</strong> — コミットは「ここまでは動いていた」のセーブポイント。Claude が壊しても戻せる。</div>
+    </li>
+    <li>
+      <i data-lucide="git-branch" width="20" height="20"></i>
+      <div><strong>実験場</strong> — ブランチを切れば main を汚さずに試せる。失敗したらブランチごと捨てればよい。</div>
+    </li>
+    <li>
+      <i data-lucide="eye" width="20" height="20"></i>
+      <div><strong>可視化</strong> — <code>git diff</code> で「Claudeが何を変えたか」を人間が目で確認できる。盲信を防ぐ最後の砦。</div>
+    </li>
+  </ul>
+
+  <div class="info-box" style="border-left-color: #D97757;">
+    <span class="label">ここがプロの境目</span>
+    <p><strong>小さな commit を細かく積む</strong>。Claude に任せる時こそ「ここまでは動いていた」というロールバックポイントを残すのがパワーユーザーの型です。1機能 = 1コミットを死守すると、何か壊れても <code>git revert</code> 1発で戻せる。大きな変更を1コミットにまとめる癖は、Claude を使う時には最大の敵です。<br>
+    <em>試し方：</em> 次に Claude に頼む時、「各論理的ステップごとに commit を切って」と明示してみる。</p>
+  </div>
+
+  <!-- ===== Section 2: ワークフロー全体像 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 基本ワークフロー全体像</h2>
+
+  <p>Claude Code で1つの機能を追加する時、下のフローを毎回回します。最初は意識的に、慣れたら無意識に。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Claude Code × Git 標準ワークフロー</div>
+    <pre class="mermaid">
+graph TD
+  A([機能依頼を受ける]) --> B["ブランチ作成<br/>git checkout -b"]
+  B --> C[Claudeに実装依頼]
+  C --> D["git diff で<br/>変更内容レビュー"]
+  D --> E{意図通り?}
+  E -- Yes --> F["git add + commit<br/>1機能=1コミット"]
+  E -- No --> G[修正を依頼 or 破棄]
+  G --> C
+  F --> H{"他に変更<br/>必要?"}
+  H -- Yes --> C
+  H -- No --> I["git push + gh pr create"]
+  I --> J([完了])
+    </pre>
+    <div class="diagram-caption">ブランチ→実装→diff レビュー→commit→PR のループ。各ステップで人間が介入するのがポイント。</div>
+  </div>
+
+  <p>このフローの肝は <span class="term" data-tip="git diff: 現在の変更内容を差分として表示するコマンド。ステージ前はファイルとindexの差、--stagedでindexとHEADの差を見る。">diff レビュー</span> を <strong>commit 前に必ず挟む</strong>ことです。Claudeの作業結果を盲信しない。これが無いと事故が確率で起きます。</p>
+
+  <!-- ===== Section 3: ブランチ作成とコミット単位 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> ブランチ作成とコミット単位</h2>
+
+  <p><span class="term" data-tip="ブランチ: 作業ラインを枝分かれさせて、main(本線)を汚さず実験・開発できる仕組み。">ブランチ</span>を切る習慣を作ると、Claude に自由に書かせても main が守られます。命名は <code>feat/◯◯</code>, <code>fix/◯◯</code>, <code>refactor/◯◯</code> の3種類を覚えておけば十分です。</p>
+
+  <p><strong>今すぐ試す(コピペ)</strong>: 現在のリポジトリで新しいブランチを切って、Claude に小さな変更を依頼する準備を整えます。</p>
+
+<pre><code># main の最新を取得してからブランチを切る
+git checkout main
+git pull origin main
+git checkout -b feat/add-user-greeting
+
+# この状態で Claude に依頼する:
+# 「src/greet.ts に getGreeting(name) 関数を追加して。
+#  テストも同時に書いて、1機能=1コミットで commit して」</code></pre>
+
+  <h3>コミット単位の「ちょうど良い」粒度</h3>
+
+  <table>
+    <thead>
+      <tr><th>粒度</th><th>例</th><th>良い?</th><th>理由</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>細かすぎ</td><td>1行ごとに commit</td><td>×</td><td>履歴が読めない、レビュー不能</td></tr>
+      <tr><td><strong>ちょうど良い</strong></td><td>1機能 / 1バグ修正 / 1リファクタ</td><td>○</td><td>revert/cherry-pickの単位と一致</td></tr>
+      <tr><td>粗すぎ</td><td>「今日の作業」で1コミット</td><td>×</td><td>部分ロールバック不可、PRが爆発</td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-box">
+    <span class="label">Claudeへの明示</span>
+    <p>Claude は放置すると1つのでかいコミットにまとめがちです。<strong>依頼時に明示的に</strong> 「<code>関数追加 → テスト追加 → ドキュメント更新</code> の3コミットに分けて」と伝えると、その通りにやってくれます。</p>
+  </div>
+
+  <!-- ===== Section 4: diff レビューと commit メッセージ ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> diff レビューと commit メッセージ</h2>
+
+  <p>Claude が実装を終えたら、<strong>必ず自分の目で diff を見る</strong>。ここが手を抜くと、「なぜかテストが書き換わっていた」「別ファイルが消されていた」系の事故が起きます。</p>
+
+<pre><code># ステージ前の変更を見る
+git diff
+
+# ステージ済みを含めて見る
+git diff HEAD
+
+# ファイル単位で確認
+git status
+git diff src/greet.ts
+
+# 大きい変更なら名前だけ先にスキャン
+git diff --stat</code></pre>
+
+  <h3>commit メッセージは Claude に書かせる</h3>
+
+  <p>commit メッセージを考えるのは意外と面倒。Claude に任せましょう。<strong>コツは「diffを見せて、決まった形式で書いて」と頼む</strong>ことです。</p>
+
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">Before</span>
+      <h4>ベタな依頼</h4>
+      <ul>
+        <li>「commitして」</li>
+        <li>メッセージが <code>update</code> など無意味</li>
+        <li>履歴を辿れない</li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">After</span>
+      <h4>型を伝える依頼</h4>
+      <ul>
+        <li>「<code>git diff</code>を確認して、Conventional Commits 形式で日本語 commit メッセージを作って。<br>形式: <code>feat(greet): メッセージ</code>」</li>
+        <li>意図・範囲が明確な履歴</li>
+        <li>PR作成時にそのまま流用可</li>
+      </ul>
+    </div>
+  </div>
+
+  <p><span class="term" data-tip="Conventional Commits: feat/fix/docs/refactor/test/chore のprefix で commit 種別を明示する慣習。gh や 各種ツールと相性が良い。">Conventional Commits</span> の型:</p>
+
+  <div class="kv-grid">
+    <div class="kv"><div class="kv-key">feat</div><div class="kv-val">新機能追加</div></div>
+    <div class="kv"><div class="kv-key">fix</div><div class="kv-val">バグ修正</div></div>
+    <div class="kv"><div class="kv-key">refactor</div><div class="kv-val">挙動変えずに構造改善</div></div>
+    <div class="kv"><div class="kv-key">test</div><div class="kv-val">テスト追加/修正</div></div>
+    <div class="kv"><div class="kv-key">docs</div><div class="kv-val">ドキュメント</div></div>
+    <div class="kv"><div class="kv-key">chore</div><div class="kv-val">雑務・設定</div></div>
+  </div>
+
+  <p>Claude への具体的な頼み方例(コピペ):</p>
+
+<pre><code>以下の git diff を見て、Conventional Commits 形式で
+commit メッセージを1つ作ってください。
+
+制約:
+- 日本語。1行目は50文字以内、2行目以降は必要なら空行+詳細
+- prefix: feat / fix / refactor / test / docs / chore
+- scope は src 配下の主要ディレクトリ名
+- 変更の「何を」「なぜ」を含める(「どう」は書かない)
+
+```diff
+$(git diff --staged)
+```</code></pre>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section 5: PR作成 (gh pr create) ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> PR作成 — gh pr create を使い倒す</h2>
+
+  <p><span class="term" data-tip="gh: GitHub公式のCLIツール。PR作成、Issue操作、レビューをターミナルから完結できる。brew install gh でインストール。">gh CLI</span> を使えば、PR 作成をターミナルから一発でできます。ブラウザを開かない分、Claude と対話している流れを止めません。</p>
+
+  <p><strong>今すぐ試す</strong>:</p>
+
+<pre><code># ブランチをリモートに push
+git push -u origin feat/add-user-greeting
+
+# PR作成(タイトルと本文をコマンドライン指定)
+gh pr create \
+  --title "feat(greet): getGreeting関数を追加" \
+  --body "$(cat <<'EOF'
+## Summary
+- src/greet.ts に getGreeting(name) を追加
+- 対応するテストを tests/greet.test.ts に追加
+
+## Test plan
+- [ ] npm test が全パス
+- [ ] 空文字入力で 'Hello, !' にならないこと
+EOF
+)"
+
+# ブラウザで確認したい時
+gh pr view --web</code></pre>
+
+  <div class="info-box">
+    <span class="label">公式ドキュメント必読</span>
+    <p><code>gh pr create</code> は <code>--draft</code>/<code>--reviewer</code>/<code>--label</code>/<code>--base</code> など多数のフラグを持ちます。ここは公式ドキュメントで一度通読しておくと、以後の作業効率が段違い。<a href="https://cli.github.com/manual/gh_pr_create" target="_blank" rel="noopener">gh pr create 公式マニュアル →</a></p>
+  </div>
+
+  <h3>Claude に PR 本文も書かせる</h3>
+
+  <p>コミットメッセージと同じ要領で、PR 本文も Claude に書かせます。<strong>複数コミットをまとめるPRなら <code>git log</code> を渡して要約</strong>させるのが定石:</p>
+
+<pre><code>以下の commit 群から PR 本文を Markdown で作ってください。
+
+セクション:
+## Summary (3-5行、何をしたか)
+## Why (なぜ必要か)
+## Test plan (チェックボックス形式)
+## Notes (レビュアーへの申し送り。なければ省略)
+
+```
+$(git log main..HEAD --oneline)
+```</code></pre>
+
+  <details class="more-box">
+    <summary>もっと詳しく: PR テンプレートを <code>.github/PULL_REQUEST_TEMPLATE.md</code> で固定する</summary>
+    <div class="more-body">
+      <p>リポジトリ直下に <code>.github/PULL_REQUEST_TEMPLATE.md</code> を置くと、<code>gh pr create</code> 時に自動で本文がプリセットされます。チームで形式を揃えたい時、あるいは自分の脳内テンプレを外出ししたい時に便利:</p>
+<pre><code># .github/PULL_REQUEST_TEMPLATE.md
+## Summary
+&lt;!-- 変更の概要 3-5行 --&gt;
+
+## Why
+&lt;!-- なぜ必要か --&gt;
+
+## Test plan
+- [ ] npm test 全パス
+- [ ] 手動動作確認
+
+## Notes
+&lt;!-- レビュアー向け補足(あれば) --&gt;</code></pre>
+      <p>Claude に「このテンプレに沿って埋めて」と頼めば、ブレのない PR が量産できます。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 6: ロールバック ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 失敗 commit の戻し方 — 3つの道具</h2>
+
+  <p>Claude が変なコードを commit した。あるいは自分が「これでOK」と commit した後に気づいた。そんな時、道具は3つあります。<strong>状況によって使い分け</strong>るのが肝心です。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">ロールバック判断フロー</div>
+    <pre class="mermaid">
+graph TD
+  S([戻したい]) --> Q1{"push 済み?"}
+  Q1 -- No --> Q2{"直前の<br/>commit?"}
+  Q1 -- Yes --> REV["git revert<br/>(新しいcommitで打消し)"]
+  Q2 -- Yes --> AMEND["git commit --amend<br/>or git reset --soft HEAD~"]
+  Q2 -- No --> RESET["git reset HEAD~N<br/>(慎重に)"]
+  REV --> DONE([完了])
+  AMEND --> DONE
+  RESET --> DONE
+    </pre>
+    <div class="diagram-caption">push済みなら revert 一択。ローカルだけなら reset か amend。</div>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>コマンド</th><th>何が起きる</th><th>使う場面</th><th>注意</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>git commit --amend</code></td><td>直前の commit を上書き</td><td>メッセージ誤り / ファイル漏れ(未push)</td><td>push済みは不可</td></tr>
+      <tr><td><code>git reset --soft HEAD~1</code></td><td>commit を取消し、変更は staged で残る</td><td>直前 commit を作り直したい</td><td>ローカルのみ</td></tr>
+      <tr><td><code>git reset --hard HEAD~1</code></td><td>commit と変更を完全削除</td><td>捨てたい(危険!)</td><td>作業消失、<span class="term" data-tip="reflog: HEADの移動履歴。reset --hardしても直近の操作はreflogから復旧可能。git reflog で見られる。">reflog</span>で復旧可</td></tr>
+      <tr><td><code>git revert &lt;sha&gt;</code></td><td>打消し commit を新規作成</td><td>push済み / チーム開発時</td><td>履歴が汚れず安全</td></tr>
+    </tbody>
+  </table>
+
+  <p><strong>今すぐ試す(安全なシナリオ)</strong>: 直前の commit を取消して、やり直す:</p>
+
+<pre><code># シナリオ1: メッセージを直したいだけ
+git commit --amend -m "feat(greet): getGreeting関数を追加（改訂版）"
+
+# シナリオ2: ファイルを追加し忘れた
+git add forgotten.ts
+git commit --amend --no-edit
+
+# シナリオ3: commitを取消してやり直したい(未push)
+git reset --soft HEAD~1   # 変更はstagingに残る
+# → ここでファイルを直すなり再編成するなり
+git commit -m "fix: ..."
+
+# シナリオ4: push済みを打消したい
+git revert &lt;commit-sha&gt;
+git push</code></pre>
+
+  <div class="info-box" style="border-left-color: #dc2626;">
+    <span class="label">危険: reset --hard と force push</span>
+    <p><code>git reset --hard</code> は <strong>未コミットの変更まで消します</strong>。実行前に必ず <code>git status</code> で確認。また push 済みブランチでの <code>git push --force</code> は他の人の作業を消す可能性があります。チーム開発では <code>git revert</code> を選択するのが安全です。</p>
+  </div>
+
+  <h3>Claude に戻させるときの頼み方</h3>
+
+  <p>Claude に「直前の commit を取消して、内容を見直してからやり直して」と頼むと、<code>git reset --soft HEAD~1</code> + 再 commit の流れを自動で組んでくれます。<strong>ただし push 済みかどうかは Claude は分からない</strong>ので、自分で状態を伝えるのがコツ:</p>
+
+<pre><code>直前の commit を取消したい。
+- 状態: まだ push していない、ローカルのみ
+- 目的: テストが弱い(境界値を見ていない)ので追加してから commit し直したい
+- 制約: reset --hard は使わない(変更内容は保持したい)
+
+上の条件で戻してから、テストを追加し、再度 commit してください。</code></pre>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section 7: パワーユーザーの1日フロー ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> パワーユーザーの1日フロー</h2>
+
+  <p>ここまでを自然に回せるようになった時の、典型的な1日のリズムです。</p>
+
+  <div class="steps">
+    <div class="step done"><div class="step-num">1</div><div class="step-label">朝</div><div class="step-desc">main を pull、ブランチを切る</div></div>
+    <div class="step done"><div class="step-num">2</div><div class="step-label">午前</div><div class="step-desc">小機能単位で Claude に依頼 → diff レビュー → commit。2-3サイクル。</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-label">午後</div><div class="step-desc">テスト/動作確認 → 追加 commit → push → gh pr create</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-label">夕</div><div class="step-desc">レビュー対応 → 追加 commit → merge</div></div>
+  </div>
+
+  <p>1日で小さな PR を 1-3本 出すのがパワーユーザーの標準ペースです。大きな PR を週1本出すより、学習速度もレビューの質も圧倒的に高い。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">コミット粒度ごとの「戻しやすさ」</div>
+    <canvas id="ch7-bar-1" height="140"></canvas>
+  </div>
+  <script>
+  window.addEventListener("load", function() {
+    var ctx = document.getElementById('ch7-bar-1');
+    if (!ctx || !window.Chart) return;
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['1行ごと(過剰)', '1機能=1コミット(理想)', '1日1コミット(粗)', '1週間1コミット(論外)'],
+        datasets: [{
+          label: '戻しやすさスコア(10点満点)',
+          data: [6, 10, 3, 1],
+          backgroundColor: ['#fde6d7', '#D97757', '#fde6d7', '#fde6d7'],
+          borderRadius: 6
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        plugins: { legend: { display: false } },
+        scales: { x: { beginAtZero: true, max: 10 } }
+      }
+    });
+  });
+  </script>
+
+  <details class="more-box">
+    <summary>もっと詳しく: <code>git add -p</code> で「部分的にステージ」を覚える</summary>
+    <div class="more-body">
+      <p>1ファイルに複数の論理的変更が混ざった時、<code>git add -p</code>(patch mode)を使うと、hunk 単位で stage するかを選べます:</p>
+<pre><code>git add -p src/greet.ts
+# y (yes, stage this hunk)
+# n (no, skip)
+# s (split into smaller hunks)
+# q (quit)</code></pre>
+      <p>これで「このhunkは commit A に、あのhunkは commit B に」と分けられます。Claude がまとめて書いた変更を<strong>人間が後から分割する</strong>武器です。上位20%ユーザーは頻繁に使います。</p>
+    </div>
+  </details>
+
+  <details class="more-box">
+    <summary>もっと詳しく: CLAUDE.md に Git ルールを書く</summary>
+    <div class="more-body">
+      <p>Ch06 で学んだ CLAUDE.md に、以下のような Git ルールを追加しておくと、毎回指示する手間が消えます:</p>
+<pre><code># CLAUDE.md 抜粋
+
+## Git ルール
+- 1機能 = 1コミットを厳守
+- commit メッセージは Conventional Commits 形式、日本語
+- push 前に必ず diff を見せて、ユーザ確認を取る
+- reset --hard, push --force は提案しない(明示依頼時のみ)
+- PR 本文は Summary / Why / Test plan の3節</code></pre>
+      <p>これだけで毎セッションの指示量が半減します。</p>
+    </div>
+  </details>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===================== Exercises ===================== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Exercise — 手を動かして定着させる</h2>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>小さな機能を1コミットで PR まで出す</h4>
+    <p>手元の任意の Git リポジトリで、以下を最初から最後まで通してやってみましょう。</p>
+    <ol>
+      <li><code>main</code> を pull してから <code>feat/hello-claude</code> ブランチを作る</li>
+      <li>Claude Code に「<code>README.md</code> の末尾に『Built with Claude Code』の1行を追加して」と依頼</li>
+      <li><code>git diff</code> で変更内容を自分の目で確認する</li>
+      <li>Claude に「Conventional Commits 形式で日本語 commit メッセージを作って commit して」と頼む</li>
+      <li><code>git push -u origin feat/hello-claude</code></li>
+      <li><code>gh pr create</code> で PR を作る(Summary / Test plan を含める)</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>実際のコマンド列:</p>
+<pre><code>git checkout main && git pull origin main
+git checkout -b feat/hello-claude
+
+# Claude に依頼: 「README.md の末尾に 'Built with Claude Code' を追加して」
+# 変更後:
+git diff
+# → +Built with Claude Code が見えればOK
+
+# Claude に依頼: 「git diff を確認して、Conventional Commits 形式の
+# 日本語 commit メッセージで commit して」
+# → Claude が git add README.md && git commit -m "docs: READMEにクレジットを追記" を実行
+
+git push -u origin feat/hello-claude
+gh pr create --title "docs: READMEにクレジットを追記" --body "$(cat <<'EOF'
+## Summary
+- README.md 末尾に 'Built with Claude Code' を追加
+
+## Test plan
+- [ ] プレビューで表示確認
+EOF
+)"</code></pre>
+      <p>ポイント: 各ステップで「自分が次に何をすべきか」を意識すること。特に <code>git diff</code> のレビューを飛ばさないこと。これが今後の事故率に直結します。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>「しくじった commit」を3通りの方法で戻す</h4>
+    <p>失敗シナリオを自分で作り、3つのロールバック方法を1つのブランチで試します。</p>
+    <ol>
+      <li>実験用ブランチ <code>practice/rollback</code> を作る</li>
+      <li>ダミーファイル <code>sample.txt</code> を作り、「bad commit」というメッセージで commit する(ファイル内容は適当に3行)</li>
+      <li>未push状態で <code>git commit --amend -m "fix: メッセージ修正"</code> を試す</li>
+      <li>さらに commit を重ねた後、<code>git reset --soft HEAD~1</code> で戻して、再 commit</li>
+      <li>最後に push してから、<strong>直前の commit を <code>git revert</code> で打消す</strong>新しい commit を作る</li>
+      <li>各ステップで <code>git log --oneline</code> を確認し、履歴がどう変化したかメモする</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>全工程のコマンド例:</p>
+<pre><code># 準備
+git checkout -b practice/rollback
+echo -e "line1\nline2\nline3" > sample.txt
+git add sample.txt
+git commit -m "bad commit"
+git log --oneline   # bad commit が1つ見える
+
+# [1] amend でメッセージ修正
+git commit --amend -m "fix: メッセージ修正"
+git log --oneline   # メッセージだけ変わる(SHAは変化)
+
+# [2] もう1コミット重ねる
+echo "line4" >> sample.txt
+git add sample.txt && git commit -m "add line4"
+
+# [3] soft reset で直前を取消、再commit
+git reset --soft HEAD~1
+git status   # line4の変更が staged に戻っている
+git commit -m "feat: sample.txt に4行目を追加"
+
+# [4] push してから revert
+git push -u origin practice/rollback
+git revert HEAD --no-edit
+git push
+git log --oneline   # 打消しcommitが1つ追加されているのが見える</code></pre>
+      <p><strong>学びのポイント</strong>: <code>amend</code> と <code>reset --soft</code> はSHAを書き換える(履歴改変)。push済みなら <code>revert</code> 一択で新しい commit を積む。<span class="term" data-tip="SHA: commit を一意に識別する40文字のハッシュ値。短縮形は先頭7文字。">SHA</span> の変化を <code>git log --oneline</code> で確認する習慣が付けば、一人前です。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式ドキュメント</a> <span class="res-type doc">Doc</span> — 全体像と最新仕様</li>
+      <li><a href="https://cli.github.com/manual/" target="_blank" rel="noopener">gh CLI 公式マニュアル</a> <span class="res-type doc">Doc</span> — <code>gh pr create</code> の全オプション</li>
+      <li><a href="https://git-scm.com/docs/git-revert" target="_blank" rel="noopener">git revert 公式ドキュメント</a> <span class="res-type doc">Doc</span> — 安全なロールバック</li>
+      <li><a href="https://www.conventionalcommits.org/ja/v1.0.0/" target="_blank" rel="noopener">Conventional Commits 日本語仕様</a> <span class="res-type doc">Doc</span> — コミットメッセージの型</li>
+      <li><a href="https://docs.github.com/ja/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests" target="_blank" rel="noopener">GitHub PR 公式ガイド</a> <span class="res-type doc">Doc</span> — PR の基本作法</li>
+      <li><a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener">Claude Code GitHub</a> <span class="res-type doc">Doc</span> — Issue や 実例</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="07">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="06-claude-md.html"><span class="direction">&larr; Prev</span>CLAUDE.md</a>
+    <a href="08-prompt-patterns.html"><span class="direction">Next &rarr;</span>プロンプト設計の型</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<!-- 視覚化ライブラリ群 -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>

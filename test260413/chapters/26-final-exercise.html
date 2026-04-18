@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>最終演習：自社業務を1つClaude Code化 - MK's Claude Code Tutorial</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code Tutorial
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="../index.html#phase3" data-nav><span class="phase-name">Advanced</span><span class="phase-pct" id="pct-advanced">0%</span></a></li>
+      <li><a href="../index.html#phase4" data-nav class="active"><span class="phase-name">Projects</span><span class="phase-pct" id="pct-projects">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.26</span>
+    最終演習：自社業務を1つClaude Code化
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 26 sections</text>
+    </svg>
+    <div class="progress-info">0h / 24h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-welcome.html"><span class="status-dot" data-chapter="01"></span> ようこそ&セットアップ</a></li>
+    <li><a href="02-communication-basics.html"><span class="status-dot" data-chapter="02"></span> 対話の原則</a></li>
+    <li><a href="03-file-tools.html"><span class="status-dot" data-chapter="03"></span> ファイル操作ツール</a></li>
+    <li><a href="04-bash-safety.html"><span class="status-dot" data-chapter="04"></span> Bashツールと安全</a></li>
+    <li><a href="05-todo-management.html"><span class="status-dot" data-chapter="05"></span> TodoWriteで作業管理</a></li>
+    <li><a href="06-claude-md.html"><span class="status-dot" data-chapter="06"></span> CLAUDE.md</a></li>
+    <li><a href="07-git-workflow.html"><span class="status-dot" data-chapter="07"></span> Git × Claude Code</a></li>
+  </ul>
+  <div class="section-label">Core</div>
+  <ul>
+    <li><a href="08-prompt-patterns.html"><span class="status-dot" data-chapter="08"></span> プロンプト設計の型</a></li>
+    <li><a href="09-code-review.html"><span class="status-dot" data-chapter="09"></span> コードレビュー依頼</a></li>
+    <li><a href="10-refactor-workflow.html"><span class="status-dot" data-chapter="10"></span> 改修ワークフロー</a></li>
+    <li><a href="11-tdd-with-claude.html"><span class="status-dot" data-chapter="11"></span> テスト駆動</a></li>
+    <li><a href="12-debugging.html"><span class="status-dot" data-chapter="12"></span> デバッグ</a></li>
+    <li><a href="13-plan-mode.html"><span class="status-dot" data-chapter="13"></span> Planモード</a></li>
+    <li><a href="14-context-management.html"><span class="status-dot" data-chapter="14"></span> コンテキスト管理</a></li>
+    <li><a href="15-web-tools.html"><span class="status-dot" data-chapter="15"></span> Web検索・取得</a></li>
+  </ul>
+  <div class="section-label">Advanced</div>
+  <ul>
+    <li><a href="16-subagents-overview.html"><span class="status-dot" data-chapter="16"></span> Subagents</a></li>
+    <li><a href="17-mcp-overview.html"><span class="status-dot" data-chapter="17"></span> MCP</a></li>
+    <li><a href="18-hooks-overview.html"><span class="status-dot" data-chapter="18"></span> Hooks</a></li>
+    <li><a href="19-schedule-loop.html"><span class="status-dot" data-chapter="19"></span> Schedule &amp; Loop</a></li>
+    <li><a href="20-skills-overview.html"><span class="status-dot" data-chapter="20"></span> Skills</a></li>
+    <li><a href="21-worktree.html"><span class="status-dot" data-chapter="21"></span> worktree</a></li>
+    <li><a href="22-pitfalls.html"><span class="status-dot" data-chapter="22"></span> 失敗パターン10</a></li>
+  </ul>
+  <div class="section-label">Projects</div>
+  <ul>
+    <li><a href="23-project-automation.html"><span class="status-dot" data-chapter="23"></span> Project A：業務自動化</a></li>
+    <li><a href="24-project-refactor.html"><span class="status-dot" data-chapter="24"></span> Project B：リファクタ</a></li>
+    <li><a href="25-project-webapp.html"><span class="status-dot" data-chapter="25"></span> Project C：Webアプリ</a></li>
+    <li><a href="26-final-exercise.html" class="active"><span class="status-dot" data-chapter="26"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 4: Projects &gt; Chapter 26</div>
+  <h1>最終演習：自社業務を1つClaude Code化</h1>
+  <p class="subtitle">24時間の学びを統合し、自分の会社の業務を1つ動くSkillに変える — それがマスターへの道</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 90分</span>
+    <span class="badge">Phase: Projects</span>
+    <span class="badge">難易度: 応用 (最終章)</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">Note</span>
+    <p>本章の記述は <strong>2026年1月時点</strong>の Claude Code / Agent SDK / Skills / Hooks / MCP / Scheduled Tasks の仕様に基づきます。パラメータ名・設定ファイル名は変わる可能性があります。運用導入前に必ず <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">公式ドキュメント</a>で最新を確認してください。</p>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- Section 1: 24時間の学びを「1つの成果物」に束ねる -->
+  <!-- ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 24時間の学びを「1つの成果物」に束ねる</h2>
+
+  <p>ここまで25章・24時間の旅を走ってきました。対話の原則、ファイル操作、Git連携、プロンプト設計、コードレビュー、リファクタ、TDD、Planモード、Subagents、<span class="term" data-tip="Model Context Protocol。Claude Code が主戦場ツール(GitHub/Slack/Driveなど)と繋がる共通プロトコル。Ch17で扱った。">MCP</span>、Hooks、Scheduled Tasks、Skills、worktree、そして3つのプロジェクト。これが最後の章です。</p>
+
+  <p>最終演習のゴールはシンプルで大きい:<br>
+  <strong>自分の会社(または日常)の業務を1つ選び、Claude Code 化された動く状態にし、チーム共有方法まで設計する</strong>。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span></p>
+
+  <div class="info-box" style="border-left-color: #D97757;">
+    <span class="label">ここがプロの境目</span>
+    <p><strong>学んだ全てを統合して1つ作る — それがマスターへの道</strong>。読むだけの24時間と、成果物1つを出した24時間は、別物の経験になる。断片的な知識は1週間で忘れるが、自分の業務に刺さった <span class="term" data-tip="SKILL.md + 補助スクリプト + 参照ドキュメントをひとまとめにした再利用可能なワークフロー単位。Ch20で扱った。">Skill</span> は10年使える。<br>
+    <em>試し方：</em> 今日の自分の作業ログから「3回以上やった仕事」を1つだけ選び、この章の演習を最後まで進めてみる。</p>
+  </div>
+
+  <!-- 24時間 → 1つの成果物 への収束図 -->
+  <div class="diagram-box">
+    <div class="diagram-title">24時間の学びが「自社業務1つのSkill」に収束する</div>
+    <svg viewBox="0 0 760 360" width="100%" style="max-width:760px; display:block; margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0" y="0" width="760" height="360" rx="12" fill="#fafafa" stroke="#e4e4e7"/>
+      <text x="380" y="28" text-anchor="middle" font-size="13" font-weight="700" fill="#18181b">4フェーズ × 25章の知識が 1つの運用可能な成果物に束ねられる</text>
+
+      <!-- Basics -->
+      <rect x="30" y="55" width="165" height="110" rx="8" fill="rgba(217,119,87,0.15)" stroke="#D97757"/>
+      <text x="112" y="78" text-anchor="middle" font-size="12" font-weight="700" fill="#D97757">Basics (Ch01-07)</text>
+      <text x="112" y="98" text-anchor="middle" font-size="10" fill="#52525b">対話 / Read/Grep</text>
+      <text x="112" y="114" text-anchor="middle" font-size="10" fill="#52525b">Bash安全 / TodoWrite</text>
+      <text x="112" y="130" text-anchor="middle" font-size="10" fill="#52525b">CLAUDE.md / Git</text>
+      <text x="112" y="152" text-anchor="middle" font-size="10" fill="#D97757">→ 土台の操作</text>
+
+      <!-- Core -->
+      <rect x="210" y="55" width="165" height="110" rx="8" fill="rgba(217,119,87,0.15)" stroke="#D97757"/>
+      <text x="292" y="78" text-anchor="middle" font-size="12" font-weight="700" fill="#D97757">Core (Ch08-15)</text>
+      <text x="292" y="98" text-anchor="middle" font-size="10" fill="#52525b">プロンプト型 / レビュー</text>
+      <text x="292" y="114" text-anchor="middle" font-size="10" fill="#52525b">リファクタ / TDD / Debug</text>
+      <text x="292" y="130" text-anchor="middle" font-size="10" fill="#52525b">Plan / context / Web</text>
+      <text x="292" y="152" text-anchor="middle" font-size="10" fill="#D97757">→ 依頼品質</text>
+
+      <!-- Advanced -->
+      <rect x="390" y="55" width="165" height="110" rx="8" fill="rgba(217,119,87,0.15)" stroke="#D97757"/>
+      <text x="472" y="78" text-anchor="middle" font-size="12" font-weight="700" fill="#D97757">Advanced (Ch16-22)</text>
+      <text x="472" y="98" text-anchor="middle" font-size="10" fill="#52525b">Subagents / MCP</text>
+      <text x="472" y="114" text-anchor="middle" font-size="10" fill="#52525b">Hooks / Schedule&amp;Loop</text>
+      <text x="472" y="130" text-anchor="middle" font-size="10" fill="#52525b">Skills / worktree / 失敗</text>
+      <text x="472" y="152" text-anchor="middle" font-size="10" fill="#D97757">→ 自動化の道具</text>
+
+      <!-- Projects -->
+      <rect x="570" y="55" width="165" height="110" rx="8" fill="rgba(217,119,87,0.15)" stroke="#D97757"/>
+      <text x="652" y="78" text-anchor="middle" font-size="12" font-weight="700" fill="#D97757">Projects (Ch23-25)</text>
+      <text x="652" y="98" text-anchor="middle" font-size="10" fill="#52525b">A: 業務自動化</text>
+      <text x="652" y="114" text-anchor="middle" font-size="10" fill="#52525b">B: 大規模リファクタ</text>
+      <text x="652" y="130" text-anchor="middle" font-size="10" fill="#52525b">C: Webアプリ公開</text>
+      <text x="652" y="152" text-anchor="middle" font-size="10" fill="#D97757">→ 統合ハンズオン</text>
+
+      <!-- 矢印(4つとも下へ) -->
+      <line x1="112" y1="170" x2="380" y2="240" stroke="#D97757" stroke-width="1.5"/>
+      <line x1="292" y1="170" x2="380" y2="240" stroke="#D97757" stroke-width="1.5"/>
+      <line x1="472" y1="170" x2="380" y2="240" stroke="#D97757" stroke-width="1.5"/>
+      <line x1="652" y1="170" x2="380" y2="240" stroke="#D97757" stroke-width="1.5"/>
+
+      <!-- 収束点: 最終成果物 -->
+      <rect x="170" y="240" width="420" height="100" rx="10" fill="#ffffff" stroke="#18181b" stroke-width="1.8"/>
+      <text x="380" y="266" text-anchor="middle" font-size="14" font-weight="700" fill="#18181b">あなたの自社業務 Claude Code Skill</text>
+      <text x="380" y="286" text-anchor="middle" font-size="10" fill="#52525b">SKILL.md + 補助スクリプト + Hook / Schedule / MCP 連携</text>
+      <text x="380" y="302" text-anchor="middle" font-size="10" fill="#52525b">Git リポジトリで配布 / チーム全員が同じ動作を再現できる</text>
+      <text x="380" y="322" text-anchor="middle" font-size="10" fill="#D97757">— 24時間の学びが、業務の形を変える —</text>
+    </svg>
+    <div class="diagram-caption">25章の知識は単独では使わない。1つの業務に全部束ねてこそ、パワーユーザーの仕事になる。</div>
+  </div>
+
+  <h3>本演習の進め方(90分)</h3>
+
+  <div class="steps">
+    <div class="step done"><div class="step-num">1</div><div class="step-label">業務選定</div><div class="step-desc">10分</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-label">形式判定</div><div class="step-desc">10分</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-label">設計</div><div class="step-desc">15分</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-label">実装</div><div class="step-desc">35分</div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-label">検証&amp;共有設計</div><div class="step-desc">20分</div></div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- Section 2: 問題提示 -->
+  <!-- ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 問題提示: 自社業務を1つ Claude Code 化する</h2>
+
+  <p>あなたの会社・チームの業務から<strong>1つだけ</strong>選び、以下の4点セットを揃えてください。このチュートリアルの総決算です。</p>
+
+  <h3>前提条件</h3>
+
+  <table>
+    <thead>
+      <tr><th>項目</th><th>内容</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>対象者</td><td>Ch01-25 を一通り触った人(触ってないものが3つ以下)</td></tr>
+      <tr><td>期間</td><td>90分(設計+実装+検証+共有設計を含む)</td></tr>
+      <tr><td>個数</td><td><span class="term" data-tip="欲張らず1つに絞る。2つ以上だと90分では完成しない。この章は「完成して動かす」が最優先。">1つ</span>(絶対に欲張らない)</td></tr>
+      <tr><td>選定基準</td><td>週1回以上発生 / 繰り返し / 属人性が痛い / 時間かコストが痛い</td></tr>
+      <tr><td>形式</td><td>Skill / Hook / Subagent / Scheduled Task のいずれか(複数組み合わせも可)</td></tr>
+      <tr><td>動作要件</td><td>コマンド1行または1イベントで<strong>実際に動く</strong>状態(スライドだけは不可)</td></tr>
+      <tr><td>共有要件</td><td>チームの他の人が同じ手順で再現できる配布方法を設計</td></tr>
+      <tr><td>検証環境</td><td>Claude Code CLI (<span class="term" data-tip="2026年1月時点。最新は公式ドキュメント参照。">2026年1月時点</span>)</td></tr>
+    </tbody>
+  </table>
+
+  <h3>求めるアウトプット (4点セット)</h3>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="clipboard-list" width="20" height="20"></i>
+      <div><strong>業務選定メモ</strong> — 10候補の棚卸しマトリクス(頻度×時間×属人性)から1つに絞った判断</div>
+    </li>
+    <li>
+      <i data-lucide="layers" width="20" height="20"></i>
+      <div><strong>形式判定と設計</strong> — Skill/Hook/Subagent/Schedule のどれか、理由、設計メモ</div>
+    </li>
+    <li>
+      <i data-lucide="play-circle" width="20" height="20"></i>
+      <div><strong>動く実装</strong> — SKILL.md など実ファイル + 1回以上実行した実行ログ or スクリーンショット</div>
+    </li>
+    <li>
+      <i data-lucide="users" width="20" height="20"></i>
+      <div><strong>チーム共有方法</strong> — リポジトリURL or 社内配布手順 + 効果測定指標の決定</div>
+    </li>
+  </ul>
+
+  <!-- 業務棚卸しマトリクスSVG(頻度×時間×属人性) -->
+  <div class="diagram-box">
+    <div class="diagram-title">業務選定の3軸マトリクス(頻度 × 時間 × 属人性)</div>
+    <svg viewBox="0 0 720 420" width="100%" style="max-width:720px; display:block; margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0" y="0" width="720" height="420" rx="12" fill="#fafafa" stroke="#e4e4e7"/>
+      <text x="360" y="28" text-anchor="middle" font-size="13" font-weight="700" fill="#18181b">横軸=頻度 / 縦軸=1回あたり時間 / 円サイズ=属人性</text>
+
+      <!-- 軸 -->
+      <line x1="80" y1="360" x2="680" y2="360" stroke="#18181b" stroke-width="1.2"/>
+      <line x1="80" y1="60" x2="80" y2="360" stroke="#18181b" stroke-width="1.2"/>
+      <text x="680" y="380" text-anchor="end" font-size="11" fill="#52525b">頻度(週あたり) →</text>
+      <text x="60" y="65" text-anchor="end" font-size="11" fill="#52525b">時間(分)</text>
+
+      <!-- 目盛 -->
+      <text x="80" y="378" text-anchor="middle" font-size="10" fill="#71717a">0</text>
+      <text x="230" y="378" text-anchor="middle" font-size="10" fill="#71717a">2</text>
+      <text x="380" y="378" text-anchor="middle" font-size="10" fill="#71717a">5</text>
+      <text x="530" y="378" text-anchor="middle" font-size="10" fill="#71717a">10</text>
+      <text x="680" y="378" text-anchor="middle" font-size="10" fill="#71717a">20+</text>
+      <text x="72" y="364" text-anchor="end" font-size="10" fill="#71717a">0</text>
+      <text x="72" y="280" text-anchor="end" font-size="10" fill="#71717a">30</text>
+      <text x="72" y="200" text-anchor="end" font-size="10" fill="#71717a">60</text>
+      <text x="72" y="120" text-anchor="end" font-size="10" fill="#71717a">120</text>
+
+      <!-- 理想ゾーン(上位20%) -->
+      <rect x="380" y="60" width="300" height="200" rx="8" fill="rgba(217,119,87,0.12)" stroke="#D97757" stroke-dasharray="4 4"/>
+      <text x="530" y="82" text-anchor="middle" font-size="11" font-weight="700" fill="#D97757">高頻度×高時間×高属人性 = 最優先ゾーン</text>
+
+      <!-- 業務プロット(円: cx, cy, r=属人性) -->
+      <!-- 毎朝のIssue整理 -->
+      <circle cx="540" cy="220" r="22" fill="#D97757" fill-opacity="0.75" stroke="#D97757"/>
+      <text x="540" y="224" text-anchor="middle" font-size="10" fill="#fff" font-weight="700">A</text>
+      <text x="540" y="195" text-anchor="middle" font-size="9" fill="#18181b">毎朝Issue整理</text>
+      <!-- PRサマリ投稿 -->
+      <circle cx="490" cy="290" r="16" fill="#D97757" fill-opacity="0.6" stroke="#D97757"/>
+      <text x="490" y="293" text-anchor="middle" font-size="10" fill="#fff" font-weight="700">B</text>
+      <text x="490" y="270" text-anchor="middle" font-size="9" fill="#18181b">PRサマリ投稿</text>
+      <!-- 議事録整形 -->
+      <circle cx="390" cy="180" r="18" fill="#D97757" fill-opacity="0.6" stroke="#D97757"/>
+      <text x="390" y="183" text-anchor="middle" font-size="10" fill="#fff" font-weight="700">C</text>
+      <text x="390" y="158" text-anchor="middle" font-size="9" fill="#18181b">議事録整形</text>
+      <!-- 週報作成 -->
+      <circle cx="250" cy="140" r="20" fill="#a3a3a3" fill-opacity="0.5" stroke="#a3a3a3"/>
+      <text x="250" y="143" text-anchor="middle" font-size="10" fill="#fff" font-weight="700">D</text>
+      <text x="250" y="115" text-anchor="middle" font-size="9" fill="#18181b">週報作成</text>
+      <!-- CIログ解析 -->
+      <circle cx="300" cy="320" r="10" fill="#a3a3a3" fill-opacity="0.45" stroke="#a3a3a3"/>
+      <text x="300" y="323" text-anchor="middle" font-size="10" fill="#fff" font-weight="700">E</text>
+      <text x="300" y="305" text-anchor="middle" font-size="9" fill="#18181b">CIログ解析</text>
+      <!-- 契約書チェック -->
+      <circle cx="150" cy="100" r="14" fill="#a3a3a3" fill-opacity="0.45" stroke="#a3a3a3"/>
+      <text x="150" y="103" text-anchor="middle" font-size="10" fill="#fff" font-weight="700">F</text>
+      <text x="150" y="85" text-anchor="middle" font-size="9" fill="#18181b">契約書チェック</text>
+      <!-- メールトリアージ -->
+      <circle cx="620" cy="315" r="14" fill="#D97757" fill-opacity="0.55" stroke="#D97757"/>
+      <text x="620" y="318" text-anchor="middle" font-size="10" fill="#fff" font-weight="700">G</text>
+      <text x="620" y="295" text-anchor="middle" font-size="9" fill="#18181b">メール仕分け</text>
+
+      <!-- 凡例 -->
+      <circle cx="130" cy="395" r="10" fill="#D97757" fill-opacity="0.7" stroke="#D97757"/>
+      <text x="148" y="399" font-size="10" fill="#52525b">属人性が高い</text>
+      <circle cx="260" cy="395" r="6" fill="#a3a3a3" fill-opacity="0.5" stroke="#a3a3a3"/>
+      <text x="272" y="399" font-size="10" fill="#52525b">属人性が低い</text>
+      <text x="380" y="399" font-size="10" fill="#D97757">破線の四角=採用候補ゾーン</text>
+    </svg>
+    <div class="diagram-caption">Aの「毎朝のIssue整理」は高頻度・中時間・中属人性で、今回の模範解答のテーマ。自分の業務もこの図にプロットしてみる。</div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- Section 3: 段階ヒント (5つ) -->
+  <!-- ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 段階ヒント(詰まったら順に開く)</h2>
+
+  <p>いきなり全部開くと「答え写し」になります。まず自分の業務で5分考え、詰まったヒントだけ開いてください。5つのヒントは <strong>業務選定 → 形式判定 → 設計 → 共有 → 測定</strong> の順です。</p>
+
+  <details class="more-box">
+    <summary>もっと詳しく: ヒント1 — 業務選定(繰り返し頻度 × 時間 × 属人性)</summary>
+    <div class="more-body">
+      <p>まず10個書き出してから絞ります。書き出せない人は<strong>1週間の自分のカレンダー</strong>を眺めて、同じ形の会議・作業が並んでいる箇所を探してください。以下の3軸で評価:</p>
+      <ul>
+        <li><strong>繰り返し頻度</strong>(週あたり): 週1回以下は後回し。週2以上が候補。</li>
+        <li><strong>1回あたり時間</strong>: 15分未満は効果が見えにくい。30分-2時間が狙い目。</li>
+        <li><strong>属人性</strong>(自分しかできないか): 属人性が高いほど <span class="term" data-tip="SKILL.md化することで、担当が変わっても同じ品質で仕事が回るようになる状態。「明日休んでも回る」が目安。">Skill化の価値</span>が大きい。</li>
+      </ul>
+      <p>3軸を各10点で採点し、合計25点以上の業務が「最優先ゾーン」。迷ったら <strong>「今週も来週もやる仕事」</strong>を1つ選べば外しません。</p>
+      <div class="info-box">
+        <span class="label">Tips</span>
+        <p>候補が出ない人は、<strong>Slack検索で自分の発言に "また" "いつもの" "毎週" が含まれる投稿</strong>を探してみる。繰り返し業務の金脈がそこに眠っています。</p>
+      </div>
+    </div>
+  </details>
+
+  <details class="more-box">
+    <summary>もっと詳しく: ヒント2 — Skill か Hook か Subagent か Scheduled Task か</summary>
+    <div class="more-body">
+      <p>選定した業務の<strong>起動トリガー</strong>と<strong>並列性</strong>で形式が決まります。</p>
+      <table>
+        <thead><tr><th>形式</th><th>起動トリガー</th><th>向いている業務</th><th>参照章</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Skill</strong></td><td>人間の指示(/skill-name)</td><td>手順が長く、頻繁に呼び出す定型業務</td><td>Ch20</td></tr>
+          <tr><td><strong>Hook</strong></td><td>ツール実行前後・Stop等のイベント</td><td>「毎回自動でやる」系(commit前にPrettier等)</td><td>Ch18</td></tr>
+          <tr><td><strong>Subagent</strong></td><td>Skill/Hookの中から Task ツールで</td><td>独立並列化できる観点・対象分割</td><td>Ch16</td></tr>
+          <tr><td><strong>Scheduled Task</strong></td><td>cron(時刻・間隔)</td><td>毎朝・毎週など定刻の放置業務</td><td>Ch19</td></tr>
+        </tbody>
+      </table>
+      <p>組み合わせ例:</p>
+      <ul>
+        <li><strong>毎朝のIssue整理</strong>: Scheduled Task(毎朝9時)→ Skill を呼ぶ → 内部で Subagent 並列 → 完了後 Hook で Slack 通知</li>
+        <li><strong>PR自動サマリ</strong>: Hook(PostToolUse on git push) → Skill → Subagent でレビュー</li>
+      </ul>
+      <div class="info-box">
+        <span class="label">公式ドキュメント必読</span>
+        <p>Skills / Hooks / Scheduled Tasks の正確な設定ファイル名・スキーマは公式を必ずマスターしてください。ここを間違えると動かないだけで済みますが、実務のデバッグ時間が一気に膨らみます。<a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式 →</a></p>
+      </div>
+    </div>
+  </details>
+
+  <details class="more-box">
+    <summary>もっと詳しく: ヒント3 — プロンプト / SKILL.md の設計</summary>
+    <div class="more-body">
+      <p>Ch20 で学んだ <strong>SKILL.md の骨格</strong>を再掲します。最終演習はこれを埋めるだけ:</p>
+      <pre><code>---
+name: your-skill-name
+description: この Skill をいつ使うか (Claude が自動発動を判断する基準)
+---
+
+# {Skill のタイトル}
+
+## いつ使うか
+- トリガー1
+- トリガー2
+
+## 入力
+- {必要な情報・ファイル・URL}
+
+## 手順
+1. ステップ1
+2. ステップ2
+3. ステップ3
+
+## 出力形式
+- {期待するフォーマット}
+
+## 注意点
+- やってはいけないこと
+- エッジケース
+</code></pre>
+      <p>ポイントは<strong>description を「いつ使うか」に特化して書く</strong>こと。これが甘いと Claude が Skill を発動しないので、実務で使い物になりません(Ch20の最大の落とし穴)。</p>
+    </div>
+  </details>
+
+  <details class="more-box">
+    <summary>もっと詳しく: ヒント4 — チーム共有方法(リポジトリ・配布)</summary>
+    <div class="more-body">
+      <p>自分だけで動けば十分、ではありません。<strong>明日隣の席の人が同じ手順で動かせる</strong>までが合格ラインです。配布パターン3つ:</p>
+      <ol>
+        <li><strong>Git リポジトリ配布</strong>(推奨) — <code>company-skills/</code> リポジトリに <code>.claude/skills/your-skill/</code> を置き、チーム全員が clone &amp; シンボリックリンクで <code>~/.claude/skills/</code> に繋ぐ。更新は <code>git pull</code> で即共有。</li>
+        <li><strong>社内Wiki + zip配布</strong>(簡易) — Notion や Confluence に手順と SKILL.md を貼り、動作確認済みの zip を添付。小規模チームならこれで十分。</li>
+        <li><strong>Claude Code プロジェクト設定</strong> — プロジェクトリポジトリ直下の <code>.claude/</code> にコミット。そのリポで作業する人は自動的に使える。プロジェクト固有の Skill に最適。</li>
+      </ol>
+      <p>配布時の必須3点セット: <strong>README</strong>(導入手順3行で済む粒度)/ <strong>SKILL.md</strong>(本体)/ <strong>サンプル実行ログ</strong>(期待動作のプリセット)。</p>
+      <div class="info-box">
+        <span class="label">Warning</span>
+        <p>Hook や MCP を含む Skill は<strong>権限スコープに注意</strong>。不用意に <code>Bash(*)</code> を許可すると、チーム全員の端末に広い権限が撒かれます。配布前に <span class="term" data-tip="Ch22で扱った10の失敗パターンのうち、MCP権限広すぎ・Hooks無限ループは組織レベルの事故に直結する2大リスク。">権限スコープ</span>を最小化するレビューを入れてください。</p>
+      </div>
+    </div>
+  </details>
+
+  <details class="more-box">
+    <summary>もっと詳しく: ヒント5 — 効果測定(時間削減 / 品質向上)</summary>
+    <div class="more-body">
+      <p>作って終わり、は3週間で忘れます。<strong>数字で効果を残す</strong>のが最後の仕事です。最小セットは3指標:</p>
+      <div class="kv-grid">
+        <div class="kv"><div class="kv-key">時間削減</div><div class="kv-val">Before(手動分) → After(Skill分)</div></div>
+        <div class="kv"><div class="kv-key">品質向上</div><div class="kv-val">抜け漏れ件数 / 再作業率(%)</div></div>
+        <div class="kv"><div class="kv-key">定着度</div><div class="kv-val">チーム内の週間利用者数</div></div>
+      </div>
+      <p>「1人あたり1日10分の節約 × 10人 × 200営業日 = 年333時間」のように <strong>年間換算</strong>で出すと、経営側への説明が強くなります。2週間で最低10回実行して数字を固定し、月次で見直しましょう。</p>
+      <p>測定で見るべき<strong>本当の指標</strong>は「<strong>自分とチームが、再びそれを使いたいと思うか</strong>」。数字が渋くても満足度が高ければ改善で勝てます。逆に数字が良くても誰も使わない Skill は廃止判断を。</p>
+    </div>
+  </details>
+
+  <!-- ============================================================ -->
+  <!-- Section 4: 模範解答 — 毎朝のIssue整理 Skill 完全実装 -->
+  <!-- ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 模範解答: 「毎朝のIssue整理 Skill」 の完全実装</h2>
+
+  <p>自分の業務で先に設計してみましたか? ここからは MK が実際に2026年1月に運用している <strong>「毎朝のIssue整理 Skill」</strong>の完全実装例です。書き上げてから答え合わせにどうぞ。</p>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る(SKILL.md 全文 + 使い方 + Slack通知Hook連携)</summary>
+    <div class="answer-body">
+
+      <h3>1. 業務選定の判断</h3>
+
+      <p>MK の場合、棚卸しで出てきた10候補から<strong>「毎朝のIssue整理」</strong>を選びました。理由:</p>
+
+      <div class="compare-cards">
+        <div class="cc good">
+          <span class="cc-label">採用理由 #1</span>
+          <h4>毎日発生する確実性</h4>
+          <ul>
+            <li>頻度: 週5回(営業日毎朝)</li>
+            <li>時間: 1回20-30分</li>
+            <li>年間: 約100時間消費</li>
+          </ul>
+        </div>
+        <div class="cc good">
+          <span class="cc-label">採用理由 #2</span>
+          <h4>形式が決まっている</h4>
+          <ul>
+            <li>入力: GitHub Issue 一覧</li>
+            <li>出力: Markdown レポート</li>
+            <li>判断軸: 優先度 / 期限</li>
+          </ul>
+        </div>
+        <div class="cc good">
+          <span class="cc-label">採用理由 #3</span>
+          <h4>属人性の解消価値</h4>
+          <ul>
+            <li>「MKしか整理できない」を解消</li>
+            <li>同じフォーマットで継続可</li>
+            <li>休暇時も代替可能</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>2. 形式判定: Skill + Scheduled Task + Hook の3段構え</h3>
+
+      <p>単独の Skill ではなく、<strong>3つを組み合わせ</strong>ました。</p>
+
+      <table>
+        <thead>
+          <tr><th>形式</th><th>役割</th><th>設定場所</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Scheduled Task</td><td>毎朝9時に Skill を自動起動</td><td>cron trigger (Ch19)</td></tr>
+          <tr><td>Skill</td><td>Issue取得→整理→レポート生成</td><td>~/.claude/skills/morning-issues/</td></tr>
+          <tr><td>Subagent × 3</td><td>優先度P0/P1/P2 を並列に整理</td><td>Skill 内で Task ツール起動</td></tr>
+          <tr><td>Hook (Stop)</td><td>完了したら Slack #daily-issues に通知</td><td>settings.json</td></tr>
+          <tr><td>MCP (GitHub)</td><td>Issue 一覧取得</td><td>.mcp.json</td></tr>
+        </tbody>
+      </table>
+
+      <h3>3. 実行フロー図</h3>
+
+      <div class="diagram-box">
+        <div class="diagram-title">毎朝のIssue整理 Skill 実行フロー</div>
+        <pre class="mermaid">
+graph TD
+  Cron["Scheduled Task<br/>毎朝9:00"] --&gt; Skill["Skill: morning-issues"]
+  Skill --&gt; MCP["MCP GitHub<br/>Issue一覧取得"]
+  MCP --&gt; Split["優先度で3分割<br/>P0 / P1 / P2"]
+  Split --&gt; A1["Subagent P0<br/>緊急対応が必要"]
+  Split --&gt; A2["Subagent P1<br/>今週中に着手"]
+  Split --&gt; A3["Subagent P2<br/>来週以降バックログ"]
+  A1 --&gt; Merge["主エージェント集約<br/>1枚のMarkdownレポート"]
+  A2 --&gt; Merge
+  A3 --&gt; Merge
+  Merge --&gt; Save["reports/YYYY-MM-DD.md 保存"]
+  Save --&gt; Hook["Hook Stop<br/>Slack通知トリガー"]
+  Hook --&gt; Slack["#daily-issues へ投稿<br/>レポートリンク付き"]
+        </pre>
+        <div class="diagram-caption">cron → Skill → MCP取得 → Subagent並列 → 集約 → 保存 → Hook通知、の7段パイプライン。</div>
+      </div>
+
+      <h3>4. SKILL.md 全文(実ファイル)</h3>
+
+      <p>以下が <code>~/.claude/skills/morning-issues/SKILL.md</code> の実物(2026年1月時点で稼働中のもの)。そのままコピペ可能です。</p>
+
+      <pre><code>---
+name: morning-issues
+description: 毎朝のGitHub Issue整理。P0/P1/P2の優先度で並列に整理し、当日対応すべきタスクを Markdown レポートにまとめる。毎朝9:00の自動実行、または「Issue整理して」「今日のタスク整理」と依頼された時に使う。
+---
+
+# 毎朝のIssue整理 Skill
+
+## いつ使うか
+- 毎朝9:00(Scheduled Task 経由で自動起動)
+- ユーザーが「Issue整理して」「今日のタスク整理」と依頼した時
+- 週明けや休暇明けに溜まった Issue を一気に棚卸ししたい時
+
+## 入力
+- 対象リポジトリ: `~/.claude/skills/morning-issues/config.yml` に記載のリポジトリ一覧
+- 対象ラベル: `priority/P0`, `priority/P1`, `priority/P2`(未ラベルは P2 扱い)
+- アサイン条件: 自分 or チームメンバー(config.yml の team_members)
+
+## 手順
+
+### Step 1: Issue一覧取得(MCP GitHub)
+MCP GitHub サーバー経由で、以下の条件で Issue を取得:
+- state: open
+- assignee: self + team_members
+- sort: updated, direction: desc
+- 件数上限: 50件
+
+### Step 2: 優先度で3分割し Subagent 並列起動
+Task ツールで3つの Explore Subagent を並列起動:
+
+```
+Task(subagent_type="Explore",
+     description="P0優先度 Issue 整理",
+     prompt="本プロンプトのP0セクションテンプレに従い...")
+Task(subagent_type="Explore",
+     description="P1優先度 Issue 整理", prompt="...")
+Task(subagent_type="Explore",
+     description="P2優先度 Issue 整理", prompt="...")
+```
+
+各 Subagent のプロンプトは `prompts/p{0,1,2}.md` を参照。
+
+### Step 3: 集約してレポート生成
+3つの結果を以下のフォーマットで 1 つの Markdown に集約:
+
+```markdown
+# Daily Issue Report YYYY-MM-DD
+
+## 今日必ず対応 (P0)
+- [#123] タイトル - 期限: 今日 - 担当: @xxx
+
+## 今週中に着手 (P1)
+- [#456] タイトル - 期限: 金曜 - 担当: @yyy
+
+## バックログ (P2)
+- [#789] タイトル - 次回レビュー: 来週月曜
+```
+
+### Step 4: 保存とサマリ
+- `reports/YYYY-MM-DD.md` に保存
+- 主エージェントの最終サマリ:「P0: N件, P1: M件, P2: K件。レポート: reports/YYYY-MM-DD.md」
+
+## 出力形式
+- Markdown ファイル: `reports/YYYY-MM-DD.md`
+- stdout サマリ: 1行(P0/P1/P2 件数 + レポートパス)
+
+## 注意点
+- **Issue 本文の機密情報は Slack に貼らない**(タイトルと番号のみ通知)
+- MCP GitHub の認証失敗時は、reports/YYYY-MM-DD.md に「取得失敗」と明記して Stop
+- P0 が5件を超えた日は、サマリに「⚠️ P0過多」と付記する(ヘルス指標)
+- Subagent は isolation=true 推奨(主コンテキストを汚さない)
+
+## 配布
+- リポジトリ: `github.com/motohirokoma/company-claude-skills`
+- 導入手順: README の 3行で完了(clone → symlink → ~/.claude/settings.json に追記)
+</code></pre>
+
+      <h3>5. 使い方(手動起動と自動起動)</h3>
+
+      <h4>A. 手動起動</h4>
+      <pre><code># Claude Code CLI で、/skill morning-issues と発動
+# あるいは自然言語で
+あなた: Issue整理して
+Claude: (morning-issues Skill を発動) → 約2分で完了
+</code></pre>
+
+      <h4>B. 自動起動(Scheduled Task)</h4>
+      <pre><code># ~/.claude/scheduled-tasks.json(2026年1月時点の仕様)
+{
+  "tasks": [
+    {
+      "name": "morning-issues",
+      "cron": "0 9 * * 1-5",
+      "prompt": "/skill morning-issues を実行して",
+      "timeout_min": 10
+    }
+  ]
+}
+</code></pre>
+
+      <h3>6. Slack通知 Hook 連携</h3>
+
+      <p>Skill の Stop イベントにフックして、Slack #daily-issues に投稿します。<code>~/.claude/settings.json</code> の Hooks セクション:</p>
+
+      <pre><code>{
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": {
+          "skill_name": "morning-issues"
+        },
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/skills/morning-issues/notify-slack.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
+</code></pre>
+
+      <p>notify-slack.sh(実ファイルの抜粋):</p>
+
+      <pre><code>#!/usr/bin/env bash
+set -euo pipefail
+
+REPORT_DIR="$HOME/projects/issues-reports/reports"
+TODAY=$(date +%Y-%m-%d)
+REPORT_PATH="$REPORT_DIR/$TODAY.md"
+
+if [[ ! -f "$REPORT_PATH" ]]; then
+  exit 0  # レポートが無い日はスキップ
+fi
+
+# P0/P1/P2 の件数を集計
+P0=$(grep -c '^- \[#' "$REPORT_PATH" | head -1 || echo 0)
+
+# SlackのWebhook URL(環境変数から)
+SLACK_URL="${SLACK_DAILY_ISSUES_WEBHOOK:?SLACK_DAILY_ISSUES_WEBHOOK is not set}"
+
+curl -sS -X POST -H 'Content-type: application/json' \
+  --data "{\"text\":\"朝のIssue整理完了: ${TODAY} — レポート: ${REPORT_PATH}\"}" \
+  "$SLACK_URL" &gt; /dev/null
+</code></pre>
+
+      <div class="info-box">
+        <span class="label">Tips</span>
+        <p>Webhook URL を Hook スクリプトに<strong>直書きしない</strong>のは鉄則。環境変数 or 社内の secret manager 経由で渡します。リポジトリに漏れた Webhook は全チーム宛に誰でも投稿できる爆弾になります(Ch22のMCP権限ミスと同じクラスの事故)。</p>
+      </div>
+
+      <h3>7. 測定結果(2週間運用の実測)</h3>
+
+      <div class="stats-grid">
+        <div class="stat">
+          <div class="stat-num">74<small>%</small></div>
+          <div class="stat-label">所要時間の削減</div>
+          <div class="stat-trend up">↑ 25分 → 6.5分(Slack確認時間)</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">100<small>%</small></div>
+          <div class="stat-label">P0見落とし 0件</div>
+          <div class="stat-trend up">↑ 以前は月2-3件の見落とし</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">4.6<small>/5</small></div>
+          <div class="stat-label">チーム満足度(n=6)</div>
+          <div class="stat-trend up">↑ 全員が「翌週も使いたい」</div>
+        </div>
+      </div>
+
+      <!-- Chart.js: 効果測定 bar chart -->
+      <div class="diagram-box">
+        <div class="diagram-title">Before / After 比較(4指標)</div>
+        <canvas id="ch26-bar-1" height="200"></canvas>
+        <div class="diagram-caption">所要時間は74%減、P0見落としはゼロ、週間利用者は1人→6人、年間削減時間は95時間。</div>
+      </div>
+
+      <h3>8. チーム共有(リポジトリ配布)</h3>
+
+      <p>Git リポジトリ <code>github.com/motohirokoma/company-claude-skills</code> に以下の構成で配置:</p>
+
+      <pre><code>company-claude-skills/
+├── README.md                # 導入手順3行
+├── skills/
+│   └── morning-issues/
+│       ├── SKILL.md         # 本体(上記全文)
+│       ├── config.yml       # リポジトリ&チーム設定
+│       ├── notify-slack.sh  # Slack通知スクリプト
+│       ├── prompts/
+│       │   ├── p0.md
+│       │   ├── p1.md
+│       │   └── p2.md
+│       └── examples/
+│           └── 2026-01-15-sample.md  # 期待出力例
+├── hooks/
+│   └── settings.example.json
+└── scheduled-tasks/
+    └── tasks.example.json
+</code></pre>
+
+      <p>README の導入手順(本当に3行):</p>
+
+      <pre><code># 1. clone
+git clone git@github.com:motohirokoma/company-claude-skills.git ~/company-claude-skills
+
+# 2. symlink
+ln -s ~/company-claude-skills/skills/morning-issues ~/.claude/skills/morning-issues
+
+# 3. 環境変数設定 & 初回実行確認
+export SLACK_DAILY_ISSUES_WEBHOOK="https://hooks.slack.com/services/xxx/yyy/zzz"
+claude "/skill morning-issues を実行して"
+</code></pre>
+
+      <div class="info-box">
+        <span class="label">Insight</span>
+        <p>MKが2週間運用して一番効いたのは「時間削減」ではなく、<strong>「P0見落としゼロ」</strong>でした。25分→6.5分はもちろん嬉しいけれど、「<span class="term" data-tip="月2-3件の見落としは、平均して月1件は事故化していた体感。Skill導入後、四半期で事故化ゼロに。">月1件の事故が消える</span>」のインパクトは桁違いです。量より質で効くパターンが、<strong>属人性の高い業務</strong>ほど強く現れる、という学びが本物の収穫でした。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span></p>
+      </div>
+
+      <h3>この1つを動かせれば、もう「読者」ではない</h3>
+
+      <p>ここまで写経でも、改変でも、自分の業務適用でも構いません。<strong>動く SKILL.md が1つ手元にある</strong>人は、もう「Claude Code を学ぶ人」ではなく「<strong>Claude Code で組織の仕事を変える人</strong>」になっています。</p>
+
+    </div>
+  </details>
+
+  <!-- ============================================================ -->
+  <!-- Section 5: 応用課題 -->
+  <!-- ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 応用課題</h2>
+
+  <p>1つ動いたら、次の2つで組織スケールに展開します。</p>
+
+  <div class="exercise-box">
+    <div class="exercise-label">応用 1</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>2週間後に3つに拡張する計画を作る</h4>
+    <p>最初の1つを2週間運用したら、<strong>同じリポジトリに2つ追加</strong>する計画を30分で作ってください。候補は棚卸しマトリクスの2-4位から。1周目の学びを設計に反映するのがポイント。</p>
+    <ol>
+      <li>1周目で<strong>満足度4.0未満</strong>の Skill は改修 or 廃止を検討</li>
+      <li>2周目は <strong>1つは「書く系」、1つは「調査系」</strong>のように役割を分散</li>
+      <li>共有リポジトリ <code>company-claude-skills/</code> に <strong>CHANGELOG.md</strong> を作り、追加ごとに記録</li>
+    </ol>
+  </div>
+
+  <div class="exercise-box">
+    <div class="exercise-label">応用 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>チーム共有Skillパックをリポジトリ化する</h4>
+    <p>自分の3つが揃ったら、<strong>チーム全員が貢献できる形</strong>にします。<code>company-claude-skills/</code> を「Skill の共通流通所」として運用する設計を作ってください。</p>
+    <ol>
+      <li>リポジトリの<strong>Contributing ガイド</strong>(新しい Skill を追加する手順・レビュー基準)を書く</li>
+      <li><strong>月1のSkill棚卸し会</strong>を設定(効果測定の結果を見て、追加・改修・廃止を決める)</li>
+      <li>権限スコープのレビューチェックリスト(Hook・MCP 権限の最小化)</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る(応用1 + 応用2)</summary>
+    <div class="answer-body">
+      <h4>応用1 の例: MK の2周目(2026年1月時点)</h4>
+      <ul>
+        <li><strong>継続:</strong> 毎朝のIssue整理(満足度4.6)</li>
+        <li><strong>追加1:</strong> PR自動サマリ投稿 Skill(Hook起動、PostToolUse on git push)</li>
+        <li><strong>追加2:</strong> 議事録からToDo抽出 Skill(Subagent×3: 担当別並列)</li>
+        <li><strong>CHANGELOG.md に記録:</strong> 追加日 / バージョン / 設計判断 / 効果測定の結果</li>
+      </ul>
+
+      <h4>応用2 の例: Contributing ガイドの骨格</h4>
+      <pre><code># Contributing to company-claude-skills
+
+## 新Skillの追加手順
+1. `skills/{skill-name}/SKILL.md` を作成(テンプレ: `docs/SKILL_TEMPLATE.md`)
+2. `examples/` に期待出力サンプル1つ以上
+3. README に1行追記
+4. PR を作り、下記チェックリストを self-review
+
+## レビューチェックリスト
+- [ ] description は「いつ使うか」が明確
+- [ ] 入力・出力のフォーマットが決まっている
+- [ ] Hook / MCP の権限は最小化されている
+- [ ] 環境変数/秘密情報はスクリプトに直書きしていない
+- [ ] examples/ にサンプル出力がある
+- [ ] 実行ログ or スクショを PR description に添付
+
+## 月1 Skill棚卸し会(第1金曜 16:00-17:00)
+- 全Skillの利用回数・満足度をレビュー
+- 追加候補(応用1の2周目以降)をチームで投票
+- 廃止候補(満足度4.0未満が2か月継続)を決める
+</code></pre>
+
+      <div class="info-box">
+        <span class="label">Insight</span>
+        <p>応用2 の真の価値は「<strong>個人最適から組織最適への切り替え</strong>」です。1人のパワーユーザーが生む効果は年間数百時間ですが、10人のチームでSkillパックが共通資産になれば年間数千時間 — <strong>桁が変わります</strong>。ここまで来ると Claude Code は「便利ツール」ではなく「<span class="term" data-tip="単なるツールではなく、組織の仕事のやり方を変える基盤。OS の upgrade に近い性質を持つ。">組織のワークOS</span>」の一部になります。</p>
+      </div>
+    </div>
+  </details>
+
+  <!-- ============================================================ -->
+  <!-- Section 6: 締めのことば -->
+  <!-- ============================================================ -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 締めのことば: 会社全員が上位20%になる日を作ろう</h2>
+
+  <p>おつかれさまでした。24時間・26章の旅をやりきり、自社業務を1つ動く形にしたあなたは、もう間違いなく <strong>Claude Code 利用者の上位20%(パワーユーザー)</strong>です。おめでとうございます。</p>
+
+  <div class="quote">
+    1人のパワーユーザーが年間数百時間を取り戻す。<br>
+    10人のチームがパワーユーザーになれば、年間数千時間が組織に戻ってくる。<br>
+    そして、<strong>会社全員が上位20%になる日</strong> — そこからが本当のスタートだ。
+    <cite>— 本チュートリアルの最終メッセージ</cite>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-num">26<small>章</small></div>
+      <div class="stat-label">完走したトピック</div>
+      <div class="stat-trend up">24時間完走</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">1<small>→N</small></div>
+      <div class="stat-label">動く自社Skill</div>
+      <div class="stat-trend up">組織展開へ</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">20<small>%</small></div>
+      <div class="stat-label">上位パワーユーザー到達</div>
+      <div class="stat-trend up">次は組織全員へ</div>
+    </div>
+  </div>
+
+  <p>でも、あなた1人が上位20%になっただけでは、組織は変わりません。<strong>隣の席の人にも、このチュートリアルを勧めてください</strong>。あるいは今日作った SKILL.md を社内チャットに流してください。1人から3人、3人から10人、10人から会社全体へ — その伝播を止めないでください。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span></p>
+
+  <p>この運用設計書・SKILL.md・リポジトリは、<strong>作って終わりではなく</strong>、チームで磨き続けて初めて本当の資産になります。1か月後、半年後、1年後の会社の景色が、今日作った1つのSkillから始まる — そう信じて、今日を終えてください。</p>
+
+  <p><strong>あなたの会社の全員が、Claude Code を当たり前に使いこなす日</strong>が来ますように。その日まで、1つずつ Skill を育てていきましょう。</p>
+
+  <div class="info-box">
+    <span class="label">Note</span>
+    <p>本章および本チュートリアル全体の記述は <strong>2026年1月時点</strong>の Claude Code / Agent SDK / Skills / Hooks / MCP / Scheduled Tasks 仕様に基づきます。cron 形式・scheduled-tasks.json の場所・Hook イベント名は将来変わる可能性があります。必ず <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">公式ドキュメント</a>で最新を確認してから運用してください。</p>
+  </div>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式ドキュメント</a> — Skills / Hooks / Scheduled Tasks / MCP の一次情報。運用前に必ず最新を確認。</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener">Claude Code GitHub</a> — CLI挙動・Issue・リリースノート。自動化が壊れた時の最初の確認先。</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://github.com/anthropics/anthropic-cookbook" target="_blank" rel="noopener">Anthropic Cookbook</a> — 並列 Agent / 評価パターン / Skills の実装例集。コピペ可のサンプルが豊富。</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://modelcontextprotocol.io" target="_blank" rel="noopener">MCP 公式</a> — GitHub/Slack/Drive との接続を作る時の一次情報源。</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://github.com/modelcontextprotocol/servers" target="_blank" rel="noopener">MCP 公式servers</a> — 既製MCPサーバー集。自作前にここで検索。</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://www.anthropic.com/news" target="_blank" rel="noopener">Anthropic Blog</a> — 運用事例・モデル更新・設計思想。組織展開の参考に。</li>
+      <li><span class="res-type video">Video</span> <a href="https://www.youtube.com/results?search_query=Claude+Code+Skills+team" target="_blank" rel="noopener">YouTube: Claude Code Skills team</a> — 海外チームの導入動画。</li>
+      <li><span class="res-type video">Video</span> <a href="https://zenn.dev/topics/claudecode" target="_blank" rel="noopener">Zenn: Claude Code 日本語記事</a> — 日本語の実運用事例。他社の導入失敗例から学ぶのが最速。</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>全26章、24時間の最終演習、本当におつかれさまでした。下のボタンで完走を記録しましょう。あなたは今日、上位20%に入りました。</p>
+    <button class="btn-complete" data-chapter="26">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="25-project-webapp.html"><span class="direction">&larr; Prev</span>Project C：Webアプリ</a>
+    <span></span>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<!-- 視覚化ライブラリ群 -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+<script>
+  window.addEventListener("load", function(){
+    // Before/After 比較 bar chart
+    var ctx1 = document.getElementById('ch26-bar-1');
+    if (ctx1 && window.Chart) {
+      new Chart(ctx1, {
+        type: 'bar',
+        data: {
+          labels: [
+            '所要時間(分/日)',
+            'P0見落とし(件/月)',
+            '週間利用者数(人)',
+            '年間削減時間(h×10)'
+          ],
+          datasets: [
+            {
+              label: 'Before(Skill導入前)',
+              data: [25, 2.5, 1, 0],
+              backgroundColor: '#cbd5e1',
+              borderRadius: 4
+            },
+            {
+              label: 'After(Skill導入後・2週間運用)',
+              data: [6.5, 0, 6, 9.5],
+              backgroundColor: '#D97757',
+              borderRadius: 4
+            }
+          ]
+        },
+        options: {
+          plugins: {
+            legend: { position: 'bottom' },
+            title: { display: false }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: { display: true, text: '単位は各ラベル参照' }
+            }
+          }
+        }
+      });
+    }
+  });
+</script>
+</body>
+</html>

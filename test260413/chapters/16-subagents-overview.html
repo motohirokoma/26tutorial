@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>Subagentsで並列思考 - MK's Claude Code Tutorial</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code Tutorial
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="../index.html#phase3" data-nav class="active"><span class="phase-name">Advanced</span><span class="phase-pct" id="pct-advanced">0%</span></a></li>
+      <li><a href="../index.html#phase4" data-nav><span class="phase-name">Projects</span><span class="phase-pct" id="pct-projects">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.16</span>
+    Subagentsで並列思考
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 26 sections</text>
+    </svg>
+    <div class="progress-info">0h / 24h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-welcome.html"><span class="status-dot" data-chapter="01"></span> ようこそ&セットアップ</a></li>
+    <li><a href="02-communication-basics.html"><span class="status-dot" data-chapter="02"></span> 対話の原則</a></li>
+    <li><a href="03-file-tools.html"><span class="status-dot" data-chapter="03"></span> ファイル操作ツール</a></li>
+    <li><a href="04-bash-safety.html"><span class="status-dot" data-chapter="04"></span> Bashツールと安全</a></li>
+    <li><a href="05-todo-management.html"><span class="status-dot" data-chapter="05"></span> TodoWriteで作業管理</a></li>
+    <li><a href="06-claude-md.html"><span class="status-dot" data-chapter="06"></span> CLAUDE.md</a></li>
+    <li><a href="07-git-workflow.html"><span class="status-dot" data-chapter="07"></span> Git × Claude Code</a></li>
+  </ul>
+  <div class="section-label">Core</div>
+  <ul>
+    <li><a href="08-prompt-patterns.html"><span class="status-dot" data-chapter="08"></span> プロンプト設計の型</a></li>
+    <li><a href="09-code-review.html"><span class="status-dot" data-chapter="09"></span> コードレビュー依頼</a></li>
+    <li><a href="10-refactor-workflow.html"><span class="status-dot" data-chapter="10"></span> 改修ワークフロー</a></li>
+    <li><a href="11-tdd-with-claude.html"><span class="status-dot" data-chapter="11"></span> テスト駆動</a></li>
+    <li><a href="12-debugging.html"><span class="status-dot" data-chapter="12"></span> デバッグ</a></li>
+    <li><a href="13-plan-mode.html"><span class="status-dot" data-chapter="13"></span> Planモード</a></li>
+    <li><a href="14-context-management.html"><span class="status-dot" data-chapter="14"></span> コンテキスト管理</a></li>
+    <li><a href="15-web-tools.html"><span class="status-dot" data-chapter="15"></span> Web検索・取得</a></li>
+  </ul>
+  <div class="section-label">Advanced</div>
+  <ul>
+    <li><a href="16-subagents-overview.html" class="active"><span class="status-dot" data-chapter="16"></span> Subagents</a></li>
+    <li><a href="17-mcp-overview.html"><span class="status-dot" data-chapter="17"></span> MCP</a></li>
+    <li><a href="18-hooks-overview.html"><span class="status-dot" data-chapter="18"></span> Hooks</a></li>
+    <li><a href="19-schedule-loop.html"><span class="status-dot" data-chapter="19"></span> Schedule &amp; Loop</a></li>
+    <li><a href="20-skills-overview.html"><span class="status-dot" data-chapter="20"></span> Skills</a></li>
+    <li><a href="21-worktree.html"><span class="status-dot" data-chapter="21"></span> worktree</a></li>
+    <li><a href="22-pitfalls.html"><span class="status-dot" data-chapter="22"></span> 失敗パターン10</a></li>
+  </ul>
+  <div class="section-label">Projects</div>
+  <ul>
+    <li><a href="23-project-automation.html"><span class="status-dot" data-chapter="23"></span> Project A：業務自動化</a></li>
+    <li><a href="24-project-refactor.html"><span class="status-dot" data-chapter="24"></span> Project B：リファクタ</a></li>
+    <li><a href="25-project-webapp.html"><span class="status-dot" data-chapter="25"></span> Project C：Webアプリ</a></li>
+    <li><a href="26-final-exercise.html"><span class="status-dot" data-chapter="26"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 3: Advanced &gt; Chapter 16</div>
+  <h1>Subagentsで並列思考</h1>
+  <p class="subtitle">独立タスクを同時に飛ばして、時間を1/5に圧縮する</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 60分</span>
+    <span class="badge">Phase: Advanced</span>
+    <span class="badge">難易度: 中級</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">この章のゴール</span>
+    <p>Claude Codeの<strong>Agent tool</strong>(subagent呼び出し)の基本を押さえ、<strong>「独立したタスクは並列に飛ばす」</strong>という思考様式を身につけます。5観点レビュー(セキュリティ/パフォーマンス/可読性/テスト/設計)を<strong>同時並列</strong>で走らせるハンズオンを通して、直列処理では絶対に味わえない時短の快感を体験しましょう。ここがPhase 3 Advanced の入口、かつ<strong>上位20%の入場券</strong>です。</p>
+  </div>
+
+  <div class="info-box" style="border-left: 3px solid #D97757;">
+    <span class="label">バージョン注記</span>
+    <p>本章の記述は<strong>2026年1月時点</strong>のClaude Code (Agent SDK/CLI) 挙動に基づきます。<code>subagent_type</code>のラインナップやAgent tool のパラメータ名は進化するため、コマンドが通らない時は<a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">公式ドキュメント</a>を必ず確認してください。</p>
+  </div>
+
+  <!-- ===== Section 1: Subagentとは ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Subagentとは — 分身を送り出すイメージ</h2>
+
+  <p><span class="term" data-tip="Subagent: メインClaudeから分岐して独立文脈で動く子エージェント。終了時に要約1つを親に返す。">Subagent</span>は、いまあなたと会話しているClaude(メインエージェント)が、<strong>Agent toolを通して起動する分身</strong>です。子は独立した会話履歴(<span class="term" data-tip="context window: LLMが一度に見られる文字数の上限。Claudeなら約200k tokens。">context window</span>)を持ち、タスクを終えたら<strong>要約1つ</strong>を親に返して消えます。親は要約だけ読んで続きを判断する——これが基本モデルです。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">メインエージェント vs Subagent の関係</div>
+    <svg viewBox="0 0 500 260" width="100%" style="max-width:500px; display:block; margin:0 auto;">
+      <rect x="180" y="20" width="140" height="50" rx="8" fill="#D97757" opacity="0.85"/>
+      <text x="250" y="50" text-anchor="middle" font-size="14" font-weight="700" fill="white">Main Claude</text>
+      <line x1="250" y1="70" x2="100" y2="120" stroke="#D97757" stroke-width="2"/>
+      <line x1="250" y1="70" x2="250" y2="120" stroke="#D97757" stroke-width="2"/>
+      <line x1="250" y1="70" x2="400" y2="120" stroke="#D97757" stroke-width="2"/>
+      <rect x="40" y="120" width="120" height="50" rx="8" fill="rgba(217,119,87,0.15)" stroke="#D97757"/>
+      <text x="100" y="142" text-anchor="middle" font-size="12" font-weight="600">Subagent A</text>
+      <text x="100" y="158" text-anchor="middle" font-size="10" fill="#64748b">独立context</text>
+      <rect x="190" y="120" width="120" height="50" rx="8" fill="rgba(217,119,87,0.15)" stroke="#D97757"/>
+      <text x="250" y="142" text-anchor="middle" font-size="12" font-weight="600">Subagent B</text>
+      <text x="250" y="158" text-anchor="middle" font-size="10" fill="#64748b">独立context</text>
+      <rect x="340" y="120" width="120" height="50" rx="8" fill="rgba(217,119,87,0.15)" stroke="#D97757"/>
+      <text x="400" y="142" text-anchor="middle" font-size="12" font-weight="600">Subagent C</text>
+      <text x="400" y="158" text-anchor="middle" font-size="10" fill="#64748b">独立context</text>
+      <line x1="100" y1="170" x2="250" y2="210" stroke="#64748b" stroke-width="1.5" stroke-dasharray="4 2"/>
+      <line x1="250" y1="170" x2="250" y2="210" stroke="#64748b" stroke-width="1.5" stroke-dasharray="4 2"/>
+      <line x1="400" y1="170" x2="250" y2="210" stroke="#64748b" stroke-width="1.5" stroke-dasharray="4 2"/>
+      <rect x="170" y="210" width="160" height="40" rx="6" fill="#f4f4f5" stroke="#18181b"/>
+      <text x="250" y="235" text-anchor="middle" font-size="12" font-weight="600">要約を集約(親が受信)</text>
+    </svg>
+    <div class="diagram-caption">親は子の会話履歴を見ない。子が返す「要約」だけを材料に次の判断を行う。</div>
+  </div>
+
+  <p>通常の<code>Read</code>/<code>Grep</code>/<code>Bash</code>ツールが<strong>「手の延長」</strong>(親が指示してすぐ結果が返る)だとすれば、Subagentは<strong>「脳の複製」</strong>(独立に考えて結論だけ持ち帰る)です。この違いが、独立な複数タスクで桁違いの時短を生みます。</p>
+
+  <details class="more-box">
+    <summary>もっと詳しく: なぜcontextを分けるのか</summary>
+    <div class="more-body">
+      <p>メインClaudeの文脈はユーザとの対話履歴・既に読んだコード・TodoWriteなどで既に埋まりがち。そこにさらに「競合ライブラリ3本の仕様書」を詰め込むと、肝心の本題に割ける注意力が削れます。Subagentは<strong>独立contextで専念</strong>し、<strong>要約だけ親に返す</strong>ことで、<strong>親のcontext窓を保護</strong>するのが最大の価値です。Ch14「コンテキスト管理」と合わせて読むと腑に落ちます。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 2: Agent toolの基本構造 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Agent toolの呼び出し構造</h2>
+
+  <p>Claude Codeには<code>Agent</code>という内部ツールがあり、自然言語で「subagentを起動してほしい」と頼むと、Claudeがこれを使って子を立ち上げます。呼び出しの最小JSONはこんな形です:</p>
+
+  <pre><code>{
+  "tool": "Agent",
+  "input": {
+    "subagent_type": "general-purpose",
+    "description": "セキュリティ観点のレビュー",
+    "prompt": "リポジトリ直下の src/auth/ を読み、SQLインジェクション・XSS・認証バイパスの観点で\n気になる箇所を列挙してください。各指摘は【ファイル:行】【症状】【修正案】の3点セットで。\n最大10個、優先度順で。"
+  }
+}</code></pre>
+
+  <p>この呼び出しで重要なのは<strong>3つのフィールド</strong>だけです:</p>
+
+  <table>
+    <thead>
+      <tr><th>フィールド</th><th>役割</th><th>書き方のコツ</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>subagent_type</code></td><td>使うエージェントの種類</td><td><code>general-purpose</code> or <code>Explore</code>(後述)</td></tr>
+      <tr><td><code>description</code></td><td>3-5語の短いラベル</td><td>UIの実行ログで識別するため。日本語可</td></tr>
+      <tr><td><code>prompt</code></td><td>子に渡す依頼文(全て)</td><td>子は親の会話を見えない前提で、自己完結的に書く</td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-box">
+    <span class="label">公式ドキュメント必読</span>
+    <p>ここは公式ドキュメントにも書いていますし、実務で間違えると致命的(Agent呼び出しが成立しない／権限境界を誤解する)ので必ずマスターしてください。<a href="https://docs.claude.com/en/docs/claude-code/sub-agents" target="_blank" rel="noopener">Claude Code 公式 - Sub-agents →</a></p>
+  </div>
+
+  <!-- ===== Section 3: subagent_typeの使い分け ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> subagent_typeの使い分け</h2>
+
+  <p>2026年1月時点、日常使いで覚えるべきタイプは<strong>2つ</strong>だけです。</p>
+
+  <div class="compare-cards">
+    <div class="cc good">
+      <span class="cc-label">Explore</span>
+      <h4>読むだけの調査特化</h4>
+      <ul>
+        <li>Read/Grep/Glob/WebFetch等<strong>読み取り系</strong>のみ</li>
+        <li>Write/Edit/Bashは<strong>不可</strong>(破壊リスクゼロ)</li>
+        <li>コードベース把握・仕様調査・類似事例収集に最適</li>
+        <li>軽量で速い、並列に多数飛ばせる</li>
+      </ul>
+    </div>
+    <div class="cc neutral">
+      <span class="cc-label">general-purpose</span>
+      <h4>書き換えもできる万能</h4>
+      <ul>
+        <li><strong>ほぼ全ツール</strong>が使える(Edit/Write/Bashも)</li>
+        <li>タスクを<strong>完遂</strong>するまで子の中で試行錯誤</li>
+        <li>独立した修正ブランチ・リファクタ・テスト追加に</li>
+        <li>重い・長い・コスト高、数は絞る</li>
+      </ul>
+    </div>
+  </div>
+
+  <p class="clawd-aside-wrap" style="display:flex; align-items:flex-start; gap:12px; padding:14px 16px; background:rgba(217,119,87,0.07); border-radius:10px; margin:18px 0;">
+    <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+    <span><strong>迷ったらExplore</strong>。調査・把握・レビューなど「読むだけで結論が出る」タスクなら迷わずExplore。general-purposeはどうしても書き換えが要る時のリザーブ武器、くらいの感覚でちょうどいい。</span>
+  </p>
+
+  <details class="more-box">
+    <summary>もっと詳しく: カスタムsubagentとの関係</summary>
+    <div class="more-body">
+      <p>Claude Codeは<code>.claude/agents/</code>配下に<strong>自作のsubagent定義</strong>(Markdown + frontmatter)を置けます。例えば<code>security-reviewer.md</code>を作れば<code>subagent_type: "security-reviewer"</code>として呼べるようになり、毎回長いプロンプトを書かずに済みます。これは専門編<a href="https://motohirokoma.github.io/26tutorial/test260419/" target="_blank" rel="noopener">Subagents Mastery</a>で深掘ります。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 4: 並列 vs 直列 — タイムチャート ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 並列 vs 直列 — 体感で時短を掴む</h2>
+
+  <p>ここが本章の<strong>核心</strong>。5観点レビューを直列でやるか並列でやるか、でどれだけ壁時計時間が変わるかを数字で見ます。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">壁時計時間:5観点レビュー(各観点90秒と仮定)</div>
+    <svg viewBox="0 0 560 230" width="100%" style="max-width:560px; display:block; margin:0 auto;">
+      <!-- axis -->
+      <line x1="80" y1="200" x2="540" y2="200" stroke="#94a3b8" stroke-width="1"/>
+      <text x="80" y="220" font-size="10" fill="#64748b">0s</text>
+      <text x="170" y="220" font-size="10" fill="#64748b">90s</text>
+      <text x="260" y="220" font-size="10" fill="#64748b">180s</text>
+      <text x="350" y="220" font-size="10" fill="#64748b">270s</text>
+      <text x="440" y="220" font-size="10" fill="#64748b">360s</text>
+      <text x="530" y="220" font-size="10" fill="#64748b">450s</text>
+      <!-- Serial (top row) -->
+      <text x="10" y="40" font-size="12" font-weight="700" fill="#18181b">直列</text>
+      <rect x="80"  y="25" width="90" height="26" fill="#cbd5e1" stroke="#64748b"/>
+      <text x="125" y="42" text-anchor="middle" font-size="11" fill="#18181b">Security</text>
+      <rect x="170" y="25" width="90" height="26" fill="#94a3b8" stroke="#64748b"/>
+      <text x="215" y="42" text-anchor="middle" font-size="11" fill="white">Perf</text>
+      <rect x="260" y="25" width="90" height="26" fill="#cbd5e1" stroke="#64748b"/>
+      <text x="305" y="42" text-anchor="middle" font-size="11" fill="#18181b">Read</text>
+      <rect x="350" y="25" width="90" height="26" fill="#94a3b8" stroke="#64748b"/>
+      <text x="395" y="42" text-anchor="middle" font-size="11" fill="white">Test</text>
+      <rect x="440" y="25" width="90" height="26" fill="#cbd5e1" stroke="#64748b"/>
+      <text x="485" y="42" text-anchor="middle" font-size="11" fill="#18181b">Design</text>
+      <text x="540" y="70" text-anchor="end" font-size="11" font-weight="700" fill="#b91c1c">合計 450s(7.5min)</text>
+      <!-- Parallel (bottom) -->
+      <text x="10" y="120" font-size="12" font-weight="700" fill="#18181b">並列</text>
+      <rect x="80" y="100" width="90" height="18" fill="#D97757"/>
+      <text x="125" y="114" text-anchor="middle" font-size="10" fill="white">Security</text>
+      <rect x="80" y="120" width="90" height="18" fill="#D97757" opacity="0.9"/>
+      <text x="125" y="134" text-anchor="middle" font-size="10" fill="white">Perf</text>
+      <rect x="80" y="140" width="90" height="18" fill="#D97757" opacity="0.8"/>
+      <text x="125" y="154" text-anchor="middle" font-size="10" fill="white">Read</text>
+      <rect x="80" y="160" width="90" height="18" fill="#D97757" opacity="0.7"/>
+      <text x="125" y="174" text-anchor="middle" font-size="10" fill="white">Test</text>
+      <rect x="80" y="180" width="90" height="18" fill="#D97757" opacity="0.6"/>
+      <text x="125" y="194" text-anchor="middle" font-size="10" fill="white">Design</text>
+      <line x1="170" y1="95" x2="170" y2="205" stroke="#15803d" stroke-width="2" stroke-dasharray="3 3"/>
+      <text x="180" y="165" font-size="11" font-weight="700" fill="#15803d">合計 90s(1.5min)</text>
+    </svg>
+    <div class="diagram-caption">5倍速。5観点が互いに独立なので、<strong>並列の律速は「一番遅い1つ」</strong>。これが時短の最大レバー。</div>
+  </div>
+
+  <div class="info-box" style="border-left-color: #D97757;">
+    <span class="label">ここがプロの境目</span>
+    <p><strong>「このタスク同士は独立か?」を真っ先に判定し、独立ならsubagentで並列に飛ばす</strong>。これが時短の最大レバーです。直列なら5分の仕事が、並列なら1分で終わる——この差は1日何度も効いてきます。<br>
+    <em>試し方:</em> 今日これからやるタスクで「実は独立な3-5個」に割れるものを1つ探し、Subagentを並列で飛ばしてみてください。</p>
+  </div>
+
+  <!-- ===== Section 5: 独立かどうかの判定 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 「独立か?」を判定する3質問</h2>
+
+  <p>並列化の肝は<strong>依存関係の見極め</strong>。以下のフローで「独立」と判定できるものだけ並列化します。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">並列化の判定フロー</div>
+    <pre class="mermaid">
+graph TD
+  Start([タスクA,B,Cが手元にある]) --> Q1{"Bの結果がAの入力に必要?"}
+  Q1 -- Yes --> Serial[直列で順番に実行]
+  Q1 -- No --> Q2{"同じファイルを書き換える?"}
+  Q2 -- Yes --> Serial
+  Q2 -- No --> Q3{"結果を集約する明確な窓口がある?"}
+  Q3 -- No --> Serial
+  Q3 -- Yes --> Parallel["並列でsubagentを同時launch"]
+    </pre>
+    <div class="diagram-caption">3つ全てYes(独立・書き換え無し・集約先明確)なら並列。どれか1つでもNoなら直列。</div>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>タスクセット</th><th>判定</th><th>理由</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>5観点コードレビュー</td><td><strong style="color:#15803d;">並列◯</strong></td><td>各観点は<span class="term" data-tip="read-only: 読み取り専用。書き換えを伴わないので競合しない。">read-only</span>、互いに独立</td></tr>
+      <tr><td>3ライブラリの比較調査</td><td><strong style="color:#15803d;">並列◯</strong></td><td>独立調査、集約は親が表で統合</td></tr>
+      <tr><td>設計→実装→テストの3段</td><td><strong style="color:#b91c1c;">直列✕</strong></td><td>前段の成果物が次段の入力</td></tr>
+      <tr><td>同一ファイルへの複数修正</td><td><strong style="color:#b91c1c;">直列✕</strong></td><td>書き込み競合で破壊的</td></tr>
+      <tr><td>10ファイルへのPrettier適用</td><td><strong style="color:#15803d;">並列◯</strong></td><td>ファイル単位で独立、集約はgit diff</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ===== Section 6: コスト感 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> コスト感 — トークンはどう消費されるか</h2>
+
+  <p>並列は時短の王様ですが、<strong>トークン消費は直列とほぼ同じか、やや多い</strong>(各子が独立に自己紹介プロンプトを読むため)。壁時計を買うためにコストを少し払う、という感覚で合っています。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">相対コスト:観点数による推定トークン・時間</div>
+    <canvas id="ch16-bar-1" height="200"></canvas>
+  </div>
+  <script>
+  window.addEventListener("load", function(){
+    var el = document.getElementById('ch16-bar-1');
+    if (!el || !window.Chart) return;
+    new Chart(el, {
+      type: 'bar',
+      data: {
+        labels: ['1観点','2観点','3観点','5観点','7観点'],
+        datasets: [
+          { label: '直列: 壁時計(s)', data: [90,180,270,450,630], backgroundColor: '#cbd5e1', borderRadius: 4 },
+          { label: '並列: 壁時計(s)', data: [90,95,100,110,120], backgroundColor: '#D97757', borderRadius: 4 },
+          { label: 'トークン(千・目安)', data: [8,16,24,40,56], backgroundColor: 'rgba(217,119,87,0.3)', borderRadius: 4 }
+        ]
+      },
+      options: { plugins: { legend: { position: 'bottom' } }, scales: { y: { beginAtZero: true } } }
+    });
+  });
+  </script>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-num">5<small>×</small></div>
+      <div class="stat-label">壁時計の短縮(5並列時)</div>
+      <div class="stat-trend up">↑ 時間回収</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">1.1<small>×</small></div>
+      <div class="stat-label">トークン増(並列/直列比)</div>
+      <div class="stat-trend down">→ ほぼ誤差</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">~10<small>本</small></div>
+      <div class="stat-label">実用的な同時並列の上限</div>
+      <div class="stat-trend up">→ 余裕</div>
+    </div>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: general-purposeを5並列する時の注意</summary>
+    <div class="more-body">
+      <p>Exploreは読むだけなので5-10並列しても怖くありませんが、general-purposeを5並列すると<strong>5つのエージェントが同時に思考・編集</strong>を始めるため、消費が大きい。まずExploreで地図を引いてから、書き換えフェーズは直列 or 2-3並列に留めるのが安全。cost感覚は<code>/cost</code>で毎日確認する習慣を(Ch01参照)。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 7: 結果の集約 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 結果の集約 — 子の声を親がまとめる</h2>
+
+  <p>並列で飛ばすと、各子から<strong>要約</strong>が戻ってきます。そこで親(メインClaude)の仕事は「<strong>整形と統合</strong>」。以下のパターンが鉄板:</p>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="table" width="20" height="20"></i>
+      <div><strong>観点別比較表で集約</strong> — 観点/指摘数/優先度/修正見積 の列で横串に並べる</div>
+    </li>
+    <li>
+      <i data-lucide="list-checks" width="20" height="20"></i>
+      <div><strong>優先度順の統合リスト</strong> — 各子の最重要3件だけ抜き、全体で15件に絞る</div>
+    </li>
+    <li>
+      <i data-lucide="git-compare" width="20" height="20"></i>
+      <div><strong>矛盾の検出</strong> — 子どうしで結論が割れた箇所を親がハイライト</div>
+    </li>
+    <li>
+      <i data-lucide="target" width="20" height="20"></i>
+      <div><strong>次アクションの明示</strong> — 「誰が・どこから手を付けるか」1行で閉める</div>
+    </li>
+  </ul>
+
+  <p>集約時に親が<strong>子の会話履歴</strong>を欲しがったら、それは「要約が薄い」か「prompt設計が粗い」サインです。親が追いかけ質問をするくらいなら、最初からpromptに「各指摘は【ファイル:行】【症状】【修正案】の3点セットで返せ」と明記した方が早い。</p>
+
+  <!-- ===== Section 8: ハンズオン — 5観点並列レビュー ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 今すぐ試す:5観点並列レビュー</h2>
+
+  <p><strong>所要10分</strong>。自分のリポジトリ(任意のもの、小さい方が見通しやすい)で並列レビューを体験してみましょう。</p>
+
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-label">対象指定</div><div class="step-desc">レビュー対象ディレクトリを1つ決める</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-label">発注</div><div class="step-desc">下記プロンプトをそのまま貼る</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-label">観察</div><div class="step-desc">5並列が同時走行するログを見る</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-label">集約</div><div class="step-desc">親が統合した表を受け取る</div></div>
+  </div>
+
+  <pre><code>次のタスクを、5つのExplore subagentを「並列」で同時に起動して実行してください。
+
+対象: {自分のリポのディレクトリパス、例 src/}
+観点(各観点1つの子に割り当て):
+  1. セキュリティ(SQLi/XSS/認証/機密ログ漏洩)
+  2. パフォーマンス(N+1/不要な再計算/メモリリーク)
+  3. 可読性(命名/関数長/ネスト深さ)
+  4. テスト(カバレッジの穴/境界値不足)
+  5. 設計(単一責任/依存方向/重複)
+
+各子の出力形式(統一):
+  - 【ファイル:行】【症状】【修正案】の3点セットで最大5件、優先度順
+  - それ以上見つからなければ「指摘なし」と明記
+
+集約(親の仕事):
+  - 5観点 × 優先度の比較表で提示
+  - 最優先3件だけ、具体的な着手手順を追記
+  - 観点間で矛盾する指摘があればハイライト</code></pre>
+
+  <div class="info-box">
+    <span class="label">観察ポイント</span>
+    <p>実行中、Claude Codeは5つのAgent呼び出しを<strong>同時にlaunch</strong>します。ログ上で5つの「Running...」が並走するのが見えるはず。終了時間はほぼ揃い、<strong>律速は一番遅い1子</strong>。直列なら5倍かかる仕事が、壁時計で1/5になる瞬間を体感してください。</p>
+  </div>
+
+  <!-- ===== Section 9: アンチパターン ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 並列化のアンチパターン</h2>
+
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">やりがちNG</span>
+      <h4>直列タスクを無理やり並列化</h4>
+      <ul>
+        <li>「設計→実装→テスト」を3並列にしてしまう</li>
+        <li>同ファイルを3子が同時Edit(最後が勝つ)</li>
+        <li>子のpromptに「親の会話を前提」の文言</li>
+      </ul>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">正しい型</span>
+      <h4>独立タスクだけ並列</h4>
+      <ul>
+        <li>独立3質問を同時に、結果だけ親で統合</li>
+        <li>書き換えが絡むなら<strong>ファイル単位で排他</strong></li>
+        <li>子promptは<strong>自己完結</strong>で書く(状況を全て埋め込む)</li>
+      </ul>
+    </div>
+  </div>
+
+  <p class="clawd-aside-wrap" style="display:flex; align-items:flex-start; gap:12px; padding:14px 16px; background:rgba(217,119,87,0.07); border-radius:10px; margin:18px 0;">
+    <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+    <span><strong>子は親の会話を見ていない</strong>——この一点を忘れると、promptを「続き文脈ありき」で書いてしまって、子が意味不明な挙動をします。子に渡すpromptは、<strong>他人に初めてお願いするメール</strong>だと思って書きましょう。</span>
+  </p>
+
+  <details class="more-box">
+    <summary>もっと詳しく: 「独立っぽく見えて実は依存」の典型3パターン</summary>
+    <div class="more-body">
+      <ol>
+        <li><strong>同一ファイルの異なる関数の修正</strong> — 書き込み競合。行番号がズレて互いに壊し合う。</li>
+        <li><strong>片方が生成したファイルを相手が読む</strong> — 完全依存。直列または親が中継。</li>
+        <li><strong>共有DBへの並行書き込み</strong> — トランザクションが競合。SQLなら1つのトランザクションで</li>
+      </ol>
+      <p>判断に迷ったら「<strong>両方を同時に他人2人に頼んで、互いに知らなくても成立するか?</strong>」を自問してください。成立するなら独立、しないなら直列。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 10: 章末誘導(Advanced 必須) ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> もっと深く学ぶ — 専門編への誘導</h2>
+
+  <div class="info-box" style="border-left: 4px solid #D97757; background: rgba(217,119,87,0.08); padding: 18px 22px;">
+    <span class="label" style="font-size: 13px; color: #D97757;">Advanced 専門編</span>
+    <p style="font-size: 15px; line-height: 1.7;">本章は Subagents の<strong>エッセンス60分版</strong>でした。カスタムsubagent定義(<code>.claude/agents/*.md</code>)、isolation=worktree、10並列以上の設計、プロンプト職人技、実プロジェクトでの運用レシピ——そのすべてを体系化した<strong>4時間カリキュラム</strong>を別途用意しています。</p>
+    <p style="margin-top:12px; font-size: 16px;">
+      <strong>👉 もっと深く学ぶ</strong>:
+      <a href="https://motohirokoma.github.io/26tutorial/test260419/" target="_blank" rel="noopener" style="font-weight:700; font-size:17px; color:#D97757; text-decoration: underline;">MK's Claude Code Tutorial - Subagents Mastery →</a>
+    </p>
+    <p style="font-size: 13px; color: #64748b; margin-top:8px;">8章 / 4時間 / 最終演習付き。Subagentsを「仕事の基本リズム」に組み込みたい人向け。</p>
+  </div>
+
+  <!-- ===== Exercises ===== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>「独立か?」判定練習</h4>
+    <p>以下5つのタスクセットから、並列化可能なものと直列のものを分類してください。各判定に1行の理由を添えてください。</p>
+    <ol>
+      <li>社内3つのライブラリ(A/B/C)のREADMEを要約して比較</li>
+      <li>ある関数をリファクタ → そのテストを追加 → PR本文を書く</li>
+      <li>5ファイルそれぞれに<code>black</code>を実行してフォーマット</li>
+      <li>Day1のログを整形し、その結果でDay2の異常を検出</li>
+      <li>3つの候補アルゴリズムの計算量を別々に調査</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <ol>
+        <li><strong>並列◯</strong> — 独立調査、書き換え無し、集約は比較表</li>
+        <li><strong>直列✕</strong> — 成果物が次段の入力(リファクタ→テスト→PR本文)</li>
+        <li><strong>並列◯</strong> — ファイル単位で独立、書き換えも排他的</li>
+        <li><strong>直列✕</strong> — Day1の結果がDay2の検出入力</li>
+        <li><strong>並列◯</strong> — 独立調査の典型、集約は親が表で統合</li>
+      </ol>
+      <p><strong>判定ポイント</strong>: 「一方の結果が他方の入力か?」「同じファイルに書き込むか?」「集約先が明確か?」の3質問を通してYes/Yes/Noのどれかに該当したら直列、全てクリアなら並列。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>自分のリポで5観点並列レビューを実行</h4>
+    <p>Section 8のプロンプトテンプレを使い、自分の任意プロジェクトで実際に5並列レビューを走らせてください。そのあと以下を記録します。</p>
+    <ol>
+      <li>壁時計時間(全子が揃うまで) vs もし直列だったらの見積時間</li>
+      <li>5子のうち、最も重い指摘を出したのはどれか(観点名)</li>
+      <li>矛盾する指摘はあったか、あったならどれ同士か</li>
+      <li>今後「毎週このパターンで回す」とした場合、カスタムsubagent化したい観点はどれか</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><strong>記録例</strong>(小規模Node.jsリポで筆者が実施した場合):</p>
+      <ul>
+        <li>壁時計 120秒 / 直列見積 580秒 → <strong>約4.8倍速</strong></li>
+        <li>最重指摘:「設計」(循環依存が2箇所)。次点は「テスト」(境界値不足)</li>
+        <li>矛盾1件:「可読性」は関数分割を推奨、「パフォーマンス」は関数呼び出しオーバヘッドを指摘 → 親判断で可読性を優先</li>
+        <li>カスタム化候補:「セキュリティ」(毎週同じ観点・同じ出力形式でいい)。<code>.claude/agents/security-reviewer.md</code>を作って、以後<code>subagent_type: "security-reviewer"</code>で一撃呼び出し</li>
+      </ul>
+      <p>この記録を残すと、<strong>自分の弱点観点が見える化</strong>します。セキュリティ指摘が毎週出るなら、それはあなたの設計クセ。習慣化レビューが効く所以です。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式ドキュメント</a> <span class="res-type doc">Doc</span> — Agent tool の最新仕様はここで</li>
+      <li><a href="https://docs.claude.com/en/docs/claude-code/sub-agents" target="_blank" rel="noopener">Claude Code 公式 - Sub-agents</a> <span class="res-type doc">Doc</span> — subagent_type と custom agents の詳細</li>
+      <li><a href="https://motohirokoma.github.io/26tutorial/test260419/" target="_blank" rel="noopener">MK's Claude Code - Subagents Mastery</a> <span class="res-type doc">Doc</span> — 本章の<strong>専門編</strong>(4時間カリキュラム)</li>
+      <li><a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener">Claude Code GitHub</a> <span class="res-type doc">Doc</span> — 実装とissue議論</li>
+      <li><a href="https://github.com/anthropics/anthropic-cookbook" target="_blank" rel="noopener">Anthropic Cookbook</a> <span class="res-type doc">Doc</span> — Agent SDK のサンプル実装</li>
+      <li><a href="https://www.anthropic.com/news" target="_blank" rel="noopener">Anthropic Blog</a> <span class="res-type doc">Doc</span> — Agent/Subagent関連の最新アナウンス</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="16">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="15-web-tools.html"><span class="direction">&larr; Prev</span>Web検索・取得</a>
+    <a href="17-mcp-overview.html"><span class="direction">Next &rarr;</span>MCPで主戦場ツールと繋ぐ</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>

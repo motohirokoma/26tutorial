@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23D97757%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>MCPで主戦場ツールと繋ぐ - MK's Claude Code Tutorial</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #D97757; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Claude Code Tutorial
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1" data-nav><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" data-nav><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="../index.html#phase3" data-nav class="active"><span class="phase-name">Advanced</span><span class="phase-pct" id="pct-advanced">0%</span></a></li>
+      <li><a href="../index.html#phase4" data-nav><span class="phase-name">Projects</span><span class="phase-pct" id="pct-projects">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.17</span>
+    MCPで主戦場ツールと繋ぐ
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18"
+        stroke-dasharray="0 113.1"
+        stroke-dashoffset="0"
+        transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 26 sections</text>
+    </svg>
+    <div class="progress-info">0h / 24h completed</div>
+  </div>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-welcome.html"><span class="status-dot" data-chapter="01"></span> ようこそ&amp;セットアップ</a></li>
+    <li><a href="02-communication-basics.html"><span class="status-dot" data-chapter="02"></span> 対話の原則</a></li>
+    <li><a href="03-file-tools.html"><span class="status-dot" data-chapter="03"></span> ファイル操作ツール</a></li>
+    <li><a href="04-bash-safety.html"><span class="status-dot" data-chapter="04"></span> Bashツールと安全</a></li>
+    <li><a href="05-todo-management.html"><span class="status-dot" data-chapter="05"></span> TodoWriteで作業管理</a></li>
+    <li><a href="06-claude-md.html"><span class="status-dot" data-chapter="06"></span> CLAUDE.md</a></li>
+    <li><a href="07-git-workflow.html"><span class="status-dot" data-chapter="07"></span> Git × Claude Code</a></li>
+  </ul>
+  <div class="section-label">Core</div>
+  <ul>
+    <li><a href="08-prompt-patterns.html"><span class="status-dot" data-chapter="08"></span> プロンプト設計の型</a></li>
+    <li><a href="09-code-review.html"><span class="status-dot" data-chapter="09"></span> コードレビュー依頼</a></li>
+    <li><a href="10-refactor-workflow.html"><span class="status-dot" data-chapter="10"></span> 改修ワークフロー</a></li>
+    <li><a href="11-tdd-with-claude.html"><span class="status-dot" data-chapter="11"></span> テスト駆動</a></li>
+    <li><a href="12-debugging.html"><span class="status-dot" data-chapter="12"></span> デバッグ</a></li>
+    <li><a href="13-plan-mode.html"><span class="status-dot" data-chapter="13"></span> Planモード</a></li>
+    <li><a href="14-context-management.html"><span class="status-dot" data-chapter="14"></span> コンテキスト管理</a></li>
+    <li><a href="15-web-tools.html"><span class="status-dot" data-chapter="15"></span> Web検索・取得</a></li>
+  </ul>
+  <div class="section-label">Advanced</div>
+  <ul>
+    <li><a href="16-subagents-overview.html"><span class="status-dot" data-chapter="16"></span> Subagents</a></li>
+    <li><a href="17-mcp-overview.html" class="active"><span class="status-dot" data-chapter="17"></span> MCP</a></li>
+    <li><a href="18-hooks-overview.html"><span class="status-dot" data-chapter="18"></span> Hooks</a></li>
+    <li><a href="19-schedule-loop.html"><span class="status-dot" data-chapter="19"></span> Schedule &amp; Loop</a></li>
+    <li><a href="20-skills-overview.html"><span class="status-dot" data-chapter="20"></span> Skills</a></li>
+    <li><a href="21-worktree.html"><span class="status-dot" data-chapter="21"></span> worktree</a></li>
+    <li><a href="22-pitfalls.html"><span class="status-dot" data-chapter="22"></span> 失敗パターン10</a></li>
+  </ul>
+  <div class="section-label">Projects</div>
+  <ul>
+    <li><a href="23-project-automation.html"><span class="status-dot" data-chapter="23"></span> Project A：業務自動化</a></li>
+    <li><a href="24-project-refactor.html"><span class="status-dot" data-chapter="24"></span> Project B：リファクタ</a></li>
+    <li><a href="25-project-webapp.html"><span class="status-dot" data-chapter="25"></span> Project C：Webアプリ</a></li>
+    <li><a href="26-final-exercise.html"><span class="status-dot" data-chapter="26"></span> 最終演習</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 3: Advanced &gt; Chapter 17</div>
+  <h1>MCPで主戦場ツールと繋ぐ</h1>
+  <p class="subtitle">Claude Code を「自分の主戦場」へ接続し、生産性を桁で変える標準プロトコル</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 60分</span>
+    <span class="badge">Phase: Advanced</span>
+    <span class="badge">難易度: 中級</span>
+  </div>
+
+  <div class="info-box">
+    <span class="label">この章のゴール</span>
+    <p><strong>MCP</strong>(Model Context Protocol)を「<strong>Claude と外部ツールを繋ぐ共通コネクタ規格</strong>」として直感できるようにし、<code>.mcp.json</code> に1つサーバーを書いて動かすところまで60分で到達します。GitHub / Slack / Google Drive / 社内DB — あなたの「主戦場ツール」が Claude Code の中から直接操作できるようになる、その入口です。</p>
+  </div>
+
+  <div class="info-box" style="border-left: 3px solid #D97757;">
+    <span class="label">2026年1月時点の情報</span>
+    <p>本章の記述は <strong>2026年1月時点</strong> の Claude Code と MCP 仕様(プロトコルバージョン <code>2025-06-18</code> 系)に基づきます。公式サーバーのパッケージ名や認可フロー(OAuth 2.1)は改訂が続いているため、実際に接続する際は <a href="https://modelcontextprotocol.io" target="_blank" rel="noopener">MCP公式</a> / <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code公式</a> を必ず参照してください。</p>
+  </div>
+
+  <!-- ===== Section 1: MCPとは ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> MCPとは — 「AIのUSB-C」</h2>
+
+  <p><span class="term" data-tip="MCP: Model Context Protocol。Anthropicが2024年末に公開したオープン規格で、LLMと外部ツール/データソースを繋ぐ共通プロトコル。">MCP</span>(<strong>Model Context Protocol</strong>)は、Anthropicが公開した<strong>LLMと外部ツールを繋ぐ共通規格</strong>です。よく「<strong>AIのUSB-C</strong>」と呼ばれます — これまで各LLMクライアントが個別に作っていた「GitHub統合」「Slack統合」「Notion統合」を、<strong>1本の規格</strong>にまとめた、というのがポイント。</p>
+
+  <p>Claude Code は MCP クライアントとして動作し、<span class="term" data-tip="MCPサーバー: ツールやリソースを提供する外部プロセス。stdioまたはhttpで通信する。">MCPサーバー</span>を <code>.mcp.json</code> に登録するだけで、そのサーバーが公開するツールがすべて Claude から使えるようになります。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">MCPの全体像 — クライアントとサーバーの接続</div>
+    <svg viewBox="0 0 520 300" width="100%" style="max-width:520px; display:block; margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arrMCP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#D97757"/></marker>
+      </defs>
+      <!-- Claude Code (client) -->
+      <rect x="30" y="100" width="140" height="100" rx="12" fill="rgba(217,119,87,0.15)" stroke="#D97757" stroke-width="2"/>
+      <text x="100" y="130" text-anchor="middle" font-size="13" font-weight="700" fill="#18181b">Claude Code</text>
+      <text x="100" y="150" text-anchor="middle" font-size="10" fill="#475569">(MCPクライアント)</text>
+      <text x="100" y="172" text-anchor="middle" font-size="10">プロンプトを</text>
+      <text x="100" y="188" text-anchor="middle" font-size="10">ツール呼び出しへ</text>
+      <!-- Protocol line -->
+      <path d="M 170 135 L 240 80" stroke="#D97757" stroke-width="2" fill="none" marker-end="url(#arrMCP)"/>
+      <path d="M 170 150 L 240 150" stroke="#D97757" stroke-width="2" fill="none" marker-end="url(#arrMCP)"/>
+      <path d="M 170 170 L 240 220" stroke="#D97757" stroke-width="2" fill="none" marker-end="url(#arrMCP)"/>
+      <text x="205" y="125" text-anchor="middle" font-size="9" fill="#64748b">JSON-RPC 2.0</text>
+      <text x="205" y="210" text-anchor="middle" font-size="9" fill="#64748b">(stdio / http)</text>
+      <!-- MCP Servers -->
+      <rect x="250" y="40" width="170" height="70" rx="10" fill="#ffffff" stroke="#D97757" stroke-width="1.5"/>
+      <text x="335" y="65" text-anchor="middle" font-size="12" font-weight="700">GitHub MCP</text>
+      <text x="335" y="84" text-anchor="middle" font-size="10" fill="#475569">create_issue / list_prs</text>
+      <text x="335" y="100" text-anchor="middle" font-size="10" fill="#475569">merge_pr / search_code</text>
+      <rect x="250" y="120" width="170" height="60" rx="10" fill="#ffffff" stroke="#D97757" stroke-width="1.5"/>
+      <text x="335" y="145" text-anchor="middle" font-size="12" font-weight="700">Filesystem MCP</text>
+      <text x="335" y="164" text-anchor="middle" font-size="10" fill="#475569">read / write (scoped path)</text>
+      <rect x="250" y="190" width="170" height="60" rx="10" fill="#ffffff" stroke="#D97757" stroke-width="1.5"/>
+      <text x="335" y="215" text-anchor="middle" font-size="12" font-weight="700">Slack MCP</text>
+      <text x="335" y="234" text-anchor="middle" font-size="10" fill="#475569">post_message / search</text>
+      <!-- External targets -->
+      <rect x="440" y="55" width="60" height="40" rx="6" fill="rgba(217,119,87,0.08)" stroke="#94a3b8" stroke-dasharray="3,2"/>
+      <text x="470" y="80" text-anchor="middle" font-size="10">API</text>
+      <rect x="440" y="130" width="60" height="40" rx="6" fill="rgba(217,119,87,0.08)" stroke="#94a3b8" stroke-dasharray="3,2"/>
+      <text x="470" y="155" text-anchor="middle" font-size="10">FS</text>
+      <rect x="440" y="200" width="60" height="40" rx="6" fill="rgba(217,119,87,0.08)" stroke="#94a3b8" stroke-dasharray="3,2"/>
+      <text x="470" y="225" text-anchor="middle" font-size="10">API</text>
+      <text x="100" y="280" text-anchor="middle" font-size="10" fill="#64748b">あなたの端末</text>
+      <text x="335" y="280" text-anchor="middle" font-size="10" fill="#64748b">MCPサーバー群</text>
+      <text x="470" y="265" text-anchor="middle" font-size="10" fill="#64748b">実サービス</text>
+    </svg>
+    <div class="diagram-caption">Claude Code は一律のプロトコル(JSON-RPC 2.0)で各MCPサーバーと話す。サーバーは実サービス(GitHub / ファイルシステム / Slack 等)に専用の方法でアクセスする。</div>
+  </div>
+
+  <div class="hands-on-box info-box" style="background: rgba(217,119,87,0.08); border-left: 3px solid #D97757;">
+    <span class="label">今すぐ試す(1分)</span>
+    <p>ターミナルで現在登録されているMCPサーバーを確認してみましょう。</p>
+    <pre><code>claude mcp list</code></pre>
+    <p>まだ何も入れていなければ空のはずです。この章の後半で最初の1つ(Filesystem MCP)を入れます。</p>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section 2: N×M問題 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> なぜ必要なのか — N×M問題</h2>
+
+  <p>MCPが生まれた背景は「<span class="term" data-tip="N×M問題: N個のLLMクライアントとM個のツールを繋ぐのに、N×M通りの個別実装が必要になる問題。">N×M問題</span>」です。5つのLLM(ChatGPT / Claude / Gemini / Cursor / ...)と100個のツール(GitHub / Slack / Jira / ...)を繋ごうとすると、単純計算で <strong>5×100 = 500個のインテグレーション</strong>が必要になる。これが共通プロトコルMCPで <strong>5 + 100 = 105個</strong> に圧縮される、というのが発想の根っこです。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">N×M(個別統合) vs N+M(MCP経由)</div>
+    <canvas id="ch17-bar-1" height="200"></canvas>
+    <div class="diagram-caption">クライアント5 × ツール100 の場合、個別統合は500本、MCPなら105本。規模が増えるほど差が指数的に広がる。</div>
+  </div>
+
+  <script>
+  window.addEventListener("load", function(){
+    var ctx = document.getElementById('ch17-bar-1');
+    if(!ctx || !window.Chart) return;
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['2×5', '3×10', '5×50', '5×100', '10×200'],
+        datasets: [
+          { label: '個別統合 (N×M)', data: [10, 30, 250, 500, 2000], backgroundColor: '#D97757', borderRadius: 4 },
+          { label: 'MCP経由 (N+M)', data: [7, 13, 55, 105, 210], backgroundColor: 'rgba(217,119,87,0.3)', borderRadius: 4 }
+        ]
+      },
+      options: {
+        plugins: { legend: { position: 'bottom' } },
+        scales: { y: { beginAtZero: true, title: { display: true, text: '必要インテグレーション数' } } }
+      }
+    });
+  });
+  </script>
+
+  <p>現実的には「すべてのツールを一人で使うことはない」ので、個人レベルでは <strong>主戦場ツール3-5個を MCP 化</strong> するのが一番効きます。毎日触るもの、つまり <strong>あなたの"主戦場"</strong> を識別することが最初のステップです。</p>
+
+  <table>
+    <thead>
+      <tr><th>主戦場タイプ</th><th>典型ツール</th><th>代表的なMCPサーバー</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>コード管理</td><td>GitHub / GitLab</td><td><code>@modelcontextprotocol/server-github</code></td></tr>
+      <tr><td>コミュニケーション</td><td>Slack / Discord</td><td><code>@modelcontextprotocol/server-slack</code></td></tr>
+      <tr><td>ドキュメント</td><td>Google Drive / Notion</td><td><code>@modelcontextprotocol/server-gdrive</code> / Notion公式</td></tr>
+      <tr><td>タスク管理</td><td>Jira / Linear</td><td>Atlassian公式 / Linear公式</td></tr>
+      <tr><td>ローカル資源</td><td>ファイルシステム / SQLite</td><td><code>@modelcontextprotocol/server-filesystem</code> / <code>server-sqlite</code></td></tr>
+      <tr><td>DB / データ基盤</td><td>Postgres / BigQuery</td><td><code>server-postgres</code> / ベンダー公式</td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-box" style="border-left-color: #D97757;">
+    <span class="label">ここがプロの境目</span>
+    <p><strong>主戦場ツール(GitHub / Slack / Drive等)は、迷わず MCP 化する</strong>。「Claude Code で何でもやる」をやれるようになると、コピペ/貼付けの往復が消え、生産性が<strong>桁で変わる</strong>。「PRの一覧を見て説明して、コメント付けて」「Slackの#devチャンネルの今週の議論を要約」がチャット1行で完結する世界です。<br>
+    <em>試し方：</em> 自分が今週もっともタブを切り替えたツール1つを思い出し、今週中に対応MCPサーバーを入れる。まずは1つ、読み取り専用スコープで十分。</p>
+  </div>
+
+  <!-- ===== Section 3: .mcp.json の書き方 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> .mcp.json の書き方 — 3スコープ</h2>
+
+  <p>Claude Code での MCP 設定は、基本的に <code>.mcp.json</code> ファイルに書きます。<strong>スコープ(=どこに書くか)で読み込み範囲が決まる</strong>のが最重要ポイントです。</p>
+
+  <div class="compare-cards">
+    <div class="cc good">
+      <span class="cc-label">local (個人)</span>
+      <h4><code>~/.claude/mcp.json</code></h4>
+      <ul>
+        <li>自分のマシン全体で有効</li>
+        <li>API キー等を安心して書ける</li>
+        <li>チームには共有されない</li>
+      </ul>
+    </div>
+    <div class="cc neutral">
+      <span class="cc-label">project (共有)</span>
+      <h4><code>./.mcp.json</code>(リポジトリ直下)</h4>
+      <ul>
+        <li>プロジェクトごとのサーバー定義</li>
+        <li>Gitで共有可能、<strong>秘密情報は環境変数で</strong></li>
+        <li>チーム全員が同じMCP構成になる</li>
+      </ul>
+    </div>
+    <div class="cc bad">
+      <span class="cc-label">project.local (非共有)</span>
+      <h4><code>./.mcp.local.json</code></h4>
+      <ul>
+        <li>個人オーバーライド</li>
+        <li><code>.gitignore</code>対象</li>
+        <li>自分だけの実験用</li>
+      </ul>
+    </div>
+  </div>
+
+  <p><strong>.mcp.jsonの最小例</strong>(Filesystem MCP を追加):</p>
+
+  <pre><code>{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/Users/you/Desktop/claude"
+      ]
+    }
+  }
+}</code></pre>
+
+  <p>この <code>mcpServers</code> オブジェクトのキー(<code>"filesystem"</code>)が、Claude 側から見たサーバー名になります。<code>args</code> の末尾に渡したパス(<code>/Users/you/Desktop/claude</code>)が<strong>アクセス許可される唯一のディレクトリ</strong> — このスコープ外には絶対に触れません。</p>
+
+  <div class="hands-on-box info-box" style="background: rgba(217,119,87,0.08); border-left: 3px solid #D97757;">
+    <span class="label">今すぐ試す(5分) — Filesystem MCP 導入</span>
+    <p>一番簡単な Filesystem MCP を入れて動作確認します。</p>
+    <ol>
+      <li>プロジェクトルートで <code>claude mcp add filesystem --scope project -- npx -y @modelcontextprotocol/server-filesystem $(pwd)</code></li>
+      <li><code>claude mcp list</code> で <code>filesystem</code> が ✓ になっているか確認</li>
+      <li>Claude Codeを開いて「<code>mcp__filesystem__list_directory</code> を使って、このプロジェクトのルートを一覧化して」と依頼</li>
+    </ol>
+    <p>ツール名は <code>mcp__{サーバー名}__{ツール名}</code> のパターンで自動展開されます。</p>
+  </div>
+
+  <details class="more-box">
+    <summary>もっと詳しく: スコープの優先順位と読み込み順</summary>
+    <div class="more-body">
+      <p>同じサーバー名が複数スコープに書かれている場合、<strong>project.local > project > local(user)</strong> の順で優先されます。チームは共通構成を <code>.mcp.json</code> に、個人APIキーは <code>.mcp.local.json</code> に書く、が基本パターン。また、<code>env</code> フィールドで環境変数を子プロセスに渡せます(後述GitHub MCP参照)。<code>disabled: true</code> を書くと無効化できます(一時オフ用)。</p>
+    </div>
+  </details>
+
+  <!-- ===== Section 4: stdio vs http ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> トランスポート — stdio vs HTTP</h2>
+
+  <p>MCPサーバーとの通信手段は大きく2つあります。<span class="term" data-tip="stdio: 標準入出力を使った同一マシン内プロセス間通信。ローカルのMCPサーバーに最適。">stdio</span> と <span class="term" data-tip="HTTP(Streamable HTTP): リモートのMCPサーバーに対するHTTPベースの通信方式。2026年1月時点ではStreamable HTTP(+SSE)が主流。">HTTP</span>(Streamable HTTP + SSE)です。どちらを選ぶかで設定形が変わります。</p>
+
+  <table>
+    <thead>
+      <tr><th>観点</th><th>stdio</th><th>HTTP</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>サーバーの所在</td><td>ローカル(自分のマシン)</td><td>リモート(クラウド) or ローカル</td></tr>
+      <tr><td>起動方法</td><td>Claude Code が子プロセスとして起動</td><td>既に起動しているサーバーのURLを叩く</td></tr>
+      <tr><td>認証</td><td>プロセス起動時に環境変数で渡す</td><td>OAuth 2.1 / Bearer token</td></tr>
+      <tr><td>得意</td><td>ファイル操作・ローカルDB・個人利用</td><td>チーム共有サーバー・SaaS公式</td></tr>
+      <tr><td>苦手</td><td>複数マシンで共有</td><td>セットアップのハードル高</td></tr>
+    </tbody>
+  </table>
+
+  <p><strong>stdio形式の例</strong>(ローカル実行):</p>
+  <pre><code>{
+  "mcpServers": {
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_TOKEN}"
+      }
+    }
+  }
+}</code></pre>
+
+  <p><strong>HTTP形式の例</strong>(リモートサーバー接続):</p>
+  <pre><code>{
+  "mcpServers": {
+    "company-wiki": {
+      "type": "http",
+      "url": "https://mcp.your-company.com/wiki",
+      "headers": {
+        "Authorization": "Bearer ${COMPANY_MCP_TOKEN}"
+      }
+    }
+  }
+}</code></pre>
+
+  <div class="diagram-box">
+    <div class="diagram-title">どちらを選ぶか(判断フロー)</div>
+    <pre class="mermaid">
+graph TD
+  A[MCPサーバーを追加したい] --> Q1{"サーバーは自分の端末で動く?"}
+  Q1 -- Yes --> S[stdio を選ぶ]
+  Q1 -- No --> Q2{"公式がHTTPエンドポイント提供?"}
+  Q2 -- Yes --> H["HTTP を選ぶ(OAuth推奨)"]
+  Q2 -- No --> R["リモート用にstdio→HTTP ブリッジを立てる"]
+  S --> End[完了]
+  H --> End
+  R --> End
+    </pre>
+    <div class="diagram-caption">ローカル用は stdio、リモート/SaaS は HTTP。公式サーバーが提供されていればまずそれを使う。</div>
+  </div>
+
+  <div class="info-box">
+    <span class="label">公式ドキュメント必読</span>
+    <p>ここは公式ドキュメントにも書いていますし、実務で間違えると致命的(権限広すぎで情報漏洩等)なので必ずマスターしてください。<a href="https://modelcontextprotocol.io/specification/2025-06-18/basic/transports" target="_blank" rel="noopener">MCP Transports 仕様 →</a> / <a href="https://docs.claude.com/en/docs/claude-code/mcp" target="_blank" rel="noopener">Claude Code MCP docs →</a></p>
+  </div>
+
+  <!-- ===== Section 5: GitHub MCP 実装例 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 実装例 — GitHub MCP</h2>
+
+  <p>主戦場ツールの中でも、開発者にとってGitHubは<strong>間違いなく第1位</strong>。ここを MCP 化すると、Claude Code のチャットで <code>gh</code> コマンドを自分でゴリゴリ叩かなくても、PR一覧/Issue作成/コメント投稿までまとめて任せられます。</p>
+
+  <div class="steps">
+    <div class="step done"><div class="step-num">1</div><div class="step-label">PAT発行</div><div class="step-desc">scopeは<code>repo</code>,<code>read:org</code>最小限</div></div>
+    <div class="step done"><div class="step-num">2</div><div class="step-label">環境変数</div><div class="step-desc"><code>export GITHUB_TOKEN=...</code></div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-label">設定追加</div><div class="step-desc"><code>.mcp.local.json</code>に記述</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-label">動作確認</div><div class="step-desc"><code>claude mcp list</code>で✓</div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-label">実タスク投入</div><div class="step-desc">「今週のPRを要約して」</div></div>
+  </div>
+
+  <p><strong>.mcp.local.json の中身</strong>(個人のトークンを含むので必ず <code>.local</code> 側へ):</p>
+
+  <pre><code>{
+  "mcpServers": {
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_TOKEN}"
+      }
+    }
+  }
+}</code></pre>
+
+  <p>設定後、Claude Code にこう頼めます(実プロンプト例):</p>
+
+  <pre><code>mcp__github__list_pull_requests を使って、
+リポジトリ anthropics/claude-code の直近10件のPRを
+タイトル・作成者・状態の表にまとめて。</code></pre>
+
+  <div class="hands-on-box info-box" style="background: rgba(217,119,87,0.08); border-left: 3px solid #D97757;">
+    <span class="label">今すぐ試す(10分)</span>
+    <ol>
+      <li>GitHubの <a href="https://github.com/settings/tokens?type=beta" target="_blank" rel="noopener">Fine-grained PAT</a> を発行(Repo access限定、必要最小scope)</li>
+      <li><code>~/.zshrc</code> に <code>export GITHUB_TOKEN=ghp_xxx</code> を追記して <code>source ~/.zshrc</code></li>
+      <li><code>claude mcp add github --scope local -- npx -y @modelcontextprotocol/server-github</code></li>
+      <li>Claude Code を開き直して「自分が今週開いたPRを一覧化して」と頼む</li>
+    </ol>
+    <p>うまくいけば、<code>mcp__github__search_issues</code> 等のツール呼び出しが画面に出ます。</p>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section 6: 認証とスコープ ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 認証とスコープ — 事故る前に</h2>
+
+  <p>MCPは強力な分、<strong>権限設計を間違えると一撃で事故る</strong>ツールでもあります。失敗パターンはだいたい「スコープが広すぎる」「秘密情報が共有ファイルに漏れた」の2パターン。</p>
+
+  <ul class="icon-list">
+    <li>
+      <i data-lucide="key" width="20" height="20"></i>
+      <div><strong>トークンは最小スコープで</strong> — GitHubなら <code>repo:read</code> だけで足りる場面は多い。<code>admin:*</code>系は書かない</div>
+    </li>
+    <li>
+      <i data-lucide="lock" width="20" height="20"></i>
+      <div><strong>秘密情報は <code>.mcp.local.json</code> または環境変数へ</strong> — <code>.mcp.json</code>に平文トークンを書いて <code>git push</code> したら終わり</div>
+    </li>
+    <li>
+      <i data-lucide="shield" width="20" height="20"></i>
+      <div><strong>Filesystem MCP は許可パスを狭く</strong> — <code>$HOME</code> 直下や <code>/</code> は絶対NG。プロジェクトルートのみ</div>
+    </li>
+    <li>
+      <i data-lucide="eye" width="20" height="20"></i>
+      <div><strong>信頼できないサーバーを入れない</strong> — 公式 or 一次ベンダー or コード確認済みOSS のみ。怪しいnpmパッケージは中でなんでもできる</div>
+    </li>
+    <li>
+      <i data-lucide="alert-triangle" width="20" height="20"></i>
+      <div><strong>破壊的ツール(delete/push/merge)は確認プロンプトを有効に</strong> — Claude Codeの <code>--dangerously-skip-permissions</code> と MCP は相性が悪い、絶対に併用しない</div>
+    </li>
+  </ul>
+
+  <div class="diagram-box">
+    <div class="diagram-title">スコープの広さ vs リスク(イメージ)</div>
+    <canvas id="ch17-radar-1" height="220"></canvas>
+    <div class="diagram-caption">"最小権限" は理想値。実務では開発用トークンでも <code>repo</code> を丸ごと与えがちだが、意識して絞ると事故が激減する。</div>
+  </div>
+
+  <script>
+  window.addEventListener("load", function(){
+    var ctx = document.getElementById('ch17-radar-1');
+    if(!ctx || !window.Chart) return;
+    new Chart(ctx, {
+      type: 'radar',
+      data: {
+        labels: ['read権限','write権限','admin権限','ファイル範囲','秘密情報露出','破壊操作'],
+        datasets: [
+          { label: '最小権限(理想)', data: [2, 1, 0, 1, 0, 0], borderColor: '#D97757', backgroundColor: 'rgba(217,119,87,0.25)', pointBackgroundColor: '#D97757' },
+          { label: '雑な運用(NG)',   data: [4, 4, 3, 4, 3, 4], borderColor: '#94a3b8', backgroundColor: 'rgba(148,163,184,0.2)', pointBackgroundColor: '#94a3b8' }
+        ]
+      },
+      options: {
+        plugins: { legend: { position: 'bottom' } },
+        scales: { r: { suggestedMin: 0, suggestedMax: 5, ticks: { stepSize: 1 } } }
+      }
+    });
+  });
+  </script>
+
+  <details class="more-box">
+    <summary>もっと詳しく: OAuth 2.1 対応のHTTPサーバー</summary>
+    <div class="more-body">
+      <p>2025年の仕様改訂で、リモートMCPサーバーは <strong>OAuth 2.1 + PKCE</strong> による認可フローが推奨になりました。Claude Code は <code>type: "http"</code> サーバーの <code>/.well-known/oauth-authorization-server</code> を自動探索し、ブラウザで認可画面を開いてtoken交換します。PAT直書きより安全で、revokeもサービス側UIから一発。チーム導入時はHTTP+OAuthが本命です。</p>
+    </div>
+  </details>
+
+  <details class="more-box">
+    <summary>もっと詳しく: 失敗事例アンチパターン3つ</summary>
+    <div class="more-body">
+      <p><strong>(1) PAT共有リポジトリにハードコード</strong> → 他人にMergeされた瞬間に露出。<strong>(2) Filesystem MCP で <code>$HOME</code> 許可</strong> → <code>.ssh/id_rsa</code>まで読み放題。<strong>(3) 怪しいサードパーティMCPを <code>npx</code> で即実行</strong> → 実は環境変数全送信のマルウェア。いずれも「最小スコープ + 公式ソースのみ」で回避できます。</p>
+    </div>
+  </details>
+
+  <div class="quote">
+    MCPは便利の延長に「権限」という大きな扉を開く。<strong>開けた扉を常に意識する</strong>のがプロ。
+    <cite>— MCP運用の鉄則</cite>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
+
+  <!-- ===== Section 7: 章末誘導 ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> もっと深く学ぶ — MCP専門編へ</h2>
+
+  <p>この章では概念と最小実装にフォーカスしました。実務では「<strong>自作MCPサーバーの作り方</strong>」「<strong>社内システムへの安全な接続</strong>」「<strong>複数MCPの組み合わせ運用</strong>」「<strong>OAuthフローの詳細</strong>」が主戦場になります。そこは専用のカリキュラムで一気に踏み込むのが最短です。</p>
+
+  <div class="hover-card card" style="border-left: 4px solid #D97757; padding: 18px 22px;">
+    <h4 style="margin-top:0;">もっと深く学ぶ → <a href="https://motohirokoma.github.io/26tutorial/test260419-2/" target="_blank" rel="noopener"><strong>MK's Claude Code Tutorial - MCP Guide</strong></a></h4>
+    <p>自作MCPサーバー / 公式サーバーベンチマーク / OAuth 2.1 実装 / 権限設計の事故事例集 — 本章で触れ切れなかった<strong>実運用</strong>を深掘りする専門編です。60分でMCP設計者になれる構成。</p>
+  </div>
+
+  <!-- ===================== Exercises ===================== -->
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>Filesystem MCP を自プロジェクトに入れる</h4>
+    <p>自分が普段触っている任意のプロジェクトディレクトリで Filesystem MCP を動かし、Claude Codeから「README の先頭10行を要約して」を実行してみる。</p>
+    <ol>
+      <li>プロジェクトルートで <code>claude mcp add</code> コマンドで Filesystem を追加</li>
+      <li><code>claude mcp list</code> で接続OKを確認</li>
+      <li>Claude にREADMEの要約を依頼し、<code>mcp__filesystem__</code> で始まるツール呼び出しが使われるか観察</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>以下のコマンドをプロジェクトルートで実行。</p>
+      <pre><code># 追加
+claude mcp add filesystem --scope project -- npx -y @modelcontextprotocol/server-filesystem $(pwd)
+
+# 確認
+claude mcp list
+# => filesystem: npx ... (✓)
+
+# Claude Code内でのプロンプト
+このプロジェクトの README.md の先頭10行を読んで、
+内容を3行で要約してください。</code></pre>
+      <p>途中で Claude が <code>mcp__filesystem__read_text_file</code> や <code>mcp__filesystem__list_directory</code> を呼んでいれば成功です。ツール呼び出しログは画面に表示されます。呼ばれていない場合は、手動で「MCPの filesystem ツールを使って」と指示を足すと確実。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>自分の主戦場ツール1つをMCP化する計画を書く</h4>
+    <p>あなたが今週一番タブを切り替えたツールを1つ選び、MCP化の<strong>実行計画</strong>を作る。実施は今週中に。</p>
+    <ol>
+      <li>ツール名と、MCP化したい代表ユースケース3つを列挙</li>
+      <li>対応するMCPサーバー(公式 or 一次ベンダー)を<a href="https://github.com/modelcontextprotocol/servers" target="_blank" rel="noopener">公式リスト</a>から探す</li>
+      <li>必要な権限スコープを<strong>最小限で</strong>洗い出す</li>
+      <li><code>.mcp.json</code> または <code>.mcp.local.json</code> の草案を書く(トークンはプレースホルダ)</li>
+      <li>リスク(権限事故 / 秘密漏洩 / レート制限)を1-2行で書き留める</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p>例: Slack を主戦場に選んだ場合。</p>
+      <pre><code># 選定
+Tool: Slack
+Usecases:
+  - 今週の #dev チャンネルのスレッドを要約
+  - 自分メンションの未読を一覧
+  - 決定事項を Notion へ転記(後続MCPと組み合わせ)
+
+# MCPサーバー
+@modelcontextprotocol/server-slack (公式)
+
+# 最小スコープ (Slack App設定)
+channels:history, channels:read, users:read, chat:write (投稿する場合のみ)
+admin系は不要
+
+# .mcp.local.json 草案
+{
+  "mcpServers": {
+    "slack": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-slack"],
+      "env": {
+        "SLACK_BOT_TOKEN": "${SLACK_BOT_TOKEN}",
+        "SLACK_TEAM_ID": "${SLACK_TEAM_ID}"
+      }
+    }
+  }
+}
+
+# リスク
+- Bot tokenが漏れると自分のSlackアカウント権限で操作される
+  => .mcp.local.json は必ず .gitignore
+- chat:write を付けると誤投稿の事故可能性
+  => まず読取専用で始める</code></pre>
+      <p>このように「<strong>ユースケース → サーバー選定 → 最小スコープ → 設定草案 → リスク</strong>」で書くと、導入のPR/相談資料としてそのまま使えます。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span> <a href="https://modelcontextprotocol.io" target="_blank" rel="noopener">MCP 公式サイト</a> — 仕様・概念の一次ソース</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://modelcontextprotocol.io/specification/2025-06-18/basic/transports" target="_blank" rel="noopener">MCP Specification (Transports)</a> — stdio/HTTP 仕様</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://github.com/modelcontextprotocol/servers" target="_blank" rel="noopener">公式サーバー一覧 (modelcontextprotocol/servers)</a> — GitHub/Slack/Drive等</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.claude.com/en/docs/claude-code/mcp" target="_blank" rel="noopener">Claude Code: MCP 統合ガイド</a> — .mcp.json の書き方</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Claude Code 公式</a> — 全体リファレンス</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://www.anthropic.com/news/model-context-protocol" target="_blank" rel="noopener">Anthropic: Introducing MCP</a> — MCP発表ブログ(背景理解に)</li>
+      <li><span class="res-type video">Video</span> YouTubeで「Claude Code MCP tutorial」検索 — 実装デモ多数</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="17">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="16-subagents-overview.html"><span class="direction">&larr; Prev</span>Subagents</a>
+    <a href="18-hooks-overview.html"><span class="direction">Next &rarr;</span>Hooks</a>
+  </div>
+</main>
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: 'rgba(217,119,87,0.15)',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#D97757',
+      lineColor: '#D97757',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<!-- 視覚化ライブラリ群 -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>
