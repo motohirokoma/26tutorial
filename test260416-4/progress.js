@@ -384,6 +384,103 @@ window.tutorialProgress = {
   },
 };
 
+// ============ Zoomable diagrams (lightbox) ============
+(function initZoomableDiagrams() {
+  const EXCLUDE = '.clawd, .clawd-heading, .clawd-aside, .clawd-btn, .lucide, .topbar, nav.sidebar, .streak-badge, .auth-box, .zoomable-wrap';
+  const MIN_WIDTH = 200;
+  let overlay = null;
+
+  function findTargets() {
+    const targets = new Set();
+    document.querySelectorAll('main .mermaid').forEach((el) => {
+      if (el.closest('.zoomable-wrap')) return;
+      targets.add(el);
+    });
+    document.querySelectorAll('main canvas').forEach((el) => {
+      if (el.closest(EXCLUDE)) return;
+      const rect = el.getBoundingClientRect();
+      if (rect.width < MIN_WIDTH) return;
+      targets.add(el);
+    });
+    document.querySelectorAll('main svg').forEach((el) => {
+      if (el.closest(EXCLUDE)) return;
+      if (el.closest('.mermaid')) return;
+      const rect = el.getBoundingClientRect();
+      if (rect.width < MIN_WIDTH) return;
+      targets.add(el);
+    });
+    return [...targets];
+  }
+
+  function wrapZoomable(el) {
+    if (el.closest('.zoomable-wrap')) return;
+    const wrap = document.createElement('div');
+    wrap.className = 'zoomable-wrap';
+    el.parentNode.insertBefore(wrap, el);
+    wrap.appendChild(el);
+    wrap.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openLightbox(el);
+    });
+  }
+
+  function cloneForLightbox(el) {
+    if (el.tagName === 'CANVAS') {
+      const img = document.createElement('img');
+      try { img.src = el.toDataURL('image/png'); } catch (_) { /* tainted */ }
+      return img;
+    }
+    return el.cloneNode(true);
+  }
+
+  function ensureOverlay() {
+    if (overlay) return overlay;
+    overlay = document.createElement('div');
+    overlay.className = 'lightbox-overlay';
+    overlay.innerHTML = '<div class="lightbox-content"><button class="lightbox-close" aria-label="閉じる">✕</button></div>';
+    document.body.appendChild(overlay);
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay || e.target.classList.contains('lightbox-close')) {
+        closeLightbox();
+      }
+    });
+    return overlay;
+  }
+
+  function openLightbox(el) {
+    const ov = ensureOverlay();
+    const content = ov.querySelector('.lightbox-content');
+    [...content.children].forEach((c) => {
+      if (!c.classList.contains('lightbox-close')) c.remove();
+    });
+    content.appendChild(cloneForLightbox(el));
+    ov.classList.add('is-open');
+    document.body.classList.add('lightbox-open');
+  }
+
+  function closeLightbox() {
+    if (!overlay) return;
+    overlay.classList.remove('is-open');
+    document.body.classList.remove('lightbox-open');
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLightbox();
+  });
+
+  function init() {
+    findTargets().forEach(wrapZoomable);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+  setTimeout(init, 500);
+  setTimeout(init, 1500);
+})();
+
 // ============ Clawd ランダムアニメーション ============
 (function initClawdAnimations() {
   const ANIMS = ['hop', 'wiggle', 'wobble', 'spin', 'pop', 'crab'];
