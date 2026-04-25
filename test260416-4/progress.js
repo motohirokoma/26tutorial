@@ -430,7 +430,19 @@ window.tutorialProgress = {
       try { img.src = el.toDataURL('image/png'); } catch (_) { /* tainted */ }
       return img;
     }
-    return el.cloneNode(true);
+    const clone = el.cloneNode(true);
+    const stripSizing = (n) => {
+      if (n.style) n.style.cssText = '';
+      if (n.removeAttribute) {
+        n.removeAttribute('width');
+        n.removeAttribute('height');
+      }
+    };
+    stripSizing(clone);
+    if (clone.querySelectorAll) {
+      clone.querySelectorAll('svg').forEach(stripSizing);
+    }
+    return clone;
   }
 
   function ensureOverlay() {
