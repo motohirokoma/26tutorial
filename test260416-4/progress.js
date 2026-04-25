@@ -384,6 +384,20 @@ window.tutorialProgress = {
   },
 };
 
+// ============ Sidebar digital clock ============
+(function initSidebarClock() {
+  const els = document.querySelectorAll('.sidebar-clock .clock-time');
+  if (!els.length) return;
+  const pad = (n) => String(n).padStart(2, '0');
+  function tick() {
+    const d = new Date();
+    const t = `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+    els.forEach((el) => { el.textContent = t; });
+  }
+  tick();
+  setInterval(tick, 1000);
+})();
+
 // ============ Zoomable diagrams (lightbox) ============
 (function initZoomableDiagrams() {
   const EXCLUDE = '.clawd, .clawd-heading, .clawd-aside, .clawd-btn, .lucide, .topbar, nav.sidebar, .streak-badge, .auth-box, .zoomable-wrap';
