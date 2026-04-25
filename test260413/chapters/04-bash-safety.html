@@ -112,12 +112,12 @@
 
   <div class="info-box">
     <span class="label">この章のゴール</span>
-    <p>Claude Code の <code>Bash</code> ツールは、あなたの端末と同じ権限でコマンドを実行する<strong>最も強力で最も危険な</strong>ツールです。この章の45分で、(1)実行モデルを掴む、(2)<span class="term" data-tip="destructive action: 削除・上書き・履歴改変など、元に戻すのが難しい操作。Bashでは特に rm/git reset/push --force が代表格。">destructive action</span> の見分け方を覚える、(3)「<strong>確認 → 実行</strong>」を分ける型を身体に染み込ませる——ここまでを目指します。読むより手を動かす時間を長く。</p>
+    <p>Claude Code の <code>Bash</code> ツールは、あなたの端末と同じ権限でコマンドを実行する<strong>最も強力で最も危険な</strong>ツールです。この章の45分で、(1)実行モデルを掴む、(2)<span class="term" tabindex="0" data-tip="destructive action: 削除・上書き・履歴改変など、元に戻すのが難しい操作。Bashでは特に rm/git reset/push --force が代表格。">destructive action</span> の見分け方を覚える、(3)「<strong>確認 → 実行</strong>」を分ける型を身体に染み込ませる——ここまでを目指します。読むより手を動かす時間を長く。</p>
   </div>
 
   <div class="info-box" style="border-left: 3px solid #D97757;">
     <span class="label">バージョン注記</span>
-    <p>本章の記述は <strong>2026年1月時点</strong> の Claude Code (CLI / Agent SDK) の挙動に基づきます。<span class="term" data-tip="permission mode: Claude Code がコマンドを実行する前にユーザに確認を求めるかどうかの設定モード。default / acceptEdits / bypassPermissions / plan の4種類。">permission mode</span> の名称や挙動は進化するため、違和感を感じたら <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">公式ドキュメント</a> で最新を確認してください。</p>
+    <p>本章の記述は <strong>2026年1月時点</strong> の Claude Code (CLI / Agent SDK) の挙動に基づきます。<span class="term" tabindex="0" data-tip="permission mode: Claude Code がコマンドを実行する前にユーザに確認を求めるかどうかの設定モード。default / acceptEdits / bypassPermissions / plan の4種類。">permission mode</span> の名称や挙動は進化するため、違和感を感じたら <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">公式ドキュメント</a> で最新を確認してください。</p>
   </div>
 
   <!-- ===== Section 1: Bashツールの実行モデル ===== -->
@@ -166,7 +166,7 @@
   <!-- ===== Section 2: permission mode ===== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 2. permission mode と許可ルール</h2>
 
-  <p>Claude Code には4つの <span class="term" data-tip="permission mode: Claude Code の権限モード。起動時 --permission-mode で指定、実行中は Shift+Tab でトグル可能。">permission mode</span> があり、危険度別に「どこまで自動で走らせるか」を決めます。迷ったら<strong>default</strong>から抜け出さないこと。</p>
+  <p>Claude Code には4つの <span class="term" tabindex="0" data-tip="permission mode: Claude Code の権限モード。起動時 --permission-mode で指定、実行中は Shift+Tab でトグル可能。">permission mode</span> があり、危険度別に「どこまで自動で走らせるか」を決めます。迷ったら<strong>default</strong>から抜け出さないこと。</p>
 
   <table>
     <thead><tr><th>モード</th><th>ファイル編集</th><th>Bash 実行</th><th>向いてる場面</th></tr></thead>
@@ -178,7 +178,7 @@
     </tbody>
   </table>
 
-  <p><span class="term" data-tip="settings.json: Claude Code の設定ファイル。~/.claude/settings.json(ユーザー全体)と .claude/settings.json(プロジェクト)の2段で上書き。">settings.json</span> の <code>permissions.allow</code> / <code>permissions.deny</code> に個別のコマンドパターンを書くと、モードに関係なく「これは常に確認なし」「これは絶対ブロック」が作れます。<strong>deny の方が優先</strong>です。</p>
+  <p><span class="term" tabindex="0" data-tip="settings.json: Claude Code の設定ファイル。~/.claude/settings.json(ユーザー全体)と .claude/settings.json(プロジェクト)の2段で上書き。">settings.json</span> の <code>permissions.allow</code> / <code>permissions.deny</code> に個別のコマンドパターンを書くと、モードに関係なく「これは常に確認なし」「これは絶対ブロック」が作れます。<strong>deny の方が優先</strong>です。</p>
 
 <pre><code>{
   "permissions": {
@@ -284,7 +284,7 @@
   <!-- ===== Section 4: 「確認→実行」フロー ===== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 4. 「確認 → 実行」を分けるフロー</h2>
 
-  <p>これが本章のコアです。<span class="term" data-tip="ドライラン: 実際には変更せず、「何が起こるか」だけを表示すること。--dry-run や ls / diff がこれに相当。">ドライラン</span> を挟む癖をつければ、事故は激減します。</p>
+  <p>これが本章のコアです。<span class="term" tabindex="0" data-tip="ドライラン: 実際には変更せず、「何が起こるか」だけを表示すること。--dry-run や ls / diff がこれに相当。">ドライラン</span> を挟む癖をつければ、事故は激減します。</p>
 
   <div class="diagram-box">
     <div class="diagram-title">安全なBash依頼のデフォルトフロー</div>
@@ -407,7 +407,7 @@ graph LR
     <div class="kv"><div class="kv-key">保険</div><div class="kv-val">stash / tag / reflog / worktree</div></div>
   </div>
 
-  <p>次章 <a href="05-todo-management.html">Ch05 TodoWrite で作業管理</a> では、この「確認→実行」の型をさらに拡張して、<strong>長い作業を途中で見失わない</strong>仕組みを学びます。<span class="term" data-tip="TodoWrite: Claude Code の作業タスク管理ツール。手順を宣言させ、in_progress / completed で進捗を見える化。">TodoWrite</span> と Bash を組み合わせると、Claude の動きが劇的に予測可能になります。</p>
+  <p>次章 <a href="05-todo-management.html">Ch05 TodoWrite で作業管理</a> では、この「確認→実行」の型をさらに拡張して、<strong>長い作業を途中で見失わない</strong>仕組みを学びます。<span class="term" tabindex="0" data-tip="TodoWrite: Claude Code の作業タスク管理ツール。手順を宣言させ、in_progress / completed で進捗を見える化。">TodoWrite</span> と Bash を組み合わせると、Claude の動きが劇的に予測可能になります。</p>
 
   <!-- ===================== Exercises ===================== -->
   <div class="exercise-box">
@@ -471,7 +471,7 @@ graph LR
 
 3. 私が「GO」と返したら1コマンドずつ実行し、各コマンド後に結果を見せて。
    node_modules の削除前に、pwd が期待通りか必ず show して。</code></pre>
-      <p>ポイントは <strong>「計画提示で止まる」</strong> を明示すること。これを書かないと、Claude は "賢く" 一気に進めてしまいます。また「pwd を見せて」の1行で、想定外ディレクトリで rm を打つ事故が消えます。慣れてきたら、このテンプレを <span class="term" data-tip="CLAUDE.md: プロジェクトやユーザー単位で Claude に毎回読ませる指示書。Ch06で詳説。">CLAUDE.md</span> や <a href="20-skills-overview.html">Skill(Ch20)</a> に外出しすると、毎回コピペする必要がなくなります。</p>
+      <p>ポイントは <strong>「計画提示で止まる」</strong> を明示すること。これを書かないと、Claude は "賢く" 一気に進めてしまいます。また「pwd を見せて」の1行で、想定外ディレクトリで rm を打つ事故が消えます。慣れてきたら、このテンプレを <span class="term" tabindex="0" data-tip="CLAUDE.md: プロジェクトやユーザー単位で Claude に毎回読ませる指示書。Ch06で詳説。">CLAUDE.md</span> や <a href="20-skills-overview.html">Skill(Ch20)</a> に外出しすると、毎回コピペする必要がなくなります。</p>
     </div>
   </details>
 

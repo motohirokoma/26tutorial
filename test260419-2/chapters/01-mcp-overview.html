@@ -92,7 +92,7 @@
   <!-- ===== Section 1: MCPとは何か ===== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> MCP (Model Context Protocol) とは</h2>
 
-  <p><span class="term" data-tip="Model Context Protocol: AIアシスタント(LLM)と外部ツール/データソースの橋渡しを標準化するために Anthropic が2024年末に公開したオープンプロトコル">MCP (Model Context Protocol)</span> は、<strong>AIアシスタントが外部のツールやデータに接続する方法を標準化するオープンプロトコル</strong>です。Anthropicが2024年11月に仕様を公開し、2026年1月時点ではClaude Code・Claude Desktop・Zed・Cursor などの主要AIクライアントが対応しています。</p>
+  <p><span class="term" tabindex="0" data-tip="Model Context Protocol: AIアシスタント(LLM)と外部ツール/データソースの橋渡しを標準化するために Anthropic が2024年末に公開したオープンプロトコル">MCP (Model Context Protocol)</span> は、<strong>AIアシスタントが外部のツールやデータに接続する方法を標準化するオープンプロトコル</strong>です。Anthropicが2024年11月に仕様を公開し、2026年1月時点ではClaude Code・Claude Desktop・Zed・Cursor などの主要AIクライアントが対応しています。</p>
 
   <p>ざっくり言えば、MCPは「<strong>AIのUSB-C端子</strong>」です。どのノートPCでも同じUSB-Cケーブルで周辺機器が繋がるように、どのAIクライアントでも同じMCPサーバーに繋げば、Slack / GitHub / Postgres / ローカルファイル などを操作できる——その共通規格を目指しています。</p>
 
@@ -129,7 +129,7 @@
 
   <p>MCPを理解する一番の近道は、「<strong>もしMCPが無かったら、今どれだけの個別実装が必要になるか</strong>」を想像することです。</p>
 
-  <p><span class="term" data-tip="N×M問題: N個のAIクライアント(LLM) × M個の外部ツールを組み合わせるとき、個別統合だとNM本のコネクタが必要になる統合コスト問題">N×M問題</span>とは、ソフトウェア統合でよく出てくる古典的課題です。N個の消費者(AIクライアント)と M個の提供者(ツール)を結びつけるとき、<strong>個別にコネクタを書くと N × M 本のコードが必要</strong>になります。中間にプロトコル層を1つ挟むと、必要なのは N + M 本に激減する——これがMCPの存在意義です。</p>
+  <p><span class="term" tabindex="0" data-tip="N×M問題: N個のAIクライアント(LLM) × M個の外部ツールを組み合わせるとき、個別統合だとNM本のコネクタが必要になる統合コスト問題">N×M問題</span>とは、ソフトウェア統合でよく出てくる古典的課題です。N個の消費者(AIクライアント)と M個の提供者(ツール)を結びつけるとき、<strong>個別にコネクタを書くと N × M 本のコードが必要</strong>になります。中間にプロトコル層を1つ挟むと、必要なのは N + M 本に激減する——これがMCPの存在意義です。</p>
 
   <div class="diagram-box">
     <div class="diagram-title">Before MCP: N×M 本の個別コネクタ</div>
@@ -219,7 +219,7 @@
   <details class="more-box">
     <summary>もっと詳しく: N×M問題はソフトウェア業界の「お決まり」</summary>
     <div class="more-body">
-      <p>似た構造の問題は歴史上何度も現れています。たとえば <span class="term" data-tip="ODBC: Open Database Connectivity。アプリとDBの間を標準化したMicrosoft主導の規格(1992)">ODBC</span> はアプリとデータベースの N×M を解き、<span class="term" data-tip="LSP: Language Server Protocol。エディタと言語処理系の間を標準化したMicrosoft主導の規格(2016)">LSP (Language Server Protocol)</span> はエディタと言語処理系の N×M を解きました。MCPは<strong>その系譜の最新版</strong>と言えます。</p>
+      <p>似た構造の問題は歴史上何度も現れています。たとえば <span class="term" tabindex="0" data-tip="ODBC: Open Database Connectivity。アプリとDBの間を標準化したMicrosoft主導の規格(1992)">ODBC</span> はアプリとデータベースの N×M を解き、<span class="term" tabindex="0" data-tip="LSP: Language Server Protocol。エディタと言語処理系の間を標準化したMicrosoft主導の規格(2016)">LSP (Language Server Protocol)</span> はエディタと言語処理系の N×M を解きました。MCPは<strong>その系譜の最新版</strong>と言えます。</p>
       <p>面白いのは、LSPの設計者が MCP 仕様の参考文献として繰り返し引用されていることです。JSON-RPC の使い方、capabilities のネゴシエーション、stdio transport などは LSP とよく似ています。LSPを触ったことがあれば、MCPのRFCも驚くほど早く読めます。</p>
     </div>
   </details>
@@ -278,7 +278,7 @@
 
   <p>大半のMCPサーバーが主に公開するのは <strong>Tools</strong> です。各ツールは <code>name</code> / <code>description</code> / <code>inputSchema</code> (JSON Schema) の3点セットで宣言され、Claude Codeはこれを見て「今このツールを呼ぶべきか」を判断します。</p>
 
-  <p>たとえば GitHub MCPサーバーが <span class="term" data-tip="list_issues: GitHub MCPが提供するツールの一例。指定リポジトリのissue一覧を返す。open/closed などのフィルタを引数で渡せる">list_issues</span> ツールを宣言すると、Claude Codeからは以下のように見えます。</p>
+  <p>たとえば GitHub MCPサーバーが <span class="term" tabindex="0" data-tip="list_issues: GitHub MCPが提供するツールの一例。指定リポジトリのissue一覧を返す。open/closed などのフィルタを引数で渡せる">list_issues</span> ツールを宣言すると、Claude Codeからは以下のように見えます。</p>
 
   <pre><code>{
   "name": "list_issues",
@@ -304,7 +304,7 @@
   <!-- ===== Section 4: アーキテクチャ ===== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> アーキテクチャ:Client ⇔ Server の対話</h2>
 
-  <p>MCPは <strong>Client-Server アーキテクチャ</strong> です。<span class="term" data-tip="Host: MCPクライアントを内包するAIアプリ本体。Claude Code・Claude Desktop・Cursor 等">Host</span>(Claude Code等のAIアプリ)が <span class="term" data-tip="Client: Host内部でMCPプロトコルを喋るコンポーネント。サーバーとの接続管理を担当">Client</span> を介して <span class="term" data-tip="Server: 個別ツールとの接続を提供するプロセス。通常は stdio か HTTP で起動する独立プロセス">Server</span> と通信します。</p>
+  <p>MCPは <strong>Client-Server アーキテクチャ</strong> です。<span class="term" tabindex="0" data-tip="Host: MCPクライアントを内包するAIアプリ本体。Claude Code・Claude Desktop・Cursor 等">Host</span>(Claude Code等のAIアプリ)が <span class="term" tabindex="0" data-tip="Client: Host内部でMCPプロトコルを喋るコンポーネント。サーバーとの接続管理を担当">Client</span> を介して <span class="term" tabindex="0" data-tip="Server: 個別ツールとの接続を提供するプロセス。通常は stdio か HTTP で起動する独立プロセス">Server</span> と通信します。</p>
 
   <div class="diagram-box">
     <div class="diagram-title">Host / Client / Server の関係</div>
@@ -415,7 +415,7 @@ claude mcp list
       </tr>
       <tr>
         <td><strong>Claude Code 内蔵ツール</strong></td>
-        <td><span class="term" data-tip="Claude Code内蔵ツール: Read/Edit/Bash/Grep など、Claude Codeに最初から組み込まれているツール群">Read / Edit / Bash / Grep 等</span></td>
+        <td><span class="term" tabindex="0" data-tip="Claude Code内蔵ツール: Read/Edit/Bash/Grep など、Claude Codeに最初から組み込まれているツール群">Read / Edit / Bash / Grep 等</span></td>
         <td>設定不要、即使える、権限モデルが統一</td>
         <td>拡張できない、カスタムなし</td>
         <td>ファイル編集・シェル実行など汎用タスク</td>

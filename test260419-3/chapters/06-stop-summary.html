@@ -86,7 +86,7 @@
 
   <div class="info-box">
     <span class="label">この章のゴール</span>
-    <p>長時間の Claude Code 作業が終わった時、<strong>PCの前に戻って気付く</strong> のでは遅い。本章では <span class="term" data-tip="Stop = Claude Codeが応答を完了した時に発火するHookイベント">Stopイベント</span> を使って、作業終了時に「何が変わったか(<code>git diff --stat</code>)」を取得し、<strong>macOS通知 / Slack Webhook / ブラウザ通知</strong> の3経路で自分に届ける仕組みを構築する。さらに <span class="term" data-tip="JSON Lines形式。1行1JSONで追記ログ向き">jsonl</span> に作業履歴を貯めて、後から振り返れるようにする。本章の記述は <span class="term" data-tip="2026年1月時点の記述。最新は公式ドキュメント参照">2026年1月時点</span> の情報です。</p>
+    <p>長時間の Claude Code 作業が終わった時、<strong>PCの前に戻って気付く</strong> のでは遅い。本章では <span class="term" tabindex="0" data-tip="Stop = Claude Codeが応答を完了した時に発火するHookイベント">Stopイベント</span> を使って、作業終了時に「何が変わったか(<code>git diff --stat</code>)」を取得し、<strong>macOS通知 / Slack Webhook / ブラウザ通知</strong> の3経路で自分に届ける仕組みを構築する。さらに <span class="term" tabindex="0" data-tip="JSON Lines形式。1行1JSONで追記ログ向き">jsonl</span> に作業履歴を貯めて、後から振り返れるようにする。本章の記述は <span class="term" tabindex="0" data-tip="2026年1月時点の記述。最新は公式ドキュメント参照">2026年1月時点</span> の情報です。</p>
   </div>
 
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>なぜ「終わった通知」が要るのか</h2>
@@ -139,7 +139,7 @@
 
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>Stopイベントの発火タイミングと入力</h2>
 
-  <p>Stopは <span class="term" data-tip="Claude Codeのメイン応答サイクルが1回完了した時。ユーザが次の発話を入力できる状態に戻った瞬間">メインAgentの応答完了時</span> に1回だけ発火します。<span class="term" data-tip="SubagentがStopした時にだけ発火するイベント。メインのStopとは別物">SubagentStop</span> と混同しないこと。Subagentが5つ並列で回って5回発火するのは SubagentStop の仕事で、Stop は最上位Agentのみ。</p>
+  <p>Stopは <span class="term" tabindex="0" data-tip="Claude Codeのメイン応答サイクルが1回完了した時。ユーザが次の発話を入力できる状態に戻った瞬間">メインAgentの応答完了時</span> に1回だけ発火します。<span class="term" tabindex="0" data-tip="SubagentがStopした時にだけ発火するイベント。メインのStopとは別物">SubagentStop</span> と混同しないこと。Subagentが5つ並列で回って5回発火するのは SubagentStop の仕事で、Stop は最上位Agentのみ。</p>
 
   <div class="diagram-box">
     <div class="diagram-title">1セッションのイベント発火順</div>
@@ -171,7 +171,7 @@ sequenceDiagram
 
   <div class="info-box">
     <span class="label">セキュリティ警告</span>
-    <p>Hookは <strong>任意のシェルコマンドを自動実行する仕組み</strong> です。stdin で渡される <code>cwd</code> や <code>transcript_path</code> をそのままシェル展開に使うと<span class="term" data-tip="ユーザ入力や外部データをエスケープせずにシェルに渡すと任意コマンド実行の穴になる">コマンドインジェクション</span>の穴になります。必ずJSONパース → 変数代入 → クオート済みで使う(下の実装例はすべてこのパターン)。</p>
+    <p>Hookは <strong>任意のシェルコマンドを自動実行する仕組み</strong> です。stdin で渡される <code>cwd</code> や <code>transcript_path</code> をそのままシェル展開に使うと<span class="term" tabindex="0" data-tip="ユーザ入力や外部データをエスケープせずにシェルに渡すと任意コマンド実行の穴になる">コマンドインジェクション</span>の穴になります。必ずJSONパース → 変数代入 → クオート済みで使う(下の実装例はすべてこのパターン)。</p>
   </div>
 
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>サマリ取得: git diff --stat + α</h2>

@@ -86,7 +86,7 @@
 
   <div class="info-box">
     <span class="label">この章のゴール</span>
-    <p>Scheduled Tasks や <code>/loop</code> で走るプロンプトは <strong>「寝ている間に1人で動く」</strong> 前提で書く必要があります。対話モードのようにユーザーが途中で補足することはできません。本章では <span class="term" data-tip="外部文脈に依存せず、プロンプトだけ読めば全体像が分かる状態。放置運用の大前提">self-contained</span>・エラー時挙動・必須5要素・Before/After比較を通じて、<strong>コピペで動く定期タスク用プロンプトを1本書き上げる</strong>のがゴールです。本章の記述は<span class="term" data-tip="2026年1月時点の記述。Claude Code は活発に更新されるため最新はオフィシャルDocsを参照">2026年1月時点</span>。</p>
+    <p>Scheduled Tasks や <code>/loop</code> で走るプロンプトは <strong>「寝ている間に1人で動く」</strong> 前提で書く必要があります。対話モードのようにユーザーが途中で補足することはできません。本章では <span class="term" tabindex="0" data-tip="外部文脈に依存せず、プロンプトだけ読めば全体像が分かる状態。放置運用の大前提">self-contained</span>・エラー時挙動・必須5要素・Before/After比較を通じて、<strong>コピペで動く定期タスク用プロンプトを1本書き上げる</strong>のがゴールです。本章の記述は<span class="term" tabindex="0" data-tip="2026年1月時点の記述。Claude Code は活発に更新されるため最新はオフィシャルDocsを参照">2026年1月時点</span>。</p>
   </div>
 
   <!-- ===== Section 1: 放置運用が対話と違う3点 ===== -->
@@ -143,7 +143,7 @@
     </li>
     <li>
       <i data-lucide="dollar-sign" width="20" height="20"></i>
-      <div><strong>コスト直結</strong> — 曖昧なプロンプトは試行錯誤を増やし、トークン消費が膨らむ。放置運用は<span class="term" data-tip="実行回数 × 1回あたりのトークン消費。曖昧プロンプトは回数とトークンの両方を増やす">コスト倍率</span>が効くので設計の甘さが直接的な金銭ダメージになる。</div>
+      <div><strong>コスト直結</strong> — 曖昧なプロンプトは試行錯誤を増やし、トークン消費が膨らむ。放置運用は<span class="term" tabindex="0" data-tip="実行回数 × 1回あたりのトークン消費。曖昧プロンプトは回数とトークンの両方を増やす">コスト倍率</span>が効くので設計の甘さが直接的な金銭ダメージになる。</div>
     </li>
   </ul>
 
@@ -204,7 +204,7 @@
   <details class="more-box">
     <summary>もっと詳しく: 「目的」が判断の北極星になる理由</summary>
     <div class="more-body">
-      <p>例: 「毎朝9時にPRサマリを通知」というタスクで、Claude が「該当PRが0件だった」状況に出会ったとき、目的の書き方で挙動が変わります。「<strong>朝会の話題を提供する</strong>」という目的があれば「本日レビュー対象は0件です」と明示的に通知する判断ができる。目的がない場合は Claude が自分で「空通知は迷惑かな?」と忖度してスキップし、結果として「通知が来ない = 故障なのか0件なのか不明」という状態を作り出します。<span class="term" data-tip="LLM が細部で迷ったとき、上位目標を参照して一貫した判断をする性質。CLAUDE.md / prompt に 'Why' を書くと細部が揃う">北極星指示</span>を必ず書きましょう。</p>
+      <p>例: 「毎朝9時にPRサマリを通知」というタスクで、Claude が「該当PRが0件だった」状況に出会ったとき、目的の書き方で挙動が変わります。「<strong>朝会の話題を提供する</strong>」という目的があれば「本日レビュー対象は0件です」と明示的に通知する判断ができる。目的がない場合は Claude が自分で「空通知は迷惑かな?」と忖度してスキップし、結果として「通知が来ない = 故障なのか0件なのか不明」という状態を作り出します。<span class="term" tabindex="0" data-tip="LLM が細部で迷ったとき、上位目標を参照して一貫した判断をする性質。CLAUDE.md / prompt に 'Why' を書くと細部が揃う">北極星指示</span>を必ず書きましょう。</p>
     </div>
   </details>
 
@@ -256,13 +256,13 @@ graph TD
 
   <div class="info-box">
     <span class="label">冪等性を先に考える</span>
-    <p><span class="term" data-tip="同じ操作を何回やっても結果が変わらない性質。リトライ安全性の前提">冪等性</span>がないタスク(例: Slackに送信 / GitHubへコメント)をリトライさせると、二重通知や重複コメントが発生します。送信先側にIDで重複チェックを持たせるか、「送信済みフラグ」をファイルに書いてから送る設計にしましょう。</p>
+    <p><span class="term" tabindex="0" data-tip="同じ操作を何回やっても結果が変わらない性質。リトライ安全性の前提">冪等性</span>がないタスク(例: Slackに送信 / GitHubへコメント)をリトライさせると、二重通知や重複コメントが発生します。送信先側にIDで重複チェックを持たせるか、「送信済みフラグ」をファイルに書いてから送る設計にしましょう。</p>
   </div>
 
   <details class="more-box">
     <summary>もっと詳しく: スキップを選ぶときは「連続失敗検知」もセットで</summary>
     <div class="more-body">
-      <p>スキップを安易に選ぶと、<span class="term" data-tip="失敗に誰も気づかずにタスクが沈黙し続ける状態。放置運用で最も避けたい">サイレント故障</span>が起きます。対策: 「直近N回連続で失敗したら通知を出す」という簡易ガードをプロンプトに組み込みます。例: <code>state/last-run.json</code> に <code>consecutive_failures</code> を書き、3以上で人間に通知。こうすれば1回のスキップは静かに、3回続けば人を呼べます。</p>
+      <p>スキップを安易に選ぶと、<span class="term" tabindex="0" data-tip="失敗に誰も気づかずにタスクが沈黙し続ける状態。放置運用で最も避けたい">サイレント故障</span>が起きます。対策: 「直近N回連続で失敗したら通知を出す」という簡易ガードをプロンプトに組み込みます。例: <code>state/last-run.json</code> に <code>consecutive_failures</code> を書き、3以上で人間に通知。こうすれば1回のスキップは静かに、3回続けば人を呼べます。</p>
     </div>
   </details>
 
@@ -422,7 +422,7 @@ graph TD
 
   <h3>コスト視点の出力設計</h3>
 
-  <p>出力字数は <span class="term" data-tip="output tokens = モデルが生成した文字数。入力より単価が高い(目安2-5倍)ため、無駄な冗長さはコストに直撃">output tokens</span> に直結します。放置運用の出力は<strong>150字前後で型を縛る</strong>のがベスト。詳細は必ずファイルに書き出してパスだけ通知する。</p>
+  <p>出力字数は <span class="term" tabindex="0" data-tip="output tokens = モデルが生成した文字数。入力より単価が高い(目安2-5倍)ため、無駄な冗長さはコストに直撃">output tokens</span> に直結します。放置運用の出力は<strong>150字前後で型を縛る</strong>のがベスト。詳細は必ずファイルに書き出してパスだけ通知する。</p>
 
   <div class="diagram-box">
     <div class="diagram-title">出力字数とOutput Tokenコスト(日次 × 30日、モデル別傾向の概算)</div>
@@ -482,7 +482,7 @@ graph TD
   <!-- ===== Section 7: 数値で見る設計品質の効果 ===== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 数値で見るプロンプト設計の効果</h2>
 
-  <p>筆者が社内の定期ジョブ5本を Before / After で<span class="term" data-tip="2026年1月時点の計測値。環境・モデル・タスクの内容で変わる参考値">簡易計測</span>した結果です。</p>
+  <p>筆者が社内の定期ジョブ5本を Before / After で<span class="term" tabindex="0" data-tip="2026年1月時点の計測値。環境・モデル・タスクの内容で変わる参考値">簡易計測</span>した結果です。</p>
 
   <div class="diagram-box">
     <div class="diagram-title">5要素テンプレ適用前後の指標変化(5ジョブ平均)</div>
@@ -551,7 +551,7 @@ graph TD
   <details class="more-box">
     <summary>もっと詳しく: ハートビート通知のバランス</summary>
     <div class="more-body">
-      <p>「毎回何かしら通知する」と「通知疲れ」が起きます。バランス: <strong>毎日タスクなら0件時も通知</strong>・<strong>5分毎の高頻度タスクは失敗時のみ通知 + 週次でハートビート</strong>。目安として<span class="term" data-tip="通知が多すぎてユーザーが無視するようになる状態。重要通知まで埋もれて見逃される">通知疲れ</span>の閾値は「1日10通以上」。これを超えると read 率が激減します。重要度で通知先チャンネルを分けるのも有効。</p>
+      <p>「毎回何かしら通知する」と「通知疲れ」が起きます。バランス: <strong>毎日タスクなら0件時も通知</strong>・<strong>5分毎の高頻度タスクは失敗時のみ通知 + 週次でハートビート</strong>。目安として<span class="term" tabindex="0" data-tip="通知が多すぎてユーザーが無視するようになる状態。重要通知まで埋もれて見逃される">通知疲れ</span>の閾値は「1日10通以上」。これを超えると read 率が激減します。重要度で通知先チャンネルを分けるのも有効。</p>
     </div>
   </details>
 
@@ -665,7 +665,7 @@ graph TD
 
   <div class="info-box">
     <span class="label">2026年1月時点の注記</span>
-    <p>本章の記述(ScheduleWakeup・<code>/loop</code>・CronCreate の挙動、gh CLI のフラグ等)は<strong>2026年1月時点</strong>のものです。Claude Code は活発に更新されているため、<span class="term" data-tip="2026年1月時点の記述。最新は公式ドキュメント参照">ツール名・パラメータ・デフォルト値</span>は変わる可能性があります。運用投入前に必ず公式ドキュメントで最新挙動を確認してください。</p>
+    <p>本章の記述(ScheduleWakeup・<code>/loop</code>・CronCreate の挙動、gh CLI のフラグ等)は<strong>2026年1月時点</strong>のものです。Claude Code は活発に更新されているため、<span class="term" tabindex="0" data-tip="2026年1月時点の記述。最新は公式ドキュメント参照">ツール名・パラメータ・デフォルト値</span>は変わる可能性があります。運用投入前に必ず公式ドキュメントで最新挙動を確認してください。</p>
   </div>
 
   <div class="resources-section">

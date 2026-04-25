@@ -97,7 +97,7 @@
   <!-- ===== Section 1: 2つのコンセプト ===== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 2つのコンセプト — 一言で</h2>
 
-  <p><span class="term" data-tip="Scheduled Tasks: cron式で指定した時刻に Claude Code を自動起動する仕組み。CronCreate ツール / /schedule スキル経由で登録する。2026年1月時点">Scheduled Tasks</span> と <span class="term" data-tip="/loop スキル: Claude 自身が次の起動時刻を決めて自走する仕組み。dynamic モードと interval モードがある。2026年1月時点">/loop</span> は似て非なるものです。片方は<strong>時計が駆動</strong>し、もう片方は<strong>Claude自身が駆動</strong>します。</p>
+  <p><span class="term" tabindex="0" data-tip="Scheduled Tasks: cron式で指定した時刻に Claude Code を自動起動する仕組み。CronCreate ツール / /schedule スキル経由で登録する。2026年1月時点">Scheduled Tasks</span> と <span class="term" tabindex="0" data-tip="/loop スキル: Claude 自身が次の起動時刻を決めて自走する仕組み。dynamic モードと interval モードがある。2026年1月時点">/loop</span> は似て非なるものです。片方は<strong>時計が駆動</strong>し、もう片方は<strong>Claude自身が駆動</strong>します。</p>
 
   <div class="diagram-box">
     <div class="diagram-title">Scheduled Tasks vs /loop の駆動モデル</div>
@@ -129,7 +129,7 @@
     <div class="diagram-caption">左=外部の時計が叩く / 右=Claudeが自分で次を予約する。駆動役が真逆。</div>
   </div>
 
-  <p>正確には、Scheduled Tasks は <span class="term" data-tip="CronCreate: Claude Code ランタイムに搭載された、定時実行トリガーを登録するツール。リモート Claude Code 環境で動く。2026年1月時点"><code>CronCreate</code> ツール</span>(または <code>/schedule</code> スキル)で cron 式を登録することで起動します。一方 /loop は、Claude が応答の最後に <span class="term" data-tip="ScheduleWakeup: /loop が内部で呼ぶ、次ターンを自分で予約する仕組み。dynamic モードでは Claude 自身が時刻を選び、interval モードは固定秒数が使われる"><code>ScheduleWakeup</code></span> を呼ぶことで「次ターン予約」を自分に入れる仕組みです。<strong>前者は時刻で叩かれる</strong>、<strong>後者は自分で時刻を決めて生き残る</strong>、と覚えると混乱しません。</p>
+  <p>正確には、Scheduled Tasks は <span class="term" tabindex="0" data-tip="CronCreate: Claude Code ランタイムに搭載された、定時実行トリガーを登録するツール。リモート Claude Code 環境で動く。2026年1月時点"><code>CronCreate</code> ツール</span>(または <code>/schedule</code> スキル)で cron 式を登録することで起動します。一方 /loop は、Claude が応答の最後に <span class="term" tabindex="0" data-tip="ScheduleWakeup: /loop が内部で呼ぶ、次ターンを自分で予約する仕組み。dynamic モードでは Claude 自身が時刻を選び、interval モードは固定秒数が使われる"><code>ScheduleWakeup</code></span> を呼ぶことで「次ターン予約」を自分に入れる仕組みです。<strong>前者は時刻で叩かれる</strong>、<strong>後者は自分で時刻を決めて生き残る</strong>、と覚えると混乱しません。</p>
 
   <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
 
@@ -150,7 +150,7 @@
       <tr><td>典型的な間隔</td><td>分〜日〜週(固定)</td><td>秒〜分〜時(可変)</td></tr>
       <tr><td>停止</td><td><code>CronDelete</code> で明示削除</td><td>次ターン予約を呼ばなければ自然停止</td></tr>
       <tr><td>向いてる用途</td><td>毎朝9時のPRサマリのような定時業務</td><td>CI完了まで見張る・長文を書き切る等</td></tr>
-      <tr><td>キャッシュ</td><td>基本コールドスタート</td><td><span class="term" data-tip="キャッシュTTL: プロンプトキャッシュの寿命。/loop は次起動までの間隔が短いほどウォーム状態を維持できる。&lt;270秒でウォーム / &gt;1200秒でコールド扱い。2026年1月時点">TTL 5分</span>でウォーム維持可能</td></tr>
+      <tr><td>キャッシュ</td><td>基本コールドスタート</td><td><span class="term" tabindex="0" data-tip="キャッシュTTL: プロンプトキャッシュの寿命。/loop は次起動までの間隔が短いほどウォーム状態を維持できる。&lt;270秒でウォーム / &gt;1200秒でコールド扱い。2026年1月時点">TTL 5分</span>でウォーム維持可能</td></tr>
     </tbody>
   </table>
 
@@ -313,7 +313,7 @@ graph TD
 
   <h3>コスト試算(放置運用の怖さを数字で)</h3>
 
-  <p>もっとも見落とされやすい <strong>コスト</strong> を、いくつかの設定で試算してみます。「<span class="term" data-tip="1回あたり目安: 入力+出力のトークンから換算。モデルや内容により大きく変動する。本表はあくまで感覚を掴むための概算">1回あたり</span> $0.05」を仮定した場合の月額コスト(30日換算)。</p>
+  <p>もっとも見落とされやすい <strong>コスト</strong> を、いくつかの設定で試算してみます。「<span class="term" tabindex="0" data-tip="1回あたり目安: 入力+出力のトークンから換算。モデルや内容により大きく変動する。本表はあくまで感覚を掴むための概算">1回あたり</span> $0.05」を仮定した場合の月額コスト(30日換算)。</p>
 
   <div class="diagram-box">
     <div class="diagram-title">間隔ごとの月額コスト試算(1回 $0.05 仮定)</div>

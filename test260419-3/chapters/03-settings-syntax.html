@@ -86,12 +86,12 @@
 
   <div class="info-box">
     <span class="label">この章のゴール</span>
-    <p>Hookを動かすには必ず <code>settings.json</code> に定義を書きます。この章では<strong>3つのスコープ(user/project/local)</strong>・<strong>Hooksセクションの構造(イベント→matcher→hooks)</strong>・<strong>matcherの正規表現</strong>・<strong>commandの書き方</strong>・<strong>stdout/stderr/exit codeの規約</strong>・<strong>Hookスクリプトで使える環境変数</strong>を押さえ、最後に<strong>自分で設定を書いて発火させる</strong>ハンズオンまでやります。<span class="term" data-tip="2026年1月時点の記述。Hook仕様は進化中。最新は公式ドキュメント参照">本章の記述は2026年1月時点の情報</span>です。</p>
+    <p>Hookを動かすには必ず <code>settings.json</code> に定義を書きます。この章では<strong>3つのスコープ(user/project/local)</strong>・<strong>Hooksセクションの構造(イベント→matcher→hooks)</strong>・<strong>matcherの正規表現</strong>・<strong>commandの書き方</strong>・<strong>stdout/stderr/exit codeの規約</strong>・<strong>Hookスクリプトで使える環境変数</strong>を押さえ、最後に<strong>自分で設定を書いて発火させる</strong>ハンズオンまでやります。<span class="term" tabindex="0" data-tip="2026年1月時点の記述。Hook仕様は進化中。最新は公式ドキュメント参照">本章の記述は2026年1月時点の情報</span>です。</p>
   </div>
 
   <div class="info-box" style="border-left-color:#dc2626; background:#fef2f2;">
     <span class="label" style="color:#b91c1c;">セキュリティ注意</span>
-    <p>Hookは <strong>任意のシェルコマンド</strong> を自動実行します。他人から渡された <code>settings.json</code> をそのまま読み込むと<span class="term" data-tip="コードインジェクション：悪意あるコマンドが紛れ込んで実行される攻撃">コードインジェクション</span>になります。Ch07のセキュリティ章と合わせて、本章の例も<strong>内容を理解してからコピペ</strong>してください。</p>
+    <p>Hookは <strong>任意のシェルコマンド</strong> を自動実行します。他人から渡された <code>settings.json</code> をそのまま読み込むと<span class="term" tabindex="0" data-tip="コードインジェクション：悪意あるコマンドが紛れ込んで実行される攻撃">コードインジェクション</span>になります。Ch07のセキュリティ章と合わせて、本章の例も<strong>内容を理解してからコピペ</strong>してください。</p>
   </div>
 
   <!-- ===== Section 1: 3つのスコープ ===== -->
@@ -134,14 +134,14 @@
 
   <div class="info-box">
     <span class="label">優先順位のイメージ</span>
-    <p>同じイベント(例: <code>PreToolUse</code>)が3スコープすべてに書かれていると、<strong>3つすべてが発火</strong>します(上書きではなく<span class="term" data-tip="マージ：複数スコープのHook定義が結合されて、全部が実行される挙動">マージ</span>)。ただし <code>permissions</code> のような単一値キーは local &gt; project &gt; user の順で勝ちます。<strong>Hookはマージ・それ以外は上書き</strong>と覚えると実務で困りません。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span></p>
+    <p>同じイベント(例: <code>PreToolUse</code>)が3スコープすべてに書かれていると、<strong>3つすべてが発火</strong>します(上書きではなく<span class="term" tabindex="0" data-tip="マージ：複数スコープのHook定義が結合されて、全部が実行される挙動">マージ</span>)。ただし <code>permissions</code> のような単一値キーは local &gt; project &gt; user の順で勝ちます。<strong>Hookはマージ・それ以外は上書き</strong>と覚えると実務で困りません。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span></p>
   </div>
 
   <details class="more-box">
     <summary>もっと詳しく: どこに書くか迷ったら</summary>
     <div class="more-body">
       <p>判断フロー: <strong>(1) 他のマシンでも欲しい?</strong> → No なら local。Yes なら (2)へ。<strong>(2) チーム全員に効かせたい?</strong> → Yes なら project(gitコミット)。No なら user(自マシン全リポジトリ)。</p>
-      <p>特に Slack Webhook URL や個人APIキーのような <span class="term" data-tip="シークレット：漏洩すると被害が出る秘密情報。Webhook URL・APIキー・Bearerトークン等">シークレット</span> を含むHookは<strong>必ず local</strong>に置き、<code>.gitignore</code> に <code>.claude/settings.local.json</code> を追加してください。</p>
+      <p>特に Slack Webhook URL や個人APIキーのような <span class="term" tabindex="0" data-tip="シークレット：漏洩すると被害が出る秘密情報。Webhook URL・APIキー・Bearerトークン等">シークレット</span> を含むHookは<strong>必ず local</strong>に置き、<code>.gitignore</code> に <code>.claude/settings.local.json</code> を追加してください。</p>
     </div>
   </details>
 
@@ -193,7 +193,7 @@ graph TD
     </li>
     <li>
       <i data-lucide="filter" width="20" height="20"></i>
-      <div><strong>第2階層:</strong> <span class="term" data-tip="matcher：このHookを発火させる対象(主にtool名)を絞り込む正規表現。ツール不要なイベント(Stop/SessionStart等)では省略可">matcher</span> はツール名のマッチング正規表現。<code>"Edit|Write"</code> なら両方で発火。省略か空文字ならそのイベントの<strong>全発火</strong>で動く。</div>
+      <div><strong>第2階層:</strong> <span class="term" tabindex="0" data-tip="matcher：このHookを発火させる対象(主にtool名)を絞り込む正規表現。ツール不要なイベント(Stop/SessionStart等)では省略可">matcher</span> はツール名のマッチング正規表現。<code>"Edit|Write"</code> なら両方で発火。省略か空文字ならそのイベントの<strong>全発火</strong>で動く。</div>
     </li>
     <li>
       <i data-lucide="terminal" width="20" height="20"></i>
@@ -204,7 +204,7 @@ graph TD
   <!-- ===== Section 3: matcher 正規表現 ===== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> matcher — 発火対象を絞る正規表現</h2>
 
-  <p><code>matcher</code> は<strong>ツール名に対する正規表現</strong>です。「このツールが呼ばれた時だけHookを走らせたい」を表現します。完全一致ではなく<span class="term" data-tip="部分一致：文字列のどこかにパターンが含まれれば一致。^ $ で完全一致を強制できる">部分一致</span>なので注意。</p>
+  <p><code>matcher</code> は<strong>ツール名に対する正規表現</strong>です。「このツールが呼ばれた時だけHookを走らせたい」を表現します。完全一致ではなく<span class="term" tabindex="0" data-tip="部分一致：文字列のどこかにパターンが含まれれば一致。^ $ で完全一致を強制できる">部分一致</span>なので注意。</p>
 
   <table>
     <thead>
@@ -265,11 +265,11 @@ graph TD
   <ul class="icon-list">
     <li>
       <i data-lucide="check-circle" width="20" height="20"></i>
-      <div><strong>絶対パス or 環境変数で書く</strong> — <code>$CLAUDE_PROJECT_DIR/.claude/hooks/xxx.sh</code>。相対パスは<span class="term" data-tip="Hook実行時のcwdはプロジェクトルートだが、保証されるのは$CLAUDE_PROJECT_DIRの方。将来変更に備えて環境変数推奨">cwdに依存する</span>ので避ける。</div>
+      <div><strong>絶対パス or 環境変数で書く</strong> — <code>$CLAUDE_PROJECT_DIR/.claude/hooks/xxx.sh</code>。相対パスは<span class="term" tabindex="0" data-tip="Hook実行時のcwdはプロジェクトルートだが、保証されるのは$CLAUDE_PROJECT_DIRの方。将来変更に備えて環境変数推奨">cwdに依存する</span>ので避ける。</div>
     </li>
     <li>
       <i data-lucide="file-code" width="20" height="20"></i>
-      <div><strong>スクリプトには実行権限</strong> — <code>chmod +x .claude/hooks/lint.sh</code> を忘れない。実行できないと <span class="term" data-tip="Permission denied：実行権限がない時のエラー。chmod +x で解決">Permission denied</span> で失敗する。</div>
+      <div><strong>スクリプトには実行権限</strong> — <code>chmod +x .claude/hooks/lint.sh</code> を忘れない。実行できないと <span class="term" tabindex="0" data-tip="Permission denied：実行権限がない時のエラー。chmod +x で解決">Permission denied</span> で失敗する。</div>
     </li>
     <li>
       <i data-lucide="clock" width="20" height="20"></i>
@@ -346,7 +346,7 @@ graph TD
   }
 }</code></pre>
 
-  <p><code>cat | jq</code> で<span class="term" data-tip="stdin：標準入力。Hookには発火イベントのJSONが流れ込む。jqで中身を取り出す">stdin</span>に流れてくるJSONから <code>tool_input.command</code> を取り出し、<code>rm -rf /</code> で始まるなら <code>exit 2</code> でブロック、stderrにエラー理由を書きます。<strong>Claudeはstderrを読んで「やめます」と判断</strong>します。</p>
+  <p><code>cat | jq</code> で<span class="term" tabindex="0" data-tip="stdin：標準入力。Hookには発火イベントのJSONが流れ込む。jqで中身を取り出す">stdin</span>に流れてくるJSONから <code>tool_input.command</code> を取り出し、<code>rm -rf /</code> で始まるなら <code>exit 2</code> でブロック、stderrにエラー理由を書きます。<strong>Claudeはstderrを読んで「やめます」と判断</strong>します。</p>
 
   <div class="info-box">
     <span class="label">JSONで詳細制御(高度)</span>
@@ -356,7 +356,7 @@ graph TD
   <!-- ===== Section 6: 環境変数 ===== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Hookで使える環境変数</h2>
 
-  <p>Hookスクリプトの中では、Claude Codeが用意する<strong>環境変数</strong>が参照できます。これを使うとスクリプトが<span class="term" data-tip="ポータブル：どのマシン・どのパスで実行されても同じように動くこと">ポータブル</span>になり、チーム共有しても壊れません。</p>
+  <p>Hookスクリプトの中では、Claude Codeが用意する<strong>環境変数</strong>が参照できます。これを使うとスクリプトが<span class="term" tabindex="0" data-tip="ポータブル：どのマシン・どのパスで実行されても同じように動くこと">ポータブル</span>になり、チーム共有しても壊れません。</p>
 
   <div class="kv-grid">
     <div class="kv"><div class="kv-key"><code>$CLAUDE_PROJECT_DIR</code></div><div class="kv-val">プロジェクトルートの絶対パス。<strong>最頻出</strong>。スクリプトpathの基準に使う。</div></div>

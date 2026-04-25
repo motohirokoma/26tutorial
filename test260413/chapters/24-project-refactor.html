@@ -123,7 +123,7 @@
   <!-- ===== Section: 全体像 ===== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 全体像 — 90分の地図</h2>
 
-  <p>このプロジェクトは3つのパートで構成されます。<span class="term" data-tip="既存コードの振る舞いを変えずに内部構造だけを改善すること。外から見た動作は同じまま、読みやすさ・テスタビリティ・再利用性を上げる。">リファクタ</span>は「振る舞いを変えない改修」なので、<strong>先にテストで振る舞いを固定する</strong>のが鉄則です。</p>
+  <p>このプロジェクトは3つのパートで構成されます。<span class="term" tabindex="0" data-tip="既存コードの振る舞いを変えずに内部構造だけを改善すること。外から見た動作は同じまま、読みやすさ・テスタビリティ・再利用性を上げる。">リファクタ</span>は「振る舞いを変えない改修」なので、<strong>先にテストで振る舞いを固定する</strong>のが鉄則です。</p>
 
   <div class="diagram-box">
     <div class="diagram-title">Project B の90分タイムライン</div>
@@ -206,7 +206,7 @@
   <!-- ===== Section: Part 1 設計 ===== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Part 1: 設計 — worktree / Explore / Plan (15-20min)</h2>
 
-  <p>最初の20分は <strong>触らない時間</strong> です。いきなり書き換えさせると、壊れる確率がぐっと上がる——Ch10で学んだ通り、<span class="term" data-tip="改修ワークフロー: 理解→計画→実装→検証の4ステップ。Ch10参照">改修ワークフロー</span>の頭2ステップを丁寧に踏みます。</p>
+  <p>最初の20分は <strong>触らない時間</strong> です。いきなり書き換えさせると、壊れる確率がぐっと上がる——Ch10で学んだ通り、<span class="term" tabindex="0" data-tip="改修ワークフロー: 理解→計画→実装→検証の4ステップ。Ch10参照">改修ワークフロー</span>の頭2ステップを丁寧に踏みます。</p>
 
   <div class="steps">
     <div class="step"><div class="step-num">1</div><div class="step-label">worktree作成</div><div class="step-desc">本流を汚さない隔離空間</div></div>
@@ -216,7 +216,7 @@
 
   <h3>Step 1: worktree で作業空間を隔離する</h3>
 
-  <p><span class="term" data-tip="git worktree: 1つのリポから複数のブランチを別ディレクトリで同時にチェックアウトできるGit標準機能。Ch21参照。">worktree</span>を使うと、<code>main</code>をそのまま手元に残したまま、<strong>別ディレクトリで別ブランチ</strong>を触れます。リファクタが失敗しても、<code>main</code>は無傷です。</p>
+  <p><span class="term" tabindex="0" data-tip="git worktree: 1つのリポから複数のブランチを別ディレクトリで同時にチェックアウトできるGit標準機能。Ch21参照。">worktree</span>を使うと、<code>main</code>をそのまま手元に残したまま、<strong>別ディレクトリで別ブランチ</strong>を触れます。リファクタが失敗しても、<code>main</code>は無傷です。</p>
 
   <div class="hands-on-box info-box" style="background: rgba(217,119,87,0.08); border-left: 3px solid #D97757;">
     <span class="label">今すぐ試す(2分)</span>
@@ -231,7 +231,7 @@ pwd   # 新しい作業ディレクトリにいるはず</code></pre>
 
   <h3>Step 2: Explore agent でコード把握</h3>
 
-  <p>コード把握はメインのClaudeでやってもいいですが、<strong>ファイル数本以上読ませると親のコンテキストが汚れます</strong>。そこで<span class="term" data-tip="Explore subagent: ファイル探索・読解に特化した子エージェント。親に要約だけ返すのでコンテキストを食わない。Ch16参照。">Explore subagent</span>に任せます。</p>
+  <p>コード把握はメインのClaudeでやってもいいですが、<strong>ファイル数本以上読ませると親のコンテキストが汚れます</strong>。そこで<span class="term" tabindex="0" data-tip="Explore subagent: ファイル探索・読解に特化した子エージェント。親に要約だけ返すのでコンテキストを食わない。Ch16参照。">Explore subagent</span>に任せます。</p>
 
   <div class="hands-on-box info-box" style="background: rgba(217,119,87,0.08); border-left: 3px solid #D97757;">
     <span class="label">実プロンプト(コピペ可)</span>
@@ -249,7 +249,7 @@ prompt:
 
   <h3>Step 3: Planモードで計画に合意する</h3>
 
-  <p>Explore の要約を見たら、<span class="term" data-tip="Planモード: 実行ではなく計画提案だけを返させるモード。ExitPlanMode でユーザーが承認して初めて実装に進む。Ch13参照。">Planモード</span>に入ってリファクタ計画を立てさせます。大きな変更こそPlanから入る——これがロールバックの保険になります。</p>
+  <p>Explore の要約を見たら、<span class="term" tabindex="0" data-tip="Planモード: 実行ではなく計画提案だけを返させるモード。ExitPlanMode でユーザーが承認して初めて実装に進む。Ch13参照。">Planモード</span>に入ってリファクタ計画を立てさせます。大きな変更こそPlanから入る——これがロールバックの保険になります。</p>
 
   <div class="diagram-box">
     <div class="diagram-title">Planモードの流れ</div>
@@ -359,7 +359,7 @@ report_generator.py に対して次のリファクタ計画を立ててくださ
 
   <h3>Step 4: テストを先に追加する(RED)</h3>
 
-  <p>Ch11のTDDで学んだ通り、<span class="term" data-tip="Red-Green-Refactor: TDDの基本サイクル。失敗するテストを書き(Red)、最小コードで通し(Green)、整理する(Refactor)。">Red-Green-Refactor</span>のRedから入ります。ただしリファクタの場合は<strong>既存コードが既にGreenに相当</strong>するので、「既存の振る舞いを固定するテスト」を足すのが目的です。</p>
+  <p>Ch11のTDDで学んだ通り、<span class="term" tabindex="0" data-tip="Red-Green-Refactor: TDDの基本サイクル。失敗するテストを書き(Red)、最小コードで通し(Green)、整理する(Refactor)。">Red-Green-Refactor</span>のRedから入ります。ただしリファクタの場合は<strong>既存コードが既にGreenに相当</strong>するので、「既存の振る舞いを固定するテスト」を足すのが目的です。</p>
 
   <div class="hands-on-box info-box" style="background: rgba(217,119,87,0.08); border-left: 3px solid #D97757;">
     <span class="label">実プロンプト(コピペ可)</span>
@@ -422,7 +422,7 @@ report_generator.py に対して次のリファクタ計画を立ててくださ
 
   <h3>Step 6: コンテキストが重くなったら /compact</h3>
 
-  <p>50-60分も作業するとセッションが長くなります。Ch14で学んだ<span class="term" data-tip="/compact: 過去の会話を要約圧縮してコンテキスト消費を下げるコマンド。満杯前が使い時。">/compact</span>を、<strong>リファクタの区切り(Step 5-2 終了時など)</strong>で1回入れるとちょうどいい。</p>
+  <p>50-60分も作業するとセッションが長くなります。Ch14で学んだ<span class="term" tabindex="0" data-tip="/compact: 過去の会話を要約圧縮してコンテキスト消費を下げるコマンド。満杯前が使い時。">/compact</span>を、<strong>リファクタの区切り(Step 5-2 終了時など)</strong>で1回入れるとちょうどいい。</p>
 
   <div class="info-box">
     <span class="label">Tips</span>

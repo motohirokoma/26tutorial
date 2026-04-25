@@ -86,7 +86,7 @@
 
   <div class="info-box">
     <span class="label">この章のゴール</span>
-    <p>MCPの仕組みが分かったら、次は「**実際に何を繋げるか**」です。本章では<span class="term" data-tip="Anthropic公式組織(modelcontextprotocol org)が管理するリファレンス実装のMCPサーバー">公式MCPサーバー</span>と、<span class="term" data-tip="サービスベンダー自身が公開する一次配布のMCPサーバー。AnthropicではないがOfficial扱い">準公式サーバー</span>・<span class="term" data-tip="コミュニティが自主的に開発・公開しているMCPサーバー。品質はまちまち">コミュニティサーバー</span>を**用途別カタログ**として一望し、自分の業務に連携できそうなサーバーを2つ選べる状態を目指します。Ch04以降の実践の「下ごしらえ」です。</p>
+    <p>MCPの仕組みが分かったら、次は「**実際に何を繋げるか**」です。本章では<span class="term" tabindex="0" data-tip="Anthropic公式組織(modelcontextprotocol org)が管理するリファレンス実装のMCPサーバー">公式MCPサーバー</span>と、<span class="term" tabindex="0" data-tip="サービスベンダー自身が公開する一次配布のMCPサーバー。AnthropicではないがOfficial扱い">準公式サーバー</span>・<span class="term" tabindex="0" data-tip="コミュニティが自主的に開発・公開しているMCPサーバー。品質はまちまち">コミュニティサーバー</span>を**用途別カタログ**として一望し、自分の業務に連携できそうなサーバーを2つ選べる状態を目指します。Ch04以降の実践の「下ごしらえ」です。</p>
   </div>
 
   <div class="info-box">
@@ -137,7 +137,7 @@
       <tr><th>階層</th><th>管理者</th><th>信頼性</th><th>更新頻度</th><th>業務利用</th></tr>
     </thead>
     <tbody>
-      <tr><td><strong>Official (公式)</strong></td><td>Anthropic / <span class="term" data-tip="modelcontextprotocol という GitHub org。MCP仕様とリファレンス実装を管理">MCP org</span></td><td>◎ 最高</td><td>週〜月</td><td>◎ 推奨</td></tr>
+      <tr><td><strong>Official (公式)</strong></td><td>Anthropic / <span class="term" tabindex="0" data-tip="modelcontextprotocol という GitHub org。MCP仕様とリファレンス実装を管理">MCP org</span></td><td>◎ 最高</td><td>週〜月</td><td>◎ 推奨</td></tr>
       <tr><td><strong>Partner (準公式)</strong></td><td>サービスベンダー自身 (GitHub社/Notion社/Slack社等)</td><td>○ 高い</td><td>月〜四半期</td><td>○ 推奨</td></tr>
       <tr><td><strong>Community (コミュニティ)</strong></td><td>個人・OSS貢献者</td><td>△ コード確認必須</td><td>ピンキリ</td><td>△ 非機微な用途のみ</td></tr>
     </tbody>
@@ -199,7 +199,7 @@
     </li>
     <li>
       <i data-lucide="github" width="20" height="20"></i>
-      <div><strong>GitHub</strong> — <em>できる:</em> Issue/PR/Actions/Repo/検索/レビュー投稿。 <em>できない:</em> Billing操作・Enterprise admin操作・<span class="term" data-tip="Personal Access Token。GitHubがユーザー単位で発行する認証トークン">PAT</span>権限外のリポアクセス。</div>
+      <div><strong>GitHub</strong> — <em>できる:</em> Issue/PR/Actions/Repo/検索/レビュー投稿。 <em>できない:</em> Billing操作・Enterprise admin操作・<span class="term" tabindex="0" data-tip="Personal Access Token。GitHubがユーザー単位で発行する認証トークン">PAT</span>権限外のリポアクセス。</div>
     </li>
     <li>
       <i data-lucide="message-square" width="20" height="20"></i>
@@ -222,7 +222,7 @@
   <details class="more-box">
     <summary>もっと詳しく: Postgresが「読み取り専用」になっている理由</summary>
     <div class="more-body">
-      <p>公式Postgres MCPサーバーは**明示的に`readOnly`トランザクションでクエリを実行**します。理由は単純で、LLMにDELETE文を打たせて本番DBを飛ばす事故を防ぐため。Claude Codeが「テーブルを綺麗にしますね」と善意でTRUNCATEを走らせる可能性がゼロでない以上、最初から書き込み口を塞いでおく設計になっています。書き込みたい場合は**専用の別MCPサーバー(例: 書き込み許可を明示した社内ラッパー)を自作**するか、Claude Codeに<span class="term" data-tip="Claude Codeがツールを呼ぶたび人間に承認を求めるモード。--permission-mode または設定で切替">承認モード</span>を強制して1クエリずつ目視確認する運用に寄せるのが現実解です。</p>
+      <p>公式Postgres MCPサーバーは**明示的に`readOnly`トランザクションでクエリを実行**します。理由は単純で、LLMにDELETE文を打たせて本番DBを飛ばす事故を防ぐため。Claude Codeが「テーブルを綺麗にしますね」と善意でTRUNCATEを走らせる可能性がゼロでない以上、最初から書き込み口を塞いでおく設計になっています。書き込みたい場合は**専用の別MCPサーバー(例: 書き込み許可を明示した社内ラッパー)を自作**するか、Claude Codeに<span class="term" tabindex="0" data-tip="Claude Codeがツールを呼ぶたび人間に承認を求めるモード。--permission-mode または設定で切替">承認モード</span>を強制して1クエリずつ目視確認する運用に寄せるのが現実解です。</p>
     </div>
   </details>
 
@@ -299,7 +299,7 @@ graph TD
     セキュリティスコープ ― 「最小権限」を貫く
   </h2>
 
-  <p>MCPサーバーを入れる=<strong>AIに鍵を渡す</strong>です。便利の裏側で、鍵を広く渡すほど事故の爆発半径も広がります。原則は常に<span class="term" data-tip="システムやアカウントに与える権限を業務遂行に必要な最小限に絞る原則。情報セキュリティの基本">最小権限原則(Principle of Least Privilege)</span>。</p>
+  <p>MCPサーバーを入れる=<strong>AIに鍵を渡す</strong>です。便利の裏側で、鍵を広く渡すほど事故の爆発半径も広がります。原則は常に<span class="term" tabindex="0" data-tip="システムやアカウントに与える権限を業務遂行に必要な最小限に絞る原則。情報セキュリティの基本">最小権限原則(Principle of Least Privilege)</span>。</p>
 
   <div class="diagram-box">
     <div class="diagram-title">権限のレイヤー(どこで絞るか)</div>
@@ -330,7 +330,7 @@ graph TD
   <ul class="icon-list">
     <li>
       <i data-lucide="key" width="20" height="20"></i>
-      <div><strong>トークンは用途専用で発行</strong> — GitHub PATは「claude-code-read-only」のような名前で、必要な<span class="term" data-tip="GitHub PATで付与する権限セット。repo, workflow, admin:orgなどの粒度">スコープ</span>だけ付ける。</div>
+      <div><strong>トークンは用途専用で発行</strong> — GitHub PATは「claude-code-read-only」のような名前で、必要な<span class="term" tabindex="0" data-tip="GitHub PATで付与する権限セット。repo, workflow, admin:orgなどの粒度">スコープ</span>だけ付ける。</div>
     </li>
     <li>
       <i data-lucide="folder-lock" width="20" height="20"></i>
@@ -338,7 +338,7 @@ graph TD
     </li>
     <li>
       <i data-lucide="shield-check" width="20" height="20"></i>
-      <div><strong>Communityサーバーはコードを読む</strong> — `stdio` で起動するコマンドの中身を確認。<span class="term" data-tip="不明なコードが任意の外部通信を行ったり秘密情報を漏洩させるリスク">サプライチェーン攻撃</span>を避ける。</div>
+      <div><strong>Communityサーバーはコードを読む</strong> — `stdio` で起動するコマンドの中身を確認。<span class="term" tabindex="0" data-tip="不明なコードが任意の外部通信を行ったり秘密情報を漏洩させるリスク">サプライチェーン攻撃</span>を避ける。</div>
     </li>
     <li>
       <i data-lucide="eye" width="20" height="20"></i>

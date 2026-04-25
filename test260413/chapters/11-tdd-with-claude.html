@@ -117,7 +117,7 @@
 
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>なぜ Claude には TDD が効くのか</h2>
 
-  <p>Claude Code に実装を頼むと、しばしば「<em>それっぽいコード</em>」が返ってきます。動きそうに見えて、境界値や例外ケースで崩れる。これを防ぐ最強の手段が <span class="term" data-tip="Test-Driven Development。先にテストを書き、それを通すように実装する開発手法。Red/Green/Refactor の3ステップで回す">TDD</span> です。Claude に「<strong>このテストを通して</strong>」と渡せば、<em>成功条件</em>が数式のように定義され、曖昧さが消えます。</p>
+  <p>Claude Code に実装を頼むと、しばしば「<em>それっぽいコード</em>」が返ってきます。動きそうに見えて、境界値や例外ケースで崩れる。これを防ぐ最強の手段が <span class="term" tabindex="0" data-tip="Test-Driven Development。先にテストを書き、それを通すように実装する開発手法。Red/Green/Refactor の3ステップで回す">TDD</span> です。Claude に「<strong>このテストを通して</strong>」と渡せば、<em>成功条件</em>が数式のように定義され、曖昧さが消えます。</p>
 
   <p>逆に言えば、テストを渡さずに「○○機能を作って」と頼むのは、<strong>採点基準なしにテスト答案を書かせる</strong>ようなもの。Claude は親切なので「たぶんこういう意味だろう」と想像で埋めますが、それは高確率で外れます。</p>
 
@@ -155,7 +155,7 @@
     <div class="diagram-caption">赤→緑→オレンジ。Claude は主に Green フェーズで働き、Red と Refactor の判断は人間が握る。</div>
   </div>
 
-  <p>3色それぞれの「<strong>誰がやるか</strong>」を分けて覚えてください。Red は<em>人間</em>、Green は<em>Claude</em>、Refactor は<em>Claude + 人間レビュー</em>。<span class="term" data-tip="分業のこと。Claudeに何でもやらせると、期待値そのものを書き換えられる危険がある">役割分担</span>を明確にするだけで事故が激減します。</p>
+  <p>3色それぞれの「<strong>誰がやるか</strong>」を分けて覚えてください。Red は<em>人間</em>、Green は<em>Claude</em>、Refactor は<em>Claude + 人間レビュー</em>。<span class="term" tabindex="0" data-tip="分業のこと。Claudeに何でもやらせると、期待値そのものを書き換えられる危険がある">役割分担</span>を明確にするだけで事故が激減します。</p>
 
   <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
 
@@ -213,7 +213,7 @@
 
   <h3>今すぐ試す: Red フェーズ — 人間がテストを書く</h3>
 
-  <p>まず自分でテストファイル <code>shipping.test.js</code> を書きます。これは<strong>Claudeに書かせない</strong>。仕様の境界(5000円ちょうど)を<span class="term" data-tip="入力のエッジ。ちょうどの値、1つ手前、1つ後。バグが集中する場所">境界値</span>として明示します。</p>
+  <p>まず自分でテストファイル <code>shipping.test.js</code> を書きます。これは<strong>Claudeに書かせない</strong>。仕様の境界(5000円ちょうど)を<span class="term" tabindex="0" data-tip="入力のエッジ。ちょうどの値、1つ手前、1つ後。バグが集中する場所">境界値</span>として明示します。</p>
 
   <pre><code>// shipping.test.js — 人間が書く
 import { calcShipping } from './shipping.js';
@@ -292,7 +292,7 @@ export function calcShipping(amount) {
 
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>テストのスコープと境界値の指定</h2>
 
-  <p>Claude に境界値を「察して」もらえません。<span class="term" data-tip="正常系と異常系、エッジケースの3種。仕様境界の前後1つずつを必ずカバーする">境界値分析</span>は依頼プロンプトに明示的に書くと効きます。</p>
+  <p>Claude に境界値を「察して」もらえません。<span class="term" tabindex="0" data-tip="正常系と異常系、エッジケースの3種。仕様境界の前後1つずつを必ずカバーする">境界値分析</span>は依頼プロンプトに明示的に書くと効きます。</p>
 
   <div class="diagram-box">
     <div class="diagram-title">テストスコープの4象限(入力 × 系統)</div>
@@ -399,7 +399,7 @@ fi</code></pre>
 
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>効果の可視化：TDDで欠陥はどれだけ減るか</h2>
 
-  <p>体感ではなく数字で見ておきましょう。筆者が社内プロジェクトで TDD を導入する前後で、<span class="term" data-tip="ReleaseしてからUserが検出するまでのバグ件数。事後修正コストが最大">本番検出バグ</span>がどう動いたかのサンプルです(サンプルサイズ小なので傾向として)。</p>
+  <p>体感ではなく数字で見ておきましょう。筆者が社内プロジェクトで TDD を導入する前後で、<span class="term" tabindex="0" data-tip="ReleaseしてからUserが検出するまでのバグ件数。事後修正コストが最大">本番検出バグ</span>がどう動いたかのサンプルです(サンプルサイズ小なので傾向として)。</p>
 
   <div class="diagram-box">
     <div class="diagram-title">TDD導入前後の本番検出バグ数(月次)</div>
@@ -457,7 +457,7 @@ fi</code></pre>
 
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>プロンプト・テンプレ集(保存推奨)</h2>
 
-  <p>ここまでの内容を<span class="term" data-tip="コピペで使える型。毎回ゼロから書かず、型に当てはめるのが上位20%の共通項">テンプレ化</span>しておきます。スニペット管理ツールに登録してください。</p>
+  <p>ここまでの内容を<span class="term" tabindex="0" data-tip="コピペで使える型。毎回ゼロから書かず、型に当てはめるのが上位20%の共通項">テンプレ化</span>しておきます。スニペット管理ツールに登録してください。</p>
 
   <ul class="icon-list">
     <li>

@@ -86,7 +86,7 @@
 
   <div class="info-box">
     <span class="label">本章について</span>
-    <p>本章の記述は<span class="term" data-tip="2026年1月時点の記述。最新は公式ドキュメント参照">2026年1月時点</span>の情報です。Hookは「動かない時」と「動きすぎた時」が最も怖い仕組みです。前者は時間を吸われ、後者はデータを失います。本章では症状→原因→対処を<span class="term" data-tip="根本原因を一発で突き止めるための診断手順。ログ・再現・単体実行の3点セット">診断の型</span>として整理し、さらに「他人のsettings.jsonを受け取った時」のセキュリティ観点を徹底解説します。</p>
+    <p>本章の記述は<span class="term" tabindex="0" data-tip="2026年1月時点の記述。最新は公式ドキュメント参照">2026年1月時点</span>の情報です。Hookは「動かない時」と「動きすぎた時」が最も怖い仕組みです。前者は時間を吸われ、後者はデータを失います。本章では症状→原因→対処を<span class="term" tabindex="0" data-tip="根本原因を一発で突き止めるための診断手順。ログ・再現・単体実行の3点セット">診断の型</span>として整理し、さらに「他人のsettings.jsonを受け取った時」のセキュリティ観点を徹底解説します。</p>
   </div>
 
   <!-- ===================== §1 動かない5大症状 ===================== -->
@@ -127,7 +127,7 @@ graph TD
   <!-- ===================== §2 診断3点セット ===================== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>2. 診断3点セット</h2>
 
-  <p>原因を素早く特定する<span class="term" data-tip="debug mode・手動実行・ログ追跡の3つを順番に使うと大半の問題が判別できる診断手順">診断3点セット</span>を覚えましょう。これは順番が大事です。上から順に試すと無駄な仮説検証を省けます。</p>
+  <p>原因を素早く特定する<span class="term" tabindex="0" data-tip="debug mode・手動実行・ログ追跡の3つを順番に使うと大半の問題が判別できる診断手順">診断3点セット</span>を覚えましょう。これは順番が大事です。上から順に試すと無駄な仮説検証を省けます。</p>
 
   <ul class="icon-list">
     <li>
@@ -155,7 +155,7 @@ $ CLAUDE_LOG_LEVEL=debug claude</code></pre>
 
   <h3>手動実行で切り分けるテクニック</h3>
 
-  <p>Hookは<span class="term" data-tip="Claude Code本体が受け取ったtool useの情報をJSON形式で標準入力からhookスクリプトに渡す仕組み">stdinからJSON</span>を受け取って動きます。手動実行で再現する時はこれを模倣します:</p>
+  <p>Hookは<span class="term" tabindex="0" data-tip="Claude Code本体が受け取ったtool useの情報をJSON形式で標準入力からhookスクリプトに渡す仕組み">stdinからJSON</span>を受け取って動きます。手動実行で再現する時はこれを模倣します:</p>
 
 <pre><code># Hookコマンドを手で実行して挙動を確認
 $ echo '{"tool_name":"Write","tool_input":{"file_path":"/tmp/x.js"}}' | \
@@ -189,7 +189,7 @@ $ cat /tmp/err.log</code></pre>
       <span class="cc-label">ダメな例</span>
       <h4>意図通りマッチしない</h4>
       <ul>
-        <li><code>"matcher": "Write|Edit"</code> — <span class="term" data-tip="正規表現で文字列の先頭・末尾を示す特殊文字。matcherは完全一致評価されるため部分記述だと期待と違う">アンカー</span>不明で混乱</li>
+        <li><code>"matcher": "Write|Edit"</code> — <span class="term" tabindex="0" data-tip="正規表現で文字列の先頭・末尾を示す特殊文字。matcherは完全一致評価されるため部分記述だと期待と違う">アンカー</span>不明で混乱</li>
         <li><code>"matcher": "bash"</code> — toolは<code>Bash</code>(大文字始まり)</li>
         <li><code>"matcher": "Write.js"</code> — <code>.</code>は任意1文字、意図せず<code>WriteXjs</code>にもマッチ</li>
         <li><code>"matcher": "*"</code> — glob構文、正規表現では<strong>構文エラー</strong></li>
@@ -214,7 +214,7 @@ $ cat /tmp/err.log</code></pre>
 
   <h3>PATH問題の典型</h3>
 
-  <p>Hookは<span class="term" data-tip="ログインシェルではなく、親プロセスから継承された最小限の環境で実行される。.zshrcや.bash_profileは読まれない">非インタラクティブシェル</span>で実行されます。つまり、普段<code>zsh</code>で設定した<code>PATH</code>や<code>alias</code>は<strong>継承されません</strong>。Homebrewで入れた<code>prettier</code>や<code>rubocop</code>は<code>/opt/homebrew/bin</code>にありますが、Hookの環境でそこが見えない事があります。</p>
+  <p>Hookは<span class="term" tabindex="0" data-tip="ログインシェルではなく、親プロセスから継承された最小限の環境で実行される。.zshrcや.bash_profileは読まれない">非インタラクティブシェル</span>で実行されます。つまり、普段<code>zsh</code>で設定した<code>PATH</code>や<code>alias</code>は<strong>継承されません</strong>。Homebrewで入れた<code>prettier</code>や<code>rubocop</code>は<code>/opt/homebrew/bin</code>にありますが、Hookの環境でそこが見えない事があります。</p>
 
   <div class="diagram-box">
     <div class="diagram-title">Hookが「command not found」になる原因</div>
@@ -277,7 +277,7 @@ $ cat /tmp/err.log</code></pre>
   <!-- ===================== §4 exit code/stdout誤解 ===================== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>4. exit code / stdout の誤解</h2>
 
-  <p>Ch03でも触れましたが、復習と実践的なtipsを。<span class="term" data-tip="プロセス終了時に親に返す整数値。Unix慣習では0=成功、非0=失敗だがClaude Code Hookでは2に特別な意味がある">exit code</span>の誤解が「意図せずブロック」「ユーザに情報が届かない」事故の筆頭です。</p>
+  <p>Ch03でも触れましたが、復習と実践的なtipsを。<span class="term" tabindex="0" data-tip="プロセス終了時に親に返す整数値。Unix慣習では0=成功、非0=失敗だがClaude Code Hookでは2に特別な意味がある">exit code</span>の誤解が「意図せずブロック」「ユーザに情報が届かない」事故の筆頭です。</p>
 
   <table>
     <thead>
@@ -348,7 +348,7 @@ exit 2</code></pre>
 
   <div class="info-box">
     <span class="label">レッドフラッグ検出コマンド</span>
-    <p>受け取ったsettings.jsonを即この4本で<span class="term" data-tip="セキュリティレビュー時に赤信号となる危険パターンの組み合わせ。全部機械的に検知できる">レッドフラッグ</span>検査:</p>
+    <p>受け取ったsettings.jsonを即この4本で<span class="term" tabindex="0" data-tip="セキュリティレビュー時に赤信号となる危険パターンの組み合わせ。全部機械的に検知できる">レッドフラッグ</span>検査:</p>
 <pre><code>$ grep -E "rm\s+-rf|rm\s+-fr|curl.*\|\s*(bash|sh|zsh)" settings.json
 $ grep -E "eval|source\s+/dev|echo.*\>.*\.ssh" settings.json
 $ grep -E "nc\s+-|/dev/tcp|base64\s+-d.*\|" settings.json
@@ -364,7 +364,7 @@ $ grep -oE "https?://[^\" ]+" settings.json | sort -u</code></pre>
   <ul class="icon-list">
     <li>
       <i data-lucide="trash-2" width="20" height="20"></i>
-      <div><strong>破壊系が無い</strong> — <code>rm -rf</code> / <code>find ... -delete</code> / <code>truncate</code> / <code>dd of=</code> が含まれないか。含むなら対象パスを<span class="term" data-tip="パス展開の暴走を防ぐため、プロジェクト配下のみに対象を限定する慣行。$CLAUDE_PROJECT_DIRで囲う">プロジェクト配下限定</span>に。</div>
+      <div><strong>破壊系が無い</strong> — <code>rm -rf</code> / <code>find ... -delete</code> / <code>truncate</code> / <code>dd of=</code> が含まれないか。含むなら対象パスを<span class="term" tabindex="0" data-tip="パス展開の暴走を防ぐため、プロジェクト配下のみに対象を限定する慣行。$CLAUDE_PROJECT_DIRで囲う">プロジェクト配下限定</span>に。</div>
     </li>
     <li>
       <i data-lucide="download" width="20" height="20"></i>
@@ -376,7 +376,7 @@ $ grep -oE "https?://[^\" ]+" settings.json | sort -u</code></pre>
     </li>
     <li>
       <i data-lucide="wifi" width="20" height="20"></i>
-      <div><strong>外部送信先が明示</strong> — <code>curl/wget/nc</code>のURLは明示固定。<span class="term" data-tip="送信先のURLやホスト名が動的に組み立てられる状態。攻撃者が任意の宛先に変更可能な抜け穴になる">動的URL</span>は禁止(<code>curl $URL</code>のような変数展開)。</div>
+      <div><strong>外部送信先が明示</strong> — <code>curl/wget/nc</code>のURLは明示固定。<span class="term" tabindex="0" data-tip="送信先のURLやホスト名が動的に組み立てられる状態。攻撃者が任意の宛先に変更可能な抜け穴になる">動的URL</span>は禁止(<code>curl $URL</code>のような変数展開)。</div>
     </li>
     <li>
       <i data-lucide="folder-lock" width="20" height="20"></i>
@@ -410,7 +410,7 @@ $ grep -oE "https?://[^\" ]+" settings.json | sort -u</code></pre>
   <!-- ===================== §7 事故発生率の実データ ===================== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>7. 原因別の発生率</h2>
 
-  <p>筆者(MK)のHook運用1ヶ月・計100件超のトラブル事例を分類した結果です(<span class="term" data-tip="2026年1月時点の個人環境での観測値。あくまで傾向として参照のこと">2026年1月時点の個人観測値</span>)。上位3つで全体の80%を占めるため、まずここを疑うのが診断の鉄則です。</p>
+  <p>筆者(MK)のHook運用1ヶ月・計100件超のトラブル事例を分類した結果です(<span class="term" tabindex="0" data-tip="2026年1月時点の個人環境での観測値。あくまで傾向として参照のこと">2026年1月時点の個人観測値</span>)。上位3つで全体の80%を占めるため、まずここを疑うのが診断の鉄則です。</p>
 
   <div class="diagram-box">
     <div class="diagram-title">Hookトラブル原因の内訳</div>

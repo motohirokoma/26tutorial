@@ -95,7 +95,7 @@
 
   <div class="info-box">
     <span class="label">Tips</span>
-    <p>完璧な3つを選ぶ必要はありません。<strong>まず5分で10個書き出し</strong>、その中から「頻度が高い × 定型化できる × <span class="term" data-tip="Hookのコマンドは任意のシェルを実行する。誤ったコマンドで開発環境を破壊するリスクがあるため、副作用の小さいものから始めるべき。">副作用が小さい</span>」の3軸で3つに絞ります。完璧より「まず動かす」が正解です。</p>
+    <p>完璧な3つを選ぶ必要はありません。<strong>まず5分で10個書き出し</strong>、その中から「頻度が高い × 定型化できる × <span class="term" tabindex="0" data-tip="Hookのコマンドは任意のシェルを実行する。誤ったコマンドで開発環境を破壊するリスクがあるため、副作用の小さいものから始めるべき。">副作用が小さい</span>」の3軸で3つに絞ります。完璧より「まず動かす」が正解です。</p>
   </div>
 
   <!-- 7章が最終演習のどこに効くか SVG -->
@@ -173,12 +173,12 @@
     <tbody>
       <tr><td>対象者</td><td>Claude Code を1週間以上使い、Ch01〜07を読み終えた人</td></tr>
       <tr><td>期間</td><td>設計30分 + 運用1週間(実運用で検証)</td></tr>
-      <tr><td>個数</td><td><span class="term" data-tip="最初は多すぎないことが大事。3つが設計・検証・切り戻しを同時に回せる上限。">3つ</span>(欲張らない)</td></tr>
+      <tr><td>個数</td><td><span class="term" tabindex="0" data-tip="最初は多すぎないことが大事。3つが設計・検証・切り戻しを同時に回せる上限。">3つ</span>(欲張らない)</td></tr>
       <tr><td>選定基準</td><td>週3回以上発生 / 1回1分以上の工数 / コマンドが決まっている</td></tr>
       <tr><td>イベント</td><td>PreToolUse / PostToolUse / Stop / UserPromptSubmit / SessionStart のいずれか</td></tr>
-      <tr><td><span class="term" data-tip="settings.json の hooks.{event}.matcher フィールドに書く正規表現。tool 名にマッチしたときだけコマンドを起動する。">matcher</span></td><td>ツール名の正規表現で絞り込む(例: <code>^(Edit|Write)$</code>)</td></tr>
+      <tr><td><span class="term" tabindex="0" data-tip="settings.json の hooks.{event}.matcher フィールドに書く正規表現。tool 名にマッチしたときだけコマンドを起動する。">matcher</span></td><td>ツール名の正規表現で絞り込む(例: <code>^(Edit|Write)$</code>)</td></tr>
       <tr><td>測定指標</td><td>削減工数(秒/回) / 発火回数(週) / ミス検出数 の3つを最低限記録</td></tr>
-      <tr><td>検証環境</td><td>Claude Code CLI (<span class="term" data-tip="2026年1月時点の記述。最新は公式ドキュメント参照。hooks セクションの仕様は変更される可能性あり。">2026年1月時点</span>)</td></tr>
+      <tr><td>検証環境</td><td>Claude Code CLI (<span class="term" tabindex="0" data-tip="2026年1月時点の記述。最新は公式ドキュメント参照。hooks セクションの仕様は変更される可能性あり。">2026年1月時点</span>)</td></tr>
       <tr><td>セキュリティ</td><td><code>rm</code> / <code>curl</code> / <code>eval</code> を含む Hook は自分で精査してから採用</td></tr>
     </tbody>
   </table>
@@ -192,7 +192,7 @@
     </li>
     <li>
       <i data-lucide="target" width="20" height="20"></i>
-      <div><strong>3つのHookカード</strong> — 名前・目的・<span class="term" data-tip="Hookが起動するタイミング。PreToolUse(ツール実行前)、PostToolUse(実行後)、Stop(作業終了時)など。">イベント</span>・matcher・command を1枚で</div>
+      <div><strong>3つのHookカード</strong> — 名前・目的・<span class="term" tabindex="0" data-tip="Hookが起動するタイミング。PreToolUse(ツール実行前)、PostToolUse(実行後)、Stop(作業終了時)など。">イベント</span>・matcher・command を1枚で</div>
     </li>
     <li>
       <i data-lucide="file-code" width="20" height="20"></i>
@@ -200,7 +200,7 @@
     </li>
     <li>
       <i data-lucide="shield-check" width="20" height="20"></i>
-      <div><strong>セキュリティチェックリスト</strong> — 破壊的操作・秘密情報リーク・<span class="term" data-tip="環境変数やコマンド置換を通じて攻撃者が任意コマンドを埋め込む脆弱性。Hookのcommand文字列に信頼できない値を展開するのは厳禁。">注入リスク</span>の3点を潰したことを確認</div>
+      <div><strong>セキュリティチェックリスト</strong> — 破壊的操作・秘密情報リーク・<span class="term" tabindex="0" data-tip="環境変数やコマンド置換を通じて攻撃者が任意コマンドを埋め込む脆弱性。Hookのcommand文字列に信頼できない値を展開するのは厳禁。">注入リスク</span>の3点を潰したことを確認</div>
     </li>
     <li>
       <i data-lucide="activity" width="20" height="20"></i>
@@ -311,7 +311,7 @@
     ]
   }
 }</code></pre>
-      <p>環境変数 <code>$CLAUDE_PROJECT_DIR</code> はプロジェクトルートを指す。Hook 内から相対パスを使うと呼び出し元の <span class="term" data-tip="現在の作業ディレクトリ(current working directory)。Hookは呼び出し時点のcwdから起動されるため、プロジェクト外で動作することがある。">cwd</span> に依存して壊れやすいので、明示するのが安全です。</p>
+      <p>環境変数 <code>$CLAUDE_PROJECT_DIR</code> はプロジェクトルートを指す。Hook 内から相対パスを使うと呼び出し元の <span class="term" tabindex="0" data-tip="現在の作業ディレクトリ(current working directory)。Hookは呼び出し時点のcwdから起動されるため、プロジェクト外で動作することがある。">cwd</span> に依存して壊れやすいので、明示するのが安全です。</p>
     </div>
   </details>
 
@@ -321,7 +321,7 @@
       <p>Hook の動作確認は <strong>3段階</strong>で進めると迷いません:</p>
       <ol>
         <li><strong>コマンド単体で動くか</strong> — まず対象コマンドをシェルに貼って動かす。「Prettier に PATH 通ってないので動かない」などの大半はここで潰れる。</li>
-        <li><strong><code>claude --debug</code> で発火するか</strong> — デバッグモードで Hook 呼び出しのログが出る。<span class="term" data-tip="Claude Code の実行ログに Hook の発火・標準出力・exit code が表示されるフラグ。動かない時の最初の一手。">--debug</span> でログ確認が最速の切り分け。</li>
+        <li><strong><code>claude --debug</code> で発火するか</strong> — デバッグモードで Hook 呼び出しのログが出る。<span class="term" tabindex="0" data-tip="Claude Code の実行ログに Hook の発火・標準出力・exit code が表示されるフラグ。動かない時の最初の一手。">--debug</span> でログ確認が最速の切り分け。</li>
         <li><strong>実ワークフローで1日触るか</strong> — 小さい PR や手元ブランチで実運用。本番ブランチでいきなり試さない。</li>
       </ol>
       <p>それでも動かない場合の典型原因:</p>
@@ -347,7 +347,7 @@
       </ol>
       <div class="info-box">
         <span class="label">Warning</span>
-        <p>特に危険なのは <strong>Stop イベントの curl + eval パターン</strong>(外部から取得した内容を実行)。これは <span class="term" data-tip="Remote Code Execution。遠隔からの任意コード実行。Hookは既にローカルで任意コードを動かせるため、外部入力を実行に繋げると「どこからでも自分のマシンが乗っ取られる」等価の脆弱性になる。">RCE</span> に直結します。便利そうに見えても使わない勇気が肝心です。</p>
+        <p>特に危険なのは <strong>Stop イベントの curl + eval パターン</strong>(外部から取得した内容を実行)。これは <span class="term" tabindex="0" data-tip="Remote Code Execution。遠隔からの任意コード実行。Hookは既にローカルで任意コードを動かせるため、外部入力を実行に繋げると「どこからでも自分のマシンが乗っ取られる」等価の脆弱性になる。">RCE</span> に直結します。便利そうに見えても使わない勇気が肝心です。</p>
       </div>
     </div>
   </details>
@@ -585,7 +585,7 @@ graph TD
     <h4>チーム共有Hookパックを設計する</h4>
     <p>自分の3つを、<strong>チームに配布可能な形</strong>にパッケージ化してください。最終アウトプットは「チーム用 settings.json テンプレ + README + セキュリティレビュー済み証跡」です。</p>
     <ol>
-      <li>プロジェクトルート直下 <code>.claude/settings.json</code> に置き、<span class="term" data-tip="ユーザ個別の settings.json を上書きしたい時に使う、チーム共有用のプロジェクトスコープ。team で Git に commit する想定。">project scope</span> で配布</li>
+      <li>プロジェクトルート直下 <code>.claude/settings.json</code> に置き、<span class="term" tabindex="0" data-tip="ユーザ個別の settings.json を上書きしたい時に使う、チーム共有用のプロジェクトスコープ。team で Git に commit する想定。">project scope</span> で配布</li>
       <li>シェルスクリプト本体は <code>scripts/claude-hooks/</code> にまとめ、Git管理</li>
       <li>README に「何を自動化するか/副作用/無効化手順」を明記</li>
       <li>セキュリティレビューを1人以上にしてもらい、ログ化</li>

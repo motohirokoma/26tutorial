@@ -86,7 +86,7 @@
 
   <div class="info-box">
     <span class="label">この章のゴール</span>
-    <p>mainブランチに push した直後の CI (GitHub Actions) を<strong>5分おきに監視</strong>し、失敗したジョブだけ Slack 通知する放置運用を、自分のリポで実装します。Ch02(/loop) と Ch03(Scheduled Tasks) の知識を実戦投入し、<strong>interval vs cron の使い分け</strong>、<span class="term" data-tip="同じ失敗ビルドに対して重複通知が飛ぶのを抑止する仕組み。直近通知ビルドIDをローカルファイルに保存するのが定石">二重通知回避</span>、<strong>コスト見積もり</strong>までを現場レベルで体得するのが目標です。<span class="term" data-tip="2026年1月時点の記述。GitHub Actions / gh CLI / Claude Code の仕様は更新される可能性があります">本章の記述は2026年1月時点</span>。</p>
+    <p>mainブランチに push した直後の CI (GitHub Actions) を<strong>5分おきに監視</strong>し、失敗したジョブだけ Slack 通知する放置運用を、自分のリポで実装します。Ch02(/loop) と Ch03(Scheduled Tasks) の知識を実戦投入し、<strong>interval vs cron の使い分け</strong>、<span class="term" tabindex="0" data-tip="同じ失敗ビルドに対して重複通知が飛ぶのを抑止する仕組み。直近通知ビルドIDをローカルファイルに保存するのが定石">二重通知回避</span>、<strong>コスト見積もり</strong>までを現場レベルで体得するのが目標です。<span class="term" tabindex="0" data-tip="2026年1月時点の記述。GitHub Actions / gh CLI / Claude Code の仕様は更新される可能性があります">本章の記述は2026年1月時点</span>。</p>
   </div>
 
   <div class="info-box" style="border-left:4px solid #dc2626; background:#fef2f2;">
@@ -97,7 +97,7 @@
   <!-- ===== Section 1: シナリオ ===== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> シナリオ: なぜ5分ごとに監視したいのか</h2>
 
-  <p>典型的な開発フロー: mainブランチに push → GitHub Actions で lint/test/build → 失敗したら<strong>できるだけ早く気づきたい</strong>。でも毎回 GitHub のWeb画面を開くのは面倒、しかも失敗通知が GitHub の <span class="term" data-tip="GitHub の通知機能。デフォルトは受信トレイに溜まるだけで、能動的に見に行かないと気づけない。Slack への転送設定が必要">Notifications</span> に埋もれて気づかない問題がよくあります。</p>
+  <p>典型的な開発フロー: mainブランチに push → GitHub Actions で lint/test/build → 失敗したら<strong>できるだけ早く気づきたい</strong>。でも毎回 GitHub のWeb画面を開くのは面倒、しかも失敗通知が GitHub の <span class="term" tabindex="0" data-tip="GitHub の通知機能。デフォルトは受信トレイに溜まるだけで、能動的に見に行かないと気づけない。Slack への転送設定が必要">Notifications</span> に埋もれて気づかない問題がよくあります。</p>
 
   <div class="diagram-box">
     <div class="diagram-title">従来ワークフロー vs Claude 放置運用</div>
@@ -171,7 +171,7 @@
       <tr>
         <td>実行場所</td>
         <td>手元の Claude Code セッション</td>
-        <td>リモート Claude (<span class="term" data-tip="Anthropic 側で cron をホストして実行するリモート実行環境。ローカルマシンを閉じても動く">RemoteTrigger</span>)</td>
+        <td>リモート Claude (<span class="term" tabindex="0" data-tip="Anthropic 側で cron をホストして実行するリモート実行環境。ローカルマシンを閉じても動く">RemoteTrigger</span>)</td>
       </tr>
       <tr>
         <td>PC を閉じて良いか</td>
@@ -195,7 +195,7 @@
       </tr>
       <tr>
         <td>キャッシュ効率</td>
-        <td>5分以内なら<span class="term" data-tip="Claude Code のプロンプトキャッシュは約5分のTTL。連続間隔が5分以内ならウォーム状態でコストが大幅に下がる">ウォーム</span>状態維持しやすい</td>
+        <td>5分以内なら<span class="term" tabindex="0" data-tip="Claude Code のプロンプトキャッシュは約5分のTTL。連続間隔が5分以内ならウォーム状態でコストが大幅に下がる">ウォーム</span>状態維持しやすい</td>
         <td>毎回コールド(原則)</td>
       </tr>
       <tr>
@@ -233,7 +233,7 @@ graph TD
   <!-- ===== Section 3: 前提ツール ===== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 前提: gh CLI と Slack Webhook を準備</h2>
 
-  <p>Claude に渡す「道具」として以下2つがあれば十分です。ローカルにあれば Claude Code は<span class="term" data-tip="シェルコマンド実行ツール。ghのようなCLIはこれ経由で呼ばれる">Bash tool</span>経由で自力で叩きに行けます。</p>
+  <p>Claude に渡す「道具」として以下2つがあれば十分です。ローカルにあれば Claude Code は<span class="term" tabindex="0" data-tip="シェルコマンド実行ツール。ghのようなCLIはこれ経由で呼ばれる">Bash tool</span>経由で自力で叩きに行けます。</p>
 
   <h3>1. gh CLI 最新版をインストール</h3>
 
@@ -275,7 +275,7 @@ curl -X POST -H 'Content-Type: application/json' \
   <!-- ===== Section 4: プロンプト設計 ===== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> プロンプト設計: self-contained に全部書く</h2>
 
-  <p>Ch04 で学んだ <span class="term" data-tip="呼び出しごとに必要情報を毎回完全に渡すスタイル。前回ターンのコンテキストを当てにしない">self-contained</span> 原則を適用します。放置運用では「<strong>起動した Claude が履歴ゼロで読んでも1人で完遂できる</strong>」ようプロンプトを書きます。</p>
+  <p>Ch04 で学んだ <span class="term" tabindex="0" data-tip="呼び出しごとに必要情報を毎回完全に渡すスタイル。前回ターンのコンテキストを当てにしない">self-contained</span> 原則を適用します。放置運用では「<strong>起動した Claude が履歴ゼロで読んでも1人で完遂できる</strong>」ようプロンプトを書きます。</p>
 
   <div class="diagram-box">
     <div class="diagram-title">監視プロンプトの7ブロック構造</div>
@@ -484,7 +484,7 @@ sequenceDiagram
   <!-- ===== Section 8: コスト試算 ===== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> コスト試算: どれくらいで済むのか</h2>
 
-  <p>放置運用で一番怖いのは<strong>気づいたら月額が跳ねている</strong>こと。事前に試算しておきます。<span class="term" data-tip="2026年1月時点の参考値。実コストは利用プランとモデル価格で変わるので、必ず公式料金表で再確認">以下は2026年1月時点の概算</span>。</p>
+  <p>放置運用で一番怖いのは<strong>気づいたら月額が跳ねている</strong>こと。事前に試算しておきます。<span class="term" tabindex="0" data-tip="2026年1月時点の参考値。実コストは利用プランとモデル価格で変わるので、必ず公式料金表で再確認">以下は2026年1月時点の概算</span>。</p>
 
   <div class="diagram-box">
     <div class="diagram-title">運用パターン別・1ヶ月のおおまかな実行回数</div>
@@ -513,7 +513,7 @@ sequenceDiagram
   <details class="more-box">
     <summary>もっと詳しく: 失敗時のみ詳細分析でコストを抑える</summary>
     <div class="more-body">
-      <p>ポーリング毎に log tail 60行 を全部要約するのは<strong>無駄</strong>。成功時(全体の95%以上)は「status 取得 → 成功確認 → 即終了」で最小トークンに抑えられます。失敗時だけ log を取りに行き要約する設計にすれば、<span class="term" data-tip="毎回の呼び出しで扱うトークン量。失敗時分岐を使うと平均実トークンが桁違いに減る">平均トークン</span>は 1/5 程度まで下がります。プロンプトに「成功時は log を読まない」と明示するのがコツです。</p>
+      <p>ポーリング毎に log tail 60行 を全部要約するのは<strong>無駄</strong>。成功時(全体の95%以上)は「status 取得 → 成功確認 → 即終了」で最小トークンに抑えられます。失敗時だけ log を取りに行き要約する設計にすれば、<span class="term" tabindex="0" data-tip="毎回の呼び出しで扱うトークン量。失敗時分岐を使うと平均実トークンが桁違いに減る">平均トークン</span>は 1/5 程度まで下がります。プロンプトに「成功時は log を読まない」と明示するのがコツです。</p>
     </div>
   </details>
 

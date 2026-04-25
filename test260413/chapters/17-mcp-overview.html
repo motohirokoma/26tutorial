@@ -123,9 +123,9 @@
   <!-- ===== Section 1: MCPとは ===== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> MCPとは — 「AIのUSB-C」</h2>
 
-  <p><span class="term" data-tip="MCP: Model Context Protocol。Anthropicが2024年末に公開したオープン規格で、LLMと外部ツール/データソースを繋ぐ共通プロトコル。">MCP</span>(<strong>Model Context Protocol</strong>)は、Anthropicが公開した<strong>LLMと外部ツールを繋ぐ共通規格</strong>です。よく「<strong>AIのUSB-C</strong>」と呼ばれます — これまで各LLMクライアントが個別に作っていた「GitHub統合」「Slack統合」「Notion統合」を、<strong>1本の規格</strong>にまとめた、というのがポイント。</p>
+  <p><span class="term" tabindex="0" data-tip="MCP: Model Context Protocol。Anthropicが2024年末に公開したオープン規格で、LLMと外部ツール/データソースを繋ぐ共通プロトコル。">MCP</span>(<strong>Model Context Protocol</strong>)は、Anthropicが公開した<strong>LLMと外部ツールを繋ぐ共通規格</strong>です。よく「<strong>AIのUSB-C</strong>」と呼ばれます — これまで各LLMクライアントが個別に作っていた「GitHub統合」「Slack統合」「Notion統合」を、<strong>1本の規格</strong>にまとめた、というのがポイント。</p>
 
-  <p>Claude Code は MCP クライアントとして動作し、<span class="term" data-tip="MCPサーバー: ツールやリソースを提供する外部プロセス。stdioまたはhttpで通信する。">MCPサーバー</span>を <code>.mcp.json</code> に登録するだけで、そのサーバーが公開するツールがすべて Claude から使えるようになります。</p>
+  <p>Claude Code は MCP クライアントとして動作し、<span class="term" tabindex="0" data-tip="MCPサーバー: ツールやリソースを提供する外部プロセス。stdioまたはhttpで通信する。">MCPサーバー</span>を <code>.mcp.json</code> に登録するだけで、そのサーバーが公開するツールがすべて Claude から使えるようになります。</p>
 
   <div class="diagram-box">
     <div class="diagram-title">MCPの全体像 — クライアントとサーバーの接続</div>
@@ -182,7 +182,7 @@
   <!-- ===== Section 2: N×M問題 ===== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> なぜ必要なのか — N×M問題</h2>
 
-  <p>MCPが生まれた背景は「<span class="term" data-tip="N×M問題: N個のLLMクライアントとM個のツールを繋ぐのに、N×M通りの個別実装が必要になる問題。">N×M問題</span>」です。5つのLLM(ChatGPT / Claude / Gemini / Cursor / ...)と100個のツール(GitHub / Slack / Jira / ...)を繋ごうとすると、単純計算で <strong>5×100 = 500個のインテグレーション</strong>が必要になる。これが共通プロトコルMCPで <strong>5 + 100 = 105個</strong> に圧縮される、というのが発想の根っこです。</p>
+  <p>MCPが生まれた背景は「<span class="term" tabindex="0" data-tip="N×M問題: N個のLLMクライアントとM個のツールを繋ぐのに、N×M通りの個別実装が必要になる問題。">N×M問題</span>」です。5つのLLM(ChatGPT / Claude / Gemini / Cursor / ...)と100個のツール(GitHub / Slack / Jira / ...)を繋ごうとすると、単純計算で <strong>5×100 = 500個のインテグレーション</strong>が必要になる。これが共通プロトコルMCPで <strong>5 + 100 = 105個</strong> に圧縮される、というのが発想の根っこです。</p>
 
   <div class="diagram-box">
     <div class="diagram-title">N×M(個別統合) vs N+M(MCP経由)</div>
@@ -306,7 +306,7 @@
   <!-- ===== Section 4: stdio vs http ===== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> トランスポート — stdio vs HTTP</h2>
 
-  <p>MCPサーバーとの通信手段は大きく2つあります。<span class="term" data-tip="stdio: 標準入出力を使った同一マシン内プロセス間通信。ローカルのMCPサーバーに最適。">stdio</span> と <span class="term" data-tip="HTTP(Streamable HTTP): リモートのMCPサーバーに対するHTTPベースの通信方式。2026年1月時点ではStreamable HTTP(+SSE)が主流。">HTTP</span>(Streamable HTTP + SSE)です。どちらを選ぶかで設定形が変わります。</p>
+  <p>MCPサーバーとの通信手段は大きく2つあります。<span class="term" tabindex="0" data-tip="stdio: 標準入出力を使った同一マシン内プロセス間通信。ローカルのMCPサーバーに最適。">stdio</span> と <span class="term" tabindex="0" data-tip="HTTP(Streamable HTTP): リモートのMCPサーバーに対するHTTPベースの通信方式。2026年1月時点ではStreamable HTTP(+SSE)が主流。">HTTP</span>(Streamable HTTP + SSE)です。どちらを選ぶかで設定形が変わります。</p>
 
   <table>
     <thead>

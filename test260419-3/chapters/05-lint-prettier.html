@@ -86,7 +86,7 @@
 
   <div class="info-box">
     <span class="label">この章のゴール</span>
-    <p>Claude Code が書き出すコードを、毎回手で整形し直す作業から解放されます。本章では <strong>PreToolUse</strong>(Write/Edit 直前)と <strong>PostToolUse</strong>(Write/Edit 直後)の使い分け、Prettier / ESLint / Black / gofmt / rubocop の <strong>言語別セットアップ</strong>、そして「Claude が書いた直後に勝手に再フォーマットして差分が騒がしくなる」問題の<strong>競合回避</strong>を扱います。ハンズオンで TypeScript プロジェクトに Prettier hook を実装し、動作確認まで一気に到達します。<span class="term" data-tip="2026年1月時点の記述。Claude Code の hook 仕様は今後変更の可能性あり。最新は公式ドキュメント参照">本章の記述は2026年1月時点</span>。</p>
+    <p>Claude Code が書き出すコードを、毎回手で整形し直す作業から解放されます。本章では <strong>PreToolUse</strong>(Write/Edit 直前)と <strong>PostToolUse</strong>(Write/Edit 直後)の使い分け、Prettier / ESLint / Black / gofmt / rubocop の <strong>言語別セットアップ</strong>、そして「Claude が書いた直後に勝手に再フォーマットして差分が騒がしくなる」問題の<strong>競合回避</strong>を扱います。ハンズオンで TypeScript プロジェクトに Prettier hook を実装し、動作確認まで一気に到達します。<span class="term" tabindex="0" data-tip="2026年1月時点の記述。Claude Code の hook 仕様は今後変更の可能性あり。最新は公式ドキュメント参照">本章の記述は2026年1月時点</span>。</p>
   </div>
 
   <!-- ===== Section 1: Pre vs Post の使い分け ===== -->
@@ -117,7 +117,7 @@ sequenceDiagram
     <div class="diagram-caption">PreToolUse は「書く直前の介入」、PostToolUse は「書いた直後の後処理」。どちらを選ぶかで設計が変わる。</div>
   </div>
 
-  <p>用語を整理します。<span class="term" data-tip="PreToolUse: Claude がツール(Write/Edit/Bash など)を実行しようとした直前に発火。tool_input をコマンドで上書きしたり、exit 2 で実行をブロックできる。2026年1月時点">PreToolUse</span>はツール実行の<em>直前</em>に割り込みます。<span class="term" data-tip="PostToolUse: Claude がツールを実行完了した直後に発火。ファイルが既に書き込まれた状態で呼ばれる。2026年1月時点">PostToolUse</span>はツール実行の<em>直後</em>に呼ばれます。</p>
+  <p>用語を整理します。<span class="term" tabindex="0" data-tip="PreToolUse: Claude がツール(Write/Edit/Bash など)を実行しようとした直前に発火。tool_input をコマンドで上書きしたり、exit 2 で実行をブロックできる。2026年1月時点">PreToolUse</span>はツール実行の<em>直前</em>に割り込みます。<span class="term" tabindex="0" data-tip="PostToolUse: Claude がツールを実行完了した直後に発火。ファイルが既に書き込まれた状態で呼ばれる。2026年1月時点">PostToolUse</span>はツール実行の<em>直後</em>に呼ばれます。</p>
 
   <table>
     <thead>
@@ -155,7 +155,7 @@ sequenceDiagram
   <details class="more-box">
     <summary>もっと詳しく: なぜ PostToolUse フォーマッタは差分が騒がしくなるのか</summary>
     <div class="more-body">
-      <p>Claude は自分のコンテキストに残っているコードを基準に次の Edit を計画します。PostToolUse でファイルだけ書き換えると、Claude の<span class="term" data-tip="LLM が自分の出力と実ファイル状態がズレていると認識する状態。後続の Edit で『どこを変えるか』の指示が曖昧になる原因">内部モデル</span>とディスクが乖離し、次の Edit で「どこを変えるか」指示が通りにくくなります。例えば Claude は <code>const  x =1;</code>(空白崩れ) のつもりで次を指示するが、実際のファイルは <code>const x = 1;</code> になっており、Edit の old_string が見つからず失敗する、といった事故が起きます。PreToolUse で整形すれば Claude もキレイな形で認識するため、この食い違いが起きません。</p>
+      <p>Claude は自分のコンテキストに残っているコードを基準に次の Edit を計画します。PostToolUse でファイルだけ書き換えると、Claude の<span class="term" tabindex="0" data-tip="LLM が自分の出力と実ファイル状態がズレていると認識する状態。後続の Edit で『どこを変えるか』の指示が曖昧になる原因">内部モデル</span>とディスクが乖離し、次の Edit で「どこを変えるか」指示が通りにくくなります。例えば Claude は <code>const  x =1;</code>(空白崩れ) のつもりで次を指示するが、実際のファイルは <code>const x = 1;</code> になっており、Edit の old_string が見つからず失敗する、といった事故が起きます。PreToolUse で整形すれば Claude もキレイな形で認識するため、この食い違いが起きません。</p>
     </div>
   </details>
 
@@ -206,7 +206,7 @@ sequenceDiagram
   <ul class="icon-list">
     <li>
       <i data-lucide="zap" width="20" height="20"></i>
-      <div><strong>冪等かつ高速 (Prettier / Black / gofmt)</strong> — PreToolUse で書き込み前に整形。ファイル全体を渡しても<span class="term" data-tip="同じ入力に対して何度実行しても同じ結果を返す性質。フォーマッタは基本これを満たすが、ESLint の一部ルールは違反を新たに検出することがある">冪等性</span>が保証されている。</div>
+      <div><strong>冪等かつ高速 (Prettier / Black / gofmt)</strong> — PreToolUse で書き込み前に整形。ファイル全体を渡しても<span class="term" tabindex="0" data-tip="同じ入力に対して何度実行しても同じ結果を返す性質。フォーマッタは基本これを満たすが、ESLint の一部ルールは違反を新たに検出することがある">冪等性</span>が保証されている。</div>
     </li>
     <li>
       <i data-lucide="shield-check" width="20" height="20"></i>
@@ -220,7 +220,7 @@ sequenceDiagram
 
   <div class="info-box warning-box">
     <span class="label">セキュリティ警告</span>
-    <p>Hook は<strong>任意のシェルコマンドを実行</strong>します。チーム共有の <code>.claude/settings.json</code> に他人が悪意あるコマンドを追加すると、あなたの環境で勝手に実行されます。<code>settings.json</code> を git から pull したら必ず diff を目視レビューしてから <code>claude</code> を起動してください。<span class="term" data-tip="2026年1月時点では settings.local.json の優先順位が最も高い。project settings との差分管理に注意">settings の優先順位は settings.local.json &gt; settings.json</span>。</p>
+    <p>Hook は<strong>任意のシェルコマンドを実行</strong>します。チーム共有の <code>.claude/settings.json</code> に他人が悪意あるコマンドを追加すると、あなたの環境で勝手に実行されます。<code>settings.json</code> を git から pull したら必ず diff を目視レビューしてから <code>claude</code> を起動してください。<span class="term" tabindex="0" data-tip="2026年1月時点では settings.local.json の優先順位が最も高い。project settings との差分管理に注意">settings の優先順位は settings.local.json &gt; settings.json</span>。</p>
   </div>
 
   <!-- ===== Section 3: 言語別セットアップ ===== -->
@@ -335,7 +335,7 @@ sys.exit(0)</code></pre>
   }
 }</code></pre>
 
-  <p>Go は <span class="term" data-tip="Go 標準の整形ツール。スタイル論争が存在しないほど言語仕様レベルで規約化されている。2026年1月時点で gofmt が事実上唯一の選択肢">gofmt</span> がスタイル論争を終わらせているため、PostToolUse で安全に書き換えできます。<code>goimports</code> を先に通すと import 整理も済みます。</p>
+  <p>Go は <span class="term" tabindex="0" data-tip="Go 標準の整形ツール。スタイル論争が存在しないほど言語仕様レベルで規約化されている。2026年1月時点で gofmt が事実上唯一の選択肢">gofmt</span> がスタイル論争を終わらせているため、PostToolUse で安全に書き換えできます。<code>goimports</code> を先に通すと import 整理も済みます。</p>
 
   <h3>Ruby: rubocop</h3>
 
@@ -372,7 +372,7 @@ exit 1</code></pre>
   <details class="more-box">
     <summary>もっと詳しく: exit code の設計ポリシー</summary>
     <div class="more-body">
-      <p>Claude Code の hook は<strong>exit code に意味がある</strong>。0=成功で素通し、1=警告(stderr が Claude に表示される)、2=ブロック(後続のツール実行を止める)。整形系は「失敗しても人間が手で直せる」ので 1 推奨。対して「危険コマンドのブロック」や「秘密鍵検出」のような security hook は 2 で強制停止します。フォーマッタを 2 にすると、些細な構文エラーで Claude が先に進めなくなり UX が崩壊するので注意。<span class="term" data-tip="2026年1月時点の仕様。exit code 2 は stderr を Claude にフィードバックしつつ実行をブロックする設計">exit code の規約</span>。</p>
+      <p>Claude Code の hook は<strong>exit code に意味がある</strong>。0=成功で素通し、1=警告(stderr が Claude に表示される)、2=ブロック(後続のツール実行を止める)。整形系は「失敗しても人間が手で直せる」ので 1 推奨。対して「危険コマンドのブロック」や「秘密鍵検出」のような security hook は 2 で強制停止します。フォーマッタを 2 にすると、些細な構文エラーで Claude が先に進めなくなり UX が崩壊するので注意。<span class="term" tabindex="0" data-tip="2026年1月時点の仕様。exit code 2 は stderr を Claude にフィードバックしつつ実行をブロックする設計">exit code の規約</span>。</p>
     </div>
   </details>
 
@@ -501,7 +501,7 @@ claude
   <!-- ===== Section 6: 効果測定 ===== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 数字で見る効果</h2>
 
-  <p>筆者の社内プロジェクトで1週間計測した<span class="term" data-tip="2026年1月時点、TypeScript プロジェクト 3本・約200 Edit 操作を対象に計測。読者の環境では数値が変わる">簡易ベンチ</span>の結果が以下です。</p>
+  <p>筆者の社内プロジェクトで1週間計測した<span class="term" tabindex="0" data-tip="2026年1月時点、TypeScript プロジェクト 3本・約200 Edit 操作を対象に計測。読者の環境では数値が変わる">簡易ベンチ</span>の結果が以下です。</p>
 
   <div class="diagram-box">
     <div class="diagram-title">hook 導入前後の手動整形回数(週あたり)</div>
@@ -634,7 +634,7 @@ exit 0</code></pre>
 
   <div class="info-box">
     <span class="label">2026年1月時点の注記</span>
-    <p>本章の hook 挙動(PreToolUse / PostToolUse のフィールド名、stdin JSON 構造、exit code 規約)は<strong>2026年1月時点</strong>のものです。Claude Code は活発に更新されており、<code>tool_input.file_path</code> のキー名や matcher の正規表現仕様は今後変わる可能性があります。最新は公式ドキュメント(下記リソース)で確認してください。<span class="term" data-tip="2026年1月時点では Write / Edit / MultiEdit が主な対象ツール。NotebookEdit など他ツールが増えた場合は matcher に追加">対象ツール</span>。</p>
+    <p>本章の hook 挙動(PreToolUse / PostToolUse のフィールド名、stdin JSON 構造、exit code 規約)は<strong>2026年1月時点</strong>のものです。Claude Code は活発に更新されており、<code>tool_input.file_path</code> のキー名や matcher の正規表現仕様は今後変わる可能性があります。最新は公式ドキュメント(下記リソース)で確認してください。<span class="term" tabindex="0" data-tip="2026年1月時点では Write / Edit / MultiEdit が主な対象ツール。NotebookEdit など他ツールが増えた場合は matcher に追加">対象ツール</span>。</p>
   </div>
 
   <div class="resources-section">

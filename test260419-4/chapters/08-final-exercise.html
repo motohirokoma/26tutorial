@@ -91,7 +91,7 @@
 
   <p>ここまで Ch01-Ch07 で、<strong>Scheduled Tasks</strong>(定時のcron実行)と <strong>/loop</strong>(dynamic / interval の自走モード)、放置運用プロンプト、そして CI監視・PRサマリ・長時間タスク自走 の3つの実戦パターンを学んできました。知識を<strong>あなたの業務に3つ埋め込む</strong>のがこの最終章の目的です。</p>
 
-  <p>目標は<strong>「2週間のうちに3つの定期タスクを自分の業務で動かし、コスト・効果・通知負荷を数字で把握できている」</strong>状態。放置運用は<strong>コストに直結する</strong>のでザル設計は禁物、でも怖がって小さくしすぎると効果ゼロ。絶妙なバランスを<span class="term" data-tip="自分の業務で実運用し、データを見ながら磨き上げる。教科書では学べない最後の1ピース">実運用</span>で掴むのが本演習です。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span></p>
+  <p>目標は<strong>「2週間のうちに3つの定期タスクを自分の業務で動かし、コスト・効果・通知負荷を数字で把握できている」</strong>状態。放置運用は<strong>コストに直結する</strong>のでザル設計は禁物、でも怖がって小さくしすぎると効果ゼロ。絶妙なバランスを<span class="term" tabindex="0" data-tip="自分の業務で実運用し、データを見ながら磨き上げる。教科書では学べない最後の1ピース">実運用</span>で掴むのが本演習です。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span></p>
 
   <div class="info-box">
     <span class="label">Tips</span>
@@ -173,12 +173,12 @@
     <tbody>
       <tr><td>対象者</td><td>Claude Code を日常業務で1週間以上使っている人</td></tr>
       <tr><td>期間</td><td>設計1日 + 運用2週間(実運用で検証)</td></tr>
-      <tr><td>個数</td><td><span class="term" data-tip="最初は多すぎないことが肝。3つが設計・測定・改善を同時に回せる上限。通知疲れも3つまでなら許容できる。">3つ</span>(欲張らない)</td></tr>
+      <tr><td>個数</td><td><span class="term" tabindex="0" data-tip="最初は多すぎないことが肝。3つが設計・測定・改善を同時に回せる上限。通知疲れも3つまでなら許容できる。">3つ</span>(欲張らない)</td></tr>
       <tr><td>選定基準</td><td>週1回以上発生する定型業務 / 無人実行で完結 / 時間か認知負荷が痛い</td></tr>
-      <tr><td>実行方式</td><td><span class="term" data-tip="Ch03 で学んだ CronCreate ツール / /schedule スキル経由で cron式を登録する定時実行。例: 0 9 * * 1-5">Scheduled Tasks</span> / <span class="term" data-tip="Ch02 で学んだ ScheduleWakeup ベースの自走モード。dynamic(Claude自身が次ターン予約)と interval(一定間隔)の2種。">/loop</span>(dynamic / interval)から選択</td></tr>
+      <tr><td>実行方式</td><td><span class="term" tabindex="0" data-tip="Ch03 で学んだ CronCreate ツール / /schedule スキル経由で cron式を登録する定時実行。例: 0 9 * * 1-5">Scheduled Tasks</span> / <span class="term" tabindex="0" data-tip="Ch02 で学んだ ScheduleWakeup ベースの自走モード。dynamic(Claude自身が次ターン予約)と interval(一定間隔)の2種。">/loop</span>(dynamic / interval)から選択</td></tr>
       <tr><td>通知</td><td>Slack / push / メール のいずれか(二重通知回避の工夫必須)</td></tr>
       <tr><td>測定指標</td><td>実行回数 / 成功率 / 月額コスト見積 / 満足度(5段階)</td></tr>
-      <tr><td>検証環境</td><td>Claude Code CLI (<span class="term" data-tip="2026年1月時点の記述。cron式仕様・通知オプション・コスト単価は公式で最新を確認">2026年1月時点</span>)</td></tr>
+      <tr><td>検証環境</td><td>Claude Code CLI (<span class="term" tabindex="0" data-tip="2026年1月時点の記述。cron式仕様・通知オプション・コスト単価は公式で最新を確認">2026年1月時点</span>)</td></tr>
     </tbody>
   </table>
 
@@ -322,14 +322,14 @@
     <div class="more-body">
       <p>放置運用で最もユーザを離脱させるのは<strong>通知疲れ</strong>。3つの原則で設計:</p>
       <ol>
-        <li><strong>状態変化のみ通知</strong> — 「ビルド失敗したまま」なら2回目以降は静かに。前回ステータスを<span class="term" data-tip="実行状態を跨いで保持するファイルや小さなDB。~/.claude-state/ch8-ci-last.txt のように1行テキストでも十分">ステートファイル</span>に保存して比較</li>
+        <li><strong>状態変化のみ通知</strong> — 「ビルド失敗したまま」なら2回目以降は静かに。前回ステータスを<span class="term" tabindex="0" data-tip="実行状態を跨いで保持するファイルや小さなDB。~/.claude-state/ch8-ci-last.txt のように1行テキストでも十分">ステートファイル</span>に保存して比較</li>
         <li><strong>チャンネル分離</strong> — 緊急(CI失敗=即Slack DM) / 日次サマリ(PRレビュー=#pr-daily) / 週次(メール) で音量を分ける</li>
         <li><strong>ミュート時間の設定</strong> — 深夜・週末は保留し翌営業日にまとめる。cron側で時間枠制御</li>
       </ol>
       <p>通知経路は<strong>1タスクに1経路</strong>が鉄則。Slack・メール・pushを全部繋ぐと冗長で、どれも読まれなくなります。</p>
       <div class="info-box">
         <span class="label">Warning</span>
-        <p>Slack Webhook は秘匿情報。環境変数 `SLACK_WEBHOOK_URL` 経由で渡し、プロンプトに直書きしない。リポジトリにコミットすると即座に <span class="term" data-tip="GitHubのシークレットスキャンで自動検出され、Slackが自動で無効化する仕組み。コミット履歴に残った時点でリボーク相当の手間が発生する">トークン失効</span>が走ります(2026年1月時点の GitHub Push Protection 仕様)。</p>
+        <p>Slack Webhook は秘匿情報。環境変数 `SLACK_WEBHOOK_URL` 経由で渡し、プロンプトに直書きしない。リポジトリにコミットすると即座に <span class="term" tabindex="0" data-tip="GitHubのシークレットスキャンで自動検出され、Slackが自動で無効化する仕組み。コミット履歴に残った時点でリボーク相当の手間が発生する">トークン失効</span>が走ります(2026年1月時点の GitHub Push Protection 仕様)。</p>
       </div>
     </div>
   </details>

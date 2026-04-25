@@ -86,7 +86,7 @@
 
   <div class="info-box">
     <span class="label">この章のゴール</span>
-    <p>Claude Codeで「毎朝9時にPRサマリをSlackに送る」「1時間後に一度だけバッチを回す」といった<strong>定時・定期実行のタスク</strong>を、自分の手で1本作れるようになります。鍵になるのは <code>CronCreate</code> ツール(<code>/schedule</code> スキル経由)と <span class="term" data-tip="cron式：分 時 日 月 曜 の5フィールドでスケジュールを表現する標準フォーマット">cron式</span>の理解、それに<strong>リモート実行スコープ</strong>と通知経路です。最後は実際に1時間後の1回実行トリガーを作り、出力を <code>TaskOutput</code> で取り出すまで通しでやります。<span class="term" data-tip="2026年1月時点の記述。UIやツール名称は将来変更される可能性あり">本章の記述は2026年1月時点の情報</span>で書かれています。</p>
+    <p>Claude Codeで「毎朝9時にPRサマリをSlackに送る」「1時間後に一度だけバッチを回す」といった<strong>定時・定期実行のタスク</strong>を、自分の手で1本作れるようになります。鍵になるのは <code>CronCreate</code> ツール(<code>/schedule</code> スキル経由)と <span class="term" tabindex="0" data-tip="cron式：分 時 日 月 曜 の5フィールドでスケジュールを表現する標準フォーマット">cron式</span>の理解、それに<strong>リモート実行スコープ</strong>と通知経路です。最後は実際に1時間後の1回実行トリガーを作り、出力を <code>TaskOutput</code> で取り出すまで通しでやります。<span class="term" tabindex="0" data-tip="2026年1月時点の記述。UIやツール名称は将来変更される可能性あり">本章の記述は2026年1月時点の情報</span>で書かれています。</p>
   </div>
 
   <div class="info-box">
@@ -97,7 +97,7 @@
   <!-- ===== Section 1: CronCreate と /schedule の全体像 ===== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> CronCreate と /schedule スキルの全体像</h2>
 
-  <p>Claude Codeで定時実行をやるには<strong>2つの入口</strong>があります。どちらも最終的には同じ「<span class="term" data-tip="トリガー：スケジュールに従って自動起動されるリモートエージェントの設定単位。1つ1つが個別のcron entryになる">トリガー</span>(リモートエージェント設定)」を作ります。</p>
+  <p>Claude Codeで定時実行をやるには<strong>2つの入口</strong>があります。どちらも最終的には同じ「<span class="term" tabindex="0" data-tip="トリガー：スケジュールに従って自動起動されるリモートエージェントの設定単位。1つ1つが個別のcron entryになる">トリガー</span>(リモートエージェント設定)」を作ります。</p>
 
   <div class="diagram-box">
     <div class="diagram-title">CronCreate と /schedule の関係図</div>
@@ -129,7 +129,7 @@
   <ul class="icon-list">
     <li>
       <i data-lucide="message-square" width="20" height="20"></i>
-      <div><strong>/schedule スキル</strong> — <span class="term" data-tip="/schedule：Claude Codeに同梱されるスキルで、自然文からトリガー作成・一覧・削除を仲介する">トリガー操作の対話UI</span>。「毎朝9時にPRサマリ送って」のような自然文で依頼できる。内部的には CronCreate/CronList/CronDelete を呼ぶ。</div>
+      <div><strong>/schedule スキル</strong> — <span class="term" tabindex="0" data-tip="/schedule：Claude Codeに同梱されるスキルで、自然文からトリガー作成・一覧・削除を仲介する">トリガー操作の対話UI</span>。「毎朝9時にPRサマリ送って」のような自然文で依頼できる。内部的には CronCreate/CronList/CronDelete を呼ぶ。</div>
     </li>
     <li>
       <i data-lucide="terminal" width="20" height="20"></i>
@@ -137,7 +137,7 @@
     </li>
     <li>
       <i data-lucide="list" width="20" height="20"></i>
-      <div><strong>CronList / CronDelete</strong> — 登録済みトリガーの一覧と削除。<span class="term" data-tip="trigger_id：各トリガーを一意に識別する文字列ID。CronListで確認しCronDeleteで指定する">trigger_id</span>で指定する。</div>
+      <div><strong>CronList / CronDelete</strong> — 登録済みトリガーの一覧と削除。<span class="term" tabindex="0" data-tip="trigger_id：各トリガーを一意に識別する文字列ID。CronListで確認しCronDeleteで指定する">trigger_id</span>で指定する。</div>
     </li>
     <li>
       <i data-lucide="play-circle" width="20" height="20"></i>
@@ -224,14 +224,14 @@
 
   <div class="info-box">
     <span class="label">タイムゾーン注意</span>
-    <p>cron式の<strong>時刻はトリガー側のタイムゾーンで解釈</strong>されます。<span class="term" data-tip="リモート実行環境はUTC基準のことが多い。日本時間で書きたい場合はトリガー作成時にtimezone=Asia/Tokyoを明示する">2026年1月時点のリモート実行はデフォルトUTC</span>のことが多いので、「朝9時」は<code>timezone="Asia/Tokyo"</code> 指定を忘れずに。でないとJSTの18時に動いて怒られます。</p>
+    <p>cron式の<strong>時刻はトリガー側のタイムゾーンで解釈</strong>されます。<span class="term" tabindex="0" data-tip="リモート実行環境はUTC基準のことが多い。日本時間で書きたい場合はトリガー作成時にtimezone=Asia/Tokyoを明示する">2026年1月時点のリモート実行はデフォルトUTC</span>のことが多いので、「朝9時」は<code>timezone="Asia/Tokyo"</code> 指定を忘れずに。でないとJSTの18時に動いて怒られます。</p>
   </div>
 
   <details class="more-box">
     <summary>もっと詳しく: crontab.guru で自分の式を検証するクセをつける</summary>
     <div class="more-body">
       <p><a href="https://crontab.guru/" target="_blank" rel="noopener">crontab.guru</a> に式を貼ると「この式は次に何時に動く」を<strong>自然文で表示</strong>してくれます。特に <code>*/7</code> のような割り切れない間隔、月末指定、曜日の境界ケースは人力検算だとハマりがち。本番トリガーを作る前に一度貼って確かめるだけで、深夜3時にSlackが鳴る事故が激減します。</p>
-      <p>Claude Codeのリモート実行では<span class="term" data-tip="標準cronより拡張が少なめ。@reboot など特殊指定は通常使えない">標準5フィールド構文に限定</span>されることが多いです。<code>@hourly</code> 等のエイリアスが通らない実装もあるので、<strong>常に5フィールドで書くクセ</strong>をつけておくと安全です。</p>
+      <p>Claude Codeのリモート実行では<span class="term" tabindex="0" data-tip="標準cronより拡張が少なめ。@reboot など特殊指定は通常使えない">標準5フィールド構文に限定</span>されることが多いです。<code>@hourly</code> 等のエイリアスが通らない実装もあるので、<strong>常に5フィールドで書くクセ</strong>をつけておくと安全です。</p>
     </div>
   </details>
 
@@ -273,7 +273,7 @@
   <ul class="icon-list">
     <li>
       <i data-lucide="slack" width="20" height="20"></i>
-      <div><strong>Slack (Incoming Webhook)</strong> — <span class="term" data-tip="Incoming Webhook：Slackが払い出すURLにPOSTするとチャネルにメッセージが流れる仕組み">Webhook URL</span> を1本もらえば完了。チームで共有・検索しやすい。CIアラート、PRサマリの定番。</div>
+      <div><strong>Slack (Incoming Webhook)</strong> — <span class="term" tabindex="0" data-tip="Incoming Webhook：Slackが払い出すURLにPOSTするとチャネルにメッセージが流れる仕組み">Webhook URL</span> を1本もらえば完了。チームで共有・検索しやすい。CIアラート、PRサマリの定番。</div>
     </li>
     <li>
       <i data-lucide="bell" width="20" height="20"></i>
@@ -293,7 +293,7 @@
   <details class="more-box">
     <summary>もっと詳しく: 二重通知を避けるチェックポイント</summary>
     <div class="more-body">
-      <p>CI失敗を5分ごとに見続けるトリガーで<strong>同じ失敗を12回通知する</strong>のは典型的な事故です。回避策は(1) 最終通知した<span class="term" data-tip="SHA：Gitコミットの識別ハッシュ。7〜40文字の16進数。ビルド対象を一意に指す">SHA</span>をファイルに保存し次回起動時に比較、(2) 結果が前回と同じなら通知スキップ、(3) 復旧したときだけもう一度通知——の3点セット。プロンプトに「前回通知した commit SHA を `last_notified.txt` に保存し、同じなら送信しない」と明記するだけで実装できます。</p>
+      <p>CI失敗を5分ごとに見続けるトリガーで<strong>同じ失敗を12回通知する</strong>のは典型的な事故です。回避策は(1) 最終通知した<span class="term" tabindex="0" data-tip="SHA：Gitコミットの識別ハッシュ。7〜40文字の16進数。ビルド対象を一意に指す">SHA</span>をファイルに保存し次回起動時に比較、(2) 結果が前回と同じなら通知スキップ、(3) 復旧したときだけもう一度通知——の3点セット。プロンプトに「前回通知した commit SHA を `last_notified.txt` に保存し、同じなら送信しない」と明記するだけで実装できます。</p>
     </div>
   </details>
 
@@ -354,7 +354,7 @@ TaskOutput(trigger_id=t.id)
   <ul class="icon-list">
     <li>
       <i data-lucide="scroll-text" width="20" height="20"></i>
-      <div><strong>何を返すか</strong> — <span class="term" data-tip="TaskOutputが返す3要素：(1)最終応答テキスト(2)ツール呼び出し履歴(3)エラーがあれば例外情報">最終応答・ツール履歴・エラー</span>をまとめたログオブジェクト。</div>
+      <div><strong>何を返すか</strong> — <span class="term" tabindex="0" data-tip="TaskOutputが返す3要素：(1)最終応答テキスト(2)ツール呼び出し履歴(3)エラーがあれば例外情報">最終応答・ツール履歴・エラー</span>をまとめたログオブジェクト。</div>
     </li>
     <li>
       <i data-lucide="clock" width="20" height="20"></i>
@@ -465,7 +465,7 @@ sequenceDiagram
     </li>
   </ul>
 
-  <p>ここまでできれば、あとは<strong>プロンプトの中身を差し替えるだけ</strong>で「CI監視」「PRサマリ」「週次レポート」すべて同じ型で作れます。Ch04ではこの型を<span class="term" data-tip="無人前提で走らせても結果が再現可能になるプロンプト。文脈・出力形式・異常時動作を明示する">放置運用プロンプト</span>に進化させるコツを学びます。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span></p>
+  <p>ここまでできれば、あとは<strong>プロンプトの中身を差し替えるだけ</strong>で「CI監視」「PRサマリ」「週次レポート」すべて同じ型で作れます。Ch04ではこの型を<span class="term" tabindex="0" data-tip="無人前提で走らせても結果が再現可能になるプロンプト。文脈・出力形式・異常時動作を明示する">放置運用プロンプト</span>に進化させるコツを学びます。<span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span></p>
 
   <details class="more-box">
     <summary>もっと詳しく: cron式の「1回きり」を安全に運用する2パターン</summary>

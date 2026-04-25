@@ -86,13 +86,13 @@
 
   <div class="info-box">
     <span class="label">本章について</span>
-    <p>本章の記述は<span class="term" data-tip="2026年1月時点の記述。最新は公式ドキュメント参照">2026年1月時点</span>の情報です。大きな<span class="term" data-tip="Pull Request。GitHub等でコード変更をレビュー・取り込みするための提案単位">PR</span>を1人で読むのは苦痛ですが、Subagent 5体に観点別で並列レビューさせると、30分の作業が5分で終わります。自分のコードを題材に手を動かしながら進めましょう。</p>
+    <p>本章の記述は<span class="term" tabindex="0" data-tip="2026年1月時点の記述。最新は公式ドキュメント参照">2026年1月時点</span>の情報です。大きな<span class="term" tabindex="0" data-tip="Pull Request。GitHub等でコード変更をレビュー・取り込みするための提案単位">PR</span>を1人で読むのは苦痛ですが、Subagent 5体に観点別で並列レビューさせると、30分の作業が5分で終わります。自分のコードを題材に手を動かしながら進めましょう。</p>
   </div>
 
   <!-- ===================== §1 なぜ分割並列化か ===================== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>1. なぜ分割並列化か</h2>
 
-  <p>大きな<span class="term" data-tip="Pull Request: 変更を本体に取り込むための提案。500行超えると人間のレビュー品質が急落する">PR</span>を1体のAgentに丸投げすると、<strong>注意が分散して全観点が薄くなります</strong>。「セキュリティも見て、パフォーマンスも見て、可読性も見て…」と詰め込むと、<span class="term" data-tip="Subagentが与えられたプロンプトを処理するための有限な注意容量。多タスク指示は品質低下を招く">認知負荷</span>が上がり、各観点が中途半端になります。観点別に分けて5並列で走らせると、各Subagentは1観点に集中でき、質が上がります。</p>
+  <p>大きな<span class="term" tabindex="0" data-tip="Pull Request: 変更を本体に取り込むための提案。500行超えると人間のレビュー品質が急落する">PR</span>を1体のAgentに丸投げすると、<strong>注意が分散して全観点が薄くなります</strong>。「セキュリティも見て、パフォーマンスも見て、可読性も見て…」と詰め込むと、<span class="term" tabindex="0" data-tip="Subagentが与えられたプロンプトを処理するための有限な注意容量。多タスク指示は品質低下を招く">認知負荷</span>が上がり、各観点が中途半端になります。観点別に分けて5並列で走らせると、各Subagentは1観点に集中でき、質が上がります。</p>
 
   <div class="diagram-box">
     <div class="diagram-title">観点分割の構造 — 1体多観点 vs 5体1観点</div>
@@ -136,14 +136,14 @@
     <div class="diagram-caption">左: 1体で5観点 → 薄い。右: 5体が1観点ずつ並列 → 深い + 最後にメインAgentがmerge。</div>
   </div>
 
-  <p>観点分割が効くのは「<strong>観点同士が独立</strong>」だからです。セキュリティの指摘はパフォーマンスの指摘と干渉しません。<span class="term" data-tip="タスク間に依存関係がない状態。A→Bの順で実行する必要がないので並列化できる">独立性</span>があるタスクは並列化の最有力候補です。</p>
+  <p>観点分割が効くのは「<strong>観点同士が独立</strong>」だからです。セキュリティの指摘はパフォーマンスの指摘と干渉しません。<span class="term" tabindex="0" data-tip="タスク間に依存関係がない状態。A→Bの順で実行する必要がないので並列化できる">独立性</span>があるタスクは並列化の最有力候補です。</p>
 
   <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
 
   <details class="more-box">
     <summary>もっと詳しく: なぜ1体で5観点だと品質が落ちるのか</summary>
     <div class="more-body">
-      <p>Subagentも人間と同じく、プロンプトに書かれた要件を順序づけて処理します。「セキュリティ、パフォーマンス、可読性、テスト、型」の5観点を並べると、前半の観点に重点が置かれ、後半は流されがちです。さらに、1体のAgentが持つ<span class="term" data-tip="Agentが1回の実行で処理できる入出力の最大量。トークン上限と実質同義">コンテキスト</span>は有限で、大PRを全観点で精査するとトークン圧迫で末端の指摘が雑になります。5体に分けると各体がフルコンテキストを1観点に使えます。</p>
+      <p>Subagentも人間と同じく、プロンプトに書かれた要件を順序づけて処理します。「セキュリティ、パフォーマンス、可読性、テスト、型」の5観点を並べると、前半の観点に重点が置かれ、後半は流されがちです。さらに、1体のAgentが持つ<span class="term" tabindex="0" data-tip="Agentが1回の実行で処理できる入出力の最大量。トークン上限と実質同義">コンテキスト</span>は有限で、大PRを全観点で精査するとトークン圧迫で末端の指摘が雑になります。5体に分けると各体がフルコンテキストを1観点に使えます。</p>
     </div>
   </details>
 
@@ -175,7 +175,7 @@
     </div>
   </div>
 
-  <p>迷ったら<strong>観点分割</strong>を選びましょう。観点別の基準が揃うので、統合レポートが読みやすくなります。ファイル分割は「<span class="term" data-tip="Monorepo: 複数プロジェクトを1リポジトリで管理する構造。ファイルごとに独立した関心がある">monorepo</span>の独立パッケージを横断するPR」のような特殊ケースで使います。</p>
+  <p>迷ったら<strong>観点分割</strong>を選びましょう。観点別の基準が揃うので、統合レポートが読みやすくなります。ファイル分割は「<span class="term" tabindex="0" data-tip="Monorepo: 複数プロジェクトを1リポジトリで管理する構造。ファイルごとに独立した関心がある">monorepo</span>の独立パッケージを横断するPR」のような特殊ケースで使います。</p>
 
   <table>
     <thead>
@@ -192,7 +192,7 @@
   <!-- ===================== §3 5観点の実プロンプト ===================== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>3. 5観点の実プロンプト</h2>
 
-  <p>観点ごとのSubagentプロンプトは「<strong>共通構造 + 観点固有の差分</strong>」で作ります。共通部分は「PRの diff を読む、指摘は重要度別に、50語以内で報告」。差分は各観点の<span class="term" data-tip="レビュー時に何を見るべきかの項目集。セキュリティならSQL injection、XSS等">チェックリスト</span>です。以下の5本を全部使えるようにコピペ可能な形で掲載します。</p>
+  <p>観点ごとのSubagentプロンプトは「<strong>共通構造 + 観点固有の差分</strong>」で作ります。共通部分は「PRの diff を読む、指摘は重要度別に、50語以内で報告」。差分は各観点の<span class="term" tabindex="0" data-tip="レビュー時に何を見るべきかの項目集。セキュリティならSQL injection、XSS等">チェックリスト</span>です。以下の5本を全部使えるようにコピペ可能な形で掲載します。</p>
 
   <h3>共通テンプレート</h3>
 
@@ -265,7 +265,7 @@
 - ジェネリクスで表現できる重複型定義</code></pre>
   </div>
 
-  <p>この5本を<span class="term" data-tip="1つのメッセージ内で複数のAgent toolを同時に呼ぶパターン。Claude Codeでは同一assistantターン内の複数tool_useが並列実行される">1メッセージ内で同時起動</span>すれば、5体が並列でレビューします。4章で学んだ並列実行の知識がそのまま活きます。</p>
+  <p>この5本を<span class="term" tabindex="0" data-tip="1つのメッセージ内で複数のAgent toolを同時に呼ぶパターン。Claude Codeでは同一assistantターン内の複数tool_useが並列実行される">1メッセージ内で同時起動</span>すれば、5体が並列でレビューします。4章で学んだ並列実行の知識がそのまま活きます。</p>
 
   <div class="diagram-box">
     <div class="diagram-title">観点ごとのプロンプト差分</div>
@@ -286,14 +286,14 @@
   <details class="more-box">
     <summary>もっと詳しく: 観点を増やしたい場合(アクセシビリティ・i18n・ログ)</summary>
     <div class="more-body">
-      <p>Webフロントなら<strong>アクセシビリティ</strong>(aria属性、キーボード操作、コントラスト)、国際化が必要なら<strong>i18n</strong>(ハードコード文字列、日付フォーマット)、運用系なら<strong>ログ・可観測性</strong>(構造化ログ、メトリクス、トレースID)を観点として足せます。ただし並列は5観点程度が<span class="term" data-tip="コストと品質のバランスが取れる並列数の目安。5を超えるとmerge時の整理が重くなる">体感上限</span>。7観点以上になるならフェーズ分割(P0観点→P1観点)を検討。</p>
+      <p>Webフロントなら<strong>アクセシビリティ</strong>(aria属性、キーボード操作、コントラスト)、国際化が必要なら<strong>i18n</strong>(ハードコード文字列、日付フォーマット)、運用系なら<strong>ログ・可観測性</strong>(構造化ログ、メトリクス、トレースID)を観点として足せます。ただし並列は5観点程度が<span class="term" tabindex="0" data-tip="コストと品質のバランスが取れる並列数の目安。5を超えるとmerge時の整理が重くなる">体感上限</span>。7観点以上になるならフェーズ分割(P0観点→P1観点)を検討。</p>
     </div>
   </details>
 
   <!-- ===================== §4 結果集約フロー ===================== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>4. 結果集約フロー</h2>
 
-  <p>5体の指摘が返ってきたら、メインAgentが<strong>merge + 優先順位付け</strong>します。単純に並べるだけではレビュイが消化不良を起こすので、<span class="term" data-tip="Critical > Major > Minor の順に指摘を並べ替えて、無視可能なものは省く作業">severity別に並べ替え</span>してから渡します。</p>
+  <p>5体の指摘が返ってきたら、メインAgentが<strong>merge + 優先順位付け</strong>します。単純に並べるだけではレビュイが消化不良を起こすので、<span class="term" tabindex="0" data-tip="Critical > Major > Minor の順に指摘を並べ替えて、無視可能なものは省く作業">severity別に並べ替え</span>してから渡します。</p>
 
   <div class="diagram-box">
     <div class="diagram-title">5並列レビュー → merge の全体フロー</div>
@@ -341,12 +341,12 @@ graph TD
     </li>
   </ul>
 
-  <p>merge時に<span class="term" data-tip="複数のAgentが同じ問題を別の観点から指摘するケース。可読性Agentとテスト Agentが同じ複雑関数を指摘するなど">重複指摘</span>が出るのは健全なシグナルです(そこは本当に問題)。ただしレビューコメントとしては1つに統合して提示しましょう。</p>
+  <p>merge時に<span class="term" tabindex="0" data-tip="複数のAgentが同じ問題を別の観点から指摘するケース。可読性Agentとテスト Agentが同じ複雑関数を指摘するなど">重複指摘</span>が出るのは健全なシグナルです(そこは本当に問題)。ただしレビューコメントとしては1つに統合して提示しましょう。</p>
 
   <!-- ===================== §5 時間短縮の実測 ===================== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>5. 時間短縮の実測</h2>
 
-  <p>観点分割の並列化でどれくらい速くなるか、同じPR(約800行、6ファイル)で実測した結果を示します。<span class="term" data-tip="2026年1月時点の目安値。環境・PR内容・モデルバージョンにより変動する">測定条件は2026年1月のClaude Code環境</span>。</p>
+  <p>観点分割の並列化でどれくらい速くなるか、同じPR(約800行、6ファイル)で実測した結果を示します。<span class="term" tabindex="0" data-tip="2026年1月時点の目安値。環境・PR内容・モデルバージョンにより変動する">測定条件は2026年1月のClaude Code環境</span>。</p>
 
   <div class="diagram-box">
     <div class="diagram-title">レビュー所要時間の比較(分)</div>
@@ -372,7 +372,7 @@ graph TD
     </div>
   </div>
 
-  <p>並列化のコストは<strong>同時課金 × Agent数</strong>なので、5並列は単体の約5倍の<span class="term" data-tip="Agentが処理した入出力トークン量に応じて発生する課金。並列化すると総トークンは増えるが時間は短縮">トークン消費</span>になります。ただし人間の時間単価を考えれば、大抵のケースでペイします。</p>
+  <p>並列化のコストは<strong>同時課金 × Agent数</strong>なので、5並列は単体の約5倍の<span class="term" tabindex="0" data-tip="Agentが処理した入出力トークン量に応じて発生する課金。並列化すると総トークンは増えるが時間は短縮">トークン消費</span>になります。ただし人間の時間単価を考えれば、大抵のケースでペイします。</p>
 
   <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
 
@@ -403,7 +403,7 @@ $ git diff main...HEAD &gt; /tmp/review-target.diff
  - Agent 3 (general-purpose): 型観点 + §3型チェックリスト
  全員Critical/Major/Minorで分類し、50語以内で完了報告。
  あなた(メイン)は結果をseverity順にmergeして、重複は1件に統合してほしい。」</code></pre>
-      <p>ポイント: Agent呼び出しは<span class="term" data-tip="同じassistantメッセージ内で複数のtool_use blockを出すこと。この形だけが真の並列実行になる">同一メッセージ内で複数tool_use</span>にすること。順次起動すると直列になります。</p>
+      <p>ポイント: Agent呼び出しは<span class="term" tabindex="0" data-tip="同じassistantメッセージ内で複数のtool_use blockを出すこと。この形だけが真の並列実行になる">同一メッセージ内で複数tool_use</span>にすること。順次起動すると直列になります。</p>
     </div>
   </details>
 

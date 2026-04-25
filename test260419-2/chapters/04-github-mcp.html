@@ -86,7 +86,7 @@
 
   <div class="info-box">
     <span class="label">この章のゴール</span>
-    <p>GitHub MCP サーバーを Claude Code に追加し、<strong>Issue 一覧・PR レビュー・Release notes 生成</strong>などを自然言語で実行できる状態を作ります。認証(<span class="term" data-tip="Personal Access Token。GitHubが発行する、ユーザー権限を限定的に付与できる文字列トークン">PAT</span>)のセットアップから、実用シナリオ3つ、権限管理のベストプラクティスまでを一気通貫で体験。最後のハンズオンでは<strong>自分のリポジトリの issue を取得して分類させる</strong>ところまで到達します。</p>
+    <p>GitHub MCP サーバーを Claude Code に追加し、<strong>Issue 一覧・PR レビュー・Release notes 生成</strong>などを自然言語で実行できる状態を作ります。認証(<span class="term" tabindex="0" data-tip="Personal Access Token。GitHubが発行する、ユーザー権限を限定的に付与できる文字列トークン">PAT</span>)のセットアップから、実用シナリオ3つ、権限管理のベストプラクティスまでを一気通貫で体験。最後のハンズオンでは<strong>自分のリポジトリの issue を取得して分類させる</strong>ところまで到達します。</p>
   </div>
 
   <div class="info-box" style="border-color:#D97757;">
@@ -97,7 +97,7 @@
   <!-- ===== Section 1: GitHub MCPの全体像 ===== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> GitHub MCP サーバーの全体像</h2>
 
-  <p>GitHub MCP サーバーは、Claude Code から GitHub の <span class="term" data-tip="REST API + GraphQL API。GitHub がリポジトリ・Issue・PR・Actionsなどを操作するために公開している HTTP API">GitHub API</span> を「ツール」として呼び出せるようにする中継サーバーです。Claude Code は自然言語の依頼を受け、必要に応じてこのサーバーの tool を呼び出し、結果を要約してユーザーに返します。</p>
+  <p>GitHub MCP サーバーは、Claude Code から GitHub の <span class="term" tabindex="0" data-tip="REST API + GraphQL API。GitHub がリポジトリ・Issue・PR・Actionsなどを操作するために公開している HTTP API">GitHub API</span> を「ツール」として呼び出せるようにする中継サーバーです。Claude Code は自然言語の依頼を受け、必要に応じてこのサーバーの tool を呼び出し、結果を要約してユーザーに返します。</p>
 
   <div class="diagram-box">
     <div class="diagram-title">Claude Code ⇔ GitHub MCP ⇔ GitHub の3層構造</div>
@@ -135,7 +135,7 @@ graph LR
         <li>Organization 管理(SSO 設定等)は<strong>scope 不足で失敗</strong>しがち</li>
         <li>Private repo は PAT の <code>repo</code> scope が必須</li>
         <li>GitHub Enterprise Server は<strong>別途 endpoint 設定</strong>が必要</li>
-        <li>API <span class="term" data-tip="Rate Limit。単位時間あたりのAPIリクエスト上限。認証ユーザーは5000req/h、未認証は60req/h">レート制限</span>に到達すると一時停止</li>
+        <li>API <span class="term" tabindex="0" data-tip="Rate Limit。単位時間あたりのAPIリクエスト上限。認証ユーザーは5000req/h、未認証は60req/h">レート制限</span>に到達すると一時停止</li>
       </ul>
     </div>
   </div>
@@ -154,7 +154,7 @@ graph LR
 
   <h3>Step 1: PAT を発行する</h3>
 
-  <p>GitHub の <span class="term" data-tip="Settings &gt; Developer settings &gt; Personal access tokens &gt; Fine-grained tokens。2022年以降の推奨方式で、リポ単位・scope単位で権限を絞れる">Fine-grained PAT</span> を推奨。古い Classic PAT より安全に scope を絞れます。</p>
+  <p>GitHub の <span class="term" tabindex="0" data-tip="Settings &gt; Developer settings &gt; Personal access tokens &gt; Fine-grained tokens。2022年以降の推奨方式で、リポ単位・scope単位で権限を絞れる">Fine-grained PAT</span> を推奨。古い Classic PAT より安全に scope を絞れます。</p>
 
   <div class="diagram-box">
     <div class="diagram-title">PAT 発行の4ステップ</div>
@@ -354,7 +354,7 @@ create_pr_review(event="COMMENT") で投稿してください。
   <!-- ===== Section 6: 実用シナリオ3 Release notes ===== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 実用シナリオ3: Release notes 生成</h2>
 
-  <p>前回リリースから今日までに merged された PR を集め、<span class="term" data-tip="リリースノート。そのバージョンで何が変わったかを利用者向けに要約した文書。Keep a Changelog 形式が有名">Release notes</span> のドラフトを作る作業も数分で終わります。</p>
+  <p>前回リリースから今日までに merged された PR を集め、<span class="term" tabindex="0" data-tip="リリースノート。そのバージョンで何が変わったかを利用者向けに要約した文書。Keep a Changelog 形式が有名">Release notes</span> のドラフトを作る作業も数分で終わります。</p>
 
   <div class="diagram-box">
     <div class="diagram-title">Release notes 生成プロンプト</div>
@@ -391,7 +391,7 @@ create_pr_review(event="COMMENT") で投稿してください。
   <!-- ===== Section 7: 権限管理ベストプラクティス ===== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 権限管理のベストプラクティス</h2>
 
-  <p>GitHub MCP は強力なぶん、<strong>PAT が漏れたら即時にリポジトリへ書き込まれる</strong>リスクがあります。<span class="term" data-tip="Principle of Least Privilege。ソフトウェアやアカウントに必要最小限の権限だけ与える設計原則。セキュリティの基本">最小権限原則</span>を徹底しましょう。</p>
+  <p>GitHub MCP は強力なぶん、<strong>PAT が漏れたら即時にリポジトリへ書き込まれる</strong>リスクがあります。<span class="term" tabindex="0" data-tip="Principle of Least Privilege。ソフトウェアやアカウントに必要最小限の権限だけ与える設計原則。セキュリティの基本">最小権限原則</span>を徹底しましょう。</p>
 
   <h3>PAT設計の5原則</h3>
 

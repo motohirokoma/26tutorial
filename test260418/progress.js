@@ -352,3 +352,170 @@ window.tutorialProgress = {
     if (currentUser) pushToCloud();
   },
 };
+
+
+// ============ Zoomable diagrams (lightbox) ============
+(function initZoomableDiagrams() {
+  const EXCLUDE = '.clawd, .clawd-heading, .clawd-aside, .clawd-btn, .lucide, .topbar, nav.sidebar, .streak-badge, .auth-box, .zoomable-wrap';
+  const MIN_WIDTH = 200;
+  let overlay = null;
+
+  function findTargets() {
+    const targets = new Set();
+    document.querySelectorAll('main .mermaid').forEach((el) => {
+      if (el.closest('.zoomable-wrap')) return;
+      targets.add(el);
+    });
+    document.querySelectorAll('main canvas').forEach((el) => {
+      if (el.closest(EXCLUDE)) return;
+      const rect = el.getBoundingClientRect();
+      if (rect.width < MIN_WIDTH) return;
+      targets.add(el);
+    });
+    document.querySelectorAll('main svg').forEach((el) => {
+      if (el.closest(EXCLUDE)) return;
+      if (el.closest('.mermaid')) return;
+      const rect = el.getBoundingClientRect();
+      if (rect.width < MIN_WIDTH) return;
+      targets.add(el);
+    });
+    return [...targets];
+  }
+
+  function wrapZoomable(el) {
+    if (el.closest('.zoomable-wrap')) return;
+    const wrap = document.createElement('div');
+    wrap.className = 'zoomable-wrap';
+    el.parentNode.insertBefore(wrap, el);
+    wrap.appendChild(el);
+    wrap.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openLightbox(el);
+    });
+  }
+
+  function sizeSvgFromViewBox(svg) {
+    svg.style.cssText = '';
+    svg.removeAttribute('width');
+    svg.removeAttribute('height');
+    const vb = svg.getAttribute('viewBox');
+    if (!vb) return;
+    const parts = vb.split(/[\s,]+/).map(Number);
+    if (parts.length !== 4 || !parts[2] || !parts[3]) return;
+    const ratio = parts[2] / parts[3];
+    const maxW = Math.min(window.innerWidth * 0.85, 1400);
+    const maxH = window.innerHeight * 0.8;
+    let w = maxW, h = w / ratio;
+    if (h > maxH) { h = maxH; w = h * ratio; }
+    svg.setAttribute('width', Math.round(w));
+    svg.setAttribute('height', Math.round(h));
+  }
+
+  function cloneForLightbox(el) {
+    if (el.tagName === 'CANVAS') {
+      const img = document.createElement('img');
+      try { img.src = el.toDataURL('image/png'); } catch (_) { /* tainted */ }
+      return img;
+    }
+    const clone = el.cloneNode(true);
+    if (clone.style) clone.style.cssText = '';
+    const svgs = [];
+    if (clone.tagName && clone.tagName.toLowerCase() === 'svg') svgs.push(clone);
+    if (clone.querySelectorAll) svgs.push(...clone.querySelectorAll('svg'));
+    svgs.forEach(sizeSvgFromViewBox);
+    return clone;
+  }
+
+  function ensureOverlay() {
+    if (overlay) return overlay;
+    overlay = document.createElement('div');
+    overlay.className = 'lightbox-overlay';
+    overlay.innerHTML = '<div class="lightbox-content"><button class="lightbox-close" aria-label="閉じる">✕</button></div>';
+    document.body.appendChild(overlay);
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay || e.target.classList.contains('lightbox-close')) {
+        closeLightbox();
+      }
+    });
+    return overlay;
+  }
+
+  function openLightbox(el) {
+    const ov = ensureOverlay();
+    const content = ov.querySelector('.lightbox-content');
+    [...content.children].forEach((c) => {
+      if (!c.classList.contains('lightbox-close')) c.remove();
+    });
+    content.appendChild(cloneForLightbox(el));
+    ov.classList.add('is-open');
+    document.body.classList.add('lightbox-open');
+  }
+
+  function closeLightbox() {
+    if (!overlay) return;
+    overlay.classList.remove('is-open');
+    document.body.classList.remove('lightbox-open');
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLightbox();
+  });
+
+  function init() {
+    findTargets().forEach(wrapZoomable);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+  setTimeout(init, 500);
+  setTimeout(init, 1500);
+})();
+
+// ============ Clawd ランダムアニメーション ============
+(function initClawdAnimations() {
+  const ANIMS = ['hop', 'wiggle', 'wobble', 'spin', 'pop', 'crab'];
+  const SELECTOR = '.clawd, .clawd-heading, .clawd-aside, .clawd-btn';
+
+  function trigger(el) {
+    if (el.dataset.animating === '1') return;
+    const cls = 'anim-' + ANIMS[Math.floor(Math.random() * ANIMS.length)];
+    el.classList.add(cls);
+    el.dataset.animating = '1';
+    el.addEventListener('animationend', () => {
+      el.classList.remove(cls);
+      delete el.dataset.animating;
+    }, { once: true });
+  }
+
+  document.addEventListener('mouseenter', (e) => {
+    const t = e.target;
+    if (t && t.matches && t.matches(SELECTOR)) trigger(t);
+  }, true);
+
+  document.addEventListener('click', (e) => {
+    const el = e.target.closest && e.target.closest(SELECTOR);
+    if (el) trigger(el);
+  });
+})();
+
+// ============ Term tooltip tap toggle (iOS Safari対応) ============
+(function initTermTooltips() {
+  document.addEventListener('click', (e) => {
+    const term = e.target.closest('.term');
+    document.querySelectorAll('.term.is-open').forEach((t) => {
+      if (t !== term) t.classList.remove('is-open');
+    });
+    if (term) {
+      term.classList.toggle('is-open');
+      e.stopPropagation();
+    }
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.term.is-open').forEach((t) => t.classList.remove('is-open'));
+    }
+  });
+})();

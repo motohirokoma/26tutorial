@@ -96,7 +96,7 @@
   <!-- ===== Section 1: 10レシピの全体像 ===== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 10レシピの全体像: どのイベントに何を仕込むか</h2>
 
-  <p>まずは10個のレシピを<span class="term" data-tip="Hookが発火するタイミング。PreToolUse・PostToolUse・Stop・UserPromptSubmit・SessionStart等">イベント</span>×目的のマトリクスで俯瞰します。どれから導入するか決める判断材料に。</p>
+  <p>まずは10個のレシピを<span class="term" tabindex="0" data-tip="Hookが発火するタイミング。PreToolUse・PostToolUse・Stop・UserPromptSubmit・SessionStart等">イベント</span>×目的のマトリクスで俯瞰します。どれから導入するか決める判断材料に。</p>
 
   <div class="diagram-box">
     <div class="diagram-title">10レシピのイベント分布(色=目的カテゴリ)</div>
@@ -127,7 +127,7 @@
   <!-- ===== Recipe 1 ===== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> レシピ1: Edit前にPrettier(PreToolUse)</h2>
 
-  <p>ClaudeがEdit/Writeで書き換えようとする<strong>直前</strong>に、対象ファイルをPrettierで整形します。Claudeは整形済みの状態をベースに書き換えるので、<span class="term" data-tip="差分のノイズ。関係ない整形差分が混ざって本質的変更が見えにくくなる状態">差分ノイズ</span>が劇的に減ります。</p>
+  <p>ClaudeがEdit/Writeで書き換えようとする<strong>直前</strong>に、対象ファイルをPrettierで整形します。Claudeは整形済みの状態をベースに書き換えるので、<span class="term" tabindex="0" data-tip="差分のノイズ。関係ない整形差分が混ざって本質的変更が見えにくくなる状態">差分ノイズ</span>が劇的に減ります。</p>
 
   <h3>settings.json</h3>
   <pre><code>{
@@ -162,7 +162,7 @@ exit 0</code></pre>
   <!-- ===== Recipe 2 ===== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> レシピ2: Write後にESLint(PostToolUse)</h2>
 
-  <p>Write/Editが完了した直後に<span class="term" data-tip="JavaScript/TypeScript向け静的解析ツール">ESLint</span>を走らせ、構文/ルール違反があればClaudeに<strong>stderr経由でフィードバック</strong>します。Claudeはその内容を読んで自動修正を試みます。</p>
+  <p>Write/Editが完了した直後に<span class="term" tabindex="0" data-tip="JavaScript/TypeScript向け静的解析ツール">ESLint</span>を走らせ、構文/ルール違反があればClaudeに<strong>stderr経由でフィードバック</strong>します。Claudeはその内容を読んで自動修正を試みます。</p>
 
   <h3>settings.json</h3>
   <pre><code>{
@@ -199,7 +199,7 @@ exit 0</code></pre>
   <!-- ===== Recipe 3 ===== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> レシピ3: Bash実行前に危険コマンドをブロック(PreToolUse)</h2>
 
-  <p>Bashツールの実行<strong>直前</strong>にコマンド文字列を検査し、<span class="term" data-tip="削除や破壊を伴うコマンド。rm -rf・format・chmod 777・:(){:|:&amp;};: 等">危険コマンド</span>パターンに一致したら<strong>exit 2</strong>でブロックします。これがHookの防御機能の真骨頂。</p>
+  <p>Bashツールの実行<strong>直前</strong>にコマンド文字列を検査し、<span class="term" tabindex="0" data-tip="削除や破壊を伴うコマンド。rm -rf・format・chmod 777・:(){:|:&amp;};: 等">危険コマンド</span>パターンに一致したら<strong>exit 2</strong>でブロックします。これがHookの防御機能の真骨頂。</p>
 
   <div class="info-box">
     <span class="label">警告: exit code 2 の意味</span>
@@ -321,7 +321,7 @@ exit 0</code></pre>
   <!-- ===== Recipe 6 ===== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> レシピ6: UserPromptSubmitでPIIマスク</h2>
 
-  <p>ユーザーが入力したプロンプトをClaudeへ渡す前に検査し、メール/電話番号/クレカ等の<span class="term" data-tip="Personally Identifiable Information。個人を特定できる情報">PII</span>らしき文字列を<code>[REDACTED]</code>にマスクします。<strong>stdout</strong>に加工済みプロンプトを出力するとClaudeはそれを見ます。</p>
+  <p>ユーザーが入力したプロンプトをClaudeへ渡す前に検査し、メール/電話番号/クレカ等の<span class="term" tabindex="0" data-tip="Personally Identifiable Information。個人を特定できる情報">PII</span>らしき文字列を<code>[REDACTED]</code>にマスクします。<strong>stdout</strong>に加工済みプロンプトを出力するとClaudeはそれを見ます。</p>
 
   <h3>settings.json</h3>
   <pre><code>{
@@ -435,7 +435,7 @@ exit 0</code></pre>
   <!-- ===== Recipe 9 ===== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> レシピ9: Stop時にSlack通知</h2>
 
-  <p>長時間作業が終わったらSlackに「終わったよ」と通知。<span class="term" data-tip="Slackの受信用URL。POSTするとチャンネルにメッセージが届く">Slack Incoming Webhook</span>のURLを環境変数で持たせる運用が安全です。</p>
+  <p>長時間作業が終わったらSlackに「終わったよ」と通知。<span class="term" tabindex="0" data-tip="Slackの受信用URL。POSTするとチャンネルにメッセージが届く">Slack Incoming Webhook</span>のURLを環境変数で持たせる運用が安全です。</p>
 
   <h3>settings.json</h3>
   <pre><code>{
@@ -477,7 +477,7 @@ exit 0</code></pre>
   <!-- ===== Recipe 10 ===== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> レシピ10: Stop時にサマリをjsonl保存</h2>
 
-  <p>Stop時に<strong>1行JSON(<span class="term" data-tip="JSON Lines。1行1JSONの追記型ログ形式">jsonl</span>)</strong>として作業サマリを蓄積。あとから「先月何をやったか」を<code>jq</code>で集計できます。</p>
+  <p>Stop時に<strong>1行JSON(<span class="term" tabindex="0" data-tip="JSON Lines。1行1JSONの追記型ログ形式">jsonl</span>)</strong>として作業サマリを蓄積。あとから「先月何をやったか」を<code>jq</code>で集計できます。</p>
 
   <h3>settings.json</h3>
   <pre><code>{

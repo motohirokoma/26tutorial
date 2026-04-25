@@ -102,7 +102,7 @@
   <!-- ===== Section 1: シナリオ ===== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> シナリオ：夜まで回したいタスクたち</h2>
 
-  <p>「自分が寝ている間に10件ぶん終わってたら助かるなあ」というタスクは、周りに転がっています。<span class="term" data-tip="/loop dynamic: 一定間隔ではなく、Claude自身が次の起動時刻を決めるモード。重いタスクに向く(2026年1月時点)。">/loop dynamic</span> は、こうした <strong>「1ステップの実行時間が大きい／本数が多い／順次に進めたい」</strong> タスクの得意分野です。代表的な3シナリオを見ます。</p>
+  <p>「自分が寝ている間に10件ぶん終わってたら助かるなあ」というタスクは、周りに転がっています。<span class="term" tabindex="0" data-tip="/loop dynamic: 一定間隔ではなく、Claude自身が次の起動時刻を決めるモード。重いタスクに向く(2026年1月時点)。">/loop dynamic</span> は、こうした <strong>「1ステップの実行時間が大きい／本数が多い／順次に進めたい」</strong> タスクの得意分野です。代表的な3シナリオを見ます。</p>
 
   <div class="compare-cards">
     <div class="cc">
@@ -134,14 +134,14 @@
     </div>
   </div>
 
-  <p>いずれも共通するのは <strong>「独立な単位(=1項目)が10個前後」+「全体を一気に1ターンで処理するのは無理」</strong> という特性。ここで <code>/loop dynamic</code> と <span class="term" data-tip="todo.md: 進捗をMarkdownで記録する単純なテキストファイル。1項目1行でチェックボックス付けるだけで、状態保持の最小限になる。">todo.md</span> が効きます。</p>
+  <p>いずれも共通するのは <strong>「独立な単位(=1項目)が10個前後」+「全体を一気に1ターンで処理するのは無理」</strong> という特性。ここで <code>/loop dynamic</code> と <span class="term" tabindex="0" data-tip="todo.md: 進捗をMarkdownで記録する単純なテキストファイル。1項目1行でチェックボックス付けるだけで、状態保持の最小限になる。">todo.md</span> が効きます。</p>
 
   <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
 
   <!-- ===== Section 2: /loop dynamic の使い方 ===== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> /loop dynamic の使い方 — 自分で次を予約する</h2>
 
-  <p><code>/loop dynamic</code> は <span class="term" data-tip="ScheduleWakeup: 次のターンを指定時刻に発火させるための内部ツール。dynamic モードの心臓部(2026年1月時点)。">ScheduleWakeup</span> を毎ターン呼ぶことで「自分で次の起動時刻を決める」ループです。これが <code>interval</code> モード(固定間隔)と異なる点。重い1ステップが終わってから次を予約するので、<strong>ステップ間の休み時間を動的に調整</strong> できます。</p>
+  <p><code>/loop dynamic</code> は <span class="term" tabindex="0" data-tip="ScheduleWakeup: 次のターンを指定時刻に発火させるための内部ツール。dynamic モードの心臓部(2026年1月時点)。">ScheduleWakeup</span> を毎ターン呼ぶことで「自分で次の起動時刻を決める」ループです。これが <code>interval</code> モード(固定間隔)と異なる点。重い1ステップが終わってから次を予約するので、<strong>ステップ間の休み時間を動的に調整</strong> できます。</p>
 
   <div class="diagram-box">
     <div class="diagram-title">/loop dynamic の動き(1サイクル)</div>
@@ -193,7 +193,7 @@ graph LR
   <details class="more-box">
     <summary>もっと詳しく: ScheduleWakeup の仕組みと次起動の考え方</summary>
     <div class="more-body">
-      <p><code>ScheduleWakeup</code> は「<strong>N秒後またはT時刻に、このセッションを再度起床させる</strong>」というハーネス側の予約機能です。dynamicループでは毎ターン末尾にこれを呼ぶことで継続します。キャッシュTTLが5分(2026年1月時点)なので、<strong>270秒以内に次を予約すればウォーム状態で再開</strong>、それより長いと <span class="term" data-tip="コールド再開: キャッシュが失効した状態で再起動すること。入力トークンが再計算される分、コストと時間が増える。">コールド再開</span> になります。重い1ステップの直後は数分のクールダウンを入れても構いませんが、「次の項目にすぐ取り掛かる」ならウォーム範囲を狙うのが得。</p>
+      <p><code>ScheduleWakeup</code> は「<strong>N秒後またはT時刻に、このセッションを再度起床させる</strong>」というハーネス側の予約機能です。dynamicループでは毎ターン末尾にこれを呼ぶことで継続します。キャッシュTTLが5分(2026年1月時点)なので、<strong>270秒以内に次を予約すればウォーム状態で再開</strong>、それより長いと <span class="term" tabindex="0" data-tip="コールド再開: キャッシュが失効した状態で再起動すること。入力トークンが再計算される分、コストと時間が増える。">コールド再開</span> になります。重い1ステップの直後は数分のクールダウンを入れても構いませんが、「次の項目にすぐ取り掛かる」ならウォーム範囲を狙うのが得。</p>
     </div>
   </details>
 

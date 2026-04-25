@@ -86,7 +86,7 @@
 
   <div class="info-box">
     <span class="label">この章のゴール</span>
-    <p>Ch01で「Hookとは何か」を掴んだ今、Claude Code が発火してくれる<strong>イベントの全種類</strong>を1つずつ押さえます。主要な6イベント(<span class="term" data-tip="Claude がツール(Write/Edit/Bash等)を実行する直前に発火。exit 2 でブロック可能">PreToolUse</span> / <span class="term" data-tip="ツール実行が完了した直後に発火。成功/失敗結果に応じた後処理に使う">PostToolUse</span> / <span class="term" data-tip="Claudeがメイン応答を完了しようとする時に発火。作業終了時の通知・サマリに最適">Stop</span> / <span class="term" data-tip="ユーザーが入力を送信した直後、モデルが読む前に発火。PIIマスク・履歴記録に使う">UserPromptSubmit</span> / <span class="term" data-tip="Claude Codeセッション開始時に1回だけ発火。git pull や環境情報の注入に使う">SessionStart</span> / <span class="term" data-tip="セッション終了時に1回だけ発火。ログのflush・通知に使う">SessionEnd</span>)について、<strong>いつ発火するか・何が stdin で渡ってくるか・どう出力するか</strong>を体系的に整理。最後に最小の PreToolUse Hook を実際に仕込んで発火を確認します。2026年1月時点の仕様に基づきます。</p>
+    <p>Ch01で「Hookとは何か」を掴んだ今、Claude Code が発火してくれる<strong>イベントの全種類</strong>を1つずつ押さえます。主要な6イベント(<span class="term" tabindex="0" data-tip="Claude がツール(Write/Edit/Bash等)を実行する直前に発火。exit 2 でブロック可能">PreToolUse</span> / <span class="term" tabindex="0" data-tip="ツール実行が完了した直後に発火。成功/失敗結果に応じた後処理に使う">PostToolUse</span> / <span class="term" tabindex="0" data-tip="Claudeがメイン応答を完了しようとする時に発火。作業終了時の通知・サマリに最適">Stop</span> / <span class="term" tabindex="0" data-tip="ユーザーが入力を送信した直後、モデルが読む前に発火。PIIマスク・履歴記録に使う">UserPromptSubmit</span> / <span class="term" tabindex="0" data-tip="Claude Codeセッション開始時に1回だけ発火。git pull や環境情報の注入に使う">SessionStart</span> / <span class="term" tabindex="0" data-tip="セッション終了時に1回だけ発火。ログのflush・通知に使う">SessionEnd</span>)について、<strong>いつ発火するか・何が stdin で渡ってくるか・どう出力するか</strong>を体系的に整理。最後に最小の PreToolUse Hook を実際に仕込んで発火を確認します。2026年1月時点の仕様に基づきます。</p>
   </div>
 
   <div class="info-box">
@@ -105,7 +105,7 @@
     主要6イベントの全体像 ― セッション寿命の中での位置取り
   </h2>
 
-  <p>Claude Code の<span class="term" data-tip="Claude Codeの1回の起動〜終了までの単位。設定ファイル読込・会話状態・コンテキスト全てがこの中に閉じる">セッション</span>は「開始 → ユーザ入力 → モデル応答(ツール連打) → 完了 → 終了」のライフサイクルをぐるぐる回ります。Hook は<strong>その各節目に割って入る<span class="term" data-tip="プログラム実行の途中に外部コードを差し込む仕組み。Git hooks / React hooks と同じ系譜の用語">フック</span></strong>です。まずは全体像を1枚の図で押さえましょう。</p>
+  <p>Claude Code の<span class="term" tabindex="0" data-tip="Claude Codeの1回の起動〜終了までの単位。設定ファイル読込・会話状態・コンテキスト全てがこの中に閉じる">セッション</span>は「開始 → ユーザ入力 → モデル応答(ツール連打) → 完了 → 終了」のライフサイクルをぐるぐる回ります。Hook は<strong>その各節目に割って入る<span class="term" tabindex="0" data-tip="プログラム実行の途中に外部コードを差し込む仕組み。Git hooks / React hooks と同じ系譜の用語">フック</span></strong>です。まずは全体像を1枚の図で押さえましょう。</p>
 
   <div class="diagram-box">
     <div class="diagram-title">6つの主要イベントの発火位置</div>
@@ -162,7 +162,7 @@
     <div class="diagram-caption">セッションを横軸にして6イベントを置くと、それぞれの立ち位置が一目で掴める。</div>
   </div>
 
-  <p>特に重要なのが、<strong>PreToolUse と PostToolUse は1セッション中に何度でも発火する</strong>こと。Claude がツールを10回使えば、それぞれ Pre/Post が10回ずつ呼ばれます。一方 SessionStart/SessionEnd はセッションにつき1回、Stop はモデルが応答を完了する度に1回(<span class="term" data-tip="ユーザが追加プロンプトを送って続く場合、次の応答完了時にまた Stop が発火する">継続対話なら複数回</span>)発火します。</p>
+  <p>特に重要なのが、<strong>PreToolUse と PostToolUse は1セッション中に何度でも発火する</strong>こと。Claude がツールを10回使えば、それぞれ Pre/Post が10回ずつ呼ばれます。一方 SessionStart/SessionEnd はセッションにつき1回、Stop はモデルが応答を完了する度に1回(<span class="term" tabindex="0" data-tip="ユーザが追加プロンプトを送って続く場合、次の応答完了時にまた Stop が発火する">継続対話なら複数回</span>)発火します。</p>
 
   <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
   <p>6つとも覚える必要はありません。<strong>最初は PreToolUse / PostToolUse / Stop の3つ</strong>で9割の用途は賄えます。残り3つは「ユーザ入力の段階で何かしたい」「セッション境界で何かしたい」と思った時に引っ張り出せば十分。</p>
@@ -335,7 +335,7 @@ sequenceDiagram
     入力コンテキスト ― stdin に何が流れてくるか
   </h2>
 
-  <p>Hook として起動されたシェルコマンドは、<strong><span class="term" data-tip="standard input。プロセスが起動時に受け取る入力ストリーム。Claude Code はここに JSON を流し込む">標準入力(stdin)</span>に JSON が流し込まれる</strong>という約束になっています。イベントごとに形は違いますが、「<code>hook_event_name</code>」「<code>session_id</code>」「<span class="term" data-tip="そのセッションの会話ログがJSONLで書き込まれているファイルのパス。Hook内で読んで解析できる">transcript_path</span>」は共通で入ります。残りはイベント固有フィールド。</p>
+  <p>Hook として起動されたシェルコマンドは、<strong><span class="term" tabindex="0" data-tip="standard input。プロセスが起動時に受け取る入力ストリーム。Claude Code はここに JSON を流し込む">標準入力(stdin)</span>に JSON が流し込まれる</strong>という約束になっています。イベントごとに形は違いますが、「<code>hook_event_name</code>」「<code>session_id</code>」「<span class="term" tabindex="0" data-tip="そのセッションの会話ログがJSONLで書き込まれているファイルのパス。Hook内で読んで解析できる">transcript_path</span>」は共通で入ります。残りはイベント固有フィールド。</p>
 
   <h3>PreToolUse の stdin 例</h3>
 
@@ -407,7 +407,7 @@ sequenceDiagram
     出力方法 ― stderr と exit code でClaudeに話しかける
   </h2>
 
-  <p>Hook から Claude Code に結果を返す主要な手段は2つ: <strong><span class="term" data-tip="プロセス終了時に返す整数値。0=成功、2=Claude Codeでは『ブロック』の特別な意味を持つ">exit code</span></strong> と <strong><span class="term" data-tip="standard error。プロセスのエラー出力ストリーム。Claude Codeはここの内容を『Claudeへのフィードバック』として扱う">stderr</span> の文字列</strong>です。<span class="term" data-tip="standard output。プロセスの通常出力。Hookでは主にログ・ユーザ向けメッセージに使う">stdout</span> は通常ログ(人間向け)に使い、<span class="term" data-tip="正確には stdout に JSON を書いて decision フィールドで制御する『高度な API』もあるが、ここでは最もシンプルな stderr + exit code 方式を紹介">Claudeの挙動を変える方法</span>は exit code と stderr 経由が基本です。</p>
+  <p>Hook から Claude Code に結果を返す主要な手段は2つ: <strong><span class="term" tabindex="0" data-tip="プロセス終了時に返す整数値。0=成功、2=Claude Codeでは『ブロック』の特別な意味を持つ">exit code</span></strong> と <strong><span class="term" tabindex="0" data-tip="standard error。プロセスのエラー出力ストリーム。Claude Codeはここの内容を『Claudeへのフィードバック』として扱う">stderr</span> の文字列</strong>です。<span class="term" tabindex="0" data-tip="standard output。プロセスの通常出力。Hookでは主にログ・ユーザ向けメッセージに使う">stdout</span> は通常ログ(人間向け)に使い、<span class="term" tabindex="0" data-tip="正確には stdout に JSON を書いて decision フィールドで制御する『高度な API』もあるが、ここでは最もシンプルな stderr + exit code 方式を紹介">Claudeの挙動を変える方法</span>は exit code と stderr 経由が基本です。</p>
 
   <div class="compare-cards">
     <div class="cc neutral">
@@ -531,7 +531,7 @@ exit 0</code></pre>
     matcher との組み合わせ ― 「全Edit」か「特定拡張子だけ」か
   </h2>
 
-  <p>PreToolUse / PostToolUse は <span class="term" data-tip="settings.jsonでHook対象のツール名を絞り込むフィールド。正規表現で記述する。Ch03で完全解説">matcher</span>(<span class="term" data-tip="regular expression。文字列のパターンマッチ記法。Edit|Write のように | で複数候補を表現できる">正規表現</span>)でツール名を絞れます。<strong>matcher を書かないと全ツールで発火</strong>するので、ログが暴走しがち。目的のツールだけに絞るのが作法です。</p>
+  <p>PreToolUse / PostToolUse は <span class="term" tabindex="0" data-tip="settings.jsonでHook対象のツール名を絞り込むフィールド。正規表現で記述する。Ch03で完全解説">matcher</span>(<span class="term" tabindex="0" data-tip="regular expression。文字列のパターンマッチ記法。Edit|Write のように | で複数候補を表現できる">正規表現</span>)でツール名を絞れます。<strong>matcher を書かないと全ツールで発火</strong>するので、ログが暴走しがち。目的のツールだけに絞るのが作法です。</p>
 
   <table>
     <thead>

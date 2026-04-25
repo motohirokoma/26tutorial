@@ -84,7 +84,7 @@
     <span class="badge">難易度: 中級</span>
   </div>
 
-  <p>Ch04でGitHub MCPを主戦場にした。今度はそれ以外の<strong>日常よく使う4ジャンル</strong> — <span class="term" data-tip="任意のディレクトリをMCP経由でClaude Codeに読ませる公式サーバー。作業dir外の~/Documents等にアクセスできる">Filesystem MCP</span>、<span class="term" data-tip="PostgreSQL等DBに読取専用で接続しスキーマ検査・SELECTを許可するMCPサーバー群">DB系MCP</span>、<span class="term" data-tip="Slackのメッセージ送受信・チャンネル要約をClaude Codeから操作できるMCPサーバー">Slack MCP</span>、<span class="term" data-tip="HTTPページを取得してMarkdownに変換するfetch系と、ヘッドレスブラウザで実DOM・スクショを取るPuppeteer系の総称">Fetch/Puppeteer MCP</span> — を駆け足でまわす。Ch03のカタログに出てきたサーバー群を、<strong>実際にどう動かすか</strong>に焦点を絞った実践章です。</p>
+  <p>Ch04でGitHub MCPを主戦場にした。今度はそれ以外の<strong>日常よく使う4ジャンル</strong> — <span class="term" tabindex="0" data-tip="任意のディレクトリをMCP経由でClaude Codeに読ませる公式サーバー。作業dir外の~/Documents等にアクセスできる">Filesystem MCP</span>、<span class="term" tabindex="0" data-tip="PostgreSQL等DBに読取専用で接続しスキーマ検査・SELECTを許可するMCPサーバー群">DB系MCP</span>、<span class="term" tabindex="0" data-tip="Slackのメッセージ送受信・チャンネル要約をClaude Codeから操作できるMCPサーバー">Slack MCP</span>、<span class="term" tabindex="0" data-tip="HTTPページを取得してMarkdownに変換するfetch系と、ヘッドレスブラウザで実DOM・スクショを取るPuppeteer系の総称">Fetch/Puppeteer MCP</span> — を駆け足でまわす。Ch03のカタログに出てきたサーバー群を、<strong>実際にどう動かすか</strong>に焦点を絞った実践章です。</p>
 
   <div class="info-box"><span class="label">前提</span><p>Ch02の <code>.mcp.json</code> 基礎と、Ch04のシェル実行フロー(<code>claude mcp list</code> / トークン管理)がわかっていること。本章は「繋ぎ方」より「使いどころ」の比率が高い。</p></div>
 
@@ -144,7 +144,7 @@
 
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>Filesystem MCP: 作業dir外のファイルを扱う</h2>
 
-  <p>Claude Codeには組み込みのRead/Edit/Writeがあるが、それらは<strong>起動時の作業ディレクトリ配下</strong>しか扱えない。「<code>~/Documents</code> の資料を要約したい」「別リポの設定を覗きたい」といった場面で詰まる。<span class="term" data-tip="ファイル操作を許可する対象ディレクトリをMCPサーバー起動時引数で明示するモデル。許可外は触れない">ルート許可モデル</span>で安全にこれを解放するのがFilesystem MCPです。</p>
+  <p>Claude Codeには組み込みのRead/Edit/Writeがあるが、それらは<strong>起動時の作業ディレクトリ配下</strong>しか扱えない。「<code>~/Documents</code> の資料を要約したい」「別リポの設定を覗きたい」といった場面で詰まる。<span class="term" tabindex="0" data-tip="ファイル操作を許可する対象ディレクトリをMCPサーバー起動時引数で明示するモデル。許可外は触れない">ルート許可モデル</span>で安全にこれを解放するのがFilesystem MCPです。</p>
 
   <p>設定は1行追加するだけ。引数に渡したパスだけが<strong>読み書き可能な領域</strong>になる。</p>
 
@@ -250,7 +250,7 @@ sequenceDiagram
 
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>Slack MCP: チャンネル要約と投稿</h2>
 
-  <p>Slack MCPは<span class="term" data-tip="Slack管理画面で作成するOAuthアプリのアクセストークン。Bot Token(xoxb-) と User Token(xoxp-) がある">Bot Token</span>を使ってチャンネル読書きする。要約用途なら<code>channels:history</code>/<code>channels:read</code>だけのBotで十分で、投稿を許すなら<code>chat:write</code>を追加する。</p>
+  <p>Slack MCPは<span class="term" tabindex="0" data-tip="Slack管理画面で作成するOAuthアプリのアクセストークン。Bot Token(xoxb-) と User Token(xoxp-) がある">Bot Token</span>を使ってチャンネル読書きする。要約用途なら<code>channels:history</code>/<code>channels:read</code>だけのBotで十分で、投稿を許すなら<code>chat:write</code>を追加する。</p>
 
   <pre><code>// .mcp.json
 {
@@ -309,7 +309,7 @@ sequenceDiagram
 
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>Fetch / Puppeteer MCP: Webを読む</h2>
 
-  <p>Web情報を扱うMCPは2系統。<span class="term" data-tip="指定URLをHTTP GETしMarkdownに変換する軽量MCP。静的HTMLに強い">Fetch系</span>は軽量HTTPクライアント、<span class="term" data-tip="Chromiumヘッドレスブラウザを操作してJavaScript描画後のDOM取得・スクリーンショット・フォーム操作ができるMCPサーバー">Puppeteer系</span>はフルブラウザ。<strong>用途で使い分ける</strong>。</p>
+  <p>Web情報を扱うMCPは2系統。<span class="term" tabindex="0" data-tip="指定URLをHTTP GETしMarkdownに変換する軽量MCP。静的HTMLに強い">Fetch系</span>は軽量HTTPクライアント、<span class="term" tabindex="0" data-tip="Chromiumヘッドレスブラウザを操作してJavaScript描画後のDOM取得・スクリーンショット・フォーム操作ができるMCPサーバー">Puppeteer系</span>はフルブラウザ。<strong>用途で使い分ける</strong>。</p>
 
   <table>
     <thead>

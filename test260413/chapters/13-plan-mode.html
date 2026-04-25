@@ -123,9 +123,9 @@
   <!-- ===== Section 1: Plan モードとは ===== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> Plan モードとは — 一言で</h2>
 
-  <p><span class="term" data-tip="Plan モード: Claude Code が「書き込み/実行」を一切行わず、まず計画だけ立てるモード。ユーザが同意するまでは安全。">Plan モード</span>は、Claude が<strong>読み取り専用</strong>で情報を集め、「これから何をやるつもりか」を<strong>計画として提示するだけ</strong>のモードです。あなたが計画に OK を出さない限り、ファイルは1行も書き換わらず、<code>Bash</code> も実行されません。</p>
+  <p><span class="term" tabindex="0" data-tip="Plan モード: Claude Code が「書き込み/実行」を一切行わず、まず計画だけ立てるモード。ユーザが同意するまでは安全。">Plan モード</span>は、Claude が<strong>読み取り専用</strong>で情報を集め、「これから何をやるつもりか」を<strong>計画として提示するだけ</strong>のモードです。あなたが計画に OK を出さない限り、ファイルは1行も書き換わらず、<code>Bash</code> も実行されません。</p>
 
-  <p>通常モードでは Claude は「考える → 書く → 実行する」を一気通貫でやります。Plan モードはその真ん中に<strong>同意ゲート</strong>を差し込む仕組み。いわば<span class="term" data-tip="dry-run: 本番実行せずに、何が起きるかだけシミュレートする走行">dry-run</span>と契約書レビューを合体させたようなものです。</p>
+  <p>通常モードでは Claude は「考える → 書く → 実行する」を一気通貫でやります。Plan モードはその真ん中に<strong>同意ゲート</strong>を差し込む仕組み。いわば<span class="term" tabindex="0" data-tip="dry-run: 本番実行せずに、何が起きるかだけシミュレートする走行">dry-run</span>と契約書レビューを合体させたようなものです。</p>
 
   <div class="diagram-box">
     <div class="diagram-title">通常モード vs Plan モード</div>
@@ -169,7 +169,7 @@
   <!-- ===== Section 2: ExitPlanMode ===== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> ExitPlanMode の意味 — 「同意ゲート」の正体</h2>
 
-  <p>Plan モード中に Claude が計画をまとめ終わると、内部で <span class="term" data-tip="ExitPlanMode: Plan モードを抜けて実行モードに移るためのツール。ユーザ承認を要求する。">ExitPlanMode</span> というツールを呼びます。これが実質的に「<strong>ここまでが計画です、進めていいですか?</strong>」という<span class="term" data-tip="承認プロンプト: ユーザに Yes/No を求める UI">承認プロンプト</span>を出す仕組み。あなたが承認するまで、実行系ツール(<code>Write</code> / <code>Edit</code> / <code>Bash</code>)は一切走りません。</p>
+  <p>Plan モード中に Claude が計画をまとめ終わると、内部で <span class="term" tabindex="0" data-tip="ExitPlanMode: Plan モードを抜けて実行モードに移るためのツール。ユーザ承認を要求する。">ExitPlanMode</span> というツールを呼びます。これが実質的に「<strong>ここまでが計画です、進めていいですか?</strong>」という<span class="term" tabindex="0" data-tip="承認プロンプト: ユーザに Yes/No を求める UI">承認プロンプト</span>を出す仕組み。あなたが承認するまで、実行系ツール(<code>Write</code> / <code>Edit</code> / <code>Bash</code>)は一切走りません。</p>
 
   <div class="info-box">
     <span class="label">公式ドキュメント必読</span>
@@ -335,7 +335,7 @@ graph TD
   <!-- ===== Section 5: Plan が効くメカニズム ===== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> なぜ Plan が「ロールバック保険」になるのか</h2>
 
-  <p>Plan が保険として機能する本質は「<strong>同意した瞬間、以降の変更に責任の境界線が引かれる</strong>」点です。同意前の計画書は、あなたと Claude の間の<span class="term" data-tip="契約: お互いの合意でスコープを固定する行為">契約</span>。この契約に沿わない変更が起きたら差し戻せば済む、という姿勢が取れます。</p>
+  <p>Plan が保険として機能する本質は「<strong>同意した瞬間、以降の変更に責任の境界線が引かれる</strong>」点です。同意前の計画書は、あなたと Claude の間の<span class="term" tabindex="0" data-tip="契約: お互いの合意でスコープを固定する行為">契約</span>。この契約に沿わない変更が起きたら差し戻せば済む、という姿勢が取れます。</p>
 
   <div class="diagram-box">
     <div class="diagram-title">Plan ありなしの手戻りコスト (相対値)</div>

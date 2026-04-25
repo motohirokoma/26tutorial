@@ -188,12 +188,12 @@ graph TD
     <div class="diagram-caption">ブランチ→実装→diff レビュー→commit→PR のループ。各ステップで人間が介入するのがポイント。</div>
   </div>
 
-  <p>このフローの肝は <span class="term" data-tip="git diff: 現在の変更内容を差分として表示するコマンド。ステージ前はファイルとindexの差、--stagedでindexとHEADの差を見る。">diff レビュー</span> を <strong>commit 前に必ず挟む</strong>ことです。Claudeの作業結果を盲信しない。これが無いと事故が確率で起きます。</p>
+  <p>このフローの肝は <span class="term" tabindex="0" data-tip="git diff: 現在の変更内容を差分として表示するコマンド。ステージ前はファイルとindexの差、--stagedでindexとHEADの差を見る。">diff レビュー</span> を <strong>commit 前に必ず挟む</strong>ことです。Claudeの作業結果を盲信しない。これが無いと事故が確率で起きます。</p>
 
   <!-- ===== Section 3: ブランチ作成とコミット単位 ===== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> ブランチ作成とコミット単位</h2>
 
-  <p><span class="term" data-tip="ブランチ: 作業ラインを枝分かれさせて、main(本線)を汚さず実験・開発できる仕組み。">ブランチ</span>を切る習慣を作ると、Claude に自由に書かせても main が守られます。命名は <code>feat/◯◯</code>, <code>fix/◯◯</code>, <code>refactor/◯◯</code> の3種類を覚えておけば十分です。</p>
+  <p><span class="term" tabindex="0" data-tip="ブランチ: 作業ラインを枝分かれさせて、main(本線)を汚さず実験・開発できる仕組み。">ブランチ</span>を切る習慣を作ると、Claude に自由に書かせても main が守られます。命名は <code>feat/◯◯</code>, <code>fix/◯◯</code>, <code>refactor/◯◯</code> の3種類を覚えておけば十分です。</p>
 
   <p><strong>今すぐ試す(コピペ)</strong>: 現在のリポジトリで新しいブランチを切って、Claude に小さな変更を依頼する準備を整えます。</p>
 
@@ -267,7 +267,7 @@ git diff --stat</code></pre>
     </div>
   </div>
 
-  <p><span class="term" data-tip="Conventional Commits: feat/fix/docs/refactor/test/chore のprefix で commit 種別を明示する慣習。gh や 各種ツールと相性が良い。">Conventional Commits</span> の型:</p>
+  <p><span class="term" tabindex="0" data-tip="Conventional Commits: feat/fix/docs/refactor/test/chore のprefix で commit 種別を明示する慣習。gh や 各種ツールと相性が良い。">Conventional Commits</span> の型:</p>
 
   <div class="kv-grid">
     <div class="kv"><div class="kv-key">feat</div><div class="kv-val">新機能追加</div></div>
@@ -298,7 +298,7 @@ $(git diff --staged)
   <!-- ===== Section 5: PR作成 (gh pr create) ===== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> PR作成 — gh pr create を使い倒す</h2>
 
-  <p><span class="term" data-tip="gh: GitHub公式のCLIツール。PR作成、Issue操作、レビューをターミナルから完結できる。brew install gh でインストール。">gh CLI</span> を使えば、PR 作成をターミナルから一発でできます。ブラウザを開かない分、Claude と対話している流れを止めません。</p>
+  <p><span class="term" tabindex="0" data-tip="gh: GitHub公式のCLIツール。PR作成、Issue操作、レビューをターミナルから完結できる。brew install gh でインストール。">gh CLI</span> を使えば、PR 作成をターミナルから一発でできます。ブラウザを開かない分、Claude と対話している流れを止めません。</p>
 
   <p><strong>今すぐ試す</strong>:</p>
 
@@ -392,7 +392,7 @@ graph TD
     <tbody>
       <tr><td><code>git commit --amend</code></td><td>直前の commit を上書き</td><td>メッセージ誤り / ファイル漏れ(未push)</td><td>push済みは不可</td></tr>
       <tr><td><code>git reset --soft HEAD~1</code></td><td>commit を取消し、変更は staged で残る</td><td>直前 commit を作り直したい</td><td>ローカルのみ</td></tr>
-      <tr><td><code>git reset --hard HEAD~1</code></td><td>commit と変更を完全削除</td><td>捨てたい(危険!)</td><td>作業消失、<span class="term" data-tip="reflog: HEADの移動履歴。reset --hardしても直近の操作はreflogから復旧可能。git reflog で見られる。">reflog</span>で復旧可</td></tr>
+      <tr><td><code>git reset --hard HEAD~1</code></td><td>commit と変更を完全削除</td><td>捨てたい(危険!)</td><td>作業消失、<span class="term" tabindex="0" data-tip="reflog: HEADの移動履歴。reset --hardしても直近の操作はreflogから復旧可能。git reflog で見られる。">reflog</span>で復旧可</td></tr>
       <tr><td><code>git revert &lt;sha&gt;</code></td><td>打消し commit を新規作成</td><td>push済み / チーム開発時</td><td>履歴が汚れず安全</td></tr>
     </tbody>
   </table>
@@ -597,7 +597,7 @@ git push -u origin practice/rollback
 git revert HEAD --no-edit
 git push
 git log --oneline   # 打消しcommitが1つ追加されているのが見える</code></pre>
-      <p><strong>学びのポイント</strong>: <code>amend</code> と <code>reset --soft</code> はSHAを書き換える(履歴改変)。push済みなら <code>revert</code> 一択で新しい commit を積む。<span class="term" data-tip="SHA: commit を一意に識別する40文字のハッシュ値。短縮形は先頭7文字。">SHA</span> の変化を <code>git log --oneline</code> で確認する習慣が付けば、一人前です。</p>
+      <p><strong>学びのポイント</strong>: <code>amend</code> と <code>reset --soft</code> はSHAを書き換える(履歴改変)。push済みなら <code>revert</code> 一択で新しい commit を積む。<span class="term" tabindex="0" data-tip="SHA: commit を一意に識別する40文字のハッシュ値。短縮形は先頭7文字。">SHA</span> の変化を <code>git log --oneline</code> で確認する習慣が付けば、一人前です。</p>
     </div>
   </details>
 

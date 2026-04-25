@@ -86,7 +86,7 @@
 
   <div class="info-box">
     <span class="label">この章のゴール</span>
-    <p>毎朝9時、自分が関係するPRを<span class="term" data-tip="GitHubで他者のコードレビュー依頼として自分に割り当てられた、または自分が作成したopen状態のPull Request">open PR</span>から自動収集し、優先度付きでSlackに投下する<span class="term" data-tip="Claude Codeが提供するcron形式のスケジュール実行ツール。指定時刻にリモート/ローカルでClaudeセッションを起動する">CronCreate</span>ジョブをゼロから作ります。cron式の設計、<span class="term" data-tip="実行時のコンテキストを一切前提にしないプロンプト。過去ログ・直前の会話を見なくても単体で完結するように書く">self-contained</span>プロンプト、Slack通知、テンプレ化してチーム展開、までを一本で。<span class="term" data-tip="2026年1月時点の記述。最新仕様は公式ドキュメント参照">本章の記述は2026年1月時点</span>。</p>
+    <p>毎朝9時、自分が関係するPRを<span class="term" tabindex="0" data-tip="GitHubで他者のコードレビュー依頼として自分に割り当てられた、または自分が作成したopen状態のPull Request">open PR</span>から自動収集し、優先度付きでSlackに投下する<span class="term" tabindex="0" data-tip="Claude Codeが提供するcron形式のスケジュール実行ツール。指定時刻にリモート/ローカルでClaudeセッションを起動する">CronCreate</span>ジョブをゼロから作ります。cron式の設計、<span class="term" tabindex="0" data-tip="実行時のコンテキストを一切前提にしないプロンプト。過去ログ・直前の会話を見なくても単体で完結するように書く">self-contained</span>プロンプト、Slack通知、テンプレ化してチーム展開、までを一本で。<span class="term" tabindex="0" data-tip="2026年1月時点の記述。最新仕様は公式ドキュメント参照">本章の記述は2026年1月時点</span>。</p>
   </div>
 
   <!-- ===== Section 1: シナリオ ===== -->
@@ -116,7 +116,7 @@ graph LR
   <!-- ===== Section 2: cron設計 ===== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> cron式の設計: <code>0 9 * * 1-5</code></h2>
 
-  <p>CronCreateに渡すcron式は <code>0 9 * * 1-5</code>。<span class="term" data-tip="cron式は『分 時 日 月 曜日』の5フィールド。曜日は0(日)-6(土)で、1-5は月〜金を示す">5フィールド構文</span>で「平日の9:00ちょうど」を意味します。週末も含めたい人は <code>0 9 * * *</code> に。タイムゾーンはCronCreateツールのデフォルトで<strong>JST(Asia/Tokyo)が明示設定可能</strong>です。</p>
+  <p>CronCreateに渡すcron式は <code>0 9 * * 1-5</code>。<span class="term" tabindex="0" data-tip="cron式は『分 時 日 月 曜日』の5フィールド。曜日は0(日)-6(土)で、1-5は月〜金を示す">5フィールド構文</span>で「平日の9:00ちょうど」を意味します。週末も含めたい人は <code>0 9 * * *</code> に。タイムゾーンはCronCreateツールのデフォルトで<strong>JST(Asia/Tokyo)が明示設定可能</strong>です。</p>
 
   <div class="diagram-box">
     <div class="diagram-title">cron式5フィールドの分解</div>
@@ -175,14 +175,14 @@ graph LR
         <li><code>0 9 1 * *</code> — 毎月1日の朝9時(月次レポート)</li>
         <li><code>0 18 * * 5</code> — 毎週金曜18時(週次振り返り)</li>
       </ul>
-      <p><span class="term" data-tip="曜日フィールドは 0-6 (0=Sunday) か、sun/mon/tue/wed/thu/fri/sat の略記も可(実装依存)">曜日表記</span>は数字が無難。crontab.guru で検証するのを習慣に。</p>
+      <p><span class="term" tabindex="0" data-tip="曜日フィールドは 0-6 (0=Sunday) か、sun/mon/tue/wed/thu/fri/sat の略記も可(実装依存)">曜日表記</span>は数字が無難。crontab.guru で検証するのを習慣に。</p>
     </div>
   </details>
 
   <!-- ===== Section 3: プロンプト設計 ===== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> プロンプト設計: 自律動作する完全指示</h2>
 
-  <p>毎朝9時にリモートセッションで起動するプロンプトは、<strong>誰も見ていない環境で自走</strong>する必要があります。<span class="term" data-tip="CronCreateで起動されるリモートClaude Codeセッション。ユーザー介入なしに最後まで完結する必要がある">リモートトリガー</span>では対話できないので、指示は単体で完結させます。</p>
+  <p>毎朝9時にリモートセッションで起動するプロンプトは、<strong>誰も見ていない環境で自走</strong>する必要があります。<span class="term" tabindex="0" data-tip="CronCreateで起動されるリモートClaude Codeセッション。ユーザー介入なしに最後まで完結する必要がある">リモートトリガー</span>では対話できないので、指示は単体で完結させます。</p>
 
   <div class="diagram-box">
     <div class="diagram-title">プロンプトに必須の7ブロック</div>
@@ -279,7 +279,7 @@ graph LR
   <details class="more-box">
     <summary>もっと詳しく: 「沈黙を起こさない」設計思想</summary>
     <div class="more-body">
-      <p>朝会前に通知が来ないと、ユーザーは「ジョブ動いた? 通知バグ? PRゼロ?」と迷います。<span class="term" data-tip="結果がゼロや失敗でも通知を出す設計。『通知なし』という状態を存在させないことで、静かな故障(silent failure)を防ぐ">ゼロ件通知</span>を仕込むと「来ないこと=壊れている」と1:1で判断できるため、運用コストが劇的に下がります。異常時も空振り時も、必ず1通。</p>
+      <p>朝会前に通知が来ないと、ユーザーは「ジョブ動いた? 通知バグ? PRゼロ?」と迷います。<span class="term" tabindex="0" data-tip="結果がゼロや失敗でも通知を出す設計。『通知なし』という状態を存在させないことで、静かな故障(silent failure)を防ぐ">ゼロ件通知</span>を仕込むと「来ないこと=壊れている」と1:1で判断できるため、運用コストが劇的に下がります。異常時も空振り時も、必ず1通。</p>
     </div>
   </details>
 
@@ -499,7 +499,7 @@ done</code></pre>
         <li><strong>opt-in にする</strong> — 強制すると「通知疲れ」でミュートされる。希望者だけ</li>
         <li><strong>2週間で効果レビュー</strong> — 「通知を読む頻度」アンケート。読まれないなら頻度か粒度を変える</li>
       </ol>
-      <p><span class="term" data-tip="通知過多でユーザーが通知そのものを無視するようになる現象。一度起きると回復が難しい">notification fatigue</span>を起こすと、重要な通知まで無視されます。粒度設計が最重要。</p>
+      <p><span class="term" tabindex="0" data-tip="通知過多でユーザーが通知そのものを無視するようになる現象。一度起きると回復が難しい">notification fatigue</span>を起こすと、重要な通知まで無視されます。粒度設計が最重要。</p>
     </div>
   </details>
 
@@ -612,7 +612,7 @@ timezone: "Asia/Tokyo"
 
   <div class="info-box">
     <span class="label">2026年1月時点の注記</span>
-    <p>本章の <code>/schedule</code> サブコマンド、CronCreate の引数名、タイムゾーン指定方法は<strong>2026年1月時点</strong>のものです。Claude Code はアップデートが活発なため、<span class="term" data-tip="2026年1月時点の記述。最新は公式ドキュメント参照">--env / --env-from-secret / --one-shot</span> のフラグ名は変更される可能性があります。最新情報は公式ドキュメントで確認してください。</p>
+    <p>本章の <code>/schedule</code> サブコマンド、CronCreate の引数名、タイムゾーン指定方法は<strong>2026年1月時点</strong>のものです。Claude Code はアップデートが活発なため、<span class="term" tabindex="0" data-tip="2026年1月時点の記述。最新は公式ドキュメント参照">--env / --env-from-secret / --one-shot</span> のフラグ名は変更される可能性があります。最新情報は公式ドキュメントで確認してください。</p>
   </div>
 
   <div class="resources-section">

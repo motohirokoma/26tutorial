@@ -86,7 +86,7 @@
 
   <div class="info-box">
     <span class="label">この章のゴール</span>
-    <p>MCPを触っていれば必ず遭遇する「<strong>繋がらない・権限エラー・ツールが見つからない</strong>」系のトラブルを、<span class="term" data-tip="症状から原因を絞り込み、対処までつなげる思考プロセス。闇雲にググる前に、まずこの順で切り分けると早い">症状→原因→対処</span>の順で体系的に解決できるようになります。<code>claude mcp list</code>・起動ログ・サーバーログという3つの診断ツールを押さえれば、初見のエラーでも概ね10分以内に切り分け可能になります。</p>
+    <p>MCPを触っていれば必ず遭遇する「<strong>繋がらない・権限エラー・ツールが見つからない</strong>」系のトラブルを、<span class="term" tabindex="0" data-tip="症状から原因を絞り込み、対処までつなげる思考プロセス。闇雲にググる前に、まずこの順で切り分けると早い">症状→原因→対処</span>の順で体系的に解決できるようになります。<code>claude mcp list</code>・起動ログ・サーバーログという3つの診断ツールを押さえれば、初見のエラーでも概ね10分以内に切り分け可能になります。</p>
   </div>
 
   <div class="info-box">
@@ -146,7 +146,7 @@
   <p>特に初学者が混乱しやすいのは<strong>①と④の見分け</strong>です。①は<code>claude mcp list</code>で赤く落ちているのに対し、④は緑で繋がっているのにClaudeが呼び出さない、という違いがあります。</p>
 
   <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
-  <p><strong>実体験ベースの統計感</strong>: MCPで詰まった人の相談を受けると、<strong>半分以上が①(起動しない)</strong>で、しかもその8割が「コマンドパスの書き間違い」「JSON構文エラー」「<span class="term" data-tip="Node.js製MCPサーバーを一時インストールして実行するコマンド。node_modulesを事前配置する必要がない">npx</span>が見つからない」の3つに集約されます。つまり、<strong>落ち着いて設定ファイルを読み直すだけで大半は解く</strong>ことができます。</p>
+  <p><strong>実体験ベースの統計感</strong>: MCPで詰まった人の相談を受けると、<strong>半分以上が①(起動しない)</strong>で、しかもその8割が「コマンドパスの書き間違い」「JSON構文エラー」「<span class="term" tabindex="0" data-tip="Node.js製MCPサーバーを一時インストールして実行するコマンド。node_modulesを事前配置する必要がない">npx</span>が見つからない」の3つに集約されます。つまり、<strong>落ち着いて設定ファイルを読み直すだけで大半は解く</strong>ことができます。</p>
 
   <!-- ===== Section 2: 診断3点セット ===== -->
   <h2 data-section="07-02">
@@ -189,7 +189,7 @@ slack          user     stdio  disconnected npx -y @modelcontextprotocol/server-
 
   <h3>② Claude Code 起動ログ ― <code>--mcp-debug</code></h3>
 
-  <p>Claude Code自体を<span class="term" data-tip="--mcp-debugやCLAUDE_CODE_LOG=debug等の環境変数で、MCP関連の詳細ログをstderrに出すモード。起動コマンド・JSON-RPC通信・エラースタックが見える">デバッグモード</span>で起動すると、MCPの起動コマンド・JSON-RPC通信・スタックトレースまで見えます。</p>
+  <p>Claude Code自体を<span class="term" tabindex="0" data-tip="--mcp-debugやCLAUDE_CODE_LOG=debug等の環境変数で、MCP関連の詳細ログをstderrに出すモード。起動コマンド・JSON-RPC通信・エラースタックが見える">デバッグモード</span>で起動すると、MCPの起動コマンド・JSON-RPC通信・スタックトレースまで見えます。</p>
 
   <pre><code># macOS / Linux
 claude --mcp-debug
@@ -207,7 +207,7 @@ console.error(`[${new Date().toISOString()}] tool called: ${name}`);
 
   <div class="info-box">
     <span class="label">要注意: stdoutに出力すると壊れる</span>
-    <p><span class="term" data-tip="標準入出力でJSON-RPCをやりとりするMCPの通信方式。stdout=通信路なので、デバッグprint等を混ぜると即プロトコル破壊">stdio transport</span>ではstdoutが通信チャンネルそのものです。ログを<code>console.log</code>(=stdout)に書くとプロトコルが壊れ、「意味不明なパースエラー」の形で症状化します。<strong>ログは必ずstderrへ</strong>。</p>
+    <p><span class="term" tabindex="0" data-tip="標準入出力でJSON-RPCをやりとりするMCPの通信方式。stdout=通信路なので、デバッグprint等を混ぜると即プロトコル破壊">stdio transport</span>ではstdoutが通信チャンネルそのものです。ログを<code>console.log</code>(=stdout)に書くとプロトコルが壊れ、「意味不明なパースエラー」の形で症状化します。<strong>ログは必ずstderrへ</strong>。</p>
   </div>
 
   <!-- ===== Section 3: 症状→原因→対処の大表 ===== -->
@@ -236,7 +236,7 @@ console.error(`[${new Date().toISOString()}] tool called: ${name}`);
       <tr>
         <td><strong>JSON構文エラー</strong></td>
         <td>末尾カンマ／コメント混入／シングルクオート使用</td>
-        <td><code>.mcp.json</code>を<span class="term" data-tip="JSON構文を検査するオンライン/ローカルツール。jq やエディタ拡張で事前チェックすれば構文エラーの9割は防げる">jsonlint</span>に通す。VSCodeのJSONバリデータで赤線確認</td>
+        <td><code>.mcp.json</code>を<span class="term" tabindex="0" data-tip="JSON構文を検査するオンライン/ローカルツール。jq やエディタ拡張で事前チェックすれば構文エラーの9割は防げる">jsonlint</span>に通す。VSCodeのJSONバリデータで赤線確認</td>
       </tr>
       <tr>
         <td><strong>タイムアウト</strong><br/>(初回のみ長い)</td>
@@ -337,7 +337,7 @@ console.error(`[${new Date().toISOString()}] tool called: ${name}`);
   <ul class="icon-list">
     <li>
       <i data-lucide="file-warning" width="20" height="20"></i>
-      <div><strong>環境変数が展開されない</strong> — <code>"GITHUB_TOKEN": "$GITHUB_TOKEN"</code>のように書くと文字列のまま格納される。<code>env</code>フィールドには<strong>実値</strong>を書く(or 起動側の環境変数から<span class="term" data-tip="プロセス起動時にOSから継承される環境変数。.mcp.json側で明示指定しないなら、親プロセス(Claude Code)の環境変数がサーバーに渡る">inheritされる</span>設計のサーバーを選ぶ)</div>
+      <div><strong>環境変数が展開されない</strong> — <code>"GITHUB_TOKEN": "$GITHUB_TOKEN"</code>のように書くと文字列のまま格納される。<code>env</code>フィールドには<strong>実値</strong>を書く(or 起動側の環境変数から<span class="term" tabindex="0" data-tip="プロセス起動時にOSから継承される環境変数。.mcp.json側で明示指定しないなら、親プロセス(Claude Code)の環境変数がサーバーに渡る">inheritされる</span>設計のサーバーを選ぶ)</div>
     </li>
     <li>
       <i data-lucide="folder-lock" width="20" height="20"></i>
@@ -345,7 +345,7 @@ console.error(`[${new Date().toISOString()}] tool called: ${name}`);
     </li>
     <li>
       <i data-lucide="terminal" width="20" height="20"></i>
-      <div><strong><code>npx</code>がPATHにない</strong> — Node.jsを<span class="term" data-tip="nvm / fnm 等のNodeバージョン管理ツール。シェル起動時にPATHを動的追加するが、GUIから起動したアプリには反映されない場合がある">nvm/fnm</span>で入れていると、GUIアプリから見えないことがある。フルパス(<code>/Users/koma/.nvm/versions/node/v22.0.0/bin/npx</code>)を指定</div>
+      <div><strong><code>npx</code>がPATHにない</strong> — Node.jsを<span class="term" tabindex="0" data-tip="nvm / fnm 等のNodeバージョン管理ツール。シェル起動時にPATHを動的追加するが、GUIから起動したアプリには反映されない場合がある">nvm/fnm</span>で入れていると、GUIアプリから見えないことがある。フルパス(<code>/Users/koma/.nvm/versions/node/v22.0.0/bin/npx</code>)を指定</div>
     </li>
     <li>
       <i data-lucide="key-round" width="20" height="20"></i>
@@ -374,7 +374,7 @@ console.error(`[${new Date().toISOString()}] tool called: ${name}`);
       <tr><td><strong>403 Forbidden</strong></td><td>tokenは有効だが権限不足</td><td>scope / permission が足りない</td><td>必要scopeを追加したtokenを再発行(例: <code>repo</code>, <code>issues:write</code>)</td></tr>
       <tr><td><strong>404 Not Found</strong></td><td>対象が見つからない</td><td>リポ名タイポ／private repoだがtokenがpublic専用</td><td>repo名確認→tokenのrepo scope有無を確認</td></tr>
       <tr><td><strong>429 Too Many Requests</strong></td><td>レート制限</td><td>短時間に大量呼び出し</td><td>少し待つ／tokenのtier確認</td></tr>
-      <tr><td><strong>500 系</strong></td><td>サーバー側障害</td><td>GitHub/Slackの外的障害</td><td><span class="term" data-tip="各サービスの稼働状況ページ。障害時はまずここを確認。GitHubなら status.github.com">status page</span>確認→時間をおいて再試行</td></tr>
+      <tr><td><strong>500 系</strong></td><td>サーバー側障害</td><td>GitHub/Slackの外的障害</td><td><span class="term" tabindex="0" data-tip="各サービスの稼働状況ページ。障害時はまずここを確認。GitHubなら status.github.com">status page</span>確認→時間をおいて再試行</td></tr>
     </tbody>
   </table>
 
@@ -411,7 +411,7 @@ console.error(`[${new Date().toISOString()}] tool called: ${name}`);
     </li>
   </ul>
 
-  <p>また、<span class="term" data-tip="MCPの1回呼び出しでClaudeが応答を待つ最大時間。デフォルト60秒前後の実装が多い。長時間処理のサーバーを使うならサーバー側で進捗通知を返すのが王道">tool timeout</span>はサーバー側の実装に依存します。自作サーバーなら「30秒以上かかるtool」は作らず、ジョブ起動→別toolで結果取得、という分割をおすすめします。</p>
+  <p>また、<span class="term" tabindex="0" data-tip="MCPの1回呼び出しでClaudeが応答を待つ最大時間。デフォルト60秒前後の実装が多い。長時間処理のサーバーを使うならサーバー側で進捗通知を返すのが王道">tool timeout</span>はサーバー側の実装に依存します。自作サーバーなら「30秒以上かかるtool」は作らず、ジョブ起動→別toolで結果取得、という分割をおすすめします。</p>
 
   <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
   <p><strong>地味だが効く改善</strong>: 普段から<strong>必要なMCPだけ有効化</strong>するクセをつけてください。使わないMCPが10個も繋がっていると、Claudeのコンテキストにtool一覧が全部入り、応答が目に見えて遅くなります。<code>.mcp.json</code>をプロジェクト別に分ければ、「今日は<code>github</code>と<code>filesystem</code>だけ」と絞り込めます。</p>
@@ -432,7 +432,7 @@ console.error(`[${new Date().toISOString()}] tool called: ${name}`);
   <ul class="icon-list">
     <li>
       <i data-lucide="shield-check" width="20" height="20"></i>
-      <div><strong>公式・準公式を優先</strong> — <code>@modelcontextprotocol/*</code>配下は公式。それ以外は<span class="term" data-tip="悪意ある依存パッケージが正規風の名前で配布されるサプライチェーン攻撃。MCPサーバーはシェル実行権限を持つので影響範囲が広い">サプライチェーン攻撃</span>のリスクを常に意識</div>
+      <div><strong>公式・準公式を優先</strong> — <code>@modelcontextprotocol/*</code>配下は公式。それ以外は<span class="term" tabindex="0" data-tip="悪意ある依存パッケージが正規風の名前で配布されるサプライチェーン攻撃。MCPサーバーはシェル実行権限を持つので影響範囲が広い">サプライチェーン攻撃</span>のリスクを常に意識</div>
     </li>
     <li>
       <i data-lucide="file-lock-2" width="20" height="20"></i>

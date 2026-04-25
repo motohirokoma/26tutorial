@@ -92,7 +92,7 @@
   <!-- ===== Section 1: なぜ並列化するのか ===== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> なぜ並列化するのか: 時間 vs コストの構造</h2>
 
-  <p>Subagentを<span class="term" data-tip="順次実行。1つのタスクが終わってから次を開始する方式">直列</span>で呼ぶと、各タスク時間が足し算になります。<span class="term" data-tip="並列実行。独立したタスクを同時に走らせ、実時間を最長タスクに圧縮する方式">並列</span>にすると、実時間は<strong>最も遅いタスクの時間</strong>で済みます。3タスクが各90秒なら、直列は270秒、並列は90秒。3倍の高速化です。</p>
+  <p>Subagentを<span class="term" tabindex="0" data-tip="順次実行。1つのタスクが終わってから次を開始する方式">直列</span>で呼ぶと、各タスク時間が足し算になります。<span class="term" tabindex="0" data-tip="並列実行。独立したタスクを同時に走らせ、実時間を最長タスクに圧縮する方式">並列</span>にすると、実時間は<strong>最も遅いタスクの時間</strong>で済みます。3タスクが各90秒なら、直列は270秒、並列は90秒。3倍の高速化です。</p>
 
   <div class="diagram-box">
     <div class="diagram-title">直列 vs 並列 タイムチャート(3タスク × 90秒)</div>
@@ -129,7 +129,7 @@
   <!-- ===== Section 2: 並列化の判断軸 独立性 ===== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 並列化の判断軸: 独立性(Independence)</h2>
 
-  <p>並列化できるかどうかの唯一の判断基準は「<strong><span class="term" data-tip="タスク間に依存関係がなく、互いの結果を参照せずに完遂できる性質">独立性</span></strong>」です。タスクAの結果をタスクBが使うなら並列化できません。逆に「5つの異なる切り口で同じ問いを調べる」「ファイルごとにレビューする」などは典型的な並列向き。</p>
+  <p>並列化できるかどうかの唯一の判断基準は「<strong><span class="term" tabindex="0" data-tip="タスク間に依存関係がなく、互いの結果を参照せずに完遂できる性質">独立性</span></strong>」です。タスクAの結果をタスクBが使うなら並列化できません。逆に「5つの異なる切り口で同じ問いを調べる」「ファイルごとにレビューする」などは典型的な並列向き。</p>
 
   <div class="diagram-box">
     <div class="diagram-title">並列化できるか判定フロー</div>
@@ -179,7 +179,7 @@ graph TD
   <!-- ===== Section 3: 1メッセージ内で複数Agentを呼ぶ ===== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> 1メッセージ内で複数Agent call(並列起動の作法)</h2>
 
-  <p>Claude Codeの並列化は「<strong>同じアシスタントメッセージ内で <span class="term" data-tip="Agentツール。Subagentを起動するツール。1メッセージで複数呼び出すと並列実行される">Agentツール</span>を複数回連続呼び出しする</strong>」ことで実現します。別メッセージに分けると直列になるので注意。</p>
+  <p>Claude Codeの並列化は「<strong>同じアシスタントメッセージ内で <span class="term" tabindex="0" data-tip="Agentツール。Subagentを起動するツール。1メッセージで複数呼び出すと並列実行される">Agentツール</span>を複数回連続呼び出しする</strong>」ことで実現します。別メッセージに分けると直列になるので注意。</p>
 
   <h3>同時呼び出しの構造(3 Agent calls)</h3>
 
@@ -201,7 +201,7 @@ graph TD
 
   <div class="info-box">
     <span class="label">重要: 「同じメッセージ内」の意味</span>
-    <p>ここでいう「メッセージ」はアシスタント(Claude)の1ターンの出力を指します。<strong>ユーザーから見ると1回の応答の中で複数のtool_useが並ぶ</strong>だけ。ユーザーは「Subagentを3つ並列で起動する」と依頼するだけでよく、並列化自体は<span class="term" data-tip="2026年1月時点の記述。最新は公式ドキュメント参照">Claudeが自動的に</span>1メッセージ内にまとめてくれます。</p>
+    <p>ここでいう「メッセージ」はアシスタント(Claude)の1ターンの出力を指します。<strong>ユーザーから見ると1回の応答の中で複数のtool_useが並ぶ</strong>だけ。ユーザーは「Subagentを3つ並列で起動する」と依頼するだけでよく、並列化自体は<span class="term" tabindex="0" data-tip="2026年1月時点の記述。最新は公式ドキュメント参照">Claudeが自動的に</span>1メッセージ内にまとめてくれます。</p>
   </div>
 
   <h3>手順: 3独立タスクを並列で投げる</h3>
@@ -216,7 +216,7 @@ graph TD
   <!-- ===== Section 4: バッチング戦略 ===== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> バッチング戦略: 全並列 vs 3-5ずつに分割</h2>
 
-  <p>「10タスクあるから10並列で!」は必ずしも正解ではありません。並列数が増えるほど、<strong>結果集約が破綻しやすく、1件失敗の影響も大きい</strong>。実用の落とし所は<span class="term" data-tip="Batching。複数タスクを小さなグループに分けて段階的に実行する方式">バッチング</span>で3〜5個ずつ処理することです。</p>
+  <p>「10タスクあるから10並列で!」は必ずしも正解ではありません。並列数が増えるほど、<strong>結果集約が破綻しやすく、1件失敗の影響も大きい</strong>。実用の落とし所は<span class="term" tabindex="0" data-tip="Batching。複数タスクを小さなグループに分けて段階的に実行する方式">バッチング</span>で3〜5個ずつ処理することです。</p>
 
   <div class="compare-cards">
     <div class="cc neutral">
@@ -291,7 +291,7 @@ graph TD
   <!-- ===== Section 6: コスト管理 ===== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> コスト管理: 並列=同時課金という現実</h2>
 
-  <p>並列化で縮むのは<strong>時間だけ</strong>、トークン量は直列と同じです。しかも<strong>同じ瞬間に一気に消費</strong>されるため、Claude Max等の利用枠に短時間で負荷がかかります。2026年1月時点、Claude Code(Max契約)では<span class="term" data-tip="2026年1月時点の記述。最新は公式ドキュメント参照">使用制限ウィンドウ</span>が5時間単位で計算されるため、並列数が多いほどウィンドウ上限に早く到達します。</p>
+  <p>並列化で縮むのは<strong>時間だけ</strong>、トークン量は直列と同じです。しかも<strong>同じ瞬間に一気に消費</strong>されるため、Claude Max等の利用枠に短時間で負荷がかかります。2026年1月時点、Claude Code(Max契約)では<span class="term" tabindex="0" data-tip="2026年1月時点の記述。最新は公式ドキュメント参照">使用制限ウィンドウ</span>が5時間単位で計算されるため、並列数が多いほどウィンドウ上限に早く到達します。</p>
 
   <div class="diagram-box">
     <div class="diagram-title">並列数とトークン消費の推移(5時間ウィンドウ視点)</div>

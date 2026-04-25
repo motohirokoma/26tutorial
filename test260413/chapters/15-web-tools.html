@@ -123,7 +123,7 @@
   <!-- ===== Section 1: 2つのツールの違い ===== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> WebFetch と WebSearch は別物 — 役割を1行で</h2>
 
-  <p>まず混同を殺します。<span class="term" data-tip="WebFetch: 指定したURLのページをClaudeが取得して中身を読み取るツール。URLが既に決まっている時に使う。">WebFetch</span> は<strong>「URLを知っている前提で、そのページの中身を取ってくる」</strong>ツール。<span class="term" data-tip="WebSearch: 検索クエリを投げて関連するWebページの一覧(タイトル+スニペット+URL)を返すツール。URLが分からない時に使う。">WebSearch</span> は<strong>「URLを知らないので、まず検索して候補を出す」</strong>ツール。片方ずつ役割を固定すれば迷いません。</p>
+  <p>まず混同を殺します。<span class="term" tabindex="0" data-tip="WebFetch: 指定したURLのページをClaudeが取得して中身を読み取るツール。URLが既に決まっている時に使う。">WebFetch</span> は<strong>「URLを知っている前提で、そのページの中身を取ってくる」</strong>ツール。<span class="term" tabindex="0" data-tip="WebSearch: 検索クエリを投げて関連するWebページの一覧(タイトル+スニペット+URL)を返すツール。URLが分からない時に使う。">WebSearch</span> は<strong>「URLを知らないので、まず検索して候補を出す」</strong>ツール。片方ずつ役割を固定すれば迷いません。</p>
 
   <div class="diagram-box">
     <div class="diagram-title">WebFetch vs WebSearch の役割分担</div>
@@ -184,7 +184,7 @@
   <!-- ===== Section 2: ここがプロの境目 ===== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> ここがプロの境目 — 記憶ではなく取得で答えさせる</h2>
 
-  <p>初級者は「Claudeは物知りだから聞けば教えてくれる」と考えがちです。しかしLLMには<span class="term" data-tip="ナレッジカットオフ: モデルが学習した最後の日付。それ以降の情報はモデルの記憶には存在しない。">ナレッジカットオフ</span>があり、<strong>数カ月〜1年前までの情報しか記憶にありません</strong>。特にAPI仕様やSDKのバージョン差分、リリースされたばかりの機能は記憶ベースの答えが平気で嘘を言います。</p>
+  <p>初級者は「Claudeは物知りだから聞けば教えてくれる」と考えがちです。しかしLLMには<span class="term" tabindex="0" data-tip="ナレッジカットオフ: モデルが学習した最後の日付。それ以降の情報はモデルの記憶には存在しない。">ナレッジカットオフ</span>があり、<strong>数カ月〜1年前までの情報しか記憶にありません</strong>。特にAPI仕様やSDKのバージョン差分、リリースされたばかりの機能は記憶ベースの答えが平気で嘘を言います。</p>
 
   <div class="info-box" style="border-left-color: #D97757;">
     <span class="label">ここがプロの境目</span>
@@ -298,7 +298,7 @@ graph TD
   <details class="more-box">
     <summary>もっと詳しく: WebFetchの挙動の細かい話</summary>
     <div class="more-body">
-      <p>WebFetch は対象ページを HTTP GET で取得し、HTMLをテキストに近い形へ解析してから <code>prompt</code> 引数と組み合わせてClaudeに渡します。<strong>JavaScript で動的に描画されるSPAの中身</strong>は取れないことが多く、その場合はAPIエンドポイント(例: <code>/api/...</code>)を直接叩くURLに変える、あるいは<span class="term" data-tip="WARC: Webアーカイブ保存形式。Wayback Machineなどが使う。">WARC</span>化されたミラー(Wayback Machine等)のURLを使うと成功率が上がります。<br>また、取得は<strong>キャッシュされる</strong>ことがあるので、変わったばかりのページを再取得したい時は <code>prompt</code> の中で「キャッシュを無視して最新を取って」と明示すると有効です(モデルの判断で再フェッチを促す)。</p>
+      <p>WebFetch は対象ページを HTTP GET で取得し、HTMLをテキストに近い形へ解析してから <code>prompt</code> 引数と組み合わせてClaudeに渡します。<strong>JavaScript で動的に描画されるSPAの中身</strong>は取れないことが多く、その場合はAPIエンドポイント(例: <code>/api/...</code>)を直接叩くURLに変える、あるいは<span class="term" tabindex="0" data-tip="WARC: Webアーカイブ保存形式。Wayback Machineなどが使う。">WARC</span>化されたミラー(Wayback Machine等)のURLを使うと成功率が上がります。<br>また、取得は<strong>キャッシュされる</strong>ことがあるので、変わったばかりのページを再取得したい時は <code>prompt</code> の中で「キャッシュを無視して最新を取って」と明示すると有効です(モデルの判断で再フェッチを促す)。</p>
     </div>
   </details>
 
@@ -312,13 +312,13 @@ graph TD
   <!-- ===== Section 5: プライバシー意識 ===== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> プライバシーと落とし穴</h2>
 
-  <p>Web系ツールには独特の落とし穴があります。特に<span class="term" data-tip="内部URL: 社内イントラやローカルホスト、認証必須の管理画面など、外部から到達できないURL。">内部URL</span>と<span class="term" data-tip="PII: Personally Identifiable Information。個人を特定できる情報(氏名・メール・住所等)。">PII</span>の扱いです。</p>
+  <p>Web系ツールには独特の落とし穴があります。特に<span class="term" tabindex="0" data-tip="内部URL: 社内イントラやローカルホスト、認証必須の管理画面など、外部から到達できないURL。">内部URL</span>と<span class="term" tabindex="0" data-tip="PII: Personally Identifiable Information。個人を特定できる情報(氏名・メール・住所等)。">PII</span>の扱いです。</p>
 
   <table>
     <thead><tr><th>落とし穴</th><th>症状</th><th>対処</th></tr></thead>
     <tbody>
       <tr><td>認証必須ページ</td><td>ログイン画面のHTMLだけ返ってくる</td><td>API key付きエンドポイントを直接指定 / MCP化する(Ch17)</td></tr>
-      <tr><td>社内URL</td><td>Claudeから到達不可</td><td>本文をコピペで貼る or <span class="term" data-tip="VPN: 仮想プライベートネットワーク。社内リソースへの安全な接続手段。">VPN</span>経由の代替URLを使う</td></tr>
+      <tr><td>社内URL</td><td>Claudeから到達不可</td><td>本文をコピペで貼る or <span class="term" tabindex="0" data-tip="VPN: 仮想プライベートネットワーク。社内リソースへの安全な接続手段。">VPN</span>経由の代替URLを使う</td></tr>
       <tr><td>PII入りURL</td><td>クエリ文字列に氏名・メールが入る</td><td>URLをマスク(<code>?email=***</code>)してから渡す</td></tr>
       <tr><td>レート制限</td><td>同一ドメインの連続取得で失敗</td><td>並列数を絞る / 間をあける / キャッシュ活用</td></tr>
     </tbody>
