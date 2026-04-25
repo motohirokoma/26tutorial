@@ -384,6 +384,33 @@ window.tutorialProgress = {
   },
 };
 
+// ============ Clawd ランダムアニメーション ============
+(function initClawdAnimations() {
+  const ANIMS = ['hop', 'wiggle', 'wobble', 'spin', 'pop', 'crab'];
+  const SELECTOR = '.clawd, .clawd-heading, .clawd-aside, .clawd-btn';
+
+  function trigger(el) {
+    if (el.dataset.animating === '1') return;
+    const cls = 'anim-' + ANIMS[Math.floor(Math.random() * ANIMS.length)];
+    el.classList.add(cls);
+    el.dataset.animating = '1';
+    el.addEventListener('animationend', () => {
+      el.classList.remove(cls);
+      delete el.dataset.animating;
+    }, { once: true });
+  }
+
+  document.addEventListener('mouseenter', (e) => {
+    const t = e.target;
+    if (t && t.matches && t.matches(SELECTOR)) trigger(t);
+  }, true);
+
+  document.addEventListener('click', (e) => {
+    const el = e.target.closest && e.target.closest(SELECTOR);
+    if (el) trigger(el);
+  });
+})();
+
 // ============ Term tooltip tap toggle (iOS Safari対応) ============
 (function initTermTooltips() {
   document.addEventListener('click', (e) => {
