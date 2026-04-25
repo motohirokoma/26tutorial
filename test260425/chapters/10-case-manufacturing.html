@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23262260%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>業界ケース②: 製造 - MK's Enterprise AI/DX Basics</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #262260; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Enterprise AI/DX Basics
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1"><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2"><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="../index.html#phase3" class="active"><span class="phase-name">Advanced</span><span class="phase-pct" id="pct-advanced">0%</span></a></li>
+      <li><a href="../index.html#phase4"><span class="phase-name">Capstone</span><span class="phase-pct" id="pct-capstone">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.10</span>
+    業界ケース②: 製造
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18" stroke-dasharray="0 113.1" stroke-dashoffset="0" transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 14 sections</text>
+    </svg>
+    <div class="progress-info">0h / 23h completed</div>
+  </div>
+  <div class="section-label">Prerequisites</div>
+  <ul><li><a href="00-prerequisites.html"><span class="status-dot"></span> 前提知識</a></li></ul>
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-overview.html"><span class="status-dot" data-chapter="01"></span> AI・DX全体像</a></li>
+    <li><a href="02-consulting-thinking.html"><span class="status-dot" data-chapter="02"></span> 戦略コンサル思考</a></li>
+  </ul>
+  <div class="section-label">Core</div>
+  <ul>
+    <li><a href="03-llm-fundamentals.html"><span class="status-dot" data-chapter="03"></span> 生成AI/LLM 本質編</a></li>
+    <li><a href="04-ml-data-infra.html"><span class="status-dot" data-chapter="04"></span> ML / データ基盤</a></li>
+    <li><a href="05-physical-ai.html"><span class="status-dot" data-chapter="05"></span> フィジカルAI</a></li>
+    <li><a href="06-poc-to-delivery.html"><span class="status-dot" data-chapter="06"></span> PoCから本番デリバリー</a></li>
+  </ul>
+  <div class="section-label">Advanced</div>
+  <ul>
+    <li><a href="07-industry-foresight.html"><span class="status-dot" data-chapter="07"></span> 業界未来予測</a></li>
+    <li><a href="08-insight-proposal.html"><span class="status-dot" data-chapter="08"></span> インサイト型提案</a></li>
+    <li><a href="09-case-finance.html"><span class="status-dot" data-chapter="09"></span> 金融ケース</a></li>
+    <li><a href="10-case-manufacturing.html" class="active"><span class="status-dot" data-chapter="10"></span> 製造ケース</a></li>
+    <li><a href="11-case-defense.html"><span class="status-dot" data-chapter="11"></span> 防衛ケース</a></li>
+  </ul>
+  <div class="section-label">Capstone</div>
+  <ul>
+    <li><a href="12-ethics-regulation.html"><span class="status-dot" data-chapter="12"></span> 倫理・規制</a></li>
+    <li><a href="13-capstone-case.html"><span class="status-dot" data-chapter="13"></span> 統合ケース演習</a></li>
+    <li><a href="14-final-exercise.html"><span class="status-dot" data-chapter="14"></span> 最終演習問題</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 3: Advanced &gt; Chapter 10</div>
+  <h1>業界ケース②: 製造 — 予兆保全・品質検査・SCM・フィジカルAI実装</h1>
+  <p class="subtitle">日本の主力産業、製造業はAI/DXによって最も劇的に再定義される業界の1つ。本章では予兆保全・品質検査・SCM(サプライチェーン)とフィジカルAIの工場実装まで、提案で使う具体的なユースケースと技術構成を扱います。</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 90分</span>
+    <span class="badge">Phase: Advanced</span>
+    <span class="badge">難易度: ★★★☆☆</span>
+  </div>
+
+  <div class="info-box" style="margin-top: 16px;">
+    <span class="label">本章の射程</span>
+    <p>本章の記述は2026年4月時点の情報に基づきます。製造業は装置産業ごとに事情が異なるため、本章では汎用的な視点で骨格を扱います。</p>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></span>1. 製造業の地殻変動</h2>
+
+  <ul class="icon-list">
+    <li><i data-lucide="users" width="20" height="20"></i><div><strong>① 人手不足の常態化</strong> — 日本だけで製造業労働者は5年で15%減、若手の流入も乏しい</div></li>
+    <li><i data-lucide="trending-up" width="20" height="20"></i><div><strong>② 中国製造業の高度化</strong> — EV・電池・産業機械で日本の地位を揺るがす、価格競争激化</div></li>
+    <li><i data-lucide="shield" width="20" height="20"></i><div><strong>③ サプライチェーン分断</strong> — 米中対立、ウクライナ戦争、台湾有事懸念で「効率」より「強靱性」</div></li>
+    <li><i data-lucide="cpu" width="20" height="20"></i><div><strong>④ フィジカルAI登場</strong> — Tesla・Figure 等の汎用ヒューマノイドが工場ライン投入を始める</div></li>
+    <li><i data-lucide="leaf" width="20" height="20"></i><div><strong>⑤ 脱炭素圧力</strong> — Scope3排出開示義務、サプライチェーン全体の見える化が必須に</div></li>
+  </ul>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></span>2. 予兆保全 — 機械の「健康診断」</h2>
+
+  <p>装置産業の悪夢は「予期せぬ停止」。1日のラインストップで数千万〜数億円の損失。<strong>予兆保全(Predictive Maintenance)</strong>はAI/DXの本丸ユースケースです。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">予兆保全の3レベル進化</div>
+    <pre class="mermaid">
+graph LR
+  L1["L1: 事後保全<br/>壊れたら修理"] --> L2["L2: 予防保全<br/>定期メンテ"]
+  L2 --> L3["L3: 予兆保全<br/>故障前に検知"]
+  L3 --> L4["L4: 規範保全<br/>最適タイミング推薦"]
+    </pre>
+    <div class="diagram-caption">L1→L4 へ進むほどコスト効率と稼働率が上がる。多くの工場は L2、AI/DX で L3-L4 へ。</div>
+  </div>
+
+  <h3>予兆保全の典型構成</h3>
+
+  <div class="diagram-box">
+    <div class="diagram-title">センサーから推論までのデータフロー</div>
+    <pre class="mermaid">
+graph LR
+  Sensor["IoTセンサー<br/>(振動/温度/電流)"] --> Edge["エッジゲートウェイ<br/>1次フィルタ"]
+  Edge --> Stream["ストリーミング<br/>処理"]
+  Stream --> ML["異常検知ML<br/>(LSTM/Autoencoder)"]
+  ML --> Alert{"異常?"}
+  Alert -- "Yes" --> Notify["保全担当通知"]
+  Alert -- "No" --> Store[(履歴DB)]
+  Store --> Retrain["定期再学習"]
+    </pre>
+    <div class="diagram-caption">センサー → エッジ前処理 → 異常検知ML → アラート、のシンプルなパイプライン。但し各装置の特性で個別チューニングが必要。</div>
+  </div>
+
+  <h3>予兆保全の効果(典型値)</h3>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-num">30<small>-50%</small></div>
+      <div class="stat-label">突発停止削減</div>
+      <div class="stat-trend up">↑ 麦事業全体で</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">20<small>%</small></div>
+      <div class="stat-label">保全コスト削減</div>
+      <div class="stat-trend up">↑ 過剰メンテ排除</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">5<small>-15%</small></div>
+      <div class="stat-label">設備寿命延長</div>
+      <div class="stat-trend up">↑ 適切なタイミング保全</div>
+    </div>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></span>3. 品質検査 — 目視からAIへ</h2>
+
+  <p>製造業のもう1つの主戦場が画像AIによる品質検査。これは深層学習(CNN)が最も実用化されてきた領域。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">AI検査の構成パターン</div>
+    <svg viewBox="0 0 480 240" width="100%" style="max-width:480px; display:block; margin:0 auto;">
+      <rect x="20" y="40" width="100" height="50" fill="#e0dff0" stroke="#262260" rx="6"/>
+      <text x="70" y="70" text-anchor="middle" font-size="11" font-weight="700" fill="#262260">高速カメラ</text>
+      <line x1="120" y1="65" x2="160" y2="65" stroke="#262260" stroke-width="2" marker-end="url(#a3)"/>
+
+      <rect x="160" y="40" width="100" height="50" fill="#e0dff0" stroke="#262260" rx="6"/>
+      <text x="210" y="70" text-anchor="middle" font-size="11" font-weight="700" fill="#262260">エッジAI<br/>(GPU/NPU)</text>
+      <line x1="260" y1="65" x2="300" y2="65" stroke="#262260" stroke-width="2" marker-end="url(#a3)"/>
+
+      <rect x="300" y="40" width="100" height="50" fill="#dcfce7" stroke="#16a34a" rx="6"/>
+      <text x="350" y="60" text-anchor="middle" font-size="10" font-weight="700" fill="#15803d">良品/不良</text>
+      <text x="350" y="78" text-anchor="middle" font-size="9" fill="#15803d">数十ms以内</text>
+
+      <rect x="20" y="120" width="100" height="50" fill="#fef3c7" stroke="#d97706" rx="6"/>
+      <text x="70" y="150" text-anchor="middle" font-size="11" font-weight="700" fill="#92400e">難判定品</text>
+      <line x1="120" y1="145" x2="160" y2="145" stroke="#d97706" stroke-width="2" marker-end="url(#a4)"/>
+
+      <rect x="160" y="120" width="100" height="50" fill="#fef3c7" stroke="#d97706" rx="6"/>
+      <text x="210" y="150" text-anchor="middle" font-size="11" font-weight="700" fill="#92400e">クラウドAI<br/>(詳細解析)</text>
+      <line x1="260" y1="145" x2="300" y2="145" stroke="#d97706" stroke-width="2" marker-end="url(#a4)"/>
+
+      <rect x="300" y="120" width="120" height="50" fill="#fee2e2" stroke="#dc2626" rx="6"/>
+      <text x="360" y="140" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">人間最終確認</text>
+      <text x="360" y="158" text-anchor="middle" font-size="9" fill="#b91c1c">境界品のみ</text>
+
+      <text x="240" y="200" text-anchor="middle" font-size="11" fill="#262260">エッジで一次判定 + クラウドで詳細 + 人間が境界判定</text>
+
+      <defs>
+        <marker id="a3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#262260"/></marker>
+        <marker id="a4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#d97706"/></marker>
+      </defs>
+    </svg>
+    <div class="diagram-caption">3層構造: エッジで高速判定 → クラウドで難判定 → 人間が最終境界判定。「全部AI」ではなく「人とAIの分業」が現実解。</div>
+  </div>
+
+  <h3>品質検査AI 導入の障壁とその対策</h3>
+
+  <table>
+    <thead><tr><th>障壁</th><th>対策</th></tr></thead>
+    <tbody>
+      <tr><td><strong>不良品データが少ない</strong></td><td>データ拡張(Augmentation)、合成データ(Synthetic data)、Few-shot Learning</td></tr>
+      <tr><td><strong>新製品ごとに学習し直し</strong></td><td>Transfer Learning、メタ学習で素早く適応</td></tr>
+      <tr><td><strong>人間より精度が低いと感じられる</strong></td><td>Recall優先設計、難判定品は人間レビュー、AI と人間の役割分担を明確化</td></tr>
+      <tr><td><strong>検査結果の説明が必要</strong></td><td>Grad-CAM 等で「どこが不良と判定したか」を可視化</td></tr>
+    </tbody>
+  </table>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></span>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></span>4. SCM(サプライチェーン)— 強靱性と効率の両立</h2>
+
+  <p>2020年代の製造業の最大課題が「サプライチェーンの強靱性」。コロナ・ウクライナ・米中対立で「効率最優先」のグローバル分業が崩れています。</p>
+
+  <h3>SCM AIの3軸</h3>
+
+  <div class="compare-cards">
+    <div class="cc neutral">
+      <span class="cc-label">需要予測</span>
+      <h4>何が・いつ・どれだけ売れるか</h4>
+      <p>過去データ + 外部要因(天気・イベント・SNS等) + LLMによる定性情報の構造化。<br>
+      <strong>効果</strong>: 過剰在庫20-40%削減、欠品率半減</p>
+    </div>
+    <div class="cc neutral">
+      <span class="cc-label">在庫最適化</span>
+      <h4>どこに・いくつ持つか</h4>
+      <p>需要予測 × 物流コスト × リードタイム × リスクで動的最適化。<br>
+      <strong>効果</strong>: 運転資金10-20%削減</p>
+    </div>
+  </div>
+
+  <div class="compare-cards">
+    <div class="cc neutral">
+      <span class="cc-label">サプライヤーリスク</span>
+      <h4>調達リスクの可視化</h4>
+      <p>サプライヤーの財務状況・地政学リスク・天候・社会情勢をAI監視。代替サプライヤーを予め準備。<br>
+      <strong>効果</strong>: ライン停止リスク半減</p>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">統合価値</span>
+      <h4>強靱性 + 効率の両立</h4>
+      <p>3軸を統合すると、「リスクが見えるから過剰在庫を持たなくて良い」状態に。<br>
+      従来トレードオフだった「強靱性 vs 効率」が両立する。</p>
+    </div>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></span>5. フィジカルAI実装 — ヒューマノイドが工場へ</h2>
+
+  <p>2026年が本格スタート、2028年から普及期。Ch05 と接続する最も具体的な実装場面が製造現場です。</p>
+
+  <h3>導入の段階的アプローチ</h3>
+
+  <div class="steps">
+    <div class="step done"><div class="step-num">1</div><div class="step-label">2025-26</div><div class="step-desc">パイロット 5-10体</div></div>
+    <div class="step done"><div class="step-num">2</div><div class="step-label">2026-27</div><div class="step-desc">単一ライン 50体</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-label">2027-28</div><div class="step-desc">単一工場 数百体</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-label">2028-30</div><div class="step-desc">全社展開 千体級</div></div>
+  </div>
+
+  <h3>適用に向く業務 vs 向かない業務</h3>
+
+  <table>
+    <thead><tr><th>向く</th><th>向かない</th></tr></thead>
+    <tbody>
+      <tr><td>パレタイズ(箱の積み上げ)</td><td>細かい精密組立(熟練工の領域)</td></tr>
+      <tr><td>軽量物搬送</td><td>不安定な環境での力作業</td></tr>
+      <tr><td>検品の補助</td><td>難しい判断を伴う品質保証</td></tr>
+      <tr><td>夜間・週末稼働</td><td>クリーンルーム等の特殊環境</td></tr>
+      <tr><td>定型作業の繰り返し</td><td>頻繁な治具変更を伴う作業</td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-box">
+    <span class="label">提案で押さえるべきポイント</span>
+    <p>顧客に「全部置き換える」と提案すると拒否反応。「<strong>人手不足の最も困っているライン</strong>から、5-10体のパイロット」が現実的なエントリ。Ch05 の Exercise 2 と同じパターンです。</p>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></span>6. 製造業AI市場の主要プレイヤー</h2>
+
+  <table>
+    <thead><tr><th>領域</th><th>主要プレイヤー</th></tr></thead>
+    <tbody>
+      <tr><td>予兆保全プラットフォーム</td><td>GE Digital、Siemens MindSphere、PTC ThingWorx、Microsoft Azure IoT</td></tr>
+      <tr><td>品質検査AI</td><td>Cognex、Keyence(国内)、Landing AI、Mech-Mind</td></tr>
+      <tr><td>SCM最適化</td><td>SAP IBP、Oracle SCM、Blue Yonder、Kinaxis</td></tr>
+      <tr><td>デジタルツイン</td><td>NVIDIA Omniverse、Dassault 3DEXPERIENCE、Siemens NX</td></tr>
+      <tr><td>ヒューマノイド</td><td>Tesla Optimus、Figure、Boston Dynamics、Apptronik、Unitree</td></tr>
+    </tbody>
+  </table>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></span>7. 章のまとめ</h2>
+
+  <ul class="icon-list">
+    <li><i data-lucide="check-circle" width="20" height="20"></i><div>製造業の地殻変動: 人手不足・中国攻勢・SC分断・フィジカルAI・脱炭素</div></li>
+    <li><i data-lucide="check-circle" width="20" height="20"></i><div><strong>予兆保全</strong>はAI/DXの本丸。L3-L4 へ進化、突発停止30-50%削減</div></li>
+    <li><i data-lucide="check-circle" width="20" height="20"></i><div><strong>品質検査AI</strong>は3層構造(エッジ+クラウド+人間)が現実解</div></li>
+    <li><i data-lucide="check-circle" width="20" height="20"></i><div><strong>SCM</strong>は需要予測 + 在庫最適化 + サプライヤーリスクの3軸統合</div></li>
+    <li><i data-lucide="check-circle" width="20" height="20"></i><div><strong>フィジカルAI</strong>は段階的導入、人手不足ラインから5-10体で開始</div></li>
+  </ul>
+
+  <!-- Exercises -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></span>Exercise</h2>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>予兆保全の評価指標を決める</h4>
+    <p>顧客は中堅食品メーカー、20の充填ラインがある。突発停止1回で平均500万円損失。AI予兆保全のPoC評価指標を3つ書いてください。</p>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <ol>
+        <li><strong>① 突発停止削減率</strong>: 過去1年比、月次集計。目標: 40%削減</li>
+        <li><strong>② 誤検知率(False Positive)</strong>: AIが警告を出したが実際は故障しなかった率。目標: 10%以下(高すぎると現場が無視)</li>
+        <li><strong>③ 警告から実故障までの平均時間</strong>: 短すぎると対応不能、長すぎると過剰警告。目標: 24-72時間前の警告を80%以上達成</li>
+      </ol>
+      <p>合わせて<strong>金額換算</strong>: 突発停止 月10件 × 500万円 × 40%削減 = 月2,000万円、年2.4億円のインパクト</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>製造業向け中期DX提案</h4>
+    <p>顧客は中堅自動車部品メーカー(売上1,200億円、工場8箇所、2万SKU)。経営課題は「中国メーカーの低コスト攻勢」+「人手不足」。3年DX戦略を1ページで提案してください。</p>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><strong>━━━ 業界の未来(2029) ━━━</strong></p>
+      <ul>
+        <li>中国メーカーが日本部品メーカーの主要顧客から30%シェアを奪う</li>
+        <li>人手不足で日本の工場稼働率は10-15%低下</li>
+        <li>フィジカルAI が大手3社の工場で本格稼働、コスト構造が再定義</li>
+      </ul>
+      <p><strong>━━━ 御社の機会 ━━━</strong></p>
+      <ul>
+        <li>「品質+納期」を武器にした高付加価値ポジショニング</li>
+        <li>AI/DX で生産性30%向上 → 人件費圧迫を回避し中国対比の価格競争力を維持</li>
+        <li>サプライチェーン強靱化により「日本品質」をブランド化</li>
+      </ul>
+      <p><strong>━━━ 3年ロードマップ ━━━</strong></p>
+      <ul>
+        <li><strong>Year 1(基礎)</strong>: 主要3工場で予兆保全 + 品質検査AI、3億円。突発停止30%削減、不良品率20%削減</li>
+        <li><strong>Year 2(拡大)</strong>: 全8工場展開 + SCM最適化、5億円。需要予測精度向上、在庫25%削減</li>
+        <li><strong>Year 3(構造変革)</strong>: 主力工場でヒューマノイド50体投入 + 全社デジタルツイン、5億円</li>
+      </ul>
+      <p><strong>━━━ 期待効果(3年累計) ━━━</strong></p>
+      <ul>
+        <li>生産コスト 25%削減(年100億円規模)</li>
+        <li>不良品率 50%削減</li>
+        <li>労働生産性 35%向上</li>
+        <li>3年累計 純利益増 +60億円、投資 13億円、ROI 4.6倍</li>
+      </ul>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>さらに深めるために</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span> <a href="https://www.weforum.org/projects/lighthouse-network/" target="_blank" rel="noopener">WEF Lighthouse Network</a> — 世界最先端のAI製造工場事例集</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://www.meti.go.jp/policy/mono_info_service/connected_industries/" target="_blank" rel="noopener">経産省 Connected Industries</a> — 日本の製造業DX政策</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://www.deloitte.com/global/en/Industries/manufacturing.html" target="_blank" rel="noopener">Deloitte Manufacturing</a> — グローバル製造業AIレポート</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://www.bcg.com/industries/industrial-goods" target="_blank" rel="noopener">BCG Industrial Goods</a> — 製造業戦略コンサルレポート</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://developer.nvidia.com/omniverse" target="_blank" rel="noopener">NVIDIA Omniverse</a> — デジタルツインの主要プラットフォーム</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="10">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="09-case-finance.html"><span class="direction">&larr; Prev</span>業界ケース①: 金融</a>
+    <a href="11-case-defense.html"><span class="direction">Next &rarr;</span>業界ケース③: 防衛</a>
+  </div>
+</main>
+
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'base', themeVariables: { primaryColor: '#e0dff0', primaryTextColor: '#1a1a1a', primaryBorderColor: '#262260', lineColor: '#262260', secondaryColor: '#f5f5f5', tertiaryColor: '#fafafa', fontFamily: 'inherit', fontSize: '14px' }, flowchart: { curve: 'basis', htmlLabels: true }, sequence: { useMaxWidth: true } });
+</script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+window.addEventListener('load', function() { if (window.lucide) lucide.createIcons(); });
+</script>
+</body>
+</html>

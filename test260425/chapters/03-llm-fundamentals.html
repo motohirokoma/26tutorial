@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23262260%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>生成AI/LLM 本質編 - MK's Enterprise AI/DX Basics</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #262260; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Enterprise AI/DX Basics
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1"><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" class="active"><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="../index.html#phase3"><span class="phase-name">Advanced</span><span class="phase-pct" id="pct-advanced">0%</span></a></li>
+      <li><a href="../index.html#phase4"><span class="phase-name">Capstone</span><span class="phase-pct" id="pct-capstone">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.03</span>
+    生成AI/LLM 本質編 — Transformer→RAG→Fine-tuning→Agent
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18" stroke-dasharray="0 113.1" stroke-dashoffset="0" transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 14 sections</text>
+    </svg>
+    <div class="progress-info">0h / 23h completed</div>
+  </div>
+
+  <div class="section-label">Prerequisites</div>
+  <ul>
+    <li><a href="00-prerequisites.html"><span class="status-dot"></span> 前提知識</a></li>
+  </ul>
+
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-overview.html"><span class="status-dot" data-chapter="01"></span> AI・DX全体像</a></li>
+    <li><a href="02-consulting-thinking.html"><span class="status-dot" data-chapter="02"></span> 戦略コンサル思考</a></li>
+  </ul>
+
+  <div class="section-label">Core</div>
+  <ul>
+    <li><a href="03-llm-fundamentals.html" class="active"><span class="status-dot" data-chapter="03"></span> 生成AI/LLM 本質編</a></li>
+    <li><a href="04-ml-data-infra.html"><span class="status-dot" data-chapter="04"></span> ML / データ基盤</a></li>
+    <li><a href="05-physical-ai.html"><span class="status-dot" data-chapter="05"></span> フィジカルAI</a></li>
+    <li><a href="06-poc-to-delivery.html"><span class="status-dot" data-chapter="06"></span> PoCから本番デリバリー</a></li>
+  </ul>
+
+  <div class="section-label">Advanced</div>
+  <ul>
+    <li><a href="07-industry-foresight.html"><span class="status-dot" data-chapter="07"></span> 業界未来予測</a></li>
+    <li><a href="08-insight-proposal.html"><span class="status-dot" data-chapter="08"></span> インサイト型提案</a></li>
+    <li><a href="09-case-finance.html"><span class="status-dot" data-chapter="09"></span> 金融ケース</a></li>
+    <li><a href="10-case-manufacturing.html"><span class="status-dot" data-chapter="10"></span> 製造ケース</a></li>
+    <li><a href="11-case-defense.html"><span class="status-dot" data-chapter="11"></span> 防衛ケース</a></li>
+  </ul>
+
+  <div class="section-label">Capstone</div>
+  <ul>
+    <li><a href="12-ethics-regulation.html"><span class="status-dot" data-chapter="12"></span> 倫理・規制</a></li>
+    <li><a href="13-capstone-case.html"><span class="status-dot" data-chapter="13"></span> 統合ケース演習</a></li>
+    <li><a href="14-final-exercise.html"><span class="status-dot" data-chapter="14"></span> 最終演習問題</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 2: Core &gt; Chapter 03</div>
+  <h1>生成AI/LLM 本質編 — Transformer→RAG→Fine-tuning→Agent</h1>
+  <p class="subtitle">2026年の主役技術 LLM(大規模言語モデル)を、ビジネスパーソンが顧客と対峙できる深さまで掘り下げます。「Transformer って何?」「RAG はなぜ必要?」「Fine-tuning との違いは?」に全て答えられる状態を目指します。</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 120分</span>
+    <span class="badge">Phase: Core</span>
+    <span class="badge">難易度: ★★★☆☆</span>
+  </div>
+
+  <div class="info-box" style="margin-top: 16px;">
+    <span class="label">本章の到達点 (L4)</span>
+    <p>章を終えると、顧客の課題に対して「これはRAG向き」「これはFine-tuning向き」「これはAgent向き」と<strong>技術選定の判断軸を持って提案</strong>できるようになります。本章の記述は2026年4月時点の情報に基づきます(LLM領域は3ヶ月で常識が変わるため、各章末リソースで最新を確認してください)。</p>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></span>1. LLMとは何か — 次の単語を予測する機械</h2>
+
+  <p>LLM(Large Language Model)を一言で説明すると「<strong>次に来る単語を確率的に予測する機械</strong>」です。これだけです。難しく聞こえる仕組みも、根っこはこのシンプルな考え。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">LLMの基本動作 — 単語の確率予測</div>
+    <svg viewBox="0 0 480 260" width="100%" style="max-width:480px; display:block; margin:0 auto;">
+      <!-- 入力 -->
+      <rect x="20" y="40" width="180" height="40" fill="#e0dff0" stroke="#262260" rx="6"/>
+      <text x="110" y="65" text-anchor="middle" font-size="13" font-weight="600" fill="#262260">「日本の首都は」</text>
+      <text x="20" y="30" font-size="10" fill="#475569">入力(プロンプト)</text>
+
+      <!-- 矢印 -->
+      <line x1="200" y1="60" x2="240" y2="60" stroke="#262260" stroke-width="2" marker-end="url(#arrow1)"/>
+      <defs>
+        <marker id="arrow1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#262260"/>
+        </marker>
+      </defs>
+
+      <!-- LLM box -->
+      <rect x="240" y="40" width="100" height="40" fill="#262260" rx="6"/>
+      <text x="290" y="65" text-anchor="middle" font-size="13" font-weight="700" fill="white">LLM</text>
+
+      <!-- 出力候補 -->
+      <text x="380" y="35" font-size="10" fill="#475569">確率分布で出力</text>
+      <rect x="360" y="40" width="100" height="22" fill="#16a34a" rx="3"/>
+      <text x="375" y="56" font-size="11" font-weight="600" fill="white">東京</text>
+      <text x="450" y="56" text-anchor="end" font-size="11" font-weight="600" fill="white">87%</text>
+      <rect x="360" y="64" width="100" height="22" fill="#94a3b8" rx="3"/>
+      <text x="375" y="80" font-size="11" font-weight="600" fill="white">京都</text>
+      <text x="450" y="80" text-anchor="end" font-size="11" font-weight="600" fill="white">8%</text>
+      <rect x="360" y="88" width="100" height="22" fill="#cbd5e1" rx="3"/>
+      <text x="375" y="104" font-size="11" font-weight="600" fill="white">大阪</text>
+      <text x="450" y="104" text-anchor="end" font-size="11" font-weight="600" fill="white">3%</text>
+
+      <!-- 自己回帰の説明 -->
+      <line x1="290" y1="80" x2="290" y2="160" stroke="#262260" stroke-width="2" stroke-dasharray="4,4"/>
+      <text x="240" y="180" font-size="11" fill="#262260" font-weight="600">「東京」を入力に追加して再度予測 →</text>
+      <rect x="20" y="200" width="220" height="40" fill="#e0dff0" stroke="#262260" rx="6"/>
+      <text x="130" y="225" text-anchor="middle" font-size="13" font-weight="600" fill="#262260">「日本の首都は東京」</text>
+      <line x1="240" y1="220" x2="280" y2="220" stroke="#262260" stroke-width="2" marker-end="url(#arrow1)"/>
+      <text x="290" y="225" font-size="11" font-weight="600" fill="#262260">次の単語を予測…</text>
+    </svg>
+    <div class="diagram-caption">入力に対して次の単語の確率分布を出力 → 確率の高いものを選んで入力に追加 → また予測…を繰り返すだけ。これが「自己回帰生成」と呼ばれる、LLMの基本動作。</div>
+  </div>
+
+  <p>これがすべて、というのはやや誇張ですが、本質はそうです。すごいのは<strong>「次の単語予測」だけ</strong>を巨大データで超高精度に学習させると、要約も翻訳も会話もコード生成もできてしまうこと。「単純な目標の積み上げから、複雑な能力が創発する」ことが GPT 系の発見でした。</p>
+
+  <h3>「学習」と「推論」を区別する</h3>
+
+  <table>
+    <thead><tr><th>フェーズ</th><th>やること</th><th>コスト</th><th>頻度</th></tr></thead>
+    <tbody>
+      <tr><td><strong>事前学習(Pretraining)</strong></td><td>インターネット規模のテキストで「単語予測」を学ぶ</td><td>数億〜数十億ドル</td><td>1モデルにつき1回(GPT-5など)</td></tr>
+      <tr><td><strong>事後学習(Post-training)</strong></td><td>人間の好みに沿うように調整(RLHF など)</td><td>数百万ドル</td><td>製品化のたび</td></tr>
+      <tr><td><strong>推論(Inference)</strong></td><td>学習済みモデルで実際に応答を生成する</td><td>1トークン数円〜数銭</td><td>都度(ユーザー操作ごと)</td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-box">
+    <span class="label">提案で混同してはいけないポイント</span>
+    <p>「LLM のコスト」と顧客に言われたら、必ず<strong>「学習コスト」</strong>と<strong>「推論コスト」</strong>を分けて聞きます。普段の業務利用で気にするのはほぼ推論コストのみ(API 呼び出しの料金)。学習コストは、自社で基盤モデルを作る場合か、Fine-tuning する場合の話です。</p>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></span>2. Transformer — Attentionが全てを変えた</h2>
+
+  <p>2017年に Google 研究者が発表した論文「<em>Attention Is All You Need</em>」で提唱された <strong>Transformer</strong> アーキテクチャが、現在の LLM の土台です。何が革命だったのか。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Transformerの構造(超簡略版)</div>
+    <pre class="mermaid">
+graph TB
+  Input["入力テキスト<br/>「The cat sat on」"] --> Tok["トークン化<br/>[The, cat, sat, on]"]
+  Tok --> Emb["埋め込み(Embedding)<br/>各トークンを数値ベクトルに"]
+  Emb --> Att["Self-Attention<br/>各単語が他の単語を見る"]
+  Att --> FF["フィードフォワード層"]
+  FF --> Att2["(N回繰り返し)"]
+  Att2 --> Out["次トークン予測<br/>「the」"]
+    </pre>
+    <div class="diagram-caption">入力を数値化 → Self-Attention で文脈を取り込む → 多層に重ねて次トークンを予測。GPT-4 では96層、Claude 3.5 ではさらに多層。</div>
+  </div>
+
+  <h3>Self-Attention — 「他の単語をどれくらい見るか」</h3>
+
+  <p>Attentionは「文中のある単語が、他のどの単語にどれくらい注目するか」を計算する仕組みです。これにより、文全体の文脈を踏まえた表現が作れます。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">「The cat sat on the mat」の Attention を可視化</div>
+    <svg viewBox="0 0 480 240" width="100%" style="max-width:480px; display:block; margin:0 auto;">
+      <!-- 単語ノード -->
+      <g font-size="13" font-weight="600">
+        <rect x="40" y="100" width="50" height="32" fill="#e0dff0" stroke="#262260"/><text x="65" y="120" text-anchor="middle">The</text>
+        <rect x="100" y="100" width="50" height="32" fill="#e0dff0" stroke="#262260"/><text x="125" y="120" text-anchor="middle">cat</text>
+        <rect x="160" y="100" width="50" height="32" fill="#262260" stroke="#262260"/><text x="185" y="120" text-anchor="middle" fill="white">sat</text>
+        <rect x="220" y="100" width="50" height="32" fill="#e0dff0" stroke="#262260"/><text x="245" y="120" text-anchor="middle">on</text>
+        <rect x="280" y="100" width="50" height="32" fill="#e0dff0" stroke="#262260"/><text x="305" y="120" text-anchor="middle">the</text>
+        <rect x="340" y="100" width="50" height="32" fill="#e0dff0" stroke="#262260"/><text x="365" y="120" text-anchor="middle">mat</text>
+      </g>
+      <!-- Attention線(satから他の単語へ) -->
+      <path d="M 185 100 Q 130 50 125 100" fill="none" stroke="#262260" stroke-width="3" opacity="0.7"/>
+      <text x="125" y="48" text-anchor="middle" font-size="10" font-weight="600" fill="#262260">0.45 (cat)</text>
+      <path d="M 185 100 Q 245 50 245 100" fill="none" stroke="#262260" stroke-width="2" opacity="0.5"/>
+      <text x="245" y="48" text-anchor="middle" font-size="10" font-weight="600" fill="#262260">0.20 (on)</text>
+      <path d="M 185 100 Q 365 30 365 100" fill="none" stroke="#262260" stroke-width="2" opacity="0.5"/>
+      <text x="365" y="28" text-anchor="middle" font-size="10" font-weight="600" fill="#262260">0.20 (mat)</text>
+      <path d="M 185 100 Q 65 60 65 100" fill="none" stroke="#262260" stroke-width="1" opacity="0.3"/>
+      <text x="65" y="58" text-anchor="middle" font-size="10" fill="#475569">0.10 (The)</text>
+      <path d="M 185 100 Q 305 60 305 100" fill="none" stroke="#262260" stroke-width="1" opacity="0.3"/>
+      <text x="305" y="58" text-anchor="middle" font-size="10" fill="#475569">0.05 (the)</text>
+
+      <text x="240" y="180" text-anchor="middle" font-size="11" fill="#262260" font-weight="600">「sat」は「cat」(主語)と「on/mat」(場所)を強く見る</text>
+      <text x="240" y="210" text-anchor="middle" font-size="10" fill="#475569">これが文中の関係性を理解する仕組み</text>
+    </svg>
+    <div class="diagram-caption">単語 sat が他の各単語にどれくらい「注意」を向けるかをスコア化(線の太さ)。文全体の文脈を全単語で同時に把握する。</div>
+  </div>
+
+  <details class="more-box"><summary>もっと詳しく: なぜ Transformer が革命だったのか</summary>
+  <div class="more-body">
+    <p>Transformer 以前の主流は <strong>RNN</strong>(リカレントニューラルネット)で、単語を1つずつ順番に処理していました。これは:</p>
+    <ul>
+      <li><strong>遅い</strong>: 並列化できない、長い文章の処理が極端に遅い</li>
+      <li><strong>長期依存が苦手</strong>: 文の前半を後半まで覚えていられない</li>
+    </ul>
+    <p>Transformer は Self-Attention により全単語を同時並列で処理でき、長文の文脈把握も得意。<strong>GPU で大量並列学習できる</strong>ことが「巨大化のスケール則」を発見させ、結果として LLM の爆発的な進化に繋がりました。</p>
+  </div>
+  </details>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></span>3. プロンプト工学 — 使いこなしの基礎</h2>
+
+  <p>LLMの能力を引き出す唯一のインターフェース、それが<strong>プロンプト</strong>です。「適切なプロンプト」と「適当なプロンプト」では、同じモデルでも出力品質が劇的に変わります。</p>
+
+  <h3>プロンプトの基本構造(4要素)</h3>
+
+  <ul class="icon-list">
+    <li><i data-lucide="user" width="20" height="20"></i><div><strong>Role(役割)</strong> — 「あなたはBtoBの営業マネジャーです」など、立場を指定</div></li>
+    <li><i data-lucide="target" width="20" height="20"></i><div><strong>Task(タスク)</strong> — 「以下の会議録から決定事項を抽出してください」など、具体的指示</div></li>
+    <li><i data-lucide="file-text" width="20" height="20"></i><div><strong>Context(文脈)</strong> — 関連情報・前提知識・参考資料</div></li>
+    <li><i data-lucide="layout" width="20" height="20"></i><div><strong>Format(形式)</strong> — 「箇条書きで5項目以内」「JSON形式で」など、出力フォーマット</div></li>
+  </ul>
+
+  <h3>実例: 「悪いプロンプト」と「良いプロンプト」</h3>
+
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">悪い例</span>
+      <h4>会議録を要約して</h4>
+      <p>結果:<br>
+      ・どの観点で要約すればいいか分からない<br>
+      ・長さがバラバラ<br>
+      ・決定事項とアイデアが混在<br>
+      ・形式が安定しない</p>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">良い例</span>
+      <h4>4要素を全て指定</h4>
+      <pre style="font-size:11px; margin: 0; padding: 8px; background:#f8f8f8;"><code>あなたはプロジェクトマネジャーです。
+以下の会議録を要約してください。
+
+【目的】次回会議までに参加者が
+  確認すべき内容を共有する
+
+【出力形式】
+- 決定事項(3つ以内)
+- 残課題と担当者
+- 次回までのアクション
+
+【会議録】
+...</code></pre>
+    </div>
+  </div>
+
+  <h3>高度なプロンプト技法 — 4つの定番</h3>
+
+  <div class="steps">
+    <div class="step done"><div class="step-num">1</div><div class="step-label">Few-shot</div><div class="step-desc">例を2-3個示す</div></div>
+    <div class="step done"><div class="step-num">2</div><div class="step-label">Chain-of-Thought</div><div class="step-desc">「順を追って考えて」</div></div>
+    <div class="step done"><div class="step-num">3</div><div class="step-label">Role指定</div><div class="step-desc">専門家の立場で</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-label">Self-Critique</div><div class="step-desc">出力を自己批評</div></div>
+  </div>
+
+  <table>
+    <thead><tr><th>技法</th><th>使い方</th><th>効果</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Few-shot</strong></td><td>「例: 入力A→出力a、入力B→出力b。では入力C→?」</td><td>定型タスクの精度UP、出力フォーマット安定</td></tr>
+      <tr><td><strong>Chain-of-Thought (CoT)</strong></td><td>「順を追って論理的に考えてください」</td><td>計算・推論・複雑な質問の正答率UP</td></tr>
+      <tr><td><strong>Role指定</strong></td><td>「あなたは10年経験の弁護士です」</td><td>専門知識を引き出す、口調を統一</td></tr>
+      <tr><td><strong>Self-Critique</strong></td><td>「出力を批判的にレビューし改善」</td><td>事実誤認・論理破綻を減らす</td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-box">
+    <span class="label">公式ドキュメント必読</span>
+    <p>各社が公式に出しているプロンプティングガイドは、実務で必読です。<a href="https://docs.anthropic.com/claude/docs/prompt-engineering" target="_blank" rel="noopener">Anthropic Prompt Engineering Guide</a>、<a href="https://platform.openai.com/docs/guides/prompt-engineering" target="_blank" rel="noopener">OpenAI Prompting Guide</a>、<a href="https://ai.google.dev/gemini-api/docs/prompting-strategies" target="_blank" rel="noopener">Google Gemini Prompting</a>。モデル選定時には公式の推奨パターンを必ず確認してください。</p>
+  </div>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></span>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></span>4. RAG — 知識を外付けする</h2>
+
+  <p>LLM の最大の弱点は2つ: <strong>「学習時点までの情報しか知らない」</strong>と<strong>「知らないことを"それっぽく"作話する(ハルシネーション)」</strong>。これを解決するのが RAG(Retrieval-Augmented Generation)です。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">RAG の仕組み(エンタープライズで最も使われる構成)</div>
+    <pre class="mermaid">
+graph LR
+  Q["ユーザー質問"] --> Embed["質問を<br/>ベクトル化"]
+  Embed --> Search["ベクトルDBで<br/>類似文書を検索"]
+  KB[(社内文書<br/>事前ベクトル化済み)] --> Search
+  Search --> Top["関連文書 Top-K"]
+  Top --> Prompt["プロンプト構築:<br/>質問 + 関連文書"]
+  Prompt --> LLM["LLM"]
+  LLM --> Ans["回答 + 引用元"]
+    </pre>
+    <div class="diagram-caption">質問が来たら → 社内文書から関連箇所を検索 → 質問と一緒にLLMへ → 文書に基づく回答が返る。エンタープライズの「自社データを使ったAI」のほぼ全ての実体はこれ。</div>
+  </div>
+
+  <h3>RAG の主要構成要素</h3>
+
+  <ul class="icon-list">
+    <li><i data-lucide="database" width="20" height="20"></i><div><strong>ドキュメントストア</strong> — 元の社内文書(PDF、Confluence、Slack ログ等)</div></li>
+    <li><i data-lucide="layers" width="20" height="20"></i><div><strong>チャンキング</strong> — 文書を意味のある単位に分割(数百〜数千文字)</div></li>
+    <li><i data-lucide="cpu" width="20" height="20"></i><div><strong>Embedding モデル</strong> — チャンクと質問をベクトル化(text-embedding-3-large 等)</div></li>
+    <li><i data-lucide="search" width="20" height="20"></i><div><strong>ベクトルDB</strong> — Pinecone、Weaviate、Qdrant、AWS OpenSearch、Azure AI Search</div></li>
+    <li><i data-lucide="message-square" width="20" height="20"></i><div><strong>LLM</strong> — 検索結果を踏まえて回答(GPT-4、Claude、Gemini 等)</div></li>
+  </ul>
+
+  <h3>RAG の最小実装イメージ(疑似 Python)</h3>
+
+  <pre><code># 1. 文書を事前にベクトル化(オフライン処理)
+from openai import OpenAI
+import pinecone
+
+client = OpenAI()
+index = pinecone.Index('company-docs')
+
+for chunk in document_chunks:
+    vec = client.embeddings.create(
+        model='text-embedding-3-large', input=chunk.text
+    ).data[0].embedding
+    index.upsert([(chunk.id, vec, {'text': chunk.text})])
+
+# 2. ユーザー質問が来たら検索 → LLM(オンライン処理)
+def answer(question):
+    q_vec = client.embeddings.create(
+        model='text-embedding-3-large', input=question
+    ).data[0].embedding
+
+    # 類似する文書 Top 5 を取得
+    results = index.query(vector=q_vec, top_k=5, include_metadata=True)
+    context = '\n\n'.join([m.metadata['text'] for m in results.matches])
+
+    # LLM に「文書 + 質問」を渡して回答生成
+    response = client.chat.completions.create(
+        model='gpt-4-turbo',
+        messages=[
+            {'role': 'system', 'content': '以下の文書のみを根拠に回答してください'},
+            {'role': 'user', 'content': f'文書:\n{context}\n\n質問: {question}'}
+        ]
+    )
+    return response.choices[0].message.content
+</code></pre>
+
+  <p style="font-size: 13px; color: var(--text-secondary);">※ 実際の本番では、リランカー導入・チャンキング戦略・引用元提示など多数の工夫が入りますが、骨格はこの形です。</p>
+
+  <h3>RAG の使いどころと限界</h3>
+
+  <div class="compare-cards">
+    <div class="cc good">
+      <span class="cc-label">向いている</span>
+      <h4>頻繁に更新される情報</h4>
+      <ul>
+        <li>社内マニュアル・FAQ</li>
+        <li>製品仕様書・契約書</li>
+        <li>過去の議事録・案件ログ</li>
+        <li>法律・規制の最新版</li>
+      </ul>
+    </div>
+    <div class="cc bad">
+      <span class="cc-label">向いていない</span>
+      <h4>暗黙知・スタイル変更</h4>
+      <ul>
+        <li>「弊社らしい」文章スタイル</li>
+        <li>業界特有の言い回し・専門用語</li>
+        <li>暗黙のルールや判断基準</li>
+        <li>(これらは Fine-tuning 領域)</li>
+      </ul>
+    </div>
+  </div>
+
+  <details class="more-box"><summary>もっと詳しく: RAG の精度を上げる5つの工夫</summary>
+  <div class="more-body">
+    <ol>
+      <li><strong>チャンキング戦略</strong>: 単純な文字数分割ではなく、見出しや段落で意味的に切る。重複オーバーラップを入れる</li>
+      <li><strong>ハイブリッド検索</strong>: ベクトル検索 + キーワード検索(BM25)を組み合わせ、どちらの強みも活かす</li>
+      <li><strong>リランカー</strong>: 検索結果を二段階目の小型モデルで再ランキングして精度UP(Cohere Rerank、bge-reranker)</li>
+      <li><strong>クエリ拡張</strong>: ユーザー質問を LLM で言い換え3-5バージョン作り、それぞれで検索して結果を統合</li>
+      <li><strong>引用元提示</strong>: 回答に「この部分は文書Xの第3章より」と引用元を必ず付ける(信頼性 + 検証可能性)</li>
+    </ol>
+  </div>
+  </details>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></span>5. Fine-tuning と Distillation</h2>
+
+  <p>RAG が「外付けハードディスク」だとすれば、<strong>Fine-tuning</strong>は「モデルの脳に直接書き込む」アプローチです。</p>
+
+  <h3>Fine-tuning vs RAG — 使い分けの判断軸</h3>
+
+  <div class="diagram-box">
+    <div class="diagram-title">どちらを選ぶか?の判断フロー</div>
+    <pre class="mermaid">
+graph TD
+  Start["顧客の課題"] --> Q1{"知識を増やしたい?<br/>or スタイルを変えたい?"}
+  Q1 -- "知識を増やす" --> Q2{"情報が頻繁に<br/>更新される?"}
+  Q1 -- "スタイル/振る舞い変更" --> FT["Fine-tuning"]
+  Q2 -- "Yes" --> RAG["RAG"]
+  Q2 -- "No (固定知識)" --> Q3{"件数は?"}
+  Q3 -- "数千〜" --> RAG
+  Q3 -- "数百以下" --> Both["Few-shot で十分"]
+    </pre>
+    <div class="diagram-caption">迷ったら RAG から始めて、それで足りなければ Fine-tuning を加える、が定石。逆ではない。</div>
+  </div>
+
+  <table>
+    <thead><tr><th>観点</th><th>RAG</th><th>Fine-tuning</th></tr></thead>
+    <tbody>
+      <tr><td>強み</td><td>知識更新が容易、引用可能、低コスト</td><td>スタイル統一、振る舞いの細かい調整、推論が速い</td></tr>
+      <tr><td>弱み</td><td>検索精度に依存、コンテキスト枯渇</td><td>更新が大変、データ準備コスト大、忘却リスク</td></tr>
+      <tr><td>初期コスト</td><td>低(ベクトルDB構築のみ)</td><td>中〜高(訓練データ作成 + 学習)</td></tr>
+      <tr><td>運用コスト</td><td>中(都度の検索 + LLM)</td><td>低(LLMのみ)</td></tr>
+      <tr><td>典型ユースケース</td><td>社内Q&A、ドキュメント検索、最新情報応答</td><td>業界用語の口調、ブランドトーン、特定タスクの最適化</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Distillation(蒸留) — 大モデルから小モデルへ</h3>
+
+  <p>Distillationは「大きく賢いモデル(教師)に出力させたデータを使って、小さなモデル(生徒)を訓練する」手法。<strong>賢さは保ちつつコストを大幅に下げる</strong>テクニックで、2025年以降のエンタープライズ展開で爆発的に普及しました。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Distillation の構造</div>
+    <pre class="mermaid">
+graph LR
+  Big["Teacher<br/>大モデル<br/>(GPT-4 等)"] -->|"出力ペアを生成"| Data["訓練データ<br/>10万-100万件"]
+  Data --> Train["Fine-tune"]
+  Small["Student<br/>小モデル<br/>(7B-13B)"] --> Train
+  Train --> Distilled["蒸留済み小モデル<br/>速い・安い・賢い"]
+    </pre>
+    <div class="diagram-caption">小モデルが大モデルの「考え方」を真似する。コストが10分の1、レイテンシが3分の1、性能は90%、という設計が実現可能。</div>
+  </div>
+
+  <div class="info-box">
+    <span class="label">2026年のトレンド: 蒸留+RAG ハイブリッド</span>
+    <p>多くのエンタープライズが「<strong>RAG で知識を外付け + 業界特化モデルを蒸留で作る + その上で軽い Fine-tuning</strong>」というハイブリッド構成を採用しています。一つの手法だけでは最適にならないことが分かってきた、というのが現場感です。</p>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></span>6. AI Agent — 次のパラダイム</h2>
+
+  <p>2024年後半から急速に立ち上がってきたのが <strong>AI Agent</strong>。LLM が単発の応答を返すのではなく、<strong>ツールを使い、複数ステップを自律的に実行する</strong>仕組みです。Anthropic の Claude、OpenAI の GPT-4 が agentic 機能を強化、Cursor / Devin / Manus 等の専用エージェントも登場。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Agent の動作ループ(ReAct パターン)</div>
+    <pre class="mermaid">
+graph LR
+  Goal["目標を受け取る"] --> Plan["計画を立てる<br/>(LLM)"]
+  Plan --> Act["ツールを実行<br/>(検索/コード実行/API呼び出し)"]
+  Act --> Obs["結果を観察"]
+  Obs --> Eval{"目標達成?"}
+  Eval -- "No" --> Plan
+  Eval -- "Yes" --> Done["完了"]
+    </pre>
+    <div class="diagram-caption">「考える(Reasoning)」と「行動する(Acting)」を交互に繰り返す。複雑なタスクを多段で解ける反面、暴走や無限ループのリスクも。</div>
+  </div>
+
+  <h3>Agent が使う「ツール」とは何か</h3>
+
+  <ul class="icon-list">
+    <li><i data-lucide="search" width="20" height="20"></i><div><strong>Web 検索</strong> — 最新情報を取りに行く</div></li>
+    <li><i data-lucide="terminal" width="20" height="20"></i><div><strong>コード実行</strong> — Python のサンドボックスでデータ処理・計算</div></li>
+    <li><i data-lucide="database" width="20" height="20"></i><div><strong>データベース問い合わせ</strong> — SQL を発行して結果を取得</div></li>
+    <li><i data-lucide="mail" width="20" height="20"></i><div><strong>メール送信・カレンダー操作</strong> — Gmail/Outlook と連携</div></li>
+    <li><i data-lucide="cloud" width="20" height="20"></i><div><strong>クラウド API 呼び出し</strong> — Slack、Salesforce、社内システム</div></li>
+    <li><i data-lucide="cpu" width="20" height="20"></i><div><strong>他の AI モデル呼び出し</strong> — 画像生成・音声合成・専門モデル</div></li>
+  </ul>
+
+  <h3>Single Agent vs Multi-Agent</h3>
+
+  <div class="compare-cards">
+    <div class="cc neutral">
+      <span class="cc-label">Single Agent</span>
+      <h4>1人で全部</h4>
+      <p>1つのLLMが複数ツールを使い分けて目標達成。<br>シンプルで扱いやすいが、複雑なタスクで詰まる。</p>
+    </div>
+    <div class="cc neutral">
+      <span class="cc-label">Multi-Agent</span>
+      <h4>専門家チーム</h4>
+      <p>「企画担当」「分析担当」「実装担当」など複数Agentが協調。<br>高品質だが設計と運用が複雑、コスト高。</p>
+    </div>
+  </div>
+
+  <h3>Agent の現実 — 2026年時点の率直な評価</h3>
+
+  <div class="info-box">
+    <span class="label">公式ドキュメント必読</span>
+    <p>Agent 系は安全性と運用が極めて難しい領域です。Anthropic の <a href="https://www.anthropic.com/research/building-effective-agents" target="_blank" rel="noopener">Building Effective Agents</a> は実装する全エンジニアが読むべき指針。「Agent は最終手段」「ワークフロー(プログラムで決まったフロー)で済むなら Agent にしない」という Anthropic の立場は、実務の判断軸として重要です。</p>
+  </div>
+
+  <ul class="icon-list">
+    <li><i data-lucide="check-circle" width="20" height="20"></i><div><strong>動く領域</strong>: コード生成・データ分析・調査タスク・カスタマーサポート1次対応</div></li>
+    <li><i data-lucide="alert-triangle" width="20" height="20"></i><div><strong>苦戦する領域</strong>: 長期記憶を要する業務、感情労働、重要な意思決定の代行</div></li>
+    <li><i data-lucide="x-circle" width="20" height="20"></i><div><strong>禁忌領域</strong>: 法的責任を負う行為(契約締結等)、人命に関わる判断、不可逆な金銭授受</div></li>
+  </ul>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></span>7. モデル選定 — 主要LLMの比較と判断軸</h2>
+
+  <p>2026年時点で押さえるべき主要モデルとその特徴を、<strong>顧客に提案できる粒度</strong>で整理します。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">主要LLMの能力レーダー(2026年4月時点・概算)</div>
+    <canvas id="ch03-radar" height="280"></canvas>
+    <div class="diagram-caption">5軸で各モデルの強みを可視化。実数値はベンチマークによって変動するため、案件ごとに最新評価を確認してください。</div>
+  </div>
+
+  <table>
+    <thead><tr><th>モデル系列</th><th>提供元</th><th>強み</th><th>典型用途</th><th>料金感</th></tr></thead>
+    <tbody>
+      <tr><td><strong>GPT-4 / o3</strong></td><td>OpenAI</td><td>汎用性・推論力・エコシステム</td><td>幅広い業務、コード生成</td><td>中〜高</td></tr>
+      <tr><td><strong>Claude 3.7 / 4</strong></td><td>Anthropic</td><td>長文・分析・倫理的応答・コード</td><td>長文契約レビュー、エージェント、SE作業</td><td>中〜高</td></tr>
+      <tr><td><strong>Gemini 2 / 3</strong></td><td>Google</td><td>マルチモーダル・低コスト・Google統合</td><td>画像・動画・GoogleWorkspace連携</td><td>低〜中</td></tr>
+      <tr><td><strong>Mistral Large</strong></td><td>Mistral (仏)</td><td>欧州拠点・オープンウェイト・コスト</td><td>EU規制対応案件、自社ホスティング</td><td>低</td></tr>
+      <tr><td><strong>Llama 4</strong></td><td>Meta(オープン)</td><td>無料・自社内デプロイ可能・カスタム自由</td><td>機密データ案件、研究開発</td><td>無料(運用コストのみ)</td></tr>
+      <tr><td><strong>DeepSeek V3</strong></td><td>DeepSeek (中)</td><td>圧倒的低コスト・高性能</td><td>大量推論、コスト最重視案件</td><td>極低</td></tr>
+    </tbody>
+  </table>
+
+  <div class="diagram-box">
+    <div class="diagram-title">入力1Mトークンあたりの推論コスト比較(概算・USD)</div>
+    <canvas id="ch03-cost" height="220"></canvas>
+    <div class="diagram-caption">2024年比で推論コストは1/10以下に。今後も継続的に下落見込み。「今のコストで設計→1年で価格は半分」を前提に提案する。</div>
+  </div>
+
+  <h3>顧客への提案で使う判断軸</h3>
+
+  <ul class="icon-list">
+    <li><i data-lucide="shield" width="20" height="20"></i><div><strong>データ主権</strong> — 海外API送信OKか / 国内に置く必要があるか / オンプレ必須か</div></li>
+    <li><i data-lucide="dollar-sign" width="20" height="20"></i><div><strong>コスト感度</strong> — 1リクエスト数銭か数円か。BtoB の数千件処理ならGPT-4、社内チャット10万人なら蒸留小モデル</div></li>
+    <li><i data-lucide="zap" width="20" height="20"></i><div><strong>レイテンシ</strong> — リアルタイム会話なら1秒以内、バッチ処理なら数分でもOK</div></li>
+    <li><i data-lucide="layers" width="20" height="20"></i><div><strong>マルチモーダル</strong> — 画像・音声・動画を扱うか</div></li>
+    <li><i data-lucide="settings" width="20" height="20"></i><div><strong>カスタム性</strong> — Fine-tuning する予定か、ベースモデルを切り替えたいか</div></li>
+  </ul>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></span>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></span>8. 章のまとめ</h2>
+
+  <ul class="icon-list">
+    <li><i data-lucide="check-circle" width="20" height="20"></i><div>LLM は「次の単語予測」を巨大データで学習した汎用機械。Transformer 上の Self-Attention が革命の核</div></li>
+    <li><i data-lucide="check-circle" width="20" height="20"></i><div><strong>プロンプト4要素</strong>(Role/Task/Context/Format)を意識すれば品質は劇的に変わる</div></li>
+    <li><i data-lucide="check-circle" width="20" height="20"></i><div><strong>RAG</strong>: 知識の外付け、エンタープライズの主流。最初に試すべき手法</div></li>
+    <li><i data-lucide="check-circle" width="20" height="20"></i><div><strong>Fine-tuning</strong>: スタイル・振る舞いの調整。RAGで足りない時の二段階目</div></li>
+    <li><i data-lucide="check-circle" width="20" height="20"></i><div><strong>Distillation</strong>: 大モデル→小モデルでコスト10分の1へ。2026年の主流</div></li>
+    <li><i data-lucide="check-circle" width="20" height="20"></i><div><strong>Agent</strong>: ツールを使う自律実行。強力だが慎重に。「ワークフロー優先、Agent は最終手段」</div></li>
+    <li><i data-lucide="check-circle" width="20" height="20"></i><div>モデル選定は<strong>データ主権・コスト・レイテンシ・モダリティ・カスタム性</strong>の5軸で判断</div></li>
+  </ul>
+
+  <!-- ===================== Exercises ===================== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></span>Exercise</h2>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>4要素を満たすプロンプトを作る</h4>
+    <p>以下のシナリオで、Role/Task/Context/Format の4要素を全て含むプロンプトを書いてください。</p>
+    <ol>
+      <li>シナリオ: BtoB SaaS 営業として、新規見込客向けの初回コンタクトメールを生成したい</li>
+      <li>顧客情報: 中堅製造業、IT予算削減プレッシャー、過去当社の競合製品を3年使用</li>
+      <li>各要素を明示的に書く(「Role:」「Task:」のように節を分ける)</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <pre><code>【Role】
+あなたはBtoB SaaS の営業マネジャーで、製造業向けに10年の経験があります。
+
+【Task】
+中堅製造業の見込客に向けた、初回コンタクトメールを作成してください。
+
+【Context】
+- 顧客: 中堅製造業(売上500億円規模)
+- 現状: 競合製品Xを3年使用中
+- ペイン: IT予算削減のプレッシャーが強い、コスト効率の改善を経営層から指示されている
+- 当社の強み: 同業他社で競合Xから乗り換えで30%コスト削減実績
+
+【Format】
+- 件名: 件名(15文字以内、開封したくなる文言)
+- 本文: 200文字以内
+- 構成: 「相手の状況の理解」→「具体的な数字を含む価値提案」→「次のアクション(15分電話)」
+- トーン: 押し付けがましくない、相手の判断を尊重する書きぶり</code></pre>
+      <p><strong>ポイント</strong>: ContextとFormat が具体的であるほど、出力品質が安定します。「いい感じで書いて」ではなく「この観点でこの形式で」を必ず明示。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>顧客に技術選定を提案する</h4>
+    <p>以下の3つのシナリオそれぞれに対して、最適な技術アプローチ(Few-shot / RAG / Fine-tuning / Agent / それらの組み合わせ)と、選定理由を提案してください。</p>
+    <ol>
+      <li><strong>シナリオA</strong>: 大手損保会社が、社内の保険商品マニュアル(数千ページ、毎月改訂)を対象に、コールセンター向けの社内Q&Aシステムを作りたい</li>
+      <li><strong>シナリオB</strong>: 中堅広告代理店が、社内のクリエイティブのブランドトーン(過去5年の優秀コピー数千本)を学習させ、新規コピー候補を生成するAIを作りたい</li>
+      <li><strong>シナリオC</strong>: 製造業の生産管理部門が、社内システム複数(ERP・MES・在庫DB)を横断して、自然言語で「明日の出荷予定は?」と質問できる仕組みを作りたい</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><strong>シナリオA(損保Q&A)</strong>: <span style="color:#262260; font-weight:700;">RAG が最適</span></p>
+      <ul>
+        <li>理由: 知識(マニュアル)が頻繁に更新される → Fine-tuningでは追従不能。引用元提示が必要(規制業種) → RAGで「この回答は商品約款p.42より」と明示できる</li>
+        <li>構成: ベクトルDB (Azure AI Search等、規制対応のため国内リージョン) + GPT-4 or Claude(コンプラ厳格な業界では引用に強いClaude推奨) + ハイブリッド検索 + リランカー</li>
+      </ul>
+
+      <p><strong>シナリオB(広告コピー生成)</strong>: <span style="color:#262260; font-weight:700;">Fine-tuning + Few-shot のハイブリッド</span></p>
+      <ul>
+        <li>理由: 求められるのはスタイル(ブランドトーン)であり、知識ではない → RAGよりFine-tuning向き。データ量(数千本)も Fine-tuningに十分</li>
+        <li>構成: 中型モデル(Llama 4 13B など)を社内環境で Fine-tuning + プロンプトに3-5本の Few-shot 事例も併用 + 必要なら蒸留で軽量化</li>
+        <li>注意: 著作権の扱い、人間ライターとの分業設計、生成物の選定プロセスは別途設計</li>
+      </ul>
+
+      <p><strong>シナリオC(横断質問)</strong>: <span style="color:#262260; font-weight:700;">Agent が最適</span></p>
+      <ul>
+        <li>理由: 複数システムを跨ぐ問い合わせは、決まった検索ではなく「質問→どのDBを叩くか判断→SQL生成→結果統合→回答」の動的フローが必要</li>
+        <li>構成: GPT-4 or Claude をAgent本体として、ツール = ERP API / MES API / 在庫DB SQL実行。Read系のみに権限制限、書き込みは禁止。Audit ログで全行動を記録</li>
+        <li>注意: 「Agent は最終手段」原則を守るなら、まず一番頻度が高い質問パターン(出荷予定確認等)はワークフロー化、複雑な横断質問のみAgentに回す設計が安全</li>
+      </ul>
+
+      <p><strong>共通ポイント</strong>: 「LLMで何かやる」ではなく、<strong>知識の更新頻度・スタイルの重要度・処理の動的性</strong>で道具を選ぶ。提案では必ず「なぜ Fine-tuning ではなく RAG か」「なぜ Agent ではなくワークフローか」を1行で説明できる状態を目指してください。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>さらに深めるために</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span> <a href="https://www.anthropic.com/research/building-effective-agents" target="_blank" rel="noopener">Anthropic: Building Effective Agents</a> — Agent 設計の最重要指針、必読</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://docs.anthropic.com/" target="_blank" rel="noopener">Anthropic Documentation</a> — Claude の公式仕様、プロンプティング詳細</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://platform.openai.com/docs" target="_blank" rel="noopener">OpenAI Documentation</a> — GPT 系の公式リファレンス</li>
+      <li><span class="res-type video">Video</span> <a href="https://www.youtube.com/watch?v=zjkBMFhNj_g" target="_blank" rel="noopener">Andrej Karpathy: Intro to LLMs</a> — 元OpenAI研究者による1時間の傑作講義</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noopener">Attention Is All You Need (Vaswani et al. 2017)</a> — Transformer の原論文</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://lilianweng.github.io/" target="_blank" rel="noopener">Lilian Weng's Blog</a> — 元OpenAI研究者の解説ブログ、技術深掘りに最適</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://huggingface.co/blog" target="_blank" rel="noopener">Hugging Face Blog</a> — オープンモデル系の最新動向</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="03">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="02-consulting-thinking.html"><span class="direction">&larr; Prev</span>戦略コンサル思考</a>
+    <a href="04-ml-data-infra.html"><span class="direction">Next &rarr;</span>従来型ML / データ基盤 / MLOps</a>
+  </div>
+</main>
+
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#e0dff0',
+      primaryTextColor: '#1a1a1a',
+      primaryBorderColor: '#262260',
+      lineColor: '#262260',
+      secondaryColor: '#f5f5f5',
+      tertiaryColor: '#fafafa',
+      fontFamily: 'inherit',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true },
+    sequence: { useMaxWidth: true }
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+window.addEventListener('load', function() {
+  if (window.lucide) lucide.createIcons();
+
+  var radar = document.getElementById('ch03-radar');
+  if (radar && window.Chart) {
+    new Chart(radar, {
+      type: 'radar',
+      data: {
+        labels: ['推論力','長文処理','コスト効率','マルチモーダル','カスタム性'],
+        datasets: [
+          { label: 'GPT-4', data: [90,85,60,85,70], borderColor: '#262260', backgroundColor: 'rgba(38,34,96,0.15)' },
+          { label: 'Claude 3.7', data: [85,95,65,70,65], borderColor: '#16a34a', backgroundColor: 'rgba(22,163,74,0.15)' },
+          { label: 'Gemini 2', data: [80,80,80,95,70], borderColor: '#d97706', backgroundColor: 'rgba(217,119,6,0.15)' },
+          { label: 'Llama 4', data: [75,75,90,60,95], borderColor: '#7c3aed', backgroundColor: 'rgba(124,58,237,0.15)' }
+        ]
+      },
+      options: {
+        plugins: { legend: { position: 'bottom' } },
+        scales: { r: { suggestedMin: 0, suggestedMax: 100 } }
+      }
+    });
+  }
+
+  var cost = document.getElementById('ch03-cost');
+  if (cost && window.Chart) {
+    new Chart(cost, {
+      type: 'bar',
+      data: {
+        labels: ['GPT-4 Turbo','Claude 3.7','Gemini 2 Pro','Llama 4 (自社運用)','DeepSeek V3'],
+        datasets: [{
+          label: '入力 $/1M tokens',
+          data: [10, 8, 3.5, 2, 0.5],
+          backgroundColor: '#262260',
+          borderRadius: 4
+        }]
+      },
+      options: {
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true, title: { display: true, text: 'USD / 1M tokens' }} }
+      }
+    });
+  }
+});
+</script>
+</body>
+</html>

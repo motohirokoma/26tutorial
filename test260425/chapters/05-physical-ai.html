@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23262260%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>フィジカルAI - MK's Enterprise AI/DX Basics</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #262260; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Enterprise AI/DX Basics
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1"><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2" class="active"><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="../index.html#phase3"><span class="phase-name">Advanced</span><span class="phase-pct" id="pct-advanced">0%</span></a></li>
+      <li><a href="../index.html#phase4"><span class="phase-name">Capstone</span><span class="phase-pct" id="pct-capstone">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.05</span>
+    フィジカルAI — ロボティクス・エッジ・世界モデル
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18" stroke-dasharray="0 113.1" stroke-dashoffset="0" transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 14 sections</text>
+    </svg>
+    <div class="progress-info">0h / 23h completed</div>
+  </div>
+  <div class="section-label">Prerequisites</div>
+  <ul><li><a href="00-prerequisites.html"><span class="status-dot"></span> 前提知識</a></li></ul>
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-overview.html"><span class="status-dot" data-chapter="01"></span> AI・DX全体像</a></li>
+    <li><a href="02-consulting-thinking.html"><span class="status-dot" data-chapter="02"></span> 戦略コンサル思考</a></li>
+  </ul>
+  <div class="section-label">Core</div>
+  <ul>
+    <li><a href="03-llm-fundamentals.html"><span class="status-dot" data-chapter="03"></span> 生成AI/LLM 本質編</a></li>
+    <li><a href="04-ml-data-infra.html"><span class="status-dot" data-chapter="04"></span> ML / データ基盤</a></li>
+    <li><a href="05-physical-ai.html" class="active"><span class="status-dot" data-chapter="05"></span> フィジカルAI</a></li>
+    <li><a href="06-poc-to-delivery.html"><span class="status-dot" data-chapter="06"></span> PoCから本番デリバリー</a></li>
+  </ul>
+  <div class="section-label">Advanced</div>
+  <ul>
+    <li><a href="07-industry-foresight.html"><span class="status-dot" data-chapter="07"></span> 業界未来予測</a></li>
+    <li><a href="08-insight-proposal.html"><span class="status-dot" data-chapter="08"></span> インサイト型提案</a></li>
+    <li><a href="09-case-finance.html"><span class="status-dot" data-chapter="09"></span> 金融ケース</a></li>
+    <li><a href="10-case-manufacturing.html"><span class="status-dot" data-chapter="10"></span> 製造ケース</a></li>
+    <li><a href="11-case-defense.html"><span class="status-dot" data-chapter="11"></span> 防衛ケース</a></li>
+  </ul>
+  <div class="section-label">Capstone</div>
+  <ul>
+    <li><a href="12-ethics-regulation.html"><span class="status-dot" data-chapter="12"></span> 倫理・規制</a></li>
+    <li><a href="13-capstone-case.html"><span class="status-dot" data-chapter="13"></span> 統合ケース演習</a></li>
+    <li><a href="14-final-exercise.html"><span class="status-dot" data-chapter="14"></span> 最終演習問題</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 2: Core &gt; Chapter 05</div>
+  <h1>フィジカルAI — ロボティクス・エッジ・世界モデル</h1>
+  <p class="subtitle">AIがソフトの世界を超えて<strong>物理空間</strong>に出てきます。NVIDIA Jensen Huang が「次のChatGPT瞬間はフィジカルAI」と語ったように、2026年は産業界がこの領域に本気を出し始めた節目の年。本章では物理空間で動くAIの基礎と、エンタープライズに何をもたらすかを扱います。</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 90分</span>
+    <span class="badge">Phase: Core</span>
+    <span class="badge">難易度: ★★★☆☆</span>
+  </div>
+
+  <div class="info-box" style="margin-top: 16px;">
+    <span class="label">本章の射程</span>
+    <p>「ロボットを売る話」ではなく、「<strong>顧客の事業がフィジカルAIによってどう変わるか</strong>」を語れる状態を目指します。本章の記述は2026年4月時点の情報に基づきます(この領域は半年で景色が変わるため、最新動向は章末リソースで)。</p>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></span>1. なぜ今フィジカルAIなのか</h2>
+
+  <p>フィジカルAI(Physical AI / Embodied AI)とは、<strong>物理空間でセンシング・推論・行動するAI</strong>。具体的には、ヒューマノイド・自律走行車・産業ロボット・ドローン・スマートデバイスなど。長年「あと数年で来る」と言われ続け、2025年から急速に立ち上がってきました。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">フィジカルAIのスタック</div>
+    <svg viewBox="0 0 480 260" width="100%" style="max-width:480px; display:block; margin:0 auto;">
+      <rect x="20" y="20" width="440" height="40" fill="#262260" stroke="#262260" rx="6"/>
+      <text x="240" y="45" text-anchor="middle" font-size="13" font-weight="700" fill="white">行動(モーター・駆動)</text>
+
+      <rect x="20" y="65" width="440" height="40" fill="#5b56a8" stroke="#262260" rx="6"/>
+      <text x="240" y="90" text-anchor="middle" font-size="13" font-weight="700" fill="white">意思決定 / 計画(VLA / 世界モデル / RL)</text>
+
+      <rect x="20" y="110" width="440" height="40" fill="#8a86c4" stroke="#262260" rx="6"/>
+      <text x="240" y="135" text-anchor="middle" font-size="13" font-weight="700" fill="white">認識(Computer Vision / 音声 / 触覚)</text>
+
+      <rect x="20" y="155" width="440" height="40" fill="#bbb8e0" stroke="#262260" rx="6"/>
+      <text x="240" y="180" text-anchor="middle" font-size="13" font-weight="700" fill="#262260">センシング(カメラ / LiDAR / IMU / 触覚センサー)</text>
+
+      <rect x="20" y="200" width="440" height="40" fill="#e0dff0" stroke="#262260" rx="6"/>
+      <text x="240" y="225" text-anchor="middle" font-size="13" font-weight="700" fill="#262260">ハードウェア(モーター / バッテリー / フレーム / GPU)</text>
+    </svg>
+    <div class="diagram-caption">物理AIは「センシング→認識→意思決定→行動」のループ。各層に異なる技術スタック、企業も別々。</div>
+  </div>
+
+  <h3>3つの推進力 — なぜ2026年が転換点なのか</h3>
+
+  <ul class="icon-list">
+    <li><i data-lucide="cpu" width="20" height="20"></i><div><strong>① LLM/VLM の進化</strong> — 言語と視覚を同時に扱える基盤モデル(Vision-Language Models)が、ロボの「脳」を一気に賢くした</div></li>
+    <li><i data-lucide="zap" width="20" height="20"></i><div><strong>② シミュレーションの高度化</strong> — NVIDIA Isaac Sim、Genesis 等で<strong>仮想環境で大量学習</strong>が可能に。実機学習の何百倍速</div></li>
+    <li><i data-lucide="trending-down" width="20" height="20"></i><div><strong>③ ハードウェアの低コスト化</strong> — 中国製の高性能アクチュエータ、モーター、センサーで、ヒューマノイド1体の原価が$30K-50Kまで低下(2025年時点)</div></li>
+  </ul>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></span>2. ロボティクスの基礎 — 産業ロボから汎用ヒューマノイドへ</h2>
+
+  <table>
+    <thead><tr><th>種類</th><th>特徴</th><th>2026年の主な用途</th></tr></thead>
+    <tbody>
+      <tr><td><strong>産業ロボ(固定式)</strong></td><td>溶接・組立など決まった作業を高速正確に</td><td>自動車・電子製造の主役。50年の歴史</td></tr>
+      <tr><td><strong>協働ロボ(コボット)</strong></td><td>人と並んで作業、安全機構付き</td><td>中小製造業、検品、軽量組立</td></tr>
+      <tr><td><strong>AGV / AMR</strong></td><td>無人搬送車。倉庫内移動</td><td>物流倉庫(Amazon Kiva 等)</td></tr>
+      <tr><td><strong>ヒューマノイド</strong></td><td>2足歩行、人型、汎用作業を狙う</td><td><strong>2026年から本格商用化、製造業から</strong></td></tr>
+      <tr><td><strong>ドローン / 自律走行</strong></td><td>空・地上を自律移動</td><td>配送・点検・防衛・農業</td></tr>
+    </tbody>
+  </table>
+
+  <h3>ヒューマノイドの主要プレイヤー(2026年時点)</h3>
+
+  <div class="diagram-box">
+    <div class="diagram-title">主要ヒューマノイド比較レーダー</div>
+    <canvas id="ch05-radar" height="260"></canvas>
+    <div class="diagram-caption">各社の強みは違う。Tesla はスケール、Figure は汎用性、Boston Dynamics は運動能力、1X は対話能力、Unitree はコスト。日本勢(Toyota/Sony/PFN)も独自路線。</div>
+  </div>
+
+  <ul class="icon-list">
+    <li><i data-lucide="zap" width="20" height="20"></i><div><strong>Tesla Optimus</strong> — 2025年から自社工場投入、2026年から外販開始予定。$30K目標、AI部分は自動運転技術を流用</div></li>
+    <li><i data-lucide="users" width="20" height="20"></i><div><strong>Figure 02 / 03</strong> — BMW・Volkswagen工場で実装、OpenAIとの提携で対話能力強化</div></li>
+    <li><i data-lucide="activity" width="20" height="20"></i><div><strong>Boston Dynamics Atlas(電動版)</strong> — Hyundai 傘下、2024年に油圧→電動でスペック大幅向上。運動性能で先行</div></li>
+    <li><i data-lucide="message-square" width="20" height="20"></i><div><strong>1X Neo</strong> — 家庭・オフィス用途、自然な対話と布や柔軟物の扱いに強み</div></li>
+    <li><i data-lucide="dollar-sign" width="20" height="20"></i><div><strong>Unitree G1</strong> — 中国、$16Kからの破格料金。研究・開発用途で世界で爆発的に普及</div></li>
+  </ul>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></span>3. エッジAI — 現場で推論する</h2>
+
+  <p>クラウドに送って推論していては<strong>遅すぎる</strong>場面が多い(自動運転で50ms遅れたら事故)。エッジAIは<strong>デバイス側で直接推論</strong>する技術です。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">クラウドAI vs エッジAI</div>
+    <svg viewBox="0 0 480 240" width="100%" style="max-width:480px; display:block; margin:0 auto;">
+      <!-- クラウドAI -->
+      <rect x="20" y="20" width="200" height="200" fill="#fef3c7" stroke="#d97706" rx="8"/>
+      <text x="120" y="40" text-anchor="middle" font-size="12" font-weight="700" fill="#92400e">クラウドAI</text>
+      <rect x="50" y="60" width="50" height="30" fill="#d97706" rx="4"/>
+      <text x="75" y="78" text-anchor="middle" font-size="10" fill="white">Device</text>
+      <line x1="100" y1="75" x2="180" y2="75" stroke="#d97706" stroke-width="2" marker-end="url(#a2)"/>
+      <text x="140" y="68" text-anchor="middle" font-size="9" fill="#92400e">送信</text>
+      <text x="140" y="92" text-anchor="middle" font-size="9" fill="#92400e">100-500ms</text>
+      <rect x="140" y="100" width="60" height="40" fill="#d97706" rx="4"/>
+      <text x="170" y="124" text-anchor="middle" font-size="10" fill="white">Cloud</text>
+      <text x="120" y="180" text-anchor="middle" font-size="10" fill="#92400e">遅延あり</text>
+      <text x="120" y="195" text-anchor="middle" font-size="10" fill="#92400e">通信費発生</text>
+      <text x="120" y="210" text-anchor="middle" font-size="10" fill="#92400e">プライバシー懸念</text>
+
+      <!-- エッジAI -->
+      <rect x="260" y="20" width="200" height="200" fill="#dcfce7" stroke="#16a34a" rx="8"/>
+      <text x="360" y="40" text-anchor="middle" font-size="12" font-weight="700" fill="#15803d">エッジAI</text>
+      <rect x="320" y="80" width="80" height="50" fill="#16a34a" rx="4"/>
+      <text x="360" y="105" text-anchor="middle" font-size="10" fill="white">Device + AI</text>
+      <text x="360" y="118" text-anchor="middle" font-size="9" fill="white">10ms以下</text>
+      <text x="360" y="170" text-anchor="middle" font-size="10" fill="#15803d">超低レイテンシ</text>
+      <text x="360" y="185" text-anchor="middle" font-size="10" fill="#15803d">通信不要</text>
+      <text x="360" y="200" text-anchor="middle" font-size="10" fill="#15803d">プライバシー守れる</text>
+      <text x="360" y="215" text-anchor="middle" font-size="10" fill="#15803d">電力制約あり</text>
+
+      <defs>
+        <marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#d97706"/>
+        </marker>
+      </defs>
+    </svg>
+    <div class="diagram-caption">クラウドは賢いが遅い、エッジは速いが小型モデルしか動かない。実用は両者の組み合わせ(階層型)が主流。</div>
+  </div>
+
+  <h3>エッジAIを実現する技術スタック</h3>
+
+  <ul class="icon-list">
+    <li><i data-lucide="cpu" width="20" height="20"></i><div><strong>専用チップ</strong> — NVIDIA Jetson、Google Coral、Apple Neural Engine、Qualcomm Snapdragon</div></li>
+    <li><i data-lucide="layers" width="20" height="20"></i><div><strong>モデル軽量化</strong> — 量子化(int8/int4)、プルーニング、蒸留 でモデルサイズを1/10に</div></li>
+    <li><i data-lucide="zap" width="20" height="20"></i><div><strong>専用フレームワーク</strong> — TensorRT、ONNX Runtime、Apple CoreML、TFLite</div></li>
+    <li><i data-lucide="git-branch" width="20" height="20"></i><div><strong>階層型構成</strong> — エッジで軽量推論+クラウドで詳細処理(ハイブリッド)</div></li>
+  </ul>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></span>4. 世界モデル と Vision-Language-Action</h2>
+
+  <p>2024-2025年で急速に立ち上がった概念が <strong>世界モデル(World Model)</strong>と<strong>VLA(Vision-Language-Action)</strong>。これがフィジカルAIを汎用化する鍵です。</p>
+
+  <h3>世界モデル — AIが物理世界の「想像」を持つ</h3>
+
+  <p>世界モデルとは「<strong>AIが物理世界の動きを予測できる内部モデル</strong>」のこと。「ボールを投げたらこう飛ぶはず」「コップが机から落ちたら割れる」といった常識を、観測データから学習します。OpenAI Sora、Google Genie、NVIDIA Cosmos などが代表例。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">世界モデルの仕組み</div>
+    <pre class="mermaid">
+graph LR
+  Cur["現在の状態<br/>(画像/動画)"] --> Enc["Encoder<br/>抽象表現に圧縮"]
+  Act["行動<br/>(回す/動く)"] --> Pred
+  Enc --> Pred["未来予測<br/>潜在空間で"]
+  Pred --> Dec["Decoder<br/>動画として復元"]
+  Dec --> Future["予測された未来"]
+    </pre>
+    <div class="diagram-caption">「今こうで、こう行動したら、こうなるはず」をAIが事前に想像できる。実機で試行錯誤せずに最適な行動を選べる。</div>
+  </div>
+
+  <h3>VLA(Vision-Language-Action) — 言葉で指示できるロボ</h3>
+
+  <p>VLAは「視覚 + 言語 + 行動」を統合したエンドツーエンドモデル。「<strong>赤いコップを取って</strong>」と話しかけると、ロボがカメラで赤いコップを見つけて、把持の関節角度を計算する。Google RT-2、PI(Physical Intelligence)、NVIDIA GR00T などが代表。</p>
+
+  <div class="info-box">
+    <span class="label">世界モデルの価値</span>
+    <p>従来のロボ学習は「実機で何百万回試行」が必要でした。世界モデルがあれば、シミュレーション内で何十億回も試して、優秀な行動だけを実機にデプロイできます。<strong>学習効率が桁違い</strong>になり、汎用ロボの実現を一気に近づけました。</p>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></span>5. Sim-to-Real — シミュレーションから現実へ</h2>
+
+  <p>フィジカルAI開発の最大の課題は「現実で学習させる難しさ」(時間・コスト・安全性)。これを<strong>シミュレーション内で学習させ、現実に転移する</strong>のが Sim-to-Real です。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Sim-to-Real の流れ</div>
+    <pre class="mermaid">
+graph LR
+  S1["仮想環境を構築<br/>(Isaac Sim/Genesis)"] --> S2["大量試行<br/>強化学習"]
+  S2 --> S3["方策を学習"]
+  S3 --> Bridge["ドメインギャップ<br/>埋める"]
+  Bridge --> R1["実機にデプロイ"]
+  R1 --> R2["現実で微調整<br/>(少量)"]
+    </pre>
+    <div class="diagram-caption">仮想で何百万回試行、現実で微調整するだけ。学習コスト・時間が桁違いに縮む。</div>
+  </div>
+
+  <h3>主要シミュレーターと用途</h3>
+
+  <table>
+    <thead><tr><th>シミュレーター</th><th>提供</th><th>強み</th></tr></thead>
+    <tbody>
+      <tr><td><strong>NVIDIA Isaac Sim / Lab</strong></td><td>NVIDIA</td><td>物理エンジン超高精度、GPUクラスタで超大規模並列、業界デファクト</td></tr>
+      <tr><td><strong>Genesis</strong></td><td>オープン共同体</td><td>2024年末公開、超高速、Isaac対比で速度43倍</td></tr>
+      <tr><td><strong>NVIDIA Omniverse</strong></td><td>NVIDIA</td><td>工場・倉庫まるごとを再現するデジタルツイン</td></tr>
+      <tr><td><strong>MuJoCo</strong></td><td>Google</td><td>研究用途、軽量、強化学習で長年の定番</td></tr>
+    </tbody>
+  </table>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></span>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></span>6. ビジネス機会と現実的タイムライン</h2>
+
+  <div class="diagram-box">
+    <div class="diagram-title">フィジカルAI市場の予測(2025-2032)</div>
+    <canvas id="ch05-market" height="220"></canvas>
+    <div class="diagram-caption">出典: BCG、McKinsey、Goldman Sachs 各レポートを統合した概算。Humanoid Robotics は2030年に$300B超の市場へ。</div>
+  </div>
+
+  <h3>業界別の浸透タイムライン</h3>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-date">2025-2027</div>
+      <div class="tl-title">製造業 — 工場が先行</div>
+      <div class="tl-body">構造化された環境、繰り返しタスク、安全管理が確立済み。Tesla Optimus、Figure が先行投入。日本では Toyota、Honda が独自路線。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">2026-2028</div>
+      <div class="tl-title">物流 — 倉庫から配送へ</div>
+      <div class="tl-body">Amazon・JD.com などが既に部分自動化。AMR(自律移動ロボ)が拡大。配送ラストマイルは2027年から実用化が見込まれる。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">2027-2030</div>
+      <div class="tl-title">サービス業・医療 — 病院・介護</div>
+      <div class="tl-body">移乗支援、薬剤搬送、清掃。医療現場は規制が厳しく時間がかかる。介護人手不足の日本がリードする可能性も。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">2030+</div>
+      <div class="tl-title">家庭 — 完全汎用は遠い</div>
+      <div class="tl-body">家事の多様性・安全性・プライバシーの問題で時間がかかる。1X Neo が試みているが、本格普及は2030年代。</div>
+    </div>
+  </div>
+
+  <h3>提案で押さえておくべき現実</h3>
+
+  <ul class="icon-list">
+    <li><i data-lucide="alert-triangle" width="20" height="20"></i><div><strong>「ヒューマノイドが人間の仕事を全部やる」は誇大広告</strong> — 構造化された限定タスクから始まる</div></li>
+    <li><i data-lucide="dollar-sign" width="20" height="20"></i><div><strong>1体の価格は$30-100K(2026年)、運用コストは別</strong> — 投資回収には数年かかる</div></li>
+    <li><i data-lucide="shield" width="20" height="20"></i><div><strong>安全規制(ISO 10218、JIS B 8433)が大きな壁</strong> — 産業ロボ並みの安全証明が必要</div></li>
+    <li><i data-lucide="users" width="20" height="20"></i><div><strong>「人を置き換える」より「人と協調する」設計が現実解</strong> — 人手不足対応が最も成立しやすい</div></li>
+  </ul>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></span>7. 章のまとめ</h2>
+
+  <ul class="icon-list">
+    <li><i data-lucide="check-circle" width="20" height="20"></i><div>フィジカルAI = センシング→認識→意思決定→行動 の物理空間ループ</div></li>
+    <li><i data-lucide="check-circle" width="20" height="20"></i><div>2025-2026年が転換点。<strong>VLM・シミュレーション・ハードコスト低下</strong>の3つで一気に進化</div></li>
+    <li><i data-lucide="check-circle" width="20" height="20"></i><div>ヒューマノイド本命は<strong>製造業の限定タスク</strong>から。家庭は2030年代</div></li>
+    <li><i data-lucide="check-circle" width="20" height="20"></i><div><strong>世界モデル + VLA</strong> が汎用ロボの鍵。学習はシミュレーションが主戦場</div></li>
+    <li><i data-lucide="check-circle" width="20" height="20"></i><div>エッジAI不可欠。<strong>クラウド + エッジ階層型</strong>が実用構成</div></li>
+    <li><i data-lucide="check-circle" width="20" height="20"></i><div>提案では「人を置き換える」より「<strong>人手不足の現場で人と協調</strong>」を訴求</div></li>
+  </ul>
+
+  <!-- Exercises -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></span>Exercise</h2>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>クラウドAI と エッジAI の使い分け</h4>
+    <p>以下のシステムは、クラウドAI / エッジAI / ハイブリッド のどれが最適か、理由付きで答えてください。</p>
+    <ol>
+      <li>自動運転車の障害物検知</li>
+      <li>スマート工場での製品の最終目視検査</li>
+      <li>コールセンターの会話AI</li>
+      <li>監視カメラの不審行動検知(50台規模)</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <ol>
+        <li><strong>自動運転 = エッジAI(必須)</strong>: 50ms以内の判断が必要、通信切断でも動かないとダメ。Tesla の HW4、NVIDIA Drive など専用チップ</li>
+        <li><strong>製品検査 = エッジ + クラウド</strong>: 即時判断はエッジ(産線停止できない)、難しいケースのみクラウドで詳細解析、長期傾向分析もクラウド側で</li>
+        <li><strong>コールセンター = クラウドAI</strong>: 数秒の遅延OK、巨大LLMが必要、エッジ計算リソース不要</li>
+        <li><strong>監視カメラ = ハイブリッド</strong>: 各カメラのエッジで1次フィルタ(動体検知等)、怪しい映像のみクラウドへ送信して詳細分析。通信費とプライバシーのバランス</li>
+      </ol>
+      <p><strong>判断軸</strong>: ① レイテンシ要件、② 通信安定性、③ プライバシー、④ 電力・計算リソース、⑤ コスト</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>製造業向けヒューマノイド導入提案</h4>
+    <p>顧客は中堅自動車部品メーカー(売上800億円、工場5箇所、現場作業員2000名)。経営課題は「人手不足と賃上げ圧力」。あなたが提案するヒューマノイド導入プランを設計してください。</p>
+    <ol>
+      <li>導入の<strong>第一段階(1年目)</strong>でやるべきこと(対象工程・台数・予算規模)</li>
+      <li>選定すべきベンダーと選定理由(2026年時点)</li>
+      <li>失敗を避けるために設計すべき<strong>KPI</strong>を3つ</li>
+      <li>3年スケールでのロードマップ(段階的拡大)</li>
+      <li>顧客経営層へのエレベーターピッチ(Ch02 のSCQAで)</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><strong>第一段階(1年目)</strong></p>
+      <ul>
+        <li>対象: 5工場のうち1工場、最も人手不足が深刻な部品検品+小物搬送ライン</li>
+        <li>台数: 5-10体(大量導入は失敗リスク大)</li>
+        <li>予算: 1.5-3億円(本体+整備環境+人材教育)</li>
+      </ul>
+
+      <p><strong>ベンダー選定</strong>: <span style="color:#262260; font-weight:700;">Figure 02 + Boston Dynamics Atlas のハイブリッド評価</span></p>
+      <ul>
+        <li>Figure: BMW・VW での実装実績、汎用性、汎用エンタープライズ対応</li>
+        <li>Atlas: 運動精度の高さ、Hyundai 経由で日系自動車メーカーとの相性</li>
+        <li>初年度は両方を1工程ずつ評価して比較</li>
+        <li>Tesla Optimus は外販開始時期次第で次期検討</li>
+        <li>Unitree G1 は研究・トレーニング用途として並行導入(コスト$16Kで現場に慣れる)</li>
+      </ul>
+
+      <p><strong>KPI 3つ</strong></p>
+      <ul>
+        <li>① <strong>稼働率</strong>: 1日8時間中の実稼働時間(初年度70%目標)</li>
+        <li>② <strong>処理量/エラー率</strong>: 人間作業比較での処理速度・不良流出率</li>
+        <li>③ <strong>事故・ヒヤリハット</strong>: 安全関連インシデント数(目標: ゼロ)</li>
+      </ul>
+
+      <p><strong>3年ロードマップ</strong></p>
+      <ul>
+        <li>Year 1: 1工場・1ライン・5-10体のパイロット、KPI評価、社内オペレーション体制構築</li>
+        <li>Year 2: 同工場の他ラインへ横展開(50体規模)、別ベンダーとの比較も継続</li>
+        <li>Year 3: 全5工場へ展開(200-500体規模)、エンジニア社内育成、ROI評価</li>
+      </ul>
+
+      <p><strong>SCQA エレベーターピッチ</strong>:</p>
+      <p>「貴社は<u>人手不足と賃上げで利益率が3年で5%圧迫</u>されています(<u>S</u>)。中国進出の競合は既にAI自動化で原価15%削減を達成しています(<u>C</u>)。今、何をすべきか?(<u>Q</u>)<strong>1工場でヒューマノイド5-10体のパイロットを始めましょう</strong>(<u>A</u>)。投資2億円、1年でROI判定。成功すれば3年で全工場展開、年20億円のコスト構造改革を実現します。」</p>
+
+      <p><strong>共通ポイント</strong>: 提案では「全部置き換え」と言わず、「<strong>人手不足の最も困っている工程を1つ、5-10体から</strong>」という限定的な始め方が突破口。これが PoC 死を避ける王道。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>さらに深めるために</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span> <a href="https://developer.nvidia.com/isaac" target="_blank" rel="noopener">NVIDIA Isaac Platform</a> — フィジカルAI開発の主要プラットフォーム</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://www.figure.ai/" target="_blank" rel="noopener">Figure AI</a> — 主要ヒューマノイドベンチャーの公式サイト</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://bostondynamics.com/" target="_blank" rel="noopener">Boston Dynamics</a> — Atlas, Spot, Stretch の公式</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://www.physicalintelligence.company/" target="_blank" rel="noopener">Physical Intelligence (PI)</a> — VLAモデル「π0」を発表したスタートアップ</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://genesis-embodied-ai.github.io/" target="_blank" rel="noopener">Genesis</a> — 高速シミュレーターのオープンプロジェクト</li>
+      <li><span class="res-type video">Video</span> <a href="https://www.youtube.com/watch?v=Fhs8RqW0RJI" target="_blank" rel="noopener">NVIDIA GTC 2025 Keynote</a> — Jensen Huang による「次のChatGPT瞬間はフィジカルAI」プレゼン</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="05">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="04-ml-data-infra.html"><span class="direction">&larr; Prev</span>従来型ML / データ基盤 / MLOps</a>
+    <a href="06-poc-to-delivery.html"><span class="direction">Next &rarr;</span>PoC設計から本番デリバリー</a>
+  </div>
+</main>
+
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'base', themeVariables: { primaryColor: '#e0dff0', primaryTextColor: '#1a1a1a', primaryBorderColor: '#262260', lineColor: '#262260', secondaryColor: '#f5f5f5', tertiaryColor: '#fafafa', fontFamily: 'inherit', fontSize: '14px' }, flowchart: { curve: 'basis', htmlLabels: true }, sequence: { useMaxWidth: true } });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+window.addEventListener('load', function() {
+  if (window.lucide) lucide.createIcons();
+
+  var radar = document.getElementById('ch05-radar');
+  if (radar && window.Chart) {
+    new Chart(radar, {
+      type: 'radar',
+      data: {
+        labels: ['汎用性','運動精度','対話能力','コスト効率','量産性'],
+        datasets: [
+          { label: 'Tesla Optimus', data: [70,75,65,90,95], borderColor: '#262260', backgroundColor: 'rgba(38,34,96,0.15)' },
+          { label: 'Figure', data: [85,75,80,70,75], borderColor: '#16a34a', backgroundColor: 'rgba(22,163,74,0.15)' },
+          { label: 'Atlas (BD)', data: [75,95,60,50,55], borderColor: '#d97706', backgroundColor: 'rgba(217,119,6,0.15)' },
+          { label: 'Unitree G1', data: [55,60,50,98,90], borderColor: '#7c3aed', backgroundColor: 'rgba(124,58,237,0.15)' }
+        ]
+      },
+      options: { plugins: { legend: { position: 'bottom' } }, scales: { r: { suggestedMin: 0, suggestedMax: 100 } } }
+    });
+  }
+
+  var market = document.getElementById('ch05-market');
+  if (market && window.Chart) {
+    new Chart(market, {
+      type: 'line',
+      data: {
+        labels: ['2025','2026','2027','2028','2029','2030','2031','2032'],
+        datasets: [
+          { label: 'ヒューマノイド($B)', data: [2,5,12,30,80,180,250,330], borderColor: '#262260', backgroundColor: 'rgba(38,34,96,0.1)', fill: true, tension: 0.3 },
+          { label: '産業ロボ($B)', data: [55,60,68,76,84,92,100,108], borderColor: '#d97706', backgroundColor: 'rgba(217,119,6,0.1)', fill: true, tension: 0.3 },
+          { label: 'AMR/AGV($B)', data: [12,16,22,30,40,52,65,80], borderColor: '#16a34a', backgroundColor: 'rgba(22,163,74,0.1)', fill: true, tension: 0.3 }
+        ]
+      },
+      options: { plugins: { legend: { position: 'bottom' } }, scales: { y: { beginAtZero: true, title: { display: true, text: '市場規模(億ドル)' } } } }
+    });
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23262260%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>業界ケース①: 金融 - MK's Enterprise AI/DX Basics</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #262260; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Enterprise AI/DX Basics
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1"><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2"><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="../index.html#phase3" class="active"><span class="phase-name">Advanced</span><span class="phase-pct" id="pct-advanced">0%</span></a></li>
+      <li><a href="../index.html#phase4"><span class="phase-name">Capstone</span><span class="phase-pct" id="pct-capstone">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.09</span>
+    業界ケース①: 金融
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18" stroke-dasharray="0 113.1" stroke-dashoffset="0" transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 14 sections</text>
+    </svg>
+    <div class="progress-info">0h / 23h completed</div>
+  </div>
+  <div class="section-label">Prerequisites</div>
+  <ul><li><a href="00-prerequisites.html"><span class="status-dot"></span> 前提知識</a></li></ul>
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-overview.html"><span class="status-dot" data-chapter="01"></span> AI・DX全体像</a></li>
+    <li><a href="02-consulting-thinking.html"><span class="status-dot" data-chapter="02"></span> 戦略コンサル思考</a></li>
+  </ul>
+  <div class="section-label">Core</div>
+  <ul>
+    <li><a href="03-llm-fundamentals.html"><span class="status-dot" data-chapter="03"></span> 生成AI/LLM 本質編</a></li>
+    <li><a href="04-ml-data-infra.html"><span class="status-dot" data-chapter="04"></span> ML / データ基盤</a></li>
+    <li><a href="05-physical-ai.html"><span class="status-dot" data-chapter="05"></span> フィジカルAI</a></li>
+    <li><a href="06-poc-to-delivery.html"><span class="status-dot" data-chapter="06"></span> PoCから本番デリバリー</a></li>
+  </ul>
+  <div class="section-label">Advanced</div>
+  <ul>
+    <li><a href="07-industry-foresight.html"><span class="status-dot" data-chapter="07"></span> 業界未来予測</a></li>
+    <li><a href="08-insight-proposal.html"><span class="status-dot" data-chapter="08"></span> インサイト型提案</a></li>
+    <li><a href="09-case-finance.html" class="active"><span class="status-dot" data-chapter="09"></span> 金融ケース</a></li>
+    <li><a href="10-case-manufacturing.html"><span class="status-dot" data-chapter="10"></span> 製造ケース</a></li>
+    <li><a href="11-case-defense.html"><span class="status-dot" data-chapter="11"></span> 防衛ケース</a></li>
+  </ul>
+  <div class="section-label">Capstone</div>
+  <ul>
+    <li><a href="12-ethics-regulation.html"><span class="status-dot" data-chapter="12"></span> 倫理・規制</a></li>
+    <li><a href="13-capstone-case.html"><span class="status-dot" data-chapter="13"></span> 統合ケース演習</a></li>
+    <li><a href="14-final-exercise.html"><span class="status-dot" data-chapter="14"></span> 最終演習問題</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 3: Advanced &gt; Chapter 09</div>
+  <h1>業界ケース①: 金融 — AIガバナンス・与信・不正検知・パーソナライズ</h1>
+  <p class="subtitle">金融はAI規制・データ豊富・収益構造変化の3つが交差する激動業界。本章では銀行・保険・証券のAI/DX最前線、典型ユースケース、規制対応、海外先進事例を整理し、金融顧客への具体提案テンプレートを学びます。</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 90分</span>
+    <span class="badge">Phase: Advanced</span>
+    <span class="badge">難易度: ★★★★☆</span>
+  </div>
+
+  <div class="info-box" style="margin-top: 16px;">
+    <span class="label">本章の射程</span>
+    <p>金融機関の経営層と「業界の未来」を語れる粒度で深堀ります。本章の記述は2026年4月時点の情報に基づきます。</p>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></span>1. 金融業界の地殻変動マップ</h2>
+
+  <div class="diagram-box">
+    <div class="diagram-title">2026-2030 金融業界 5つの地殻変動</div>
+    <pre class="mermaid">
+graph TB
+  Center["金融業<br/>地殻変動"]
+  Center --> S1["① 個別最適化<br/>1人1人にカスタマイズ"]
+  Center --> S2["② リアルタイム化<br/>与信3日→3秒"]
+  Center --> S3["③ 規制強化<br/>AIガバナンス必須"]
+  Center --> S4["④ ビッグテック参入<br/>Apple Pay/PayPay 等"]
+  Center --> S5["⑤ 暗号資産統合<br/>CBDC・トークン化資産"]
+    </pre>
+    <div class="diagram-caption">5つが同時並行で進行。1つだけに反応すると他が起きていない前提になり、戦略を間違える。</div>
+  </div>
+
+  <h3>銀行の収益構造変化(2024 vs 2030予測)</h3>
+
+  <div class="diagram-box">
+    <div class="diagram-title">銀行収益構造の予測</div>
+    <canvas id="ch09-revenue" height="240"></canvas>
+    <div class="diagram-caption">伝統的な「貸出+為替」収益が縮小、データ・サービス収益(個別最適化提案、与信as-a-Service、データ事業化)が増える。</div>
+  </div>
+
+  <h3>主要金融AI 海外先進事例</h3>
+
+  <table>
+    <thead><tr><th>企業</th><th>取り組み</th><th>提案で使える示唆</th></tr></thead>
+    <tbody>
+      <tr><td><strong>JPMorgan Chase</strong></td><td>COIN(契約レビューAI)で年36万時間削減、IndexGPT(資産助言)、社内 LLM Suite「LLM-Suite」を全社2万人に展開</td><td>「LLMの社内全社展開」が次の標準</td></tr>
+      <tr><td><strong>Goldman Sachs</strong></td><td>Marquee 2030(企業データプラットフォーム)、Marcus でリテール失敗→法人特化へ転換</td><td>失敗事例から学ぶ、コア事業特化が肝</td></tr>
+      <tr><td><strong>Klarna</strong></td><td>カスタマーサポートをAI 700名分代替、コスト$40M削減</td><td>カスタマーサポートはAI実装で最も成功している領域</td></tr>
+      <tr><td><strong>Ant Group</strong></td><td>Alipay 内蔵の信用スコア「芝麻信用」、与信完全自動化</td><td>個人事業主市場の新しい与信モデル</td></tr>
+      <tr><td><strong>Stripe</strong></td><td>Radar(不正検知AI)で年間数億ドル規模の不正取引阻止</td><td>不正検知のリアルタイム化が標準に</td></tr>
+    </tbody>
+  </table>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></span>2. 与信プロセスの再発明</h2>
+
+  <p>金融機関のAI最大インパクト領域。与信プロセスの<strong>3日→3秒</strong>は単なる効率化ではなく、ビジネスモデルそのものを変える。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">与信プロセス Before/After</div>
+    <svg viewBox="0 0 480 280" width="100%" style="max-width:480px; display:block; margin:0 auto;">
+      <text x="240" y="20" text-anchor="middle" font-size="13" font-weight="700">中小企業向け融資 ¥1000万円</text>
+
+      <!-- Before -->
+      <rect x="20" y="40" width="200" height="220" fill="#fee2e2" stroke="#dc2626" rx="8"/>
+      <text x="120" y="65" text-anchor="middle" font-size="12" font-weight="700" fill="#b91c1c">Before(従来)</text>
+      <text x="120" y="90" text-anchor="middle" font-size="10" fill="#b91c1c">申込 → 書類提出</text>
+      <text x="120" y="110" text-anchor="middle" font-size="10" fill="#b91c1c">↓ 担当者ヒアリング</text>
+      <text x="120" y="130" text-anchor="middle" font-size="10" fill="#b91c1c">↓ 財務分析(2日)</text>
+      <text x="120" y="150" text-anchor="middle" font-size="10" fill="#b91c1c">↓ 審査会議</text>
+      <text x="120" y="170" text-anchor="middle" font-size="10" fill="#b91c1c">↓ 決裁</text>
+      <text x="120" y="190" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">所要: 3-7日</text>
+      <text x="120" y="210" text-anchor="middle" font-size="10" fill="#b91c1c">人件費: 8-15万円</text>
+      <text x="120" y="230" text-anchor="middle" font-size="10" fill="#b91c1c">機会損失: 競合に流れる</text>
+      <text x="120" y="250" text-anchor="middle" font-size="10" fill="#b91c1c">不良債権率: 1.5%</text>
+
+      <!-- After -->
+      <rect x="260" y="40" width="200" height="220" fill="#dcfce7" stroke="#16a34a" rx="8"/>
+      <text x="360" y="65" text-anchor="middle" font-size="12" font-weight="700" fill="#15803d">After(AI高度化)</text>
+      <text x="360" y="90" text-anchor="middle" font-size="10" fill="#15803d">API連携で会計データ取得</text>
+      <text x="360" y="110" text-anchor="middle" font-size="10" fill="#15803d">↓ AI判断(数秒)</text>
+      <text x="360" y="130" text-anchor="middle" font-size="10" fill="#15803d">↓ 人間レビュー(微妙な案件のみ)</text>
+      <text x="360" y="150" text-anchor="middle" font-size="10" fill="#15803d">↓ 決裁</text>
+      <text x="360" y="180" text-anchor="middle" font-size="10" font-weight="700" fill="#15803d">所要: 3秒-10分</text>
+      <text x="360" y="200" text-anchor="middle" font-size="10" fill="#15803d">人件費: 1-3万円</text>
+      <text x="360" y="220" text-anchor="middle" font-size="10" fill="#15803d">機会獲得: 即時提示</text>
+      <text x="360" y="240" text-anchor="middle" font-size="10" fill="#15803d">不良債権率: 1.0%(精度向上)</text>
+    </svg>
+    <div class="diagram-caption">所要時間1/100、コスト1/5、精度向上、市場拡大の4方向で改善。これは効率化を超えた「与信ビジネスの再発明」。</div>
+  </div>
+
+  <h3>新しい与信に必要な3つのデータ層</h3>
+
+  <ul class="icon-list">
+    <li><i data-lucide="file-text" width="20" height="20"></i><div><strong>① 既存与信データ</strong> — 財務諸表、信用情報機関データ、過去取引</div></li>
+    <li><i data-lucide="layers" width="20" height="20"></i><div><strong>② 代替データ(Alternative Data)</strong> — 会計SaaS連携(freee/MFクラウド)、銀行口座入出金、SNS情報、ECデータ</div></li>
+    <li><i data-lucide="globe" width="20" height="20"></i><div><strong>③ コンテキスト情報</strong> — 業界・地域の景況感、サプライチェーン状況、為替/金利動向</div></li>
+  </ul>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></span>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></span>3. 不正検知・AML(マネロン対策)</h2>
+
+  <div class="diagram-box">
+    <div class="diagram-title">不正検知のリアルタイムアーキテクチャ</div>
+    <pre class="mermaid">
+graph LR
+  TX["取引発生"] --> Stream["ストリーミング処理<br/>(Kafka/Pulsar)"]
+  Stream --> ML["ML 推論<br/>(数百ms)"]
+  ML --> Risk{"スコア"}
+  Risk -- "低" --> Pass["通常処理"]
+  Risk -- "中" --> Hold["追加確認<br/>(MFA等)"]
+  Risk -- "高" --> Block["即時ブロック"]
+  Risk -- "境界" --> Human["人間判定<br/>キュー"]
+    </pre>
+    <div class="diagram-caption">ストリーミング処理で全取引をリアルタイム評価、リスクレベルで処理を分岐。Stripe Radar、Adyen RevenueAccelerate などが代表構成。</div>
+  </div>
+
+  <h3>不正検知の評価指標</h3>
+
+  <table>
+    <thead><tr><th>指標</th><th>目標値</th><th>注意点</th></tr></thead>
+    <tbody>
+      <tr><td>不正検出率(Recall)</td><td>95%以上</td><td>見逃すと損害直結</td></tr>
+      <tr><td>誤検知率(False Positive)</td><td>1%以下</td><td>正規顧客を停止すると損害+評判</td></tr>
+      <tr><td>レイテンシ</td><td>200ms以下</td><td>決済タイムアウトを避ける</td></tr>
+      <tr><td>説明可能性</td><td>判定根拠を必ず保持</td><td>顧客苦情・規制対応用</td></tr>
+    </tbody>
+  </table>
+
+  <h3>AML(Anti-Money Laundering)の特殊性</h3>
+
+  <ul class="icon-list">
+    <li><i data-lucide="shield" width="20" height="20"></i><div><strong>規制が厳格</strong> — FATF 勧告、各国法令、定期的な検査がある</div></li>
+    <li><i data-lucide="users" width="20" height="20"></i><div><strong>協調学習</strong> — 各銀行のデータを直接共有できないが、連合学習で集合知を作る試み</div></li>
+    <li><i data-lucide="alert-triangle" width="20" height="20"></i><div><strong>誤検知の闘い</strong> — 従来ルールベースでは誤検知95%以上、AI でこれを大幅削減</div></li>
+    <li><i data-lucide="clock" width="20" height="20"></i><div><strong>説明責任</strong> — 「なぜこれを疑わしいと判断したか」を必ず説明できる必要</div></li>
+  </ul>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></span>4. パーソナライズ・営業支援</h2>
+
+  <p>銀行の現場業務がAIで最も劇的に変わるのが営業・RM(リレーションシップマネジメント)領域。</p>
+
+  <h3>3つの典型ユースケース</h3>
+
+  <div class="compare-cards">
+    <div class="cc neutral">
+      <span class="cc-label">① 個別提案</span>
+      <h4>顧客ごとに最適化</h4>
+      <p>顧客の家族構成・取引履歴・ライフイベントから、最適な商品(住宅ローン、保険、投資)を提案。<br>
+      <strong>AIの役割</strong>: 1人1人の最適商品を予測、RMが顧客に伝える</p>
+    </div>
+    <div class="cc neutral">
+      <span class="cc-label">② 解約予測</span>
+      <h4>離脱前にケアする</h4>
+      <p>取引行動パターンから「3ヶ月以内に解約しそうな顧客」を予測、RMがフォロー。<br>
+      <strong>AIの役割</strong>: 解約確率予測、解約理由分析、最適なフォロー施策提案</p>
+    </div>
+  </div>
+
+  <div class="compare-cards">
+    <div class="cc neutral">
+      <span class="cc-label">③ RM 業務支援</span>
+      <h4>AIアシスタント</h4>
+      <p>顧客との面談前に過去履歴を要約、想定質問への回答案を作成、商品提案ドラフトを生成。<br>
+      <strong>AIの役割</strong>: RM 1人あたり週10時間の事務作業を AI に置き換え</p>
+    </div>
+    <div class="cc neutral">
+      <span class="cc-label">+ 統合価値</span>
+      <h4>RMの役割が変わる</h4>
+      <p>機械的な作業を AI に任せ、RM は<strong>顧客との関係構築・複雑な意思決定支援</strong>に純化。<br>
+      これが「銀行が AI 時代に何を売るか」の答え。</p>
+    </div>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></span>5. 金融AIガバナンス — 必ず押さえる規制</h2>
+
+  <div class="info-box">
+    <span class="label">公式ドキュメント必読</span>
+    <p>金融業務でAIを扱うなら、以下は必読です:<br>
+    ① <a href="https://www.fsa.go.jp/policy/ai/" target="_blank" rel="noopener">金融庁 AI関連ガイドライン</a><br>
+    ② <a href="https://www.fisc.or.jp/" target="_blank" rel="noopener">FISC 安全対策基準</a><br>
+    ③ <a href="https://www.bis.org/" target="_blank" rel="noopener">BIS(国際決済銀行)文書</a><br>
+    ④ <a href="https://artificialintelligenceact.eu/" target="_blank" rel="noopener">EU AI Act(高リスクAI分類)</a><br>
+    与信判断はEU AI Actで「高リスクAI」に分類されます。日本企業もEU市場で展開する場合は対応必須。</p>
+  </div>
+
+  <h3>金融AIガバナンスの5本柱</h3>
+
+  <ul class="icon-list">
+    <li><i data-lucide="check-circle" width="20" height="20"></i><div><strong>説明可能性(Explainability)</strong> — なぜそう判断したかの根拠を残す</div></li>
+    <li><i data-lucide="check-circle" width="20" height="20"></i><div><strong>公平性(Fairness)</strong> — 性別・年齢・地域による不公平な判断を排除</div></li>
+    <li><i data-lucide="check-circle" width="20" height="20"></i><div><strong>頑健性(Robustness)</strong> — データ攻撃・改ざんに耐える</div></li>
+    <li><i data-lucide="check-circle" width="20" height="20"></i><div><strong>監査可能性(Auditability)</strong> — 全判断のログ・モデルバージョン保管</div></li>
+    <li><i data-lucide="check-circle" width="20" height="20"></i><div><strong>人間関与(Human Oversight)</strong> — 重要判断には必ず人間が関与</div></li>
+  </ul>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></span>6. 金融顧客への提案テンプレ</h2>
+
+  <h3>地銀向け「個人事業主向け融資AI高度化」の提案サマリー</h3>
+
+  <div class="diagram-box">
+    <pre class="mermaid">
+graph TB
+  S["業界の未来<br/>3年後、地銀は個人事業主市場で勝負"]
+  S --> N["御社の現状<br/>融資判断3-5日、不良債権率1.5%"]
+  N --> O["御社の機会<br/>判断時間1日以下+不良債権率1.2%"]
+  O --> A["当社の役割<br/>会計SaaS連携 + 説明可能AI構築"]
+  A --> R["3年累計効果<br/>新規融資+30%、不良債権-30%、純利益+18億円"]
+    </pre>
+    <div class="diagram-caption">「未来→現状→機会→役割→効果」の5ステップ。これがインサイト型提案の典型構造。</div>
+  </div>
+
+  <div class="kv-grid">
+    <div class="kv"><div class="kv-key">投資</div><div class="kv-val">3億円(初期2億+運用6千万/年×2)</div></div>
+    <div class="kv"><div class="kv-key">3年累計純利益増</div><div class="kv-val">18億円</div></div>
+    <div class="kv"><div class="kv-key">投資回収</div><div class="kv-val">9ヶ月</div></div>
+    <div class="kv"><div class="kv-key">PoC期間</div><div class="kv-val">3ヶ月、5,000万円</div></div>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></span>7. 章のまとめ</h2>
+
+  <ul class="icon-list">
+    <li><i data-lucide="check-circle" width="20" height="20"></i><div>金融業は<strong>5つの地殻変動</strong>(個別最適化・リアルタイム化・規制強化・ビッグテック参入・暗号資産)が同時進行</div></li>
+    <li><i data-lucide="check-circle" width="20" height="20"></i><div><strong>与信プロセス再発明</strong>(3日→3秒)はビジネスモデル変革。代替データの活用が鍵</div></li>
+    <li><i data-lucide="check-circle" width="20" height="20"></i><div><strong>不正検知・AML</strong>はリアルタイム + 説明可能 + 連合学習が標準に</div></li>
+    <li><i data-lucide="check-circle" width="20" height="20"></i><div><strong>RMの役割</strong>が機械作業から関係構築に純化、AIは「人を高める」道具に</div></li>
+    <li><i data-lucide="check-circle" width="20" height="20"></i><div>金融AIガバナンス5本柱(説明性・公平性・頑健性・監査・人間関与)を最初から設計</div></li>
+  </ul>
+
+  <!-- Exercises -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></span>Exercise</h2>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>金融機関のAIユースケースを3層で分類</h4>
+    <p>本章で学んだ金融AIユースケース(与信、不正検知、RM支援、解約予測等)を、Ch01のDX3層(L1効率化 / L2業務変革 / L3構造変革)で分類してください。各層で1つずつ、合計3つを選んで分類理由を書いてください。</p>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <ul>
+        <li><strong>L1(効率化)</strong>: <strong>カスタマーサポートAI</strong> — 既存の問い合わせ対応をAIで効率化。業務の中身は変わらない、応答スピード・コスト削減</li>
+        <li><strong>L2(業務変革)</strong>: <strong>RM支援(個別提案+解約予測)</strong> — RMの仕事の中身が「商品売り」から「関係構築・複雑判断」に変わる。プロセスの再設計</li>
+        <li><strong>L3(構造変革)</strong>: <strong>与信3日→3秒</strong> — 銀行の収益構造そのものが変わる。「貸出は時間がかかる」前提が崩れ、新しい商品設計・新規市場開拓・ビッグテックとの競合構図が変わる</li>
+      </ul>
+      <p><strong>共通ポイント</strong>: 多くの提案は「L1 から始める」が正解だが、ストーリーは必ず L3 まで描いておく。「3年後にここまで行ける」と提示すると、L1 の予算もスムーズに通る。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>地銀向け中期DX戦略提案を1ページにまとめる</h4>
+    <p>顧客は地銀大手(預金量5兆円規模)。3年で「個人事業主市場でNo.1地銀になる」という戦略目標がある。あなたが書く1ページ提案サマリーを作ってください。インサイト型提案の3段構成(未来図→示唆→自社役割)で。</p>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><strong>1ページ提案サマリー</strong></p>
+
+      <p><strong>━━━ 業界の未来(2029年) ━━━</strong></p>
+      <ul>
+        <li>個人事業主の80%が会計SaaS(freee/MFクラウド等)を利用、口座連携が標準</li>
+        <li>3メガバンク + ビッグテック + 既存ネット銀行が個人事業主市場に本格参入</li>
+        <li>融資判断は3秒、商品提案は完全パーソナライズが標準スペック</li>
+        <li>地銀の差別化は「現場でのリレーションシップ」+「特定業界専門性」のみ残る</li>
+      </ul>
+
+      <p><strong>━━━ 御行の現状と機会 ━━━</strong></p>
+      <ul>
+        <li>地域内個人事業主の取引シェア15%(地域内No.1だが絶対数は1万件)</li>
+        <li>融資判断 平均5日、不良債権率1.4%(業界平均比やや高)</li>
+        <li>機会: 与信時間1/100、不良債権率を1.0%まで引き下げ、かつ取引シェアを2倍に</li>
+        <li>条件: 24ヶ月以内の実装、後発のビッグテック参入前にポジション確立</li>
+      </ul>
+
+      <p><strong>━━━ 当社の3段階ロードマップ ━━━</strong></p>
+      <ul>
+        <li><strong>Phase 1(M1-M6)</strong>: 会計SaaS連携基盤 + AI与信モデル PoC、5,000万円。1,000件で精度検証</li>
+        <li><strong>Phase 2(M7-M18)</strong>: 本番展開 + RM 支援AI、3億円。融資時間50%削減を実現</li>
+        <li><strong>Phase 3(M19-M36)</strong>: 業界特化型与信(医療・建設・小売)、1億円。地域シェア25%を目指す</li>
+      </ul>
+
+      <p><strong>━━━ 期待効果(3年累計) ━━━</strong></p>
+      <ul>
+        <li>新規融資 +30%(年1500件→年2000件)</li>
+        <li>不良債権率 1.4% → 1.0%(損失年5億円減)</li>
+        <li>純利益 +18億円、投資回収9ヶ月、3年ROI 5.0倍</li>
+      </ul>
+
+      <p><strong>━━━ 当社が選ばれる理由 ━━━</strong></p>
+      <ul>
+        <li>金融業界向けAI実装の専門知識・規制対応経験</li>
+        <li>金融庁ガイドライン・FISC基準・EU AI Act 全対応</li>
+        <li>3年伴走型(コンサル+SI+運用支援を一気通貫で提供)</li>
+      </ul>
+
+      <p><strong>共通ポイント</strong>: 「業界の未来」が最初に来ること、その上で御行の機会、そして自社の役割。これがインサイト型提案の王道です。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>さらに深めるために</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span> <a href="https://www.fsa.go.jp/policy/ai/" target="_blank" rel="noopener">金融庁 AIガイドライン</a> — 日本の金融AI規制の本流</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://www.fisc.or.jp/" target="_blank" rel="noopener">FISC 安全対策基準</a> — 金融機関向けセキュリティ標準</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://artificialintelligenceact.eu/" target="_blank" rel="noopener">EU AI Act</a> — 与信は「高リスクAI」分類</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://www.bcg.com/industries/financial-institutions" target="_blank" rel="noopener">BCG Financial Institutions</a> — 金融AI戦略レポート</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://www.mckinsey.com/industries/financial-services" target="_blank" rel="noopener">McKinsey Financial Services</a> — 主要レポート</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://www.jpmorgan.com/technology" target="_blank" rel="noopener">JPMorgan Technology</a> — 海外先進事例の生情報</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="09">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="08-insight-proposal.html"><span class="direction">&larr; Prev</span>インサイト型提案</a>
+    <a href="10-case-manufacturing.html"><span class="direction">Next &rarr;</span>業界ケース②: 製造</a>
+  </div>
+</main>
+
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'base', themeVariables: { primaryColor: '#e0dff0', primaryTextColor: '#1a1a1a', primaryBorderColor: '#262260', lineColor: '#262260', secondaryColor: '#f5f5f5', tertiaryColor: '#fafafa', fontFamily: 'inherit', fontSize: '14px' }, flowchart: { curve: 'basis', htmlLabels: true }, sequence: { useMaxWidth: true } });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+window.addEventListener('load', function() {
+  if (window.lucide) lucide.createIcons();
+
+  var ctx = document.getElementById('ch09-revenue');
+  if (ctx && window.Chart) {
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['貸出収益','為替・送金','資産運用','データ事業','BtoBサブスク'],
+        datasets: [
+          { label: '2024 (%)', data: [50, 20, 25, 3, 2], backgroundColor: '#94a3b8', borderRadius: 4 },
+          { label: '2030予測 (%)', data: [35, 12, 22, 18, 13], backgroundColor: '#262260', borderRadius: 4 }
+        ]
+      },
+      options: { plugins: { legend: { position: 'bottom' } }, scales: { y: { beginAtZero: true, title: { display: true, text: '収益構成比 (%)' } } } }
+    });
+  }
+});
+</script>
+</body>
+</html>
