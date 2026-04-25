@@ -383,3 +383,22 @@ window.tutorialProgress = {
     if (currentUser) pushToCloud();
   },
 };
+
+// ============ Term tooltip tap toggle (iOS Safari対応) ============
+(function initTermTooltips() {
+  document.addEventListener('click', (e) => {
+    const term = e.target.closest('.term');
+    document.querySelectorAll('.term.is-open').forEach((t) => {
+      if (t !== term) t.classList.remove('is-open');
+    });
+    if (term) {
+      term.classList.toggle('is-open');
+      e.stopPropagation();
+    }
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.term.is-open').forEach((t) => t.classList.remove('is-open'));
+    }
+  });
+})();

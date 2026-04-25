@@ -1270,6 +1270,17 @@ nav.sidebar ul li a .sub-label {
   .card-grid { grid-template-columns: 1fr; }
   .card-grid.cols-3 { grid-template-columns: 1fr; }
   .comparison { grid-template-columns: 1fr; }
+
+  .topbar-main {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 0 12px;
+  }
+  .topbar-main::-webkit-scrollbar { display: none; }
+  .topbar .nav-links { margin-left: 16px; }
+  .topbar-right { padding-right: 4px; }
 }
 
 /* ============ Auth (Firebase) ============ */
@@ -1322,7 +1333,8 @@ nav.sidebar ul li a .sub-label {
   font-weight: 500;
 }
 .term:hover::after,
-.term:focus::after {
+.term:focus::after,
+.term.is-open::after {
   content: attr(data-tip);
   position: absolute;
   bottom: calc(100% + 6px);
@@ -1342,7 +1354,9 @@ nav.sidebar ul li a .sub-label {
   box-shadow: 0 4px 16px rgba(0,0,0,0.15);
   pointer-events: none;
 }
-.term:hover::before {
+.term:hover::before,
+.term:focus::before,
+.term.is-open::before {
   content: "";
   position: absolute;
   bottom: calc(100% + 2px);
@@ -1353,6 +1367,8 @@ nav.sidebar ul li a .sub-label {
   z-index: 100;
   pointer-events: none;
 }
+.term:focus { outline: none; }
+.term:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
 
 .more-box {
   background: #fafafa;
