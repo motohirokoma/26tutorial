@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23262260%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>タスク分解 × 4象限フレーム — AI戦略策定ツール - MK's Enterprise AI/DX Basics</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #262260; }
+  /* 4象限フレーム専用スタイル */
+  .quadrant-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; max-width: 720px; margin: 24px auto; border: 2px solid #262260; }
+  .quadrant-cell { padding: 22px; min-height: 220px; position: relative; }
+  .quadrant-cell.q1 { background: #DCEAF8; border-right: 1px solid #0B56A0; border-bottom: 1px solid #0B56A0; }
+  .quadrant-cell.q2 { background: #F1E0FC; border-bottom: 1px solid #B764F2; }
+  .quadrant-cell.q3 { background: #FDE3EC; border-right: 1px solid #DC2363; }
+  .quadrant-cell.q4 { background: #FEEED2; }
+  .quadrant-cell .q-num { position: absolute; top: 14px; left: 14px; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-size: 14px; }
+  .quadrant-cell.q1 .q-num { background: #0B56A0; }
+  .quadrant-cell.q2 .q-num { background: #B764F2; }
+  .quadrant-cell.q3 .q-num { background: #DC2363; }
+  .quadrant-cell.q4 .q-num { background: #FAAE39; color: #1a1a1a; }
+  .quadrant-cell h4 { margin: 0 0 8px 44px; font-size: 16px; font-weight: 700; color: #262260 !important; }
+  .quadrant-cell .role { font-size: 12px; color: #475569; margin: 0 0 10px 44px; font-style: italic; }
+  .quadrant-cell ul { margin: 0; padding-left: 60px; font-size: 13px; }
+  .quadrant-cell ul li { margin-bottom: 4px; }
+  .axis-label { text-align: center; font-size: 12px; color: #475569; font-weight: 600; }
+  .quadrant-wrapper { position: relative; padding: 30px 0 30px 60px; }
+  .y-axis { position: absolute; left: 0; top: 50%; transform: translateY(-50%) rotate(-90deg); transform-origin: left; font-size: 12px; color: #262260; font-weight: 700; white-space: nowrap; }
+  .y-axis-top, .y-axis-bottom { position: absolute; left: 30px; font-size: 11px; color: #475569; }
+  .y-axis-top { top: 30px; }
+  .y-axis-bottom { bottom: 30px; }
+  /* 12 grid (4 quadrants × 3 actions) */
+  .actions-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin: 16px 0; }
+  .action-card { display: flex; gap: 14px; padding: 14px 16px; border-radius: 8px; background: white; border: 1px solid var(--border); }
+  .action-card .action-q { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 12px; flex-shrink: 0; }
+  .action-card.q1 .action-q { background: #0B56A0; }
+  .action-card.q2 .action-q { background: #B764F2; }
+  .action-card.q3 .action-q { background: #DC2363; }
+  .action-card.q4 .action-q { background: #FAAE39; color: #1a1a1a; }
+  .action-card h5 { margin: 0 0 4px; font-size: 13px; font-weight: 700; color: #262260; }
+  .action-card p { margin: 0; font-size: 12px; color: #475569; }
+  .action-card .roi { font-size: 11px; font-weight: 600; color: #0B56A0; margin-top: 4px; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Enterprise AI/DX Basics
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1"><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2"><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="../index.html#phase3" class="active"><span class="phase-name">Advanced</span><span class="phase-pct" id="pct-advanced">0%</span></a></li>
+      <li><a href="../index.html#phase4"><span class="phase-name">Capstone</span><span class="phase-pct" id="pct-capstone">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.08</span>
+    タスク分解 × 4象限フレーム — AI戦略策定ツール
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18" stroke-dasharray="0 113.1" stroke-dashoffset="0" transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 15 sections</text>
+    </svg>
+    <div class="progress-info">0h / 25h completed</div>
+  </div>
+  <div class="section-label">Prerequisites</div>
+  <ul><li><a href="00-prerequisites.html"><span class="status-dot"></span> 前提知識</a></li></ul>
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-overview.html"><span class="status-dot" data-chapter="01"></span> AI・DX全体像</a></li>
+    <li><a href="02-consulting-thinking.html"><span class="status-dot" data-chapter="02"></span> 戦略コンサル思考</a></li>
+  </ul>
+  <div class="section-label">Core</div>
+  <ul>
+    <li><a href="03-llm-fundamentals.html"><span class="status-dot" data-chapter="03"></span> 生成AI/LLM 本質編</a></li>
+    <li><a href="04-ml-data-infra.html"><span class="status-dot" data-chapter="04"></span> ML / データ基盤</a></li>
+    <li><a href="05-physical-ai.html"><span class="status-dot" data-chapter="05"></span> フィジカルAI</a></li>
+    <li><a href="06-poc-to-delivery.html"><span class="status-dot" data-chapter="06"></span> PoCから本番デリバリー</a></li>
+  </ul>
+  <div class="section-label">Advanced</div>
+  <ul>
+    <li><a href="07-industry-foresight.html"><span class="status-dot" data-chapter="07"></span> 業界未来予測</a></li>
+    <li><a href="08-quadrant-framework.html" class="active"><span class="status-dot" data-chapter="08"></span> 4象限フレーム</a></li>
+    <li><a href="09-insight-proposal.html"><span class="status-dot" data-chapter="09"></span> インサイト型提案</a></li>
+    <li><a href="10-case-finance.html"><span class="status-dot" data-chapter="10"></span> 金融ケース</a></li>
+    <li><a href="11-case-manufacturing.html"><span class="status-dot" data-chapter="11"></span> 製造ケース</a></li>
+    <li><a href="12-case-defense.html"><span class="status-dot" data-chapter="12"></span> 防衛ケース</a></li>
+  </ul>
+  <div class="section-label">Capstone</div>
+  <ul>
+    <li><a href="13-ethics-regulation.html"><span class="status-dot" data-chapter="13"></span> 倫理・規制</a></li>
+    <li><a href="14-capstone-case.html"><span class="status-dot" data-chapter="14"></span> 統合ケース演習</a></li>
+    <li><a href="15-final-exercise.html"><span class="status-dot" data-chapter="15"></span> 最終演習問題</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 3: Advanced &gt; Chapter 08</div>
+  <h1>タスク分解 × 4象限フレーム — AI戦略策定ツール</h1>
+  <p class="subtitle">本章は社員が顧客提案で実際に使う<strong>戦略策定ツール</strong>です。「業界・企業・コンテキスト」を入力すると、4象限に整理され、各象限から3施策ずつ(計12施策)を ROI 付きで導出できる。Ch07(業界未来予測)の次に位置し、Ch09(インサイト型提案)の土台となる中核章です。</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 120分</span>
+    <span class="badge">Phase: Advanced</span>
+    <span class="badge">難易度: ★★★★★</span>
+  </div>
+
+  <div class="info-box" style="margin-top: 16px;">
+    <span class="label">本章の到達点</span>
+    <p>顧客との初回打ち合わせで「漠然と AI で何かやりたい」と言われた瞬間に、その場で4象限を頭に描き、<strong>商談後3日以内に12施策の提案ドラフトを返せる</strong>状態。本章の記述は2026年4月時点の情報に基づきます。</p>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></span>Part 1. 問いの転換 — 経営層と話す前に</h2>
+
+  <p>Ch01 でも触れましたが、本章でより深く掘ります。<strong>顧客の経営層が抱えている問いは、ほぼ全てが悪い問い</strong>。私たちが提案を始める前に、彼らの問いを「良い問い」に転換することが第一歩です。</p>
+
+  <table>
+    <thead><tr><th>悪い問い(よくある経営者の頭の中)</th><th>転換後の良い問い</th></tr></thead>
+    <tbody>
+      <tr><td>生成AIが当社の最優秀社員に匹敵するのはいつか?</td><td>制約を踏まえて、現時点で<strong>どの業務に</strong>有効活用できるか?</td></tr>
+      <tr><td>生成AIはビジネスで価値を生むほど精度が高いのか?</td><td>どのレベルの精度なら<strong>業務に組み込めるか</strong>(=Human-in-the-Loop必要かどうか)?</td></tr>
+      <tr><td>競合他社はどう活用しているか?</td><td>自社が他社より<strong>戦略的に活用</strong>するには何が必要か?</td></tr>
+      <tr><td>CIOの動きは遅くないか?</td><td>CIOに任せきりではなく、<strong>事業部門が主役</strong>で動くべきか?</td></tr>
+    </tbody>
+  </table>
+
+  <div class="alert-box">
+    <span class="label">重要な認識</span>
+    <p><strong>競争優位は、生成AIを迅速に導入することではなく、他社よりも戦略的に利用することで生まれる。</strong>「導入が早い」だけでは差別化にならない。「どのタスクに」「どの関与モデルで」「どんな目的で」使うかを設計できているかが分かれ目です。</p>
+  </div>
+
+  <h3>「人間 vs AI」の問いから「タスク分解」へ</h3>
+
+  <div class="compare-cards">
+    <div class="cc bad">
+      <span class="cc-label">悪いアプローチ</span>
+      <h4>「全体を AI で代替できるか?」</h4>
+      <p>業務全体を一つの単位として、AI で代替できるかを問う。<br>
+      → 「精度が足りない」「責任が取れない」で終わる<br>
+      → ほとんどの業務で No になる</p>
+    </div>
+    <div class="cc good">
+      <span class="cc-label">良いアプローチ</span>
+      <h4>「タスクごとに分解、AI 関与モデルを選ぶ」</h4>
+      <p>業務を構成タスクに分解、各タスクの特性で AI 関与度を決める。<br>
+      → タスクごとに最適な AI 活用が見える<br>
+      → 全体としては大きな効果が出る</p>
+    </div>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></span>Part 2. タスク分解の思考法</h2>
+
+  <p>4象限フレームを使う前に、<strong>業務をタスクに分解する</strong>必要があります。これが第一の道具。</p>
+
+  <h3>タスク分解の3ステップ</h3>
+
+  <div class="steps">
+    <div class="step done"><div class="step-num">1</div><div class="step-label">業務フロー</div><div class="step-desc">業務全体を流れで描く</div></div>
+    <div class="step done"><div class="step-num">2</div><div class="step-label">タスク抽出</div><div class="step-desc">最小単位の作業に分解</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-label">特性評価</div><div class="step-desc">2軸で位置づけ</div></div>
+  </div>
+
+  <h3>例: 営業部門の「新規提案書作成」業務を分解</h3>
+
+  <div class="diagram-box">
+    <div class="diagram-title">タスク分解の実例</div>
+    <pre class="mermaid">
+graph TB
+  Task["新規提案書作成<br/>(平均20時間/件)"]
+  Task --> T1["1. 顧客情報収集"]
+  Task --> T2["2. 業界トレンド分析"]
+  Task --> T3["3. 提案ストーリー構想"]
+  Task --> T4["4. テンプレ流用 + 数値計算"]
+  Task --> T5["5. グラフ・図表作成"]
+  Task --> T6["6. 競合比較分析"]
+  Task --> T7["7. 価格・契約条件設定"]
+  Task --> T8["8. 経営層レビュー対応"]
+  Task --> T9["9. 提案書整形・体裁"]
+    </pre>
+    <div class="diagram-caption">1つの「業務」を9個程度のタスクに分解。各タスクの特性が違うので、AI 関与モデルもタスクごとに変わる。</div>
+  </div>
+
+  <p>分解されたタスクごとに次の2軸で評価していきます。</p>
+
+  <h3>4象限を分ける2軸の意味</h3>
+
+  <ul class="icon-list">
+    <li><i data-lucide="brain" width="20" height="20"></i><div><strong>横軸:求められる知識の種類</strong> — そのタスクで必要な知識は<strong>明示的に記述できるか</strong>、それとも<strong>暗黙知</strong>(経験・勘・状況依存)か?</div></li>
+    <li><i data-lucide="alert-octagon" width="20" height="20"></i><div><strong>縦軸:エラーのコスト</strong> — そのタスクで間違いが起きた時、<strong>軽微な非効率</strong>で済むか、それとも<strong>評判・法的責任・身体的被害</strong>に至るか?</div></li>
+  </ul>
+
+  <table>
+    <thead><tr><th>軸の値</th><th>意味</th><th>例</th></tr></thead>
+    <tbody>
+      <tr><td><strong>明示的な知識</strong></td><td>構造化/非構造化問わず、明確に説明・文書化・保存できる情報</td><td>売上数値、契約書、商品仕様、顧客レビュー</td></tr>
+      <tr><td><strong>暗黙知</strong></td><td>経験的、直観的、状況依存的な知見。明文化困難</td><td>マーケキャンペーン立案、交渉中の兆しの解釈、戦略トレードオフ判断</td></tr>
+      <tr><td><strong>低エラーコスト</strong></td><td>間違っても軽微な非効率や手直しで済む</td><td>草稿の些細な間違い、顧客反応の微妙なニュアンス見逃し</td></tr>
+      <tr><td><strong>高エラーコスト</strong></td><td>評判ダメージ、法的責任、身体的被害が発生し得る</td><td>財務報告書の不備、不適切な医療判断、契約条件のミス</td></tr>
+    </tbody>
+  </table>
+
+  <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></span>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></span>Part 3. 4象限フレーム — 中核ツール</h2>
+
+  <p>2軸で分けると、4つの象限ができ、各象限で <strong>AI 関与モデルが異なる</strong>。これが本章の中核です。</p>
+
+  <div class="diagram-box">
+    <div class="diagram-title">4象限フレーム — 全体俯瞰</div>
+    <div style="position: relative; padding: 30px 40px 40px 80px;">
+      <div style="position: absolute; top: 50%; left: 20px; transform: translateY(-50%) rotate(-90deg); transform-origin: center; font-size: 12px; color: #262260; font-weight: 700;">エラーのコスト</div>
+      <div style="position: absolute; left: 60px; top: 22px; font-size: 11px; color: #475569;">↑ 高</div>
+      <div style="position: absolute; left: 60px; bottom: 22px; font-size: 11px; color: #475569;">↓ 低</div>
+      <div class="quadrant-grid">
+        <div class="quadrant-cell q3">
+          <span class="q-num">3</span>
+          <h4>人間ファースト</h4>
+          <p class="role">負荷タスクは人間主導、AI は軽微支援</p>
+          <ul>
+            <li>全社戦略の策定・経営人材登用</li>
+            <li>危機管理と対応</li>
+            <li>懲戒処分等の人事介入</li>
+          </ul>
+        </div>
+        <div class="quadrant-cell q4">
+          <span class="q-num">4</span>
+          <h4>品質管理</h4>
+          <p class="role">AI が出力、人間が検証(HITL)</p>
+          <ul>
+            <li>高額契約書ドラフト作成</li>
+            <li>本番環境向けソフトウェア記述</li>
+            <li>各種デューデリジェンスの実施</li>
+          </ul>
+        </div>
+        <div class="quadrant-cell q2">
+          <span class="q-num">2</span>
+          <h4>クリエイティブ触媒</h4>
+          <p class="role">AI が選択肢を作成、人間が選択</p>
+          <ul>
+            <li>広告・マーケスローガン制作</li>
+            <li>営業トーク・新規商品アイデア</li>
+            <li>模擬面接シミュレーション</li>
+          </ul>
+        </div>
+        <div class="quadrant-cell q1">
+          <span class="q-num">1</span>
+          <h4>No-Regret(積極利用)</h4>
+          <p class="role">AI だけで全部こなす(人間干渉なし)</p>
+          <ul>
+            <li>大量問い合わせ対応</li>
+            <li>会議の速記録</li>
+            <li>履歴書一次スクリーニング</li>
+          </ul>
+        </div>
+      </div>
+      <div class="axis-label" style="margin-top: 8px;">← 暗黙知 &nbsp;&nbsp;&nbsp;&nbsp; 求められる知識の種類 &nbsp;&nbsp;&nbsp;&nbsp; 明示的な知識 →</div>
+    </div>
+    <div class="diagram-caption">2軸4象限。各象限で AI 関与モデルが違う。横軸は知識の種類、縦軸はエラーコスト。</div>
+  </div>
+
+  <h3>各象限の詳細解説</h3>
+
+  <div class="insight-box">
+    <span class="label">象限① No-Regret(積極利用)</span>
+    <p><strong>位置</strong>: 明示的な知識 × 低エラーコスト<br>
+    <strong>関与モデル</strong>: AI だけで全部こなす(人間は干渉しない)<br>
+    <strong>典型タスク</strong>: 顧客問い合わせ大量対応、会議の速記録、履歴書一次スクリーニング、議事録要約、定型メール作成<br>
+    <strong>判断ロジック</strong>: いますぐ生成AIを導入すべき。「退屈で時間と費用がかかりすぎる」理由でこれまで人間が手を出してこなかったタスク。将来的にエージェントが本領を発揮する領域。<br>
+    <strong>適応の問い</strong>:<br>
+    ① アウトプットの質の多少の不備を許容できるだけのコスト削減やスピードの向上が実現するか?<br>
+    ② 現在は実施していない作業、あるいは実施に大きなコストがかかっている作業に生成AIをどのように活かせるか?</p>
+  </div>
+
+  <div class="info-box">
+    <span class="label">象限② クリエイティブ触媒</span>
+    <p><strong>位置</strong>: 暗黙知 × 低エラーコスト<br>
+    <strong>関与モデル</strong>: AI が選択肢を作成し、人間が選択する<br>
+    <strong>典型タスク</strong>: 広告・マーケスローガン制作、営業トーク・新規商品アイデア、模擬面接シミュレーション、企画ブレスト、デザイン候補生成<br>
+    <strong>判断ロジック</strong>: 多少の間違いがあってもコストは低い。実験を加速させる、アイデアの量を増やす、クリエイティブプロセスに多数の人々を参加させるなど、人間の創造性を拡張する。<br>
+    <strong>適応の問い</strong>:<br>
+    ① 生成AIはクリエイティブ職の人々の時間を節約できるか?<br>
+    ② 生成AIによって、クリエイティブ職以外の人々がクリエイティブなタスクに参加しやすくなるか?</p>
+  </div>
+
+  <div class="alert-box">
+    <span class="label">象限③ 人間ファースト</span>
+    <p><strong>位置</strong>: 暗黙知 × 高エラーコスト<br>
+    <strong>関与モデル</strong>: 負荷のかかるタスクを人間が主導し、実際に行う。AI は軽微なタスクを支援<br>
+    <strong>典型タスク</strong>: 全社戦略の策定や経営人材の登用、危機管理と対応、懲戒処分等の人事介入、M&A 戦略意思決定<br>
+    <strong>判断ロジック</strong>: 意思決定を支える補助役になることはあっても、判断を下す主体にはなりえない。ミスを犯せば信頼・倫理・生命・長期的な財務に致命的なダメージが出る。<br>
+    <strong>適応の問い</strong>:<br>
+    ① 人間の判断の有効性を高めるために、現時点で生成AIが支援できるのはどのタスクか?</p>
+  </div>
+
+  <div class="highlight-box">
+    <span class="label">象限④ 品質管理</span>
+    <p><strong>位置</strong>: 明示的な知識 × 高エラーコスト<br>
+    <strong>関与モデル</strong>: AI が成果物を出力し、人間が検証する(Human-in-the-Loop)<br>
+    <strong>典型タスク</strong>: 高額契約の契約書ドラフト作成、本番環境向けソフトウェアの記述、各種デューデリジェンスの実施、財務レポート作成、特許文書作成<br>
+    <strong>判断ロジック</strong>: 明示的なデータに基づく、生成AIが得意とする分野。大きな説明責任を伴う知識集約型タスクが向く。正確性の基準が高く、Human-in-the-Loop型モデルが適する。<br>
+    <strong>適応の問い</strong>:<br>
+    ① 人間の専門知識が絶対に欠かせないのはどの部分か?<br>
+    ② ワークフローの中で、生成AIに問題なく任せられるのはどの部分か?</p>
+  </div>
+
+  <h3>業界別に見る4象限の典型例</h3>
+
+  <table>
+    <thead><tr><th>業界</th><th>① No-Regret</th><th>② クリエイティブ</th><th>③ 人間ファースト</th><th>④ 品質管理</th></tr></thead>
+    <tbody>
+      <tr><td>金融(銀行)</td><td>取引明細抽出、コール記録要約</td><td>顧客向け案内メールドラフト</td><td>大型与信の最終判断、リスク委員会</td><td>個別与信稟議、重要顧客向け提案書</td></tr>
+      <tr><td>製造</td><td>図面ファイリング、出荷ログ集計</td><td>新製品コンセプトのアイデア出し</td><td>サプライヤー戦略、品質クレーム対応</td><td>仕様書ドラフト、特許文書作成</td></tr>
+      <tr><td>小売</td><td>レビュー集計、棚卸データ要約</td><td>販促キャンペーンスローガン</td><td>店舗戦略、テナント選定</td><td>商品説明文、契約条件書</td></tr>
+      <tr><td>医療</td><td>カルテ要約、画像予備分類</td><td>患者教育コンテンツのアイデア</td><td>診断・治療判断、緊急対応</td><td>診療報酬請求書、病理レポート</td></tr>
+      <tr><td>士業(法・税・コンサル)</td><td>判例検索、文書OCR</td><td>提案書のストーリー候補</td><td>戦略助言、訴訟戦略</td><td>契約書ドラフト、税務申告書</td></tr>
+    </tbody>
+  </table>
+
+  <h3>商談時の入力 → 4象限化 の手順</h3>
+
+  <div class="steps">
+    <div class="step done"><div class="step-num">1</div><div class="step-label">入力収集</div><div class="step-desc">業界・企業・商談コンテキスト</div></div>
+    <div class="step done"><div class="step-num">2</div><div class="step-label">業務選定</div><div class="step-desc">最も影響大の業務 1-3 個</div></div>
+    <div class="step done"><div class="step-num">3</div><div class="step-label">タスク分解</div><div class="step-desc">各業務を 5-10 タスクに</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-label">2軸評価</div><div class="step-desc">各タスクを 4象限へ</div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-label">施策化</div><div class="step-desc">象限ごとに 3 施策(計12)</div></div>
+    <div class="step"><div class="step-num">6</div><div class="step-label">ROI推定</div><div class="step-desc">各施策に概算 ROI</div></div>
+  </div>
+
+  <div class="info-box">
+    <span class="label">商談コンテキストで施策の重みが変わる</span>
+    <p>顧客が「明確な課題がある」場合: 該当象限を厚く、他象限は補強提案として軽く。<br>
+    顧客が「漠然と AI で何かやりたい」の場合: 全象限で広く施策を提示し、優先度議論で絞る。<br>
+    顧客の <strong>業界・規模・成熟度</strong>で各象限の典型タスクは変わる(上の業界別表参照)。</p>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></span>Part 4. 動かないリスク × ファイブフォース×AI</h2>
+
+  <p>4象限を提示しただけでは、顧客が動かない場合があります。「もろもろ気にして様子見」型の経営層に対して、<strong>動かないリスクの構造</strong>を見せる必要があります。</p>
+
+  <div class="quote">
+    <strong>あなたが動かなくても、あなたの会社の顧客・サプライヤー・競合他社は、あなたと同じテクノロジーを利用できるようになります。</strong><br>
+    <strong>あなたが動かなくても、業界は影響を受けます。</strong>
+    <cite>— 様子見の代償は、業界全体の地殻変動の中で発生する</cite>
+  </div>
+
+  <h3>ファイブフォース × AI — 5方向からの圧力</h3>
+
+  <div class="diagram-box">
+    <div class="diagram-title">AI で書き換えられる5フォース</div>
+    <pre class="mermaid">
+graph TB
+  Self["自社<br/>(あなたの会社)"]
+  Self --- New["AIファースト新規参入者<br/>少人数 + AIエージェント"]
+  Self --- Sub["代替品<br/>AIを使った別の解決策"]
+  Self --- Cust["AIを使いこなす顧客<br/>社内化・自動化"]
+  Self --- Sup["AIを使いこなすサプライヤー<br/>技術パートナー化"]
+  Self --- Comp["既存の競合<br/>AI先行で差を広げる"]
+    </pre>
+    <div class="diagram-caption">ポーターの5フォースの全方向で、AI 化が進む。1方向への対応だけでは不十分。</div>
+  </div>
+
+  <h3>各フォースで起きる構造変化(顧客への説得材料)</h3>
+
+  <div class="compare-cards">
+    <div class="cc neutral">
+      <span class="cc-label">新規参入者</span>
+      <h4>AIファーストのスタートアップ</h4>
+      <p>何十人ものスタッフを雇う代わりに、<strong>少人数の専門家チーム</strong>(なんなら1人の起業家)。ソフトウェア開発エージェントやAIセールスパーソンが下支え。<br>
+      → 既存企業より<strong>10倍速くプロダクト立ち上げ</strong>、コスト構造が桁違い</p>
+    </div>
+    <div class="cc neutral">
+      <span class="cc-label">顧客</span>
+      <h4>AIを使いこなす顧客</h4>
+      <p>法律事務所やコンサルから見た「大企業」をイメージ。顧客側が<strong>社内弁護士+法務ツール+法務リサーチボット+契約書作成エージェント</strong>を内製。<br>
+      → 専門サービスへの外注ニーズが減る、価格交渉力が上がる</p>
+    </div>
+  </div>
+
+  <div class="compare-cards">
+    <div class="cc neutral">
+      <span class="cc-label">サプライヤー</span>
+      <h4>AIを使いこなすサプライヤー</h4>
+      <p>大企業から見た「部品ベンダー・ソフトウェア受託企業」をイメージ。単なる部品提供者ではなく、<strong>業界全体視点の設計最適化アルゴリズム</strong>を持った技術パートナーへ。<br>
+      → 自社内設計部門より情報優位、交渉力逆転、<strong>単価/人月でなく提供価値で交渉</strong></p>
+    </div>
+    <div class="cc bad">
+      <span class="cc-label">既存競合</span>
+      <h4>先行する競合</h4>
+      <p>同業他社が AI 活用で原価15%削減・リードタイム半減を達成。価格・納期で差を広げ、シェアを奪っていく。<br>
+      → 動かない自社は2-3年で<strong>取り返しのつかない差</strong>になる</p>
+    </div>
+  </div>
+
+  <div class="alert-box">
+    <span class="label">顧客への一言</span>
+    <p>「動かないリスク」を語る時は、必ず<strong>具体的なプレイヤー名+時間軸</strong>で語ります。<br>
+    例:「<strong>来年4月までに同業A社が AI 与信を本番導入予定です。御社が動き始めるのが半年遅れたら、<u>主要顧客の20%</u>が A社に流れる試算が立ちます。</strong>」</p>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></span>Part 5. 4象限 → 12施策 → ROI 推定</h2>
+
+  <p>各象限から3施策ずつ導出し、それぞれに ROI 推定を付ける手順を、具体例で示します。</p>
+
+  <h3>仮想ケース: 中堅損保会社(売上3,000億円)からの相談</h3>
+
+  <div class="info-box">
+    <span class="label">入力(顧客から得た情報)</span>
+    <p><strong>業界</strong>: 損保<br>
+    <strong>企業規模</strong>: 売上3,000億円、従業員 4,000名、エージェント 5,000名<br>
+    <strong>商談コンテキスト</strong>: 経営層から「AI で何かしたい」と漠然とした要望。具体的な業務指定なし。コスト削減と新サービス両方を期待。</p>
+  </div>
+
+  <h3>各象限から3施策、計12施策の提案</h3>
+
+  <div class="actions-grid">
+    <div class="action-card q1">
+      <div class="action-q">①-A</div>
+      <div>
+        <h5>① No-Regret: クレーム1次対応の AI 自動応答</h5>
+        <p>顧客からの問い合わせ・苦情を24時間 AI が1次受付。FAQ 範囲で完結する 60% を AI で対応、残りを人へ引き継ぎ。</p>
+        <p class="roi">ROI推定: 年間 8,000時間削減 × 時給3,000円 = <strong>2,400万円/年</strong>(コスト削減型)</p>
+      </div>
+    </div>
+    <div class="action-card q1">
+      <div class="action-q">①-B</div>
+      <div>
+        <h5>① No-Regret: 全社員アンケート・調査の自動集計</h5>
+        <p>四半期ごとの社内アンケート(自由記述含む)を AI で全数解析、傾向レポート自動生成。</p>
+        <p class="roi">ROI推定: 集計工数 200時間/回 × 4回 × 時給4,000円 = <strong>320万円/年</strong>(コスト削減型)</p>
+      </div>
+    </div>
+    <div class="action-card q1">
+      <div class="action-q">①-C</div>
+      <div>
+        <h5>① No-Regret: 採用書類の一次スクリーニング</h5>
+        <p>新卒・中途採用の履歴書・エントリーシートを AI が初次スクリーニング。明らかな不適合のみ自動除外、残りを人事へ。</p>
+        <p class="roi">ROI推定: 年5,000件 × 1人あたり10分削減 = 833時間 × 時給5,000円 = <strong>420万円/年</strong>(コスト削減型)</p>
+      </div>
+    </div>
+    <div class="action-card q2">
+      <div class="action-q">②-A</div>
+      <div>
+        <h5>② クリエイティブ触媒: 商品コピー・広告候補の量産</h5>
+        <p>新商品の広告コピー候補を AI で50パターン生成、マーケが選別・リファイン。社員主導の選別とブランドトーンを保ちつつ、量を10倍に。</p>
+        <p class="roi">ROI推定: 広告投入数 +30% × 年間広告効果 5億円 = <strong>1.5億円/年 機会創出</strong>(売上向上型)</p>
+      </div>
+    </div>
+    <div class="action-card q2">
+      <div class="action-q">②-B</div>
+      <div>
+        <h5>② クリエイティブ触媒: エージェント研修コンテンツ自動生成</h5>
+        <p>5,000名のエージェント向けに、保険商品ごとの研修コンテンツ(動画台本・FAQ)を AI で量産。エージェント力量平準化。</p>
+        <p class="roi">ROI推定: 研修制作費 8,000万/年 → 3,000万/年に圧縮 = <strong>5,000万円/年削減</strong>(コスト削減型)</p>
+      </div>
+    </div>
+    <div class="action-card q2">
+      <div class="action-q">②-C</div>
+      <div>
+        <h5>② クリエイティブ触媒: 営業トーク候補生成 + シミュレーション</h5>
+        <p>顧客プロファイル別に最適な営業トーク候補を AI で生成、模擬面談で訓練。エージェント営業力 +15% 想定。</p>
+        <p class="roi">ROI推定: エージェント1人 +15% × 5,000名 × 1人売上 1,500万円 = <strong>112億円/年機会拡大</strong>(売上向上型、ただし達成率0.5想定で 56億円)</p>
+      </div>
+    </div>
+    <div class="action-card q3">
+      <div class="action-q">③-A</div>
+      <div>
+        <h5>③ 人間ファースト: 災害発生時の全社対応支援</h5>
+        <p>大規模災害時、過去事例・気象データ・SNS 投稿を AI で集約し、対策本部の意思決定を支援。<strong>判断は人間</strong>、AI は情報整理に徹する。</p>
+        <p class="roi">ROI推定: 大規模災害1件あたり対応コスト1割削減 + 顧客満足向上 = <strong>5億円/件 × 0.5回/年 = 2.5億円/年</strong>(リスク回避型)</p>
+      </div>
+    </div>
+    <div class="action-card q3">
+      <div class="action-q">③-B</div>
+      <div>
+        <h5>③ 人間ファースト: 経営戦略策定の AI 支援</h5>
+        <p>業界レポート・競合動向・自社財務の総合分析を AI が要約、経営会議の事前資料に。<strong>戦略判断は経営層</strong>。</p>
+        <p class="roi">ROI推定: 経営判断スピード+精度向上による中期戦略の質改善 = <strong>定量化困難だが大型機会</strong>(時間価値型)</p>
+      </div>
+    </div>
+    <div class="action-card q3">
+      <div class="action-q">③-C</div>
+      <div>
+        <h5>③ 人間ファースト: コンプラ事案・懲戒処分の判断支援</h5>
+        <p>過去判例・社内規定をベースに AI が論点整理。<strong>最終判断は人事委員会</strong>。説明可能性確保。</p>
+        <p class="roi">ROI推定: 重大事案の判断ミス1件あたり訴訟コスト1億円 × 削減確率0.3 = <strong>3,000万円/年</strong>(リスク回避型)</p>
+      </div>
+    </div>
+    <div class="action-card q4">
+      <div class="action-q">④-A</div>
+      <div>
+        <h5>④ 品質管理: 個別与信判断の AI ドラフト + 審査員レビュー</h5>
+        <p>過去与信履歴・財務データから AI が判断ドラフトを生成、与信審査員がレビュー・最終判断。HITL 構造で説明可能性も確保。</p>
+        <p class="roi">ROI推定: 1件あたり審査時間 4時間→1時間、年5万件 = 15万時間削減 × 時給5,000円 = <strong>7.5億円/年</strong>(コスト削減型)+ 不良債権率 0.4% 改善 = 6億円/年 = 計13.5億円/年</p>
+      </div>
+    </div>
+    <div class="action-card q4">
+      <div class="action-q">④-B</div>
+      <div>
+        <h5>④ 品質管理: 大型契約書ドラフト + 法務レビュー</h5>
+        <p>団体保険・法人契約のドラフトを AI が生成、法務がレビュー。標準条項を AI、特殊条項を法務が担当。</p>
+        <p class="roi">ROI推定: 法務工数 5,000時間/年 → 2,000時間/年 = 3,000時間 × 時給8,000円 = <strong>2,400万円/年</strong>(コスト削減型)</p>
+      </div>
+    </div>
+    <div class="action-card q4">
+      <div class="action-q">④-C</div>
+      <div>
+        <h5>④ 品質管理: 各種 DD(Due Diligence)の AI 一次調査</h5>
+        <p>提携先・買収先・新規取引先の DD で、AI が公開情報・過去データから一次調査結果を生成。専門家がレビュー・判断。</p>
+        <p class="roi">ROI推定: DD 1件 80時間 → 30時間、年30件 = 1,500時間 × 時給10,000円 = <strong>1,500万円/年</strong>(コスト削減型)+ 機会逃しリスク低減</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>ROI推定の標準テンプレ — 5型</h3>
+
+  <table>
+    <thead><tr><th>型</th><th>計算式</th><th>根拠の出し方</th></tr></thead>
+    <tbody>
+      <tr><td><strong>コスト削減型</strong></td><td>削減人時 × 時給</td><td>営業時給(年収÷年労働時間)、参考: 営業時給3,000-5,000円、法務8,000-10,000円</td></tr>
+      <tr><td><strong>売上向上型</strong></td><td>顧客単価 × 増加率 × 顧客数</td><td>業界平均レート、過去類似事例、「達成率」係数で控えめに(0.3-0.7)</td></tr>
+      <tr><td><strong>リスク回避型</strong></td><td>想定損失額 × 発生確率削減</td><td>過去事故/苦情データ、業界統計(損保業界の苦情率、訴訟率等)</td></tr>
+      <tr><td><strong>機会創出型</strong></td><td>新規収益機会の見込</td><td>市場規模 × シェア仮定、初年度は控えめ、3年で立ち上がる前提</td></tr>
+      <tr><td><strong>時間価値型</strong></td><td>意思決定迅速化の機会価値</td><td>競争優位の持続期間、機会損失の試算</td></tr>
+    </tbody>
+  </table>
+
+  <h3>業界別 参考値表(ROI 試算用)</h3>
+
+  <table>
+    <thead><tr><th>業界・領域</th><th>参考指標</th><th>典型値</th></tr></thead>
+    <tbody>
+      <tr><td>営業全般</td><td>営業1人あたり時給</td><td>3,000-5,000円</td></tr>
+      <tr><td>法務</td><td>弁護士・法務担当時給</td><td>8,000-15,000円</td></tr>
+      <tr><td>金融(銀行)</td><td>与信1件あたり審査時間</td><td>2-6時間 / 不良債権率: 1.0-1.5%</td></tr>
+      <tr><td>製造業</td><td>突発停止1時間あたりコスト</td><td>50万円-2,000万円(装置による)</td></tr>
+      <tr><td>製造業</td><td>不良品1個あたりコスト</td><td>原価×3倍(リコール時は10倍以上)</td></tr>
+      <tr><td>小売</td><td>欠品1回あたり機会損失</td><td>来店客数 × 客単価 × 0.05-0.1</td></tr>
+      <tr><td>医療</td><td>診断 1件あたり時間</td><td>15-45分(疾患による)</td></tr>
+      <tr><td>カスタマーサポート</td><td>1件あたり対応時間</td><td>5-25分</td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-box">
+    <span class="label">提案で使うコツ</span>
+    <p>ROI 推定は<strong>3層に分けて表示</strong>すると説得力が増します:<br>
+    ① <strong>計算式</strong>(透明性): 「○○ × ○○ × ○○ = ○億円」<br>
+    ② <strong>参考根拠</strong>(信頼性): 「業界統計より ○○。御社規模での想定」<br>
+    ③ <strong>幅</strong>(誠実さ): 「ベース ○億円、幅 △-□億円。控えめに見て確実な範囲」</p>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></span>章のまとめ</h2>
+
+  <ul class="icon-list">
+    <li><i data-lucide="check-circle" width="20" height="20"></i><div><strong>問いの転換</strong>: 「いつ来るか」から「現時点でどう活用するか」へ。「人間 vs AI」から「タスク分解」へ</div></li>
+    <li><i data-lucide="check-circle" width="20" height="20"></i><div><strong>タスク分解の3ステップ</strong>: 業務フロー → タスク抽出 → 特性評価(2軸)</div></li>
+    <li><i data-lucide="check-circle" width="20" height="20"></i><div><strong>4象限フレーム</strong>: 知識の種類(明示/暗黙) × エラーコスト(低/高)で4つの AI 関与モデルを使い分け</div></li>
+    <li><i data-lucide="check-circle" width="20" height="20"></i><div><strong>動かないリスク × 5フォース×AI</strong>: 顧客が動かなくても業界が動く。具体プレイヤー+時間軸で説得</div></li>
+    <li><i data-lucide="check-circle" width="20" height="20"></i><div><strong>4象限 → 12施策 → ROI推定</strong>: 各象限3施策、5型で ROI 試算、3層構造(式・根拠・幅)で見せる</div></li>
+  </ul>
+
+  <!-- Exercises -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></span>Exercise</h2>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 1</div>
+    <span class="difficulty beginner">入門</span>
+    <h4>身近な業務をタスク分解 + 4象限化</h4>
+    <p>あなたが日々行う業務(または身近な人の業務)を1つ選び、以下を実施してください。</p>
+    <ol>
+      <li>業務を5-9個のタスクに分解</li>
+      <li>各タスクを2軸評価し、4象限のどこに位置づけるかを決定</li>
+      <li>象限ごとに「AI 関与モデル」と「想定される効果」を簡潔に記述</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答(例: 中堅商社の営業マネジャーの「週次案件レビュー」業務)</summary>
+    <div class="answer-body">
+      <p><strong>タスク分解</strong>:</p>
+      <ol>
+        <li>営業日報の読み込み(約20件/週)</li>
+        <li>失注案件の理由集計</li>
+        <li>翌週訪問先の優先順位付け</li>
+        <li>主要案件の進捗報告書作成</li>
+        <li>マネジャー間の会議準備</li>
+        <li>難案件の戦略検討(エスカレ判断含む)</li>
+        <li>役員報告のサマリー作成</li>
+      </ol>
+
+      <p><strong>4象限化</strong>:</p>
+      <ul>
+        <li>① No-Regret: タスク1(日報読み込み)・2(失注理由集計)→ AI が要約・分類</li>
+        <li>② クリエイティブ: タスク3(優先順位案)→ AI が3パターン生成、マネジャーが選択</li>
+        <li>③ 人間ファースト: タスク6(難案件戦略)→ マネジャー主導、AI は過去類似案件を提示</li>
+        <li>④ 品質管理: タスク4(進捗報告書)・7(役員サマリー)→ AI ドラフト、マネジャーがレビュー・修正</li>
+      </ul>
+
+      <p><strong>関与モデル + 効果</strong>:</p>
+      <ul>
+        <li>象限①: AI 単独 → 週次5時間の作業を30分に</li>
+        <li>象限②: AI が選択肢、人間が選ぶ → 判断速度2倍、見落とし減</li>
+        <li>象限③: 人間主導、AI が補助 → 判断の質向上(過去事例参照可)</li>
+        <li>象限④: AI ドラフト、人間検証 → 報告書作成時間 3時間→1時間</li>
+      </ul>
+
+      <p><strong>共通ポイント</strong>: 1業務でも複数の象限に分散する。「全体を AI で代替」ではなく「タスクごとに最適なモデル」で構成すると、現実的に実装可能。</p>
+    </div>
+  </details>
+
+  <div class="exercise-box">
+    <div class="exercise-label">Exercise 2</div>
+    <span class="difficulty advanced">応用</span>
+    <h4>架空案件で 12施策 + ROI推定 を作る</h4>
+    <p>顧客は中堅地銀(預金量4兆円、行員2,000名、店舗50箇所)。経営層から「個人事業主向け融資をAIで強化したい」と相談を受けた。</p>
+    <ol>
+      <li>融資業務を5-7タスクに分解</li>
+      <li>各タスクを4象限へ配置</li>
+      <li>各象限から3施策ずつ、計12施策を導出</li>
+      <li>各施策に ROI 推定(計算式・根拠・幅 の3層)を付ける</li>
+      <li>顧客経営会議向け1ページサマリー(優先施策3つ + 総合効果)を作る</li>
+    </ol>
+  </div>
+
+  <details class="answer-toggle">
+    <summary>模範解答を見る</summary>
+    <div class="answer-body">
+      <p><strong>タスク分解</strong>:</p>
+      <ol>
+        <li>申込書類の受付・スキャン・データ化</li>
+        <li>会計データ・口座データの解析</li>
+        <li>業界・地域動向との照合</li>
+        <li>与信スコアリング</li>
+        <li>融資条件・金利の決定</li>
+        <li>稟議書ドラフト作成</li>
+        <li>支店長・本部による審査・承認</li>
+      </ol>
+
+      <p><strong>象限配置 + 12施策</strong>(主要のみ抜粋):</p>
+
+      <p>① No-Regret(明示×低):<br>
+      A. 申込書類のOCR・データ化(1番) — ROI: 年5万件×30分削減 = 2.5万時間×3,000円 = <strong>0.75億/年</strong>(幅 0.6-0.9)<br>
+      B. 会計データ・口座データの自動解析(2番) — ROI: 1件30分削減×5万件 = <strong>0.75億/年</strong><br>
+      C. 業界レポートの定常配信(3番補助) — ROI: 行員時間節約 0.2億/年</p>
+
+      <p>② クリエイティブ触媒(暗黙×低):<br>
+      A. 個人事業主向け新商品アイデアの量産 — ROI: 新商品立ち上げ年数 短縮、3年累計 5億機会(幅 3-8億)<br>
+      B. 営業トーク候補生成 — ROI: 提案成功率 +10%、年200億残高拡大可能性(達成率 0.3 → 6億機会)<br>
+      C. 行員向け営業研修コンテンツ自動生成 — ROI: 研修制作 0.2億/年削減</p>
+
+      <p>③ 人間ファースト(暗黙×高):<br>
+      A. 大型与信の戦略判断支援(本部役員レビュー) — ROI: 重大判断ミス回避、訴訟・不良債権リスク削減 1億/年<br>
+      B. 個別店舗戦略の AI 補助 — ROI: 不採算店舗判断早期化、3年5億改善<br>
+      C. 危機対応(地域災害時等)の支援 — ROI: 災害時運営コスト 30%減</p>
+
+      <p>④ 品質管理(明示×高):<br>
+      A. <strong>個別与信判断のAIドラフト + 審査員レビュー</strong>(4-6番)— ROI: 1件審査時間4h→1h、5万件で15万時間削減 × 5,000円 = <strong>7.5億/年</strong> + 不良債権率 1.4%→1.0%で 4億/年 = <strong>合計11.5億/年</strong>(幅 9-14億)<br>
+      B. 稟議書ドラフト自動生成(6番) — ROI: 1件30分削減 × 5万件 × 5,000円/時 = 1.25億/年<br>
+      C. 反社・コンプラチェックの AI 一次照会 — ROI: コンプラ工数 0.3億/年削減</p>
+
+      <p><strong>1ページサマリー(優先3施策)</strong>:</p>
+      <ul>
+        <li>優先①: <strong>個別与信判断 AI(④-A)</strong> — 単独効果11.5億/年、3年累計34億</li>
+        <li>優先②: <strong>申込・会計データ自動化(①-A・B)</strong> — 1.5億/年、即効性あり</li>
+        <li>優先③: <strong>営業トーク候補生成(②-B)</strong> — 中長期で6億機会、行員力量平準化</li>
+        <li><strong>3施策合計</strong>: 投資 5億円(初期+1年運用)、3年累計効果 50億円超、ROI 10倍以上</li>
+      </ul>
+
+      <p><strong>共通ポイント</strong>: 全12施策を提示しつつ、優先3つに絞る。投資効果が大きく、即効性のあるものから着手。</p>
+    </div>
+  </details>
+
+  <div class="resources-section">
+    <h3>さらに深めるために</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span> 安宅和人『シン・ニホン』 — 日本企業の AI/DX 戦略の方向性</li>
+      <li><span class="res-type doc">Doc</span> Andrew Ng『Generative AI for Everyone』(Coursera) — 4象限的思考に近いアプローチ</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://www.bcg.com/publications/2024/where-is-the-payoff-from-genai" target="_blank" rel="noopener">BCG: Where's the Payoff from GenAI</a> — 戦略的活用と価値創出の関係</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://www.mckinsey.com/featured-insights/artificial-intelligence" target="_blank" rel="noopener">McKinsey on AI</a> — エンタープライズAI 投資効果のレポート</li>
+      <li><span class="res-type doc">Doc</span> 『The Innovator's Dilemma』(クリステンセン)— 既存企業が動かないリスクの古典</li>
+      <li><span class="res-type doc">Doc</span> 『Competitive Strategy』(ポーター)— ファイブフォース原典</li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章を終えたら、下のボタンを押して進捗を記録しましょう。</p>
+    <button class="btn-complete" data-chapter="08">&#9744; Mark as Complete</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="07-industry-foresight.html"><span class="direction">&larr; Prev</span>業界未来予測 ✕ 技術ロードマップ ✕ データ資産</a>
+    <a href="09-insight-proposal.html"><span class="direction">Next &rarr;</span>インサイト型提案</a>
+  </div>
+</main>
+
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'base', themeVariables: { primaryColor: '#e0dff0', primaryTextColor: '#1a1a1a', primaryBorderColor: '#262260', lineColor: '#262260', secondaryColor: '#f5f5f5', tertiaryColor: '#fafafa', fontFamily: 'inherit', fontSize: '14px' }, flowchart: { curve: 'basis', htmlLabels: true }, sequence: { useMaxWidth: true } });
+</script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+window.addEventListener('load', function() { if (window.lucide) lucide.createIcons(); });
+</script>
+</body>
+</html>
