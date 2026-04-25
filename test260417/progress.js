@@ -568,3 +568,21 @@ window.tutorialProgress = {
     }
   });
 })();
+
+// ============ Sidebar digital clock ============
+(function initSidebarClock() {
+  const dateEls = document.querySelectorAll('.sidebar-clock .clock-date');
+  const timeEls = document.querySelectorAll('.sidebar-clock .clock-time');
+  if (!timeEls.length) return;
+  const WEEK = ['日', '月', '火', '水', '木', '金', '土'];
+  const pad = (n) => String(n).padStart(2, '0');
+  function tick() {
+    const d = new Date();
+    const date = `${d.getFullYear()}/${pad(d.getMonth() + 1)}/${pad(d.getDate())} (${WEEK[d.getDay()]})`;
+    const time = `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+    dateEls.forEach((el) => { el.textContent = date; });
+    timeEls.forEach((el) => { el.textContent = time; });
+  }
+  tick();
+  setInterval(tick, 1000);
+})();
