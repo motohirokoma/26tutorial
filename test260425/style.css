@@ -13,6 +13,22 @@
   --border: #e4e4e7;
   --code-bg: #fafafa;
   --shadow: 0 1px 3px rgba(0,0,0,0.06);
+
+  /* === Special Palette for "MK's Enterprise AI/DX Basics" === */
+  /* Primary: 構造の主役。テキスト・見出し・枠の主色 */
+  --p-indigo: #262260;
+  --p-indigo-l: #E5E4F0;
+  --p-blue: #0B56A0;
+  --p-blue-l: #DCEAF8;
+  /* Secondary: 意味付きアクセント */
+  --s-pink: #DC2363;
+  --s-pink-l: #FDE3EC;
+  --s-amber: #FAAE39;
+  --s-amber-l: #FEEED2;
+  --s-violet: #B764F2;
+  --s-violet-l: #F1E0FC;
+  --s-sky: #6CA7E5;
+  --s-sky-l: #E1EEFA;
   --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
   --blue: #2563eb;
   --green: #16a34a;
@@ -317,6 +333,7 @@ h1 {
   letter-spacing: -0.6px;
   line-height: 1.2;
   margin-bottom: 12px;
+  color: var(--p-indigo);
 }
 
 .subtitle {
@@ -334,6 +351,7 @@ h2 {
   letter-spacing: -0.3px;
   padding-bottom: 8px;
   border-bottom: 1px solid var(--border);
+  color: var(--p-indigo);
 }
 
 h3 {
@@ -341,6 +359,7 @@ h3 {
   font-weight: 600;
   margin: 32px 0 12px;
   letter-spacing: -0.2px;
+  color: var(--p-indigo);
 }
 
 h4 {
@@ -1640,3 +1659,201 @@ nav.sidebar ul li a .sub-label {
   from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+
+/* ============================================
+   ENTERPRISE AI/DX BASICS — SPECIAL COMPONENTS
+   ============================================ */
+
+/* h2/h3 の clawd-heading は新色維持(svg fill) */
+h2 .clawd-heading svg path,
+h3 .clawd-heading svg path { fill: var(--p-indigo) !important; }
+
+/* === Box Variants (4種類の意味色 box) === */
+/* Info Box は既存の .info-box を Sky 系に置き換え */
+.info-box {
+  background: var(--s-sky-l);
+  border-left: 3px solid var(--s-sky);
+}
+.info-box .label { color: var(--p-blue); }
+
+.alert-box {
+  padding: 18px 22px;
+  background: var(--s-pink-l);
+  border-left: 3px solid var(--s-pink);
+  border-radius: 0 8px 8px 0;
+  margin: 24px 0;
+}
+.alert-box .label {
+  font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+  color: var(--s-pink); margin-bottom: 4px;
+}
+.alert-box p { margin: 0; font-size: 14px; }
+
+.highlight-box {
+  padding: 18px 22px;
+  background: var(--s-amber-l);
+  border-left: 3px solid var(--s-amber);
+  border-radius: 0 8px 8px 0;
+  margin: 24px 0;
+}
+.highlight-box .label {
+  font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+  color: #b45309; margin-bottom: 4px;
+}
+.highlight-box p { margin: 0; font-size: 14px; }
+
+.insight-box {
+  padding: 18px 22px;
+  background: var(--s-violet-l);
+  border-left: 3px solid var(--s-violet);
+  border-radius: 0 8px 8px 0;
+  margin: 24px 0;
+}
+.insight-box .label {
+  font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+  color: var(--s-violet); margin-bottom: 4px;
+}
+.insight-box p { margin: 0; font-size: 14px; }
+
+/* === Hero Special (index.html 用グラデーション) === */
+.hero-special {
+  position: relative;
+  background: linear-gradient(135deg, var(--p-indigo) 0%, var(--p-blue) 100%);
+  color: white;
+  padding: 56px 40px;
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 32px;
+}
+.hero-special::before {
+  content: "";
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 280px; height: 280px;
+  background: radial-gradient(circle, var(--s-violet) 0%, transparent 70%);
+  opacity: 0.35;
+}
+.hero-special::after {
+  content: "";
+  position: absolute;
+  bottom: -80px; left: -40px;
+  width: 240px; height: 240px;
+  background: radial-gradient(circle, var(--s-sky) 0%, transparent 70%);
+  opacity: 0.3;
+}
+.hero-special .hero-content { position: relative; z-index: 1; text-align: center; }
+.hero-special h1 { color: white !important; font-size: 42px; letter-spacing: -1px; margin-bottom: 16px; }
+.hero-special .subtitle { color: rgba(255,255,255,0.9); }
+.hero-special .badge {
+  background: rgba(255,255,255,0.18) !important;
+  border: 1px solid rgba(255,255,255,0.3) !important;
+  color: white !important;
+  backdrop-filter: blur(4px);
+}
+.hero-special .stats-row .num { color: white !important; }
+.hero-special .stats-row .label { color: rgba(255,255,255,0.75) !important; }
+
+/* === Phase Cards (index.html: phase-num の色を意味色に) === */
+.phase-section.phase-basics .phase-num { background: var(--p-indigo); }
+.phase-section.phase-core .phase-num { background: var(--p-blue); }
+.phase-section.phase-advanced .phase-num { background: var(--s-violet); }
+.phase-section.phase-capstone .phase-num { background: var(--s-amber); color: #1a1a1a; }
+
+.phase-section.phase-basics .phase-header h2 { color: var(--p-indigo); border: none; padding: 0; }
+.phase-section.phase-core .phase-header h2 { color: var(--p-blue); border: none; padding: 0; }
+.phase-section.phase-advanced .phase-header h2 { color: var(--s-violet); border: none; padding: 0; }
+.phase-section.phase-capstone .phase-header h2 { color: #b45309; border: none; padding: 0; }
+
+/* === Industry Accent (業界ケース章のサブヒーローアクセント) === */
+.industry-banner {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 22px;
+  border-radius: 12px;
+  margin: 16px 0 28px;
+  border-left: 4px solid var(--ind-color);
+  background: var(--ind-light);
+}
+.industry-banner .ind-badge {
+  display: inline-block;
+  background: var(--ind-color);
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 3px 10px;
+  border-radius: 999px;
+  text-transform: uppercase;
+}
+.industry-banner .ind-text {
+  flex: 1; font-size: 13px; color: var(--p-indigo); font-weight: 500;
+}
+.industry-banner.ind-finance { --ind-color: var(--s-sky); --ind-light: var(--s-sky-l); }
+.industry-banner.ind-manufacturing { --ind-color: var(--s-amber); --ind-light: var(--s-amber-l); }
+.industry-banner.ind-defense { --ind-color: var(--s-pink); --ind-light: var(--s-pink-l); }
+
+/* === Pills (badge の色バリエーション) === */
+.badge-row .badge {
+  background: var(--p-indigo-l);
+  color: var(--p-indigo);
+  border: none;
+  font-weight: 600;
+}
+
+/* === Topbar の clawd 色維持 === */
+.topbar .logo .clawd svg path { fill: var(--p-indigo); }
+
+/* === Sidebar active カラー === */
+nav.sidebar ul li a.active {
+  color: var(--p-indigo);
+  background: var(--p-indigo-l);
+  font-weight: 600;
+}
+nav.sidebar .ring-fill { stroke: var(--p-indigo); }
+nav.sidebar .ring-pct { fill: var(--p-indigo); }
+
+/* === Topbar nav-links active === */
+.topbar .nav-links a.active {
+  color: var(--p-indigo);
+  background: var(--p-indigo-l);
+  font-weight: 600;
+}
+
+/* === Buttons === */
+.btn-complete {
+  background: var(--p-blue);
+  color: white;
+}
+.btn-complete:hover { background: var(--p-indigo); }
+.btn-complete.is-done { background: #16a34a; }
+
+/* === Phase Distribution Bars (index 内の時間配分バー) === */
+.bar-fill.c1 { background: var(--p-indigo); }
+.bar-fill.c2 { background: var(--p-blue); }
+.bar-fill.c3 { background: var(--s-violet); }
+.bar-fill.c4 { background: var(--s-amber); color: #1a1a1a; }
+
+/* === ch-num の色(章リスト) === */
+.chapter-list .ch-num {
+  background: var(--p-indigo-l);
+  color: var(--p-indigo);
+}
+
+/* === Strong text accent === */
+.subtitle strong { color: var(--p-indigo); }
+
+/* === Resource type chips === */
+.res-type.doc { background: var(--p-blue-l); color: var(--p-blue); }
+.res-type.video { background: var(--s-pink-l); color: var(--s-pink); }
+
+/* === Difficulty chips === */
+.difficulty.beginner { background: var(--s-sky-l); color: var(--p-blue); }
+.difficulty.advanced { background: var(--s-violet-l); color: var(--s-violet); }
+
+/* === Exercise box === */
+.exercise-box .exercise-label {
+  color: var(--p-indigo);
+  font-weight: 700;
+}
+
