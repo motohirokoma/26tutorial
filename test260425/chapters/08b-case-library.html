@@ -48,6 +48,24 @@
   .actions-table .roi-detail .yearly div { background: white; border: 1px solid #e4e4e7; padding: 3px 5px; border-radius: 3px; text-align: center; font-size: 10px; }
   .actions-table .roi-detail .yearly div .y { color: #71717a; font-size: 9px; }
   .actions-table .roi-detail .yearly div .v { font-weight: 700; color: var(--p-indigo); }
+  /* 詳細ROI 拡張フォーマット */
+  .actions-table .roi-detail .impact-meta { background: #fffbe6; border: 1px solid #f5d76e; border-radius: 4px; padding: 6px 10px; margin: 4px 0 10px; }
+  .actions-table .roi-detail .impact-meta .row { margin-bottom: 1px; }
+  .actions-table .roi-detail .impact-meta .label { color: #b45309; }
+  .actions-table .roi-detail .params { background: white; border: 1px solid #e4e4e7; border-radius: 4px; padding: 8px 12px; margin: 6px 0 10px; }
+  .actions-table .roi-detail .params-title { font-weight: 700; color: var(--p-indigo); font-size: 11px; margin-bottom: 4px; }
+  .actions-table .roi-detail .params ul { margin: 0; padding-left: 16px; font-size: 11px; }
+  .actions-table .roi-detail .params ul li { margin-bottom: 2px; line-height: 1.5; }
+  .actions-table .roi-detail .params ul li code { background: #f1f5f9; padding: 0 3px; border-radius: 2px; font-size: 10px; color: #0B56A0; }
+  .actions-table .roi-detail .yearly-calc { width: 100%; font-size: 10.5px; border-collapse: collapse; margin: 6px 0 10px; }
+  .actions-table .roi-detail .yearly-calc th { background: var(--p-indigo); color: white; padding: 4px 6px; text-align: left; font-size: 10px; font-weight: 600; }
+  .actions-table .roi-detail .yearly-calc td { background: white; border: 1px solid #e4e4e7; padding: 4px 6px; vertical-align: top; line-height: 1.45; }
+  .actions-table .roi-detail .yearly-calc td.year { background: #DCEAF8; color: var(--p-blue); font-weight: 700; text-align: center; width: 32px; }
+  .actions-table .roi-detail .yearly-calc td.calc { font-family: ui-monospace, "SF Mono", Consolas, monospace; font-size: 10px; color: #475569; }
+  .actions-table .roi-detail .yearly-calc td.eff { color: var(--p-indigo); font-weight: 700; text-align: right; white-space: nowrap; }
+  .actions-table .roi-detail .yearly-calc tfoot td { background: #FEEED2; color: #b45309; font-weight: 700; text-align: right; }
+  .actions-table .roi-detail .yearly-calc tfoot td:first-child { text-align: center; }
+  .actions-table .roi-detail .note { font-size: 10px; color: #64748b; line-height: 1.5; margin: 4px 0 8px; padding: 4px 8px; background: #f8fafc; border-left: 2px solid #cbd5e1; }
 
   .compare-block { background: var(--s-amber-l); border-left: 4px solid var(--s-amber); padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 20px 0; }
   .compare-block h4 { margin: 0 0 6px; color: #b45309; font-size: 13px; border: none; padding: 0; }
@@ -263,17 +281,35 @@
             <td>
               <details><summary>▶ 詳細</summary>
                 <div class="roi-detail">
-                  <div class="yearly">
-                    <div><div class="y">Y1</div><div class="v">¥10億</div></div>
-                    <div><div class="y">Y2</div><div class="v">¥40億</div></div>
-                    <div><div class="y">Y3</div><div class="v">¥60億</div></div>
-                    <div><div class="y">Y4</div><div class="v">¥70億</div></div>
-                    <div><div class="y">Y5</div><div class="v">¥70億</div></div>
+                  <div class="impact-meta">
+                    <div class="row"><div class="label">種別</div><div>コスト削減(コールセンター人件費)</div></div>
+                    <div class="row"><div class="label">示す金額</div><div>営業利益貢献額(税引前)— 削減人件費はほぼ全額利益直結</div></div>
+                    <div class="row"><div class="label">関与モデル</div><div>① No-Regret(明示×低エラー)</div></div>
                   </div>
-                  <div class="row"><div class="label">計算式</div><div>年間問い合わせ約1,500万件 × 50%自動化 × 1件あたり0.05万円(オペレーター時給+間接費)</div></div>
-                  <div class="row"><div class="label">業界統計</div><div>銀行業のコールセンターコスト構造:全銀協レポート、Klarna 700名分代替事例($40M削減)</div></div>
-                  <div class="row"><div class="label">幅</div><div>下振れ ¥150億 〜 上振れ ¥400億</div></div>
-                  <div class="row"><div class="label">リスク</div><div>① 顧客満足度低下のリスク ② 個人情報保護対応 ③ 自動化率の達成率</div></div>
+                  <div class="params">
+                    <div class="params-title">基本パラメータ(全年共通)</div>
+                    <ul>
+                      <li><code>A</code> 年間総問い合わせ件数: <strong>約 1,500 万件/年</strong>(個人顧客向け)</li>
+                      <li><code>B</code> AI 処理件数 = A × 展開比率 × 自動化率(年次で変動、下表参照)</li>
+                      <li><code>C</code> 1 件あたり対応原価: <strong>¥500</strong> = 平均応対 6 分 × 時給 ¥4,000(社保・間接費込) ÷ 60 + 場所/システム費 ¥100</li>
+                      <li>年効果 = <code>B × C</code></li>
+                    </ul>
+                  </div>
+                  <table class="yearly-calc">
+                    <thead><tr><th>年</th><th>展開範囲</th><th>自動化率</th><th>B(AI処理件数)</th><th>計算</th><th>効果</th></tr></thead>
+                    <tbody>
+                      <tr><td class="year">Y1</td><td>関東 2 拠点 PoC + 夜間限定</td><td>30%</td><td>200 万件</td><td class="calc">200万 × ¥500</td><td class="eff">¥10 億</td></tr>
+                      <tr><td class="year">Y2</td><td>国内全拠点 段階展開</td><td>45%</td><td>800 万件</td><td class="calc">800万 × ¥500</td><td class="eff">¥40 億</td></tr>
+                      <tr><td class="year">Y3</td><td>国内全拠点 + 夜間/休日</td><td>65%</td><td>1,200 万件</td><td class="calc">1,200万 × ¥500</td><td class="eff">¥60 億</td></tr>
+                      <tr><td class="year">Y4</td><td>安定運用 + 改善</td><td>75%</td><td>1,400 万件</td><td class="calc">1,400万 × ¥500</td><td class="eff">¥70 億</td></tr>
+                      <tr><td class="year">Y5</td><td>競争優位最大化</td><td>75%</td><td>1,400 万件</td><td class="calc">1,400万 × ¥500</td><td class="eff">¥70 億</td></tr>
+                    </tbody>
+                    <tfoot><tr><td colspan="5">5 年累積</td><td>¥250 億</td></tr></tfoot>
+                  </table>
+                  <div class="note">※ 年効果は減価償却・運用費(年 ¥3-5 億)を控除済み。Y0(構築期)に ¥10-15 億の事前投資を別途想定。Y2 以降が運用フェーズ。</div>
+                  <div class="row"><div class="label">業界統計</div><div>全国銀行協会「銀行コールセンター実態調査」/ Klarna(700 名分業務代替で年 $40M 削減)/ Bank of America "Erica"(月 4,200 万件 AI 対応、2024)/ 日本コールセンター協会(1 件原価 ¥350-800)</div></div>
+                  <div class="row"><div class="label">幅</div><div>下振れ <strong>¥150 億</strong>(自動化率 30% 止まり / 人件費削減実現 60%)〜 中央値 <strong>¥250 億</strong> 〜 上振れ <strong>¥400 億</strong>(自動化率 75% 超 + NPS 向上による解約率改善も含む)</div></div>
+                  <div class="row"><div class="label">リスク</div><div>① 顧客満足度低下(NPS)→ 高齢層対応の例外設計が必要 ② 個人情報保護対応 → クラウド・LLM のデータ取扱規程整備 ③ 自動化率の達成 → Y0 で 6-12 ヶ月の学習データ整備が必要</div></div>
                 </div>
               </details>
             </td>
@@ -285,17 +321,35 @@
             <td>
               <details><summary>▶ 詳細</summary>
                 <div class="roi-detail">
-                  <div class="yearly">
-                    <div><div class="y">Y1</div><div class="v">¥4億</div></div>
-                    <div><div class="y">Y2</div><div class="v">¥8億</div></div>
-                    <div><div class="y">Y3</div><div class="v">¥9億</div></div>
-                    <div><div class="y">Y4</div><div class="v">¥10億</div></div>
-                    <div><div class="y">Y5</div><div class="v">¥9億</div></div>
+                  <div class="impact-meta">
+                    <div class="row"><div class="label">種別</div><div>コスト削減(議事録作成・整理工数)</div></div>
+                    <div class="row"><div class="label">示す金額</div><div>営業利益貢献額(税引前)— 内部人時の削減</div></div>
+                    <div class="row"><div class="label">関与モデル</div><div>① No-Regret(明示×低エラー)</div></div>
                   </div>
-                  <div class="row"><div class="label">計算式</div><div>会議参加者全社平均 12万人 × 議事録時間 月2時間削減 × 時給5,000円</div></div>
-                  <div class="row"><div class="label">業界統計</div><div>金融庁・大企業の会議関連工数調査、Microsoft 365 Copilot 採用効果</div></div>
-                  <div class="row"><div class="label">幅</div><div>下振れ ¥25億 〜 上振れ ¥60億</div></div>
-                  <div class="row"><div class="label">リスク</div><div>① 機密情報の AI 連携可否 ② 既存ツール置換の組織抵抗 ③ 利用率低迷</div></div>
+                  <div class="params">
+                    <div class="params-title">基本パラメータ(全年共通)</div>
+                    <ul>
+                      <li><code>A</code> 対象議事録件数(年): 本部・支店・取締役会・委員会の議事録 — 全社満額 <strong>約 24 万件/年</strong></li>
+                      <li><code>B</code> 1 件あたり削減時間: <strong>60 分</strong>(従来 90 分→AI ドラフト 15 分+人レビュー 15 分)</li>
+                      <li><code>C</code> 担当者(本部・管理職)時給: <strong>¥5,000</strong></li>
+                      <li>年効果 = <code>A(展開分) × 1 h × C</code> = <code>A × ¥5,000</code></li>
+                    </ul>
+                  </div>
+                  <table class="yearly-calc">
+                    <thead><tr><th>年</th><th>展開範囲</th><th>対象議事録件数</th><th>計算</th><th>効果</th></tr></thead>
+                    <tbody>
+                      <tr><td class="year">Y1</td><td>本部 PoC(経企・財務・IT)</td><td>80,000 件</td><td class="calc">80,000 × ¥5,000</td><td class="eff">¥4 億</td></tr>
+                      <tr><td class="year">Y2</td><td>国内本部 + 主要支店</td><td>160,000 件</td><td class="calc">160,000 × ¥5,000</td><td class="eff">¥8 億</td></tr>
+                      <tr><td class="year">Y3</td><td>国内全拠点</td><td>180,000 件</td><td class="calc">180,000 × ¥5,000</td><td class="eff">¥9 億</td></tr>
+                      <tr><td class="year">Y4</td><td>海外含む全社</td><td>200,000 件</td><td class="calc">200,000 × ¥5,000</td><td class="eff">¥10 億</td></tr>
+                      <tr><td class="year">Y5</td><td>安定運用 + 次世代化投資</td><td>200,000 件</td><td class="calc">¥10 億 − 次世代化 R&D ¥1 億</td><td class="eff">¥9 億</td></tr>
+                    </tbody>
+                    <tfoot><tr><td colspan="4">5 年累積</td><td>¥40 億</td></tr></tfoot>
+                  </table>
+                  <div class="note">※ Y5 は GPT-5 級モデル更新+多言語化(海外現地語)の R&D 投資を控除。1 件あたり削減時間は文書監査・電子化費用を含む</div>
+                  <div class="row"><div class="label">業界統計</div><div>金融庁・大企業の会議関連工数調査 / Microsoft 365 Copilot 採用効果(平均 14 分/会議の削減)/ 大企業の議事録工数(IDC Japan、年 1 人 50 時間規模)</div></div>
+                  <div class="row"><div class="label">幅</div><div>下振れ <strong>¥25 億</strong>(展開遅延 / 1 件削減 30 分止まり)〜 中央値 <strong>¥40 億</strong> 〜 上振れ <strong>¥60 億</strong>(対象拡張 30 万件 / 1 件 90 分削減)</div></div>
+                  <div class="row"><div class="label">リスク</div><div>① 機密情報の AI 連携可否(取締役会等) ② 既存ツール置換の組織抵抗 ③ 利用率低迷(現場が手書きを続ける)</div></div>
                 </div>
               </details>
             </td>
@@ -307,17 +361,35 @@
             <td>
               <details><summary>▶ 詳細</summary>
                 <div class="roi-detail">
-                  <div class="yearly">
-                    <div><div class="y">Y1</div><div class="v">¥8億</div></div>
-                    <div><div class="y">Y2</div><div class="v">¥15億</div></div>
-                    <div><div class="y">Y3</div><div class="v">¥20億</div></div>
-                    <div><div class="y">Y4</div><div class="v">¥20億</div></div>
-                    <div><div class="y">Y5</div><div class="v">¥17億</div></div>
+                  <div class="impact-meta">
+                    <div class="row"><div class="label">種別</div><div>コスト削減(事務処理工数)</div></div>
+                    <div class="row"><div class="label">示す金額</div><div>営業利益貢献額(税引前)— 後方事務人時の削減</div></div>
+                    <div class="row"><div class="label">関与モデル</div><div>① No-Regret(明示×低エラー)</div></div>
                   </div>
-                  <div class="row"><div class="label">計算式</div><div>年間申請書類 約500万件 × 1件30分削減 × 時給4,000円</div></div>
-                  <div class="row"><div class="label">業界統計</div><div>銀行の事務処理コスト(全銀協、業務効率化白書)、3メガバンクのデジタル化目標</div></div>
-                  <div class="row"><div class="label">幅</div><div>下振れ ¥50億 〜 上振れ ¥130億</div></div>
-                  <div class="row"><div class="label">リスク</div><div>① OCR 精度に依存 ② 既存システム連携 ③ 紙文化の根強さ</div></div>
+                  <div class="params">
+                    <div class="params-title">基本パラメータ(全年共通)</div>
+                    <ul>
+                      <li><code>A</code> 年間申請書類件数: <strong>約 500 万件/年</strong>(融資申込・口座開設・KYC 等 20 種以上)</li>
+                      <li><code>B</code> 1 件あたり削減時間: <strong>30 分 = 0.5 時間</strong>(手入力・チェック・データ転記の置換)</li>
+                      <li><code>C</code> 後方事務職時給: <strong>¥4,000</strong></li>
+                      <li>年効果 = <code>A(展開分)× B × C</code> = <code>A × ¥2,000</code></li>
+                    </ul>
+                  </div>
+                  <table class="yearly-calc">
+                    <thead><tr><th>年</th><th>展開範囲</th><th>展開比率</th><th>対象件数</th><th>計算</th><th>効果</th></tr></thead>
+                    <tbody>
+                      <tr><td class="year">Y1</td><td>口座開設・本人確認 PoC</td><td>8%</td><td>40 万件</td><td class="calc">40 万 × ¥2,000</td><td class="eff">¥8 億</td></tr>
+                      <tr><td class="year">Y2</td><td>融資申込追加・主要書類拡張</td><td>15%</td><td>75 万件</td><td class="calc">75 万 × ¥2,000</td><td class="eff">¥15 億</td></tr>
+                      <tr><td class="year">Y3</td><td>20 種書類対応(全社展開)</td><td>20%</td><td>100 万件</td><td class="calc">100 万 × ¥2,000</td><td class="eff">¥20 億</td></tr>
+                      <tr><td class="year">Y4</td><td>安定運用</td><td>20%</td><td>100 万件</td><td class="calc">100 万 × ¥2,000</td><td class="eff">¥20 億</td></tr>
+                      <tr><td class="year">Y5</td><td>運用 + 次世代化投資</td><td>20%</td><td>100 万件</td><td class="calc">¥20 億 − 運用・R&D ¥3 億</td><td class="eff">¥17 億</td></tr>
+                    </tbody>
+                    <tfoot><tr><td colspan="5">5 年累積</td><td>¥80 億</td></tr></tfoot>
+                  </table>
+                  <div class="note">※ 展開比率の上限が 20% にとどまるのは、書類種別の多様性(20 種以上、各特殊レイアウト)・印鑑/紙文化・既存システム連携コストが原因。完全電子化(eKYC 等)で上限突破の余地あり</div>
+                  <div class="row"><div class="label">業界統計</div><div>全国銀行協会「銀行業務効率化白書」/ 3 メガバンクのデジタル化目標 KPI / 経産省「事務処理工数調査」/ 国内 OCR 市場 IDC Japan 2024</div></div>
+                  <div class="row"><div class="label">幅</div><div>下振れ <strong>¥50 億</strong>(OCR 精度 85% 止まり / 5 種書類のみ)〜 中央値 <strong>¥80 億</strong> 〜 上振れ <strong>¥130 億</strong>(eKYC 完全移行 + 全書類対応)</div></div>
+                  <div class="row"><div class="label">リスク</div><div>① OCR 精度依存(誤読時の遡及作業発生) ② 既存ホスト系/勘定系システム連携の難しさ ③ 紙文化・押印文化の根強さ</div></div>
                 </div>
               </details>
             </td>
@@ -329,17 +401,36 @@
             <td>
               <details><summary>▶ 詳細</summary>
                 <div class="roi-detail">
-                  <div class="yearly">
-                    <div><div class="y">Y1</div><div class="v">¥5億</div></div>
-                    <div><div class="y">Y2</div><div class="v">¥15億</div></div>
-                    <div><div class="y">Y3</div><div class="v">¥30億</div></div>
-                    <div><div class="y">Y4</div><div class="v">¥35億</div></div>
-                    <div><div class="y">Y5</div><div class="v">¥35億</div></div>
+                  <div class="impact-meta">
+                    <div class="row"><div class="label">種別</div><div>売上増(新商品の粗利貢献 + 既存商品改良)</div></div>
+                    <div class="row"><div class="label">示す金額</div><div>売上総利益(粗利)貢献額 — 売上ではなく粗利</div></div>
+                    <div class="row"><div class="label">関与モデル</div><div>② Creative Catalyst(暗黙×低エラー)</div></div>
                   </div>
-                  <div class="row"><div class="label">計算式</div><div>新商品立ち上げペース 1.5倍 × 1商品あたり粗利 5億円 × 達成率0.4</div></div>
-                  <div class="row"><div class="label">業界統計</div><div>金融商品開発リードタイム調査、JPMorgan の IndexGPT 等海外事例</div></div>
-                  <div class="row"><div class="label">幅</div><div>下振れ ¥60億 〜 上振れ ¥250億(売上向上型は変動大)</div></div>
-                  <div class="row"><div class="label">リスク</div><div>① 規制承認 ② 競合追随 ③ 顧客需要の不確実性</div></div>
+                  <div class="params">
+                    <div class="params-title">基本パラメータ(全年共通)</div>
+                    <ul>
+                      <li><code>A</code> 既存の新商品立ち上げペース: <strong>年 6 商品</strong>(保険・運用・カード等)</li>
+                      <li><code>B</code> AI 支援による追加商品: <strong>年 +3 商品</strong>(現状の +50%)</li>
+                      <li><code>C</code> 1 商品あたり安定期粗利: <strong>¥10 億/年</strong>(運用残高/契約数 × 手数料率)</li>
+                      <li><code>D</code> 達成率(企画→商品化→売上化): <strong>0.4</strong></li>
+                      <li>年効果 = (B × C × D)+ 既存商品の AI 改良効果</li>
+                    </ul>
+                  </div>
+                  <table class="yearly-calc">
+                    <thead><tr><th>年</th><th>累計新商品</th><th>計算内訳</th><th>効果</th></tr></thead>
+                    <tbody>
+                      <tr><td class="year">Y1</td><td>0(企画段階)</td><td class="calc">企画工数削減 + 既存商品マイナー改良 = ¥5 億</td><td class="eff">¥5 億</td></tr>
+                      <tr><td class="year">Y2</td><td>1 商品稼働</td><td class="calc">1 × ¥10 億 × 0.4 + 立ち上げ初期粗利 ¥3 億 + 案ストック効果 ¥8 億 ≈ ¥15 億</td><td class="eff">¥15 億</td></tr>
+                      <tr><td class="year">Y3</td><td>累計 3 商品</td><td class="calc">3 × ¥10 億 × 0.4 + 既存改良 ¥18 億 = ¥30 億</td><td class="eff">¥30 億</td></tr>
+                      <tr><td class="year">Y4</td><td>累計 5 商品</td><td class="calc">5 × ¥10 億 × 0.4 + 既存改良 ¥15 億 = ¥35 億</td><td class="eff">¥35 億</td></tr>
+                      <tr><td class="year">Y5</td><td>累計 6-7 商品(撤退含)</td><td class="calc">純益 6 × ¥10 億 × 0.4 + 既存改良 ¥11 億 = ¥35 億</td><td class="eff">¥35 億</td></tr>
+                    </tbody>
+                    <tfoot><tr><td colspan="3">5 年累積</td><td>¥120 億</td></tr></tfoot>
+                  </table>
+                  <div class="note">※ 達成率 0.4 は「100 案 → 40 商品化 → 売上化成功」の業界標準。AI でアイデア量産 → スクリーニング後の純粗利を計上。商品開発のリードタイム短縮(平均 18 ヶ月→12 ヶ月)効果は別途</div>
+                  <div class="row"><div class="label">業界統計</div><div>金融商品開発リードタイム調査(野村総研)/ JPMorgan "IndexGPT"(指数連動商品の AI 自動設計)/ 大和総研 アセマネ業界レポート</div></div>
+                  <div class="row"><div class="label">幅</div><div>下振れ <strong>¥60 億</strong>(達成率 0.2 / 商品単位粗利下振れ)〜 中央値 <strong>¥120 億</strong> 〜 上振れ <strong>¥250 億</strong>(ヒット商品 +1 で粗利倍増シナリオ)</div></div>
+                  <div class="row"><div class="label">リスク</div><div>① 規制承認(金融商品取引法・保険業法) ② 競合追随で先行者利益喪失 ③ 顧客需要の不確実性</div></div>
                 </div>
               </details>
             </td>
@@ -351,17 +442,35 @@
             <td>
               <details><summary>▶ 詳細</summary>
                 <div class="roi-detail">
-                  <div class="yearly">
-                    <div><div class="y">Y1</div><div class="v">¥4億</div></div>
-                    <div><div class="y">Y2</div><div class="v">¥10億</div></div>
-                    <div><div class="y">Y3</div><div class="v">¥18億</div></div>
-                    <div><div class="y">Y4</div><div class="v">¥20億</div></div>
-                    <div><div class="y">Y5</div><div class="v">¥18億</div></div>
+                  <div class="impact-meta">
+                    <div class="row"><div class="label">種別</div><div>コスト削減(制作費)+ 売上増(個別最適化効果)</div></div>
+                    <div class="row"><div class="label">示す金額</div><div>営業利益貢献額(税引前)— 制作費削減と売上増の合算</div></div>
+                    <div class="row"><div class="label">関与モデル</div><div>② Creative Catalyst(暗黙×低エラー)</div></div>
                   </div>
-                  <div class="row"><div class="label">計算式</div><div>マーケ広告費 年200億円 × 効率化10%(達成率0.4)+ コンテンツ制作費削減</div></div>
-                  <div class="row"><div class="label">業界統計</div><div>金融マーケ業界平均レート、Klarna・JPMorgan の生成AIマーケ事例</div></div>
-                  <div class="row"><div class="label">幅</div><div>下振れ ¥40億 〜 上振れ ¥150億</div></div>
-                  <div class="row"><div class="label">リスク</div><div>① ブランドトーン保持 ② 規制(誤認広告) ③ クリエイティブ職の抵抗</div></div>
+                  <div class="params">
+                    <div class="params-title">基本パラメータ(全年共通)</div>
+                    <ul>
+                      <li><code>A</code> 年間マーケ予算: <strong>¥200 億</strong>(うちクリエイティブ・コンテンツ制作費 ¥40 億)</li>
+                      <li><code>B</code> 制作費削減率: 段階的に <strong>10% → 20%</strong></li>
+                      <li><code>C</code> 個別最適化による売上増分(対象 顧客 1,500 万 × ARPU 改善)</li>
+                      <li>年効果 = <code>¥40 億 × B</code>(コスト削減)+ <code>C</code>(売上増)</li>
+                    </ul>
+                  </div>
+                  <table class="yearly-calc">
+                    <thead><tr><th>年</th><th>制作費削減</th><th>個別最適 売上増</th><th>計算</th><th>効果</th></tr></thead>
+                    <tbody>
+                      <tr><td class="year">Y1</td><td>10% = ¥4 億</td><td>¥0(PoC、効果未発現)</td><td class="calc">¥4 億 + ¥0</td><td class="eff">¥4 億</td></tr>
+                      <tr><td class="year">Y2</td><td>15% = ¥6 億</td><td>¥4 億(限定キャンペーン)</td><td class="calc">¥6 億 + ¥4 億</td><td class="eff">¥10 億</td></tr>
+                      <tr><td class="year">Y3</td><td>20% = ¥8 億</td><td>¥10 億(全キャンペーン)</td><td class="calc">¥8 億 + ¥10 億</td><td class="eff">¥18 億</td></tr>
+                      <tr><td class="year">Y4</td><td>20% = ¥8 億</td><td>¥12 億</td><td class="calc">¥8 億 + ¥12 億</td><td class="eff">¥20 億</td></tr>
+                      <tr><td class="year">Y5</td><td>20% = ¥8 億</td><td>¥12 億 − R&D ¥2 億</td><td class="calc">¥8 億 + ¥10 億</td><td class="eff">¥18 億</td></tr>
+                    </tbody>
+                    <tfoot><tr><td colspan="4">5 年累積</td><td>¥70 億</td></tr></tfoot>
+                  </table>
+                  <div class="note">※ 個別最適化売上増の根拠: 対象顧客 1,500 万 × ARPU 改善 ¥80/年 ≈ ¥12 億/年。バナー CTR・メール CV の業界実績 +20-40% が前提</div>
+                  <div class="row"><div class="label">業界統計</div><div>金融広告クリエイティブ単価(電通レポート)/ Klarna(マーケ制作費 50% 削減事例)/ JPMorgan(AI コピーで CTR +450% 事例)/ Persado 等の生成 AI マーケツール導入効果</div></div>
+                  <div class="row"><div class="label">幅</div><div>下振れ <strong>¥40 億</strong>(削減率 10% 止まり / 個別最適効果未達)〜 中央値 <strong>¥70 億</strong> 〜 上振れ <strong>¥150 億</strong>(ARPU 改善 ¥150 シナリオ)</div></div>
+                  <div class="row"><div class="label">リスク</div><div>① ブランドトーン保持(AI 量産で粗悪化) ② 規制(誤認広告・不当表示) ③ クリエイティブ職の抵抗・離職</div></div>
                 </div>
               </details>
             </td>
@@ -373,17 +482,36 @@
             <td>
               <details><summary>▶ 詳細</summary>
                 <div class="roi-detail">
-                  <div class="yearly">
-                    <div><div class="y">Y1</div><div class="v">¥10億</div></div>
-                    <div><div class="y">Y2</div><div class="v">¥30億</div></div>
-                    <div><div class="y">Y3</div><div class="v">¥45億</div></div>
-                    <div><div class="y">Y4</div><div class="v">¥48億</div></div>
-                    <div><div class="y">Y5</div><div class="v">¥47億</div></div>
+                  <div class="impact-meta">
+                    <div class="row"><div class="label">種別</div><div>売上増(商談成功率向上による粗利貢献)</div></div>
+                    <div class="row"><div class="label">示す金額</div><div>売上総利益(粗利)貢献額 — 売上ではなく粗利</div></div>
+                    <div class="row"><div class="label">関与モデル</div><div>② Creative Catalyst(暗黙×低エラー)</div></div>
                   </div>
-                  <div class="row"><div class="label">計算式</div><div>RM・FA 約8,000名 × 商談成功率+10% × 1人あたり粗利貢献500万円 × 達成率0.4</div></div>
-                  <div class="row"><div class="label">業界統計</div><div>BCG「金融RM AI支援の効果」、Morgan Stanley の AI コーパイロット事例</div></div>
-                  <div class="row"><div class="label">幅</div><div>下振れ ¥80億 〜 上振れ ¥350億</div></div>
-                  <div class="row"><div class="label">リスク</div><div>① RM の使いこなし格差 ② 顧客との関係性影響 ③ 商品個別規制</div></div>
+                  <div class="params">
+                    <div class="params-title">基本パラメータ(全年共通)</div>
+                    <ul>
+                      <li><code>A</code> RM・FA(リレーションシップマネージャー/フィナンシャルアドバイザー)数: <strong>約 8,000 名</strong></li>
+                      <li><code>B</code> 1 人あたり年間商談数: <strong>約 100 件</strong> → 全社年 <strong>80 万件</strong></li>
+                      <li><code>C</code> AI 提案ストーリー支援による成功率改善: <strong>+3 pt</strong>(現状 20%→23%)</li>
+                      <li><code>D</code> 1 件成功時の粗利(平均): <strong>¥300 万</strong>(運用残高/契約金額 × 手数料率 × 平均保有年数)</li>
+                      <li>満額/年 = 80 万件 × 3% × ¥300 万 = <strong>¥72 億/年</strong></li>
+                    </ul>
+                  </div>
+                  <table class="yearly-calc">
+                    <thead><tr><th>年</th><th>展開範囲</th><th>達成率</th><th>計算</th><th>効果</th></tr></thead>
+                    <tbody>
+                      <tr><td class="year">Y1</td><td>富裕層 RM 25% PoC</td><td>50%</td><td class="calc">¥72 億 × 25% × 50%</td><td class="eff">¥10 億</td></tr>
+                      <tr><td class="year">Y2</td><td>RM 全体 70%</td><td>60%</td><td class="calc">¥72 億 × 70% × 60%</td><td class="eff">¥30 億</td></tr>
+                      <tr><td class="year">Y3</td><td>RM・FA 全体 90%</td><td>70%</td><td class="calc">¥72 億 × 90% × 70%</td><td class="eff">¥45 億</td></tr>
+                      <tr><td class="year">Y4</td><td>全体 100%</td><td>67%</td><td class="calc">¥72 億 × 100% × 67%</td><td class="eff">¥48 億</td></tr>
+                      <tr><td class="year">Y5</td><td>安定運用 + R&D</td><td>67%</td><td class="calc">¥48 億 − R&D ¥1 億</td><td class="eff">¥47 億</td></tr>
+                    </tbody>
+                    <tfoot><tr><td colspan="4">5 年累積</td><td>¥180 億</td></tr></tfoot>
+                  </table>
+                  <div class="note">※ 達成率 = AI 提案を実際に商談で活用 × 顧客に響いた割合。Y3 以降で 67-70% 着地が現実的(Morgan Stanley AI コーパイロット採用率の海外実績ベース)</div>
+                  <div class="row"><div class="label">業界統計</div><div>BCG「金融 RM AI 支援の効果」(成功率改善 +5-15%)/ Morgan Stanley AI Assistant(2024 年全 RM 展開)/ 野村証券 ウェルスマネジメント KPI</div></div>
+                  <div class="row"><div class="label">幅</div><div>下振れ <strong>¥80 億</strong>(成功率改善 +1.5pt 止まり)〜 中央値 <strong>¥180 億</strong> 〜 上振れ <strong>¥350 億</strong>(成功率 +5pt + 顧客 NPS 改善でクロスセル拡大)</div></div>
+                  <div class="row"><div class="label">リスク</div><div>① RM の使いこなし格差(若手は活用、ベテランは敬遠) ② 顧客との関係性影響(AI 臭い提案を嫌う顧客) ③ 商品個別の規制対応</div></div>
                 </div>
               </details>
             </td>
@@ -395,17 +523,35 @@
             <td>
               <details><summary>▶ 詳細</summary>
                 <div class="roi-detail">
-                  <div class="yearly">
-                    <div><div class="y">Y1</div><div class="v">¥10億</div></div>
-                    <div><div class="y">Y2</div><div class="v">¥25億</div></div>
-                    <div><div class="y">Y3</div><div class="v">¥35億</div></div>
-                    <div><div class="y">Y4</div><div class="v">¥40億</div></div>
-                    <div><div class="y">Y5</div><div class="v">¥40億</div></div>
+                  <div class="impact-meta">
+                    <div class="row"><div class="label">種別</div><div>リスク回避(大型案件の判断ミスによる損失回避)</div></div>
+                    <div class="row"><div class="label">示す金額</div><div>想定損失の回避額(税引前)— 期待値ベース。実際は「損失が出なかった」金額の集計</div></div>
+                    <div class="row"><div class="label">関与モデル</div><div>③ Human-First(暗黙×高エラー)— 最終判断は委員会・経営陣</div></div>
                   </div>
-                  <div class="row"><div class="label">計算式</div><div>大型案件年100件 × 判断ミス回避1件あたり10億円効果 × 改善確率0.15</div></div>
-                  <div class="row"><div class="label">業界統計</div><div>大型与信の不良債権発生率、海外IB の AI 案件支援事例</div></div>
-                  <div class="row"><div class="label">幅</div><div>下振れ ¥60億 〜 上振れ ¥300億(リスク回避型は変動大)</div></div>
-                  <div class="row"><div class="label">リスク</div><div>① 判断責任の所在 ② AI 推奨への過度依存 ③ 規制対応</div></div>
+                  <div class="params">
+                    <div class="params-title">基本パラメータ(全年共通)</div>
+                    <ul>
+                      <li><code>A</code> 大型案件件数(M&A・シンジ・大型法人融資): <strong>年 30 件</strong></li>
+                      <li><code>B</code> 1 件あたり判断ミス時の想定損失中央値: <strong>¥30 億</strong>(不良債権引当 + 機会損失)</li>
+                      <li><code>C</code> AI 論点整理・類似案件提示によるミス削減率: 段階的に <strong>0 → 5 pt</strong>(現状 10%→5% の改善)</li>
+                      <li>満額/年 = 30 件 × ¥30 億 × 5% = <strong>¥45 億/年</strong></li>
+                    </ul>
+                  </div>
+                  <table class="yearly-calc">
+                    <thead><tr><th>年</th><th>展開範囲</th><th>ミス削減実現</th><th>計算</th><th>効果</th></tr></thead>
+                    <tbody>
+                      <tr><td class="year">Y1</td><td>30% 範囲(M&Aのみ)</td><td>2 pt</td><td class="calc">30件 × 30% × ¥30 億 × 2%</td><td class="eff">¥10 億</td></tr>
+                      <tr><td class="year">Y2</td><td>60% 範囲</td><td>4.6 pt</td><td class="calc">30件 × 60% × ¥30 億 × 4.6%</td><td class="eff">¥25 億</td></tr>
+                      <tr><td class="year">Y3</td><td>85% 範囲</td><td>4.6 pt</td><td class="calc">30件 × 85% × ¥30 億 × 4.6%</td><td class="eff">¥35 億</td></tr>
+                      <tr><td class="year">Y4</td><td>100% 範囲</td><td>4.4 pt</td><td class="calc">30件 × 100% × ¥30 億 × 4.4%</td><td class="eff">¥40 億</td></tr>
+                      <tr><td class="year">Y5</td><td>100% + 安定運用</td><td>4.4 pt</td><td class="calc">¥40 億</td><td class="eff">¥40 億</td></tr>
+                    </tbody>
+                    <tfoot><tr><td colspan="4">5 年累積</td><td>¥150 億</td></tr></tfoot>
+                  </table>
+                  <div class="note">※ リスク回避型のため期待値計算。実態は「N 年に 1 回の大規模損失」が回避できた場合の便益を平均化。Y5 以降に大規模損失が偶然発生しなければ、累積効果は ¥300 億級に膨らむ可能性</div>
+                  <div class="row"><div class="label">業界統計</div><div>大型与信の不良債権発生率(金融庁ディスクロージャー誌)/ メガバンク 3 行の M&A 助言業務 KPI / 海外 IB(Goldman・JPMorgan)の AI 案件支援事例</div></div>
+                  <div class="row"><div class="label">幅</div><div>下振れ <strong>¥60 億</strong>(ミス削減 2pt 止まり)〜 中央値 <strong>¥150 億</strong> 〜 上振れ <strong>¥300 億</strong>(大規模損失回避の偶発効果含む)</div></div>
+                  <div class="row"><div class="label">リスク</div><div>① 判断責任の所在(AI 推奨で失敗した時の責任分界) ② AI 推奨への過度依存(委員会の議論が形骸化) ③ 規制対応(金融庁の説明可能性要請)</div></div>
                 </div>
               </details>
             </td>
@@ -417,17 +563,35 @@
             <td>
               <details><summary>▶ 詳細</summary>
                 <div class="roi-detail">
-                  <div class="yearly">
-                    <div><div class="y">Y1</div><div class="v">¥4億</div></div>
-                    <div><div class="y">Y2</div><div class="v">¥10億</div></div>
-                    <div><div class="y">Y3</div><div class="v">¥20億</div></div>
-                    <div><div class="y">Y4</div><div class="v">¥23億</div></div>
-                    <div><div class="y">Y5</div><div class="v">¥23億</div></div>
+                  <div class="impact-meta">
+                    <div class="row"><div class="label">種別</div><div>リスク回避(大規模システム障害・金融危機の損失低減)</div></div>
+                    <div class="row"><div class="label">示す金額</div><div>想定損失の低減額(税引前)— 期待値ベース、確率 × 損失低減</div></div>
+                    <div class="row"><div class="label">関与モデル</div><div>③ Human-First(暗黙×高エラー)— 経営対策本部が判断、AI は情報集約</div></div>
                   </div>
-                  <div class="row"><div class="label">計算式</div><div>大規模障害1件あたり想定損失 100億円 × 発生確率半減効果 × 規模係数</div></div>
-                  <div class="row"><div class="label">業界統計</div><div>金融機関の大規模システム障害損失事例(報道ベース、IRリリース)</div></div>
-                  <div class="row"><div class="label">幅</div><div>下振れ ¥30億 〜 上振れ ¥250億</div></div>
-                  <div class="row"><div class="label">リスク</div><div>① 有事に AI が機能しないリスク ② 訓練不足 ③ 過度な依存</div></div>
+                  <div class="params">
+                    <div class="params-title">基本パラメータ(全年共通)</div>
+                    <ul>
+                      <li><code>A</code> 大規模障害(数時間以上の取引停止級)発生確率: <strong>5 年に 1 回 = 0.2/年</strong></li>
+                      <li><code>B</code> 1 件あたり想定損失: <strong>¥250 億</strong>(取引停止 + 顧客補償 + 信頼失墜による解約 + 規制対応)</li>
+                      <li><code>C</code> AI 支援による損失低減率(対応スピード × 適切な意思決定): 段階的に <strong>0 → 46%</strong></li>
+                      <li>満額/年 = 0.2 × ¥250 億 × 46% = <strong>¥23 億/年</strong></li>
+                    </ul>
+                  </div>
+                  <table class="yearly-calc">
+                    <thead><tr><th>年</th><th>シナリオ整備</th><th>低減率</th><th>計算</th><th>効果</th></tr></thead>
+                    <tbody>
+                      <tr><td class="year">Y1</td><td>主要障害シナリオ 20%</td><td>8%</td><td class="calc">0.2 × ¥250 億 × 8%</td><td class="eff">¥4 億</td></tr>
+                      <tr><td class="year">Y2</td><td>シナリオ 60% + 訓練</td><td>20%</td><td class="calc">0.2 × ¥250 億 × 20%</td><td class="eff">¥10 億</td></tr>
+                      <tr><td class="year">Y3</td><td>シナリオ 100% + 周辺機関連携</td><td>40%</td><td class="calc">0.2 × ¥250 億 × 40%</td><td class="eff">¥20 億</td></tr>
+                      <tr><td class="year">Y4</td><td>高度化 + 中小障害も対応</td><td>46%</td><td class="calc">0.2 × ¥250 億 × 46%</td><td class="eff">¥23 億</td></tr>
+                      <tr><td class="year">Y5</td><td>安定運用 + 訓練継続</td><td>46%</td><td class="calc">¥23 億</td><td class="eff">¥23 億</td></tr>
+                    </tbody>
+                    <tfoot><tr><td colspan="4">5 年累積</td><td>¥80 億</td></tr></tfoot>
+                  </table>
+                  <div class="note">※ リスク回避型は期待値計算。実態は「障害が起きなかった年は効果ゼロ、起きた年は ¥X0 億単位の便益」が現れる。期待値で平均化</div>
+                  <div class="row"><div class="label">業界統計</div><div>金融機関の大規模システム障害損失事例(みずほ 2021 障害、IR リリース)/ FFIEC「銀行システム障害コスト」/ Gartner「金融機関 ITSM 危機対応コスト」</div></div>
+                  <div class="row"><div class="label">幅</div><div>下振れ <strong>¥30 億</strong>(障害ゼロ年が続く / 訓練不足)〜 中央値 <strong>¥80 億</strong> 〜 上振れ <strong>¥250 億</strong>(5 年内に大規模障害発生 + AI で損失大幅低減シナリオ)</div></div>
+                  <div class="row"><div class="label">リスク</div><div>① 有事に AI が機能しないリスク(平時に検証不十分) ② 訓練不足で AI 推奨が活用されない ③ 過度な依存で人の判断力が劣化</div></div>
                 </div>
               </details>
             </td>
@@ -439,17 +603,35 @@
             <td>
               <details><summary>▶ 詳細</summary>
                 <div class="roi-detail">
-                  <div class="yearly">
-                    <div><div class="y">Y1</div><div class="v">¥3億</div></div>
-                    <div><div class="y">Y2</div><div class="v">¥8億</div></div>
-                    <div><div class="y">Y3</div><div class="v">¥10億</div></div>
-                    <div><div class="y">Y4</div><div class="v">¥10億</div></div>
-                    <div><div class="y">Y5</div><div class="v">¥9億</div></div>
+                  <div class="impact-meta">
+                    <div class="row"><div class="label">種別</div><div>コスト削減(経営企画・調査工数)</div></div>
+                    <div class="row"><div class="label">示す金額</div><div>営業利益貢献額(税引前)— 戦略人材の高単価工数の削減</div></div>
+                    <div class="row"><div class="label">関与モデル</div><div>③ Human-First(暗黙×高エラー)— 経営判断は人間、AI は分析資料を準備</div></div>
                   </div>
-                  <div class="row"><div class="label">計算式</div><div>経営企画・各事業部の調査工数削減 約3万時間/年 × 時給10,000円</div></div>
-                  <div class="row"><div class="label">業界統計</div><div>大企業の経営企画機能調査、戦略コンサル業界レート</div></div>
-                  <div class="row"><div class="label">幅</div><div>下振れ ¥20億 〜 上振れ ¥80億</div></div>
-                  <div class="row"><div class="label">リスク</div><div>① AI 分析の質 ② 経営判断との乖離 ③ 機密情報管理</div></div>
+                  <div class="params">
+                    <div class="params-title">基本パラメータ(全年共通)</div>
+                    <ul>
+                      <li><code>A</code> 戦略・調査・企画関連工数(経営企画 + 各事業部の戦略担当): <strong>約 100 万時間/年</strong>(対象 3,000 名 × 平均 333 h/年)</li>
+                      <li><code>B</code> AI 削減率: <strong>30%</strong>(市場分析・競合分析・ベンチマーク調査の自動化)</li>
+                      <li><code>C</code> 戦略専門人材時給: <strong>¥8,000</strong>(年収 1,500 万 + 福利 → 年 2,000 時間で割戻)</li>
+                      <li>満額/年 = 100 万 × 30% × ¥8,000 = <strong>¥24 億/年</strong></li>
+                    </ul>
+                  </div>
+                  <table class="yearly-calc">
+                    <thead><tr><th>年</th><th>展開範囲</th><th>計算</th><th>効果</th></tr></thead>
+                    <tbody>
+                      <tr><td class="year">Y1</td><td>経企部限定 PoC(13%)</td><td class="calc">100 万 × 13% × 30% × ¥8,000</td><td class="eff">¥3 億</td></tr>
+                      <tr><td class="year">Y2</td><td>経企+主要事業部(33%)</td><td class="calc">100 万 × 33% × 30% × ¥8,000</td><td class="eff">¥8 億</td></tr>
+                      <tr><td class="year">Y3</td><td>全事業部(42%)</td><td class="calc">100 万 × 42% × 30% × ¥8,000</td><td class="eff">¥10 億</td></tr>
+                      <tr><td class="year">Y4</td><td>安定運用</td><td class="calc">同上</td><td class="eff">¥10 億</td></tr>
+                      <tr><td class="year">Y5</td><td>運用 + R&D</td><td class="calc">¥10 億 − R&D ¥1 億</td><td class="eff">¥9 億</td></tr>
+                    </tbody>
+                    <tfoot><tr><td colspan="3">5 年累積</td><td>¥40 億</td></tr></tfoot>
+                  </table>
+                  <div class="note">※ 戦略策定の本質は「人間の判断」なので AI 削減率は 30% が上限の目安。残り 70% は判断・解釈・利害調整など</div>
+                  <div class="row"><div class="label">業界統計</div><div>大企業経営企画機能調査(野村総研)/ 戦略コンサル業界平均レート ¥1.5-3 万/h / Bain「Strategic Planning AI 活用調査 2024」/ McKinsey「経営計画策定の生成 AI 効果」</div></div>
+                  <div class="row"><div class="label">幅</div><div>下振れ <strong>¥20 億</strong>(展開遅延 / 削減率 15% 止まり)〜 中央値 <strong>¥40 億</strong> 〜 上振れ <strong>¥80 億</strong>(削減率 50% + 海外現地法人含む拡張)</div></div>
+                  <div class="row"><div class="label">リスク</div><div>① AI 分析の質(誤った前提・古い情報) ② 経営判断との乖離(現場感覚との不一致) ③ 機密情報管理(M&A 検討等)</div></div>
                 </div>
               </details>
             </td>
@@ -461,17 +643,38 @@
             <td>
               <details><summary>▶ 詳細</summary>
                 <div class="roi-detail">
-                  <div class="yearly">
-                    <div><div class="y">Y1</div><div class="v">¥40億</div></div>
-                    <div><div class="y">Y2</div><div class="v">¥150億</div></div>
-                    <div><div class="y">Y3</div><div class="v">¥300億</div></div>
-                    <div><div class="y">Y4</div><div class="v">¥360億</div></div>
-                    <div><div class="y">Y5</div><div class="v">¥350億</div></div>
+                  <div class="impact-meta">
+                    <div class="row"><div class="label">種別</div><div>コスト削減(審査工数)+ リスク回避(不良債権率改善)の合算</div></div>
+                    <div class="row"><div class="label">示す金額</div><div>営業利益貢献額(税引前)— 工数削減の人件費効果 + 引当金繰入の縮小効果</div></div>
+                    <div class="row"><div class="label">関与モデル</div><div>④ Quality Control(明示×高エラー)— AI ドラフト + 審査員レビュー</div></div>
                   </div>
-                  <div class="row"><div class="label">計算式</div><div>(1) 審査時間削減: 年間与信件数 約100万件 × 1件3時間削減 × 時給5,000円 = ¥1,500億/5年。(2) 不良債権率改善: 与信総額 数十兆円 × 0.05pt 改善 = 巨大効果。両者の合算で控えめに ¥1,200億/5年</div></div>
-                  <div class="row"><div class="label">業界統計</div><div>金融庁「銀行の与信業務効率化」、メガバンク3行の有報の貸出残高・不良債権率(MUFG 連結貸出 約100兆円)</div></div>
-                  <div class="row"><div class="label">幅</div><div>下振れ ¥600億 〜 上振れ ¥2,500億</div></div>
-                  <div class="row"><div class="label">リスク</div><div>① EU AI Act 高リスク分類対応(説明可能性必須) ② 公平性監査 ③ 既存システム置換</div></div>
+                  <div class="params">
+                    <div class="params-title">基本パラメータ(全年共通)</div>
+                    <ul>
+                      <li><code>A</code> 年間与信件数(中小企業・個人事業主): <strong>約 100 万件/年</strong></li>
+                      <li><code>B</code> 1 件あたり審査時間削減: <strong>3 時間</strong>(従来 5 時間→AI ドラフト後 2 時間)</li>
+                      <li><code>C</code> 審査員時給: <strong>¥5,000</strong></li>
+                      <li><code>D</code> MUFG 連結貸出残高: <strong>約 100 兆円</strong>(うち中小・個人事業主向け 約 30 兆円)</li>
+                      <li><code>E</code> 不良債権率改善: <strong>0.05 pt</strong>(中小向け 30 兆円 × 0.05% = 引当金圧縮 ¥150 億/年)</li>
+                      <li>(1) 工数削減 満額: 100 万 × 3h × ¥5,000 = <strong>¥150 億/年</strong></li>
+                      <li>(2) 引当圧縮 満額: 約 <strong>¥150 億/年</strong></li>
+                    </ul>
+                  </div>
+                  <table class="yearly-calc">
+                    <thead><tr><th>年</th><th>展開範囲</th><th>(1) 工数削減</th><th>(2) 引当圧縮</th><th>計算</th><th>効果</th></tr></thead>
+                    <tbody>
+                      <tr><td class="year">Y1</td><td>東京 PoC(13%)</td><td>¥20 億</td><td>¥20 億</td><td class="calc">¥150 億 × 13% + ¥150 億 × 13%</td><td class="eff">¥40 億</td></tr>
+                      <tr><td class="year">Y2</td><td>国内主要支店(50%)</td><td>¥75 億</td><td>¥75 億</td><td class="calc">¥150 億 × 50% × 2</td><td class="eff">¥150 億</td></tr>
+                      <tr><td class="year">Y3</td><td>全支店展開(100%)</td><td>¥150 億</td><td>¥150 億</td><td class="calc">¥150 億 × 100% × 2</td><td class="eff">¥300 億</td></tr>
+                      <tr><td class="year">Y4</td><td>安定運用 + 上振れ(120%)</td><td>¥150 億</td><td>¥210 億</td><td class="calc">¥150 億 + ¥210 億(改善 0.07pt)</td><td class="eff">¥360 億</td></tr>
+                      <tr><td class="year">Y5</td><td>運用 + R&D 控除</td><td>¥150 億</td><td>¥210 億</td><td class="calc">¥360 億 − R&D ¥10 億</td><td class="eff">¥350 億</td></tr>
+                    </tbody>
+                    <tfoot><tr><td colspan="5">5 年累積</td><td>¥1,200 億</td></tr></tfoot>
+                  </table>
+                  <div class="note">※ ④象限の代表施策。AI のドラフト精度が高くても審査員の最終承認は必須(規制要請+説明可能性)。審査員の判断品質は変わらず、生産性が上がる構図</div>
+                  <div class="row"><div class="label">業界統計</div><div>金融庁「銀行の与信業務効率化」/ MUFG 有価証券報告書 2024(連結貸出 約 100 兆円)/ メガバンク 3 行の不良債権比率(0.5-1%)/ Capital One・Goldman Sachs の AI 与信実績</div></div>
+                  <div class="row"><div class="label">幅</div><div>下振れ <strong>¥600 億</strong>(引当改善 0.025pt 止まり)〜 中央値 <strong>¥1,200 億</strong> 〜 上振れ <strong>¥2,500 億</strong>(引当改善 0.10pt + 法人向け拡張シナリオ)</div></div>
+                  <div class="row"><div class="label">リスク</div><div>① EU AI Act 高リスク分類対応(説明可能性必須) ② 公平性監査(融資の差別防止) ③ 既存基幹系システム置換コスト</div></div>
                 </div>
               </details>
             </td>
@@ -483,17 +686,35 @@
             <td>
               <details><summary>▶ 詳細</summary>
                 <div class="roi-detail">
-                  <div class="yearly">
-                    <div><div class="y">Y1</div><div class="v">¥30億</div></div>
-                    <div><div class="y">Y2</div><div class="v">¥100億</div></div>
-                    <div><div class="y">Y3</div><div class="v">¥150億</div></div>
-                    <div><div class="y">Y4</div><div class="v">¥170億</div></div>
-                    <div><div class="y">Y5</div><div class="v">¥150億</div></div>
+                  <div class="impact-meta">
+                    <div class="row"><div class="label">種別</div><div>リスク回避(不正取引被害削減)+ コスト削減(AML 審査工数)</div></div>
+                    <div class="row"><div class="label">示す金額</div><div>営業利益貢献額(税引前)— 不正阻止額 + 工数削減 + 誤検知再判定削減</div></div>
+                    <div class="row"><div class="label">関与モデル</div><div>④ Quality Control(明示×高エラー)— AI 検知 + コンプラ部署再判定</div></div>
                   </div>
-                  <div class="row"><div class="label">計算式</div><div>(1) 不正阻止額: 年間不正被害削減 ¥60億 × 5年。(2) 誤検知削減: 1日数千件のFP削減で年¥40億。(3) AML工数削減: 年数千時間 × 時給10,000円</div></div>
-                  <div class="row"><div class="label">業界統計</div><div>FATF 報告、金融庁マネロン白書、Stripe Radar 事例</div></div>
-                  <div class="row"><div class="label">幅</div><div>下振れ ¥350億 〜 上振れ ¥1,200億</div></div>
-                  <div class="row"><div class="label">リスク</div><div>① 規制対応(説明責任) ② 攻撃側 AI の進化 ③ 顧客の不便(誤検知)</div></div>
+                  <div class="params">
+                    <div class="params-title">基本パラメータ(全年共通)</div>
+                    <ul>
+                      <li><code>A</code> 年間カード不正・送金不正被害想定: <strong>¥150 億</strong>(MUFG 規模、業界平均)</li>
+                      <li><code>B</code> AI による阻止率向上: <strong>50%</strong>(現状検知率 60%→90% 想定)→ <strong>¥75 億/年</strong> 削減</li>
+                      <li><code>C</code> AML 関連工数(不正疑い口座の精査・規制報告): 年 <strong>10,000 時間</strong> × 時給 ¥10,000 = ¥1 億 + 誤検知再判定削減 ¥49 億</li>
+                      <li>満額/年: B + C = <strong>¥125 億/年</strong></li>
+                    </ul>
+                  </div>
+                  <table class="yearly-calc">
+                    <thead><tr><th>年</th><th>展開範囲</th><th>(1)不正阻止</th><th>(2)工数+誤検知</th><th>計算</th><th>効果</th></tr></thead>
+                    <tbody>
+                      <tr><td class="year">Y1</td><td>カード不正限定 PoC(24%)</td><td>¥18 億</td><td>¥12 億</td><td class="calc">¥75 億 × 24% + ¥50 億 × 24%</td><td class="eff">¥30 億</td></tr>
+                      <tr><td class="year">Y2</td><td>+ 送金不正(80%)</td><td>¥60 億</td><td>¥40 億</td><td class="calc">¥75 億 × 80% + ¥50 億 × 80%</td><td class="eff">¥100 億</td></tr>
+                      <tr><td class="year">Y3</td><td>+ AML 全業務(120%)</td><td>¥90 億</td><td>¥60 億</td><td class="calc">阻止率上振れ + 海外法人含む</td><td class="eff">¥150 億</td></tr>
+                      <tr><td class="year">Y4</td><td>高度化(136%)</td><td>¥102 億</td><td>¥68 億</td><td class="calc">同上 + 規制対応の改善</td><td class="eff">¥170 億</td></tr>
+                      <tr><td class="year">Y5</td><td>運用 + 攻撃側進化対応</td><td>¥90 億</td><td>¥60 億</td><td class="calc">¥150 億(攻撃側 AI 進化で阻止率低下を再投資で補う)</td><td class="eff">¥150 億</td></tr>
+                    </tbody>
+                    <tfoot><tr><td colspan="5">5 年累積</td><td>¥600 億</td></tr></tfoot>
+                  </table>
+                  <div class="note">※ Y5 に効果が下がる理由: 攻撃側も生成 AI で進化するため、防御側も継続再投資が必要(イタチごっこ)。R&D 投資 ¥20 億/年規模を控除済み</div>
+                  <div class="row"><div class="label">業界統計</div><div>FATF Mutual Evaluation Report / 金融庁マネロン・テロ資金供与対策ガイドライン / Stripe Radar(不正検知事例)/ Mastercard Decision Intelligence(AI 不正検知)/ JCB の AI 不正検知導入実績</div></div>
+                  <div class="row"><div class="label">幅</div><div>下振れ <strong>¥350 億</strong>(阻止率向上 30% 止まり)〜 中央値 <strong>¥600 億</strong> 〜 上振れ <strong>¥1,200 億</strong>(阻止率 70% + 海外法人含む拡張)</div></div>
+                  <div class="row"><div class="label">リスク</div><div>① 規制対応(説明責任・差別防止) ② 攻撃側 AI の進化(生成 AI で詐欺手口高度化) ③ 顧客の不便(誤検知でカード停止 → クレーム)</div></div>
                 </div>
               </details>
             </td>
@@ -505,17 +726,35 @@
             <td>
               <details><summary>▶ 詳細</summary>
                 <div class="roi-detail">
-                  <div class="yearly">
-                    <div><div class="y">Y1</div><div class="v">¥10億</div></div>
-                    <div><div class="y">Y2</div><div class="v">¥40億</div></div>
-                    <div><div class="y">Y3</div><div class="v">¥70億</div></div>
-                    <div><div class="y">Y4</div><div class="v">¥75億</div></div>
-                    <div><div class="y">Y5</div><div class="v">¥55億</div></div>
+                  <div class="impact-meta">
+                    <div class="row"><div class="label">種別</div><div>コスト削減(法務・専門人時)</div></div>
+                    <div class="row"><div class="label">示す金額</div><div>営業利益貢献額(税引前)— 高単価専門人材の工数削減</div></div>
+                    <div class="row"><div class="label">関与モデル</div><div>④ Quality Control(明示×高エラー)— AI ドラフト + 法務専門家レビュー必須</div></div>
                   </div>
-                  <div class="row"><div class="label">計算式</div><div>法務・市場部・IB の専門人時 削減10万時間/年 × 時給10,000円 × 5年(初年度から段階展開)</div></div>
-                  <div class="row"><div class="label">業界統計</div><div>JPMorgan COIN(年36万時間削減事例)、Harvey の法律業界導入実績</div></div>
-                  <div class="row"><div class="label">幅</div><div>下振れ ¥120億 〜 上振れ ¥500億</div></div>
-                  <div class="row"><div class="label">リスク</div><div>① 法務責任の所在 ② 機密情報の AI 連携 ③ 国際法務の複雑性</div></div>
+                  <div class="params">
+                    <div class="params-title">基本パラメータ(全年共通)</div>
+                    <ul>
+                      <li><code>A</code> 法務・市場部・IB 専門人時/年: <strong>約 20 万時間</strong>(契約書ドラフト・DD・規制対応)</li>
+                      <li><code>B</code> AI ドラフト + レビューによる削減率: <strong>50%</strong>(初稿作成時間が 50% に圧縮)</li>
+                      <li><code>C</code> 専門人材時給: <strong>¥15,000</strong>(法務・IB 等、年収 2,500-3,000 万級)</li>
+                      <li>満額/年 = 20 万 × 50% × ¥15,000 = <strong>¥150 億/年</strong></li>
+                    </ul>
+                  </div>
+                  <table class="yearly-calc">
+                    <thead><tr><th>年</th><th>展開範囲</th><th>削減率</th><th>計算</th><th>効果</th></tr></thead>
+                    <tbody>
+                      <tr><td class="year">Y1</td><td>シンジローン契約 PoC(7%)</td><td>50%</td><td class="calc">20 万 × 7% × 50% × ¥15,000</td><td class="eff">¥10 億</td></tr>
+                      <tr><td class="year">Y2</td><td>+ M&A DD(27%)</td><td>50%</td><td class="calc">20 万 × 27% × 50% × ¥15,000</td><td class="eff">¥40 億</td></tr>
+                      <tr><td class="year">Y3</td><td>+ IPO 引受文書(47%)</td><td>50%</td><td class="calc">20 万 × 47% × 50% × ¥15,000</td><td class="eff">¥70 億</td></tr>
+                      <tr><td class="year">Y4</td><td>+ 外貨建契約(50%)</td><td>50%</td><td class="calc">20 万 × 50% × 50% × ¥15,000</td><td class="eff">¥75 億</td></tr>
+                      <tr><td class="year">Y5</td><td>モデル次世代化フェーズ</td><td>50%</td><td class="calc">¥75 億 − 再構築 R&D ¥20 億</td><td class="eff">¥55 億</td></tr>
+                    </tbody>
+                    <tfoot><tr><td colspan="4">5 年累積</td><td>¥250 億</td></tr></tfoot>
+                  </table>
+                  <div class="note">※ Y5 に減少する理由: GPT-5/Claude-5 級モデルへの大規模リプレース投資。新モデルの社内検証・既存テンプレート再構築・専門家による再校正</div>
+                  <div class="row"><div class="label">業界統計</div><div>JPMorgan COIN(契約書解析で年 36 万時間削減実績)/ Harvey AI(M&A・大型契約で米英日の主要法律事務所が導入、2024)/ 三菱 UFJ「リーガルテック導入計画」/ 大手法律事務所のレビュー単価 ¥3-6 万/h</div></div>
+                  <div class="row"><div class="label">幅</div><div>下振れ <strong>¥120 億</strong>(削減率 30% 止まり / 法務責任懸念で限定運用)〜 中央値 <strong>¥250 億</strong> 〜 上振れ <strong>¥500 億</strong>(削減率 70% + 法務外注削減も含む)</div></div>
+                  <div class="row"><div class="label">リスク</div><div>① 法務責任の所在(AI ドラフトのミスで損害発生時) ② 機密情報の AI 連携(M&A 案件等) ③ 国際法務の複雑性(各国法体系の差異)</div></div>
                 </div>
               </details>
             </td>
