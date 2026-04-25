@@ -31,6 +31,7 @@ const CHAPTERS = [
   { id: '06', title: 'PoC設計から本番デリバリーまで', hours: 2, phase: 'core' },
   { id: '07', title: '業界未来予測 ✕ 技術ロードマップ ✕ データ資産の真価', hours: 2, phase: 'advanced' },
   { id: '08', title: 'タスク分解 × 4象限フレーム — AI戦略策定ツール', hours: 2, phase: 'advanced' },
+  { id: '08b', title: '業界×企業 4象限ライブラリ — 20社の実装例とROI推定', hours: 5, phase: 'advanced' },
   { id: '09', title: 'インサイト型提案 — 脱・ソリューション営業', hours: 1.5, phase: 'advanced' },
   { id: '10', title: '業界ケース①: 金融', hours: 1.5, phase: 'advanced' },
   { id: '11', title: '業界ケース②: 製造', hours: 1.5, phase: 'advanced' },
@@ -40,7 +41,7 @@ const CHAPTERS = [
   { id: '15', title: '最終演習問題', hours: 1.5, phase: 'capstone' },
 ];
 
-const TOTAL_HOURS = 25;
+const TOTAL_HOURS = 30;
 
 const CHAPTER_FILES = {
   '01': '01-overview.html',
@@ -51,6 +52,7 @@ const CHAPTER_FILES = {
   '06': '06-poc-to-delivery.html',
   '07': '07-industry-foresight.html',
   '08': '08-quadrant-framework.html',
+  '08b': '08b-case-library.html',
   '09': '09-insight-proposal.html',
   '10': '10-case-finance.html',
   '11': '11-case-manufacturing.html',
