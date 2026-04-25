@@ -8,12 +8,14 @@
 <link rel="stylesheet" href="../style.css">
 <style>
   :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #262260; }
-  /* 4象限フレーム専用スタイル */
+  /* 4象限フレーム専用スタイル — 線の太さを2px solid #262260 で全統一 */
   .quadrant-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; max-width: 720px; margin: 24px auto; border: 2px solid #262260; }
   .quadrant-cell { padding: 22px; min-height: 220px; position: relative; }
-  .quadrant-cell.q1 { background: #DCEAF8; border-right: 1px solid #0B56A0; border-bottom: 1px solid #0B56A0; }
-  .quadrant-cell.q2 { background: #F1E0FC; border-bottom: 1px solid #B764F2; }
-  .quadrant-cell.q3 { background: #FDE3EC; border-right: 1px solid #DC2363; }
+  /* 内側のグリッド分割線も外枠と同じ 2px solid #262260 で統一 */
+  /* 配置: 左上=②, 右上=③, 左下=①, 右下=④ */
+  .quadrant-cell.q2 { background: #F1E0FC; border-right: 2px solid #262260; border-bottom: 2px solid #262260; }
+  .quadrant-cell.q3 { background: #FDE3EC; border-bottom: 2px solid #262260; }
+  .quadrant-cell.q1 { background: #DCEAF8; border-right: 2px solid #262260; }
   .quadrant-cell.q4 { background: #FEEED2; }
   .quadrant-cell .q-num { position: absolute; top: 14px; left: 14px; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-size: 14px; }
   .quadrant-cell.q1 .q-num { background: #0B56A0; }
@@ -210,8 +212,8 @@ graph TB
   <h3>4象限を分ける2軸の意味</h3>
 
   <ul class="icon-list">
-    <li><i data-lucide="brain" width="20" height="20"></i><div><strong>横軸:求められる知識の種類</strong> — そのタスクで必要な知識は<strong>明示的に記述できるか</strong>、それとも<strong>暗黙知</strong>(経験・勘・状況依存)か?</div></li>
-    <li><i data-lucide="alert-octagon" width="20" height="20"></i><div><strong>縦軸:エラーのコスト</strong> — そのタスクで間違いが起きた時、<strong>軽微な非効率</strong>で済むか、それとも<strong>評判・法的責任・身体的被害</strong>に至るか?</div></li>
+    <li><i data-lucide="alert-octagon" width="20" height="20"></i><div><strong>横軸:エラーのコスト</strong>(左=低 → 右=高)— そのタスクで間違いが起きた時、<strong>軽微な非効率</strong>で済むか、それとも<strong>評判・法的責任・身体的被害</strong>に至るか?</div></li>
+    <li><i data-lucide="brain" width="20" height="20"></i><div><strong>縦軸:求められる知識の種類</strong>(上=暗黙知 → 下=明示的)— そのタスクで必要な知識は<strong>明示的に記述できるか</strong>、それとも<strong>暗黙知</strong>(経験・勘・状況依存)か?</div></li>
   </ul>
 
   <table>
@@ -233,30 +235,11 @@ graph TB
   <div class="diagram-box">
     <div class="diagram-title">4象限フレーム — 全体俯瞰</div>
     <div style="position: relative; padding: 30px 40px 40px 80px;">
-      <div style="position: absolute; top: 50%; left: 20px; transform: translateY(-50%) rotate(-90deg); transform-origin: center; font-size: 12px; color: #262260; font-weight: 700;">エラーのコスト</div>
-      <div style="position: absolute; left: 60px; top: 22px; font-size: 11px; color: #475569;">↑ 高</div>
-      <div style="position: absolute; left: 60px; bottom: 22px; font-size: 11px; color: #475569;">↓ 低</div>
+      <div style="position: absolute; top: 50%; left: 20px; transform: translateY(-50%) rotate(-90deg); transform-origin: center; font-size: 12px; color: #262260; font-weight: 700;">求められる知識の種類</div>
+      <div style="position: absolute; left: 60px; top: 22px; font-size: 11px; color: #475569;">↑ 暗黙知</div>
+      <div style="position: absolute; left: 60px; bottom: 22px; font-size: 11px; color: #475569;">↓ 明示的</div>
       <div class="quadrant-grid">
-        <div class="quadrant-cell q3">
-          <span class="q-num">3</span>
-          <h4>人間ファースト</h4>
-          <p class="role">負荷タスクは人間主導、AI は軽微支援</p>
-          <ul>
-            <li>全社戦略の策定・経営人材登用</li>
-            <li>危機管理と対応</li>
-            <li>懲戒処分等の人事介入</li>
-          </ul>
-        </div>
-        <div class="quadrant-cell q4">
-          <span class="q-num">4</span>
-          <h4>品質管理</h4>
-          <p class="role">AI が出力、人間が検証(HITL)</p>
-          <ul>
-            <li>高額契約書ドラフト作成</li>
-            <li>本番環境向けソフトウェア記述</li>
-            <li>各種デューデリジェンスの実施</li>
-          </ul>
-        </div>
+        <!-- 左上: ② クリエイティブ触媒(暗黙×低エラー) -->
         <div class="quadrant-cell q2">
           <span class="q-num">2</span>
           <h4>クリエイティブ触媒</h4>
@@ -267,6 +250,18 @@ graph TB
             <li>模擬面接シミュレーション</li>
           </ul>
         </div>
+        <!-- 右上: ③ 人間ファースト(暗黙×高エラー) -->
+        <div class="quadrant-cell q3">
+          <span class="q-num">3</span>
+          <h4>人間ファースト</h4>
+          <p class="role">負荷タスクは人間主導、AI は軽微支援</p>
+          <ul>
+            <li>全社戦略の策定・経営人材登用</li>
+            <li>危機管理と対応</li>
+            <li>懲戒処分等の人事介入</li>
+          </ul>
+        </div>
+        <!-- 左下: ① No-Regret(明示×低エラー) -->
         <div class="quadrant-cell q1">
           <span class="q-num">1</span>
           <h4>No-Regret(積極利用)</h4>
@@ -277,10 +272,21 @@ graph TB
             <li>履歴書一次スクリーニング</li>
           </ul>
         </div>
+        <!-- 右下: ④ 品質管理(明示×高エラー) -->
+        <div class="quadrant-cell q4">
+          <span class="q-num">4</span>
+          <h4>品質管理</h4>
+          <p class="role">AI が出力、人間が検証(HITL)</p>
+          <ul>
+            <li>高額契約書ドラフト作成</li>
+            <li>本番環境向けソフトウェア記述</li>
+            <li>各種デューデリジェンスの実施</li>
+          </ul>
+        </div>
       </div>
-      <div class="axis-label" style="margin-top: 8px;">← 暗黙知 &nbsp;&nbsp;&nbsp;&nbsp; 求められる知識の種類 &nbsp;&nbsp;&nbsp;&nbsp; 明示的な知識 →</div>
+      <div class="axis-label" style="margin-top: 8px;">← 低 &nbsp;&nbsp;&nbsp;&nbsp; エラーのコスト &nbsp;&nbsp;&nbsp;&nbsp; 高 →</div>
     </div>
-    <div class="diagram-caption">2軸4象限。各象限で AI 関与モデルが違う。横軸は知識の種類、縦軸はエラーコスト。</div>
+    <div class="diagram-caption">2軸4象限。横軸=エラーのコスト(左低・右高)、縦軸=求められる知識の種類(上が暗黙知・下が明示的)。各象限で AI 関与モデルが違う。</div>
   </div>
 
   <h3>各象限の詳細解説</h3>
