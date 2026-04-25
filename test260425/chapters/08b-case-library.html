@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox=%270 0 24 24%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath clip-rule=%27evenodd%27 d=%27M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z%27 fill=%27%23262260%27 fill-rule=%27evenodd%27/%3E%3C/svg%3E">
+<title>業界×企業 4象限ライブラリ — Ch.8.5 - MK's Enterprise AI/DX Basics</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  :root { --accent: #18181b; --accent-light: #f4f4f5; --clawd: #262260; }
+  /* Ch08.5 専用スタイル */
+  .toc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; margin: 20px 0 32px; }
+  .toc-grid a { display: block; padding: 12px 14px; background: white; border: 1px solid var(--border); border-radius: 8px; text-decoration: none; color: var(--p-indigo); transition: all 0.15s; }
+  .toc-grid a:hover { background: var(--p-indigo-l); border-color: var(--p-indigo); transform: translateY(-1px); }
+  .toc-grid a .toc-num { font-size: 10px; color: #71717a; letter-spacing: 0.06em; text-transform: uppercase; }
+  .toc-grid a .toc-name { display: block; font-size: 14px; font-weight: 700; margin-top: 2px; }
+  .toc-grid a .toc-comp { display: block; font-size: 11px; color: #475569; margin-top: 4px; }
+
+  .industry-section { margin: 56px 0; padding-top: 24px; border-top: 2px solid var(--p-indigo); }
+  .industry-section h2 { color: var(--p-indigo); border: none; padding: 0; margin-top: 0; }
+  .industry-overview { background: var(--p-indigo-l); border-left: 4px solid var(--p-indigo); padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0 28px; }
+  .industry-overview h3 { margin: 0 0 8px; color: var(--p-indigo); border: none; padding: 0; font-size: 14px; }
+  .industry-overview p { font-size: 13px; margin: 0; line-height: 1.6; }
+
+  .company-section { margin: 32px 0; padding: 20px; background: white; border: 1px solid var(--border); border-radius: 12px; }
+  .company-section h3 { color: var(--p-indigo); border: none; padding: 0; margin: 0 0 4px; font-size: 18px; }
+  .company-meta { display: flex; gap: 16px; flex-wrap: wrap; font-size: 12px; color: #475569; margin-bottom: 14px; }
+  .company-meta span { background: var(--accent-light); padding: 3px 8px; border-radius: 4px; }
+  .company-section h4 { color: var(--p-indigo); margin: 18px 0 8px; font-size: 14px; font-weight: 700; }
+
+  /* 12施策テーブル */
+  .actions-table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 12px; }
+  .actions-table th, .actions-table td { border: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+  .actions-table thead th { background: var(--p-indigo); color: white; font-weight: 700; font-size: 11px; letter-spacing: 0.04em; }
+  .actions-table tbody td { background: white; }
+  .actions-table tr.q1-row td:first-child { background: #DCEAF8; color: #0B56A0; font-weight: 700; text-align: center; }
+  .actions-table tr.q2-row td:first-child { background: #F1E0FC; color: #B764F2; font-weight: 700; text-align: center; }
+  .actions-table tr.q3-row td:first-child { background: #FDE3EC; color: #DC2363; font-weight: 700; text-align: center; }
+  .actions-table tr.q4-row td:first-child { background: #FEEED2; color: #b45309; font-weight: 700; text-align: center; }
+  .actions-table .roi-total { font-weight: 700; color: var(--p-indigo); white-space: nowrap; }
+  .actions-table details { font-size: 11px; }
+  .actions-table details summary { cursor: pointer; color: var(--p-blue); font-weight: 600; padding: 2px 0; outline: none; }
+  .actions-table details[open] summary { margin-bottom: 6px; }
+  .actions-table .roi-detail { background: #fafafa; padding: 8px 10px; border-radius: 4px; margin-top: 4px; }
+  .actions-table .roi-detail .row { display: flex; gap: 6px; margin-bottom: 2px; }
+  .actions-table .roi-detail .label { min-width: 80px; color: #71717a; font-size: 10px; text-transform: uppercase; letter-spacing: 0.04em; }
+  .actions-table .roi-detail .yearly { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; margin: 6px 0; }
+  .actions-table .roi-detail .yearly div { background: white; border: 1px solid #e4e4e7; padding: 3px 5px; border-radius: 3px; text-align: center; font-size: 10px; }
+  .actions-table .roi-detail .yearly div .y { color: #71717a; font-size: 9px; }
+  .actions-table .roi-detail .yearly div .v { font-weight: 700; color: var(--p-indigo); }
+
+  .compare-block { background: var(--s-amber-l); border-left: 4px solid var(--s-amber); padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 20px 0; }
+  .compare-block h4 { margin: 0 0 6px; color: #b45309; font-size: 13px; border: none; padding: 0; }
+  .compare-block p { margin: 0; font-size: 13px; line-height: 1.6; }
+
+  .roi-format-box { background: var(--p-blue-l); border: 1px solid var(--p-blue); border-radius: 10px; padding: 18px 22px; margin: 16px 0 28px; font-size: 13px; }
+  .roi-format-box h4 { margin: 0 0 10px; color: var(--p-blue); border: none; padding: 0; }
+  .roi-format-box code { background: white; padding: 1px 4px; border-radius: 3px; font-size: 12px; }
+
+  .roi-quad-mini { display: grid; grid-template-columns: 1fr 1fr; max-width: 360px; margin: 16px auto; border: 2px solid var(--p-indigo); }
+  .roi-quad-mini > div { padding: 10px 12px; min-height: 56px; font-size: 11px; line-height: 1.4; }
+  .roi-quad-mini .qm2 { background: #F1E0FC; border-right: 2px solid var(--p-indigo); border-bottom: 2px solid var(--p-indigo); }
+  .roi-quad-mini .qm3 { background: #FDE3EC; border-bottom: 2px solid var(--p-indigo); }
+  .roi-quad-mini .qm1 { background: #DCEAF8; border-right: 2px solid var(--p-indigo); }
+  .roi-quad-mini .qm4 { background: #FEEED2; }
+  .roi-quad-mini b { display: block; font-size: 12px; color: var(--p-indigo); }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-main">
+    <a href="../index.html" class="logo">
+      <div class="clawd"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></div>
+      &gt;_ MK's Enterprise AI/DX Basics
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#phase1"><span class="phase-name">Basics</span><span class="phase-pct" id="pct-basics">0%</span></a></li>
+      <li><a href="../index.html#phase2"><span class="phase-name">Core</span><span class="phase-pct" id="pct-core">0%</span></a></li>
+      <li><a href="../index.html#phase3" class="active"><span class="phase-name">Advanced</span><span class="phase-pct" id="pct-advanced">0%</span></a></li>
+      <li><a href="../index.html#phase4"><span class="phase-name">Capstone</span><span class="phase-pct" id="pct-capstone">0%</span></a></li>
+    </ul>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streak"><span class="fire">🔥</span><span id="streak-count">0 days</span></div>
+      <a class="next-btn" id="next-btn"><span class="next-label">Next:</span> Loading...</a>
+      <div class="auth-box">
+        <button class="auth-btn" id="sign-in-btn">Sign in</button>
+        <div class="auth-user" id="auth-user">
+          <img id="auth-avatar" alt="">
+          <span id="auth-name"></span>
+          <button class="auth-btn-small" id="sign-out-btn">Sign out</button>
+        </div>
+        <span class="sync-badge" id="sync-badge">Synced</span>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-chapter visible">
+    <span class="ch-indicator">Ch.8.5</span>
+    業界×企業 4象限ライブラリ — 20社の実装例とROI推定
+  </div>
+  <div class="topbar-progress"><div class="topbar-progress-fill" id="global-bar" style="width:0%"></div></div>
+</div>
+
+<nav class="sidebar">
+  <div class="progress-ring">
+    <svg viewBox="0 0 42 42">
+      <circle class="ring-bg" cx="21" cy="21" r="18"/>
+      <circle class="ring-fill" cx="21" cy="21" r="18" stroke-dasharray="0 113.1" stroke-dashoffset="0" transform="rotate(-90 21 21)"/>
+      <text class="ring-pct" x="21" y="19" text-anchor="middle" dominant-baseline="middle">0%</text>
+      <text class="ring-sub" x="21" y="27" text-anchor="middle">0 / 16 sections</text>
+    </svg>
+    <div class="progress-info">0h / 30h completed</div>
+  </div>
+  <div class="section-label">Prerequisites</div>
+  <ul><li><a href="00-prerequisites.html"><span class="status-dot"></span> 前提知識</a></li></ul>
+  <div class="section-label">Basics</div>
+  <ul>
+    <li><a href="01-overview.html"><span class="status-dot" data-chapter="01"></span> AI・DX全体像</a></li>
+    <li><a href="02-consulting-thinking.html"><span class="status-dot" data-chapter="02"></span> 戦略コンサル思考</a></li>
+  </ul>
+  <div class="section-label">Core</div>
+  <ul>
+    <li><a href="03-llm-fundamentals.html"><span class="status-dot" data-chapter="03"></span> 生成AI/LLM 本質編</a></li>
+    <li><a href="04-ml-data-infra.html"><span class="status-dot" data-chapter="04"></span> ML / データ基盤</a></li>
+    <li><a href="05-physical-ai.html"><span class="status-dot" data-chapter="05"></span> フィジカルAI</a></li>
+    <li><a href="06-poc-to-delivery.html"><span class="status-dot" data-chapter="06"></span> PoCから本番デリバリー</a></li>
+  </ul>
+  <div class="section-label">Advanced</div>
+  <ul>
+    <li><a href="07-industry-foresight.html"><span class="status-dot" data-chapter="07"></span> 業界未来予測</a></li>
+    <li><a href="08-quadrant-framework.html"><span class="status-dot" data-chapter="08"></span> 4象限フレーム</a></li>
+    <li><a href="08b-case-library.html" class="active"><span class="status-dot" data-chapter="08b"></span> 業界×企業ライブラリ</a></li>
+    <li><a href="09-insight-proposal.html"><span class="status-dot" data-chapter="09"></span> インサイト型提案</a></li>
+    <li><a href="10-case-finance.html"><span class="status-dot" data-chapter="10"></span> 金融ケース</a></li>
+    <li><a href="11-case-manufacturing.html"><span class="status-dot" data-chapter="11"></span> 製造ケース</a></li>
+    <li><a href="12-case-defense.html"><span class="status-dot" data-chapter="12"></span> 防衛ケース</a></li>
+  </ul>
+  <div class="section-label">Capstone</div>
+  <ul>
+    <li><a href="13-ethics-regulation.html"><span class="status-dot" data-chapter="13"></span> 倫理・規制</a></li>
+    <li><a href="14-capstone-case.html"><span class="status-dot" data-chapter="14"></span> 統合ケース演習</a></li>
+    <li><a href="15-final-exercise.html"><span class="status-dot" data-chapter="15"></span> 最終演習問題</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">Phase 3: Advanced &gt; Chapter 8.5(本章の延長・実装リファレンス)</div>
+  <h1>業界×企業 4象限ライブラリ — 20社の実装例とROI推定</h1>
+  <p class="subtitle">Ch08(4象限フレーム)で学んだ理論を、<strong>AI親和性が高い10業界×日本上場2社=20社</strong>の実装例に落とし込んだリファレンスです。各社につき4象限×3施策=12施策、計<strong>240施策</strong>に5年(Y1-Y5)のROI推定を付与しています。商談前準備で「この業界のあの企業に近い」と当たりをつけ、提案ドラフトを2-3時間で組み立てるための辞書として使ってください。</p>
+
+  <div class="badge-row">
+    <span class="badge">所要時間: 300分(5時間)</span>
+    <span class="badge">Phase: Advanced</span>
+    <span class="badge">難易度: ★★★★★</span>
+    <span class="badge">用途: 商談前準備リファレンス</span>
+  </div>
+
+  <div class="info-box" style="margin-top: 16px;">
+    <span class="label">本章の使い方</span>
+    <p>通読は想定していません。<strong>商談前に「顧客業界・近い企業」のセクションを開いて参照</strong>するリファレンスとして設計しています。下の目次から直接ジャンプしてください。<br>本章の数値は<strong>すべて公開IR資料・業界統計に基づく外部観察ベースの推定値</strong>です。実案件では当該企業の最新IR・経営計画と照らして調整してください。本章の記述は2026年4月時点の情報に基づきます。</p>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></span>業界目次(クリックでジャンプ)</h2>
+
+  <div class="toc-grid">
+    <a href="#industry-finance"><span class="toc-num">Industry 1</span><span class="toc-name">金融</span><span class="toc-comp">三菱UFJ FG / SBI HD</span></a>
+    <a href="#industry-retail"><span class="toc-num">Industry 2</span><span class="toc-name">小売・EC</span><span class="toc-comp">ファーストリテイリング / セブン&amp;アイ HD</span></a>
+    <a href="#industry-medical"><span class="toc-num">Industry 3</span><span class="toc-name">医療・ヘルスケア</span><span class="toc-comp">武田薬品 / エムスリー</span></a>
+    <a href="#industry-legal"><span class="toc-num">Industry 4</span><span class="toc-name">法務(リーガルテック)</span><span class="toc-comp">弁護士ドットコム / LegalOn</span></a>
+    <a href="#industry-consulting"><span class="toc-num">Industry 5</span><span class="toc-name">コンサル・SI</span><span class="toc-comp">NRI / ベイカレント</span></a>
+    <a href="#industry-advertising"><span class="toc-num">Industry 6</span><span class="toc-name">広告・マーケ</span><span class="toc-comp">電通 / 博報堂DY</span></a>
+    <a href="#industry-saas"><span class="toc-num">Industry 7</span><span class="toc-name">SaaS / 業務ソフト</span><span class="toc-comp">マネーフォワード / Sansan</span></a>
+    <a href="#industry-hr"><span class="toc-num">Industry 8</span><span class="toc-name">人材</span><span class="toc-comp">リクルート HD / パーソル HD</span></a>
+    <a href="#industry-logistics"><span class="toc-num">Industry 9</span><span class="toc-name">物流・運輸</span><span class="toc-comp">ヤマト HD / SG HD</span></a>
+    <a href="#industry-manufacturing"><span class="toc-num">Industry 10</span><span class="toc-name">製造</span><span class="toc-comp">トヨタ / ファナック</span></a>
+    <a href="#analysis"><span class="toc-num">Analysis</span><span class="toc-name">章末分析(累積ROI集計)</span><span class="toc-comp">240施策のヒートマップ・ランキング</span></a>
+    <a href="#exercise"><span class="toc-num">Exercise</span><span class="toc-name">演習</span><span class="toc-comp">自社顧客で12施策を作る</span></a>
+  </div>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></span>4象限フレームの再掲(超圧縮)</h2>
+
+  <p>各セクションを参照する前に、4象限の意味を再掲します。詳細は <a href="08-quadrant-framework.html">Ch08「タスク分解 × 4象限フレーム」</a> を参照してください。</p>
+
+  <div class="roi-quad-mini">
+    <div class="qm2"><b>② クリエイティブ触媒</b>暗黙×低エラー<br>AI が選択肢、人間が選ぶ</div>
+    <div class="qm3"><b>③ 人間ファースト</b>暗黙×高エラー<br>人間主導、AI 補助</div>
+    <div class="qm1"><b>① No-Regret</b>明示×低エラー<br>AI 単独実行</div>
+    <div class="qm4"><b>④ 品質管理</b>明示×高エラー<br>AI 出力+人間検証</div>
+  </div>
+  <p style="text-align: center; font-size: 11px; color: #475569; margin: 4px 0 16px;">↑暗黙知 / ↓明示的 &nbsp;&nbsp;|&nbsp;&nbsp; ←低エラー / 高エラー→</p>
+
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#262260" fill-rule="evenodd"/></svg></span>ROI推定 詳細フォーマットの定義</h2>
+
+  <p>本章の全240施策は、以下の<strong>統一フォーマット</strong>でROIを推定しています。</p>
+
+  <div class="roi-format-box">
+    <h4>各施策のROI記載項目</h4>
+    <ul style="margin: 0 0 12px; padding-left: 20px;">
+      <li><strong>関与モデル</strong>: ① No-Regret / ② Creative / ③ Human-First / ④ Quality Control</li>
+      <li><strong>対象タスク</strong>: どの業務のどのタスクをAI化するか(1-2行)</li>
+      <li><strong>Year 1〜Year 5の年次効果</strong>: 限定パイロット → 段階展開 → 全社展開 → 安定運用 → 競争優位最大化 の順で立ち上がる前提</li>
+      <li><strong>5年累積</strong>: 上記の合計</li>
+      <li><strong>計算式</strong>: 例「平均単価 × 件数 × 削減率」</li>
+      <li><strong>業界統計参照</strong>: IR・業界白書・市場レポートのいずれかを明示</li>
+      <li><strong>幅(下振れ-上振れ)</strong>: 5年累積でのレンジ</li>
+      <li><strong>リスク要因</strong>: 想定通り進まない場合の主因(2-3個)</li>
+    </ul>
+    <p style="margin: 0; font-size: 12px;">表のデフォルト表示は<strong>関与モデル / 施策名 / 5年累積</strong>の3列のみ。<code>▶ 詳細</code>を開くと年次・計算式・根拠・幅・リスクが展開されます。</p>
+  </div>
+
+  <div class="alert-box">
+    <span class="label">ROI数値の前提条件</span>
+    <p>記載のROI数値は<strong>すべて推定値</strong>です。各社の公開IR(直近年度有価証券報告書)、業界統計、AI導入事例のメディア報道(BCG・McKinsey・PwC・経産省レポート等)を元に、<strong>外部からの観察</strong>で構築した仮説ベース。実案件では<strong>当該企業の経営計画・直近数値・現場ヒアリング</strong>を元に再計算してください。本章の数値はあくまで「<strong>業界・企業規模に応じた感覚値</strong>」を提供するためのものです。</p>
+  </div>
+
+  <!-- ============================================
+       業界1: 金融
+       ============================================ -->
+  <div class="industry-section" id="industry-finance">
+    <h2>Industry 1: 金融</h2>
+    <p style="font-size: 13px; color: #71717a;">対象企業: 三菱UFJフィナンシャル・グループ / SBIホールディングス</p>
+    <p style="color: #b45309; font-style: italic; font-size: 13px;">[Phase B-1 で生成予定]</p>
+  </div>
+
+  <!-- ============================================
+       業界2: 小売・EC
+       ============================================ -->
+  <div class="industry-section" id="industry-retail">
+    <h2>Industry 2: 小売・EC</h2>
+    <p style="font-size: 13px; color: #71717a;">対象企業: ファーストリテイリング / セブン&amp;アイ・ホールディングス</p>
+    <p style="color: #b45309; font-style: italic; font-size: 13px;">[Phase B-2 で生成予定]</p>
+  </div>
+
+  <!-- ============================================
+       業界3: 医療・ヘルスケア
+       ============================================ -->
+  <div class="industry-section" id="industry-medical">
+    <h2>Industry 3: 医療・ヘルスケア</h2>
+    <p style="font-size: 13px; color: #71717a;">対象企業: 武田薬品工業 / エムスリー</p>
+    <p style="color: #b45309; font-style: italic; font-size: 13px;">[Phase B-3 で生成予定]</p>
+  </div>
+
+  <!-- ============================================
+       業界4: 法務(リーガルテック)
+       ============================================ -->
+  <div class="industry-section" id="industry-legal">
+    <h2>Industry 4: 法務(リーガルテック)</h2>
+    <p style="font-size: 13px; color: #71717a;">対象企業: 弁護士ドットコム / LegalOn Technologies</p>
+    <p style="color: #b45309; font-style: italic; font-size: 13px;">[Phase B-4 で生成予定]</p>
+  </div>
+
+  <!-- ============================================
+       業界5: コンサル・SI
+       ============================================ -->
+  <div class="industry-section" id="industry-consulting">
+    <h2>Industry 5: コンサル・SI</h2>
+    <p style="font-size: 13px; color: #71717a;">対象企業: 野村総合研究所(NRI) / ベイカレント・コンサルティング</p>
+    <p style="color: #b45309; font-style: italic; font-size: 13px;">[Phase B-5 で生成予定]</p>
+  </div>
+
+  <!-- ============================================
+       業界6: 広告・マーケティング
+       ============================================ -->
+  <div class="industry-section" id="industry-advertising">
+    <h2>Industry 6: 広告・マーケティング</h2>
+    <p style="font-size: 13px; color: #71717a;">対象企業: 電通グループ / 博報堂DYホールディングス</p>
+    <p style="color: #b45309; font-style: italic; font-size: 13px;">[Phase C-6 で生成予定]</p>
+  </div>
+
+  <!-- ============================================
+       業界7: SaaS / 業務ソフト
+       ============================================ -->
+  <div class="industry-section" id="industry-saas">
+    <h2>Industry 7: SaaS / 業務ソフト</h2>
+    <p style="font-size: 13px; color: #71717a;">対象企業: マネーフォワード / Sansan</p>
+    <p style="color: #b45309; font-style: italic; font-size: 13px;">[Phase C-7 で生成予定]</p>
+  </div>
+
+  <!-- ============================================
+       業界8: 人材
+       ============================================ -->
+  <div class="industry-section" id="industry-hr">
+    <h2>Industry 8: 人材</h2>
+    <p style="font-size: 13px; color: #71717a;">対象企業: リクルートホールディングス / パーソルホールディングス</p>
+    <p style="color: #b45309; font-style: italic; font-size: 13px;">[Phase C-8 で生成予定]</p>
+  </div>
+
+  <!-- ============================================
+       業界9: 物流・運輸
+       ============================================ -->
+  <div class="industry-section" id="industry-logistics">
+    <h2>Industry 9: 物流・運輸</h2>
+    <p style="font-size: 13px; color: #71717a;">対象企業: ヤマトホールディングス / SGホールディングス</p>
+    <p style="color: #b45309; font-style: italic; font-size: 13px;">[Phase C-9 で生成予定]</p>
+  </div>
+
+  <!-- ============================================
+       業界10: 製造
+       ============================================ -->
+  <div class="industry-section" id="industry-manufacturing">
+    <h2>Industry 10: 製造</h2>
+    <p style="font-size: 13px; color: #71717a;">対象企業: トヨタ自動車 / ファナック</p>
+    <p style="color: #b45309; font-style: italic; font-size: 13px;">[Phase C-10 で生成予定]</p>
+  </div>
+
+  <!-- ============================================
+       章末分析: 240施策の累積ROI集計
+       ============================================ -->
+  <div class="industry-section" id="analysis">
+    <h2>章末分析: 240施策の累積ROI集計</h2>
+    <p style="color: #b45309; font-style: italic; font-size: 13px;">[Phase D で生成予定 — 業界横断ヒートマップ、象限別累積ROIランキング、Top 30 施策]</p>
+  </div>
+
+  <!-- ============================================
+       Exercise
+       ============================================ -->
+  <div class="industry-section" id="exercise">
+    <h2>Exercise — 自社顧客で12施策を作る</h2>
+    <p style="color: #b45309; font-style: italic; font-size: 13px;">[Phase D で生成予定]</p>
+  </div>
+
+  <div class="resources-section">
+    <h3>参考リソース</h3>
+    <ul>
+      <li><span class="res-type doc">Doc</span> 各社IR(有価証券報告書、決算説明資料、中期経営計画) — 全社の公開資料</li>
+      <li><span class="res-type doc">Doc</span> 経済産業省「DXレポート」 — 日本のDX政策の本流</li>
+      <li><span class="res-type doc">Doc</span> 矢野経済研究所・富士キメラ総研 — 業界別市場規模レポート</li>
+      <li><span class="res-type doc">Doc</span> <a href="https://www.bcg.com/publications/2024/where-is-the-payoff-from-genai" target="_blank" rel="noopener">BCG: Where's the Payoff from GenAI</a></li>
+      <li><span class="res-type doc">Doc</span> <a href="https://www.mckinsey.com/featured-insights/artificial-intelligence" target="_blank" rel="noopener">McKinsey on AI</a></li>
+    </ul>
+  </div>
+
+  <div class="mark-complete-area">
+    <p>この章はリファレンスです。一度全業界をスキャンしたら、下のボタンを押して進捗を記録してください。</p>
+    <button class="btn-complete" data-chapter="08b">&#9744; Mark as Reviewed</button>
+  </div>
+
+  <div class="page-nav">
+    <a href="08-quadrant-framework.html"><span class="direction">&larr; Prev</span>タスク分解 × 4象限フレーム</a>
+    <a href="09-insight-proposal.html"><span class="direction">Next &rarr;</span>インサイト型提案 — 脱・ソリューション営業</a>
+  </div>
+</main>
+
+<!-- 集計用データグローバル変数 -->
+<script>
+  // 各業界セクションの <script> から push される
+  window.allActions = [];
+</script>
+
+<script type="module" src="../progress.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'base', themeVariables: { primaryColor: '#e0dff0', primaryTextColor: '#1a1a1a', primaryBorderColor: '#262260', lineColor: '#262260', secondaryColor: '#f5f5f5', tertiaryColor: '#fafafa', fontFamily: 'inherit', fontSize: '14px' }, flowchart: { curve: 'basis', htmlLabels: true }, sequence: { useMaxWidth: true } });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+window.addEventListener('load', function() { if (window.lucide) lucide.createIcons(); });
+</script>
+</body>
+</html>
