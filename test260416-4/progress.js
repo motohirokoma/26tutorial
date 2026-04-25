@@ -424,6 +424,23 @@ window.tutorialProgress = {
     });
   }
 
+  function sizeSvgFromViewBox(svg) {
+    svg.style.cssText = '';
+    svg.removeAttribute('width');
+    svg.removeAttribute('height');
+    const vb = svg.getAttribute('viewBox');
+    if (!vb) return;
+    const parts = vb.split(/[\s,]+/).map(Number);
+    if (parts.length !== 4 || !parts[2] || !parts[3]) return;
+    const ratio = parts[2] / parts[3];
+    const maxW = Math.min(window.innerWidth * 0.85, 1400);
+    const maxH = window.innerHeight * 0.8;
+    let w = maxW, h = w / ratio;
+    if (h > maxH) { h = maxH; w = h * ratio; }
+    svg.setAttribute('width', Math.round(w));
+    svg.setAttribute('height', Math.round(h));
+  }
+
   function cloneForLightbox(el) {
     if (el.tagName === 'CANVAS') {
       const img = document.createElement('img');
@@ -431,17 +448,11 @@ window.tutorialProgress = {
       return img;
     }
     const clone = el.cloneNode(true);
-    const stripSizing = (n) => {
-      if (n.style) n.style.cssText = '';
-      if (n.removeAttribute) {
-        n.removeAttribute('width');
-        n.removeAttribute('height');
-      }
-    };
-    stripSizing(clone);
-    if (clone.querySelectorAll) {
-      clone.querySelectorAll('svg').forEach(stripSizing);
-    }
+    if (clone.style) clone.style.cssText = '';
+    const svgs = [];
+    if (clone.tagName && clone.tagName.toLowerCase() === 'svg') svgs.push(clone);
+    if (clone.querySelectorAll) svgs.push(...clone.querySelectorAll('svg'));
+    svgs.forEach(sizeSvgFromViewBox);
     return clone;
   }
 
