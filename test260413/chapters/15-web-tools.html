@@ -124,7 +124,7 @@
   <!-- ===== Section 1: 2つのツールの違い ===== -->
   <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> WebFetch と WebSearch は別物 — 役割を1行で</h2>
 
-  <p>まず混同を殺します。<span class="term" tabindex="0" data-tip="WebFetch: 指定したURLのページをClaudeが取得して中身を読み取るツール。URLが既に決まっている時に使う。">WebFetch</span> は<strong>「URLを知っている前提で、そのページの中身を取ってくる」</strong>ツール。<span class="term" tabindex="0" data-tip="WebSearch: 検索クエリを投げて関連するWebページの一覧(タイトル+スニペット+URL)を返すツール。URLが分からない時に使う。">WebSearch</span> は<strong>「URLを知らないので、まず検索して候補を出す」</strong>ツール。片方ずつ役割を固定すれば迷いません。</p>
+  <p>まず混同を整理します。<span class="term" tabindex="0" data-tip="WebFetch: 指定したURLのページをClaudeが取得して中身を読み取るツール。URLが既に決まっている時に使う。">WebFetch</span> は<strong>「URLを知っている前提で、そのページの中身を取ってくる」</strong>ツール。<span class="term" tabindex="0" data-tip="WebSearch: 検索クエリを投げて関連するWebページの一覧(タイトル+スニペット+URL)を返すツール。URLが分からない時に使う。">WebSearch</span> は<strong>「URLを知らないので、まず検索して候補を出す」</strong>ツール。片方ずつ役割を固定すれば迷いません。</p>
 
   <div class="diagram-box">
     <div class="diagram-title">WebFetch vs WebSearch の役割分担</div>
@@ -182,15 +182,15 @@
 
   <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
 
-  <!-- ===== Section 2: ここがプロの境目 ===== -->
-  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> ここがプロの境目 — 記憶ではなく取得で答えさせる</h2>
+  <!-- ===== Section 2: ひと差つくポイント ===== -->
+  <h2><span class="clawd clawd-heading"><svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span> ひと差つくポイント — 記憶ではなく取得で答えさせる</h2>
 
-  <p>初級者は「Claudeは物知りだから聞けば教えてくれる」と考えがちです。しかしLLMには<span class="term" tabindex="0" data-tip="ナレッジカットオフ: モデルが学習した最後の日付。それ以降の情報はモデルの記憶には存在しない。">ナレッジカットオフ</span>があり、<strong>数カ月〜1年前までの情報しか記憶にありません</strong>。特にAPI仕様やSDKのバージョン差分、リリースされたばかりの機能は記憶ベースの答えが平気で嘘を言います。</p>
+  <p>慣れていない時期は「Claudeは物知りだから聞けば教えてくれる」と頼りがちになります。しかしLLMには<span class="term" tabindex="0" data-tip="ナレッジカットオフ: モデルが学習した最後の日付。それ以降の情報はモデルの記憶には存在しない。">ナレッジカットオフ</span>があり、<strong>数カ月〜1年前までの情報しか記憶にありません</strong>。特にAPI仕様やSDKのバージョン差分、リリースされたばかりの機能は、記憶ベースだと事実と違う回答になることがあります。</p>
 
   <div class="info-box" style="border-left-color: #D97757;">
-    <span class="label">ここがプロの境目</span>
-    <p><strong>「最新仕様は WebFetch で取ってきて」と頼む</strong>。自分の記憶に頼らず、Claudeにも頼らせない。ナレッジカットオフ以降の情報は、依頼の中で毎回 <code>WebFetch &lt;公式URL&gt;</code> を明示するのが、上位20%の基本動作です。記憶で書かれた間違った関数名やdeprecated API を追いかけるより、1回の Fetch で済ませた方が圧倒的に速い。<br>
-    <em>試し方：</em> <code>「X の最新仕様を、記憶ではなく WebFetch https://公式URL で確認してから答えて」</code> と書き換えるだけ。</p>
+    <span class="label">ひと差つくポイント</span>
+    <p><strong>「最新仕様は WebFetch で取ってきて」と頼む</strong>。自分の記憶に頼らず、Claudeにも頼らせない。ナレッジカットオフ以降の情報は、依頼の中で毎回 <code>WebFetch &lt;公式URL&gt;</code> を明示するのが、慣れた人ほど徹底している基本動作です。記憶で書かれた間違った関数名やdeprecated API を追いかけるより、1回の Fetch で済ませた方がずっと速い。<br>
+    <em>試し方:</em> <code>「X の最新仕様を、記憶ではなく WebFetch https://公式URL で確認してから答えて」</code> と書き換えるだけ。</p>
   </div>
 
   <div class="compare-cards">
@@ -265,7 +265,7 @@ graph TD
     <pre><code>私のプロジェクトの package.json にある &lt;パッケージ名&gt; のバージョンは X.Y.Z。
 最新の X.Y.Z を WebSearch → WebFetch で公式 changelog から確認して、
 私のバージョンと最新との差分で注目すべき breaking change を3つだけ教えて。</code></pre>
-    <p>これが<strong>「記憶ではなく取得」</strong>のリアル応用例です。返ってくる3点は、Claudeの記憶ではなく本物の changelog から抽出されたもので、信頼度が段違いです。</p>
+    <p>これが<strong>「記憶ではなく取得」</strong>のリアル応用例です。返ってくる3点は、Claudeの記憶ではなく実際の changelog から抽出されたもので、信頼度がぐっと上がります。</p>
   </div>
 
   <!-- ===== Section 4: 公式docs取得の型 ===== -->
@@ -350,7 +350,7 @@ graph TD
 
   <div class="info-box">
     <span class="label">Tips: 社内情報は基本「貼る」運用</span>
-    <p>社内のConfluenceやGoogle Docs、社内Wikiは Claude のWebFetchから原則到達できません。無理にURLを投げるより、<strong>該当部分のテキストをチャットに貼る</strong>方が10倍早い。PII を含む場合は <code>XXX</code> にマスクしてから貼るのを習慣化しましょう。</p>
+    <p>社内のConfluenceやGoogle Docs、社内Wikiは Claude のWebFetchから原則到達できません。無理にURLを投げるより、<strong>該当部分のテキストをチャットに貼る</strong>方がずっと早い。PII を含む場合は <code>XXX</code> にマスクしてから貼るのを習慣化しましょう。</p>
   </div>
 
   <span class="clawd clawd-aside"><svg viewBox="0 0 24 24" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"/></svg></span>
@@ -431,7 +431,7 @@ WebFetch &lt;公式URL&gt; を読んで、
   1. 影響面: ○○ コンポーネントで useEffect 多用 → 要レビュー
   2. 緊急度: セキュリティfix は minor で配布済み、急がなくてよい
   3. 推奨: 次sprint で v19 の compat layer 経由で段階移行</code></pre>
-      <p>ここで大事なのは、「breaking change を3つ」と<strong>数を指定</strong>していること。数を指定しないと、Claudeはダラダラ長い回答を返して読む気が失せます。Ch08「プロンプト設計の型」で学んだ「制約を渡す」がここでも効きます。</p>
+      <p>ここで大事なのは、「breaking change を3つ」と<strong>数を指定</strong>していること。数を指定しないと、Claudeは冗長な回答を返してきて、読み手の負担が大きくなります。Ch08「プロンプト設計の型」で学んだ「制約を渡す」がここでも効きます。</p>
     </div>
   </details>
 
