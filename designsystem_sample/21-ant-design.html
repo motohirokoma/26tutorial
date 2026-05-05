@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ant Design — Design System Reference</title>
+  <script id="ds-meta" type="application/json">
+{"id":"21-ant-design","fileSlug":"21-ant-design","schemaVersion":"1"}
+  </script>
+  <style>
+    :root {
+      /* Ant Design 5 Light Tokens */
+      --ant-primary: #1677FF;
+      --ant-primary-hover: #4096FF;
+      --ant-primary-active: #0958D9;
+      --ant-primary-bg: #E6F4FF;
+      --ant-primary-bg-hover: #BAE0FF;
+      --ant-primary-border: #91CAFF;
+      --ant-primary-text: #0958D9;
+      --ant-success: #52C41A;
+      --ant-success-bg: #F6FFED;
+      --ant-success-border: #B7EB8F;
+      --ant-warning: #FAAD14;
+      --ant-warning-bg: #FFFBE6;
+      --ant-warning-border: #FFE58F;
+      --ant-error: #FF4D4F;
+      --ant-error-bg: #FFF1F0;
+      --ant-error-border: #FFCCC7;
+      --ant-info: #1677FF;
+
+      --ant-text: rgba(0,0,0,0.88);
+      --ant-text-secondary: rgba(0,0,0,0.65);
+      --ant-text-tertiary: rgba(0,0,0,0.45);
+      --ant-text-quaternary: rgba(0,0,0,0.25);
+      --ant-text-disabled: rgba(0,0,0,0.25);
+
+      --ant-border: #D9D9D9;
+      --ant-border-secondary: #F0F0F0;
+      --ant-fill: rgba(0,0,0,0.15);
+      --ant-fill-secondary: rgba(0,0,0,0.06);
+      --ant-fill-tertiary: rgba(0,0,0,0.04);
+      --ant-fill-quaternary: rgba(0,0,0,0.02);
+
+      --ant-bg-container: #FFFFFF;
+      --ant-bg-layout: #F5F5F5;
+      --ant-bg-elevated: #FFFFFF;
+      --ant-bg-mask: rgba(0,0,0,0.45);
+      --ant-bg-spotlight: rgba(0,0,0,0.85);
+
+      /* Geek Blue palette for sider */
+      --ant-geekblue-1: #F0F5FF;
+      --ant-geekblue-3: #ADC6FF;
+      --ant-geekblue-6: #2F54EB;
+      --ant-geekblue-8: #1D39C4;
+      --ant-geekblue-10: #001529;
+
+      /* Ant blue palette */
+      --ant-blue-1: #E6F4FF;
+      --ant-blue-2: #BAE0FF;
+      --ant-blue-3: #91CAFF;
+      --ant-blue-4: #69B1FF;
+      --ant-blue-5: #4096FF;
+      --ant-blue-6: #1677FF;
+      --ant-blue-7: #0958D9;
+      --ant-blue-8: #003EB3;
+      --ant-blue-9: #002C8C;
+      --ant-blue-10: #001D66;
+
+      /* Neutral gray palette */
+      --ant-gray-1: #FFFFFF;
+      --ant-gray-2: #FAFAFA;
+      --ant-gray-3: #F5F5F5;
+      --ant-gray-4: #F0F0F0;
+      --ant-gray-5: #D9D9D9;
+      --ant-gray-6: #BFBFBF;
+      --ant-gray-7: #8C8C8C;
+      --ant-gray-8: #595959;
+      --ant-gray-9: #434343;
+      --ant-gray-10: #262626;
+      --ant-gray-11: #1F1F1F;
+      --ant-gray-12: #141414;
+      --ant-gray-13: #000000;
+
+      /* Type */
+      --ant-font: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', Roboto, sans-serif;
+      --ant-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+
+      /* Shape */
+      --ant-radius-sm: 4px;
+      --ant-radius: 6px;
+      --ant-radius-lg: 8px;
+      --ant-radius-xl: 16px;
+
+      /* Spacing — 4dp grid */
+      --ant-pad-xs: 4px;
+      --ant-pad-sm: 8px;
+      --ant-pad-md: 12px;
+      --ant-pad: 16px;
+      --ant-pad-lg: 24px;
+      --ant-pad-xl: 32px;
+      --ant-pad-xxl: 48px;
+
+      /* Shadow */
+      --ant-shadow-1: 0 1px 2px 0 rgba(0,0,0,0.03), 0 1px 6px -1px rgba(0,0,0,0.02), 0 2px 4px 0 rgba(0,0,0,0.02);
+      --ant-shadow-2: 0 6px 16px 0 rgba(0,0,0,0.08), 0 3px 6px -4px rgba(0,0,0,0.12), 0 9px 28px 8px rgba(0,0,0,0.05);
+      --ant-shadow-3: 0 1px 2px -2px rgba(0,0,0,0.16), 0 3px 6px 0 rgba(0,0,0,0.12), 0 5px 12px 4px rgba(0,0,0,0.09);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--ant-font);
+      background: var(--ant-bg-layout);
+      color: var(--ant-text);
+      font-size: 14px;
+      line-height: 1.5715;
+      -webkit-font-smoothing: antialiased;
+    }
+    code, kbd, pre { font-family: var(--ant-mono); font-size: 13px; }
+    a { color: var(--ant-primary); text-decoration: none; }
+    a:hover { color: var(--ant-primary-hover); }
+
+    /* Header */
+    .ds-header {
+      background: linear-gradient(135deg, var(--ant-geekblue-10) 0%, var(--ant-blue-7) 100%);
+      color: #FFFFFF;
+      padding: var(--ant-pad-xxl) var(--ant-pad-xl) var(--ant-pad-xl);
+    }
+    .back-link {
+      display: inline-flex; align-items: center; gap: var(--ant-pad-sm);
+      color: rgba(255,255,255,0.85); text-decoration: none;
+      padding: 4px 12px; border-radius: var(--ant-radius);
+      font-size: 13px; transition: all 0.3s;
+      background: rgba(255,255,255,0.08);
+    }
+    .back-link:hover { background: rgba(255,255,255,0.16); color: #FFFFFF; }
+    .ds-header h1 {
+      font-size: 38px; line-height: 46px; font-weight: 600;
+      margin: var(--ant-pad) 0 var(--ant-pad-md); letter-spacing: -0.5px;
+    }
+    .ds-header .meta {
+      display: flex; flex-wrap: wrap; gap: var(--ant-pad-sm);
+      align-items: center; margin-bottom: var(--ant-pad-md);
+    }
+    .badge {
+      display: inline-flex; align-items: center; padding: 2px 10px;
+      border-radius: var(--ant-radius); font-size: 12px; font-weight: 500;
+      border: 1px solid rgba(255,255,255,0.25); background: rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.85);
+    }
+    .badge.kind-ds { background: var(--ant-blue-6); color: #FFFFFF; border-color: var(--ant-blue-5); }
+    .badge.fidelity-documented { background: var(--ant-success-bg); color: #237804; border-color: var(--ant-success-border); }
+    .badge.fidelity-approximated { background: var(--ant-warning-bg); color: #AD6800; border-color: var(--ant-warning-border); }
+    .badge.fidelity-inspired { background: #F9F0FF; color: #531DAB; border-color: #D3ADF7; }
+    .badge.source-verified { background: var(--ant-primary-bg); color: var(--ant-primary-active); border-color: var(--ant-primary-border); }
+    .ds-header .meta a {
+      color: #FFFFFF; padding: 2px 12px; border: 1px solid rgba(255,255,255,0.4);
+      border-radius: var(--ant-radius); font-size: 12px; background: rgba(255,255,255,0.08);
+    }
+    .ds-header .meta a:hover { background: rgba(255,255,255,0.18); }
+    .tagline {
+      font-size: 16px; line-height: 24px; max-width: 720px;
+      margin: var(--ant-pad) 0 0; color: rgba(255,255,255,0.75);
+    }
+
+    /* TOC */
+    .toc {
+      position: sticky; top: 0; z-index: 50;
+      background: var(--ant-bg-container);
+      border-bottom: 1px solid var(--ant-border-secondary);
+      box-shadow: var(--ant-shadow-1);
+    }
+    .toc ul {
+      list-style: none; margin: 0; padding: var(--ant-pad-sm) var(--ant-pad-xl);
+      display: flex; gap: var(--ant-pad-sm); overflow-x: auto;
+    }
+    .toc a {
+      display: inline-block; padding: 6px 14px; border-radius: var(--ant-radius);
+      color: var(--ant-text-secondary); text-decoration: none; font-size: 13px;
+      white-space: nowrap; transition: all 0.3s;
+    }
+    .toc a:hover { background: var(--ant-primary-bg); color: var(--ant-primary); }
+
+    /* Main */
+    main { max-width: 1280px; margin: 0 auto; padding: var(--ant-pad-lg) var(--ant-pad-xl); }
+    section {
+      background: var(--ant-bg-container); border-radius: var(--ant-radius-lg);
+      padding: var(--ant-pad-lg); margin-bottom: var(--ant-pad-lg);
+      box-shadow: var(--ant-shadow-1);
+    }
+    section h2 {
+      display: flex; align-items: center; gap: var(--ant-pad-md); flex-wrap: wrap;
+      font-size: 24px; line-height: 32px; font-weight: 600;
+      margin: 0 0 var(--ant-pad-lg); color: var(--ant-text);
+      padding-bottom: var(--ant-pad-md); border-bottom: 1px solid var(--ant-border-secondary);
+    }
+    .source-link { font-size: 12px; color: var(--ant-primary); margin-left: auto; }
+    h3 { font-size: 16px; font-weight: 600; margin: var(--ant-pad-lg) 0 var(--ant-pad-md); color: var(--ant-text); }
+    h4 { font-size: 14px; font-weight: 500; margin: var(--ant-pad) 0 var(--ant-pad-sm); color: var(--ant-text-secondary); }
+    p { margin: 0 0 var(--ant-pad-md); }
+
+    /* Brand */
+    #brand .brand-mark {
+      display: inline-flex; align-items: center; gap: var(--ant-pad-md);
+      padding: var(--ant-pad-md) var(--ant-pad-lg);
+      background: linear-gradient(135deg, var(--ant-blue-6), var(--ant-geekblue-8));
+      border-radius: var(--ant-radius-lg); color: white; font-size: 22px; font-weight: 600;
+    }
+    #brand .brand-mark svg { width: 32px; height: 32px; }
+    #brand .pillars {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--ant-pad); margin-top: var(--ant-pad-lg);
+    }
+    #brand .pillar {
+      padding: var(--ant-pad); background: var(--ant-fill-tertiary);
+      border-radius: var(--ant-radius); border-left: 3px solid var(--ant-primary);
+    }
+    #brand .pillar h4 { margin-top: 0; color: var(--ant-primary-active); }
+    #brand .pillar p { margin: 0; font-size: 13px; color: var(--ant-text-secondary); }
+
+    /* Color */
+    .palette-row { display: grid; grid-template-columns: repeat(10, 1fr); gap: 0; margin-bottom: var(--ant-pad-md); border-radius: var(--ant-radius); overflow: hidden; }
+    .swatch {
+      aspect-ratio: 1.4; display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 6px 8px; font-size: 10px; font-family: var(--ant-mono);
+    }
+    .swatch .lvl { font-weight: 600; }
+    .swatch .hex { opacity: 0.75; }
+
+    .semantic-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: var(--ant-pad-md); }
+    .sem-card { padding: var(--ant-pad); border-radius: var(--ant-radius); border-left: 4px solid; }
+    .sem-card.success { background: var(--ant-success-bg); border-color: var(--ant-success); color: #237804; }
+    .sem-card.warning { background: var(--ant-warning-bg); border-color: var(--ant-warning); color: #AD6800; }
+    .sem-card.error { background: var(--ant-error-bg); border-color: var(--ant-error); color: #A8071A; }
+    .sem-card.info { background: var(--ant-primary-bg); border-color: var(--ant-info); color: var(--ant-primary-active); }
+    .sem-card .label { font-size: 13px; font-weight: 600; }
+    .sem-card .hex { font-family: var(--ant-mono); font-size: 11px; opacity: 0.85; }
+
+    .neutral-grid { display: grid; grid-template-columns: repeat(13, 1fr); gap: 0; border-radius: var(--ant-radius); overflow: hidden; margin-bottom: var(--ant-pad-md); }
+    .neutral-grid .swatch { aspect-ratio: 1; padding: 4px 6px; font-size: 9px; }
+
+    /* Typography */
+    .type-row {
+      display: grid; grid-template-columns: 160px 1fr;
+      gap: var(--ant-pad); padding: var(--ant-pad-sm) 0;
+      border-bottom: 1px dashed var(--ant-border-secondary); align-items: baseline;
+    }
+    .type-row:last-child { border-bottom: 0; }
+    .type-row .label { font-family: var(--ant-mono); font-size: 12px; color: var(--ant-text-tertiary); }
+    .h1-style { font-size: 38px; line-height: 1.23; font-weight: 600; }
+    .h2-style { font-size: 30px; line-height: 1.35; font-weight: 600; }
+    .h3-style { font-size: 24px; line-height: 1.35; font-weight: 600; }
+    .h4-style { font-size: 20px; line-height: 1.4; font-weight: 600; }
+    .h5-style { font-size: 16px; line-height: 1.5; font-weight: 600; }
+    .body-lg { font-size: 16px; line-height: 1.5; }
+    .body-md { font-size: 14px; line-height: 1.5715; }
+    .body-sm { font-size: 12px; line-height: 1.66; color: var(--ant-text-secondary); }
+    .text-mono { font-family: var(--ant-mono); font-size: 13px; }
+
+    /* Iconography */
+    .icon-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px,1fr)); gap: var(--ant-pad-sm); }
+    .icon-cell {
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      padding: var(--ant-pad-md); background: var(--ant-fill-tertiary);
+      border-radius: var(--ant-radius); border: 1px solid var(--ant-border-secondary);
+    }
+    .icon-cell svg { width: 22px; height: 22px; fill: var(--ant-text); }
+    .icon-cell span { font-size: 11px; color: var(--ant-text-tertiary); }
+
+    /* Buttons */
+    .button-row { display: flex; flex-wrap: wrap; gap: var(--ant-pad-sm); align-items: center; margin-bottom: var(--ant-pad-md); }
+    .ant-btn {
+      font-family: var(--ant-font); font-size: 14px; font-weight: 400;
+      padding: 4px 15px; height: 32px;
+      border-radius: var(--ant-radius); border: 1px solid var(--ant-border);
+      background: var(--ant-bg-container); color: var(--ant-text);
+      cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+      transition: all 0.2s; line-height: 1.5715;
+    }
+    .ant-btn:hover { color: var(--ant-primary-hover); border-color: var(--ant-primary-hover); }
+    .ant-btn--primary { background: var(--ant-primary); color: #FFFFFF; border-color: var(--ant-primary); box-shadow: 0 2px 0 rgba(5,145,255,0.1); }
+    .ant-btn--primary:hover { background: var(--ant-primary-hover); border-color: var(--ant-primary-hover); color: #FFFFFF; }
+    .ant-btn--danger { background: var(--ant-error); color: #FFFFFF; border-color: var(--ant-error); box-shadow: 0 2px 0 rgba(255,38,5,0.06); }
+    .ant-btn--danger:hover { background: #FF7875; border-color: #FF7875; color: #FFFFFF; }
+    .ant-btn--dashed { border-style: dashed; }
+    .ant-btn--text { border-color: transparent; background: transparent; box-shadow: none; }
+    .ant-btn--text:hover { background: var(--ant-fill-tertiary); border-color: transparent; color: var(--ant-text); }
+    .ant-btn--link { border-color: transparent; background: transparent; color: var(--ant-primary); box-shadow: none; padding: 4px 0; }
+    .ant-btn--link:hover { color: var(--ant-primary-hover); border-color: transparent; }
+    .ant-btn--lg { height: 40px; padding: 6px 15px; font-size: 16px; border-radius: var(--ant-radius-lg); }
+    .ant-btn--sm { height: 24px; padding: 0 7px; font-size: 12px; border-radius: var(--ant-radius-sm); }
+    .ant-btn:disabled { color: var(--ant-text-disabled); background: var(--ant-fill-quaternary); border-color: var(--ant-border); cursor: not-allowed; box-shadow: none; }
+    .ant-btn--primary:disabled { background: var(--ant-fill-quaternary); color: var(--ant-text-disabled); border-color: var(--ant-border); }
+
+    /* Form */
+    .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: var(--ant-pad); }
+    .ant-form-item { display: flex; flex-direction: column; gap: 4px; margin-bottom: var(--ant-pad-md); }
+    .ant-label { font-size: 14px; color: var(--ant-text); }
+    .ant-label.required::before { content: '*'; color: var(--ant-error); margin-right: 4px; }
+    .ant-input, .ant-select, .ant-textarea {
+      font-family: var(--ant-font); font-size: 14px;
+      padding: 4px 11px; height: 32px;
+      border: 1px solid var(--ant-border); border-radius: var(--ant-radius);
+      background: var(--ant-bg-container); color: var(--ant-text);
+      outline: none; transition: all 0.3s; width: 100%;
+    }
+    .ant-input:hover { border-color: var(--ant-primary-hover); }
+    .ant-input:focus { border-color: var(--ant-primary); box-shadow: 0 0 0 2px rgba(5,145,255,0.1); }
+    .ant-input.error { border-color: var(--ant-error); }
+    .ant-input.error:focus { box-shadow: 0 0 0 2px rgba(255,38,5,0.1); }
+    .ant-input:disabled { background: var(--ant-fill-tertiary); color: var(--ant-text-disabled); cursor: not-allowed; }
+    .ant-textarea { height: auto; min-height: 80px; padding: 8px 11px; resize: vertical; }
+    .ant-select { appearance: none; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none'><path d='M2 4l4 4 4-4' stroke='%23BFBFBF' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/></svg>"); background-repeat: no-repeat; background-position: right 11px center; padding-right: 30px; }
+    .ant-help { font-size: 12px; color: var(--ant-text-tertiary); }
+    .ant-help.error { color: var(--ant-error); }
+
+    .ant-checkbox, .ant-radio { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-size: 14px; }
+    .ant-checkbox input, .ant-radio input { width: 16px; height: 16px; accent-color: var(--ant-primary); }
+
+    .ant-switch {
+      position: relative; display: inline-block; width: 44px; height: 22px;
+      background: var(--ant-text-quaternary); border-radius: 100px; cursor: pointer; transition: 0.2s;
+    }
+    .ant-switch.checked { background: var(--ant-primary); }
+    .ant-switch::after {
+      content: ''; position: absolute; top: 2px; left: 2px;
+      width: 18px; height: 18px; background: #FFFFFF; border-radius: 50%;
+      box-shadow: 0 2px 4px rgba(0,35,11,0.2); transition: 0.2s;
+    }
+    .ant-switch.checked::after { left: 24px; }
+
+    /* Surfaces */
+    .surface-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: var(--ant-pad); }
+    .ant-card {
+      background: var(--ant-bg-container); border-radius: var(--ant-radius-lg);
+      border: 1px solid var(--ant-border-secondary); overflow: hidden; transition: box-shadow 0.3s;
+    }
+    .ant-card:hover { box-shadow: var(--ant-shadow-2); }
+    .ant-card .ant-card-head {
+      padding: 0 var(--ant-pad); height: 48px; display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid var(--ant-border-secondary); font-weight: 500; font-size: 16px;
+    }
+    .ant-card .ant-card-body { padding: var(--ant-pad); }
+    .ant-card .media { height: 120px; background: linear-gradient(135deg, var(--ant-blue-1), var(--ant-geekblue-1)); }
+    .ant-card p { font-size: 13px; color: var(--ant-text-secondary); margin: 0; }
+
+    .ant-statistic { padding: var(--ant-pad); background: var(--ant-fill-tertiary); border-radius: var(--ant-radius); }
+    .ant-statistic .stat-label { font-size: 13px; color: var(--ant-text-secondary); margin-bottom: 4px; }
+    .ant-statistic .stat-value { font-size: 30px; line-height: 1.2; color: var(--ant-text); font-weight: 400; }
+    .ant-statistic .stat-suffix { font-size: 14px; color: var(--ant-text-tertiary); margin-left: 4px; }
+
+    .ant-modal {
+      background: var(--ant-bg-container); padding: 0; border-radius: var(--ant-radius-lg);
+      box-shadow: var(--ant-shadow-2); max-width: 420px; width: 100%; overflow: hidden;
+    }
+    .ant-modal-head { padding: var(--ant-pad-md) var(--ant-pad); border-bottom: 1px solid var(--ant-border-secondary); font-weight: 600; font-size: 16px; }
+    .ant-modal-body { padding: var(--ant-pad); font-size: 14px; color: var(--ant-text-secondary); }
+    .ant-modal-foot { padding: var(--ant-md) var(--ant-pad); border-top: 1px solid var(--ant-border-secondary); display: flex; justify-content: flex-end; gap: var(--ant-pad-sm); padding: var(--ant-pad-sm) var(--ant-pad); }
+
+    .ant-popover { background: var(--ant-bg-container); padding: var(--ant-pad-sm) var(--ant-pad-md); border-radius: var(--ant-radius); box-shadow: var(--ant-shadow-2); font-size: 13px; max-width: 240px; border: 1px solid var(--ant-border-secondary); }
+
+    /* Feedback */
+    .ant-alert { display: flex; gap: var(--ant-pad-sm); padding: 8px 12px; border-radius: var(--ant-radius); margin-bottom: var(--ant-pad-sm); font-size: 14px; align-items: flex-start; border: 1px solid; }
+    .ant-alert.info { background: var(--ant-primary-bg); border-color: var(--ant-primary-border); color: var(--ant-text); }
+    .ant-alert.success { background: var(--ant-success-bg); border-color: var(--ant-success-border); color: var(--ant-text); }
+    .ant-alert.warning { background: var(--ant-warning-bg); border-color: var(--ant-warning-border); color: var(--ant-text); }
+    .ant-alert.error { background: var(--ant-error-bg); border-color: var(--ant-error-border); color: var(--ant-text); }
+    .ant-alert .icon { flex-shrink: 0; }
+    .ant-alert.info .icon { color: var(--ant-primary); }
+    .ant-alert.success .icon { color: var(--ant-success); }
+    .ant-alert.warning .icon { color: var(--ant-warning); }
+    .ant-alert.error .icon { color: var(--ant-error); }
+
+    .ant-message { display: inline-flex; gap: 8px; padding: 9px 12px; border-radius: var(--ant-radius); background: var(--ant-bg-container); box-shadow: var(--ant-shadow-2); font-size: 14px; align-items: center; }
+
+    .ant-tag {
+      display: inline-flex; align-items: center; padding: 0 7px; height: 22px;
+      border-radius: var(--ant-radius-sm); font-size: 12px; line-height: 20px;
+      border: 1px solid var(--ant-border-secondary); background: var(--ant-fill-tertiary); color: var(--ant-text);
+    }
+    .ant-tag.blue { background: var(--ant-blue-1); border-color: var(--ant-blue-3); color: var(--ant-blue-7); }
+    .ant-tag.green { background: var(--ant-success-bg); border-color: var(--ant-success-border); color: #237804; }
+    .ant-tag.gold { background: var(--ant-warning-bg); border-color: var(--ant-warning-border); color: #AD6800; }
+    .ant-tag.red { background: var(--ant-error-bg); border-color: var(--ant-error-border); color: #CF1322; }
+    .ant-tag.purple { background: #F9F0FF; border-color: #D3ADF7; color: #531DAB; }
+    .ant-tag.cyan { background: #E6FFFB; border-color: #87E8DE; color: #08979C; }
+
+    .ant-badge { display: inline-flex; align-items: center; gap: 6px; }
+    .ant-badge-count { display: inline-block; min-width: 20px; height: 20px; line-height: 20px; padding: 0 6px; border-radius: 10px; background: var(--ant-error); color: #FFFFFF; font-size: 12px; text-align: center; }
+    .ant-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ant-error); display: inline-block; }
+    .ant-badge-status { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; }
+    .ant-badge-status::before { content: ''; width: 6px; height: 6px; border-radius: 50%; }
+    .ant-badge-status.success::before { background: var(--ant-success); }
+    .ant-badge-status.processing::before { background: var(--ant-primary); }
+    .ant-badge-status.warning::before { background: var(--ant-warning); }
+    .ant-badge-status.error::before { background: var(--ant-error); }
+    .ant-badge-status.default::before { background: var(--ant-text-quaternary); }
+
+    .ant-progress { width: 100%; max-width: 320px; }
+    .ant-progress-bar { width: 100%; height: 8px; background: var(--ant-fill-tertiary); border-radius: 100px; overflow: hidden; }
+    .ant-progress-bar > span { display: block; height: 100%; background: var(--ant-primary); border-radius: 100px; }
+    .ant-progress-bar.success > span { background: var(--ant-success); }
+    .ant-progress-bar.error > span { background: var(--ant-error); }
+
+    .ant-spin {
+      width: 24px; height: 24px; border: 2px solid var(--ant-primary-bg);
+      border-top-color: var(--ant-primary); border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Navigation */
+    .ant-tabs { border-bottom: 1px solid var(--ant-border-secondary); display: flex; gap: var(--ant-pad-lg); margin-bottom: var(--ant-pad-md); }
+    .ant-tab { padding: 12px 0; font-size: 14px; cursor: pointer; color: var(--ant-text-secondary); border-bottom: 2px solid transparent; transition: all 0.3s; }
+    .ant-tab:hover { color: var(--ant-primary-hover); }
+    .ant-tab.active { color: var(--ant-primary); border-bottom-color: var(--ant-primary); font-weight: 500; }
+
+    .ant-breadcrumb { font-size: 14px; color: var(--ant-text-tertiary); }
+    .ant-breadcrumb a { color: var(--ant-text-tertiary); }
+    .ant-breadcrumb a:hover { color: var(--ant-primary); }
+    .ant-breadcrumb .sep { margin: 0 8px; color: var(--ant-text-quaternary); }
+    .ant-breadcrumb .current { color: var(--ant-text); }
+
+    .ant-pagination { display: flex; gap: 8px; align-items: center; }
+    .ant-pg-item { min-width: 32px; height: 32px; line-height: 30px; text-align: center; padding: 0 8px; border: 1px solid var(--ant-border); border-radius: var(--ant-radius); font-size: 14px; cursor: pointer; background: var(--ant-bg-container); transition: all 0.3s; }
+    .ant-pg-item:hover { border-color: var(--ant-primary); color: var(--ant-primary); }
+    .ant-pg-item.active { background: var(--ant-primary); color: #FFFFFF; border-color: var(--ant-primary); }
+    .ant-pg-item.disabled { color: var(--ant-text-disabled); cursor: not-allowed; }
+
+    .ant-menu {
+      list-style: none; padding: var(--ant-pad-sm); margin: 0;
+      background: var(--ant-geekblue-10); border-radius: var(--ant-radius-lg);
+      width: 240px;
+    }
+    .ant-menu li { padding: 10px 16px; color: rgba(255,255,255,0.65); font-size: 14px; border-radius: var(--ant-radius); display: flex; align-items: center; gap: 10px; cursor: pointer; transition: all 0.2s; }
+    .ant-menu li:hover { color: #FFFFFF; background: rgba(255,255,255,0.06); }
+    .ant-menu li.active { background: var(--ant-primary); color: #FFFFFF; }
+    .ant-menu li svg { width: 14px; height: 14px; fill: currentColor; }
+
+    .ant-steps { display: flex; gap: 0; align-items: center; }
+    .ant-step { flex: 1; display: flex; align-items: center; gap: 8px; }
+    .ant-step .num { width: 28px; height: 28px; border-radius: 50%; background: var(--ant-fill); color: var(--ant-text-secondary); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500; flex-shrink: 0; }
+    .ant-step.active .num { background: var(--ant-primary); color: #FFFFFF; }
+    .ant-step.done .num { background: var(--ant-primary); color: #FFFFFF; }
+    .ant-step .lbl { font-size: 14px; color: var(--ant-text-secondary); }
+    .ant-step.active .lbl, .ant-step.done .lbl { color: var(--ant-text); font-weight: 500; }
+    .ant-step .line { flex: 1; height: 1px; background: var(--ant-border); margin: 0 8px; }
+    .ant-step.done .line { background: var(--ant-primary); }
+
+    /* Data */
+    .ant-table {
+      width: 100%; border-collapse: collapse; font-size: 14px;
+      background: var(--ant-bg-container); border-radius: var(--ant-radius-lg); overflow: hidden;
+      border: 1px solid var(--ant-border-secondary);
+    }
+    .ant-table th, .ant-table td { padding: 12px var(--ant-pad); text-align: left; border-bottom: 1px solid var(--ant-border-secondary); }
+    .ant-table th { background: var(--ant-fill-tertiary); font-weight: 500; color: var(--ant-text); }
+    .ant-table tr:last-child td { border-bottom: 0; }
+    .ant-table tr:hover td { background: var(--ant-fill-quaternary); }
+
+    .ant-list { background: var(--ant-bg-container); border-radius: var(--ant-radius-lg); border: 1px solid var(--ant-border-secondary); padding: 0; list-style: none; margin: 0; overflow: hidden; }
+    .ant-list-item { padding: var(--ant-pad-md) var(--ant-pad); border-bottom: 1px solid var(--ant-border-secondary); display: flex; align-items: center; gap: var(--ant-pad-md); }
+    .ant-list-item:last-child { border-bottom: 0; }
+    .ant-list-item .meta-title { font-size: 14px; font-weight: 500; color: var(--ant-text); }
+    .ant-list-item .meta-desc { font-size: 13px; color: var(--ant-text-secondary); }
+
+    .ant-avatar {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--ant-blue-6); color: #FFFFFF;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 500; flex-shrink: 0;
+    }
+    .ant-avatar.lg { width: 40px; height: 40px; font-size: 16px; }
+    .ant-avatar.sm { width: 24px; height: 24px; font-size: 12px; }
+    .ant-avatar-square { border-radius: var(--ant-radius); }
+
+    .ant-empty { text-align: center; padding: var(--ant-pad-xl); color: var(--ant-text-tertiary); }
+    .ant-empty svg { width: 64px; height: 41px; margin-bottom: var(--ant-pad-sm); opacity: 0.5; }
+
+    /* Layout */
+    .grid-demo { display: grid; grid-template-columns: repeat(24, 1fr); gap: 8px; margin-bottom: var(--ant-pad); }
+    .grid-demo .col { padding: 12px 8px; background: var(--ant-primary-bg); border: 1px solid var(--ant-primary-border); border-radius: var(--ant-radius-sm); font-size: 12px; text-align: center; color: var(--ant-primary-active); font-family: var(--ant-mono); }
+
+    .spacing-demo { display: flex; flex-direction: column; gap: var(--ant-pad-sm); }
+    .spacing-row { display: flex; align-items: center; gap: var(--ant-pad-md); font-size: 13px; }
+    .spacing-row .bar { background: var(--ant-primary); height: 12px; border-radius: 2px; }
+    .spacing-row .lbl { font-family: var(--ant-mono); color: var(--ant-text-tertiary); width: 80px; }
+
+    .shadow-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: var(--ant-pad); }
+    .shadow-card { background: #FFFFFF; padding: var(--ant-pad); border-radius: var(--ant-radius-lg); text-align: center; }
+    .shadow-card.s1 { box-shadow: var(--ant-shadow-1); }
+    .shadow-card.s2 { box-shadow: var(--ant-shadow-2); }
+    .shadow-card.s3 { box-shadow: var(--ant-shadow-3); }
+    .shadow-card .lbl { font-family: var(--ant-mono); font-size: 12px; color: var(--ant-text-tertiary); }
+
+    .radius-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: var(--ant-pad); }
+    .radius-card { aspect-ratio: 1; background: var(--ant-primary-bg); border: 1px dashed var(--ant-primary-border); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; }
+    .radius-card .lbl { font-family: var(--ant-mono); font-size: 11px; color: var(--ant-primary-active); }
+    .radius-card .num { font-size: 14px; color: var(--ant-text); font-weight: 500; }
+
+    /* Footer */
+    .ds-footer {
+      background: var(--ant-geekblue-10); color: rgba(255,255,255,0.65);
+      padding: var(--ant-pad-xl); margin-top: var(--ant-pad-xxl);
+    }
+    .ds-footer h3 { color: #FFFFFF; margin: 0 0 var(--ant-pad-md); font-size: 16px; }
+    .ds-footer ul { list-style: none; padding: 0; margin: 0 0 var(--ant-pad); display: grid; gap: 6px; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); }
+    .ds-footer ul li { font-size: 12px; }
+    .ds-footer a { color: var(--ant-blue-3); word-break: break-all; }
+    .ds-footer a:hover { color: var(--ant-blue-2); }
+    .ds-footer .license-note { font-size: 12px; margin: var(--ant-pad) 0 var(--ant-pad-sm); }
+    .ds-footer .meta-note { font-size: 11px; opacity: 0.65; font-family: var(--ant-mono); }
+
+    @media (max-width: 720px) {
+      main { padding: var(--ant-pad); }
+      .ds-header { padding: var(--ant-pad-lg); }
+      .ds-header h1 { font-size: 28px; line-height: 36px; }
+      section { padding: var(--ant-pad); }
+      .type-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="ds-header">
+    <a href="index.html" class="back-link">← Catalog</a>
+    <h1>Ant Design</h1>
+    <div class="meta">
+      <span class="badge kind-ds">design system</span>
+      <span class="badge fidelity-documented">documented</span>
+      <span class="badge source-verified">source: verified</span>
+      <a href="https://ant.design" target="_blank" rel="noopener">Official ↗</a>
+    </div>
+    <p class="tagline">Alibaba's enterprise-class design language for B-end products, with rich tokens and dense data UI.</p>
+  </header>
+
+  <nav class="toc">
+    <ul>
+      <li><a href="#brand">Brand</a></li>
+      <li><a href="#color">Color</a></li>
+      <li><a href="#typography">Typography</a></li>
+      <li><a href="#iconography">Iconography</a></li>
+      <li><a href="#buttons">Buttons</a></li>
+      <li><a href="#form">Form</a></li>
+      <li><a href="#surfaces">Surfaces</a></li>
+      <li><a href="#feedback">Feedback</a></li>
+      <li><a href="#navigation">Navigation</a></li>
+      <li><a href="#data">Data</a></li>
+      <li><a href="#layout">Layout</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="brand" data-fidelity="documented">
+      <h2><span>Brand</span><span class="badge fidelity-documented">documented</span></h2>
+      <div class="brand-mark">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.18L19.5 8 12 11.82 4.5 8 12 4.18zM4 9.71l7 3.59v6.7l-7-3.59v-6.7zm9 10.29v-6.7l7-3.59v6.7l-7 3.59z" fill="currentColor"/></svg>
+        Ant Design
+      </div>
+      <p style="margin-top: 16px; max-width: 720px;">Ant Design is created and maintained by Ant Group. It distills enterprise UX patterns observed across thousands of internal applications, codified into a token-driven, Less/CSS-in-JS-implemented React component library.</p>
+      <div class="pillars">
+        <div class="pillar"><h4>Natural</h4><p>Designs that feel familiar and aligned with everyday human cognition.</p></div>
+        <div class="pillar"><h4>Certain</h4><p>Reduce uncertainty by following clear, deterministic patterns.</p></div>
+        <div class="pillar"><h4>Meaningful</h4><p>Every element serves the operator's goal in business workflows.</p></div>
+        <div class="pillar"><h4>Growing</h4><p>Designed to scale across teams, regions, and product lines.</p></div>
+      </div>
+    </section>
+
+    <section id="color" data-fidelity="documented">
+      <h2><span>Color</span><span class="badge fidelity-documented">documented</span><a class="source-link" href="https://ant.design/docs/spec/colors" target="_blank" rel="noopener">spec ↗</a></h2>
+      <h3>Daybreak Blue (Primary)</h3>
+      <div class="palette-row">
+        <div class="swatch" style="background:#E6F4FF;color:#000"><span class="lvl">1</span><span class="hex">#E6F4FF</span></div>
+        <div class="swatch" style="background:#BAE0FF;color:#000"><span class="lvl">2</span><span class="hex">#BAE0FF</span></div>
+        <div class="swatch" style="background:#91CAFF;color:#000"><span class="lvl">3</span><span class="hex">#91CAFF</span></div>
+        <div class="swatch" style="background:#69B1FF;color:#000"><span class="lvl">4</span><span class="hex">#69B1FF</span></div>
+        <div class="swatch" style="background:#4096FF;color:#fff"><span class="lvl">5</span><span class="hex">#4096FF</span></div>
+        <div class="swatch" style="background:#1677FF;color:#fff"><span class="lvl">6</span><span class="hex">#1677FF</span></div>
+        <div class="swatch" style="background:#0958D9;color:#fff"><span class="lvl">7</span><span class="hex">#0958D9</span></div>
+        <div class="swatch" style="background:#003EB3;color:#fff"><span class="lvl">8</span><span class="hex">#003EB3</span></div>
+        <div class="swatch" style="background:#002C8C;color:#fff"><span class="lvl">9</span><span class="hex">#002C8C</span></div>
+        <div class="swatch" style="background:#001D66;color:#fff"><span class="lvl">10</span><span class="hex">#001D66</span></div>
+      </div>
+
+      <h3>Semantic Tokens</h3>
+      <div class="semantic-grid">
+        <div class="sem-card success"><span class="label">Success</span><span class="hex">#52C41A</span></div>
+        <div class="sem-card warning"><span class="label">Warning</span><span class="hex">#FAAD14</span></div>
+        <div class="sem-card error"><span class="label">Error</span><span class="hex">#FF4D4F</span></div>
+        <div class="sem-card info"><span class="label">Info</span><span class="hex">#1677FF</span></div>
+      </div>
+
+      <h3>Neutral Gray (13 levels)</h3>
+      <div class="neutral-grid">
+        <div class="swatch" style="background:#FFFFFF;color:#000;border:1px solid #F0F0F0"><span class="lvl">1</span></div>
+        <div class="swatch" style="background:#FAFAFA;color:#000"><span class="lvl">2</span></div>
+        <div class="swatch" style="background:#F5F5F5;color:#000"><span class="lvl">3</span></div>
+        <div class="swatch" style="background:#F0F0F0;color:#000"><span class="lvl">4</span></div>
+        <div class="swatch" style="background:#D9D9D9;color:#000"><span class="lvl">5</span></div>
+        <div class="swatch" style="background:#BFBFBF;color:#000"><span class="lvl">6</span></div>
+        <div class="swatch" style="background:#8C8C8C;color:#fff"><span class="lvl">7</span></div>
+        <div class="swatch" style="background:#595959;color:#fff"><span class="lvl">8</span></div>
+        <div class="swatch" style="background:#434343;color:#fff"><span class="lvl">9</span></div>
+        <div class="swatch" style="background:#262626;color:#fff"><span class="lvl">10</span></div>
+        <div class="swatch" style="background:#1F1F1F;color:#fff"><span class="lvl">11</span></div>
+        <div class="swatch" style="background:#141414;color:#fff"><span class="lvl">12</span></div>
+        <div class="swatch" style="background:#000000;color:#fff"><span class="lvl">13</span></div>
+      </div>
+
+      <h3>Functional Roles</h3>
+      <div class="semantic-grid">
+        <div class="sem-card" style="background:#FFFFFF;border-color:#1677FF;color:#000;border-left-width:4px;border-left-style:solid"><span class="label">Container BG</span><span class="hex">#FFFFFF</span></div>
+        <div class="sem-card" style="background:#F5F5F5;border-color:#8C8C8C;color:#000;border-left-width:4px;border-left-style:solid"><span class="label">Layout BG</span><span class="hex">#F5F5F5</span></div>
+        <div class="sem-card" style="background:#001529;border-color:#FFFFFF;color:#FFF;border-left-width:4px;border-left-style:solid"><span class="label">Geek Blue dark</span><span class="hex">#001529</span></div>
+      </div>
+    </section>
+
+    <section id="typography" data-fidelity="documented">
+      <h2><span>Typography</span><span class="badge fidelity-documented">documented</span><a class="source-link" href="https://ant.design/components/typography" target="_blank" rel="noopener">spec ↗</a></h2>
+      <p>System font stack: <code>-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei'</code></p>
+
+      <div class="type-row"><span class="label">h1 / 38 / 600</span><span class="h1-style">设计源于生活而高于生活</span></div>
+      <div class="type-row"><span class="label">h2 / 30 / 600</span><span class="h2-style">Headline two — Section title</span></div>
+      <div class="type-row"><span class="label">h3 / 24 / 600</span><span class="h3-style">Headline three — Card title</span></div>
+      <div class="type-row"><span class="label">h4 / 20 / 600</span><span class="h4-style">Headline four — Sub title</span></div>
+      <div class="type-row"><span class="label">h5 / 16 / 600</span><span class="h5-style">Headline five</span></div>
+      <div class="type-row"><span class="label">body-lg / 16 / 400</span><span class="body-lg">Body large — primary reading paragraphs use 16/24 line height for comfortable reading at desktop scale.</span></div>
+      <div class="type-row"><span class="label">body-md / 14 / 400</span><span class="body-md">Body — Ant Design default text size for forms, tables, and product chrome.</span></div>
+      <div class="type-row"><span class="label">body-sm / 12 / 400</span><span class="body-sm">Caption — auxiliary helper, status text, table footnotes.</span></div>
+      <div class="type-row"><span class="label">mono / 13 / 400</span><span class="text-mono">const tokens = { primary: '#1677FF' };</span></div>
+    </section>
+
+    <section id="iconography" data-fidelity="documented">
+      <h2><span>Iconography</span><span class="badge fidelity-documented">documented</span><a class="source-link" href="https://ant.design/components/icon" target="_blank" rel="noopener">spec ↗</a></h2>
+      <p>Ant Design Icons ship in three themes: <code>outlined</code>, <code>filled</code>, and <code>two-tone</code>. Default size 14px in body, 16px in buttons. Below: filled approximations using simple SVG.</p>
+      <div class="icon-grid">
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M12 2L2 9.5h3v9h6v-6h2v6h6v-9h3z"/></svg><span>home</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6" fill="none" stroke="currentColor" stroke-width="2"/><path d="M21 21l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg><span>search</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M12 2C9.79 2 8 3.79 8 6v2H7c-1.1 0-2 .9-2 2v9c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2v-9c0-1.1-.9-2-2-2h-1V6c0-2.21-1.79-4-4-4zm0 2c1.1 0 2 .9 2 2v2h-4V6c0-1.1.9-2 2-2z"/></svg><span>lock</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg><span>info</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2zm1 16h-2v-2h2v2zm0-4h-2V9h2v5z"/></svg><span>warning</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"/></svg><span>close</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg><span>check</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg><span>menu</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M19 13H5v-2h14v2z"/></svg><span>minus</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg><span>plus</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22 7 14.14 2 9.27l6.91-1.01z"/></svg><span>star</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg><span>heart</span></div>
+      </div>
+    </section>
+
+    <section id="buttons" data-fidelity="documented">
+      <h2><span>Buttons</span><span class="badge fidelity-documented">documented</span><a class="source-link" href="https://ant.design/components/button" target="_blank" rel="noopener">spec ↗</a></h2>
+      <h3>Types</h3>
+      <div class="button-row">
+        <button class="ant-btn ant-btn--primary">Primary</button>
+        <button class="ant-btn">Default</button>
+        <button class="ant-btn ant-btn--dashed">Dashed</button>
+        <button class="ant-btn ant-btn--text">Text</button>
+        <button class="ant-btn ant-btn--link">Link</button>
+        <button class="ant-btn ant-btn--danger">Danger</button>
+      </div>
+
+      <h3>Sizes</h3>
+      <div class="button-row">
+        <button class="ant-btn ant-btn--primary ant-btn--lg">Large</button>
+        <button class="ant-btn ant-btn--primary">Default</button>
+        <button class="ant-btn ant-btn--primary ant-btn--sm">Small</button>
+      </div>
+
+      <h3>States</h3>
+      <div class="button-row">
+        <button class="ant-btn ant-btn--primary">Default</button>
+        <button class="ant-btn ant-btn--primary" style="background:var(--ant-primary-hover);border-color:var(--ant-primary-hover)">Hover</button>
+        <button class="ant-btn ant-btn--primary" style="background:var(--ant-primary-active);border-color:var(--ant-primary-active)">Active</button>
+        <button class="ant-btn ant-btn--primary" disabled>Disabled</button>
+        <button class="ant-btn ant-btn--primary"><span class="ant-spin" style="width:14px;height:14px;border-width:1.5px;border-color:rgba(255,255,255,0.3);border-top-color:#fff"></span>Loading</button>
+      </div>
+
+      <h3>With Icons</h3>
+      <div class="button-row">
+        <button class="ant-btn ant-btn--primary"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>New</button>
+        <button class="ant-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 9l-7 7-7-7" stroke="currentColor" stroke-width="2" fill="none"/></svg>Download</button>
+        <button class="ant-btn ant-btn--primary" style="width:32px;padding:0;justify-content:center"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="11" cy="11" r="6" fill="none" stroke="currentColor" stroke-width="2"/><path d="M21 21l-5-5" stroke="currentColor" stroke-width="2" fill="none"/></svg></button>
+      </div>
+    </section>
+
+    <section id="form" data-fidelity="documented">
+      <h2><span>Form</span><span class="badge fidelity-documented">documented</span><a class="source-link" href="https://ant.design/components/input" target="_blank" rel="noopener">spec ↗</a></h2>
+      <div class="form-grid">
+        <div class="ant-form-item">
+          <label class="ant-label required">Username</label>
+          <input class="ant-input" placeholder="Please input">
+          <span class="ant-help">Used for login.</span>
+        </div>
+        <div class="ant-form-item">
+          <label class="ant-label">Email</label>
+          <input class="ant-input error" value="not-an-email">
+          <span class="ant-help error">Please enter a valid email address.</span>
+        </div>
+        <div class="ant-form-item">
+          <label class="ant-label">Description</label>
+          <textarea class="ant-textarea" placeholder="Tell us more"></textarea>
+        </div>
+        <div class="ant-form-item">
+          <label class="ant-label">Country</label>
+          <select class="ant-select"><option>China</option><option>Japan</option><option>USA</option></select>
+        </div>
+        <div class="ant-form-item">
+          <label class="ant-label">Disabled</label>
+          <input class="ant-input" placeholder="Cannot edit" disabled>
+        </div>
+        <div class="ant-form-item">
+          <label class="ant-label">Date</label>
+          <input class="ant-input" placeholder="2026-05-05">
+        </div>
+      </div>
+
+      <h3>Selection Controls</h3>
+      <div class="button-row">
+        <label class="ant-checkbox"><input type="checkbox" checked>Apple</label>
+        <label class="ant-checkbox"><input type="checkbox">Pear</label>
+        <label class="ant-checkbox"><input type="checkbox" disabled>Orange (disabled)</label>
+        <label class="ant-radio"><input type="radio" name="r" checked>A</label>
+        <label class="ant-radio"><input type="radio" name="r">B</label>
+        <label class="ant-radio"><input type="radio" name="r">C</label>
+      </div>
+
+      <h3>Switch</h3>
+      <div class="button-row">
+        <span class="ant-switch checked"></span>
+        <span class="ant-switch"></span>
+        <span class="ant-switch checked" style="opacity:0.5;cursor:not-allowed"></span>
+      </div>
+    </section>
+
+    <section id="surfaces" data-fidelity="documented">
+      <h2><span>Surfaces</span><span class="badge fidelity-documented">documented</span><a class="source-link" href="https://ant.design/components/card" target="_blank" rel="noopener">spec ↗</a></h2>
+      <h3>Cards</h3>
+      <div class="surface-grid">
+        <div class="ant-card">
+          <div class="ant-card-head"><span>Card title</span><a class="ant-btn--link" href="#">More</a></div>
+          <div class="ant-card-body">
+            <p>This is the description text inside a default card. Card sets a 1-pixel border and a 8-pixel radius by Ant 5 default.</p>
+          </div>
+        </div>
+        <div class="ant-card">
+          <div class="media"></div>
+          <div class="ant-card-body">
+            <h4 style="margin:0 0 4px;color:var(--ant-text)">With media</h4>
+            <p>Cards with cover content lead with a 16:9 image-style header.</p>
+          </div>
+        </div>
+        <div class="ant-statistic">
+          <div class="stat-label">Active Users</div>
+          <div class="stat-value">112,893<span class="stat-suffix">users</span></div>
+        </div>
+        <div class="ant-statistic">
+          <div class="stat-label">Conversion</div>
+          <div class="stat-value" style="color:var(--ant-success)">↑ 12.5%</div>
+        </div>
+      </div>
+
+      <h3>Modal</h3>
+      <div class="ant-modal">
+        <div class="ant-modal-head">Confirm action</div>
+        <div class="ant-modal-body">Are you sure you want to delete this record? This action cannot be undone.</div>
+        <div class="ant-modal-foot"><button class="ant-btn">Cancel</button><button class="ant-btn ant-btn--primary">OK</button></div>
+      </div>
+
+      <h3>Popover</h3>
+      <div class="ant-popover">A popover surface uses shadow-2 and a 6-pixel radius.</div>
+    </section>
+
+    <section id="feedback" data-fidelity="documented">
+      <h2><span>Feedback</span><span class="badge fidelity-documented">documented</span><a class="source-link" href="https://ant.design/components/alert" target="_blank" rel="noopener">spec ↗</a></h2>
+      <h3>Alert</h3>
+      <div class="ant-alert info"><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg></span><span>Info — neutral notification using primary blue.</span></div>
+      <div class="ant-alert success"><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></span><span>Success — operation completed.</span></div>
+      <div class="ant-alert warning"><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L1 21h22L12 2zm1 16h-2v-2h2v2zm0-4h-2V9h2v5z"/></svg></span><span>Warning — please review before continuing.</span></div>
+      <div class="ant-alert error"><span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"/></svg></span><span>Error — something went wrong, please retry.</span></div>
+
+      <h3>Message (Toast)</h3>
+      <div class="ant-message"><svg width="14" height="14" viewBox="0 0 24 24" fill="var(--ant-success)"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>Saved successfully</div>
+
+      <h3>Tag</h3>
+      <div class="button-row">
+        <span class="ant-tag">default</span>
+        <span class="ant-tag blue">processing</span>
+        <span class="ant-tag green">success</span>
+        <span class="ant-tag gold">warning</span>
+        <span class="ant-tag red">error</span>
+        <span class="ant-tag purple">purple</span>
+        <span class="ant-tag cyan">cyan</span>
+      </div>
+
+      <h3>Badge</h3>
+      <div class="button-row" style="gap: 24px">
+        <span class="ant-badge"><span style="display:inline-block;width:36px;height:36px;background:var(--ant-fill);border-radius:var(--ant-radius);position:relative"><span class="ant-badge-count" style="position:absolute;top:-8px;right:-8px">5</span></span></span>
+        <span class="ant-badge"><span style="display:inline-block;width:36px;height:36px;background:var(--ant-fill);border-radius:var(--ant-radius);position:relative"><span class="ant-badge-count" style="position:absolute;top:-8px;right:-8px">99+</span></span></span>
+        <span class="ant-badge"><span style="display:inline-block;width:36px;height:36px;background:var(--ant-fill);border-radius:var(--ant-radius);position:relative"><span class="ant-badge-dot" style="position:absolute;top:-3px;right:-3px"></span></span></span>
+        <span class="ant-badge-status success">Success</span>
+        <span class="ant-badge-status processing">Processing</span>
+        <span class="ant-badge-status warning">Warning</span>
+        <span class="ant-badge-status error">Error</span>
+      </div>
+
+      <h3>Progress</h3>
+      <div style="display:flex;flex-direction:column;gap:8px;max-width:360px">
+        <div class="ant-progress"><div class="ant-progress-bar"><span style="width:30%"></span></div></div>
+        <div class="ant-progress"><div class="ant-progress-bar"><span style="width:70%"></span></div></div>
+        <div class="ant-progress"><div class="ant-progress-bar success"><span style="width:100%"></span></div></div>
+        <div class="ant-progress"><div class="ant-progress-bar error"><span style="width:50%"></span></div></div>
+      </div>
+
+      <h3>Spin</h3>
+      <div class="button-row"><span class="ant-spin"></span><span class="ant-spin" style="width:32px;height:32px;border-width:3px"></span></div>
+    </section>
+
+    <section id="navigation" data-fidelity="documented">
+      <h2><span>Navigation</span><span class="badge fidelity-documented">documented</span><a class="source-link" href="https://ant.design/components/tabs" target="_blank" rel="noopener">spec ↗</a></h2>
+      <h3>Tabs</h3>
+      <div class="ant-tabs">
+        <div class="ant-tab active">Tab One</div>
+        <div class="ant-tab">Tab Two</div>
+        <div class="ant-tab">Tab Three</div>
+        <div class="ant-tab" style="opacity:0.4">Disabled</div>
+      </div>
+
+      <h3>Breadcrumb</h3>
+      <nav class="ant-breadcrumb">
+        <a href="#">Home</a>
+        <span class="sep">/</span>
+        <a href="#">Application Center</a>
+        <span class="sep">/</span>
+        <a href="#">Application List</a>
+        <span class="sep">/</span>
+        <span class="current">An Application</span>
+      </nav>
+
+      <h3>Pagination</h3>
+      <div class="ant-pagination">
+        <div class="ant-pg-item">‹</div>
+        <div class="ant-pg-item">1</div>
+        <div class="ant-pg-item active">2</div>
+        <div class="ant-pg-item">3</div>
+        <div class="ant-pg-item">4</div>
+        <div class="ant-pg-item">5</div>
+        <div class="ant-pg-item">›</div>
+      </div>
+
+      <h3>Sidebar Menu (Geek Blue dark)</h3>
+      <ul class="ant-menu">
+        <li class="active"><svg viewBox="0 0 24 24"><path d="M12 2L2 9.5h3v9h6v-6h2v6h6v-9h3z"/></svg>Dashboard</li>
+        <li><svg viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>Workspace</li>
+        <li><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6" fill="none" stroke="currentColor" stroke-width="2"/><path d="M21 21l-5-5" stroke="currentColor" stroke-width="2" fill="none"/></svg>Search</li>
+        <li><svg viewBox="0 0 24 24"><path d="M12 2C9.79 2 8 3.79 8 6v2H7c-1.1 0-2 .9-2 2v9c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2v-9c0-1.1-.9-2-2-2h-1V6c0-2.21-1.79-4-4-4z"/></svg>Settings</li>
+      </ul>
+
+      <h3>Steps</h3>
+      <div class="ant-steps">
+        <div class="ant-step done"><div class="num">✓</div><div class="lbl">Finished</div><div class="line"></div></div>
+        <div class="ant-step active"><div class="num">2</div><div class="lbl">In Progress</div><div class="line"></div></div>
+        <div class="ant-step"><div class="num">3</div><div class="lbl">Waiting</div></div>
+      </div>
+    </section>
+
+    <section id="data" data-fidelity="documented">
+      <h2><span>Data</span><span class="badge fidelity-documented">documented</span><a class="source-link" href="https://ant.design/components/table" target="_blank" rel="noopener">spec ↗</a></h2>
+      <h3>Table</h3>
+      <table class="ant-table">
+        <thead><tr><th>Name</th><th>Age</th><th>Address</th><th>Tags</th><th>Action</th></tr></thead>
+        <tbody>
+          <tr><td>John Brown</td><td>32</td><td>New York No. 1 Lake Park</td><td><span class="ant-tag green">developer</span></td><td><a href="#">Invite</a> · <a href="#">Delete</a></td></tr>
+          <tr><td>Jim Green</td><td>42</td><td>London No. 2 Lake Park</td><td><span class="ant-tag red">loser</span></td><td><a href="#">Invite</a> · <a href="#">Delete</a></td></tr>
+          <tr><td>Joe Black</td><td>32</td><td>Sydney No. 1 Lake Park</td><td><span class="ant-tag blue">cool</span><span class="ant-tag purple" style="margin-left:4px">teacher</span></td><td><a href="#">Invite</a> · <a href="#">Delete</a></td></tr>
+        </tbody>
+      </table>
+
+      <h3>List</h3>
+      <ul class="ant-list">
+        <li class="ant-list-item">
+          <span class="ant-avatar">A</span>
+          <div style="flex:1">
+            <div class="meta-title">Item One — Product launch</div>
+            <div class="meta-desc">Marketing team · 2 hours ago</div>
+          </div>
+          <button class="ant-btn ant-btn--sm">Edit</button>
+        </li>
+        <li class="ant-list-item">
+          <span class="ant-avatar" style="background:var(--ant-success)">B</span>
+          <div style="flex:1">
+            <div class="meta-title">Item Two — Shipping confirmation</div>
+            <div class="meta-desc">Operations · 1 day ago</div>
+          </div>
+          <button class="ant-btn ant-btn--sm">Edit</button>
+        </li>
+        <li class="ant-list-item">
+          <span class="ant-avatar" style="background:var(--ant-warning)">C</span>
+          <div style="flex:1">
+            <div class="meta-title">Item Three — Quarterly review</div>
+            <div class="meta-desc">Leadership · 3 days ago</div>
+          </div>
+          <button class="ant-btn ant-btn--sm">Edit</button>
+        </li>
+      </ul>
+
+      <h3>Avatar</h3>
+      <div class="button-row">
+        <span class="ant-avatar sm">U</span>
+        <span class="ant-avatar">UC</span>
+        <span class="ant-avatar lg">USR</span>
+        <span class="ant-avatar-square ant-avatar" style="background:var(--ant-warning)">A</span>
+        <span class="ant-avatar" style="background:var(--ant-error)">!</span>
+      </div>
+
+      <h3>Empty</h3>
+      <div class="ant-empty">
+        <svg viewBox="0 0 64 41" fill="none"><ellipse cx="32" cy="33" rx="32" ry="7" fill="#F5F5F5"/><g fill-rule="nonzero" stroke="#D9D9D9"><path d="M55 12.76L44.854 1.258C44.367.474 43.656 0 42.907 0H21.093c-.749 0-1.46.474-1.947 1.257L9 12.761V22h46v-9.24z"/><path d="M41.613 15.931c0-1.605.994-2.93 2.227-2.931H55v18.137C55 33.26 53.68 35 52.05 35h-40.1C10.32 35 9 33.259 9 31.137V13h11.16c1.233 0 2.227 1.323 2.227 2.928v.022c0 1.605 1.005 2.901 2.237 2.901h14.752c1.232 0 2.237-1.308 2.237-2.913v-.007z" fill="#FAFAFA"/></g></svg>
+        <p>No data</p>
+      </div>
+    </section>
+
+    <section id="layout" data-fidelity="documented">
+      <h2><span>Layout</span><span class="badge fidelity-documented">documented</span><a class="source-link" href="https://ant.design/components/grid" target="_blank" rel="noopener">spec ↗</a></h2>
+      <h3>24-Column Grid</h3>
+      <p>Ant Design uses a 24-column grid powered by flex.</p>
+      <div class="grid-demo">
+        <div class="col" style="grid-column: span 24">span 24</div>
+      </div>
+      <div class="grid-demo">
+        <div class="col" style="grid-column: span 12">span 12</div>
+        <div class="col" style="grid-column: span 12">span 12</div>
+      </div>
+      <div class="grid-demo">
+        <div class="col" style="grid-column: span 8">span 8</div>
+        <div class="col" style="grid-column: span 8">span 8</div>
+        <div class="col" style="grid-column: span 8">span 8</div>
+      </div>
+      <div class="grid-demo">
+        <div class="col" style="grid-column: span 6">span 6</div>
+        <div class="col" style="grid-column: span 6">span 6</div>
+        <div class="col" style="grid-column: span 6">span 6</div>
+        <div class="col" style="grid-column: span 6">span 6</div>
+      </div>
+
+      <h3>Spacing Scale (4 dp)</h3>
+      <div class="spacing-demo">
+        <div class="spacing-row"><span class="lbl">xs · 4</span><span class="bar" style="width:4px"></span></div>
+        <div class="spacing-row"><span class="lbl">sm · 8</span><span class="bar" style="width:8px"></span></div>
+        <div class="spacing-row"><span class="lbl">md · 12</span><span class="bar" style="width:12px"></span></div>
+        <div class="spacing-row"><span class="lbl">md · 16</span><span class="bar" style="width:16px"></span></div>
+        <div class="spacing-row"><span class="lbl">lg · 24</span><span class="bar" style="width:24px"></span></div>
+        <div class="spacing-row"><span class="lbl">xl · 32</span><span class="bar" style="width:32px"></span></div>
+        <div class="spacing-row"><span class="lbl">xxl · 48</span><span class="bar" style="width:48px"></span></div>
+      </div>
+
+      <h3>Radius</h3>
+      <div class="radius-grid">
+        <div class="radius-card" style="border-radius:0"><span class="num">0</span><span class="lbl">none</span></div>
+        <div class="radius-card" style="border-radius:4px"><span class="num">4</span><span class="lbl">--radius-sm</span></div>
+        <div class="radius-card" style="border-radius:6px"><span class="num">6</span><span class="lbl">--radius</span></div>
+        <div class="radius-card" style="border-radius:8px"><span class="num">8</span><span class="lbl">--radius-lg</span></div>
+        <div class="radius-card" style="border-radius:16px"><span class="num">16</span><span class="lbl">--radius-xl</span></div>
+      </div>
+
+      <h3>Shadow / Elevation</h3>
+      <div class="shadow-grid">
+        <div class="shadow-card s1"><div>Shadow 1</div><span class="lbl">Card default</span></div>
+        <div class="shadow-card s2"><div>Shadow 2</div><span class="lbl">Modal / popover</span></div>
+        <div class="shadow-card s3"><div>Shadow 3</div><span class="lbl">Dropdown</span></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="ds-footer">
+    <h3>Sources</h3>
+    <ul>
+      <li>Canonical: <a href="https://ant.design" target="_blank" rel="noopener">https://ant.design</a></li>
+      <li><a href="https://ant.design/docs/spec/colors" target="_blank" rel="noopener">https://ant.design/docs/spec/colors</a></li>
+      <li><a href="https://ant.design/components/typography" target="_blank" rel="noopener">https://ant.design/components/typography</a></li>
+      <li><a href="https://ant.design/components/icon" target="_blank" rel="noopener">https://ant.design/components/icon</a></li>
+      <li><a href="https://ant.design/components/button" target="_blank" rel="noopener">https://ant.design/components/button</a></li>
+      <li><a href="https://ant.design/components/input" target="_blank" rel="noopener">https://ant.design/components/input</a></li>
+      <li><a href="https://ant.design/components/card" target="_blank" rel="noopener">https://ant.design/components/card</a></li>
+      <li><a href="https://ant.design/components/alert" target="_blank" rel="noopener">https://ant.design/components/alert</a></li>
+      <li><a href="https://ant.design/components/tabs" target="_blank" rel="noopener">https://ant.design/components/tabs</a></li>
+      <li><a href="https://ant.design/components/table" target="_blank" rel="noopener">https://ant.design/components/table</a></li>
+      <li><a href="https://ant.design/components/grid" target="_blank" rel="noopener">https://ant.design/components/grid</a></li>
+    </ul>
+    <p class="license-note">This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Alibaba (Ant Group). Ant Design and related trademarks belong to Alibaba (Ant Group). Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</p>
+    <p class="meta-note">Reproduction date: 2026-05-05 · sourceStatus: verified · fidelity: documented</p>
+  </footer>
+</body>
+</html>

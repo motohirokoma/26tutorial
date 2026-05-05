@@ -1,0 +1,1605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PatternFly — Design System Reference</title>
+  <script id="ds-meta" type="application/json">
+{"id":"47-patternfly","fileSlug":"47-patternfly","schemaVersion":"1"}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700&family=Red+Hat+Text:wght@400;500;700&family=Red+Hat+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* PatternFly Tokens (v5/v6 baseline) */
+      /* Blue (primary) */
+      --pf-blue-50: #E7F1FA;
+      --pf-blue-100: #BEE1F4;
+      --pf-blue-200: #7DC3E8;
+      --pf-blue-300: #39A5DC;
+      --pf-blue-400: #0066CC;   /* Primary 400 */
+      --pf-blue-500: #004080;
+      --pf-blue-600: #002952;
+      --pf-blue-700: #001223;
+
+      /* Red Hat Red */
+      --pf-red: #EE0000;
+      --pf-red-dark: #A60000;
+
+      /* Black scale */
+      --pf-black-100: #FAFAFA;
+      --pf-black-150: #F5F5F5;
+      --pf-black-200: #F0F0F0;
+      --pf-black-300: #D2D2D2;
+      --pf-black-400: #B8BBBE;
+      --pf-black-500: #8A8D90;
+      --pf-black-600: #6A6E73;
+      --pf-black-700: #4F5255;
+      --pf-black-800: #3C3F42;
+      --pf-black-900: #212427;
+      --pf-black-1000: #151515;
+      --pf-white: #FFFFFF;
+
+      /* Semantic */
+      --pf-success: #3E8635;
+      --pf-success-100: #BDE2B9;
+      --pf-success-bg: #F3FAF2;
+      --pf-warning: #F0AB00;
+      --pf-warning-100: #F9E0A2;
+      --pf-warning-bg: #FDF7E7;
+      --pf-danger: #C9190B;
+      --pf-danger-100: #FAEAE8;
+      --pf-danger-bg: #FAEAE8;
+      --pf-info: #2B9AF3;
+      --pf-info-100: #BEE1F4;
+      --pf-info-bg: #E7F1FA;
+
+      /* Type */
+      --pf-display: 'Red Hat Display', 'RedHatDisplay', 'Helvetica Neue', Arial, sans-serif;
+      --pf-text: 'Red Hat Text', 'RedHatText', 'Helvetica Neue', Arial, sans-serif;
+      --pf-mono: 'Red Hat Mono', 'Liberation Mono', Menlo, monospace;
+
+      /* Shape (Red Hat conservative) */
+      --pf-radius-sm: 3px;
+      --pf-radius: 4px;
+      --pf-radius-md: 6px;
+      --pf-radius-lg: 8px;
+
+      /* Spacing (PF uses 8px grid plus 4px) */
+      --pf-s-xs: 4px;
+      --pf-s-sm: 8px;
+      --pf-s-md: 16px;
+      --pf-s-lg: 24px;
+      --pf-s-xl: 32px;
+      --pf-s-2xl: 48px;
+      --pf-s-3xl: 64px;
+
+      /* Elevation (subtle) */
+      --pf-elev-sm: 0 1px 1px rgba(3, 3, 3, 0.05);
+      --pf-elev: 0 1px 2px rgba(3, 3, 3, 0.06), 0 0 1px rgba(3, 3, 3, 0.10);
+      --pf-elev-md: 0 4px 8px rgba(3, 3, 3, 0.06), 0 0 2px rgba(3, 3, 3, 0.10);
+      --pf-elev-lg: 0 8px 24px rgba(3, 3, 3, 0.08), 0 0 4px rgba(3, 3, 3, 0.10);
+
+      /* Borders */
+      --pf-border: var(--pf-black-300);
+      --pf-border-strong: var(--pf-black-400);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--pf-text);
+      font-size: 16px;
+      background: var(--pf-black-100);
+      color: var(--pf-black-1000);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    code, kbd, pre { font-family: var(--pf-mono); }
+
+    /* Header */
+    .ds-header {
+      background: var(--pf-white);
+      padding: var(--pf-s-2xl) var(--pf-s-xl) var(--pf-s-xl);
+      border-bottom: 1px solid var(--pf-black-200);
+      position: relative;
+    }
+    .ds-header::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--pf-red) 0%, var(--pf-red) 25%, var(--pf-blue-400) 25%);
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--pf-s-xs);
+      color: var(--pf-blue-400);
+      text-decoration: none;
+      padding: 4px 8px;
+      border-radius: var(--pf-radius);
+      font-size: 14px;
+      font-weight: 500;
+      transition: background 0.15s;
+    }
+    .back-link:hover { background: var(--pf-blue-50); text-decoration: underline; }
+
+    .ds-header h1 {
+      font-family: var(--pf-display);
+      font-size: 36px;
+      line-height: 1.2;
+      font-weight: 500;
+      letter-spacing: -0.5px;
+      margin: var(--pf-s-md) 0 var(--pf-s-sm);
+      color: var(--pf-black-1000);
+    }
+
+    .ds-header .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--pf-s-sm);
+      align-items: center;
+      margin-bottom: var(--pf-s-sm);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 10px;
+      border-radius: 30px;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.2px;
+      border: 1px solid var(--pf-black-300);
+      background: var(--pf-white);
+      color: var(--pf-black-700);
+    }
+    .badge.kind-ds { background: var(--pf-blue-400); color: var(--pf-white); border-color: transparent; }
+    .badge.fidelity-documented { background: var(--pf-success-bg); color: #1E4F19; border-color: var(--pf-success-100); }
+    .badge.fidelity-approximated { background: var(--pf-warning-bg); color: #6E5500; border-color: var(--pf-warning-100); }
+    .badge.fidelity-inspired { background: #F2EAFB; color: #4A148C; border-color: #E0CFF2; }
+    .badge.source-verified { background: var(--pf-info-bg); color: #044C7A; border-color: var(--pf-info-100); }
+
+    .official-link {
+      color: var(--pf-blue-400);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 3px 10px;
+      border: 1px solid var(--pf-blue-400);
+      border-radius: var(--pf-radius);
+      font-size: 12px;
+    }
+    .official-link:hover { background: var(--pf-blue-400); color: var(--pf-white); }
+
+    .tagline {
+      font-size: 18px;
+      line-height: 1.5;
+      max-width: 720px;
+      margin: var(--pf-s-md) 0 0;
+      color: var(--pf-black-700);
+    }
+
+    /* TOC */
+    .toc {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255,255,255,0.96);
+      border-bottom: 1px solid var(--pf-black-200);
+      backdrop-filter: blur(8px);
+    }
+    .toc ul {
+      list-style: none;
+      margin: 0;
+      padding: var(--pf-s-sm) var(--pf-s-xl);
+      display: flex;
+      gap: var(--pf-s-xs);
+      overflow-x: auto;
+      max-width: 100%;
+    }
+    .toc a {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: var(--pf-radius);
+      color: var(--pf-black-700);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      white-space: nowrap;
+      border: 1px solid transparent;
+      transition: all 0.15s;
+    }
+    .toc a:hover { background: var(--pf-blue-50); color: var(--pf-blue-500); border-color: var(--pf-blue-100); }
+
+    /* Main */
+    main {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: var(--pf-s-xl);
+    }
+
+    section {
+      background: var(--pf-white);
+      border-radius: var(--pf-radius);
+      padding: var(--pf-s-xl);
+      margin-bottom: var(--pf-s-lg);
+      border: 1px solid var(--pf-black-200);
+      box-shadow: var(--pf-elev-sm);
+    }
+
+    section h2 {
+      font-family: var(--pf-display);
+      display: flex;
+      align-items: center;
+      gap: var(--pf-s-sm);
+      flex-wrap: wrap;
+      font-size: 28px;
+      line-height: 1.2;
+      font-weight: 500;
+      margin: 0 0 var(--pf-s-md);
+      color: var(--pf-black-1000);
+      letter-spacing: -0.3px;
+      border-bottom: 1px solid var(--pf-black-200);
+      padding-bottom: var(--pf-s-sm);
+    }
+
+    .source-link {
+      font-size: 13px;
+      color: var(--pf-blue-400);
+      text-decoration: none;
+      font-weight: 500;
+      margin-left: auto;
+    }
+    .source-link:hover { text-decoration: underline; }
+
+    h3 {
+      font-family: var(--pf-display);
+      font-size: 20px;
+      line-height: 1.3;
+      font-weight: 500;
+      margin: var(--pf-s-lg) 0 var(--pf-s-sm);
+      color: var(--pf-black-1000);
+    }
+    h4 {
+      font-family: var(--pf-display);
+      font-size: 14px;
+      line-height: 1.4;
+      font-weight: 500;
+      letter-spacing: 0.2px;
+      text-transform: uppercase;
+      margin: var(--pf-s-md) 0 var(--pf-s-xs);
+      color: var(--pf-black-600);
+    }
+    p { margin: 0 0 var(--pf-s-sm); }
+    .muted { color: var(--pf-black-700); font-size: 15px; }
+
+    /* Brand */
+    #brand .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--pf-s-md);
+      padding: var(--pf-s-md) var(--pf-s-lg);
+      background: var(--pf-black-1000);
+      border-radius: var(--pf-radius);
+      color: var(--pf-white);
+      font-family: var(--pf-display);
+      font-size: 24px;
+      font-weight: 500;
+    }
+    #brand .brand-mark .pf-logo {
+      width: 32px; height: 32px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    #brand .pillars {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--pf-s-md);
+      margin-top: var(--pf-s-lg);
+    }
+    #brand .pillar {
+      padding: var(--pf-s-md);
+      background: var(--pf-black-100);
+      border: 1px solid var(--pf-black-200);
+      border-radius: var(--pf-radius);
+    }
+    #brand .pillar h4 { color: var(--pf-blue-400); margin-top: 0; }
+    #brand .pillar p { font-size: 14px; color: var(--pf-black-700); margin: 0; }
+
+    /* Color */
+    .scale-grid {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 0;
+      margin-bottom: var(--pf-s-md);
+      border-radius: var(--pf-radius);
+      overflow: hidden;
+      border: 1px solid var(--pf-black-200);
+    }
+    .scale-cell {
+      padding: var(--pf-s-md) var(--pf-s-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-height: 90px;
+      justify-content: flex-end;
+      font-family: var(--pf-mono);
+      font-size: 11px;
+    }
+    .scale-cell .nm { font-family: var(--pf-text); font-size: 12px; font-weight: 500; }
+
+    .semantic-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
+      gap: var(--pf-s-sm);
+      margin-bottom: var(--pf-s-md);
+    }
+    .sem-card {
+      padding: var(--pf-s-md);
+      border-radius: var(--pf-radius);
+      border: 1px solid;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .sem-card .label { font-size: 13px; font-weight: 500; }
+    .sem-card .hex { font-family: var(--pf-mono); font-size: 11px; opacity: 0.85; }
+    .sem-success { background: var(--pf-success-bg); color: #1E4F19; border-color: var(--pf-success-100); }
+    .sem-warn { background: var(--pf-warning-bg); color: #6E5500; border-color: var(--pf-warning-100); }
+    .sem-danger { background: var(--pf-danger-bg); color: #771208; border-color: #F1B0AC; }
+    .sem-info { background: var(--pf-info-bg); color: #044C7A; border-color: var(--pf-info-100); }
+
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--pf-s-sm);
+    }
+    .role-chip {
+      padding: var(--pf-s-sm) var(--pf-s-md);
+      border-radius: var(--pf-radius-sm);
+      font-size: 13px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .role-chip code { font-size: 11px; opacity: 0.8; font-family: var(--pf-mono); }
+
+    /* Typography */
+    .type-row {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: var(--pf-s-md);
+      padding: var(--pf-s-sm) 0;
+      border-bottom: 1px solid var(--pf-black-200);
+      align-items: baseline;
+    }
+    .type-row:last-child { border-bottom: 0; }
+    .type-row .label {
+      font-family: var(--pf-mono);
+      font-size: 11px;
+      color: var(--pf-black-600);
+    }
+    .display-2xl { font-family: var(--pf-display); font-size: 48px; line-height: 1.1; font-weight: 500; letter-spacing: -0.8px; }
+    .display-xl { font-family: var(--pf-display); font-size: 36px; line-height: 1.15; font-weight: 500; letter-spacing: -0.5px; }
+    .display-lg { font-family: var(--pf-display); font-size: 28px; line-height: 1.2; font-weight: 500; letter-spacing: -0.3px; }
+    .display-md { font-family: var(--pf-display); font-size: 24px; line-height: 1.25; font-weight: 500; }
+    .display-sm { font-family: var(--pf-display); font-size: 20px; line-height: 1.3; font-weight: 500; }
+    .heading-lg { font-family: var(--pf-display); font-size: 18px; line-height: 1.4; font-weight: 500; }
+    .heading-md { font-family: var(--pf-display); font-size: 16px; line-height: 1.4; font-weight: 500; }
+    .heading-sm { font-family: var(--pf-display); font-size: 14px; line-height: 1.4; font-weight: 500; }
+    .body-lg { font-size: 16px; line-height: 1.5; }
+    .body-md { font-size: 14px; line-height: 1.5; }
+    .body-sm { font-size: 13px; line-height: 1.45; }
+    .body-xs { font-size: 12px; line-height: 1.4; }
+    .mono-sample { font-family: var(--pf-mono); font-size: 13px; background: var(--pf-black-150); padding: 6px 10px; border-radius: var(--pf-radius-sm); display: inline-block; }
+
+    /* Iconography */
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(110px,1fr));
+      gap: var(--pf-s-sm);
+    }
+    .icon-cell {
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: var(--pf-s-md);
+      background: var(--pf-black-100);
+      border: 1px solid var(--pf-black-200);
+      border-radius: var(--pf-radius);
+      gap: var(--pf-s-sm);
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .icon-cell:hover { border-color: var(--pf-blue-400); background: var(--pf-blue-50); }
+    .icon-cell svg { width: 22px; height: 22px; color: var(--pf-black-700); }
+    .icon-cell:hover svg { color: var(--pf-blue-500); }
+    .icon-cell span { font-size: 11px; color: var(--pf-black-600); font-family: var(--pf-mono); }
+
+    /* Buttons */
+    .button-row {
+      display: flex;
+      gap: var(--pf-s-sm);
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: var(--pf-s-sm);
+    }
+    .pf-btn {
+      font-family: var(--pf-text);
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 1.4;
+      padding: 6px 16px;
+      border: 1px solid transparent;
+      border-radius: var(--pf-radius-sm);
+      cursor: pointer;
+      transition: all 0.15s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 36px;
+    }
+    .pf-btn--primary { background: var(--pf-blue-400); color: var(--pf-white); }
+    .pf-btn--primary:hover { background: var(--pf-blue-500); }
+    .pf-btn--secondary {
+      background: transparent; color: var(--pf-blue-400);
+      border-color: var(--pf-blue-400);
+    }
+    .pf-btn--secondary:hover { background: var(--pf-blue-50); }
+    .pf-btn--tertiary {
+      background: transparent; color: var(--pf-black-1000);
+      border-color: var(--pf-black-700);
+    }
+    .pf-btn--tertiary:hover { background: var(--pf-black-200); }
+    .pf-btn--danger { background: var(--pf-danger); color: var(--pf-white); }
+    .pf-btn--danger:hover { background: #A0140A; }
+    .pf-btn--warning { background: var(--pf-warning); color: var(--pf-black-1000); }
+    .pf-btn--warning:hover { background: #C49100; }
+    .pf-btn--link {
+      background: transparent; color: var(--pf-blue-400);
+      padding: 6px 4px;
+    }
+    .pf-btn--link:hover { color: var(--pf-blue-500); text-decoration: underline; }
+    .pf-btn--plain {
+      background: transparent; color: var(--pf-black-700);
+      padding: 6px;
+    }
+    .pf-btn--plain:hover { background: var(--pf-black-200); color: var(--pf-black-1000); }
+
+    .pf-btn--sm { padding: 4px 12px; font-size: 13px; min-height: 28px; }
+    .pf-btn--lg { padding: 8px 20px; font-size: 16px; min-height: 44px; }
+
+    .pf-btn[disabled] {
+      background: var(--pf-black-200) !important;
+      color: var(--pf-black-500) !important;
+      border-color: transparent !important;
+      cursor: not-allowed;
+    }
+
+    /* Form */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
+      gap: var(--pf-s-md);
+      margin-bottom: var(--pf-s-md);
+    }
+    .pf-field { display: flex; flex-direction: column; gap: 4px; }
+    .pf-field label {
+      font-size: 13px; font-weight: 500;
+      color: var(--pf-black-1000);
+      display: flex; align-items: center; gap: 4px;
+    }
+    .pf-field label .req { color: var(--pf-danger); font-weight: 700; }
+    .pf-input,
+    .pf-textarea,
+    .pf-select {
+      font-family: var(--pf-text);
+      font-size: 14px;
+      padding: 6px 12px;
+      border: 1px solid var(--pf-black-300);
+      border-radius: var(--pf-radius-sm);
+      background: var(--pf-white);
+      color: var(--pf-black-1000);
+      outline: none;
+      min-height: 36px;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .pf-input:focus,
+    .pf-textarea:focus,
+    .pf-select:focus {
+      border-color: var(--pf-blue-400);
+      box-shadow: 0 0 0 1px var(--pf-blue-400);
+    }
+    .pf-input.error { border-color: var(--pf-danger); box-shadow: 0 0 0 1px var(--pf-danger); }
+    .pf-input.success { border-color: var(--pf-success); box-shadow: 0 0 0 1px var(--pf-success); }
+    .pf-textarea { min-height: 90px; resize: vertical; }
+    .pf-helper { font-size: 12px; color: var(--pf-black-600); }
+    .pf-helper.error { color: var(--pf-danger); }
+    .pf-helper.success { color: var(--pf-success); }
+
+    /* Switch / checkbox / radio */
+    .pf-switch {
+      position: relative; display: inline-flex; align-items: center; gap: 8px;
+      cursor: pointer; user-select: none; font-size: 14px;
+    }
+    .pf-switch input { display: none; }
+    .pf-switch .track {
+      width: 36px; height: 20px;
+      background: var(--pf-black-400);
+      border-radius: 99px;
+      position: relative;
+      transition: background 0.2s;
+    }
+    .pf-switch .knob {
+      position: absolute; top: 3px; left: 3px;
+      width: 14px; height: 14px;
+      background: var(--pf-white);
+      border-radius: 50%;
+      transition: left 0.2s;
+    }
+    .pf-switch input:checked + .track { background: var(--pf-blue-400); }
+    .pf-switch input:checked + .track .knob { left: 19px; }
+
+    .pf-check, .pf-radio {
+      display: inline-flex; align-items: center; gap: 6px;
+      cursor: pointer; user-select: none; font-size: 14px;
+    }
+    .pf-check input, .pf-radio input { display: none; }
+    .pf-check .box {
+      width: 14px; height: 14px;
+      border: 1px solid var(--pf-black-500);
+      border-radius: 2px;
+      background: var(--pf-white);
+      display: inline-flex; align-items: center; justify-content: center;
+      color: var(--pf-white);
+      font-size: 11px;
+    }
+    .pf-check input:checked + .box { background: var(--pf-blue-400); border-color: var(--pf-blue-400); }
+    .pf-check input:checked + .box::after { content: "✓"; font-weight: 700; line-height: 1; }
+    .pf-radio .dot {
+      width: 14px; height: 14px;
+      border: 1px solid var(--pf-black-500);
+      border-radius: 50%;
+      background: var(--pf-white);
+      position: relative;
+    }
+    .pf-radio input:checked + .dot { border-color: var(--pf-blue-400); }
+    .pf-radio input:checked + .dot::after {
+      content: "";
+      width: 8px; height: 8px;
+      background: var(--pf-blue-400);
+      border-radius: 50%;
+      position: absolute; top: 2px; left: 2px;
+    }
+
+    /* Surfaces (cards) */
+    .surface-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px,1fr));
+      gap: var(--pf-s-md);
+    }
+    .pf-card {
+      background: var(--pf-white);
+      border: 1px solid var(--pf-black-200);
+      border-radius: var(--pf-radius);
+      padding: 0;
+      box-shadow: var(--pf-elev-sm);
+      overflow: hidden;
+    }
+    .pf-card .card-head {
+      padding: var(--pf-s-md) var(--pf-s-md) var(--pf-s-sm);
+      border-bottom: 1px solid var(--pf-black-200);
+    }
+    .pf-card .card-title {
+      font-family: var(--pf-display);
+      font-size: 16px; font-weight: 500;
+      color: var(--pf-black-1000);
+      margin: 0 0 4px;
+    }
+    .pf-card .card-body { padding: var(--pf-s-md); font-size: 14px; color: var(--pf-black-700); }
+    .pf-card .card-foot {
+      padding: var(--pf-s-sm) var(--pf-s-md);
+      border-top: 1px solid var(--pf-black-200);
+      background: var(--pf-black-100);
+      display: flex; gap: 8px;
+    }
+
+    /* OpenShift-style console card */
+    .console-card {
+      background: var(--pf-white);
+      border: 1px solid var(--pf-black-200);
+      border-radius: var(--pf-radius);
+    }
+    .console-card .head {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--pf-black-200);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .console-card .head .ttl {
+      font-family: var(--pf-display);
+      font-size: 16px; font-weight: 500;
+    }
+    .console-card .body { padding: 16px; font-size: 14px; }
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px,1fr));
+      gap: 12px;
+    }
+    .stat {
+      background: var(--pf-black-100);
+      border: 1px solid var(--pf-black-200);
+      border-radius: var(--pf-radius-sm);
+      padding: 10px 12px;
+    }
+    .stat .num { font-family: var(--pf-display); font-size: 20px; font-weight: 500; }
+    .stat .lab { font-size: 11px; color: var(--pf-black-600); text-transform: uppercase; letter-spacing: 0.5px; }
+
+    /* Feedback */
+    .alert-grid { display: grid; gap: var(--pf-s-sm); }
+    .pf-alert {
+      padding: var(--pf-s-sm) var(--pf-s-md);
+      border-radius: var(--pf-radius-sm);
+      border-left: 3px solid;
+      background: var(--pf-white);
+      display: flex; gap: var(--pf-s-sm);
+      align-items: flex-start;
+      box-shadow: var(--pf-elev-sm);
+    }
+    .pf-alert .ic {
+      width: 20px; height: 20px;
+      flex-shrink: 0;
+      display: inline-flex; align-items: center; justify-content: center;
+    }
+    .pf-alert .body { flex: 1; }
+    .pf-alert .ttl { font-weight: 500; font-size: 14px; margin-bottom: 2px; font-family: var(--pf-display); }
+    .pf-alert .msg { font-size: 13px; color: var(--pf-black-700); }
+    .pf-alert.ok { border-color: var(--pf-success); background: var(--pf-success-bg); }
+    .pf-alert.ok .ic { color: var(--pf-success); }
+    .pf-alert.err { border-color: var(--pf-danger); background: var(--pf-danger-bg); }
+    .pf-alert.err .ic { color: var(--pf-danger); }
+    .pf-alert.warn { border-color: var(--pf-warning); background: var(--pf-warning-bg); }
+    .pf-alert.warn .ic { color: #946100; }
+    .pf-alert.info { border-color: var(--pf-info); background: var(--pf-info-bg); }
+    .pf-alert.info .ic { color: var(--pf-info); }
+
+    /* Status labels (PF labels) */
+    .status-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+    .pf-label {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 2px 8px;
+      border-radius: 30px;
+      font-size: 12px; font-weight: 500;
+      border: 1px solid;
+      background: var(--pf-white);
+    }
+    .pf-label .dot { width: 6px; height: 6px; border-radius: 50%; }
+    .pf-label.ok { color: #1E4F19; border-color: var(--pf-success-100); background: var(--pf-success-bg); }
+    .pf-label.ok .dot { background: var(--pf-success); }
+    .pf-label.err { color: #771208; border-color: #F1B0AC; background: var(--pf-danger-bg); }
+    .pf-label.err .dot { background: var(--pf-danger); }
+    .pf-label.warn { color: #6E5500; border-color: var(--pf-warning-100); background: var(--pf-warning-bg); }
+    .pf-label.warn .dot { background: var(--pf-warning); }
+    .pf-label.info { color: #044C7A; border-color: var(--pf-info-100); background: var(--pf-info-bg); }
+    .pf-label.info .dot { background: var(--pf-info); }
+    .pf-label.neutral { color: var(--pf-black-700); border-color: var(--pf-black-300); }
+    .pf-label.neutral .dot { background: var(--pf-black-500); }
+
+    /* Toast */
+    .pf-toast {
+      display: inline-flex; align-items: center; gap: 12px;
+      background: var(--pf-black-1000);
+      color: var(--pf-white);
+      padding: 12px 16px;
+      border-radius: var(--pf-radius);
+      font-size: 14px;
+      box-shadow: var(--pf-elev-md);
+    }
+
+    /* Navigation */
+    .pf-tabs {
+      display: flex;
+      border-bottom: 2px solid var(--pf-black-200);
+      gap: 0;
+    }
+    .pf-tab {
+      padding: 10px 16px;
+      font-size: 14px;
+      color: var(--pf-black-700);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+      font-weight: 400;
+      font-family: var(--pf-text);
+    }
+    .pf-tab:hover { color: var(--pf-black-1000); }
+    .pf-tab.active {
+      color: var(--pf-blue-400);
+      border-bottom-color: var(--pf-blue-400);
+      font-weight: 500;
+    }
+
+    /* Vertical nav (OpenShift sidebar pattern) */
+    .pf-vnav {
+      width: 240px;
+      background: var(--pf-black-1000);
+      color: var(--pf-white);
+      padding: 16px 0;
+      border-radius: var(--pf-radius);
+    }
+    .pf-vnav-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 8px 16px;
+      font-size: 14px;
+      color: #C8C8C8;
+      cursor: pointer;
+      border-left: 3px solid transparent;
+    }
+    .pf-vnav-item:hover { background: var(--pf-black-900); color: var(--pf-white); }
+    .pf-vnav-item.active {
+      background: var(--pf-black-900);
+      color: var(--pf-white);
+      border-left-color: var(--pf-blue-400);
+    }
+    .pf-vnav-section {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: #8A8D90;
+      padding: 12px 16px 4px;
+      font-weight: 500;
+    }
+
+    /* Breadcrumb */
+    .pf-bread {
+      display: flex; gap: 4px; align-items: center;
+      font-size: 13px;
+    }
+    .pf-bread a { color: var(--pf-blue-400); text-decoration: none; }
+    .pf-bread a:hover { text-decoration: underline; }
+    .pf-bread .sep { color: var(--pf-black-500); }
+    .pf-bread .current { color: var(--pf-black-700); }
+
+    /* Pagination */
+    .pf-pagination {
+      display: flex; gap: 4px; align-items: center;
+    }
+    .pf-page {
+      width: 32px; height: 32px;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 13px;
+      color: var(--pf-black-700);
+      border: 1px solid var(--pf-black-300);
+      border-radius: var(--pf-radius-sm);
+      background: var(--pf-white);
+      cursor: pointer;
+    }
+    .pf-page.active { background: var(--pf-blue-400); color: var(--pf-white); border-color: var(--pf-blue-400); }
+    .pf-page:hover:not(.active) { background: var(--pf-black-100); }
+
+    /* Data table */
+    .pf-table-wrap {
+      border: 1px solid var(--pf-black-200);
+      border-radius: var(--pf-radius);
+      overflow: hidden;
+    }
+    .pf-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    .pf-table thead {
+      background: var(--pf-black-100);
+      border-bottom: 1px solid var(--pf-black-200);
+    }
+    .pf-table th {
+      text-align: left;
+      padding: 10px 16px;
+      font-family: var(--pf-display);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--pf-black-1000);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+    .pf-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--pf-black-200);
+      color: var(--pf-black-1000);
+    }
+    .pf-table tr:last-child td { border-bottom: 0; }
+    .pf-table tbody tr:hover { background: var(--pf-black-100); }
+
+    /* Layout (grid demo) */
+    .layout-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .layout-cell {
+      background: var(--pf-blue-50);
+      border: 1px solid var(--pf-blue-100);
+      color: var(--pf-blue-500);
+      padding: 12px;
+      font-size: 12px;
+      font-family: var(--pf-mono);
+      text-align: center;
+      border-radius: var(--pf-radius-sm);
+    }
+
+    /* Spacing */
+    .space-row { display: flex; align-items: center; gap: 16px; padding: 6px 0; }
+    .space-bar { background: var(--pf-blue-400); height: 12px; border-radius: 2px; }
+    .space-row .lbl { width: 80px; font-family: var(--pf-mono); font-size: 12px; color: var(--pf-black-600); }
+    .space-row .px { width: 60px; font-family: var(--pf-mono); font-size: 11px; color: var(--pf-black-500); }
+
+    /* Footer */
+    .ds-footer {
+      background: var(--pf-black-1000);
+      color: var(--pf-black-300);
+      padding: var(--pf-s-xl);
+      margin-top: var(--pf-s-2xl);
+    }
+    .ds-footer h3 { color: var(--pf-white); font-family: var(--pf-display); margin-top: 0; }
+    .ds-footer ul { padding-left: 20px; }
+    .ds-footer li { margin-bottom: 4px; word-break: break-all; font-size: 13px; }
+    .ds-footer a { color: var(--pf-blue-200); text-decoration: none; }
+    .license-note { font-size: 12px; color: var(--pf-black-400); margin-top: var(--pf-s-md); line-height: 1.5; }
+    .meta-note { font-size: 11px; color: var(--pf-black-500); font-family: var(--pf-mono); margin-top: var(--pf-s-sm); }
+
+    @media (max-width: 720px) {
+      .ds-header h1 { font-size: 28px; }
+      main { padding: var(--pf-s-md); }
+      section { padding: var(--pf-s-md); }
+      .type-row { grid-template-columns: 1fr; }
+      .scale-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <header class="ds-header">
+    <a href="index.html" class="back-link">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Catalog
+    </a>
+    <h1>PatternFly</h1>
+    <div class="meta">
+      <span class="badge kind-ds">design-system</span>
+      <span class="badge fidelity-documented">documented</span>
+      <span class="badge source-verified">source: verified</span>
+      <a class="official-link" href="https://www.patternfly.org" target="_blank" rel="noopener">Official ↗</a>
+    </div>
+    <p class="tagline">Red Hat's open-source enterprise design system for cloud, container, and OpenShift consoles.</p>
+  </header>
+
+  <nav class="toc" aria-label="Table of contents">
+    <ul>
+      <li><a href="#brand">Brand</a></li>
+      <li><a href="#color">Color</a></li>
+      <li><a href="#typography">Typography</a></li>
+      <li><a href="#iconography">Iconography</a></li>
+      <li><a href="#buttons">Buttons</a></li>
+      <li><a href="#form">Form</a></li>
+      <li><a href="#surfaces">Surfaces</a></li>
+      <li><a href="#feedback">Feedback</a></li>
+      <li><a href="#navigation">Navigation</a></li>
+      <li><a href="#data">Data</a></li>
+      <li><a href="#layout">Layout</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="brand" data-fidelity="documented">
+      <h2>
+        <span>Brand</span>
+        <span class="badge fidelity-documented">documented</span>
+      </h2>
+      <div class="brand-mark">
+        <span class="pf-logo">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <rect x="2" y="14" width="6" height="14" fill="var(--pf-blue-400)"/>
+            <rect x="10" y="8" width="6" height="20" fill="var(--pf-blue-400)"/>
+            <rect x="18" y="2" width="6" height="26" fill="var(--pf-red)"/>
+          </svg>
+        </span>
+        PatternFly
+      </div>
+      <p style="margin-top:24px;max-width:720px;font-size:15px;color:var(--pf-black-700);">
+        PatternFly is the open-source design system created by Red Hat to power enterprise applications — most prominently the Red Hat OpenShift console. It emphasizes information density, accessibility (WCAG 2.1 AA baseline), and patterns proven in operations-heavy workflows: forms, tables, dashboards, and wizards. Conservative 3-4px corner radii and tight spacing scales reflect Red Hat's enterprise heritage.
+      </p>
+      <div class="pillars">
+        <div class="pillar">
+          <h4>Open</h4>
+          <p>Apache 2.0 / MIT license; design tokens, React components, and HTML/CSS distributed publicly.</p>
+        </div>
+        <div class="pillar">
+          <h4>Enterprise-grade</h4>
+          <p>Patterns for clusters, clouds, and consoles — built around dense data and operational workflows.</p>
+        </div>
+        <div class="pillar">
+          <h4>Accessible</h4>
+          <p>WCAG 2.1 AA baseline; focus rings, keyboard navigation, and ARIA patterns are first-class.</p>
+        </div>
+        <div class="pillar">
+          <h4>Token-driven</h4>
+          <p>Three-tier token model: global → semantic → component, enabling theming and white-label.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="color" data-fidelity="documented">
+      <h2>
+        <span>Color</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://www.patternfly.org/tokens/about-tokens" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p class="muted">PatternFly defines numbered scales (50-700+) for blue, red, gold, green, purple, cyan, orange, and an extensive black scale (100-1000). Below: the most commonly-cited tokens.</p>
+
+      <h3>Blue (primary)</h3>
+      <div class="scale-grid">
+        <div class="scale-cell" style="background:var(--pf-blue-50);color:var(--pf-blue-700)">
+          <span class="nm">50</span><span>#E7F1FA</span>
+        </div>
+        <div class="scale-cell" style="background:var(--pf-blue-100);color:var(--pf-blue-700)">
+          <span class="nm">100</span><span>#BEE1F4</span>
+        </div>
+        <div class="scale-cell" style="background:var(--pf-blue-200);color:var(--pf-blue-700)">
+          <span class="nm">200</span><span>#7DC3E8</span>
+        </div>
+        <div class="scale-cell" style="background:var(--pf-blue-300);color:white">
+          <span class="nm">300</span><span>#39A5DC</span>
+        </div>
+        <div class="scale-cell" style="background:var(--pf-blue-400);color:white">
+          <span class="nm">400</span><span>#0066CC</span>
+        </div>
+        <div class="scale-cell" style="background:var(--pf-blue-500);color:white">
+          <span class="nm">500</span><span>#004080</span>
+        </div>
+        <div class="scale-cell" style="background:var(--pf-blue-600);color:white">
+          <span class="nm">600</span><span>#002952</span>
+        </div>
+        <div class="scale-cell" style="background:var(--pf-blue-700);color:white">
+          <span class="nm">700</span><span>#001223</span>
+        </div>
+      </div>
+
+      <h3>Black (neutrals 100-1000)</h3>
+      <div class="scale-grid">
+        <div class="scale-cell" style="background:var(--pf-black-100);color:var(--pf-black-1000)">
+          <span class="nm">100</span><span>#FAFAFA</span>
+        </div>
+        <div class="scale-cell" style="background:var(--pf-black-200);color:var(--pf-black-1000)">
+          <span class="nm">200</span><span>#F0F0F0</span>
+        </div>
+        <div class="scale-cell" style="background:var(--pf-black-300);color:var(--pf-black-1000)">
+          <span class="nm">300</span><span>#D2D2D2</span>
+        </div>
+        <div class="scale-cell" style="background:var(--pf-black-400);color:var(--pf-black-1000)">
+          <span class="nm">400</span><span>#B8BBBE</span>
+        </div>
+        <div class="scale-cell" style="background:var(--pf-black-500);color:white">
+          <span class="nm">500</span><span>#8A8D90</span>
+        </div>
+        <div class="scale-cell" style="background:var(--pf-black-600);color:white">
+          <span class="nm">600</span><span>#6A6E73</span>
+        </div>
+        <div class="scale-cell" style="background:var(--pf-black-800);color:white">
+          <span class="nm">800</span><span>#3C3F42</span>
+        </div>
+        <div class="scale-cell" style="background:var(--pf-black-1000);color:white">
+          <span class="nm">1000</span><span>#151515</span>
+        </div>
+      </div>
+
+      <h3>Semantic roles</h3>
+      <div class="semantic-grid">
+        <div class="sem-card sem-success">
+          <span class="label">Success (Green 500)</span>
+          <span class="hex">#3E8635</span>
+        </div>
+        <div class="sem-card sem-warn">
+          <span class="label">Warning (Gold 400)</span>
+          <span class="hex">#F0AB00</span>
+        </div>
+        <div class="sem-card sem-danger">
+          <span class="label">Danger (Red 100)</span>
+          <span class="hex">#C9190B</span>
+        </div>
+        <div class="sem-card sem-info">
+          <span class="label">Info (Blue 300)</span>
+          <span class="hex">#2B9AF3</span>
+        </div>
+      </div>
+
+      <h3>Brand accent</h3>
+      <div class="role-grid">
+        <div class="role-chip" style="background:var(--pf-red);color:white">Red Hat Red <code>#EE0000</code></div>
+        <div class="role-chip" style="background:var(--pf-red-dark);color:white">Red Hat Red Dark <code>#A60000</code></div>
+        <div class="role-chip" style="background:var(--pf-blue-400);color:white">Primary Blue 400 <code>#0066CC</code></div>
+        <div class="role-chip" style="background:var(--pf-blue-500);color:white">Primary Blue 500 <code>#004080</code></div>
+      </div>
+    </section>
+
+    <section id="typography" data-fidelity="documented">
+      <h2>
+        <span>Typography</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://www.patternfly.org/design-foundations/typography" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p class="muted">PatternFly uses Red Hat's three official open-source typefaces: Red Hat Display (headings), Red Hat Text (body, UI), and Red Hat Mono (code, data). All three are licensed under SIL OFL via Google Fonts.</p>
+
+      <div class="type-row"><div class="label">Display 2xl · 48 · Display 500</div><div class="display-2xl">Red Hat Display</div></div>
+      <div class="type-row"><div class="label">Display xl · 36 · Display 500</div><div class="display-xl">Enterprise console UI</div></div>
+      <div class="type-row"><div class="label">Display lg · 28 · Display 500</div><div class="display-lg">Section heading</div></div>
+      <div class="type-row"><div class="label">Display md · 24 · Display 500</div><div class="display-md">Subsection heading</div></div>
+      <div class="type-row"><div class="label">Display sm · 20 · Display 500</div><div class="display-sm">Card title</div></div>
+      <div class="type-row"><div class="label">Heading lg · 18 · Display 500</div><div class="heading-lg">Group label</div></div>
+      <div class="type-row"><div class="label">Heading md · 16 · Display 500</div><div class="heading-md">Small heading</div></div>
+      <div class="type-row"><div class="label">Heading sm · 14 · Display 500</div><div class="heading-sm">Eyebrow / label</div></div>
+      <div class="type-row"><div class="label">Body lg · 16 · Text 400</div><div class="body-lg">PatternFly body uses Red Hat Text at 16px for emphasis copy. Text is optimized for screen readability at small sizes and works across console, dashboard, and form contexts.</div></div>
+      <div class="type-row"><div class="label">Body md · 14 · Text 400</div><div class="body-md">Default body size in PatternFly. The 14px scale is the workhorse for table cells, form labels, helper text, and most body content in OpenShift-style consoles.</div></div>
+      <div class="type-row"><div class="label">Body sm · 13 · Text 400</div><div class="body-sm">Used for breadcrumbs, secondary metadata, and tighter information density.</div></div>
+      <div class="type-row"><div class="label">Body xs · 12 · Text 400</div><div class="body-xs">Caption-level text. Sparingly used for chart axis labels and dense metadata.</div></div>
+      <div class="type-row"><div class="label">Mono · Red Hat Mono</div><div class="mono-sample">kubectl get pods --namespace=production</div></div>
+    </section>
+
+    <section id="iconography" data-fidelity="documented">
+      <h2>
+        <span>Iconography</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://www.patternfly.org/design-foundations/icons" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p class="muted">PatternFly draws from PatternFly Icons (MIT) and Font Awesome Free. Console patterns favor 14-22px solid-fill icons with consistent optical weight. Below: representative outline-style equivalents.</p>
+      <div class="icon-grid">
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12L12 3l9 9"/><path d="M5 10v10h14V10"/></svg><span>home</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><span>search</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16.5v-9a2 2 0 0 0-1-1.7l-8-4.5a2 2 0 0 0-2 0l-8 4.5A2 2 0 0 0 1 7.5v9a2 2 0 0 0 1 1.7l8 4.5a2 2 0 0 0 2 0l8-4.5a2 2 0 0 0 1-1.7zM3.27 6.96L12 12.01l8.73-5.05M12 22.08V12"/></svg><span>cube</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.5-2.5l2-1.5-2-3.5-2.5 1A7 7 0 0 0 13 4l-.5-2.5h-4L8 4a7 7 0 0 0-3 1.5l-2.5-1-2 3.5 2 1.5A7 7 0 0 0 5 12c0 .9.2 1.7.5 2.5l-2 1.5 2 3.5 2.5-1c.9.7 2 1.2 3 1.5l.5 2.5h4l.5-2.5c1-.3 2.1-.8 3-1.5l2.5 1 2-3.5-2-1.5c.3-.8.5-1.6.5-2.5z"/></svg><span>cog</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg><span>user</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8c0-1.1-.9-2-2-2h-7l-2-2H5c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2z"/></svg><span>folder</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg><span>file</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h18v18H3zM3 9h18M9 21V9"/></svg><span>dashboard</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg><span>clock</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg><span>info</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0zM12 9v4M12 17h.01"/></svg><span>warning</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg><span>error</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg><span>check-circle</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg><span>menu</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg><span>spinner</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg><span>plus</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6M10 11v6M14 11v6"/></svg><span>trash</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/></svg><span>edit</span></div>
+      </div>
+    </section>
+
+    <section id="buttons" data-fidelity="documented">
+      <h2>
+        <span>Buttons</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://www.patternfly.org/components/button" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p class="muted">PatternFly defines six button variants: Primary, Secondary, Tertiary, Danger, Warning, Link, plus Plain (icon-only). Conservative 3px corners and 36px default height match enterprise console patterns.</p>
+
+      <h3>Variants</h3>
+      <div class="button-row">
+        <button class="pf-btn pf-btn--primary">Primary</button>
+        <button class="pf-btn pf-btn--secondary">Secondary</button>
+        <button class="pf-btn pf-btn--tertiary">Tertiary</button>
+        <button class="pf-btn pf-btn--danger">Danger</button>
+        <button class="pf-btn pf-btn--warning">Warning</button>
+        <button class="pf-btn pf-btn--link">Link</button>
+        <button class="pf-btn pf-btn--plain" aria-label="more">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>
+        </button>
+      </div>
+
+      <h3>Sizes</h3>
+      <div class="button-row">
+        <button class="pf-btn pf-btn--primary pf-btn--sm">Small</button>
+        <button class="pf-btn pf-btn--primary">Default</button>
+        <button class="pf-btn pf-btn--primary pf-btn--lg">Large</button>
+      </div>
+
+      <h3>States</h3>
+      <div class="button-row">
+        <button class="pf-btn pf-btn--primary">Enabled</button>
+        <button class="pf-btn pf-btn--primary" style="background:var(--pf-blue-500)">Hover</button>
+        <button class="pf-btn pf-btn--primary" style="outline:2px solid var(--pf-blue-500);outline-offset:1px">Focus</button>
+        <button class="pf-btn pf-btn--primary" disabled>Disabled</button>
+        <button class="pf-btn pf-btn--primary">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4"><animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1s" repeatCount="indefinite"/></path></svg>
+          Loading
+        </button>
+      </div>
+
+      <h3>With icon</h3>
+      <div class="button-row">
+        <button class="pf-btn pf-btn--primary">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          Create namespace
+        </button>
+        <button class="pf-btn pf-btn--secondary">
+          Filter
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <button class="pf-btn pf-btn--danger">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"/></svg>
+          Delete pod
+        </button>
+      </div>
+    </section>
+
+    <section id="form" data-fidelity="documented">
+      <h2>
+        <span>Form</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://www.patternfly.org/components/forms/text-input" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p class="muted">PatternFly forms favor a compact 36px input height, 1px borders, and a 1px focus ring (border + box-shadow). Required fields use a red asterisk; validation states are color-coded green/red/blue.</p>
+
+      <h3>Inputs</h3>
+      <div class="form-grid">
+        <div class="pf-field">
+          <label>Namespace <span class="req">*</span></label>
+          <input class="pf-input" type="text" value="production-cluster">
+          <span class="pf-helper">Lowercase alphanumeric, dashes only.</span>
+        </div>
+        <div class="pf-field">
+          <label>Email</label>
+          <input class="pf-input" type="email" placeholder="user@redhat.com">
+          <span class="pf-helper">Used for cluster notifications.</span>
+        </div>
+        <div class="pf-field">
+          <label>Cluster size</label>
+          <select class="pf-select">
+            <option>Small (3 nodes)</option>
+            <option>Medium (5 nodes)</option>
+            <option>Large (10 nodes)</option>
+            <option>Extra Large (20+ nodes)</option>
+          </select>
+        </div>
+        <div class="pf-field">
+          <label>Description</label>
+          <textarea class="pf-textarea" placeholder="Describe the workload running in this namespace..."></textarea>
+        </div>
+        <div class="pf-field">
+          <label>Image tag <span class="req">*</span></label>
+          <input class="pf-input error" type="text" value="latest">
+          <span class="pf-helper error">Image tag "latest" is not allowed in production. Use a versioned tag.</span>
+        </div>
+        <div class="pf-field">
+          <label>Replica count</label>
+          <input class="pf-input success" type="number" value="3">
+          <span class="pf-helper success">Configuration validated.</span>
+        </div>
+      </div>
+
+      <h3>Toggle / Checkbox / Radio</h3>
+      <div style="display:flex;flex-direction:column;gap:12px;margin-top:8px">
+        <div style="display:flex;gap:24px;flex-wrap:wrap">
+          <label class="pf-switch">
+            <input type="checkbox" checked>
+            <span class="track"><span class="knob"></span></span>
+            <span>Auto-scaling enabled</span>
+          </label>
+          <label class="pf-switch">
+            <input type="checkbox">
+            <span class="track"><span class="knob"></span></span>
+            <span>Network policy</span>
+          </label>
+        </div>
+        <div style="display:flex;gap:20px;flex-wrap:wrap">
+          <label class="pf-check"><input type="checkbox" checked><span class="box"></span><span>Enable monitoring</span></label>
+          <label class="pf-check"><input type="checkbox"><span class="box"></span><span>Enable logging</span></label>
+          <label class="pf-check"><input type="checkbox" checked><span class="box"></span><span>Enable backup</span></label>
+        </div>
+        <div style="display:flex;gap:20px;flex-wrap:wrap">
+          <label class="pf-radio"><input type="radio" name="r1" checked><span class="dot"></span><span>Public access</span></label>
+          <label class="pf-radio"><input type="radio" name="r1"><span class="dot"></span><span>Private access</span></label>
+          <label class="pf-radio"><input type="radio" name="r1"><span class="dot"></span><span>VPN-only</span></label>
+        </div>
+      </div>
+    </section>
+
+    <section id="surfaces" data-fidelity="documented">
+      <h2>
+        <span>Surfaces</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://www.patternfly.org/components/card" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p class="muted">Cards in PatternFly are deliberately understated: 1px borders, subtle 1px shadow, optional title-bar and footer regions. Three-zone card patterns (head / body / foot) dominate console layouts.</p>
+
+      <h3>Card</h3>
+      <div class="surface-grid">
+        <div class="pf-card">
+          <div class="card-head">
+            <div class="card-title">Cluster overview</div>
+          </div>
+          <div class="card-body">
+            Production cluster running 24 nodes across 3 availability zones. CPU utilization 64%.
+          </div>
+          <div class="card-foot">
+            <button class="pf-btn pf-btn--secondary pf-btn--sm">View details</button>
+          </div>
+        </div>
+        <div class="pf-card">
+          <div class="card-head">
+            <div class="card-title">Recent deployments</div>
+          </div>
+          <div class="card-body">
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <div style="display:flex;justify-content:space-between"><span>api-server</span><span class="pf-label ok"><span class="dot"></span>Running</span></div>
+              <div style="display:flex;justify-content:space-between"><span>auth-service</span><span class="pf-label ok"><span class="dot"></span>Running</span></div>
+              <div style="display:flex;justify-content:space-between"><span>billing-job</span><span class="pf-label warn"><span class="dot"></span>Pending</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="pf-card">
+          <div class="card-head">
+            <div class="card-title">Resource usage</div>
+          </div>
+          <div class="card-body">
+            <div class="stat-row">
+              <div class="stat"><div class="num">68%</div><div class="lab">CPU</div></div>
+              <div class="stat"><div class="num">42%</div><div class="lab">Memory</div></div>
+              <div class="stat"><div class="num">17%</div><div class="lab">Disk</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h3>Console-style dashboard card</h3>
+      <div class="console-card" style="margin-top:8px">
+        <div class="head">
+          <div class="ttl">Cluster status — production-cluster-01</div>
+          <div style="display:flex;gap:8px">
+            <button class="pf-btn pf-btn--plain pf-btn--sm" aria-label="refresh">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10M3.51 15A9 9 0 0 0 18.36 18.36L23 14"/></svg>
+            </button>
+            <button class="pf-btn pf-btn--plain pf-btn--sm" aria-label="more">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="body">
+          <div class="stat-row">
+            <div class="stat"><div class="num">24</div><div class="lab">Nodes</div></div>
+            <div class="stat"><div class="num">186</div><div class="lab">Pods</div></div>
+            <div class="stat"><div class="num">12</div><div class="lab">Namespaces</div></div>
+            <div class="stat"><div class="num" style="color:var(--pf-success)">99.94%</div><div class="lab">Uptime (30d)</div></div>
+          </div>
+        </div>
+      </div>
+
+      <h3>Status labels</h3>
+      <div class="status-row" style="margin-top:16px">
+        <span class="pf-label ok"><span class="dot"></span>Running</span>
+        <span class="pf-label err"><span class="dot"></span>Failed</span>
+        <span class="pf-label warn"><span class="dot"></span>Pending</span>
+        <span class="pf-label info"><span class="dot"></span>Provisioning</span>
+        <span class="pf-label neutral"><span class="dot"></span>Stopped</span>
+        <span class="pf-label neutral"><span class="dot"></span>Unknown</span>
+      </div>
+
+      <h3>Shape scale</h3>
+      <div style="display:flex;gap:16px;flex-wrap:wrap">
+        <div style="width:80px;height:80px;background:var(--pf-blue-50);border:1px solid var(--pf-blue-100);border-radius:0;display:flex;align-items:center;justify-content:center;font-family:var(--pf-mono);font-size:11px;color:var(--pf-blue-500)">0px</div>
+        <div style="width:80px;height:80px;background:var(--pf-blue-50);border:1px solid var(--pf-blue-100);border-radius:3px;display:flex;align-items:center;justify-content:center;font-family:var(--pf-mono);font-size:11px;color:var(--pf-blue-500)">3px</div>
+        <div style="width:80px;height:80px;background:var(--pf-blue-50);border:1px solid var(--pf-blue-100);border-radius:4px;display:flex;align-items:center;justify-content:center;font-family:var(--pf-mono);font-size:11px;color:var(--pf-blue-500)">4px</div>
+        <div style="width:80px;height:80px;background:var(--pf-blue-50);border:1px solid var(--pf-blue-100);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:var(--pf-mono);font-size:11px;color:var(--pf-blue-500)">6px</div>
+        <div style="width:80px;height:80px;background:var(--pf-blue-50);border:1px solid var(--pf-blue-100);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--pf-mono);font-size:11px;color:var(--pf-blue-500)">8px</div>
+      </div>
+
+      <h3>Spacing scale (8px grid)</h3>
+      <div>
+        <div class="space-row"><span class="lbl">xs</span><span class="px">4px</span><span class="space-bar" style="width:4px"></span></div>
+        <div class="space-row"><span class="lbl">sm</span><span class="px">8px</span><span class="space-bar" style="width:8px"></span></div>
+        <div class="space-row"><span class="lbl">md</span><span class="px">16px</span><span class="space-bar" style="width:16px"></span></div>
+        <div class="space-row"><span class="lbl">lg</span><span class="px">24px</span><span class="space-bar" style="width:24px"></span></div>
+        <div class="space-row"><span class="lbl">xl</span><span class="px">32px</span><span class="space-bar" style="width:32px"></span></div>
+        <div class="space-row"><span class="lbl">2xl</span><span class="px">48px</span><span class="space-bar" style="width:48px"></span></div>
+        <div class="space-row"><span class="lbl">3xl</span><span class="px">64px</span><span class="space-bar" style="width:64px"></span></div>
+      </div>
+    </section>
+
+    <section id="feedback" data-fidelity="documented">
+      <h2>
+        <span>Feedback</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://www.patternfly.org/components/alert" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p class="muted">PatternFly alerts use a 3px left border in the variant color plus a tinted background. Inline alerts integrate inside forms; toast alerts stack from a notification drawer.</p>
+
+      <h3>Alerts</h3>
+      <div class="alert-grid">
+        <div class="pf-alert ok">
+          <span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/></svg></span>
+          <div class="body">
+            <div class="ttl">Deployment succeeded</div>
+            <div class="msg">api-server v3.4.2 has been deployed to production-cluster-01 across 3 nodes.</div>
+          </div>
+        </div>
+        <div class="pf-alert err">
+          <span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg></span>
+          <div class="body">
+            <div class="ttl">Pod failed to start</div>
+            <div class="msg">CrashLoopBackOff in <code>billing-job-7c4f9</code>. Container exited with status 137 — possible OOM.</div>
+          </div>
+        </div>
+        <div class="pf-alert warn">
+          <span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg></span>
+          <div class="body">
+            <div class="ttl">CPU usage approaching limit</div>
+            <div class="msg">Cluster CPU at 87%. Consider scaling out before reaching 90% threshold.</div>
+          </div>
+        </div>
+        <div class="pf-alert info">
+          <span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg></span>
+          <div class="body">
+            <div class="ttl">Operator update available</div>
+            <div class="msg">A new version of the cert-manager operator is available. Review changes before upgrading.</div>
+          </div>
+        </div>
+      </div>
+
+      <h3>Toast</h3>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:12px">
+        <div class="pf-toast">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="color:var(--pf-success)"><circle cx="12" cy="12" r="10"/></svg>
+          Configuration saved
+        </div>
+        <div class="pf-toast" style="background:var(--pf-danger)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>
+          Failed to connect to cluster
+        </div>
+        <div class="pf-toast" style="background:var(--pf-blue-500)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>
+          Build started
+        </div>
+      </div>
+
+      <h3>Empty state</h3>
+      <div style="margin-top:16px;padding:48px 24px;text-align:center;background:var(--pf-black-100);border:1px solid var(--pf-black-200);border-radius:var(--pf-radius)">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--pf-black-500)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:16px"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <div style="font-family:var(--pf-display);font-size:20px;font-weight:500;margin-bottom:6px">No results found</div>
+        <div style="font-size:14px;color:var(--pf-black-700);margin-bottom:16px">Try adjusting your search or filter to find what you're looking for.</div>
+        <button class="pf-btn pf-btn--primary">Clear filters</button>
+      </div>
+    </section>
+
+    <section id="navigation" data-fidelity="documented">
+      <h2>
+        <span>Navigation</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://www.patternfly.org/components/tabs" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p class="muted">PatternFly's vertical sidebar (dark) plus horizontal tab pattern is the signature OpenShift console layout. Breadcrumbs and pagination round out the navigation primitives.</p>
+
+      <h3>Tabs</h3>
+      <div class="pf-tabs" style="margin-top:8px">
+        <div class="pf-tab active">Overview</div>
+        <div class="pf-tab">YAML</div>
+        <div class="pf-tab">Pods (24)</div>
+        <div class="pf-tab">Events</div>
+        <div class="pf-tab">Metrics</div>
+        <div class="pf-tab">Logs</div>
+      </div>
+
+      <h3>Vertical nav (OpenShift sidebar)</h3>
+      <div class="pf-vnav">
+        <div class="pf-vnav-section">Cluster</div>
+        <div class="pf-vnav-item active">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h18v18H3zM3 9h18M9 21V9"/></svg>
+          Overview
+        </div>
+        <div class="pf-vnav-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/></svg>
+          Nodes
+        </div>
+        <div class="pf-vnav-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16.5v-9a2 2 0 0 0-1-1.7l-8-4.5a2 2 0 0 0-2 0l-8 4.5A2 2 0 0 0 1 7.5v9a2 2 0 0 0 1 1.7l8 4.5a2 2 0 0 0 2 0l8-4.5a2 2 0 0 0 1-1.7z"/></svg>
+          Pods
+        </div>
+        <div class="pf-vnav-section">Workloads</div>
+        <div class="pf-vnav-item">Deployments</div>
+        <div class="pf-vnav-item">DaemonSets</div>
+        <div class="pf-vnav-item">Jobs</div>
+        <div class="pf-vnav-item">CronJobs</div>
+      </div>
+
+      <h3>Breadcrumbs</h3>
+      <div class="pf-bread" style="margin-top:8px">
+        <a href="#">Home</a>
+        <span class="sep">/</span>
+        <a href="#">Workloads</a>
+        <span class="sep">/</span>
+        <a href="#">Deployments</a>
+        <span class="sep">/</span>
+        <span class="current">api-server</span>
+      </div>
+
+      <h3>Pagination</h3>
+      <div class="pf-pagination" style="margin-top:8px">
+        <button class="pf-page" aria-label="prev">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <span class="pf-page">1</span>
+        <span class="pf-page active">2</span>
+        <span class="pf-page">3</span>
+        <span class="pf-page">4</span>
+        <span class="pf-page">5</span>
+        <span style="padding:0 8px;color:var(--pf-black-600)">...</span>
+        <span class="pf-page">12</span>
+        <button class="pf-page" aria-label="next">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+        <span style="margin-left:16px;font-size:13px;color:var(--pf-black-600)">1-20 of 234</span>
+      </div>
+    </section>
+
+    <section id="data" data-fidelity="documented">
+      <h2>
+        <span>Data</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://www.patternfly.org/components/table" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p class="muted">PatternFly tables prioritize information density: 12px vertical padding, uppercase column headers in Red Hat Display, and inline status labels for at-a-glance scanning.</p>
+
+      <h3>Data table</h3>
+      <div class="pf-table-wrap" style="margin-top:8px">
+        <table class="pf-table">
+          <thead>
+            <tr>
+              <th style="width:40px"><label class="pf-check"><input type="checkbox"><span class="box"></span></label></th>
+              <th>Name</th>
+              <th>Namespace</th>
+              <th>Status</th>
+              <th>Replicas</th>
+              <th>Age</th>
+              <th style="width:40px"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><label class="pf-check"><input type="checkbox" checked><span class="box"></span></label></td>
+              <td><a href="#" style="color:var(--pf-blue-400);text-decoration:none">api-server</a></td>
+              <td>production</td>
+              <td><span class="pf-label ok"><span class="dot"></span>Running</span></td>
+              <td>3 / 3</td>
+              <td>14d</td>
+              <td><button class="pf-btn pf-btn--plain pf-btn--sm" aria-label="more">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>
+              </button></td>
+            </tr>
+            <tr>
+              <td><label class="pf-check"><input type="checkbox"><span class="box"></span></label></td>
+              <td><a href="#" style="color:var(--pf-blue-400);text-decoration:none">auth-service</a></td>
+              <td>production</td>
+              <td><span class="pf-label ok"><span class="dot"></span>Running</span></td>
+              <td>2 / 2</td>
+              <td>14d</td>
+              <td><button class="pf-btn pf-btn--plain pf-btn--sm" aria-label="more">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>
+              </button></td>
+            </tr>
+            <tr>
+              <td><label class="pf-check"><input type="checkbox"><span class="box"></span></label></td>
+              <td><a href="#" style="color:var(--pf-blue-400);text-decoration:none">billing-job</a></td>
+              <td>production</td>
+              <td><span class="pf-label warn"><span class="dot"></span>Pending</span></td>
+              <td>0 / 1</td>
+              <td>2h</td>
+              <td><button class="pf-btn pf-btn--plain pf-btn--sm" aria-label="more">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>
+              </button></td>
+            </tr>
+            <tr>
+              <td><label class="pf-check"><input type="checkbox"><span class="box"></span></label></td>
+              <td><a href="#" style="color:var(--pf-blue-400);text-decoration:none">notification-svc</a></td>
+              <td>staging</td>
+              <td><span class="pf-label err"><span class="dot"></span>Failed</span></td>
+              <td>0 / 2</td>
+              <td>6h</td>
+              <td><button class="pf-btn pf-btn--plain pf-btn--sm" aria-label="more">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>
+              </button></td>
+            </tr>
+            <tr>
+              <td><label class="pf-check"><input type="checkbox"><span class="box"></span></label></td>
+              <td><a href="#" style="color:var(--pf-blue-400);text-decoration:none">ingress-controller</a></td>
+              <td>system</td>
+              <td><span class="pf-label ok"><span class="dot"></span>Running</span></td>
+              <td>3 / 3</td>
+              <td>30d</td>
+              <td><button class="pf-btn pf-btn--plain pf-btn--sm" aria-label="more">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>
+              </button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="layout" data-fidelity="documented">
+      <h2>
+        <span>Layout</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://www.patternfly.org/layouts/about-layouts" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p class="muted">PatternFly's grid is a 12-column responsive system. Standard layouts include Stack (vertical), Split (two-pane), Bullseye (centered), and Gallery (auto-fit grid).</p>
+
+      <h3>12-column grid</h3>
+      <div class="layout-grid">
+        <div class="layout-cell" style="grid-column:span 12">12 (full)</div>
+      </div>
+      <div class="layout-grid">
+        <div class="layout-cell" style="grid-column:span 6">6</div>
+        <div class="layout-cell" style="grid-column:span 6">6</div>
+      </div>
+      <div class="layout-grid">
+        <div class="layout-cell" style="grid-column:span 4">4</div>
+        <div class="layout-cell" style="grid-column:span 4">4</div>
+        <div class="layout-cell" style="grid-column:span 4">4</div>
+      </div>
+      <div class="layout-grid">
+        <div class="layout-cell" style="grid-column:span 3">3</div>
+        <div class="layout-cell" style="grid-column:span 3">3</div>
+        <div class="layout-cell" style="grid-column:span 3">3</div>
+        <div class="layout-cell" style="grid-column:span 3">3</div>
+      </div>
+      <div class="layout-grid">
+        <div class="layout-cell" style="grid-column:span 8">8 (main)</div>
+        <div class="layout-cell" style="grid-column:span 4">4 (sidebar)</div>
+      </div>
+
+      <h3>Page layout (split with sidebar)</h3>
+      <div style="display:grid;grid-template-columns:200px 1fr;gap:16px;border:1px solid var(--pf-black-200);border-radius:var(--pf-radius);overflow:hidden;background:var(--pf-black-100)">
+        <div style="background:var(--pf-black-1000);color:white;padding:16px">
+          <div style="font-family:var(--pf-display);font-size:14px;font-weight:500;margin-bottom:12px">Sidebar</div>
+          <div style="font-size:12px;color:#C8C8C8;line-height:1.8">
+            Workloads<br>
+            Networking<br>
+            Storage<br>
+            Builds<br>
+            Pipelines
+          </div>
+        </div>
+        <div style="padding:20px">
+          <div style="font-family:var(--pf-display);font-size:18px;font-weight:500;margin-bottom:8px">Main content area</div>
+          <div style="font-size:13px;color:var(--pf-black-700);margin-bottom:12px">PatternFly's standard console layout: dark vertical nav, white workspace.</div>
+          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px">
+            <div style="padding:12px;background:white;border:1px solid var(--pf-black-200);border-radius:var(--pf-radius);font-size:12px">Card A</div>
+            <div style="padding:12px;background:white;border:1px solid var(--pf-black-200);border-radius:var(--pf-radius);font-size:12px">Card B</div>
+          </div>
+        </div>
+      </div>
+
+      <h3>Responsive breakpoints</h3>
+      <div style="margin-top:8px">
+        <div class="role-grid">
+          <div class="role-chip" style="background:var(--pf-black-100);border:1px solid var(--pf-black-200)">sm <code>576px</code></div>
+          <div class="role-chip" style="background:var(--pf-black-100);border:1px solid var(--pf-black-200)">md <code>768px</code></div>
+          <div class="role-chip" style="background:var(--pf-black-100);border:1px solid var(--pf-black-200)">lg <code>992px</code></div>
+          <div class="role-chip" style="background:var(--pf-black-100);border:1px solid var(--pf-black-200)">xl <code>1200px</code></div>
+          <div class="role-chip" style="background:var(--pf-black-100);border:1px solid var(--pf-black-200)">2xl <code>1450px</code></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="ds-footer">
+    <h3>Reference & sources</h3>
+    <ul>
+      <li><a href="https://www.patternfly.org" target="_blank" rel="noopener">https://www.patternfly.org</a> (verified · checked 2026-05-05)</li>
+      <li><a href="https://www.patternfly.org/tokens/about-tokens" target="_blank" rel="noopener">https://www.patternfly.org/tokens/about-tokens</a></li>
+      <li><a href="https://www.patternfly.org/design-foundations/typography" target="_blank" rel="noopener">https://www.patternfly.org/design-foundations/typography</a></li>
+      <li><a href="https://www.patternfly.org/components/button" target="_blank" rel="noopener">https://www.patternfly.org/components/button</a></li>
+      <li><a href="https://github.com/patternfly/patternfly" target="_blank" rel="noopener">GitHub: patternfly/patternfly (MIT)</a></li>
+    </ul>
+    <p class="license-note">This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Red Hat. PatternFly and related trademarks belong to Red Hat. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</p>
+    <p class="meta-note">id: 47-patternfly · fidelity: documented · source: verified · sourceCheckedAt: 2026-05-05</p>
+  </footer>
+</body>
+</html>

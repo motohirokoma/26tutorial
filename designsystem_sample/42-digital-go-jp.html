@@ -1,0 +1,1437 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>デジタル庁デザインシステム — Design System Reference</title>
+  <script id="ds-meta" type="application/json">
+{"id":"42-digital-go-jp","fileSlug":"42-digital-go-jp","schemaVersion":"1"}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* デジタル庁ブルー (signature) */
+      --da-blue: #0017C1;
+      --da-blue-dark: #000A88;
+      --da-blue-light: #E5F5FB;
+      --da-blue-supporting: #007AC2;
+      --da-blue-supporting-light: #C9E5F4;
+      --da-cyan: #00B5DD;
+
+      /* 中性色 */
+      --da-text: #1A1A1C;
+      --da-text-secondary: #595959;
+      --da-text-disabled: #949494;
+      --da-white: #FFFFFF;
+      --da-surface: #F5F5F5;
+      --da-surface-light: #FAFAFA;
+      --da-border: #EBEBEB;
+      --da-border-strong: #D2D2D2;
+
+      /* セマンティック */
+      --da-success: #008B5C;
+      --da-success-light: #DDF1E6;
+      --da-warning: #A36F00;
+      --da-warning-light: #FBF1D9;
+      --da-error: #CE0000;
+      --da-error-light: #FCE8E8;
+
+      /* タイポ */
+      --da-font: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Yu Gothic Medium', 'Meiryo', sans-serif;
+      --da-mono: ui-monospace, 'Noto Sans Mono CJK JP', SFMono-Regular, Menlo, monospace;
+
+      /* シェイプ — デジタル庁: 角丸 4-8px */
+      --da-r-0: 0;
+      --da-r-1: 2px;
+      --da-r-2: 4px;
+      --da-r-3: 6px;
+      --da-r-4: 8px;
+      --da-r-5: 12px;
+      --da-r-pill: 999px;
+
+      /* スペーシング — 8×10pxグリッド基調 */
+      --da-s-1: 4px;
+      --da-s-2: 8px;
+      --da-s-3: 12px;
+      --da-s-4: 16px;
+      --da-s-5: 20px;
+      --da-s-6: 24px;
+      --da-s-7: 32px;
+      --da-s-8: 40px;
+      --da-s-9: 48px;
+      --da-s-10: 64px;
+      --da-s-11: 80px;
+
+      /* シャドウ */
+      --da-shadow-1: 0 1px 2px rgba(0,0,0,0.04);
+      --da-shadow-2: 0 2px 4px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+      --da-shadow-3: 0 8px 16px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+      --da-shadow-4: 0 16px 32px rgba(0,0,0,0.1);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--da-font);
+      background: var(--da-surface);
+      color: var(--da-text);
+      line-height: 1.7;
+      font-feature-settings: "palt";
+      -webkit-font-smoothing: antialiased;
+    }
+    code, kbd, pre { font-family: var(--da-mono); }
+    a { color: var(--da-blue); }
+
+    /* ヘッダー */
+    .ds-header {
+      background: var(--da-blue);
+      color: var(--da-white);
+      padding: var(--da-s-9) var(--da-s-7) var(--da-s-7);
+      position: relative;
+      overflow: hidden;
+    }
+    .ds-header::before {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 50%; height: 100%;
+      background: linear-gradient(135deg, transparent 0%, rgba(0,181,221,0.18) 60%, rgba(0,181,221,0.32) 100%);
+      pointer-events: none;
+    }
+    .ds-header > * { position: relative; }
+
+    .back-link {
+      display: inline-flex; align-items: center; gap: var(--da-s-2);
+      color: var(--da-white);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: var(--da-r-2);
+      border: 1px solid rgba(255,255,255,0.3);
+      transition: background 0.15s;
+    }
+    .back-link:hover { background: rgba(255,255,255,0.12); }
+
+    .ds-header h1 {
+      font-size: 48px; line-height: 1.3;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      margin: var(--da-s-5) 0 var(--da-s-3);
+    }
+
+    .ds-header .subtitle {
+      font-size: 16px;
+      color: rgba(255,255,255,0.85);
+      margin-bottom: var(--da-s-3);
+      font-weight: 400;
+    }
+
+    .ds-header .meta {
+      display: flex; flex-wrap: wrap; gap: var(--da-s-2); align-items: center;
+      margin-bottom: var(--da-s-3);
+    }
+
+    .badge {
+      display: inline-flex; align-items: center;
+      padding: 4px 12px;
+      border-radius: var(--da-r-2);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      border: 1px solid rgba(255,255,255,0.3);
+      background: rgba(255,255,255,0.1);
+      color: var(--da-white);
+    }
+    .badge.kind-ds { background: var(--da-cyan); color: var(--da-blue-dark); border-color: transparent; }
+    .badge.fidelity-documented { background: var(--da-success-light); color: #005A3B; border-color: transparent; }
+    .badge.fidelity-approximated { background: var(--da-warning-light); color: #735000; border-color: transparent; }
+    .badge.fidelity-inspired { background: #F0E1F0; color: #6E2A82; border-color: transparent; }
+    .badge.source-verified { background: var(--da-blue-light); color: var(--da-blue-dark); border-color: transparent; }
+
+    .ds-header a.official {
+      color: var(--da-white);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 4px 12px;
+      border: 1px solid rgba(255,255,255,0.4);
+      border-radius: var(--da-r-2);
+      font-size: 13px;
+      background: rgba(255,255,255,0.08);
+    }
+    .ds-header a.official:hover { background: rgba(255,255,255,0.18); }
+
+    .tagline {
+      font-size: 18px;
+      line-height: 1.7;
+      max-width: 720px;
+      margin: var(--da-s-4) 0 0;
+      color: rgba(255,255,255,0.92);
+    }
+
+    /* TOC */
+    .toc {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(255,255,255,0.96);
+      border-bottom: 1px solid var(--da-border);
+      backdrop-filter: blur(10px);
+    }
+    .toc ul {
+      list-style: none; margin: 0;
+      padding: var(--da-s-3) var(--da-s-7);
+      display: flex; gap: var(--da-s-2); overflow-x: auto;
+    }
+    .toc a {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: var(--da-r-2);
+      color: var(--da-blue);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      white-space: nowrap;
+      border: 1px solid var(--da-border);
+      background: var(--da-white);
+      transition: all 0.15s;
+    }
+    .toc a:hover { background: var(--da-blue); color: var(--da-white); border-color: var(--da-blue); }
+
+    /* メイン */
+    main { max-width: 1280px; margin: 0 auto; padding: var(--da-s-7); }
+
+    section {
+      background: var(--da-white);
+      border-radius: var(--da-r-4);
+      padding: var(--da-s-7);
+      margin-bottom: var(--da-s-6);
+      border: 1px solid var(--da-border);
+    }
+    section h2 {
+      display: flex; align-items: center; gap: var(--da-s-3); flex-wrap: wrap;
+      font-size: 28px; line-height: 1.4; font-weight: 700;
+      margin: 0 0 var(--da-s-5);
+      color: var(--da-text);
+      padding-bottom: var(--da-s-3);
+      border-bottom: 2px solid var(--da-blue);
+    }
+    .source-link {
+      font-size: 13px;
+      color: var(--da-blue-supporting);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .source-link:hover { text-decoration: underline; }
+
+    h3 {
+      font-size: 20px; line-height: 1.5;
+      font-weight: 700;
+      margin: var(--da-s-6) 0 var(--da-s-3);
+      color: var(--da-text);
+      padding-left: 12px;
+      border-left: 4px solid var(--da-blue);
+    }
+    h4 { font-size: 15px; line-height: 1.5; font-weight: 700; margin: var(--da-s-4) 0 var(--da-s-2); color: var(--da-text-secondary); }
+    p { margin: 0 0 var(--da-s-3); }
+
+    /* ブランド */
+    #brand .brand-mark {
+      display: inline-flex; align-items: center; gap: var(--da-s-3);
+      padding: var(--da-s-3) var(--da-s-5);
+      background: var(--da-blue);
+      border-radius: var(--da-r-4);
+      color: var(--da-white);
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+    #brand .brand-mark .glyph {
+      width: 28px; height: 28px;
+      border-radius: var(--da-r-2);
+      background: var(--da-white);
+      display: inline-flex; align-items: center; justify-content: center;
+      color: var(--da-blue);
+      font-weight: 700;
+      font-size: 16px;
+    }
+    #brand .pillars {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--da-s-4);
+      margin-top: var(--da-s-5);
+    }
+    #brand .pillar {
+      padding: var(--da-s-5);
+      background: var(--da-blue-light);
+      border-radius: var(--da-r-4);
+      border-top: 4px solid var(--da-blue);
+    }
+    #brand .pillar h4 {
+      margin-top: 0; color: var(--da-blue-dark); font-size: 16px;
+    }
+
+    /* カラー */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 2px;
+      margin-bottom: var(--da-s-4);
+    }
+    .color-cell {
+      aspect-ratio: 1;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 8px;
+      font-size: 11px; font-family: var(--da-mono);
+      border-radius: 0;
+    }
+    .color-cell:first-child { border-radius: var(--da-r-2) 0 0 var(--da-r-2); }
+    .color-cell:last-child { border-radius: 0 var(--da-r-2) var(--da-r-2) 0; }
+
+    .semantic-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+      gap: var(--da-s-3);
+    }
+    .sem-card {
+      padding: var(--da-s-4);
+      border-radius: var(--da-r-4);
+      display: flex; flex-direction: column; gap: 4px;
+      border-left: 4px solid;
+    }
+    .sem-card .label { font-size: 14px; font-weight: 700; }
+    .sem-card .hex { font-family: var(--da-mono); font-size: 12px; opacity: 0.85; }
+
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--da-s-2);
+      margin-bottom: var(--da-s-4);
+    }
+    .role-chip {
+      padding: var(--da-s-3) var(--da-s-4);
+      border-radius: var(--da-r-3);
+      font-size: 13px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .role-chip code { font-size: 11px; opacity: 0.85; font-family: var(--da-mono); }
+
+    /* タイポグラフィ */
+    .type-row {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: var(--da-s-4);
+      padding: var(--da-s-3) 0;
+      border-bottom: 1px solid var(--da-border);
+      align-items: baseline;
+    }
+    .type-row:last-child { border-bottom: 0; }
+    .type-row .label {
+      font-family: var(--da-mono);
+      font-size: 12px;
+      color: var(--da-text-secondary);
+    }
+    .display-1 { font-size: 56px; line-height: 1.3; font-weight: 700; letter-spacing: 0.01em; }
+    .display-2 { font-size: 48px; line-height: 1.3; font-weight: 700; letter-spacing: 0.01em; }
+    .display-3 { font-size: 36px; line-height: 1.4; font-weight: 700; }
+    .heading-xl { font-size: 32px; line-height: 1.4; font-weight: 700; }
+    .heading-lg { font-size: 24px; line-height: 1.5; font-weight: 700; }
+    .heading-md { font-size: 20px; line-height: 1.5; font-weight: 700; }
+    .heading-sm { font-size: 18px; line-height: 1.5; font-weight: 700; }
+    .heading-xs { font-size: 16px; line-height: 1.5; font-weight: 700; }
+    .body-lg { font-size: 18px; line-height: 1.7; font-weight: 400; }
+    .body-md { font-size: 16px; line-height: 1.7; font-weight: 400; }
+    .body-sm { font-size: 14px; line-height: 1.6; font-weight: 400; }
+    .body-xs { font-size: 12px; line-height: 1.6; font-weight: 400; }
+    .label-md { font-size: 14px; line-height: 1.5; font-weight: 500; }
+    .mono-sample { font-family: var(--da-mono); font-size: 13px; color: var(--da-text-secondary); }
+
+    /* アイコン */
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(96px,1fr));
+      gap: var(--da-s-3);
+    }
+    .icon-cell {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 8px;
+      padding: var(--da-s-3);
+      background: var(--da-surface-light);
+      border-radius: var(--da-r-4);
+      border: 1px solid var(--da-border);
+    }
+    .icon-cell svg { width: 24px; height: 24px; stroke: var(--da-blue); fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+    .icon-cell span { font-size: 11px; color: var(--da-text-secondary); }
+
+    /* ボタン */
+    .button-row {
+      display: flex; flex-wrap: wrap; gap: var(--da-s-3); align-items: center;
+      margin-bottom: var(--da-s-3);
+    }
+    .da-btn {
+      font-family: var(--da-font);
+      font-size: 15px;
+      font-weight: 700;
+      padding: 10px 24px;
+      border-radius: var(--da-r-2);
+      border: 0;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 40px;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+      line-height: 1.4;
+    }
+    .da-btn--solid-blue { background: var(--da-blue); color: var(--da-white); }
+    .da-btn--solid-blue:hover { background: var(--da-blue-dark); }
+    .da-btn--solid-supporting { background: var(--da-blue-supporting); color: var(--da-white); }
+    .da-btn--solid-supporting:hover { background: #005C92; }
+    .da-btn--outlined { background: var(--da-white); color: var(--da-blue); border: 2px solid var(--da-blue); }
+    .da-btn--outlined:hover { background: var(--da-blue-light); }
+    .da-btn--text { background: transparent; color: var(--da-blue); padding: 10px 12px; }
+    .da-btn--text:hover { background: var(--da-blue-light); }
+    .da-btn--neutral { background: var(--da-surface); color: var(--da-text); border: 1px solid var(--da-border-strong); }
+    .da-btn--neutral:hover { background: var(--da-border); }
+    .da-btn--danger { background: var(--da-error); color: var(--da-white); }
+    .da-btn--danger:hover { background: #A60000; }
+    .da-btn:disabled { background: var(--da-border); color: var(--da-text-disabled); cursor: not-allowed; border-color: transparent; }
+    .da-btn--small { min-height: 32px; padding: 6px 16px; font-size: 13px; }
+    .da-btn--medium { min-height: 40px; }
+    .da-btn--large { min-height: 48px; padding: 12px 28px; font-size: 16px; }
+    .da-btn:focus-visible { outline: 3px solid var(--da-cyan); outline-offset: 2px; }
+
+    /* フォーム */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+      gap: var(--da-s-4);
+    }
+    .da-field { display: flex; flex-direction: column; gap: 6px; }
+    .da-field label.field-label {
+      font-size: 14px; font-weight: 700; color: var(--da-text);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .da-field .required-tag {
+      background: var(--da-error); color: var(--da-white);
+      padding: 1px 6px; border-radius: var(--da-r-1);
+      font-size: 11px; font-weight: 700;
+    }
+    .da-field .optional-tag {
+      background: var(--da-border); color: var(--da-text-secondary);
+      padding: 1px 6px; border-radius: var(--da-r-1);
+      font-size: 11px; font-weight: 500;
+    }
+    .da-input, .da-textarea, .da-select {
+      background: var(--da-white);
+      border: 1px solid var(--da-border-strong);
+      border-radius: var(--da-r-2);
+      padding: 10px 12px;
+      font-family: var(--da-font);
+      font-size: 15px;
+      color: var(--da-text);
+      width: 100%;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .da-input:hover, .da-textarea:hover, .da-select:hover { border-color: var(--da-blue-supporting); }
+    .da-input:focus, .da-textarea:focus, .da-select:focus {
+      outline: none;
+      border-color: var(--da-blue);
+      box-shadow: 0 0 0 3px var(--da-blue-light);
+    }
+    .da-input.error { border-color: var(--da-error); border-width: 2px; }
+    .da-input.error:focus { box-shadow: 0 0 0 3px var(--da-error-light); }
+    .da-textarea { min-height: 96px; resize: vertical; }
+    .da-select {
+      appearance: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23595959' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 40px;
+    }
+    .da-helper { font-size: 12px; color: var(--da-text-secondary); }
+    .da-error-text { font-size: 12px; color: var(--da-error); font-weight: 500; display: flex; align-items: center; gap: 4px; }
+
+    .da-checkbox, .da-radio {
+      display: inline-flex; align-items: center; gap: 8px;
+      cursor: pointer;
+      font-size: 15px;
+      padding: 6px 0;
+    }
+    .da-checkbox input, .da-radio input {
+      width: 20px; height: 20px;
+      accent-color: var(--da-blue);
+    }
+
+    .da-switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+    .da-switch input { opacity: 0; width: 0; height: 0; }
+    .da-switch .slider {
+      position: absolute; cursor: pointer; inset: 0;
+      background: var(--da-border-strong);
+      border-radius: var(--da-r-pill);
+      transition: 0.2s;
+    }
+    .da-switch .slider::before {
+      content: ''; position: absolute;
+      width: 18px; height: 18px;
+      left: 3px; top: 3px;
+      background: var(--da-white);
+      border-radius: 50%;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+      transition: 0.2s;
+    }
+    .da-switch input:checked + .slider { background: var(--da-blue); }
+    .da-switch input:checked + .slider::before { transform: translateX(20px); }
+
+    /* サーフェス */
+    .surface-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+      gap: var(--da-s-4);
+    }
+    .da-card {
+      background: var(--da-white);
+      border-radius: var(--da-r-4);
+      padding: 0;
+      border: 1px solid var(--da-border);
+      overflow: hidden;
+      display: flex; flex-direction: column;
+    }
+    .da-card--shadow { border: 0; box-shadow: var(--da-shadow-2); }
+    .da-card .media {
+      height: 140px;
+      background: linear-gradient(135deg, var(--da-blue), var(--da-cyan));
+    }
+    .da-card .body { padding: var(--da-s-5); }
+    .da-card .body h4 { margin: 0 0 8px; font-size: 17px; color: var(--da-text); font-weight: 700; }
+    .da-card .body p { font-size: 14px; color: var(--da-text-secondary); margin: 0; line-height: 1.7; }
+
+    .da-stat {
+      padding: var(--da-s-5);
+      background: var(--da-blue);
+      color: var(--da-white);
+      border-radius: var(--da-r-4);
+    }
+    .da-stat .num { font-size: 36px; font-weight: 700; line-height: 1; letter-spacing: 0; }
+    .da-stat .lbl { font-size: 13px; opacity: 0.9; margin-top: 6px; }
+
+    .da-modal {
+      background: var(--da-white);
+      padding: var(--da-s-5);
+      border-radius: var(--da-r-4);
+      box-shadow: var(--da-shadow-3);
+      max-width: 420px;
+      border-top: 4px solid var(--da-blue);
+    }
+    .da-modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; }
+
+    .da-callout {
+      padding: var(--da-s-4);
+      background: var(--da-blue-light);
+      border-radius: var(--da-r-4);
+      border-left: 4px solid var(--da-blue);
+    }
+    .da-callout h4 { margin: 0 0 4px; color: var(--da-blue-dark); font-size: 15px; }
+
+    /* フィードバック */
+    .da-notification {
+      display: flex;
+      gap: var(--da-s-3);
+      padding: var(--da-s-3) var(--da-s-4);
+      border-radius: var(--da-r-3);
+      margin-bottom: var(--da-s-2);
+      font-size: 14px;
+      align-items: flex-start;
+      border-left: 4px solid;
+    }
+    .da-notification--info { background: var(--da-blue-light); border-left-color: var(--da-blue-supporting); color: var(--da-blue-dark); }
+    .da-notification--success { background: var(--da-success-light); border-left-color: var(--da-success); color: #005A3B; }
+    .da-notification--warning { background: var(--da-warning-light); border-left-color: var(--da-warning); color: #735000; }
+    .da-notification--error { background: var(--da-error-light); border-left-color: var(--da-error); color: #8E0000; }
+    .da-notification svg { width: 20px; height: 20px; flex-shrink: 0; }
+    .da-notification h4 { margin: 0 0 4px; font-size: 14px; }
+
+    .da-toast {
+      background: var(--da-text);
+      color: var(--da-white);
+      padding: 12px 16px;
+      border-radius: var(--da-r-3);
+      box-shadow: var(--da-shadow-3);
+      display: inline-flex; align-items: center; gap: 16px;
+      font-size: 14px;
+    }
+    .da-toast button { background: transparent; color: var(--da-cyan); border: 0; font-weight: 500; cursor: pointer; }
+
+    .da-tag-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .da-tag {
+      display: inline-flex; align-items: center;
+      padding: 4px 10px;
+      border-radius: var(--da-r-2);
+      background: var(--da-surface);
+      color: var(--da-text);
+      font-size: 12px; font-weight: 500;
+      border: 1px solid var(--da-border);
+    }
+    .da-tag--blue { background: var(--da-blue-light); color: var(--da-blue-dark); border-color: transparent; }
+    .da-tag--success { background: var(--da-success-light); color: #005A3B; border-color: transparent; }
+    .da-tag--warning { background: var(--da-warning-light); color: #735000; border-color: transparent; }
+    .da-tag--error { background: var(--da-error-light); color: #8E0000; border-color: transparent; }
+    .da-tag--solid { background: var(--da-blue); color: var(--da-white); border-color: transparent; }
+
+    .da-badge {
+      background: var(--da-error); color: var(--da-white);
+      border-radius: var(--da-r-pill);
+      font-size: 11px;
+      padding: 2px 8px;
+      font-weight: 700;
+    }
+
+    .da-progress {
+      width: 100%; height: 8px;
+      background: var(--da-border);
+      border-radius: var(--da-r-pill);
+      overflow: hidden;
+    }
+    .da-progress::after { content: ''; display: block; height: 100%; width: 65%; background: var(--da-blue); }
+
+    .da-skeleton {
+      height: 16px;
+      background: linear-gradient(90deg, var(--da-border), var(--da-surface), var(--da-border));
+      background-size: 200% 100%;
+      border-radius: var(--da-r-2);
+      animation: da-shimmer 1.4s infinite;
+    }
+    @keyframes da-shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+    .da-spinner {
+      width: 28px; height: 28px;
+      border: 3px solid var(--da-border);
+      border-top-color: var(--da-blue);
+      border-radius: 50%;
+      animation: da-spin 0.9s linear infinite;
+    }
+    @keyframes da-spin { to { transform: rotate(360deg); } }
+
+    /* ナビゲーション */
+    .da-tabs {
+      display: flex; gap: 0;
+      border-bottom: 2px solid var(--da-border);
+      margin-bottom: var(--da-s-3);
+    }
+    .da-tab {
+      padding: var(--da-s-3) var(--da-s-4);
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--da-text-secondary);
+      border-bottom: 3px solid transparent;
+      cursor: pointer;
+      margin-bottom: -2px;
+    }
+    .da-tab.active { color: var(--da-blue); border-bottom-color: var(--da-blue); font-weight: 700; }
+    .da-tab:hover:not(.active) { color: var(--da-text); }
+
+    .da-breadcrumb { display: flex; gap: 8px; align-items: center; font-size: 13px; color: var(--da-text-secondary); flex-wrap: wrap; }
+    .da-breadcrumb a { color: var(--da-blue); text-decoration: none; }
+    .da-breadcrumb a:hover { text-decoration: underline; }
+    .da-breadcrumb .sep::before { content: '>'; color: var(--da-text-disabled); margin: 0 4px; }
+
+    .da-pagination { display: flex; gap: 4px; align-items: center; }
+    .da-pagination button {
+      min-width: 36px; height: 36px;
+      border-radius: var(--da-r-2);
+      border: 1px solid var(--da-border);
+      background: var(--da-white);
+      color: var(--da-text);
+      cursor: pointer;
+      font-family: var(--da-font);
+      font-size: 13px;
+      padding: 0 10px;
+    }
+    .da-pagination button.active { background: var(--da-blue); color: var(--da-white); border-color: var(--da-blue); }
+    .da-pagination button:hover:not(.active) { background: var(--da-surface); }
+
+    .da-stepper { display: flex; align-items: center; gap: 8px; font-size: 13px; flex-wrap: wrap; }
+    .da-stepper .step { display: inline-flex; align-items: center; gap: 8px; }
+    .da-stepper .num {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--da-border); color: var(--da-text-secondary);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700;
+    }
+    .da-stepper .num.active { background: var(--da-blue); color: var(--da-white); }
+    .da-stepper .num.complete { background: var(--da-success); color: var(--da-white); }
+    .da-stepper .line { flex: 1; height: 2px; background: var(--da-border); min-width: 24px; }
+
+    .da-sidebar {
+      background: var(--da-white);
+      border-radius: var(--da-r-4);
+      padding: 8px;
+      width: 240px;
+      border: 1px solid var(--da-border);
+    }
+    .da-sidebar a {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 14px;
+      border-radius: var(--da-r-2);
+      color: var(--da-text);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .da-sidebar a.active { background: var(--da-blue); color: var(--da-white); }
+    .da-sidebar a:hover:not(.active) { background: var(--da-surface); color: var(--da-blue); }
+
+    .da-header-bar {
+      display: flex; align-items: center; gap: 16px;
+      padding: 12px 20px;
+      background: var(--da-white);
+      border-bottom: 4px solid var(--da-blue);
+      border-radius: var(--da-r-3);
+    }
+    .da-header-bar .gov-title {
+      font-size: 16px; font-weight: 700; color: var(--da-blue);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .da-header-bar .gov-title .glyph {
+      width: 24px; height: 24px;
+      border-radius: var(--da-r-1);
+      background: var(--da-blue);
+      display: inline-flex; align-items: center; justify-content: center;
+      color: var(--da-white); font-size: 13px;
+    }
+
+    .da-menu {
+      background: var(--da-white);
+      border-radius: var(--da-r-3);
+      box-shadow: var(--da-shadow-2);
+      padding: 6px 0;
+      width: 220px;
+      border: 1px solid var(--da-border);
+    }
+    .da-menu .item { padding: 10px 14px; font-size: 14px; cursor: pointer; }
+    .da-menu .item:hover { background: var(--da-blue-light); color: var(--da-blue); }
+    .da-menu .divider { height: 1px; background: var(--da-border); margin: 4px 0; }
+
+    /* データ */
+    table.da-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      background: var(--da-white);
+    }
+    table.da-table th, table.da-table td {
+      text-align: left;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--da-border);
+    }
+    table.da-table th {
+      font-weight: 700;
+      color: var(--da-blue-dark);
+      background: var(--da-blue-light);
+      font-size: 13px;
+    }
+    table.da-table tr:hover td { background: var(--da-surface-light); }
+
+    .da-list { list-style: none; padding: 0; margin: 0; }
+    .da-list li {
+      padding: 12px 16px;
+      display: flex; gap: 12px; align-items: center;
+      border-bottom: 1px solid var(--da-border);
+    }
+    .da-list li:last-child { border-bottom: 0; }
+
+    .da-kv { display: grid; grid-template-columns: 160px 1fr; gap: 12px; font-size: 14px; }
+    .da-kv dt { color: var(--da-text-secondary); font-weight: 700; }
+    .da-kv dd { margin: 0; }
+
+    .da-avatar {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: var(--da-blue);
+      color: var(--da-white);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-weight: 700;
+    }
+
+    .da-empty {
+      text-align: center;
+      padding: var(--da-s-9) var(--da-s-4);
+      color: var(--da-text-secondary);
+      background: var(--da-surface-light);
+      border-radius: var(--da-r-4);
+      border: 1px dashed var(--da-border-strong);
+    }
+    .da-empty svg { width: 48px; height: 48px; opacity: 0.4; stroke: var(--da-blue); fill: none; stroke-width: 1.6; }
+
+    /* レイアウト */
+    .grid-demo {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 8px;
+      background: var(--da-surface);
+      padding: 16px;
+      border-radius: var(--da-r-4);
+    }
+    .grid-demo > div {
+      background: var(--da-blue);
+      color: var(--da-white);
+      padding: 12px;
+      border-radius: var(--da-r-2);
+      font-size: 12px;
+      font-weight: 500;
+      text-align: center;
+    }
+
+    .scale-row {
+      display: flex; gap: var(--da-s-3); flex-wrap: wrap; align-items: flex-end;
+      margin-bottom: var(--da-s-4);
+    }
+    .scale-item { display: flex; flex-direction: column; gap: 6px; align-items: center; }
+    .scale-item .swatch { background: var(--da-blue); }
+    .scale-item .lbl { font-size: 11px; font-family: var(--da-mono); color: var(--da-text-secondary); }
+
+    .shadow-demo {
+      width: 80px; height: 80px;
+      background: var(--da-white);
+      border-radius: var(--da-r-4);
+      display: inline-flex; align-items: center; justify-content: center;
+      margin-right: 16px; margin-bottom: 16px;
+      font-size: 11px; font-family: var(--da-mono); color: var(--da-text-secondary);
+    }
+
+    /* フッター */
+    .ds-footer {
+      background: var(--da-blue-dark);
+      color: var(--da-white);
+      padding: var(--da-s-7);
+      margin-top: var(--da-s-9);
+    }
+    .ds-footer h3 {
+      margin-top: 0; color: var(--da-white); font-size: 18px;
+      padding-left: 0; border-left: 0;
+    }
+    .ds-footer ul { padding-left: 20px; }
+    .ds-footer li { margin-bottom: 4px; word-break: break-all; font-size: 13px; }
+    .ds-footer a { color: var(--da-cyan); text-decoration: none; }
+    .ds-footer a:hover { color: var(--da-white); text-decoration: underline; }
+    .license-note { font-size: 13px; color: rgba(255,255,255,0.75); margin-top: var(--da-s-4); max-width: 760px; line-height: 1.7; }
+    .meta-note { font-size: 12px; color: rgba(255,255,255,0.55); font-family: var(--da-mono); margin-top: var(--da-s-2); }
+
+    @media (max-width: 720px) {
+      .ds-header h1 { font-size: 32px; }
+      main { padding: var(--da-s-4); }
+      section { padding: var(--da-s-5); }
+      .type-row { grid-template-columns: 1fr; }
+      .color-grid { grid-template-columns: repeat(4, 1fr); }
+      .grid-demo > div:nth-child(n+7) { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="ds-header">
+    <a href="index.html" class="back-link">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Catalog
+    </a>
+    <p class="subtitle">Digital Agency Design System (DADS)</p>
+    <h1>デジタル庁デザインシステム</h1>
+    <div class="meta">
+      <span class="badge kind-ds">design-system</span>
+      <span class="badge fidelity-documented">documented</span>
+      <span class="badge source-verified">source: verified</span>
+      <a href="https://design.digital.go.jp" target="_blank" rel="noopener" class="official">公式サイト ↗</a>
+    </div>
+    <p class="tagline">日本デジタル庁が運用する、公的サービスのためのデザインシステム。深い「デジタル庁ブルー」(#0017C1) と Noto Sans JP を基調に、アクセシビリティと一貫性を備えた行政体験を支えます。</p>
+  </header>
+
+  <nav class="toc" aria-label="目次">
+    <ul>
+      <li><a href="#brand">ブランド</a></li>
+      <li><a href="#color">カラー</a></li>
+      <li><a href="#typography">タイポグラフィ</a></li>
+      <li><a href="#iconography">アイコン</a></li>
+      <li><a href="#buttons">ボタン</a></li>
+      <li><a href="#form">フォーム</a></li>
+      <li><a href="#surfaces">サーフェス</a></li>
+      <li><a href="#feedback">フィードバック</a></li>
+      <li><a href="#navigation">ナビゲーション</a></li>
+      <li><a href="#data">データ</a></li>
+      <li><a href="#layout">レイアウト</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="brand" data-fidelity="documented">
+      <h2>
+        <span>ブランド / Brand</span>
+        <span class="badge fidelity-documented">documented</span>
+      </h2>
+      <div class="brand-mark">
+        <span class="glyph">D</span>
+        デジタル庁 DS
+      </div>
+      <p style="margin-top: 24px; max-width: 720px; font-size: 16px; color: var(--da-text-secondary);">
+        デジタル庁デザインシステム (DADS) は、日本の行政デジタルサービス全体に一貫した使いやすさをもたらすために構築された公的デザイン基盤です。深いコーポレートブルー「デジタル庁ブルー」(#0017C1) を中心に、Noto Sans JP の安定した可読性、8×10pxのグリッド、JIS X 8341/WCAG 2.1 AA に準拠した配色を採用しています。
+      </p>
+      <div class="pillars">
+        <div class="pillar">
+          <h4>誰一人取り残さない</h4>
+          <p style="font-size:14px;color:var(--da-text-secondary);margin:0">アクセシビリティを既定とし、行政サービスを誰もが使えるかたちで届けます。</p>
+        </div>
+        <div class="pillar">
+          <h4>一貫性</h4>
+          <p style="font-size:14px;color:var(--da-text-secondary);margin:0">トークン化されたデザイン基準で、省庁横断の体験を統一します。</p>
+        </div>
+        <div class="pillar">
+          <h4>Trust by Design</h4>
+          <p style="font-size:14px;color:var(--da-text-secondary);margin:0">深い「デジタル庁ブルー」を信頼の象徴とし、過剰な装飾を避けます。</p>
+        </div>
+        <div class="pillar">
+          <h4>日本語ファースト</h4>
+          <p style="font-size:14px;color:var(--da-text-secondary);margin:0">和文ベースで設計された行間 1.7、句読点ペアカーニング (palt) を標準。</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="color" data-fidelity="documented">
+      <h2>
+        <span>カラー / Color</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://design.digital.go.jp/dads/foundations/color/" target="_blank" rel="noopener" class="source-link">公式 ↗</a>
+      </h2>
+      <p style="color:var(--da-text-secondary)">プライマリは「デジタル庁ブルー」 #0017C1。サポーティングブルー #007AC2 は補助、シアン #00B5DD はアクセントとして用います。地色は白とライトグレー (#F5F5F5)、本文は #1A1A1C。</p>
+
+      <h3>デジタル庁ブルー</h3>
+      <div class="color-grid">
+        <div class="color-cell" style="background:var(--da-blue-light);color:var(--da-blue-dark)">light</div>
+        <div class="color-cell" style="background:var(--da-blue-supporting-light);color:var(--da-blue-dark)">supp-l</div>
+        <div class="color-cell" style="background:var(--da-cyan);color:var(--da-blue-dark)">cyan</div>
+        <div class="color-cell" style="background:var(--da-blue-supporting);color:var(--da-white)">supporting</div>
+        <div class="color-cell" style="background:var(--da-blue);color:var(--da-white)">primary</div>
+        <div class="color-cell" style="background:var(--da-blue-dark);color:var(--da-white)">dark</div>
+        <div class="color-cell" style="background:#000A55;color:var(--da-white)">deepest</div>
+      </div>
+
+      <h3>ニュートラル</h3>
+      <div class="color-grid">
+        <div class="color-cell" style="background:var(--da-white);color:var(--da-text);border:1px solid var(--da-border)">white</div>
+        <div class="color-cell" style="background:var(--da-surface-light);color:var(--da-text)">FAFAFA</div>
+        <div class="color-cell" style="background:var(--da-surface);color:var(--da-text)">F5F5F5</div>
+        <div class="color-cell" style="background:var(--da-border);color:var(--da-text)">EBEBEB</div>
+        <div class="color-cell" style="background:var(--da-border-strong);color:var(--da-text)">D2D2D2</div>
+        <div class="color-cell" style="background:var(--da-text-secondary);color:var(--da-white)">595959</div>
+        <div class="color-cell" style="background:var(--da-text);color:var(--da-white)">1A1A1C</div>
+      </div>
+
+      <h3>セマンティック</h3>
+      <div class="semantic-grid">
+        <div class="sem-card" style="background:var(--da-blue-light);border-left-color:var(--da-blue-supporting);color:var(--da-blue-dark)">
+          <span class="label">情報 / Info</span><span class="hex">#007AC2</span>
+        </div>
+        <div class="sem-card" style="background:var(--da-success-light);border-left-color:var(--da-success);color:#005A3B">
+          <span class="label">成功 / Success</span><span class="hex">#008B5C</span>
+        </div>
+        <div class="sem-card" style="background:var(--da-warning-light);border-left-color:var(--da-warning);color:#735000">
+          <span class="label">注意 / Warning</span><span class="hex">#A36F00</span>
+        </div>
+        <div class="sem-card" style="background:var(--da-error-light);border-left-color:var(--da-error);color:#8E0000">
+          <span class="label">エラー / Error</span><span class="hex">#CE0000</span>
+        </div>
+      </div>
+
+      <h3>カラー役割</h3>
+      <div class="role-grid">
+        <div class="role-chip" style="background:var(--da-blue);color:var(--da-white)">Primary <code>#0017C1</code></div>
+        <div class="role-chip" style="background:var(--da-blue-supporting);color:var(--da-white)">Supporting <code>#007AC2</code></div>
+        <div class="role-chip" style="background:var(--da-cyan);color:var(--da-blue-dark)">Accent <code>#00B5DD</code></div>
+        <div class="role-chip" style="background:var(--da-blue-light);color:var(--da-blue-dark)">Tint <code>#E5F5FB</code></div>
+        <div class="role-chip" style="background:var(--da-text);color:var(--da-white)">Text Default <code>#1A1A1C</code></div>
+        <div class="role-chip" style="background:var(--da-surface);color:var(--da-text)">Surface <code>#F5F5F5</code></div>
+        <div class="role-chip" style="background:var(--da-success);color:var(--da-white)">Success <code>#008B5C</code></div>
+        <div class="role-chip" style="background:var(--da-error);color:var(--da-white)">Error <code>#CE0000</code></div>
+      </div>
+    </section>
+
+    <section id="typography" data-fidelity="documented">
+      <h2>
+        <span>タイポグラフィ / Typography</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://design.digital.go.jp/dads/foundations/typography/" target="_blank" rel="noopener" class="source-link">公式 ↗</a>
+      </h2>
+      <p style="color:var(--da-text-secondary)">和文は <code>Noto Sans JP</code> の Regular(400) / Medium(500) / Bold(700) を使用。本文サイズ 16px、行間 1.7 を基準とし、<code>palt</code>(プロポーショナルメトリクス) で句読点まわりを整えます。</p>
+
+      <div class="type-row"><div class="label">Display 1 · 56px / 1.3 / 700</div><div class="display-1">行政デジタルの体験基盤</div></div>
+      <div class="type-row"><div class="label">Display 2 · 48px / 1.3 / 700</div><div class="display-2">手続きを、もっと身近に</div></div>
+      <div class="type-row"><div class="label">Display 3 · 36px / 1.4 / 700</div><div class="display-3">マイナンバーで簡単申請</div></div>
+      <div class="type-row"><div class="label">Heading XL · 32px / 1.4</div><div class="heading-xl">セクション見出し</div></div>
+      <div class="type-row"><div class="label">Heading LG · 24px / 1.5</div><div class="heading-lg">ページ内タイトル</div></div>
+      <div class="type-row"><div class="label">Heading MD · 20px / 1.5</div><div class="heading-md">フォームのカテゴリ</div></div>
+      <div class="type-row"><div class="label">Heading SM · 18px / 1.5</div><div class="heading-sm">カードタイトル</div></div>
+      <div class="type-row"><div class="label">Heading XS · 16px / 1.5</div><div class="heading-xs">フィールドラベル</div></div>
+      <div class="type-row"><div class="label">Body LG · 18px / 1.7</div><div class="body-lg">本文 LG は概要文や重要な案内など、視認性を高めたいテキストに使用します。</div></div>
+      <div class="type-row"><div class="label">Body MD · 16px / 1.7 既定</div><div class="body-md">本文 MD は既定の段落サイズ。Noto Sans JP は和文の字面が大きく、長文でも読みやすさを保ちます。</div></div>
+      <div class="type-row"><div class="label">Body SM · 14px / 1.6</div><div class="body-sm">補助テキストや表セルの密度の高い箇所に使用します。</div></div>
+      <div class="type-row"><div class="label">Body XS · 12px / 1.6</div><div class="body-xs">注釈や免責事項などの脚注扱い。</div></div>
+      <div class="type-row"><div class="label">Label MD · 14px / 1.5 / 500</div><div class="label-md">ラベル / タグ用</div></div>
+      <div class="type-row"><div class="label">Mono · Noto Sans Mono CJK JP</div><div class="mono-sample">案件ID: DOC-2026-00417 / 受付日: 2026-04-18</div></div>
+    </section>
+
+    <section id="iconography" data-fidelity="documented">
+      <h2>
+        <span>アイコン / Iconography</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://design.digital.go.jp/dads/foundations/iconography/" target="_blank" rel="noopener" class="source-link">公式 ↗</a>
+      </h2>
+      <p style="color:var(--da-text-secondary)">デジタル庁アイコンセットは CC BY 4.0 で公開。線の太さ 1.6px、角丸付き 24×24 グリッドを基本とした、行政サービス向けのストロークアイコン群です。下記は同等仕様の代替例。</p>
+      <div class="icon-grid">
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M3 12L12 3l9 9"/><path d="M5 10v10h14V10"/></svg><span>ホーム</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><span>検索</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg><span>マイページ</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg><span>メール</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M14 3H6v18h12V8l-4-5z"/><path d="M14 3v5h4M9 13h6M9 17h6"/></svg><span>書類</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg><span>所在地</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg><span>お知らせ</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M12 3 2 21h20z"/><path d="M12 10v5M12 18h.01"/></svg><span>注意</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg><span>確認</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg><span>閉じる</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg><span>追加</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M12 2 3 6v6c0 5 4 9 9 10 5-1 9-5 9-10V6z"/></svg><span>セキュリティ</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg><span>カレンダー</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M21 15a4 4 0 0 1-4 4H7l-4 4V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/></svg><span>チャット</span></div>
+      </div>
+    </section>
+
+    <section id="buttons" data-fidelity="documented">
+      <h2>
+        <span>ボタン / Buttons</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://design.digital.go.jp/dads/components/button/" target="_blank" rel="noopener" class="source-link">公式 ↗</a>
+      </h2>
+      <p style="color:var(--da-text-secondary)">「ソリッド (青)」「アウトラインド」「テキスト」を主要 3 種とし、補助色や状態色 (注意/エラー) を加えた構成。最小タップ領域は 40×40px を確保し、フォーカスリングはシアン #00B5DD で 3px。</p>
+
+      <h3>種類</h3>
+      <div class="button-row">
+        <button class="da-btn da-btn--solid-blue">主要 / Solid Blue</button>
+        <button class="da-btn da-btn--solid-supporting">補助 / Supporting</button>
+        <button class="da-btn da-btn--outlined">アウトライン</button>
+        <button class="da-btn da-btn--text">テキスト</button>
+        <button class="da-btn da-btn--neutral">中立</button>
+        <button class="da-btn da-btn--danger">破壊的</button>
+      </div>
+
+      <h3>サイズ</h3>
+      <div class="button-row">
+        <button class="da-btn da-btn--solid-blue da-btn--small">小 (32)</button>
+        <button class="da-btn da-btn--solid-blue da-btn--medium">中 (40)</button>
+        <button class="da-btn da-btn--solid-blue da-btn--large">大 (48)</button>
+      </div>
+
+      <h3>状態</h3>
+      <div class="button-row">
+        <button class="da-btn da-btn--solid-blue">通常</button>
+        <button class="da-btn da-btn--solid-blue" style="background:var(--da-blue-dark)">ホバー</button>
+        <button class="da-btn da-btn--solid-blue" style="outline:3px solid var(--da-cyan);outline-offset:2px">フォーカス</button>
+        <button class="da-btn da-btn--solid-blue" disabled>無効</button>
+        <button class="da-btn da-btn--solid-blue"><span class="da-spinner" style="width:14px;height:14px;border-width:2px;border-color:rgba(255,255,255,0.3);border-top-color:#fff"></span> 処理中</button>
+      </div>
+
+      <h3>アイコン付き</h3>
+      <div class="button-row">
+        <button class="da-btn da-btn--solid-blue">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>
+          申請を送信
+        </button>
+        <button class="da-btn da-btn--outlined">
+          詳細を見る
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </section>
+
+    <section id="form" data-fidelity="documented">
+      <h2>
+        <span>フォーム / Form</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://design.digital.go.jp/dads/components/text-input/" target="_blank" rel="noopener" class="source-link">公式 ↗</a>
+      </h2>
+      <p style="color:var(--da-text-secondary)">入力欄は1pxボーダー、フォーカス時に「デジタル庁ブルー」+ライトハロー。必須・任意は明示タグで示し、エラーは赤(2pxボーダー+説明文)で告知します。</p>
+
+      <h3>テキスト入力</h3>
+      <div class="form-grid">
+        <div class="da-field">
+          <label class="field-label" for="d1">氏名 (フリガナ) <span class="required-tag">必須</span></label>
+          <input class="da-input" id="d1" type="text" value="コマ モトヒロ">
+          <span class="da-helper">全角カタカナで入力してください。</span>
+        </div>
+        <div class="da-field">
+          <label class="field-label" for="d2">メールアドレス <span class="required-tag">必須</span></label>
+          <input class="da-input" id="d2" type="email" placeholder="example@digital.go.jp">
+          <span class="da-helper">確認メールが届く有効なアドレスをご入力ください。</span>
+        </div>
+        <div class="da-field">
+          <label class="field-label" for="d3">問い合わせ内容 <span class="optional-tag">任意</span></label>
+          <textarea class="da-textarea" id="d3" placeholder="ご質問・ご要望を 500 文字以内でご記入ください。"></textarea>
+        </div>
+        <div class="da-field">
+          <label class="field-label" for="d4">都道府県</label>
+          <select class="da-select" id="d4">
+            <option>選択してください</option>
+            <option>北海道</option>
+            <option>東京都</option>
+            <option>大阪府</option>
+            <option>福岡県</option>
+            <option>沖縄県</option>
+          </select>
+        </div>
+        <div class="da-field">
+          <label class="field-label" for="d5">郵便番号 <span class="required-tag">必須</span></label>
+          <input class="da-input error" id="d5" type="text" value="100-AAA">
+          <span class="da-error-text">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+            7桁の半角数字 (例: 1000001) で入力してください。
+          </span>
+        </div>
+        <div class="da-field">
+          <label class="field-label" for="d6">案件ID</label>
+          <input class="da-input" id="d6" type="text" disabled value="DOC-2026-00417">
+          <span class="da-helper">無効 / 自動採番されます。</span>
+        </div>
+      </div>
+
+      <h3>選択コントロール</h3>
+      <div class="button-row" style="flex-direction:column;align-items:flex-start;gap:0">
+        <label class="da-checkbox"><input type="checkbox" checked> プライバシーポリシーに同意します</label>
+        <label class="da-checkbox"><input type="checkbox"> お知らせメールを受け取る</label>
+        <label class="da-radio"><input type="radio" name="dr" checked> 個人で申請</label>
+        <label class="da-radio"><input type="radio" name="dr"> 法人として申請</label>
+        <label class="da-radio"><input type="radio" name="dr"> 代理人として申請</label>
+      </div>
+
+      <h3>スイッチ</h3>
+      <div class="button-row">
+        <label class="da-switch"><input type="checkbox" checked><span class="slider"></span></label>
+        <span style="font-size:14px">通知をオン</span>
+        <label class="da-switch" style="margin-left:24px"><input type="checkbox"><span class="slider"></span></label>
+        <span style="font-size:14px">マーケティング通信</span>
+      </div>
+    </section>
+
+    <section id="surfaces" data-fidelity="documented">
+      <h2>
+        <span>サーフェス / Surfaces</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://design.digital.go.jp/dads/components/card/" target="_blank" rel="noopener" class="source-link">公式 ↗</a>
+      </h2>
+      <p style="color:var(--da-text-secondary)">カードは 1px ボーダーとごく弱いシャドウで表現。コールアウト (告知ボックス) はライトブルー背景にデジタル庁ブルーの左罫を組み合わせ、注意喚起を行います。</p>
+
+      <h3>カード</h3>
+      <div class="surface-grid">
+        <div class="da-card">
+          <div class="media"></div>
+          <div class="body">
+            <h4>マイナンバーカードで申請</h4>
+            <p>スマートフォンでカードを読み取り、最短 5 分で手続きを完了できます。</p>
+          </div>
+        </div>
+        <div class="da-card da-card--shadow">
+          <div class="media" style="background:linear-gradient(135deg,var(--da-blue-supporting),var(--da-cyan))"></div>
+          <div class="body">
+            <h4>申請状況をオンラインで確認</h4>
+            <p>受付済の案件は、案件ID・氏名・生年月日を入力することで進捗を照会できます。</p>
+          </div>
+        </div>
+        <div class="da-card">
+          <div class="media" style="background:linear-gradient(135deg,var(--da-blue-dark),var(--da-blue))"></div>
+          <div class="body">
+            <h4>デジタル庁のサービス</h4>
+            <p>マイナポータル、e-Gov、ぴったりサービスなど、行政手続きをひとつの体験に。</p>
+          </div>
+        </div>
+      </div>
+
+      <h3>統計サーフェス</h3>
+      <div class="surface-grid">
+        <div class="da-stat"><div class="num">8,200万</div><div class="lbl">マイナンバーカード交付枚数</div></div>
+        <div class="da-stat" style="background:var(--da-blue-dark)"><div class="num">99.2%</div><div class="lbl">アクセシビリティ達成率 (AA)</div></div>
+        <div class="da-stat" style="background:var(--da-cyan);color:var(--da-blue-dark)"><div class="num" style="color:var(--da-blue-dark)">24時間</div><div class="lbl" style="color:var(--da-blue-dark)">オンライン申請対応</div></div>
+      </div>
+
+      <h3>モーダルとコールアウト</h3>
+      <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start">
+        <div class="da-modal">
+          <h4 style="margin:0 0 8px;font-size:18px">申請内容を確定しますか</h4>
+          <p style="font-size:14px;color:var(--da-text-secondary);margin:0 0 12px">送信後は内容の修正ができません。控えはマイページからダウンロードできます。</p>
+          <div class="da-modal-actions">
+            <button class="da-btn da-btn--neutral da-btn--small">戻る</button>
+            <button class="da-btn da-btn--solid-blue da-btn--small">送信する</button>
+          </div>
+        </div>
+        <div class="da-callout" style="max-width:380px">
+          <h4>申請に必要なもの</h4>
+          <p style="margin:0;font-size:14px">マイナンバーカード(電子証明書有効)、署名用パスワード(英数字 6–16 桁)、利用者証明用パスワード (4 桁)。</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="feedback" data-fidelity="documented">
+      <h2>
+        <span>フィードバック / Feedback</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://design.digital.go.jp/dads/components/notification/" target="_blank" rel="noopener" class="source-link">公式 ↗</a>
+      </h2>
+      <p style="color:var(--da-text-secondary)">通知は左罫4px・薄い背景・アイコンの3要素で構成。タグ・バッジ・プログレスは控えめな彩度に留め、情報の優先度を視覚的に整理します。</p>
+
+      <h3>通知</h3>
+      <div class="da-notification da-notification--info">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+        <div><h4>お知らせ</h4>2026年5月10日 02:00–05:00 にメンテナンスを実施します。</div>
+      </div>
+      <div class="da-notification da-notification--success">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>
+        <div><h4>申請を受け付けました</h4>受付番号 DOC-2026-00417。受信メールにて結果をお知らせします。</div>
+      </div>
+      <div class="da-notification da-notification--warning">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2 21h20z"/><path d="M12 10v5M12 18h.01"/></svg>
+        <div><h4>セッションがまもなく終了します</h4>5分後に自動ログアウトされます。下書きを保存してください。</div>
+      </div>
+      <div class="da-notification da-notification--error">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg>
+        <div><h4>送信に失敗しました</h4>ネットワーク接続を確認のうえ、再度お試しください。</div>
+      </div>
+
+      <h3>トースト</h3>
+      <div class="da-toast">
+        <span>下書きを保存しました</span>
+        <button>取り消し</button>
+      </div>
+
+      <h3>タグ・バッジ</h3>
+      <div class="da-tag-row" style="margin-top:12px">
+        <span class="da-tag">既定</span>
+        <span class="da-tag da-tag--blue">受付中</span>
+        <span class="da-tag da-tag--success">承認</span>
+        <span class="da-tag da-tag--warning">確認中</span>
+        <span class="da-tag da-tag--error">却下</span>
+        <span class="da-tag da-tag--solid">公的サービス</span>
+        <span class="da-badge">3 件</span>
+      </div>
+
+      <h3>プログレス・ローディング</h3>
+      <div class="da-progress" style="margin:12px 0"></div>
+      <div class="da-skeleton" style="width:60%;margin-bottom:8px"></div>
+      <div class="da-skeleton" style="width:80%;margin-bottom:16px"></div>
+      <div class="da-spinner"></div>
+    </section>
+
+    <section id="navigation" data-fidelity="documented">
+      <h2>
+        <span>ナビゲーション / Navigation</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://design.digital.go.jp/dads/components/breadcrumb/" target="_blank" rel="noopener" class="source-link">公式 ↗</a>
+      </h2>
+      <p style="color:var(--da-text-secondary)">タブはアンダーライン式 (3px、デジタル庁ブルー)。ヘッダーは下罫4pxで「庁」のアイデンティティを示します。</p>
+
+      <h3>サービスヘッダー</h3>
+      <div class="da-header-bar">
+        <span class="gov-title"><span class="glyph">D</span> マイナポータル</span>
+        <nav style="display:flex;gap:0;margin-left:auto">
+          <a class="da-tab active" href="#" style="margin-bottom:-12px">トップ</a>
+          <a class="da-tab" href="#" style="margin-bottom:-12px">申請</a>
+          <a class="da-tab" href="#" style="margin-bottom:-12px">受付状況</a>
+          <a class="da-tab" href="#" style="margin-bottom:-12px">お問い合わせ</a>
+        </nav>
+      </div>
+
+      <h3>タブ</h3>
+      <div class="da-tabs">
+        <div class="da-tab active">基本情報</div>
+        <div class="da-tab">必要書類</div>
+        <div class="da-tab">手数料</div>
+        <div class="da-tab">処理期間</div>
+      </div>
+
+      <h3>パンくず</h3>
+      <div class="da-breadcrumb">
+        <a href="#">ホーム</a><span class="sep"></span>
+        <a href="#">行政手続</a><span class="sep"></span>
+        <a href="#">マイナンバー</a><span class="sep"></span>
+        <span>受付状況の照会</span>
+      </div>
+
+      <h3>ページネーション</h3>
+      <div class="da-pagination" style="margin-top:12px">
+        <button>‹ 前へ</button>
+        <button>1</button>
+        <button class="active">2</button>
+        <button>3</button>
+        <button>4</button>
+        <button>…</button>
+        <button>17</button>
+        <button>次へ ›</button>
+      </div>
+
+      <h3>ステッパー</h3>
+      <div class="da-stepper" style="margin-top:16px">
+        <div class="step"><span class="num complete">✓</span> 入力</div>
+        <div class="line"></div>
+        <div class="step"><span class="num complete">✓</span> 添付</div>
+        <div class="line"></div>
+        <div class="step"><span class="num active">3</span> 確認</div>
+        <div class="line"></div>
+        <div class="step"><span class="num">4</span> 送信</div>
+        <div class="line"></div>
+        <div class="step"><span class="num">5</span> 完了</div>
+      </div>
+
+      <h3>サイドナビ</h3>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:12px">
+        <div class="da-sidebar">
+          <a href="#" class="active">マイページ</a>
+          <a href="#">申請履歴</a>
+          <a href="#">通知</a>
+          <a href="#">設定</a>
+          <a href="#">ヘルプ</a>
+        </div>
+        <div class="da-menu">
+          <div class="item">プロフィール</div>
+          <div class="item">アカウント設定</div>
+          <div class="divider"></div>
+          <div class="item">ログアウト</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="data" data-fidelity="documented">
+      <h2>
+        <span>データ / Data</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://design.digital.go.jp/dads/components/table/" target="_blank" rel="noopener" class="source-link">公式 ↗</a>
+      </h2>
+      <p style="color:var(--da-text-secondary)">テーブルは見出しをライトブルー背景で識別性を高めつつ、行間 1.7 で和文も読みやすく。リスト・キー値は補助情報の標準パターンとして提供します。</p>
+
+      <table class="da-table">
+        <caption style="caption-side:top;text-align:left;padding-bottom:8px;color:var(--da-text-secondary);font-size:13px">2026年度 受付中の手続き一覧</caption>
+        <thead>
+          <tr>
+            <th>手続き名</th>
+            <th>所管</th>
+            <th>所要時間</th>
+            <th>受付期限</th>
+            <th>状態</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>住民票の写し請求</td><td>市町村</td><td>約 5 分</td><td>常時</td><td><span class="da-tag da-tag--success">受付中</span></td></tr>
+          <tr><td>確定申告 e-Tax</td><td>国税庁</td><td>約 30 分</td><td>2026-03-17</td><td><span class="da-tag da-tag--warning">締切間近</span></td></tr>
+          <tr><td>引越しワンストップ</td><td>デジタル庁</td><td>約 20 分</td><td>常時</td><td><span class="da-tag da-tag--blue">推奨</span></td></tr>
+          <tr><td>パスポート申請</td><td>外務省</td><td>約 25 分</td><td>常時</td><td><span class="da-tag da-tag--success">受付中</span></td></tr>
+          <tr><td>母子手帳交付</td><td>市町村</td><td>約 15 分</td><td>—</td><td><span class="da-tag da-tag--error">対象外</span></td></tr>
+        </tbody>
+      </table>
+
+      <h3>リスト・キー値</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:12px">
+        <ul class="da-list">
+          <li><span class="da-avatar">マ</span><div><div style="font-weight:600">マイナポータル</div><div style="font-size:12px;color:var(--da-text-secondary)">本人確認 / 通知 / 各種申請</div></div></li>
+          <li><span class="da-avatar" style="background:var(--da-blue-supporting)">e</span><div><div style="font-weight:600">e-Gov</div><div style="font-size:12px;color:var(--da-text-secondary)">行政手続のオンライン窓口</div></div></li>
+          <li><span class="da-avatar" style="background:var(--da-success)">ぴ</span><div><div style="font-weight:600">ぴったりサービス</div><div style="font-size:12px;color:var(--da-text-secondary)">子育て・介護 など暮らしの手続</div></div></li>
+        </ul>
+        <dl class="da-kv">
+          <dt>案件ID</dt><dd>DOC-2026-00417</dd>
+          <dt>申請日</dt><dd>2026年4月18日</dd>
+          <dt>状態</dt><dd>審査中</dd>
+          <dt>処理機関</dt><dd>デジタル庁 (関東)</dd>
+          <dt>結果通知予定</dt><dd>2026年6月16日</dd>
+        </dl>
+      </div>
+
+      <h3>空状態</h3>
+      <div class="da-empty">
+        <svg viewBox="0 0 24 24"><path d="M14 3H6v18h12V8l-4-5z"/><path d="M14 3v5h4M9 13h6M9 17h6"/></svg>
+        <h4 style="margin:8px 0 4px;color:var(--da-text)">受付中の申請はありません</h4>
+        <p style="margin:0;font-size:13px">新しい手続きを始めると、ここに状況が表示されます。<a href="#">申請を始める</a></p>
+      </div>
+    </section>
+
+    <section id="layout" data-fidelity="documented">
+      <h2>
+        <span>レイアウト / Layout</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://design.digital.go.jp/dads/foundations/layout/" target="_blank" rel="noopener" class="source-link">公式 ↗</a>
+      </h2>
+      <p style="color:var(--da-text-secondary)">デジタル庁 DS は 12カラム / 8×10pxグリッドを基本とした、和文に最適なレイアウト体系を提供します。角丸は 4–8px を中心に揃え、シャドウは控えめに使用します。</p>
+
+      <h3>12カラムグリッド</h3>
+      <div class="grid-demo">
+        <div style="grid-column:span 12">12</div>
+        <div style="grid-column:span 8">8</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 6">6</div>
+        <div style="grid-column:span 6">6</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+      </div>
+
+      <h3>スペーシング (8×10px基調)</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div class="swatch" style="width:4px;height:32px"></div><span class="lbl">4</span></div>
+        <div class="scale-item"><div class="swatch" style="width:8px;height:32px"></div><span class="lbl">8</span></div>
+        <div class="scale-item"><div class="swatch" style="width:12px;height:32px"></div><span class="lbl">12</span></div>
+        <div class="scale-item"><div class="swatch" style="width:16px;height:32px"></div><span class="lbl">16</span></div>
+        <div class="scale-item"><div class="swatch" style="width:20px;height:32px"></div><span class="lbl">20</span></div>
+        <div class="scale-item"><div class="swatch" style="width:24px;height:32px"></div><span class="lbl">24</span></div>
+        <div class="scale-item"><div class="swatch" style="width:32px;height:32px"></div><span class="lbl">32</span></div>
+        <div class="scale-item"><div class="swatch" style="width:48px;height:32px"></div><span class="lbl">48</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:32px"></div><span class="lbl">64</span></div>
+        <div class="scale-item"><div class="swatch" style="width:80px;height:32px"></div><span class="lbl">80</span></div>
+      </div>
+
+      <h3>シェイプスケール</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:0;background:var(--da-blue)"></div><span class="lbl">0</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:2px;background:var(--da-blue)"></div><span class="lbl">2</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:4px;background:var(--da-blue)"></div><span class="lbl">4 既定</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:6px;background:var(--da-blue)"></div><span class="lbl">6</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:8px;background:var(--da-blue)"></div><span class="lbl">8</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:12px;background:var(--da-blue)"></div><span class="lbl">12</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:50%;background:var(--da-blue)"></div><span class="lbl">pill</span></div>
+      </div>
+
+      <h3>シャドウ</h3>
+      <div>
+        <div class="shadow-demo" style="box-shadow:none;border:1px solid var(--da-border)">0</div>
+        <div class="shadow-demo" style="box-shadow:var(--da-shadow-1)">1</div>
+        <div class="shadow-demo" style="box-shadow:var(--da-shadow-2)">2</div>
+        <div class="shadow-demo" style="box-shadow:var(--da-shadow-3)">3</div>
+        <div class="shadow-demo" style="box-shadow:var(--da-shadow-4)">4</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="ds-footer">
+    <h3>Sources / 出典</h3>
+    <ul>
+      <li><a href="https://design.digital.go.jp" target="_blank" rel="noopener">https://design.digital.go.jp</a></li>
+      <li><a href="https://design.digital.go.jp/dads/foundations/color/" target="_blank" rel="noopener">https://design.digital.go.jp/dads/foundations/color/</a></li>
+      <li><a href="https://design.digital.go.jp/dads/foundations/typography/" target="_blank" rel="noopener">https://design.digital.go.jp/dads/foundations/typography/</a></li>
+      <li><a href="https://design.digital.go.jp/dads/foundations/iconography/" target="_blank" rel="noopener">https://design.digital.go.jp/dads/foundations/iconography/</a></li>
+      <li><a href="https://design.digital.go.jp/dads/components/button/" target="_blank" rel="noopener">https://design.digital.go.jp/dads/components/button/</a></li>
+      <li><a href="https://design.digital.go.jp/dads/components/text-input/" target="_blank" rel="noopener">https://design.digital.go.jp/dads/components/text-input/</a></li>
+      <li><a href="https://design.digital.go.jp/dads/components/card/" target="_blank" rel="noopener">https://design.digital.go.jp/dads/components/card/</a></li>
+      <li><a href="https://design.digital.go.jp/dads/components/notification/" target="_blank" rel="noopener">https://design.digital.go.jp/dads/components/notification/</a></li>
+      <li><a href="https://design.digital.go.jp/dads/components/breadcrumb/" target="_blank" rel="noopener">https://design.digital.go.jp/dads/components/breadcrumb/</a></li>
+      <li><a href="https://design.digital.go.jp/dads/components/table/" target="_blank" rel="noopener">https://design.digital.go.jp/dads/components/table/</a></li>
+      <li><a href="https://design.digital.go.jp/dads/foundations/layout/" target="_blank" rel="noopener">https://design.digital.go.jp/dads/foundations/layout/</a></li>
+    </ul>
+    <p class="license-note">This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Digital Agency Japan. デジタル庁デザインシステム and related trademarks belong to Digital Agency Japan. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</p>
+    <p class="meta-note">Reproduction date: 2026-05-05 · sourceStatus: verified · fidelity: documented</p>
+  </footer>
+</body>
+</html>

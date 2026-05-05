@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LINE Design System — Design System Reference</title>
+  <script id="ds-meta" type="application/json">
+{"id":"25-line-design","fileSlug":"25-line-design","schemaVersion":"1"}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* LINE Design System — Light tokens */
+      --line-green: #06C755;
+      --line-green-dark: #00B900;
+      --line-green-deep: #04A046;
+      --line-green-light: #52D78D;
+      --line-green-bg: #E5F8EC;
+      --line-green-bg-2: #C9F0D7;
+
+      --line-black: #1E1E1E;
+      --line-black-2: #2C2C2C;
+      --line-white: #FFFFFF;
+
+      --line-gray-1: #FAFAFA;
+      --line-gray-2: #F0F0F0;
+      --line-gray-3: #E5E5E5;
+      --line-gray-4: #D9D9D9;
+      --line-gray-5: #C1C1C1;
+      --line-gray-6: #A6A6A6;
+      --line-gray-7: #737373;
+      --line-gray-8: #595959;
+      --line-gray-9: #404040;
+
+      --line-success: #06C755;
+      --line-warning: #FFB400;
+      --line-warning-bg: #FFF7E0;
+      --line-error: #FF334B;
+      --line-error-bg: #FFE9EC;
+      --line-info: #4392F1;
+      --line-info-bg: #E5F0FF;
+
+      --line-text: #1E1E1E;
+      --line-text-secondary: #737373;
+      --line-text-tertiary: #A6A6A6;
+      --line-text-disabled: #C1C1C1;
+      --line-text-link: #06C755;
+
+      --line-bg: #FFFFFF;
+      --line-bg-page: #F5F5F5;
+      --line-bg-chat: #B9CDDC;
+
+      /* Brand-blossoms accent (used in LINE marketing) */
+      --line-pink: #FF8AAE;
+      --line-yellow: #FFD200;
+      --line-purple: #8E63E1;
+
+      /* Type */
+      --line-font: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Hiragino Sans', sans-serif;
+      --line-mono: 'SFMono-Regular', Consolas, monospace;
+
+      /* Shape — pill / rounded */
+      --line-radius-xs: 4px;
+      --line-radius-sm: 8px;
+      --line-radius: 12px;
+      --line-radius-lg: 16px;
+      --line-radius-xl: 24px;
+      --line-radius-pill: 999px;
+
+      /* Spacing — 4dp grid */
+      --line-pad-xs: 4px;
+      --line-pad-s: 8px;
+      --line-pad-m: 12px;
+      --line-pad-l: 16px;
+      --line-pad-xl: 24px;
+      --line-pad-xxl: 32px;
+      --line-pad-xxxl: 48px;
+
+      /* Shadow — soft */
+      --line-shadow-1: 0 1px 2px rgba(0,0,0,0.04), 0 2px 8px rgba(0,0,0,0.04);
+      --line-shadow-2: 0 4px 16px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+      --line-shadow-3: 0 12px 36px rgba(0,0,0,0.12), 0 4px 8px rgba(0,0,0,0.06);
+      --line-shadow-pop: 0 8px 24px rgba(6,199,85,0.18);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--line-font);
+      background: var(--line-bg-page);
+      color: var(--line-text);
+      font-size: 14px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    code, kbd, pre { font-family: var(--line-mono); font-size: 13px; }
+    a { color: var(--line-text-link); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* Header */
+    .ds-header {
+      background: linear-gradient(135deg, var(--line-green) 0%, var(--line-green-deep) 100%);
+      color: #FFFFFF;
+      padding: var(--line-pad-xxxl) var(--line-pad-xxl) var(--line-pad-xxl);
+      position: relative;
+      overflow: hidden;
+    }
+    .ds-header::before {
+      content: ''; position: absolute; top: -100px; right: -80px;
+      width: 320px; height: 320px; border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+    }
+    .ds-header::after {
+      content: ''; position: absolute; bottom: -60px; left: 30%;
+      width: 220px; height: 220px; border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+    }
+    .back-link {
+      display: inline-flex; align-items: center; gap: var(--line-pad-s);
+      color: #FFFFFF; text-decoration: none;
+      padding: 6px 16px; border-radius: var(--line-radius-pill);
+      font-size: 13px; font-weight: 500; transition: all 0.2s;
+      background: rgba(255,255,255,0.16);
+      position: relative; z-index: 1;
+    }
+    .back-link:hover { background: rgba(255,255,255,0.28); text-decoration: none; }
+    .ds-header h1 {
+      font-size: 40px; line-height: 48px; font-weight: 700;
+      margin: var(--line-pad-l) 0 var(--line-pad-m); letter-spacing: -0.6px;
+      position: relative; z-index: 1;
+    }
+    .ds-header .meta {
+      display: flex; flex-wrap: wrap; gap: var(--line-pad-s);
+      align-items: center; margin-bottom: var(--line-pad-m);
+      position: relative; z-index: 1;
+    }
+    .badge {
+      display: inline-flex; align-items: center; padding: 4px 12px;
+      border-radius: var(--line-radius-pill); font-size: 12px; font-weight: 500;
+      background: rgba(255,255,255,0.2); color: #FFFFFF;
+    }
+    .badge.kind-ds { background: var(--line-white); color: var(--line-green-deep); font-weight: 700; }
+    .badge.fidelity-documented { background: var(--line-white); color: #1B7548; }
+    .badge.fidelity-approximated { background: var(--line-white); color: #B45309; }
+    .badge.fidelity-inspired { background: var(--line-white); color: #5B21B6; }
+    .badge.source-verified { background: var(--line-white); color: #034EA1; }
+    .ds-header .meta a {
+      color: #FFFFFF; padding: 4px 14px; border-radius: var(--line-radius-pill);
+      font-size: 12px; font-weight: 500; background: rgba(255,255,255,0.16); border: 0;
+      text-decoration: none;
+    }
+    .ds-header .meta a:hover { background: rgba(255,255,255,0.28); }
+    .tagline {
+      font-size: 16px; line-height: 24px; max-width: 720px;
+      margin: var(--line-pad-l) 0 0; color: rgba(255,255,255,0.92);
+      position: relative; z-index: 1;
+    }
+
+    /* TOC */
+    .toc {
+      position: sticky; top: 0; z-index: 50;
+      background: var(--line-bg);
+      border-bottom: 1px solid var(--line-gray-3);
+      box-shadow: 0 1px 0 rgba(0,0,0,0.02);
+    }
+    .toc ul {
+      list-style: none; margin: 0; padding: var(--line-pad-m) var(--line-pad-xxl);
+      display: flex; gap: var(--line-pad-s); overflow-x: auto;
+    }
+    .toc a {
+      display: inline-block; padding: 8px 16px; border-radius: var(--line-radius-pill);
+      color: var(--line-text-secondary); text-decoration: none; font-size: 13px;
+      font-weight: 500; white-space: nowrap; transition: all 0.2s;
+      border: 1px solid var(--line-gray-3); background: var(--line-white);
+    }
+    .toc a:hover { background: var(--line-green-bg); color: var(--line-green-deep); border-color: var(--line-green); text-decoration: none; }
+
+    /* Main */
+    main { max-width: 1280px; margin: 0 auto; padding: var(--line-pad-xl) var(--line-pad-xxl); }
+    section {
+      background: var(--line-bg); border-radius: var(--line-radius-lg);
+      padding: var(--line-pad-xl); margin-bottom: var(--line-pad-xl);
+      box-shadow: var(--line-shadow-1);
+    }
+    section h2 {
+      display: flex; align-items: center; gap: var(--line-pad-m); flex-wrap: wrap;
+      font-size: 26px; line-height: 34px; font-weight: 700;
+      margin: 0 0 var(--line-pad-xl); color: var(--line-text);
+      padding-bottom: var(--line-pad-m); border-bottom: 2px solid var(--line-green-bg);
+    }
+    .source-link { font-size: 12px; color: var(--line-green-deep); margin-left: auto; font-weight: 500; }
+    h3 { font-size: 18px; font-weight: 700; margin: var(--line-pad-xl) 0 var(--line-pad-m); color: var(--line-text); }
+    h4 { font-size: 14px; font-weight: 500; margin: var(--line-pad-l) 0 var(--line-pad-s); color: var(--line-text-secondary); }
+    p { margin: 0 0 var(--line-pad-m); }
+
+    /* Brand */
+    #brand .brand-mark {
+      display: inline-flex; align-items: center; gap: var(--line-pad-m);
+      padding: var(--line-pad-m) var(--line-pad-xl);
+      background: var(--line-green); color: var(--line-white);
+      border-radius: var(--line-radius); font-size: 26px; font-weight: 700;
+      box-shadow: var(--line-shadow-pop);
+    }
+    #brand .brand-mark .glyph {
+      width: 40px; height: 40px; background: var(--line-white); color: var(--line-green);
+      border-radius: var(--line-radius-sm);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; font-weight: 700;
+    }
+    #brand .pillars {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--line-pad-l); margin-top: var(--line-pad-xl);
+    }
+    #brand .pillar {
+      padding: var(--line-pad-l); background: var(--line-green-bg);
+      border-radius: var(--line-radius);
+    }
+    #brand .pillar h4 { margin-top: 0; color: var(--line-green-deep); font-weight: 700; font-size: 15px; }
+    #brand .pillar p { margin: 0; font-size: 13px; color: var(--line-text-secondary); }
+
+    /* Color */
+    .palette-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--line-pad-m); margin-bottom: var(--line-pad-l); }
+    .swatch-card {
+      border-radius: var(--line-radius); overflow: hidden;
+      border: 1px solid var(--line-gray-3); background: var(--line-white);
+    }
+    .swatch-fill { height: 100px; }
+    .swatch-info { padding: var(--line-pad-m); }
+    .swatch-info .name { font-size: 13px; font-weight: 700; color: var(--line-text); }
+    .swatch-info .hex { font-family: var(--line-mono); font-size: 12px; color: var(--line-text-secondary); }
+
+    .semantic-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: var(--line-pad-m); }
+    .sem-card { padding: var(--line-pad-l); border-radius: var(--line-radius); display: flex; flex-direction: column; gap: 4px; }
+    .sem-card.success { background: var(--line-green-bg); color: var(--line-green-deep); }
+    .sem-card.warning { background: var(--line-warning-bg); color: #B45309; }
+    .sem-card.error { background: var(--line-error-bg); color: #B81E32; }
+    .sem-card.info { background: var(--line-info-bg); color: #1F5DB8; }
+    .sem-card .label { font-size: 13px; font-weight: 700; }
+    .sem-card .hex { font-family: var(--line-mono); font-size: 11px; opacity: 0.85; }
+
+    .neutral-grid { display: grid; grid-template-columns: repeat(9, 1fr); gap: 0; border-radius: var(--line-radius); overflow: hidden; margin-bottom: var(--line-pad-m); }
+    .neutral-grid .ncell {
+      aspect-ratio: 1; padding: 6px 8px; font-size: 10px; font-family: var(--line-mono);
+      display: flex; flex-direction: column; justify-content: flex-end;
+    }
+
+    /* Typography */
+    .type-row {
+      display: grid; grid-template-columns: 160px 1fr;
+      gap: var(--line-pad-l); padding: var(--line-pad-m) 0;
+      border-bottom: 1px dashed var(--line-gray-3); align-items: baseline;
+    }
+    .type-row:last-child { border-bottom: 0; }
+    .type-row .label { font-family: var(--line-mono); font-size: 12px; color: var(--line-text-tertiary); }
+    .display-style { font-size: 40px; line-height: 1.2; font-weight: 700; }
+    .h1-style { font-size: 32px; line-height: 1.25; font-weight: 700; }
+    .h2-style { font-size: 24px; line-height: 1.3; font-weight: 700; }
+    .h3-style { font-size: 20px; line-height: 1.4; font-weight: 700; }
+    .h4-style { font-size: 17px; line-height: 1.4; font-weight: 500; }
+    .body-lg { font-size: 16px; line-height: 1.6; font-weight: 400; }
+    .body-md { font-size: 14px; line-height: 1.6; font-weight: 400; }
+    .body-sm { font-size: 12px; line-height: 1.5; color: var(--line-text-secondary); }
+    .text-mono { font-family: var(--line-mono); font-size: 13px; }
+
+    /* Iconography */
+    .icon-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px,1fr)); gap: var(--line-pad-s); }
+    .icon-cell {
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      padding: var(--line-pad-m); background: var(--line-gray-1);
+      border-radius: var(--line-radius); transition: background 0.2s;
+    }
+    .icon-cell:hover { background: var(--line-green-bg); }
+    .icon-cell svg { width: 24px; height: 24px; stroke: var(--line-text); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .icon-cell span { font-size: 11px; color: var(--line-text-tertiary); }
+
+    /* Buttons */
+    .button-row { display: flex; flex-wrap: wrap; gap: var(--line-pad-m); align-items: center; margin-bottom: var(--line-pad-m); }
+    .line-btn {
+      font-family: var(--line-font); font-size: 14px; font-weight: 700;
+      padding: 0 24px; height: 44px;
+      border-radius: var(--line-radius-pill); border: 0;
+      background: var(--line-gray-2); color: var(--line-text);
+      cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
+      transition: all 0.2s;
+    }
+    .line-btn:hover { background: var(--line-gray-3); }
+    .line-btn--primary { background: var(--line-green); color: var(--line-white); }
+    .line-btn--primary:hover { background: var(--line-green-deep); }
+    .line-btn--secondary { background: var(--line-white); color: var(--line-text); border: 1.5px solid var(--line-gray-4); }
+    .line-btn--secondary:hover { border-color: var(--line-text); }
+    .line-btn--danger { background: var(--line-error); color: var(--line-white); }
+    .line-btn--danger:hover { background: #DD2A40; }
+    .line-btn--ghost { background: transparent; color: var(--line-green-deep); }
+    .line-btn--ghost:hover { background: var(--line-green-bg); }
+    .line-btn--lg { height: 52px; padding: 0 32px; font-size: 16px; }
+    .line-btn--sm { height: 32px; padding: 0 14px; font-size: 13px; }
+    .line-btn--icon { width: 44px; padding: 0; justify-content: center; }
+    .line-btn:disabled { background: var(--line-gray-2); color: var(--line-text-disabled); cursor: not-allowed; }
+    .line-btn--primary:disabled { background: var(--line-green-bg-2); color: var(--line-white); }
+
+    /* Form */
+    .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: var(--line-pad-l); }
+    .line-form-item { display: flex; flex-direction: column; gap: 6px; margin-bottom: var(--line-pad-m); }
+    .line-label { font-size: 13px; font-weight: 500; color: var(--line-text); }
+    .line-label.required::after { content: '*'; color: var(--line-error); margin-left: 4px; }
+    .line-input, .line-select, .line-textarea {
+      font-family: var(--line-font); font-size: 14px;
+      padding: 12px 16px; height: 48px;
+      border: 1.5px solid var(--line-gray-3); border-radius: var(--line-radius);
+      background: var(--line-white); color: var(--line-text);
+      outline: none; transition: all 0.2s; width: 100%;
+    }
+    .line-input:hover { border-color: var(--line-gray-5); }
+    .line-input:focus { border-color: var(--line-green); }
+    .line-input.error { border-color: var(--line-error); }
+    .line-input:disabled { background: var(--line-gray-1); color: var(--line-text-disabled); cursor: not-allowed; }
+    .line-textarea { height: auto; min-height: 96px; padding: 12px 16px; resize: vertical; }
+    .line-select { appearance: none; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 14 14' fill='none'><path d='M3 5l4 4 4-4' stroke='%23737373' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/></svg>"); background-repeat: no-repeat; background-position: right 16px center; padding-right: 40px; }
+    .line-help { font-size: 12px; color: var(--line-text-tertiary); }
+    .line-help.error { color: var(--line-error); }
+
+    .line-checkbox, .line-radio { display: inline-flex; align-items: center; gap: 10px; cursor: pointer; font-size: 14px; }
+    .line-checkbox input, .line-radio input { width: 20px; height: 20px; accent-color: var(--line-green); }
+
+    .line-switch {
+      position: relative; display: inline-block; width: 52px; height: 30px;
+      background: var(--line-gray-4); border-radius: 100px; cursor: pointer; transition: 0.2s;
+    }
+    .line-switch.checked { background: var(--line-green); }
+    .line-switch::after {
+      content: ''; position: absolute; top: 3px; left: 3px;
+      width: 24px; height: 24px; background: #FFFFFF; border-radius: 50%;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2); transition: 0.2s;
+    }
+    .line-switch.checked::after { left: 25px; }
+
+    /* Surfaces */
+    .surface-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: var(--line-pad-l); }
+    .line-card {
+      background: var(--line-white); border-radius: var(--line-radius-lg);
+      box-shadow: var(--line-shadow-1); overflow: hidden; transition: box-shadow 0.2s;
+    }
+    .line-card:hover { box-shadow: var(--line-shadow-2); }
+    .line-card .media {
+      height: 140px;
+      background: linear-gradient(135deg, var(--line-green) 0%, var(--line-green-light) 100%);
+      position: relative;
+    }
+    .line-card .media::after {
+      content: ''; position: absolute; bottom: -30px; right: -20px;
+      width: 110px; height: 110px; border-radius: 50%; background: rgba(255,255,255,0.18);
+    }
+    .line-card .body { padding: var(--line-pad-l); }
+    .line-card .body h4 { margin: 0 0 6px; color: var(--line-text); font-size: 16px; font-weight: 700; }
+    .line-card .body p { font-size: 13px; color: var(--line-text-secondary); margin: 0; }
+
+    .line-list-card { background: var(--line-white); border-radius: var(--line-radius-lg); padding: var(--line-pad-l); box-shadow: var(--line-shadow-1); }
+    .line-list-card .stat-label { font-size: 12px; color: var(--line-text-secondary); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 6px; }
+    .line-list-card .stat-value { font-size: 32px; font-weight: 700; color: var(--line-green-deep); }
+
+    .line-modal {
+      background: var(--line-white); padding: 0; border-radius: var(--line-radius-xl);
+      box-shadow: var(--line-shadow-3); max-width: 380px; width: 100%; overflow: hidden;
+    }
+    .line-modal-body {
+      padding: var(--line-pad-xl); text-align: center;
+    }
+    .line-modal-body h3 { margin: 0 0 var(--line-pad-s); font-size: 18px; }
+    .line-modal-body p { margin: 0; color: var(--line-text-secondary); font-size: 14px; }
+    .line-modal-foot { display: flex; border-top: 1px solid var(--line-gray-3); }
+    .line-modal-foot button { flex: 1; padding: 16px; border: 0; background: transparent; font-size: 15px; font-weight: 500; cursor: pointer; font-family: inherit; }
+    .line-modal-foot button:first-child { color: var(--line-text-secondary); border-right: 1px solid var(--line-gray-3); }
+    .line-modal-foot button:last-child { color: var(--line-green-deep); font-weight: 700; }
+
+    .line-popover { background: var(--line-text); color: var(--line-white); padding: var(--line-pad-s) var(--line-pad-m); border-radius: var(--line-radius-sm); font-size: 13px; max-width: 240px; }
+
+    /* Feedback */
+    .line-alert { display: flex; gap: var(--line-pad-m); padding: 14px 16px; border-radius: var(--line-radius); margin-bottom: var(--line-pad-s); font-size: 14px; align-items: flex-start; }
+    .line-alert.info { background: var(--line-info-bg); color: #1F5DB8; }
+    .line-alert.success { background: var(--line-green-bg); color: var(--line-green-deep); }
+    .line-alert.warning { background: var(--line-warning-bg); color: #B45309; }
+    .line-alert.error { background: var(--line-error-bg); color: #B81E32; }
+    .line-alert .icon { flex-shrink: 0; }
+
+    .line-toast {
+      display: inline-flex; gap: 10px; padding: 12px 18px;
+      border-radius: var(--line-radius-pill);
+      background: var(--line-text); color: var(--line-white);
+      box-shadow: var(--line-shadow-2); font-size: 14px; font-weight: 500;
+      align-items: center;
+    }
+    .line-toast.success { background: var(--line-green); }
+
+    .line-tag {
+      display: inline-flex; align-items: center; padding: 4px 12px; height: 26px;
+      border-radius: var(--line-radius-pill); font-size: 12px; line-height: 18px; font-weight: 500;
+      background: var(--line-gray-2); color: var(--line-text-secondary);
+    }
+    .line-tag.green { background: var(--line-green-bg); color: var(--line-green-deep); }
+    .line-tag.warning { background: var(--line-warning-bg); color: #B45309; }
+    .line-tag.error { background: var(--line-error-bg); color: #B81E32; }
+    .line-tag.info { background: var(--line-info-bg); color: #1F5DB8; }
+    .line-tag.dark { background: var(--line-text); color: var(--line-white); }
+
+    .line-badge { display: inline-flex; align-items: center; gap: 6px; }
+    .line-badge-count { display: inline-block; min-width: 20px; height: 20px; line-height: 20px; padding: 0 6px; border-radius: 10px; background: var(--line-error); color: #FFFFFF; font-size: 11px; font-weight: 700; text-align: center; }
+    .line-badge-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--line-error); display: inline-block; }
+    .line-badge-status { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; }
+    .line-badge-status::before { content: ''; width: 8px; height: 8px; border-radius: 50%; }
+    .line-badge-status.online::before { background: var(--line-green); }
+    .line-badge-status.away::before { background: var(--line-warning); }
+    .line-badge-status.busy::before { background: var(--line-error); }
+    .line-badge-status.offline::before { background: var(--line-gray-5); }
+
+    .line-progress { width: 100%; max-width: 320px; }
+    .line-progress-bar { width: 100%; height: 8px; background: var(--line-gray-2); border-radius: 100px; overflow: hidden; }
+    .line-progress-bar > span { display: block; height: 100%; background: var(--line-green); border-radius: 100px; transition: width 0.4s; }
+    .line-progress-bar.warning > span { background: var(--line-warning); }
+    .line-progress-bar.error > span { background: var(--line-error); }
+
+    .line-spin {
+      width: 28px; height: 28px; border: 3px solid var(--line-green-bg);
+      border-top-color: var(--line-green); border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Navigation */
+    .line-tabs {
+      display: flex; gap: 4px; padding: 4px; background: var(--line-gray-2);
+      border-radius: var(--line-radius-pill); width: fit-content; margin-bottom: var(--line-pad-m);
+    }
+    .line-tab {
+      padding: 8px 18px; font-size: 13px; font-weight: 500; cursor: pointer;
+      color: var(--line-text-secondary); border-radius: var(--line-radius-pill);
+      transition: all 0.2s;
+    }
+    .line-tab:hover { color: var(--line-text); }
+    .line-tab.active { background: var(--line-white); color: var(--line-green-deep); box-shadow: 0 1px 2px rgba(0,0,0,0.06); font-weight: 700; }
+
+    .line-breadcrumb { font-size: 13px; color: var(--line-text-tertiary); }
+    .line-breadcrumb a { color: var(--line-text-tertiary); }
+    .line-breadcrumb a:hover { color: var(--line-green-deep); }
+    .line-breadcrumb .sep { margin: 0 8px; color: var(--line-gray-5); }
+    .line-breadcrumb .current { color: var(--line-text); font-weight: 500; }
+
+    .line-pagination { display: flex; gap: 6px; align-items: center; }
+    .line-pg-item {
+      min-width: 36px; height: 36px; line-height: 34px; text-align: center; padding: 0 10px;
+      border-radius: var(--line-radius-pill); font-size: 13px; cursor: pointer;
+      background: var(--line-white); border: 1px solid var(--line-gray-3); transition: all 0.2s;
+    }
+    .line-pg-item:hover { border-color: var(--line-green); color: var(--line-green-deep); }
+    .line-pg-item.active { background: var(--line-green); color: var(--line-white); border-color: var(--line-green); font-weight: 700; }
+    .line-pg-item.disabled { color: var(--line-text-disabled); cursor: not-allowed; }
+
+    .line-bottom-nav {
+      display: flex; gap: 0; background: var(--line-white);
+      border-radius: var(--line-radius-lg); box-shadow: var(--line-shadow-2);
+      padding: 8px; max-width: 380px;
+    }
+    .line-bottom-nav .item {
+      flex: 1; padding: 10px 8px; display: flex; flex-direction: column; align-items: center; gap: 4px;
+      cursor: pointer; border-radius: var(--line-radius); transition: all 0.2s;
+      color: var(--line-text-tertiary); font-size: 11px; font-weight: 500;
+    }
+    .line-bottom-nav .item:hover { background: var(--line-gray-1); }
+    .line-bottom-nav .item.active { color: var(--line-green-deep); }
+    .line-bottom-nav .item svg { width: 24px; height: 24px; stroke: currentColor; fill: none; stroke-width: 1.8; }
+    .line-bottom-nav .item.active svg { fill: var(--line-green-bg); stroke: var(--line-green-deep); }
+
+    .line-steps { display: flex; gap: 0; align-items: center; }
+    .line-step { flex: 1; display: flex; align-items: center; gap: 10px; }
+    .line-step .num { width: 32px; height: 32px; border-radius: 50%; background: var(--line-gray-3); color: var(--line-text-secondary); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; }
+    .line-step.active .num { background: var(--line-green); color: var(--line-white); }
+    .line-step.done .num { background: var(--line-green); color: var(--line-white); }
+    .line-step .lbl { font-size: 13px; color: var(--line-text-secondary); font-weight: 500; }
+    .line-step.active .lbl, .line-step.done .lbl { color: var(--line-text); font-weight: 700; }
+    .line-step .line { flex: 1; height: 2px; background: var(--line-gray-3); margin: 0 8px; border-radius: 1px; }
+    .line-step.done .line { background: var(--line-green); }
+
+    /* Chat surface (LINE flagship pattern) */
+    .chat-demo { background: var(--line-bg-chat); padding: var(--line-pad-l); border-radius: var(--line-radius-lg); display: flex; flex-direction: column; gap: 8px; }
+    .chat-msg { display: flex; gap: 8px; align-items: flex-end; max-width: 80%; }
+    .chat-msg.theirs { align-self: flex-start; }
+    .chat-msg.mine { align-self: flex-end; flex-direction: row-reverse; }
+    .chat-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--line-yellow); flex-shrink: 0; }
+    .chat-bubble { padding: 10px 14px; border-radius: var(--line-radius); font-size: 14px; line-height: 1.45; }
+    .chat-msg.theirs .chat-bubble { background: var(--line-white); border-radius: 16px 16px 16px 4px; }
+    .chat-msg.mine .chat-bubble { background: var(--line-green-light); color: var(--line-text); border-radius: 16px 16px 4px 16px; }
+
+    /* Layout */
+    .grid-demo { display: grid; grid-template-columns: repeat(12, 1fr); gap: 12px; margin-bottom: var(--line-pad-l); }
+    .grid-demo .col { padding: 14px 8px; background: var(--line-green-bg); border-radius: var(--line-radius-sm); font-size: 12px; text-align: center; color: var(--line-green-deep); font-family: var(--line-mono); font-weight: 600; }
+
+    .spacing-demo { display: flex; flex-direction: column; gap: var(--line-pad-s); }
+    .spacing-row { display: flex; align-items: center; gap: var(--line-pad-m); font-size: 13px; }
+    .spacing-row .bar { background: var(--line-green); height: 14px; border-radius: 4px; }
+    .spacing-row .lbl { font-family: var(--line-mono); color: var(--line-text-tertiary); width: 80px; }
+
+    .shadow-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: var(--line-pad-l); }
+    .shadow-card { background: #FFFFFF; padding: var(--line-pad-l); border-radius: var(--line-radius-lg); text-align: center; }
+    .shadow-card.s1 { box-shadow: var(--line-shadow-1); }
+    .shadow-card.s2 { box-shadow: var(--line-shadow-2); }
+    .shadow-card.s3 { box-shadow: var(--line-shadow-3); }
+    .shadow-card.sp { box-shadow: var(--line-shadow-pop); }
+    .shadow-card .lbl { font-family: var(--line-mono); font-size: 11px; color: var(--line-text-tertiary); }
+
+    .radius-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: var(--line-pad-l); }
+    .radius-card { aspect-ratio: 1; background: var(--line-green-bg); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; }
+    .radius-card .lbl { font-family: var(--line-mono); font-size: 11px; color: var(--line-green-deep); }
+    .radius-card .num { font-size: 16px; color: var(--line-text); font-weight: 700; }
+
+    /* Footer */
+    .ds-footer {
+      background: var(--line-text); color: rgba(255,255,255,0.72);
+      padding: var(--line-pad-xxl); margin-top: var(--line-pad-xxxl);
+    }
+    .ds-footer h3 { color: #FFFFFF; margin: 0 0 var(--line-pad-m); font-size: 16px; }
+    .ds-footer ul { list-style: none; padding: 0; margin: 0 0 var(--line-pad-l); display: grid; gap: 6px; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); }
+    .ds-footer ul li { font-size: 12px; }
+    .ds-footer a { color: var(--line-green-light); word-break: break-all; }
+    .ds-footer a:hover { color: var(--line-white); }
+    .ds-footer .license-note { font-size: 12px; margin: var(--line-pad-l) 0 var(--line-pad-s); }
+    .ds-footer .meta-note { font-size: 11px; opacity: 0.65; font-family: var(--line-mono); }
+
+    @media (max-width: 720px) {
+      main { padding: var(--line-pad-l); }
+      .ds-header { padding: var(--line-pad-xl); }
+      .ds-header h1 { font-size: 30px; line-height: 38px; }
+      section { padding: var(--line-pad-l); border-radius: var(--line-radius); }
+      .type-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="ds-header">
+    <a href="index.html" class="back-link">← Catalog</a>
+    <h1>LINE Design System</h1>
+    <div class="meta">
+      <span class="badge kind-ds">design system</span>
+      <span class="badge fidelity-approximated">approximated</span>
+      <span class="badge source-verified">source: verified</span>
+      <a href="https://designsystem.line.me" target="_blank" rel="noopener">Official ↗</a>
+    </div>
+    <p class="tagline">LINE's messaging-first design system with the iconic LINE Green and rounded, friendly forms for JP/ASEAN markets.</p>
+  </header>
+
+  <nav class="toc">
+    <ul>
+      <li><a href="#brand">Brand</a></li>
+      <li><a href="#color">Color</a></li>
+      <li><a href="#typography">Typography</a></li>
+      <li><a href="#iconography">Iconography</a></li>
+      <li><a href="#buttons">Buttons</a></li>
+      <li><a href="#form">Form</a></li>
+      <li><a href="#surfaces">Surfaces</a></li>
+      <li><a href="#feedback">Feedback</a></li>
+      <li><a href="#navigation">Navigation</a></li>
+      <li><a href="#layout">Layout</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="brand" data-fidelity="documented">
+      <h2><span>Brand</span><span class="badge fidelity-documented" style="background:var(--line-green-bg);color:var(--line-green-deep)">documented</span></h2>
+      <div class="brand-mark">
+        <span class="glyph">L</span>
+        LINE Design
+      </div>
+      <p style="margin-top: 16px; max-width: 720px;">LINE Design System (LDSM) is published by LINE Corporation (now LY Corporation) to align the LINE app and family services. Identity centers on the iconic LINE Green and warm, rounded, approachable shapes optimized for messaging and casual interactions.</p>
+      <div class="pillars">
+        <div class="pillar"><h4>Closer</h4><p>Bring people closer through familiar, friendly visual language.</p></div>
+        <div class="pillar"><h4>Comfortable</h4><p>Soft corners and generous spacing make daily use pleasant.</p></div>
+        <div class="pillar"><h4>Easy</h4><p>Predictable patterns lower the cognitive load for everyday actions.</p></div>
+        <div class="pillar"><h4>Joyful</h4><p>Stickers, icons, and color reinforce LINE's playful tone.</p></div>
+      </div>
+    </section>
+
+    <section id="color" data-fidelity="documented">
+      <h2><span>Color</span><span class="badge fidelity-documented" style="background:var(--line-green-bg);color:var(--line-green-deep)">documented</span><a class="source-link" href="https://designsystem.line.me/LDSM/foundation/color/primary-color-en.html" target="_blank" rel="noopener">spec ↗</a></h2>
+      <h3>Primary — LINE Green</h3>
+      <div class="palette-row">
+        <div class="swatch-card"><div class="swatch-fill" style="background:#06C755"></div><div class="swatch-info"><div class="name">LINE Green</div><div class="hex">#06C755</div></div></div>
+        <div class="swatch-card"><div class="swatch-fill" style="background:#00B900"></div><div class="swatch-info"><div class="name">Green Dark</div><div class="hex">#00B900</div></div></div>
+        <div class="swatch-card"><div class="swatch-fill" style="background:#52D78D"></div><div class="swatch-info"><div class="name">Green Light</div><div class="hex">#52D78D</div></div></div>
+        <div class="swatch-card"><div class="swatch-fill" style="background:#E5F8EC"></div><div class="swatch-info"><div class="name">Green BG</div><div class="hex">#E5F8EC</div></div></div>
+      </div>
+
+      <h3>Brand Neutrals</h3>
+      <div class="palette-row">
+        <div class="swatch-card"><div class="swatch-fill" style="background:#1E1E1E"></div><div class="swatch-info"><div class="name">LINE Black</div><div class="hex">#1E1E1E</div></div></div>
+        <div class="swatch-card"><div class="swatch-fill" style="background:#FFFFFF;border-bottom:1px solid #F0F0F0"></div><div class="swatch-info"><div class="name">White</div><div class="hex">#FFFFFF</div></div></div>
+        <div class="swatch-card"><div class="swatch-fill" style="background:#737373"></div><div class="swatch-info"><div class="name">Mid Gray</div><div class="hex">#737373</div></div></div>
+        <div class="swatch-card"><div class="swatch-fill" style="background:#C1C1C1"></div><div class="swatch-info"><div class="name">Light Gray</div><div class="hex">#C1C1C1</div></div></div>
+      </div>
+
+      <h3>Semantic Tokens</h3>
+      <div class="semantic-grid">
+        <div class="sem-card success"><span class="label">Success</span><span class="hex">#06C755</span></div>
+        <div class="sem-card warning"><span class="label">Warning</span><span class="hex">#FFB400</span></div>
+        <div class="sem-card error"><span class="label">Error</span><span class="hex">#FF334B</span></div>
+        <div class="sem-card info"><span class="label">Info</span><span class="hex">#4392F1</span></div>
+      </div>
+
+      <h3>Neutral Gray Scale</h3>
+      <div class="neutral-grid">
+        <div class="ncell" style="background:#FAFAFA;color:#000">1<br>FAFAFA</div>
+        <div class="ncell" style="background:#F0F0F0;color:#000">2<br>F0F0F0</div>
+        <div class="ncell" style="background:#E5E5E5;color:#000">3<br>E5E5E5</div>
+        <div class="ncell" style="background:#D9D9D9;color:#000">4<br>D9D9D9</div>
+        <div class="ncell" style="background:#C1C1C1;color:#000">5<br>C1C1C1</div>
+        <div class="ncell" style="background:#A6A6A6;color:#fff">6<br>A6A6A6</div>
+        <div class="ncell" style="background:#737373;color:#fff">7<br>737373</div>
+        <div class="ncell" style="background:#404040;color:#fff">8<br>404040</div>
+        <div class="ncell" style="background:#1E1E1E;color:#fff">9<br>1E1E1E</div>
+      </div>
+
+      <h3>Brand Accents (Sticker family)</h3>
+      <div class="palette-row">
+        <div class="swatch-card"><div class="swatch-fill" style="background:#FF8AAE"></div><div class="swatch-info"><div class="name">Pink</div><div class="hex">#FF8AAE</div></div></div>
+        <div class="swatch-card"><div class="swatch-fill" style="background:#FFD200"></div><div class="swatch-info"><div class="name">Yellow</div><div class="hex">#FFD200</div></div></div>
+        <div class="swatch-card"><div class="swatch-fill" style="background:#8E63E1"></div><div class="swatch-info"><div class="name">Purple</div><div class="hex">#8E63E1</div></div></div>
+        <div class="swatch-card"><div class="swatch-fill" style="background:#4392F1"></div><div class="swatch-info"><div class="name">Blue</div><div class="hex">#4392F1</div></div></div>
+      </div>
+    </section>
+
+    <section id="typography" data-fidelity="documented">
+      <h2><span>Typography</span><span class="badge fidelity-documented" style="background:var(--line-green-bg);color:var(--line-green-deep)">documented</span><a class="source-link" href="https://designsystem.line.me/LDSM/foundation/typography/typography-en.html" target="_blank" rel="noopener">spec ↗</a></h2>
+      <p>Primary typeface: <code>Noto Sans JP</code> (Google Fonts) with system fallback. Weights used: 400 / 500 / 700.</p>
+
+      <div class="type-row"><span class="label">display / 40 / 700</span><span class="display-style">いつものLINEで</span></div>
+      <div class="type-row"><span class="label">h1 / 32 / 700</span><span class="h1-style">Headline one — Page title</span></div>
+      <div class="type-row"><span class="label">h2 / 24 / 700</span><span class="h2-style">Headline two — Section title</span></div>
+      <div class="type-row"><span class="label">h3 / 20 / 700</span><span class="h3-style">Headline three — Card title</span></div>
+      <div class="type-row"><span class="label">h4 / 17 / 500</span><span class="h4-style">Headline four — Sub title</span></div>
+      <div class="type-row"><span class="label">body-lg / 16 / 400</span><span class="body-lg">Body large — primary reading paragraphs use 16/26 line height for comfortable Japanese reading.</span></div>
+      <div class="type-row"><span class="label">body-md / 14 / 400</span><span class="body-md">Body medium — chat messages and form helper text default size.</span></div>
+      <div class="type-row"><span class="label">body-sm / 12 / 400</span><span class="body-sm">Caption — auxiliary helper, timestamps, status text.</span></div>
+      <div class="type-row"><span class="label">mono / 13 / 400</span><span class="text-mono">const tokens = { primary: '#06C755' };</span></div>
+    </section>
+
+    <section id="iconography" data-fidelity="approximated">
+      <h2><span>Iconography</span><span class="badge fidelity-approximated">approximated</span><a class="source-link" href="https://designsystem.line.me/LDSM/foundation/iconography/iconography-style-en.html" target="_blank" rel="noopener">spec ↗</a></h2>
+      <p>LINE icons use rounded line strokes (1.8 px) at a 24×24 viewBox with rounded corners and end caps. Below: Lucide-style approximations.</p>
+      <div class="icon-grid">
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M3 12L12 3l9 9M5 10v10a1 1 0 001 1h12a1 1 0 001-1V10"/></svg><span>home</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><span>chat</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-5-5"/></svg><span>search</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg><span>call</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0116 0v1"/></svg><span>profile</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2zM17 21v-8H7v8M7 3v5h8"/></svg><span>save</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg><span>check</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M6 18L18 6"/></svg><span>close</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M12 5v14m-7-7h14"/></svg><span>add</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M21 8v13H3V8M1 3h22v5H1zM10 12h4"/></svg><span>gift</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5A5.5 5.5 0 017.5 3c1.74 0 3.41.81 4.5 2.09A6 6 0 0116.5 3 5.5 5.5 0 0122 8.5c0 3.78-3.4 6.86-8.55 11.54z"/></svg><span>heart</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg><span>inbox</span></div>
+      </div>
+    </section>
+
+    <section id="buttons" data-fidelity="approximated">
+      <h2><span>Buttons</span><span class="badge fidelity-approximated">approximated</span><a class="source-link" href="https://designsystem.line.me/LDSM/foundation/style/button-en.html" target="_blank" rel="noopener">spec ↗</a></h2>
+      <h3>Variants</h3>
+      <div class="button-row">
+        <button class="line-btn line-btn--primary">Primary</button>
+        <button class="line-btn">Default</button>
+        <button class="line-btn line-btn--secondary">Secondary</button>
+        <button class="line-btn line-btn--danger">Danger</button>
+        <button class="line-btn line-btn--ghost">Ghost</button>
+      </div>
+
+      <h3>Sizes</h3>
+      <div class="button-row">
+        <button class="line-btn line-btn--primary line-btn--lg">Large</button>
+        <button class="line-btn line-btn--primary">Medium</button>
+        <button class="line-btn line-btn--primary line-btn--sm">Small</button>
+      </div>
+
+      <h3>States</h3>
+      <div class="button-row">
+        <button class="line-btn line-btn--primary">Default</button>
+        <button class="line-btn line-btn--primary" style="background:var(--line-green-deep)">Hover</button>
+        <button class="line-btn line-btn--primary" style="background:#04A046">Active</button>
+        <button class="line-btn line-btn--primary" disabled>Disabled</button>
+        <button class="line-btn line-btn--primary"><span class="line-spin" style="width:16px;height:16px;border-width:2px;border-color:rgba(255,255,255,0.3);border-top-color:#fff"></span>Loading</button>
+      </div>
+
+      <h3>With Icons</h3>
+      <div class="button-row">
+        <button class="line-btn line-btn--primary"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>Send Message</button>
+        <button class="line-btn line-btn--secondary"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14m-7-7h14"/></svg>Add Friend</button>
+        <button class="line-btn line-btn--icon line-btn--primary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 01-2.18 2A19.79 19.79 0 013 4.18 2 2 0 015 2h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg></button>
+      </div>
+    </section>
+
+    <section id="form" data-fidelity="approximated">
+      <h2><span>Form</span><span class="badge fidelity-approximated">approximated</span><a class="source-link" href="https://designsystem.line.me/LDSM/foundation/style/form-en.html" target="_blank" rel="noopener">spec ↗</a></h2>
+      <div class="form-grid">
+        <div class="line-form-item">
+          <label class="line-label required">Display Name</label>
+          <input class="line-input" placeholder="Enter your name">
+          <span class="line-help">Visible to friends only.</span>
+        </div>
+        <div class="line-form-item">
+          <label class="line-label">Email</label>
+          <input class="line-input error" value="not-an-email">
+          <span class="line-help error">Please enter a valid email address.</span>
+        </div>
+        <div class="line-form-item">
+          <label class="line-label">Status Message</label>
+          <textarea class="line-textarea" placeholder="What's on your mind?"></textarea>
+        </div>
+        <div class="line-form-item">
+          <label class="line-label">Country</label>
+          <select class="line-select"><option>Japan</option><option>Thailand</option><option>Taiwan</option><option>Indonesia</option></select>
+        </div>
+        <div class="line-form-item">
+          <label class="line-label">Disabled</label>
+          <input class="line-input" placeholder="Cannot edit" disabled>
+        </div>
+        <div class="line-form-item">
+          <label class="line-label">Birthday</label>
+          <input class="line-input" placeholder="2026-05-05">
+        </div>
+      </div>
+
+      <h3>Selection Controls</h3>
+      <div class="button-row">
+        <label class="line-checkbox"><input type="checkbox" checked>Notifications</label>
+        <label class="line-checkbox"><input type="checkbox">Sounds</label>
+        <label class="line-checkbox"><input type="checkbox" disabled>Beta features (disabled)</label>
+        <label class="line-radio"><input type="radio" name="r" checked>Public</label>
+        <label class="line-radio"><input type="radio" name="r">Friends</label>
+        <label class="line-radio"><input type="radio" name="r">Private</label>
+      </div>
+
+      <h3>Switch</h3>
+      <div class="button-row">
+        <span class="line-switch checked"></span>
+        <span class="line-switch"></span>
+        <span class="line-switch checked" style="opacity:0.5;cursor:not-allowed"></span>
+      </div>
+    </section>
+
+    <section id="surfaces" data-fidelity="approximated">
+      <h2><span>Surfaces</span><span class="badge fidelity-approximated">approximated</span><a class="source-link" href="https://designsystem.line.me/LDSM/foundation/style/dialog-en.html" target="_blank" rel="noopener">spec ↗</a></h2>
+      <h3>Cards</h3>
+      <div class="surface-grid">
+        <div class="line-card">
+          <div class="media"></div>
+          <div class="body"><h4>Friend's Update</h4><p>Card surface with a 16-pixel radius and warm green media header.</p></div>
+        </div>
+        <div class="line-card">
+          <div class="media" style="background:linear-gradient(135deg,#FF8AAE,#FFD200)"></div>
+          <div class="body"><h4>Sticker Pack</h4><p>Promotional card variant using accent gradient and rounded corners.</p></div>
+        </div>
+        <div class="line-list-card">
+          <div class="stat-label">Daily Active</div>
+          <div class="stat-value">94.7M</div>
+        </div>
+        <div class="line-list-card">
+          <div class="stat-label">Friend Requests</div>
+          <div class="stat-value" style="color:var(--line-warning)">12 new</div>
+        </div>
+      </div>
+
+      <h3>Chat Bubbles</h3>
+      <div class="chat-demo">
+        <div class="chat-msg theirs">
+          <span class="chat-avatar"></span>
+          <div class="chat-bubble">こんにちは！週末の予定はありますか？</div>
+        </div>
+        <div class="chat-msg mine">
+          <div class="chat-bubble">空いてるよ！何かする？</div>
+        </div>
+        <div class="chat-msg theirs">
+          <span class="chat-avatar" style="background:var(--line-pink)"></span>
+          <div class="chat-bubble">渋谷でランチしよう</div>
+        </div>
+      </div>
+
+      <h3>Modal</h3>
+      <div class="line-modal">
+        <div class="line-modal-body">
+          <h3>Block this friend?</h3>
+          <p>You won't receive messages from blocked friends. You can unblock them later from settings.</p>
+        </div>
+        <div class="line-modal-foot"><button>Cancel</button><button>Block</button></div>
+      </div>
+
+      <h3>Tooltip / Popover</h3>
+      <div class="line-popover">Tap to send a sticker</div>
+    </section>
+
+    <section id="feedback" data-fidelity="approximated">
+      <h2><span>Feedback</span><span class="badge fidelity-approximated">approximated</span><a class="source-link" href="https://designsystem.line.me/LDSM/foundation/style/toast-en.html" target="_blank" rel="noopener">spec ↗</a></h2>
+      <h3>Alert</h3>
+      <div class="line-alert info"><span class="icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 8v0m0 3v5"/></svg></span><span>Info — neutral notification message.</span></div>
+      <div class="line-alert success"><span class="icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 13l4 4L19 7"/></svg></span><span>Success — your changes have been saved.</span></div>
+      <div class="line-alert warning"><span class="icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3L2 21h20L12 3zm0 6v6m0 3v0"/></svg></span><span>Warning — please review before continuing.</span></div>
+      <div class="line-alert error"><span class="icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M8 8l8 8M8 16l8-8"/></svg></span><span>Error — something went wrong, please retry.</span></div>
+
+      <h3>Toast</h3>
+      <div class="button-row">
+        <div class="line-toast"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg>Saved to Keep memo</div>
+        <div class="line-toast success">Friend added</div>
+      </div>
+
+      <h3>Tag</h3>
+      <div class="button-row">
+        <span class="line-tag">default</span>
+        <span class="line-tag green">official</span>
+        <span class="line-tag info">new</span>
+        <span class="line-tag warning">limited</span>
+        <span class="line-tag error">expired</span>
+        <span class="line-tag dark">PRO</span>
+      </div>
+
+      <h3>Badge</h3>
+      <div class="button-row" style="gap: 24px">
+        <span class="line-badge"><span style="display:inline-block;width:40px;height:40px;background:var(--line-gray-2);border-radius:var(--line-radius);position:relative"><span class="line-badge-count" style="position:absolute;top:-8px;right:-8px">5</span></span></span>
+        <span class="line-badge"><span style="display:inline-block;width:40px;height:40px;background:var(--line-gray-2);border-radius:var(--line-radius);position:relative"><span class="line-badge-count" style="position:absolute;top:-8px;right:-8px">99+</span></span></span>
+        <span class="line-badge"><span style="display:inline-block;width:40px;height:40px;background:var(--line-gray-2);border-radius:var(--line-radius);position:relative"><span class="line-badge-dot" style="position:absolute;top:-3px;right:-3px"></span></span></span>
+        <span class="line-badge-status online">Online</span>
+        <span class="line-badge-status away">Away</span>
+        <span class="line-badge-status busy">Busy</span>
+        <span class="line-badge-status offline">Offline</span>
+      </div>
+
+      <h3>Progress</h3>
+      <div style="display:flex;flex-direction:column;gap:8px;max-width:360px">
+        <div class="line-progress"><div class="line-progress-bar"><span style="width:30%"></span></div></div>
+        <div class="line-progress"><div class="line-progress-bar"><span style="width:70%"></span></div></div>
+        <div class="line-progress"><div class="line-progress-bar warning"><span style="width:90%"></span></div></div>
+        <div class="line-progress"><div class="line-progress-bar error"><span style="width:50%"></span></div></div>
+      </div>
+
+      <h3>Spinner</h3>
+      <div class="button-row"><span class="line-spin"></span><span class="line-spin" style="width:40px;height:40px;border-width:4px"></span></div>
+    </section>
+
+    <section id="navigation" data-fidelity="approximated">
+      <h2><span>Navigation</span><span class="badge fidelity-approximated">approximated</span><a class="source-link" href="https://designsystem.line.me/LDSM/foundation/style/tab-en.html" target="_blank" rel="noopener">spec ↗</a></h2>
+      <h3>Segmented Tabs</h3>
+      <div class="line-tabs">
+        <div class="line-tab active">Friends</div>
+        <div class="line-tab">Chats</div>
+        <div class="line-tab">VOOM</div>
+        <div class="line-tab">News</div>
+      </div>
+
+      <h3>Breadcrumb</h3>
+      <nav class="line-breadcrumb">
+        <a href="#">Home</a>
+        <span class="sep">›</span>
+        <a href="#">Settings</a>
+        <span class="sep">›</span>
+        <a href="#">Privacy</a>
+        <span class="sep">›</span>
+        <span class="current">Block list</span>
+      </nav>
+
+      <h3>Pagination</h3>
+      <div class="line-pagination">
+        <div class="line-pg-item">‹</div>
+        <div class="line-pg-item">1</div>
+        <div class="line-pg-item active">2</div>
+        <div class="line-pg-item">3</div>
+        <div class="line-pg-item">4</div>
+        <div class="line-pg-item">5</div>
+        <div class="line-pg-item">›</div>
+      </div>
+
+      <h3>Bottom Navigation (Mobile)</h3>
+      <div class="line-bottom-nav">
+        <div class="item active">
+          <svg viewBox="0 0 24 24"><path d="M4 21v-1a8 8 0 0116 0v1M12 12a4 4 0 100-8 4 4 0 000 8z"/></svg>
+          <span>Friends</span>
+        </div>
+        <div class="item">
+          <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          <span>Chats</span>
+        </div>
+        <div class="item">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M10 8l6 4-6 4z" fill="currentColor"/></svg>
+          <span>VOOM</span>
+        </div>
+        <div class="item">
+          <svg viewBox="0 0 24 24"><path d="M5 4h14v16H5z"/><path d="M9 9h6M9 13h6M9 17h4"/></svg>
+          <span>News</span>
+        </div>
+        <div class="item">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.8-.3"/></svg>
+          <span>Wallet</span>
+        </div>
+      </div>
+
+      <h3>Steps</h3>
+      <div class="line-steps">
+        <div class="line-step done"><div class="num">✓</div><div class="lbl">Account</div><div class="line"></div></div>
+        <div class="line-step active"><div class="num">2</div><div class="lbl">Profile</div><div class="line"></div></div>
+        <div class="line-step"><div class="num">3</div><div class="lbl">Confirm</div></div>
+      </div>
+    </section>
+
+    <section id="layout" data-fidelity="documented">
+      <h2><span>Layout</span><span class="badge fidelity-documented" style="background:var(--line-green-bg);color:var(--line-green-deep)">documented</span><a class="source-link" href="https://designsystem.line.me/LDSM/foundation/grid/grid-en.html" target="_blank" rel="noopener">spec ↗</a></h2>
+      <h3>12-Column Grid</h3>
+      <p>LDSM uses a 12-column responsive grid with generous gutters (16-24 px) tuned to mobile-first messaging UI.</p>
+      <div class="grid-demo">
+        <div class="col" style="grid-column: span 12">span 12</div>
+      </div>
+      <div class="grid-demo">
+        <div class="col" style="grid-column: span 6">span 6</div>
+        <div class="col" style="grid-column: span 6">span 6</div>
+      </div>
+      <div class="grid-demo">
+        <div class="col" style="grid-column: span 4">span 4</div>
+        <div class="col" style="grid-column: span 4">span 4</div>
+        <div class="col" style="grid-column: span 4">span 4</div>
+      </div>
+      <div class="grid-demo">
+        <div class="col" style="grid-column: span 3">span 3</div>
+        <div class="col" style="grid-column: span 3">span 3</div>
+        <div class="col" style="grid-column: span 3">span 3</div>
+        <div class="col" style="grid-column: span 3">span 3</div>
+      </div>
+
+      <h3>Spacing Scale (4 dp)</h3>
+      <div class="spacing-demo">
+        <div class="spacing-row"><span class="lbl">xs · 4</span><span class="bar" style="width:4px"></span></div>
+        <div class="spacing-row"><span class="lbl">s · 8</span><span class="bar" style="width:8px"></span></div>
+        <div class="spacing-row"><span class="lbl">m · 12</span><span class="bar" style="width:12px"></span></div>
+        <div class="spacing-row"><span class="lbl">l · 16</span><span class="bar" style="width:16px"></span></div>
+        <div class="spacing-row"><span class="lbl">xl · 24</span><span class="bar" style="width:24px"></span></div>
+        <div class="spacing-row"><span class="lbl">xxl · 32</span><span class="bar" style="width:32px"></span></div>
+        <div class="spacing-row"><span class="lbl">xxxl · 48</span><span class="bar" style="width:48px"></span></div>
+      </div>
+
+      <h3>Radius (rounded / pill)</h3>
+      <div class="radius-grid">
+        <div class="radius-card" style="border-radius:4px"><span class="num">4</span><span class="lbl">--radius-xs</span></div>
+        <div class="radius-card" style="border-radius:8px"><span class="num">8</span><span class="lbl">--radius-sm</span></div>
+        <div class="radius-card" style="border-radius:12px"><span class="num">12</span><span class="lbl">--radius</span></div>
+        <div class="radius-card" style="border-radius:16px"><span class="num">16</span><span class="lbl">--radius-lg</span></div>
+        <div class="radius-card" style="border-radius:24px"><span class="num">24</span><span class="lbl">--radius-xl</span></div>
+        <div class="radius-card" style="border-radius:999px"><span class="num">999</span><span class="lbl">--radius-pill</span></div>
+      </div>
+
+      <h3>Shadow / Elevation</h3>
+      <div class="shadow-grid">
+        <div class="shadow-card s1"><div>Shadow 1</div><span class="lbl">Card default</span></div>
+        <div class="shadow-card s2"><div>Shadow 2</div><span class="lbl">Hover / popover</span></div>
+        <div class="shadow-card s3"><div>Shadow 3</div><span class="lbl">Modal / dialog</span></div>
+        <div class="shadow-card sp"><div>Shadow Pop</div><span class="lbl">Brand emphasis</span></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="ds-footer">
+    <h3>Sources</h3>
+    <ul>
+      <li>Canonical: <a href="https://designsystem.line.me" target="_blank" rel="noopener">https://designsystem.line.me</a></li>
+      <li><a href="https://designsystem.line.me/LDSM/foundation/color/primary-color-en.html" target="_blank" rel="noopener">https://designsystem.line.me/LDSM/foundation/color/primary-color-en.html</a></li>
+      <li><a href="https://designsystem.line.me/LDSM/foundation/typography/typography-en.html" target="_blank" rel="noopener">https://designsystem.line.me/LDSM/foundation/typography/typography-en.html</a></li>
+      <li><a href="https://designsystem.line.me/LDSM/foundation/iconography/iconography-style-en.html" target="_blank" rel="noopener">https://designsystem.line.me/LDSM/foundation/iconography/iconography-style-en.html</a></li>
+      <li><a href="https://designsystem.line.me/LDSM/foundation/style/button-en.html" target="_blank" rel="noopener">https://designsystem.line.me/LDSM/foundation/style/button-en.html</a></li>
+      <li><a href="https://designsystem.line.me/LDSM/foundation/style/form-en.html" target="_blank" rel="noopener">https://designsystem.line.me/LDSM/foundation/style/form-en.html</a></li>
+      <li><a href="https://designsystem.line.me/LDSM/foundation/style/dialog-en.html" target="_blank" rel="noopener">https://designsystem.line.me/LDSM/foundation/style/dialog-en.html</a></li>
+      <li><a href="https://designsystem.line.me/LDSM/foundation/style/toast-en.html" target="_blank" rel="noopener">https://designsystem.line.me/LDSM/foundation/style/toast-en.html</a></li>
+      <li><a href="https://designsystem.line.me/LDSM/foundation/style/tab-en.html" target="_blank" rel="noopener">https://designsystem.line.me/LDSM/foundation/style/tab-en.html</a></li>
+      <li><a href="https://designsystem.line.me/LDSM/foundation/grid/grid-en.html" target="_blank" rel="noopener">https://designsystem.line.me/LDSM/foundation/grid/grid-en.html</a></li>
+    </ul>
+    <p class="license-note">This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with LINE. LINE Design System and related trademarks belong to LINE. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</p>
+    <p class="meta-note">Reproduction date: 2026-05-05 · sourceStatus: verified · fidelity: approximated</p>
+  </footer>
+</body>
+</html>

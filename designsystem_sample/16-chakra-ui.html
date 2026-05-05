@@ -1,0 +1,1425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chakra UI — Design System Reference</title>
+  <script id="ds-meta" type="application/json">
+{"id":"16-chakra-ui","fileSlug":"16-chakra-ui","schemaVersion":"1"}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Chakra teal scale (primary) */
+      --chakra-teal-50: #E6FFFA;
+      --chakra-teal-100: #B2F5EA;
+      --chakra-teal-200: #81E6D9;
+      --chakra-teal-300: #4FD1C5;
+      --chakra-teal-400: #38B2AC;
+      --chakra-teal-500: #319795;
+      --chakra-teal-600: #2C7A7B;
+      --chakra-teal-700: #285E61;
+      --chakra-teal-800: #234E52;
+      --chakra-teal-900: #1D4044;
+
+      /* Chakra gray scale */
+      --chakra-gray-50: #F7FAFC;
+      --chakra-gray-100: #EDF2F7;
+      --chakra-gray-200: #E2E8F0;
+      --chakra-gray-300: #CBD5E0;
+      --chakra-gray-400: #A0AEC0;
+      --chakra-gray-500: #718096;
+      --chakra-gray-600: #4A5568;
+      --chakra-gray-700: #2D3748;
+      --chakra-gray-800: #1A202C;
+      --chakra-gray-900: #171923;
+
+      /* Semantic accents */
+      --chakra-blue-500: #3182CE;
+      --chakra-blue-600: #2B6CB0;
+      --chakra-green-500: #38A169;
+      --chakra-green-600: #2F855A;
+      --chakra-red-500: #E53E3E;
+      --chakra-red-600: #C53030;
+      --chakra-yellow-500: #D69E2E;
+      --chakra-yellow-600: #B7791F;
+      --chakra-purple-500: #805AD5;
+      --chakra-purple-600: #6B46C1;
+      --chakra-orange-500: #DD6B20;
+      --chakra-pink-500: #D53F8C;
+      --chakra-cyan-500: #00B5D8;
+
+      /* Light mode */
+      --chakra-bg: #FFFFFF;
+      --chakra-bg-canvas: #F7FAFC;
+      --chakra-text: #1A202C;
+      --chakra-text-muted: #4A5568;
+      --chakra-text-subtle: #718096;
+      --chakra-border: #E2E8F0;
+
+      /* Type */
+      --chakra-font: 'Inter', -apple-system, system-ui, sans-serif;
+      --chakra-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+
+      /* Shape */
+      --chakra-radius-none: 0;
+      --chakra-radius-sm: 0.125rem; /* 2px */
+      --chakra-radius: 0.25rem;     /* 4px */
+      --chakra-radius-md: 0.375rem; /* 6px - Chakra default */
+      --chakra-radius-lg: 0.5rem;   /* 8px */
+      --chakra-radius-xl: 0.75rem;  /* 12px */
+      --chakra-radius-2xl: 1rem;    /* 16px */
+      --chakra-radius-full: 9999px;
+
+      /* Spacing — 4px base */
+      --chakra-sp-1: 4px;
+      --chakra-sp-2: 8px;
+      --chakra-sp-3: 12px;
+      --chakra-sp-4: 16px;
+      --chakra-sp-5: 20px;
+      --chakra-sp-6: 24px;
+      --chakra-sp-8: 32px;
+      --chakra-sp-10: 40px;
+      --chakra-sp-12: 48px;
+      --chakra-sp-16: 64px;
+
+      /* Shadow */
+      --chakra-sh-xs: 0 0 0 1px rgba(0,0,0,0.05);
+      --chakra-sh-sm: 0 1px 2px 0 rgba(0,0,0,0.05);
+      --chakra-sh-base: 0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px 0 rgba(0,0,0,0.06);
+      --chakra-sh-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+      --chakra-sh-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+      --chakra-sh-xl: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+      --chakra-sh-outline: 0 0 0 3px rgba(66,153,225,0.6);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: var(--chakra-font);
+      background: var(--chakra-bg-canvas);
+      color: var(--chakra-text);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    code, kbd, pre { font-family: var(--chakra-mono); }
+
+    /* Header */
+    .ds-header {
+      background: var(--chakra-bg);
+      color: var(--chakra-text);
+      padding: var(--chakra-sp-12) var(--chakra-sp-8) var(--chakra-sp-8);
+      border-bottom: 1px solid var(--chakra-border);
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--chakra-sp-2);
+      color: var(--chakra-teal-600);
+      text-decoration: none;
+      padding: 6px 12px;
+      border-radius: var(--chakra-radius-md);
+      font-size: 14px;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+    .back-link:hover { background: var(--chakra-teal-50); }
+
+    .ds-header h1 {
+      font-size: 48px;
+      line-height: 1.2;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin: var(--chakra-sp-4) 0 var(--chakra-sp-3);
+    }
+
+    .ds-header .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--chakra-sp-2);
+      align-items: center;
+      margin-bottom: var(--chakra-sp-3);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 10px;
+      border-radius: var(--chakra-radius-md);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      background: var(--chakra-gray-100);
+      color: var(--chakra-gray-700);
+    }
+    .badge.kind-cl { background: var(--chakra-teal-500); color: white; }
+    .badge.fidelity-documented { background: #C6F6D5; color: #22543D; }
+    .badge.fidelity-approximated { background: #FEEBC8; color: #7B341E; }
+    .badge.fidelity-inspired { background: #E9D8FD; color: #44337A; }
+    .badge.source-verified { background: var(--chakra-teal-100); color: var(--chakra-teal-800); }
+
+    .ds-header a[href*="chakra-ui.com"] {
+      color: var(--chakra-teal-600);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 4px 12px;
+      border: 1px solid var(--chakra-border);
+      border-radius: var(--chakra-radius-md);
+      font-size: 13px;
+      background: var(--chakra-bg);
+    }
+    .ds-header a[href*="chakra-ui.com"]:hover { background: var(--chakra-gray-50); }
+
+    .tagline {
+      font-size: 20px;
+      line-height: 1.5;
+      max-width: 720px;
+      margin: var(--chakra-sp-4) 0 0;
+      color: var(--chakra-text-muted);
+    }
+
+    /* TOC */
+    .toc {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255,255,255,0.85);
+      border-bottom: 1px solid var(--chakra-border);
+      backdrop-filter: blur(10px);
+    }
+    .toc ul {
+      list-style: none;
+      margin: 0;
+      padding: var(--chakra-sp-3) var(--chakra-sp-8);
+      display: flex;
+      gap: var(--chakra-sp-2);
+      overflow-x: auto;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+    .toc a {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: var(--chakra-radius-md);
+      color: var(--chakra-text-muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .toc a:hover { background: var(--chakra-teal-50); color: var(--chakra-teal-700); }
+
+    /* Main */
+    main {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: var(--chakra-sp-8);
+    }
+
+    section {
+      background: var(--chakra-bg);
+      border-radius: var(--chakra-radius-lg);
+      padding: var(--chakra-sp-8);
+      margin-bottom: var(--chakra-sp-6);
+      box-shadow: var(--chakra-sh-sm);
+      border: 1px solid var(--chakra-border);
+    }
+
+    section h2 {
+      display: flex;
+      align-items: center;
+      gap: var(--chakra-sp-3);
+      flex-wrap: wrap;
+      font-size: 30px;
+      line-height: 1.2;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin: 0 0 var(--chakra-sp-5);
+    }
+
+    .source-link {
+      font-size: 13px;
+      color: var(--chakra-teal-600);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .source-link:hover { text-decoration: underline; }
+
+    h3 {
+      font-size: 20px;
+      line-height: 1.33;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin: var(--chakra-sp-6) 0 var(--chakra-sp-3);
+    }
+
+    h4 {
+      font-size: 16px;
+      line-height: 1.5;
+      font-weight: 600;
+      margin: var(--chakra-sp-4) 0 var(--chakra-sp-2);
+    }
+
+    p { margin: 0 0 var(--chakra-sp-3); }
+    section > p { color: var(--chakra-text-muted); }
+
+    /* Brand */
+    #brand .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--chakra-sp-3);
+      padding: var(--chakra-sp-3) var(--chakra-sp-5);
+      background: var(--chakra-teal-500);
+      border-radius: var(--chakra-radius-lg);
+      color: white;
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    #brand .brand-mark svg { width: 36px; height: 36px; }
+    #brand .pillars {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--chakra-sp-4);
+      margin-top: var(--chakra-sp-6);
+    }
+    #brand .pillar {
+      padding: var(--chakra-sp-5);
+      background: var(--chakra-teal-50);
+      border-radius: var(--chakra-radius-lg);
+      border-left: 4px solid var(--chakra-teal-500);
+    }
+    #brand .pillar h4 { margin-top: 0; color: var(--chakra-teal-700); }
+
+    /* Color */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 4px;
+      margin-bottom: var(--chakra-sp-3);
+    }
+    .color-cell {
+      aspect-ratio: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 6px;
+      font-size: 10px;
+      font-family: var(--chakra-mono);
+      border-radius: var(--chakra-radius);
+    }
+
+    .semantic-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
+      gap: var(--chakra-sp-3);
+    }
+    .sem-card {
+      padding: var(--chakra-sp-4);
+      border-radius: var(--chakra-radius-md);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      color: white;
+    }
+    .sem-card .label { font-size: 14px; font-weight: 600; }
+    .sem-card .hex { font-family: var(--chakra-mono); font-size: 12px; opacity: 0.85; }
+
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--chakra-sp-2);
+      margin-bottom: var(--chakra-sp-4);
+    }
+    .role-chip {
+      padding: var(--chakra-sp-3) var(--chakra-sp-4);
+      border-radius: var(--chakra-radius-md);
+      font-size: 13px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 500;
+    }
+    .role-chip code { font-size: 11px; opacity: 0.85; }
+
+    /* Typography */
+    .type-row {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: var(--chakra-sp-4);
+      padding: var(--chakra-sp-3) 0;
+      border-bottom: 1px solid var(--chakra-border);
+      align-items: baseline;
+    }
+    .type-row:last-child { border-bottom: 0; }
+    .type-row .label {
+      font-family: var(--chakra-mono);
+      font-size: 12px;
+      color: var(--chakra-text-subtle);
+    }
+    .text-6xl { font-size: 60px; line-height: 1; font-weight: 800; letter-spacing: -0.05em; }
+    .text-5xl { font-size: 48px; line-height: 1; font-weight: 800; letter-spacing: -0.04em; }
+    .text-4xl { font-size: 36px; line-height: 1.25; font-weight: 700; letter-spacing: -0.03em; }
+    .text-3xl { font-size: 30px; line-height: 1.33; font-weight: 700; letter-spacing: -0.02em; }
+    .text-2xl { font-size: 24px; line-height: 1.33; font-weight: 700; letter-spacing: -0.01em; }
+    .text-xl { font-size: 20px; line-height: 1.4; font-weight: 600; }
+    .text-lg { font-size: 18px; line-height: 1.5; font-weight: 600; }
+    .text-md { font-size: 16px; line-height: 1.5; font-weight: 400; }
+    .text-sm { font-size: 14px; line-height: 1.43; font-weight: 400; }
+    .text-xs { font-size: 12px; line-height: 1.33; font-weight: 400; }
+    .mono-sample { font-family: var(--chakra-mono); font-size: 14px; color: var(--chakra-text-muted); }
+
+    /* Iconography */
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(80px,1fr));
+      gap: var(--chakra-sp-3);
+    }
+    .icon-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: var(--chakra-sp-3);
+      background: var(--chakra-gray-50);
+      border-radius: var(--chakra-radius-md);
+      transition: background 0.2s;
+    }
+    .icon-cell:hover { background: var(--chakra-teal-50); }
+    .icon-cell svg { width: 24px; height: 24px; stroke: var(--chakra-text-muted); }
+    .icon-cell span { font-size: 11px; color: var(--chakra-text-muted); }
+
+    /* Buttons */
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--chakra-sp-3);
+      align-items: center;
+      margin-bottom: var(--chakra-sp-3);
+    }
+
+    .ck-btn {
+      font-family: var(--chakra-font);
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 0;
+      padding: 0 16px;
+      border-radius: var(--chakra-radius-md);
+      border: 0;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      height: 40px;
+      transition: all 0.2s;
+    }
+    .ck-btn--solid { background: var(--chakra-teal-500); color: white; }
+    .ck-btn--solid:hover { background: var(--chakra-teal-600); }
+    .ck-btn--solid:disabled { background: var(--chakra-gray-200); color: var(--chakra-gray-500); cursor: not-allowed; }
+    .ck-btn--outline { background: transparent; color: var(--chakra-teal-600); border: 1px solid currentColor; }
+    .ck-btn--outline:hover { background: var(--chakra-teal-50); }
+    .ck-btn--ghost { background: transparent; color: var(--chakra-teal-600); }
+    .ck-btn--ghost:hover { background: var(--chakra-teal-50); }
+    .ck-btn--link { background: transparent; color: var(--chakra-teal-600); padding: 0; height: auto; text-decoration: underline; }
+    .ck-btn--link:hover { color: var(--chakra-teal-700); }
+    .ck-btn--gray { background: var(--chakra-gray-100); color: var(--chakra-gray-800); }
+    .ck-btn--gray:hover { background: var(--chakra-gray-200); }
+    .ck-btn--icon { width: 40px; height: 40px; padding: 0; justify-content: center; }
+    .ck-btn--xs { height: 24px; font-size: 12px; padding: 0 8px; }
+    .ck-btn--sm { height: 32px; font-size: 14px; padding: 0 12px; }
+    .ck-btn--lg { height: 48px; font-size: 18px; padding: 0 24px; }
+    .ck-btn:focus-visible { box-shadow: var(--chakra-sh-outline); outline: 0; }
+
+    /* Form */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+      gap: var(--chakra-sp-4);
+    }
+    .ck-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .ck-field-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--chakra-text);
+    }
+    .ck-input {
+      background: var(--chakra-bg);
+      border: 1px solid var(--chakra-border);
+      border-radius: var(--chakra-radius-md);
+      padding: 0 16px;
+      height: 40px;
+      font-family: var(--chakra-font);
+      font-size: 16px;
+      color: var(--chakra-text);
+      outline: none;
+      width: 100%;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .ck-input:hover { border-color: var(--chakra-gray-300); }
+    .ck-input:focus { border-color: var(--chakra-teal-500); box-shadow: 0 0 0 1px var(--chakra-teal-500); }
+    .ck-input--filled { background: var(--chakra-gray-100); border-color: transparent; }
+    .ck-input--flushed { border-radius: 0; border: 0; border-bottom: 1px solid var(--chakra-border); padding-left: 0; padding-right: 0; }
+    .ck-input--flushed:focus { box-shadow: 0 1px 0 0 var(--chakra-teal-500); }
+    .ck-input--unstyled { border: 0; padding: 0; height: auto; }
+    .ck-input--error { border-color: var(--chakra-red-500); box-shadow: 0 0 0 1px var(--chakra-red-500); }
+    .ck-helper { font-size: 14px; color: var(--chakra-text-subtle); }
+    .ck-error-text { font-size: 14px; color: var(--chakra-red-500); }
+
+    .ck-textarea { min-height: 80px; padding: 8px 16px; resize: vertical; height: auto; line-height: 1.5; }
+    select.ck-input { appearance: none; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23718096' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 40px; }
+
+    .ck-checkbox, .ck-radio {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .ck-checkbox input, .ck-radio input { width: 16px; height: 16px; accent-color: var(--chakra-teal-500); }
+    .ck-switch { position: relative; display: inline-block; width: 36px; height: 20px; }
+    .ck-switch input { opacity: 0; width: 0; height: 0; }
+    .ck-switch .slider {
+      position: absolute; cursor: pointer; inset: 0;
+      background: var(--chakra-gray-300);
+      border-radius: var(--chakra-radius-full);
+      transition: 0.2s;
+    }
+    .ck-switch .slider::before {
+      content: ''; position: absolute;
+      width: 16px; height: 16px;
+      left: 2px; top: 2px;
+      background: white;
+      border-radius: 50%;
+      transition: 0.2s;
+      box-shadow: var(--chakra-sh-sm);
+    }
+    .ck-switch input:checked + .slider { background: var(--chakra-teal-500); }
+    .ck-switch input:checked + .slider::before { transform: translateX(16px); }
+
+    .ck-slider { width: 100%; accent-color: var(--chakra-teal-500); }
+
+    /* Surfaces */
+    .surface-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
+      gap: var(--chakra-sp-4);
+    }
+    .ck-card {
+      background: var(--chakra-bg);
+      border-radius: var(--chakra-radius-lg);
+      padding: var(--chakra-sp-5);
+      box-shadow: var(--chakra-sh-base);
+      border: 1px solid var(--chakra-border);
+    }
+    .ck-card--elevated { box-shadow: var(--chakra-sh-md); }
+    .ck-card--outline { box-shadow: none; border-width: 2px; }
+    .ck-card--filled { background: var(--chakra-gray-50); border: 0; box-shadow: none; }
+    .ck-card .media { height: 120px; background: var(--chakra-teal-100); border-radius: var(--chakra-radius); margin-bottom: var(--chakra-sp-3); }
+    .ck-card h4 { margin: 0 0 4px; }
+    .ck-card p { font-size: 14px; color: var(--chakra-text-muted); margin: 0; }
+
+    .ck-stat { padding: var(--chakra-sp-5); background: var(--chakra-teal-500); border-radius: var(--chakra-radius-lg); color: white; }
+    .ck-stat .num { font-size: 36px; font-weight: 700; line-height: 1; letter-spacing: -0.02em; }
+    .ck-stat .lbl { font-size: 14px; opacity: 0.9; margin-top: 4px; }
+
+    .ck-modal {
+      background: var(--chakra-bg);
+      padding: var(--chakra-sp-6);
+      border-radius: var(--chakra-radius-md);
+      box-shadow: var(--chakra-sh-xl);
+      max-width: 480px;
+    }
+
+    /* Feedback */
+    .ck-alert {
+      display: flex;
+      gap: var(--chakra-sp-3);
+      padding: var(--chakra-sp-3) var(--chakra-sp-4);
+      border-radius: var(--chakra-radius-md);
+      margin-bottom: var(--chakra-sp-2);
+      font-size: 14px;
+      align-items: flex-start;
+    }
+    .ck-alert--info { background: #BEE3F8; color: #2A4365; }
+    .ck-alert--success { background: #C6F6D5; color: #22543D; }
+    .ck-alert--warning { background: #FEEBC8; color: #744210; }
+    .ck-alert--error { background: #FED7D7; color: #742A2A; }
+    .ck-alert--subtle-info { background: #EBF8FF; color: #2A4365; border-left: 4px solid var(--chakra-blue-500); }
+
+    .ck-toast {
+      background: var(--chakra-gray-700);
+      color: white;
+      padding: var(--chakra-sp-3) var(--chakra-sp-4);
+      border-radius: var(--chakra-radius-md);
+      box-shadow: var(--chakra-sh-md);
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 14px;
+    }
+    .ck-toast button { background: transparent; color: var(--chakra-teal-200); border: 0; font-weight: 600; cursor: pointer; }
+
+    .ck-banner {
+      display: flex;
+      gap: var(--chakra-sp-3);
+      padding: var(--chakra-sp-3) var(--chakra-sp-4);
+      background: var(--chakra-teal-50);
+      border: 1px solid var(--chakra-teal-100);
+      border-radius: var(--chakra-radius-md);
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .ck-tag-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .ck-tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 8px;
+      border-radius: var(--chakra-radius-md);
+      background: var(--chakra-gray-100);
+      color: var(--chakra-gray-700);
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .ck-tag--teal { background: var(--chakra-teal-100); color: var(--chakra-teal-800); }
+    .ck-tag--solid-teal { background: var(--chakra-teal-500); color: white; }
+    .ck-tag--blue { background: #BEE3F8; color: #2A4365; }
+    .ck-tag--green { background: #C6F6D5; color: #22543D; }
+    .ck-tag--red { background: #FED7D7; color: #742A2A; }
+    .ck-tag--yellow { background: #FEEBC8; color: #744210; }
+    .ck-tag--purple { background: #E9D8FD; color: #44337A; }
+
+    .ck-badge {
+      display: inline-flex;
+      padding: 0 6px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      border-radius: var(--chakra-radius);
+      background: var(--chakra-red-500);
+      color: white;
+      min-width: 18px;
+      height: 18px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ck-progress {
+      width: 100%;
+      height: 8px;
+      background: var(--chakra-gray-100);
+      border-radius: var(--chakra-radius-full);
+      overflow: hidden;
+    }
+    .ck-progress::after {
+      content: '';
+      display: block;
+      height: 100%;
+      width: 60%;
+      background: var(--chakra-teal-500);
+    }
+
+    .ck-skeleton {
+      height: 14px;
+      background: linear-gradient(90deg, var(--chakra-gray-100), var(--chakra-gray-200), var(--chakra-gray-100));
+      background-size: 200% 100%;
+      border-radius: var(--chakra-radius);
+      animation: shimmer 1.5s infinite;
+    }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+    .ck-spinner {
+      width: 32px; height: 32px;
+      border: 3px solid var(--chakra-gray-200);
+      border-top-color: var(--chakra-teal-500);
+      border-radius: 50%;
+      animation: spin 0.65s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Navigation */
+    .ck-tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 2px solid var(--chakra-border);
+      margin-bottom: var(--chakra-sp-3);
+    }
+    .ck-tab {
+      padding: var(--chakra-sp-2) var(--chakra-sp-4);
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--chakra-text-subtle);
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+      cursor: pointer;
+    }
+    .ck-tab.active { color: var(--chakra-teal-600); border-bottom-color: var(--chakra-teal-500); }
+
+    .ck-breadcrumb { display: flex; gap: 8px; align-items: center; font-size: 16px; color: var(--chakra-text-subtle); }
+    .ck-breadcrumb a { color: var(--chakra-teal-600); text-decoration: none; }
+    .ck-breadcrumb a:hover { text-decoration: underline; }
+
+    .ck-pagination { display: flex; gap: 4px; align-items: center; }
+    .ck-pagination button {
+      width: 36px; height: 36px;
+      border-radius: var(--chakra-radius-md);
+      border: 1px solid var(--chakra-border);
+      background: var(--chakra-bg);
+      color: var(--chakra-text);
+      cursor: pointer;
+      font-family: var(--chakra-font);
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .ck-pagination button.active { background: var(--chakra-teal-500); color: white; border-color: var(--chakra-teal-500); }
+    .ck-pagination button:hover:not(.active) { background: var(--chakra-gray-50); }
+
+    .ck-stepper { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+    .ck-stepper .step { display: inline-flex; align-items: center; gap: 8px; }
+    .ck-stepper .num {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--chakra-gray-200); color: var(--chakra-text-subtle);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 600;
+    }
+    .ck-stepper .num.active { background: var(--chakra-teal-500); color: white; }
+    .ck-stepper .num.complete { background: var(--chakra-green-500); color: white; }
+    .ck-stepper .line { flex: 1; height: 2px; background: var(--chakra-border); }
+
+    .ck-sidebar {
+      background: var(--chakra-bg);
+      border-radius: var(--chakra-radius-md);
+      padding: var(--chakra-sp-2);
+      width: 240px;
+      border: 1px solid var(--chakra-border);
+    }
+    .ck-sidebar a {
+      display: flex; align-items: center; gap: 12px;
+      padding: 8px 12px;
+      border-radius: var(--chakra-radius-md);
+      color: var(--chakra-text);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .ck-sidebar a:hover { background: var(--chakra-gray-50); }
+    .ck-sidebar a.active { background: var(--chakra-teal-50); color: var(--chakra-teal-700); }
+
+    .ck-topbar {
+      display: flex; align-items: center; gap: 16px;
+      padding: 12px 16px;
+      background: var(--chakra-bg);
+      border-radius: var(--chakra-radius-md);
+      box-shadow: var(--chakra-sh-sm);
+      border: 1px solid var(--chakra-border);
+    }
+
+    .ck-menu {
+      background: var(--chakra-bg);
+      border-radius: var(--chakra-radius-md);
+      box-shadow: var(--chakra-sh-md);
+      padding: 8px 0;
+      width: 200px;
+      border: 1px solid var(--chakra-border);
+    }
+    .ck-menu .item { padding: 8px 12px; font-size: 14px; cursor: pointer; }
+    .ck-menu .item:hover { background: var(--chakra-gray-50); }
+
+    /* Data */
+    table.ck-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    table.ck-table th, table.ck-table td {
+      text-align: left;
+      padding: 12px 24px;
+      border-bottom: 1px solid var(--chakra-border);
+    }
+    table.ck-table th { font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--chakra-text-muted); }
+    table.ck-table tbody tr:hover { background: var(--chakra-gray-50); }
+
+    .ck-list { list-style: none; padding: 0; margin: 0; }
+    .ck-list li {
+      padding: 12px 0;
+      display: flex; gap: 12px; align-items: center;
+      border-bottom: 1px solid var(--chakra-border);
+    }
+    .ck-list li:last-child { border-bottom: 0; }
+
+    .ck-kv { display: grid; grid-template-columns: 140px 1fr; gap: 12px; font-size: 14px; }
+    .ck-kv dt { color: var(--chakra-text-muted); font-weight: 600; }
+
+    .ck-avatar {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: var(--chakra-teal-500);
+      color: white;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-weight: 600;
+    }
+
+    .ck-empty {
+      text-align: center;
+      padding: var(--chakra-sp-12) var(--chakra-sp-4);
+      color: var(--chakra-text-subtle);
+    }
+    .ck-empty svg { width: 48px; height: 48px; opacity: 0.4; }
+
+    /* Layout */
+    .grid-demo {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 16px;
+      background: var(--chakra-gray-50);
+      padding: 16px;
+      border-radius: var(--chakra-radius-md);
+    }
+    .grid-demo > div {
+      background: var(--chakra-teal-100);
+      color: var(--chakra-teal-800);
+      padding: 12px;
+      border-radius: var(--chakra-radius);
+      font-size: 12px;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .scale-row {
+      display: flex;
+      gap: var(--chakra-sp-3);
+      flex-wrap: wrap;
+      align-items: flex-end;
+      margin-bottom: var(--chakra-sp-4);
+    }
+    .scale-item {
+      display: flex; flex-direction: column; gap: 6px;
+      align-items: center;
+    }
+    .scale-item .swatch {
+      background: var(--chakra-teal-500);
+    }
+    .scale-item .lbl { font-size: 11px; font-family: var(--chakra-mono); color: var(--chakra-text-muted); }
+
+    .shadow-demo {
+      width: 80px; height: 80px;
+      background: var(--chakra-bg);
+      border-radius: var(--chakra-radius-md);
+      display: inline-flex; align-items: center; justify-content: center;
+      margin-right: 16px; margin-bottom: 16px;
+      font-size: 11px; font-family: var(--chakra-mono); color: var(--chakra-text-muted);
+    }
+
+    /* Footer */
+    .ds-footer {
+      background: var(--chakra-gray-800);
+      color: var(--chakra-gray-200);
+      padding: var(--chakra-sp-8);
+      margin-top: var(--chakra-sp-12);
+    }
+    .ds-footer h3 { margin-top: 0; color: white; }
+    .ds-footer ul { padding-left: 20px; }
+    .ds-footer li { margin-bottom: 4px; word-break: break-all; font-size: 13px; }
+    .ds-footer a { color: var(--chakra-teal-300); text-decoration: none; }
+    .ds-footer a:hover { text-decoration: underline; }
+    .license-note { font-size: 13px; color: var(--chakra-gray-400); margin-top: var(--chakra-sp-4); }
+    .meta-note { font-size: 12px; color: var(--chakra-gray-500); font-family: var(--chakra-mono); margin-top: var(--chakra-sp-2); }
+
+    @media (max-width: 720px) {
+      .ds-header h1 { font-size: 32px; }
+      main { padding: var(--chakra-sp-4); }
+      section { padding: var(--chakra-sp-4); }
+      .type-row { grid-template-columns: 1fr; }
+      .color-grid { grid-template-columns: repeat(5, 1fr); }
+      .text-6xl { font-size: 40px; }
+      .text-5xl { font-size: 32px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="ds-header">
+    <a href="index.html" class="back-link">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Catalog
+    </a>
+    <h1>Chakra UI</h1>
+    <div class="meta">
+      <span class="badge kind-cl">component-library</span>
+      <span class="badge fidelity-documented">documented</span>
+      <span class="badge source-verified">source: verified</span>
+      <a href="https://chakra-ui.com" target="_blank" rel="noopener">Official ↗</a>
+    </div>
+    <p class="tagline">Modular React components with friendly teal accents and an accessibility-first design philosophy.</p>
+  </header>
+
+  <nav class="toc" aria-label="Table of contents">
+    <ul>
+      <li><a href="#brand">Brand</a></li>
+      <li><a href="#color">Color</a></li>
+      <li><a href="#typography">Typography</a></li>
+      <li><a href="#iconography">Iconography</a></li>
+      <li><a href="#buttons">Buttons</a></li>
+      <li><a href="#form">Form</a></li>
+      <li><a href="#surfaces">Surfaces</a></li>
+      <li><a href="#feedback">Feedback</a></li>
+      <li><a href="#navigation">Navigation</a></li>
+      <li><a href="#data">Data</a></li>
+      <li><a href="#layout">Layout</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="brand" data-fidelity="documented">
+      <h2>
+        <span>Brand</span>
+        <span class="badge fidelity-documented">documented</span>
+      </h2>
+      <div class="brand-mark">
+        <svg viewBox="0 0 36 36" fill="none">
+          <circle cx="18" cy="18" r="16" stroke="white" stroke-width="2.5"/>
+          <path d="M12 12 L24 12 L20 18 L24 24 L12 24 L16 18 Z" fill="white"/>
+        </svg>
+        Chakra UI
+      </div>
+      <p style="margin-top: 24px; max-width: 720px; font-size: 16px; color: var(--chakra-text-muted);">
+        Chakra UI is a modular React component library prioritizing developer experience, accessibility, and theming via style props. Its teal-led palette and consistent 4px / 6px shape rhythm produce friendly, readable interfaces with minimal customization.
+      </p>
+      <div class="pillars">
+        <div class="pillar">
+          <h4>Style Props</h4>
+          <p style="font-size:14px;color:var(--chakra-text-muted);margin:0">Set spacing, color, and layout inline with semantic shorthand props.</p>
+        </div>
+        <div class="pillar">
+          <h4>Accessible</h4>
+          <p style="font-size:14px;color:var(--chakra-text-muted);margin:0">WAI-ARIA practices baked in — focus rings, keyboard, screen reader.</p>
+        </div>
+        <div class="pillar">
+          <h4>Theme-able</h4>
+          <p style="font-size:14px;color:var(--chakra-text-muted);margin:0">extendTheme() composes tokens, semantic tokens, and component recipes.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="color" data-fidelity="documented">
+      <h2>
+        <span>Color</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://chakra-ui.com/docs/styled-system/theme" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p>Chakra ships a 10-step palette per hue (50, 100, 200, 300, 400, 500, 600, 700, 800, 900). Default brand emphasis uses teal.500 with gray.50/100/700/900 for surfaces and text.</p>
+
+      <h3>Teal scale (primary)</h3>
+      <div class="color-grid">
+        <div class="color-cell" style="background:var(--chakra-teal-50);color:var(--chakra-teal-900)">50</div>
+        <div class="color-cell" style="background:var(--chakra-teal-100);color:var(--chakra-teal-900)">100</div>
+        <div class="color-cell" style="background:var(--chakra-teal-200);color:var(--chakra-teal-900)">200</div>
+        <div class="color-cell" style="background:var(--chakra-teal-300);color:var(--chakra-teal-900)">300</div>
+        <div class="color-cell" style="background:var(--chakra-teal-400);color:white">400</div>
+        <div class="color-cell" style="background:var(--chakra-teal-500);color:white">500</div>
+        <div class="color-cell" style="background:var(--chakra-teal-600);color:white">600</div>
+        <div class="color-cell" style="background:var(--chakra-teal-700);color:white">700</div>
+        <div class="color-cell" style="background:var(--chakra-teal-800);color:white">800</div>
+        <div class="color-cell" style="background:var(--chakra-teal-900);color:white">900</div>
+      </div>
+
+      <h3>Gray scale</h3>
+      <div class="color-grid">
+        <div class="color-cell" style="background:var(--chakra-gray-50);color:var(--chakra-gray-900)">50</div>
+        <div class="color-cell" style="background:var(--chakra-gray-100);color:var(--chakra-gray-900)">100</div>
+        <div class="color-cell" style="background:var(--chakra-gray-200);color:var(--chakra-gray-900)">200</div>
+        <div class="color-cell" style="background:var(--chakra-gray-300);color:var(--chakra-gray-900)">300</div>
+        <div class="color-cell" style="background:var(--chakra-gray-400);color:var(--chakra-gray-900)">400</div>
+        <div class="color-cell" style="background:var(--chakra-gray-500);color:white">500</div>
+        <div class="color-cell" style="background:var(--chakra-gray-600);color:white">600</div>
+        <div class="color-cell" style="background:var(--chakra-gray-700);color:white">700</div>
+        <div class="color-cell" style="background:var(--chakra-gray-800);color:white">800</div>
+        <div class="color-cell" style="background:var(--chakra-gray-900);color:white">900</div>
+      </div>
+
+      <h3>Accent palette</h3>
+      <div class="semantic-grid">
+        <div class="sem-card" style="background:var(--chakra-blue-500)">
+          <span class="label">blue.500</span><span class="hex">#3182CE</span>
+        </div>
+        <div class="sem-card" style="background:var(--chakra-green-500)">
+          <span class="label">green.500</span><span class="hex">#38A169</span>
+        </div>
+        <div class="sem-card" style="background:var(--chakra-red-500)">
+          <span class="label">red.500</span><span class="hex">#E53E3E</span>
+        </div>
+        <div class="sem-card" style="background:var(--chakra-yellow-500)">
+          <span class="label">yellow.500</span><span class="hex">#D69E2E</span>
+        </div>
+        <div class="sem-card" style="background:var(--chakra-purple-500)">
+          <span class="label">purple.500</span><span class="hex">#805AD5</span>
+        </div>
+        <div class="sem-card" style="background:var(--chakra-orange-500)">
+          <span class="label">orange.500</span><span class="hex">#DD6B20</span>
+        </div>
+      </div>
+
+      <h3>Semantic tokens (Light)</h3>
+      <div class="role-grid">
+        <div class="role-chip" style="background:var(--chakra-teal-500);color:white">primary <code>teal.500</code></div>
+        <div class="role-chip" style="background:var(--chakra-teal-700);color:white">primary-emphasis <code>teal.700</code></div>
+        <div class="role-chip" style="background:var(--chakra-bg);color:var(--chakra-text);border:1px solid var(--chakra-border)">surface <code>white</code></div>
+        <div class="role-chip" style="background:var(--chakra-bg-canvas);color:var(--chakra-text);border:1px solid var(--chakra-border)">canvas <code>gray.50</code></div>
+        <div class="role-chip" style="background:var(--chakra-gray-100);color:var(--chakra-text)">muted <code>gray.100</code></div>
+        <div class="role-chip" style="background:var(--chakra-gray-700);color:white">text-strong <code>gray.700</code></div>
+        <div class="role-chip" style="background:var(--chakra-gray-500);color:white">text-subtle <code>gray.500</code></div>
+        <div class="role-chip" style="background:var(--chakra-border);color:var(--chakra-text)">border <code>gray.200</code></div>
+      </div>
+    </section>
+
+    <section id="typography" data-fidelity="documented">
+      <h2>
+        <span>Typography</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://chakra-ui.com/docs/components/text" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p>Inter (or system-ui) is the default. Chakra exposes fontSize tokens xs through 6xl and fontWeight tokens hairline through black, all driven by theme.fontSizes and theme.fontWeights.</p>
+
+      <div class="type-row"><div class="label">6xl · 60/1 · 800</div><div class="text-6xl">Compose React</div></div>
+      <div class="type-row"><div class="label">5xl · 48/1 · 800</div><div class="text-5xl">Style props rule</div></div>
+      <div class="type-row"><div class="label">4xl · 36/1.25 · 700</div><div class="text-4xl">Accessible by default</div></div>
+      <div class="type-row"><div class="label">3xl · 30/1.33 · 700</div><div class="text-3xl">Theme tokens scale</div></div>
+      <div class="type-row"><div class="label">2xl · 24/1.33 · 700</div><div class="text-2xl">Component recipes</div></div>
+      <div class="type-row"><div class="label">xl · 20/1.4 · 600</div><div class="text-xl">Heading 4</div></div>
+      <div class="type-row"><div class="label">lg · 18/1.5 · 600</div><div class="text-lg">Lead paragraph</div></div>
+      <div class="type-row"><div class="label">md · 16/1.5</div><div class="text-md">Default body voice — paragraphs, descriptions, and most prose copy use md size with normal weight.</div></div>
+      <div class="type-row"><div class="label">sm · 14/1.43</div><div class="text-sm">Small body — table cells, helper text, and dense areas use sm.</div></div>
+      <div class="type-row"><div class="label">xs · 12/1.33</div><div class="text-xs">Caption text and inline labels use the xs size.</div></div>
+      <div class="type-row"><div class="label">Mono · ui-monospace</div><div class="mono-sample">theme.colors.teal[500] = '#319795';</div></div>
+    </section>
+
+    <section id="iconography" data-fidelity="documented">
+      <h2>
+        <span>Iconography</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://chakra-ui.com/docs/components/icon" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p>Chakra exposes &lt;Icon&gt; primitives that wrap any SVG and apply size, color, and viewBox tokens. Recommended pairings include react-icons, Lucide, or Tabler Icons. Default size 1em (= 16-24px contextual).</p>
+      <div class="icon-grid">
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12L12 3l9 9"/><path d="M5 10v10h14V10"/></svg><span>home</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><span>search</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg><span>user</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4l9 16 2.5-7L21 11z"/></svg><span>send</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg><span>article</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>clock</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.5-2.5l2-1.5-2-3.5-2.5 1A7 7 0 0 0 13 4l-.5-2.5h-4L8 4a7 7 0 0 0-3 1.5l-2.5-1-2 3.5 2 1.5A7 7 0 0 0 5 12c0 .9.2 1.7.5 2.5l-2 1.5 2 3.5 2.5-1c.9.7 2 1.2 3 1.5l.5 2.5h4l.5-2.5c1-.3 2.1-.8 3-1.5l2.5 1 2-3.5-2-1.5c.3-.8.5-1.6.5-2.5z"/></svg><span>settings</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 0 20a15.3 15.3 0 0 1 0-20z"/></svg><span>globe</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>check</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg><span>close</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg><span>plus</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a4 4 0 0 1-4 4H7l-4 4V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/></svg><span>chat</span></div>
+      </div>
+    </section>
+
+    <section id="buttons" data-fidelity="documented">
+      <h2>
+        <span>Buttons</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://chakra-ui.com/docs/components/button" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p>Chakra Button has five variants: solid, outline, ghost, link, and unstyled. Default colorScheme is teal (gray when used in dialogs).</p>
+
+      <h3>Variants</h3>
+      <div class="button-row">
+        <button class="ck-btn ck-btn--solid">Solid</button>
+        <button class="ck-btn ck-btn--outline">Outline</button>
+        <button class="ck-btn ck-btn--ghost">Ghost</button>
+        <button class="ck-btn ck-btn--link">Link</button>
+        <button class="ck-btn ck-btn--gray">Gray</button>
+        <button class="ck-btn ck-btn--solid ck-btn--icon" aria-label="favorite">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l8.8 8.8 8.8-8.8a5.5 5.5 0 0 0 0-7.8z"/></svg>
+        </button>
+      </div>
+
+      <h3>Sizes</h3>
+      <div class="button-row">
+        <button class="ck-btn ck-btn--solid ck-btn--xs">Xs</button>
+        <button class="ck-btn ck-btn--solid ck-btn--sm">Sm</button>
+        <button class="ck-btn ck-btn--solid">Md</button>
+        <button class="ck-btn ck-btn--solid ck-btn--lg">Lg</button>
+      </div>
+
+      <h3>States</h3>
+      <div class="button-row">
+        <button class="ck-btn ck-btn--solid">Enabled</button>
+        <button class="ck-btn ck-btn--solid" style="background:var(--chakra-teal-600)">Hover</button>
+        <button class="ck-btn ck-btn--solid" style="box-shadow:var(--chakra-sh-outline)">Focus</button>
+        <button class="ck-btn ck-btn--solid" disabled>Disabled</button>
+      </div>
+    </section>
+
+    <section id="form" data-fidelity="documented">
+      <h2>
+        <span>Form</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://chakra-ui.com/docs/components/input" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p>Input has four variants: outline (default), filled, flushed, and unstyled. FormControl wraps Input + Label + HelperText + ErrorMessage with shared invalid / required state.</p>
+
+      <h3>Text inputs</h3>
+      <div class="form-grid">
+        <div class="ck-field">
+          <label class="ck-field-label" for="ck1">Project name</label>
+          <input class="ck-input" type="text" id="ck1" value="Chakra UI">
+          <span class="ck-helper">Outline · default variant</span>
+        </div>
+        <div class="ck-field">
+          <label class="ck-field-label" for="ck2">Email</label>
+          <input class="ck-input ck-input--filled" type="email" id="ck2" placeholder="you@example.com">
+          <span class="ck-helper">Filled variant</span>
+        </div>
+        <div class="ck-field">
+          <label class="ck-field-label" for="ck3">Username</label>
+          <input class="ck-input ck-input--flushed" type="text" id="ck3" value="motohirokoma">
+          <span class="ck-helper">Flushed variant</span>
+        </div>
+        <div class="ck-field">
+          <label class="ck-field-label" for="ck4">Description</label>
+          <textarea class="ck-input ck-textarea" id="ck4">Multiline body content for Textarea component...</textarea>
+        </div>
+        <div class="ck-field">
+          <label class="ck-field-label" for="ck5">Theme</label>
+          <select class="ck-input" id="ck5">
+            <option>Light</option>
+            <option>Dark</option>
+            <option>System</option>
+          </select>
+        </div>
+        <div class="ck-field">
+          <label class="ck-field-label" for="ck6" style="color:var(--chakra-red-500)">Email</label>
+          <input class="ck-input ck-input--error" type="text" id="ck6" value="invalid@">
+          <span class="ck-error-text">Email format is invalid.</span>
+        </div>
+      </div>
+
+      <h3>Selection controls</h3>
+      <div class="button-row">
+        <label class="ck-checkbox"><input type="checkbox" checked>Accept terms</label>
+        <label class="ck-checkbox"><input type="checkbox">Subscribe</label>
+        <label class="ck-radio"><input type="radio" name="cr" checked>React</label>
+        <label class="ck-radio"><input type="radio" name="cr">Vue</label>
+        <label class="ck-switch"><input type="checkbox" checked><span class="slider"></span></label>
+        <label class="ck-switch"><input type="checkbox"><span class="slider"></span></label>
+      </div>
+
+      <h3>Slider &amp; file</h3>
+      <div style="max-width:400px;display:flex;flex-direction:column;gap:12px">
+        <input type="range" class="ck-slider" min="0" max="100" value="60">
+        <input type="file" class="ck-input" style="padding:8px 12px;height:auto">
+      </div>
+    </section>
+
+    <section id="surfaces" data-fidelity="documented">
+      <h2>
+        <span>Surfaces</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://chakra-ui.com/docs/components/card" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p>Card supports elevated (default), outline, and filled variants. Composes Card.Header, Card.Body, and Card.Footer.</p>
+
+      <div class="surface-grid">
+        <div class="ck-card">
+          <div class="media"></div>
+          <h4>Card · elevated</h4>
+          <p>Default elevation — soft shadow with subtle border.</p>
+        </div>
+        <div class="ck-card ck-card--outline">
+          <div class="media"></div>
+          <h4>Card · outline</h4>
+          <p>2px outline, no shadow — used in dense data lists.</p>
+        </div>
+        <div class="ck-card ck-card--filled">
+          <div class="media"></div>
+          <h4>Card · filled</h4>
+          <p>Soft gray surface — works well in stats grids.</p>
+        </div>
+        <div class="ck-stat">
+          <div class="num">2,847</div>
+          <div class="lbl">Active sessions</div>
+        </div>
+      </div>
+
+      <h3>Modal</h3>
+      <div class="ck-modal">
+        <h4 style="margin-top:0">Reset preferences?</h4>
+        <p style="font-size:14px;color:var(--chakra-text-muted)">This reverts theme tokens, color mode, and component recipes to Chakra defaults. This action cannot be undone.</p>
+        <div class="button-row" style="justify-content:flex-end;margin:0">
+          <button class="ck-btn ck-btn--ghost">Cancel</button>
+          <button class="ck-btn ck-btn--solid">Reset</button>
+        </div>
+      </div>
+
+      <h3>Menu &amp; drawer</h3>
+      <div style="display:flex;gap:24px;flex-wrap:wrap">
+        <div class="ck-menu">
+          <div class="item">Edit</div>
+          <div class="item">Duplicate</div>
+          <div class="item">Archive</div>
+          <div class="item" style="color:var(--chakra-red-500)">Delete</div>
+        </div>
+        <div class="ck-sidebar">
+          <a href="#" class="active">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12L12 3l9 9"/><path d="M5 10v10h14V10"/></svg>
+            Dashboard
+          </a>
+          <a href="#">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            Search
+          </a>
+          <a href="#">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.5-2.5l2-1.5-2-3.5-2.5 1A7 7 0 0 0 13 4l-.5-2.5h-4L8 4a7 7 0 0 0-3 1.5l-2.5-1-2 3.5 2 1.5A7 7 0 0 0 5 12c0 .9.2 1.7.5 2.5l-2 1.5 2 3.5 2.5-1c.9.7 2 1.2 3 1.5l.5 2.5h4l.5-2.5c1-.3 2.1-.8 3-1.5l2.5 1 2-3.5-2-1.5c.3-.8.5-1.6.5-2.5z"/></svg>
+            Settings
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section id="feedback" data-fidelity="documented">
+      <h2>
+        <span>Feedback</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://chakra-ui.com/docs/components/alert" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+
+      <h3>Alerts</h3>
+      <div class="ck-alert ck-alert--info">
+        <strong>Info ·</strong> Chakra exposes useColorMode() for runtime light/dark switching.
+      </div>
+      <div class="ck-alert ck-alert--success">
+        <strong>Success ·</strong> Theme provider wired, components hydrated.
+      </div>
+      <div class="ck-alert ck-alert--warning">
+        <strong>Warning ·</strong> Custom colorScheme may fail WCAG AA at 50/100 stops.
+      </div>
+      <div class="ck-alert ck-alert--error">
+        <strong>Error ·</strong> Token resolution failed for semantic.canvas.
+      </div>
+      <div class="ck-alert ck-alert--subtle-info">
+        Subtle variant uses left border for low-emphasis information.
+      </div>
+
+      <h3>Toast</h3>
+      <div class="ck-toast">
+        Theme reverted to default.
+        <button>Undo</button>
+      </div>
+
+      <h3>Banner</h3>
+      <div class="ck-banner" style="margin-top:12px">
+        <span><strong>Beta —</strong> color mode auto-toggle is now enabled.</span>
+        <button class="ck-btn ck-btn--ghost ck-btn--sm">Dismiss</button>
+      </div>
+
+      <h3>Tags &amp; badges</h3>
+      <div class="ck-tag-row">
+        <span class="ck-tag">Default</span>
+        <span class="ck-tag ck-tag--teal">Teal</span>
+        <span class="ck-tag ck-tag--solid-teal">Solid</span>
+        <span class="ck-tag ck-tag--blue">Blue</span>
+        <span class="ck-tag ck-tag--green">Green</span>
+        <span class="ck-tag ck-tag--red">Red</span>
+        <span class="ck-tag ck-tag--yellow">Yellow</span>
+        <span class="ck-tag ck-tag--purple">Purple</span>
+        <span class="ck-badge">3</span>
+        <span class="ck-badge" style="background:var(--chakra-teal-500)">12</span>
+      </div>
+
+      <h3>Progress &amp; loading</h3>
+      <div style="display:flex;flex-direction:column;gap:12px;max-width:480px">
+        <div class="ck-progress"></div>
+        <div class="ck-skeleton" style="width:80%"></div>
+        <div class="ck-skeleton" style="width:60%"></div>
+        <div class="ck-spinner"></div>
+      </div>
+    </section>
+
+    <section id="navigation" data-fidelity="documented">
+      <h2>
+        <span>Navigation</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://chakra-ui.com/docs/components/tabs" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+
+      <h3>Tabs</h3>
+      <div class="ck-tabs">
+        <div class="ck-tab active">Overview</div>
+        <div class="ck-tab">Theming</div>
+        <div class="ck-tab">Components</div>
+        <div class="ck-tab">Hooks</div>
+      </div>
+
+      <h3>Breadcrumb</h3>
+      <div class="ck-breadcrumb">
+        <a href="#">Home</a><span>/</span>
+        <a href="#">Components</a><span>/</span>
+        <span>Button</span>
+      </div>
+
+      <h3>Pagination</h3>
+      <div class="ck-pagination">
+        <button>‹</button>
+        <button class="active">1</button>
+        <button>2</button>
+        <button>3</button>
+        <button>4</button>
+        <button>›</button>
+      </div>
+
+      <h3>Stepper</h3>
+      <div class="ck-stepper">
+        <div class="step"><span class="num complete">✓</span> Theme</div>
+        <span class="line"></span>
+        <div class="step"><span class="num active">2</span> Type</div>
+        <span class="line"></span>
+        <div class="step"><span class="num">3</span> Shape</div>
+        <span class="line"></span>
+        <div class="step"><span class="num">4</span> Review</div>
+      </div>
+
+      <h3>Top bar</h3>
+      <div class="ck-topbar">
+        <button class="ck-btn ck-btn--ghost ck-btn--icon" aria-label="menu"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+        <strong style="flex:1;font-size:18px;font-weight:700">Chakra UI</strong>
+        <button class="ck-btn ck-btn--ghost ck-btn--icon" aria-label="search"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></button>
+        <div class="ck-avatar">MK</div>
+      </div>
+    </section>
+
+    <section id="data" data-fidelity="documented">
+      <h2>
+        <span>Data</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://chakra-ui.com/docs/components/table" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+
+      <h3>Table</h3>
+      <table class="ck-table">
+        <thead>
+          <tr><th>Token</th><th>Value</th><th>Role</th><th>Stop</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>colors.teal.500</code></td><td>#319795</td><td>primary</td><td>500</td></tr>
+          <tr><td><code>colors.gray.50</code></td><td>#F7FAFC</td><td>canvas</td><td>50</td></tr>
+          <tr><td><code>colors.gray.700</code></td><td>#2D3748</td><td>text</td><td>700</td></tr>
+          <tr><td><code>radii.md</code></td><td>0.375rem</td><td>shape</td><td>—</td></tr>
+        </tbody>
+      </table>
+
+      <h3>List</h3>
+      <ul class="ck-list">
+        <li><div class="ck-avatar">A</div><div><strong>Avery Tan</strong><div style="font-size:13px;color:var(--chakra-text-muted)">Updated theme · 2m ago</div></div></li>
+        <li><div class="ck-avatar" style="background:var(--chakra-blue-500)">B</div><div><strong>Brett Yu</strong><div style="font-size:13px;color:var(--chakra-text-muted)">Imported tokens · 14m ago</div></div></li>
+        <li><div class="ck-avatar" style="background:var(--chakra-purple-500)">C</div><div><strong>Cleo Park</strong><div style="font-size:13px;color:var(--chakra-text-muted)">Created palette · 1h ago</div></div></li>
+      </ul>
+
+      <h3>Key – value</h3>
+      <dl class="ck-kv">
+        <dt>Color mode</dt><dd>Light · default</dd>
+        <dt>Brand color</dt><dd>teal.500</dd>
+        <dt>Spacing base</dt><dd>4px</dd>
+        <dt>Generated</dt><dd>2026-05-05</dd>
+      </dl>
+
+      <h3>Empty state</h3>
+      <div class="ck-empty">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><circle cx="9" cy="10" r="0.5" fill="currentColor"/><circle cx="15" cy="10" r="0.5" fill="currentColor"/></svg>
+        <h4 style="margin:8px 0 4px">No themes yet</h4>
+        <p style="font-size:14px;margin:0">Create one with extendTheme() or import a JSON palette.</p>
+      </div>
+    </section>
+
+    <section id="layout" data-fidelity="documented">
+      <h2>
+        <span>Layout</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://chakra-ui.com/docs/components/grid" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p>Spacing scale uses a 4px base. Grid (CSS grid) and SimpleGrid offer rapid 12-column layouts; Stack and HStack handle one-dimensional flexbox flow.</p>
+
+      <h3>12-column grid</h3>
+      <div class="grid-demo">
+        <div style="grid-column:span 12">12</div>
+        <div style="grid-column:span 6">6</div>
+        <div style="grid-column:span 6">6</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+      </div>
+
+      <h3>Spacing scale (4px base)</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div class="swatch" style="width:4px;height:32px"></div><span class="lbl">1 · 4</span></div>
+        <div class="scale-item"><div class="swatch" style="width:8px;height:32px"></div><span class="lbl">2 · 8</span></div>
+        <div class="scale-item"><div class="swatch" style="width:12px;height:32px"></div><span class="lbl">3 · 12</span></div>
+        <div class="scale-item"><div class="swatch" style="width:16px;height:32px"></div><span class="lbl">4 · 16</span></div>
+        <div class="scale-item"><div class="swatch" style="width:20px;height:32px"></div><span class="lbl">5 · 20</span></div>
+        <div class="scale-item"><div class="swatch" style="width:24px;height:32px"></div><span class="lbl">6 · 24</span></div>
+        <div class="scale-item"><div class="swatch" style="width:32px;height:32px"></div><span class="lbl">8 · 32</span></div>
+        <div class="scale-item"><div class="swatch" style="width:48px;height:32px"></div><span class="lbl">12 · 48</span></div>
+      </div>
+
+      <h3>Shape scale</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:0;background:var(--chakra-teal-200)"></div><span class="lbl">none</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:2px;background:var(--chakra-teal-200)"></div><span class="lbl">sm 2</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:4px;background:var(--chakra-teal-200)"></div><span class="lbl">base 4</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:6px;background:var(--chakra-teal-200)"></div><span class="lbl">md 6</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:8px;background:var(--chakra-teal-200)"></div><span class="lbl">lg 8</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:12px;background:var(--chakra-teal-200)"></div><span class="lbl">xl 12</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:50%;background:var(--chakra-teal-200)"></div><span class="lbl">full</span></div>
+      </div>
+
+      <h3>Shadow scale</h3>
+      <div>
+        <div class="shadow-demo" style="box-shadow:var(--chakra-sh-xs)">xs</div>
+        <div class="shadow-demo" style="box-shadow:var(--chakra-sh-sm)">sm</div>
+        <div class="shadow-demo" style="box-shadow:var(--chakra-sh-base)">base</div>
+        <div class="shadow-demo" style="box-shadow:var(--chakra-sh-md)">md</div>
+        <div class="shadow-demo" style="box-shadow:var(--chakra-sh-lg)">lg</div>
+        <div class="shadow-demo" style="box-shadow:var(--chakra-sh-xl)">xl</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="ds-footer">
+    <h3>Sources</h3>
+    <ul>
+      <li><a href="https://chakra-ui.com" target="_blank" rel="noopener">https://chakra-ui.com</a></li>
+      <li><a href="https://chakra-ui.com/docs/styled-system/theme" target="_blank" rel="noopener">https://chakra-ui.com/docs/styled-system/theme</a></li>
+      <li><a href="https://chakra-ui.com/docs/components/text" target="_blank" rel="noopener">https://chakra-ui.com/docs/components/text</a></li>
+      <li><a href="https://chakra-ui.com/docs/components/icon" target="_blank" rel="noopener">https://chakra-ui.com/docs/components/icon</a></li>
+      <li><a href="https://chakra-ui.com/docs/components/button" target="_blank" rel="noopener">https://chakra-ui.com/docs/components/button</a></li>
+      <li><a href="https://chakra-ui.com/docs/components/input" target="_blank" rel="noopener">https://chakra-ui.com/docs/components/input</a></li>
+      <li><a href="https://chakra-ui.com/docs/components/card" target="_blank" rel="noopener">https://chakra-ui.com/docs/components/card</a></li>
+      <li><a href="https://chakra-ui.com/docs/components/alert" target="_blank" rel="noopener">https://chakra-ui.com/docs/components/alert</a></li>
+      <li><a href="https://chakra-ui.com/docs/components/tabs" target="_blank" rel="noopener">https://chakra-ui.com/docs/components/tabs</a></li>
+      <li><a href="https://chakra-ui.com/docs/components/table" target="_blank" rel="noopener">https://chakra-ui.com/docs/components/table</a></li>
+      <li><a href="https://chakra-ui.com/docs/components/grid" target="_blank" rel="noopener">https://chakra-ui.com/docs/components/grid</a></li>
+    </ul>
+    <p class="license-note">This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Chakra Team. Chakra UI and related trademarks belong to Chakra Team. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</p>
+    <p class="meta-note">Reproduction date: 2026-05-05 · sourceStatus: verified · fidelity: documented</p>
+  </footer>
+</body>
+</html>

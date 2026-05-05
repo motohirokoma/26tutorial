@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vuetify — Design System Reference</title>
+  <script id="ds-meta" type="application/json">
+{"id":"19-vuetify","fileSlug":"19-vuetify","schemaVersion":"1"}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Vuetify Light Tokens (Material Design based) */
+      --v-primary: #1976D2;
+      --v-primary-darken: #1565C0;
+      --v-primary-lighten: #42A5F5;
+      --v-secondary: #424242;
+      --v-secondary-lighten: #616161;
+      --v-accent: #82B1FF;
+      --v-success: #4CAF50;
+      --v-success-lighten: #E8F5E9;
+      --v-warning: #FB8C00;
+      --v-warning-lighten: #FFF3E0;
+      --v-error: #FF5252;
+      --v-error-lighten: #FFEBEE;
+      --v-info: #2196F3;
+      --v-info-lighten: #E3F2FD;
+
+      /* Surfaces */
+      --v-background: #FFFFFF;
+      --v-surface: #FFFFFF;
+      --v-surface-variant: #F5F5F5;
+      --v-surface-light: #FAFAFA;
+      --v-on-surface: rgba(0,0,0,0.87);
+      --v-on-surface-medium: rgba(0,0,0,0.6);
+      --v-on-surface-disabled: rgba(0,0,0,0.38);
+      --v-divider: rgba(0,0,0,0.12);
+      --v-outline: rgba(0,0,0,0.38);
+
+      /* Material Colors (Vuetify palette) */
+      --v-red-500: #F44336;
+      --v-pink-500: #E91E63;
+      --v-purple-500: #9C27B0;
+      --v-deep-purple-500: #673AB7;
+      --v-indigo-500: #3F51B5;
+      --v-blue-500: #2196F3;
+      --v-light-blue-500: #03A9F4;
+      --v-cyan-500: #00BCD4;
+      --v-teal-500: #009688;
+      --v-green-500: #4CAF50;
+      --v-light-green-500: #8BC34A;
+      --v-lime-500: #CDDC39;
+      --v-yellow-500: #FFEB3B;
+      --v-amber-500: #FFC107;
+      --v-orange-500: #FF9800;
+      --v-deep-orange-500: #FF5722;
+
+      /* Type */
+      --v-font: 'Roboto', system-ui, -apple-system, sans-serif;
+      --v-mono: 'Roboto Mono', ui-monospace, monospace;
+
+      /* Shape */
+      --v-radius-0: 0;
+      --v-radius-xs: 2px;
+      --v-radius-sm: 4px;
+      --v-radius-md: 8px;
+      --v-radius-lg: 16px;
+      --v-radius-pill: 999px;
+
+      /* Spacing — Vuetify uses 4px increments */
+      --v-space-1: 4px;
+      --v-space-2: 8px;
+      --v-space-3: 12px;
+      --v-space-4: 16px;
+      --v-space-5: 24px;
+      --v-space-6: 32px;
+      --v-space-7: 48px;
+      --v-space-8: 64px;
+
+      /* Elevation */
+      --v-elev-1: 0 2px 1px -1px rgba(0,0,0,0.2), 0 1px 1px 0 rgba(0,0,0,0.14), 0 1px 3px 0 rgba(0,0,0,0.12);
+      --v-elev-2: 0 3px 1px -2px rgba(0,0,0,0.2), 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12);
+      --v-elev-3: 0 3px 3px -2px rgba(0,0,0,0.2), 0 3px 4px 0 rgba(0,0,0,0.14), 0 1px 8px 0 rgba(0,0,0,0.12);
+      --v-elev-4: 0 2px 4px -1px rgba(0,0,0,0.2), 0 4px 5px 0 rgba(0,0,0,0.14), 0 1px 10px 0 rgba(0,0,0,0.12);
+      --v-elev-6: 0 3px 5px -1px rgba(0,0,0,0.2), 0 6px 10px 0 rgba(0,0,0,0.14), 0 1px 18px 0 rgba(0,0,0,0.12);
+      --v-elev-8: 0 5px 5px -3px rgba(0,0,0,0.2), 0 8px 10px 1px rgba(0,0,0,0.14), 0 3px 14px 2px rgba(0,0,0,0.12);
+      --v-elev-12: 0 7px 8px -4px rgba(0,0,0,0.2), 0 12px 17px 2px rgba(0,0,0,0.14), 0 5px 22px 4px rgba(0,0,0,0.12);
+      --v-elev-16: 0 8px 10px -5px rgba(0,0,0,0.2), 0 16px 24px 2px rgba(0,0,0,0.14), 0 6px 30px 5px rgba(0,0,0,0.12);
+      --v-elev-24: 0 11px 15px -7px rgba(0,0,0,0.2), 0 24px 38px 3px rgba(0,0,0,0.14), 0 9px 46px 8px rgba(0,0,0,0.12);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--v-font);
+      font-weight: 400;
+      background: var(--v-surface-light);
+      color: var(--v-on-surface);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    code, kbd, pre { font-family: var(--v-mono); }
+
+    /* Header */
+    .ds-header {
+      background: var(--v-primary);
+      color: #FFFFFF;
+      padding: var(--v-space-7) var(--v-space-6) var(--v-space-6);
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--v-space-2);
+      color: rgba(255,255,255,0.92);
+      text-decoration: none;
+      padding: 6px 12px;
+      border-radius: var(--v-radius-sm);
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.0892857em;
+      text-transform: uppercase;
+      transition: background 0.2s;
+    }
+    .back-link:hover { background: rgba(255,255,255,0.12); }
+    .ds-header h1 {
+      font-size: 48px;
+      line-height: 56px;
+      font-weight: 400;
+      letter-spacing: -0.5px;
+      margin: var(--v-space-4) 0 var(--v-space-3);
+    }
+    .ds-header .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--v-space-2);
+      align-items: center;
+      margin-bottom: var(--v-space-3);
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: var(--v-radius-sm);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.0892857em;
+      text-transform: uppercase;
+      background: rgba(255,255,255,0.16);
+      color: #FFFFFF;
+    }
+    .badge.kind-cl { background: var(--v-accent); color: #102A43; }
+    .badge.fidelity-documented { background: #C8E6C9; color: #1B5E20; }
+    .badge.fidelity-approximated { background: #FFE0B2; color: #E65100; }
+    .badge.fidelity-inspired { background: #E1BEE7; color: #4A148C; }
+    .badge.source-verified { background: #BBDEFB; color: #0D47A1; }
+    .ds-header a[href*="vuetifyjs.com"] {
+      color: #FFFFFF;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 4px 10px;
+      border: 1px solid rgba(255,255,255,0.5);
+      border-radius: var(--v-radius-sm);
+      font-size: 12px;
+      letter-spacing: 0.0892857em;
+      text-transform: uppercase;
+    }
+    .ds-header a[href*="vuetifyjs.com"]:hover { background: rgba(255,255,255,0.12); }
+    .tagline {
+      font-size: 18px;
+      line-height: 26px;
+      max-width: 720px;
+      margin: var(--v-space-4) 0 0;
+      font-weight: 400;
+      opacity: 0.92;
+    }
+
+    /* TOC */
+    .toc {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: var(--v-surface);
+      border-bottom: 1px solid var(--v-divider);
+      box-shadow: var(--v-elev-1);
+    }
+    .toc ul {
+      list-style: none;
+      margin: 0;
+      padding: var(--v-space-2) var(--v-space-6);
+      display: flex;
+      gap: var(--v-space-1);
+      overflow-x: auto;
+    }
+    .toc a {
+      display: inline-block;
+      padding: 8px 16px;
+      border-radius: var(--v-radius-sm);
+      color: var(--v-on-surface-medium);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.0892857em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .toc a:hover { background: rgba(25,118,210,0.08); color: var(--v-primary); }
+
+    main {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: var(--v-space-6);
+    }
+
+    section {
+      background: var(--v-surface);
+      border-radius: var(--v-radius-sm);
+      padding: var(--v-space-6);
+      margin-bottom: var(--v-space-5);
+      box-shadow: var(--v-elev-2);
+    }
+    section h2 {
+      display: flex;
+      align-items: center;
+      gap: var(--v-space-3);
+      flex-wrap: wrap;
+      font-size: 28px;
+      line-height: 36px;
+      font-weight: 400;
+      margin: 0 0 var(--v-space-5);
+      color: var(--v-on-surface);
+    }
+    .source-link {
+      font-size: 12px;
+      color: var(--v-primary);
+      text-decoration: none;
+      font-weight: 500;
+      letter-spacing: 0.0892857em;
+      text-transform: uppercase;
+    }
+    .source-link:hover { text-decoration: underline; }
+    h3 {
+      font-size: 20px;
+      line-height: 28px;
+      font-weight: 500;
+      margin: var(--v-space-5) 0 var(--v-space-3);
+      color: var(--v-on-surface);
+    }
+    h4 {
+      font-size: 16px;
+      line-height: 24px;
+      font-weight: 500;
+      margin: var(--v-space-4) 0 var(--v-space-2);
+      color: var(--v-on-surface);
+    }
+    p { margin: 0 0 var(--v-space-3); }
+
+    /* Brand */
+    #brand .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--v-space-3);
+      padding: var(--v-space-3) var(--v-space-5);
+      background: var(--v-primary);
+      border-radius: var(--v-radius-sm);
+      color: #FFFFFF;
+      font-size: 24px;
+      font-weight: 500;
+      box-shadow: var(--v-elev-3);
+    }
+    #brand .pillars {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--v-space-4);
+      margin-top: var(--v-space-5);
+    }
+    #brand .pillar {
+      padding: var(--v-space-4);
+      background: var(--v-surface-variant);
+      border-radius: var(--v-radius-sm);
+      border-left: 4px solid var(--v-primary);
+    }
+    #brand .pillar h4 { margin-top: 0; color: var(--v-primary); }
+
+    /* Color */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 2px;
+      margin-bottom: var(--v-space-4);
+    }
+    .color-cell {
+      aspect-ratio: 1.6;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 6px;
+      font-size: 10px;
+      font-family: var(--v-mono);
+    }
+    .semantic-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
+      gap: var(--v-space-3);
+    }
+    .sem-card {
+      padding: var(--v-space-4);
+      border-radius: var(--v-radius-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .sem-card .label { font-size: 14px; font-weight: 500; }
+    .sem-card .hex { font-family: var(--v-mono); font-size: 12px; opacity: 0.85; }
+
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--v-space-2);
+      margin-bottom: var(--v-space-4);
+    }
+    .role-chip {
+      padding: var(--v-space-3) var(--v-space-4);
+      border-radius: var(--v-radius-sm);
+      font-size: 13px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .role-chip code { font-size: 11px; opacity: 0.85; }
+
+    /* Typography */
+    .type-row {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: var(--v-space-4);
+      padding: var(--v-space-3) 0;
+      border-bottom: 1px solid var(--v-divider);
+      align-items: baseline;
+    }
+    .type-row:last-child { border-bottom: 0; }
+    .type-row .label {
+      font-family: var(--v-mono);
+      font-size: 12px;
+      color: var(--v-on-surface-medium);
+    }
+    .text-h1 { font-size: 96px; line-height: 96px; font-weight: 300; letter-spacing: -1.5px; }
+    .text-h2 { font-size: 60px; line-height: 60px; font-weight: 300; letter-spacing: -0.5px; }
+    .text-h3 { font-size: 48px; line-height: 50px; font-weight: 400; }
+    .text-h4 { font-size: 34px; line-height: 40px; font-weight: 400; letter-spacing: 0.25px; }
+    .text-h5 { font-size: 24px; line-height: 32px; font-weight: 400; }
+    .text-h6 { font-size: 20px; line-height: 32px; font-weight: 500; letter-spacing: 0.15px; }
+    .text-subtitle-1 { font-size: 16px; line-height: 28px; font-weight: 400; letter-spacing: 0.15px; }
+    .text-subtitle-2 { font-size: 14px; line-height: 22px; font-weight: 500; letter-spacing: 0.1px; }
+    .text-body-1 { font-size: 16px; line-height: 24px; font-weight: 400; letter-spacing: 0.5px; }
+    .text-body-2 { font-size: 14px; line-height: 20px; font-weight: 400; letter-spacing: 0.25px; }
+    .text-button { font-size: 14px; line-height: 36px; font-weight: 500; letter-spacing: 1.25px; text-transform: uppercase; }
+    .text-caption { font-size: 12px; line-height: 20px; font-weight: 400; letter-spacing: 0.4px; }
+    .text-overline { font-size: 10px; line-height: 32px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; }
+    .mono-sample { font-family: var(--v-mono); font-size: 14px; color: var(--v-on-surface-medium); }
+
+    /* Iconography */
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(80px,1fr));
+      gap: var(--v-space-2);
+    }
+    .icon-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: var(--v-space-3);
+      background: var(--v-surface-variant);
+      border-radius: var(--v-radius-sm);
+    }
+    .icon-cell svg { width: 24px; height: 24px; stroke: var(--v-on-surface); }
+    .icon-cell span { font-size: 11px; color: var(--v-on-surface-medium); }
+
+    /* Buttons */
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--v-space-3);
+      align-items: center;
+      margin-bottom: var(--v-space-3);
+    }
+    .v-btn {
+      font-family: var(--v-font);
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.0892857em;
+      text-transform: uppercase;
+      padding: 0 16px;
+      border-radius: var(--v-radius-sm);
+      border: 0;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      height: 36px;
+      transition: box-shadow 0.2s, background 0.2s;
+    }
+    .v-btn--elevated { background: var(--v-primary); color: #FFFFFF; box-shadow: var(--v-elev-2); }
+    .v-btn--elevated:hover { background: var(--v-primary-darken); box-shadow: var(--v-elev-4); }
+    .v-btn--flat { background: var(--v-primary); color: #FFFFFF; }
+    .v-btn--flat:hover { background: var(--v-primary-darken); }
+    .v-btn--tonal { background: rgba(25,118,210,0.12); color: var(--v-primary); }
+    .v-btn--tonal:hover { background: rgba(25,118,210,0.18); }
+    .v-btn--outlined { background: transparent; color: var(--v-primary); border: 1px solid rgba(25,118,210,0.5); }
+    .v-btn--outlined:hover { background: rgba(25,118,210,0.04); }
+    .v-btn--text { background: transparent; color: var(--v-primary); }
+    .v-btn--text:hover { background: rgba(25,118,210,0.04); }
+    .v-btn--plain { background: transparent; color: var(--v-on-surface); opacity: 0.62; }
+    .v-btn--plain:hover { opacity: 1; }
+    .v-btn--icon { width: 36px; height: 36px; padding: 0; justify-content: center; border-radius: 50%; background: transparent; color: var(--v-on-surface); }
+    .v-btn--icon:hover { background: rgba(0,0,0,0.04); }
+    .v-btn--fab { width: 56px; height: 56px; border-radius: 50%; padding: 0; justify-content: center; background: var(--v-primary); color: #FFFFFF; box-shadow: var(--v-elev-6); }
+    .v-btn--sm { height: 28px; padding: 0 12px; font-size: 12px; }
+    .v-btn--lg { height: 44px; padding: 0 24px; font-size: 15px; }
+    .v-btn:disabled { background: rgba(0,0,0,0.12); color: rgba(0,0,0,0.26); cursor: not-allowed; box-shadow: none; }
+    .v-btn:focus-visible { outline: 2px solid var(--v-primary); outline-offset: 2px; }
+
+    /* Form */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+      gap: var(--v-space-4);
+    }
+    .v-field {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .v-field--filled .v-input {
+      background: var(--v-surface-variant);
+      border: 0;
+      border-bottom: 1px solid var(--v-on-surface-medium);
+      border-radius: var(--v-radius-sm) var(--v-radius-sm) 0 0;
+      padding: 24px 16px 8px;
+      font-family: var(--v-font);
+      font-size: 16px;
+      color: var(--v-on-surface);
+      outline: none;
+      width: 100%;
+    }
+    .v-field--filled .v-label {
+      position: absolute;
+      top: 8px;
+      left: 16px;
+      font-size: 12px;
+      color: var(--v-on-surface-medium);
+    }
+    .v-field--filled .v-input:focus { border-bottom: 2px solid var(--v-primary); }
+    .v-field--outlined .v-input {
+      background: transparent;
+      border: 1px solid var(--v-outline);
+      border-radius: var(--v-radius-sm);
+      padding: 16px;
+      font-family: var(--v-font);
+      font-size: 16px;
+      color: var(--v-on-surface);
+      outline: none;
+      width: 100%;
+    }
+    .v-field--outlined .v-input:focus { border: 2px solid var(--v-primary); padding: 15px; }
+    .v-field--outlined .v-label {
+      position: absolute;
+      top: -7px;
+      left: 12px;
+      font-size: 12px;
+      color: var(--v-on-surface-medium);
+      background: var(--v-surface);
+      padding: 0 4px;
+    }
+    .v-field--solo .v-input {
+      background: var(--v-surface);
+      border: 0;
+      border-radius: var(--v-radius-sm);
+      padding: 12px 16px;
+      font-family: var(--v-font);
+      font-size: 16px;
+      color: var(--v-on-surface);
+      outline: none;
+      width: 100%;
+      box-shadow: var(--v-elev-2);
+    }
+    .v-helper { font-size: 12px; color: var(--v-on-surface-medium); padding-left: 16px; }
+    .v-error { color: var(--v-error); }
+    .v-field textarea.v-input { min-height: 80px; resize: vertical; }
+    .v-field select.v-input { appearance: none; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 40px; }
+
+    .v-checkbox, .v-radio {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .v-checkbox input, .v-radio input { width: 18px; height: 18px; accent-color: var(--v-primary); }
+    .v-switch { position: relative; display: inline-block; width: 36px; height: 14px; }
+    .v-switch input { opacity: 0; width: 0; height: 0; }
+    .v-switch .slider {
+      position: absolute; cursor: pointer; inset: 0;
+      background: rgba(0,0,0,0.38);
+      border-radius: var(--v-radius-pill);
+      transition: 0.2s;
+    }
+    .v-switch .slider::before {
+      content: ''; position: absolute;
+      width: 20px; height: 20px;
+      left: -2px; top: -3px;
+      background: #FFFFFF;
+      border-radius: 50%;
+      transition: 0.2s;
+      box-shadow: var(--v-elev-2);
+    }
+    .v-switch input:checked + .slider { background: rgba(25,118,210,0.5); }
+    .v-switch input:checked + .slider::before { background: var(--v-primary); transform: translateX(18px); }
+    .v-slider { width: 100%; accent-color: var(--v-primary); }
+
+    /* Surfaces */
+    .surface-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
+      gap: var(--v-space-4);
+    }
+    .v-card {
+      background: var(--v-surface);
+      border-radius: var(--v-radius-sm);
+      padding: 0;
+      box-shadow: var(--v-elev-2);
+      overflow: hidden;
+    }
+    .v-card--outlined { box-shadow: none; border: 1px solid var(--v-divider); }
+    .v-card--elevated { box-shadow: var(--v-elev-8); }
+    .v-card .v-card-media { height: 120px; background: linear-gradient(135deg, var(--v-primary), var(--v-info)); }
+    .v-card .v-card-content { padding: var(--v-space-4); }
+    .v-card .v-card-title { font-size: 18px; font-weight: 500; margin: 0 0 4px; line-height: 24px; }
+    .v-card .v-card-subtitle { font-size: 13px; color: var(--v-on-surface-medium); margin: 0 0 var(--v-space-3); }
+    .v-card .v-card-text { font-size: 14px; color: var(--v-on-surface); margin: 0; }
+    .v-card .v-card-actions { padding: var(--v-space-2) var(--v-space-3); border-top: 1px solid var(--v-divider); display: flex; gap: 8px; }
+
+    .v-stat { padding: var(--v-space-4); background: var(--v-primary); border-radius: var(--v-radius-sm); color: #FFFFFF; box-shadow: var(--v-elev-2); }
+    .v-stat .num { font-size: 32px; font-weight: 500; line-height: 1; }
+    .v-stat .lbl { font-size: 12px; opacity: 0.85; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.0892857em; }
+
+    .v-dialog {
+      background: var(--v-surface);
+      padding: var(--v-space-5);
+      border-radius: var(--v-radius-sm);
+      box-shadow: var(--v-elev-24);
+      max-width: 360px;
+    }
+
+    .v-list {
+      background: var(--v-surface);
+      border-radius: var(--v-radius-sm);
+      box-shadow: var(--v-elev-8);
+      padding: 8px 0;
+      width: 200px;
+    }
+    .v-list-item { padding: 12px 16px; font-size: 14px; cursor: pointer; }
+    .v-list-item:hover { background: rgba(0,0,0,0.04); }
+
+    /* Feedback */
+    .v-alert {
+      display: flex;
+      gap: var(--v-space-3);
+      padding: var(--v-space-3) var(--v-space-4);
+      border-radius: var(--v-radius-sm);
+      margin-bottom: var(--v-space-2);
+      font-size: 14px;
+      align-items: flex-start;
+      border-left: 4px solid;
+    }
+    .v-alert--info { background: var(--v-info-lighten); color: #0D47A1; border-left-color: var(--v-info); }
+    .v-alert--success { background: var(--v-success-lighten); color: #1B5E20; border-left-color: var(--v-success); }
+    .v-alert--warning { background: var(--v-warning-lighten); color: #E65100; border-left-color: var(--v-warning); }
+    .v-alert--error { background: var(--v-error-lighten); color: #B71C1C; border-left-color: var(--v-error); }
+
+    .v-snackbar {
+      background: #323232;
+      color: #FFFFFF;
+      padding: 14px 16px;
+      border-radius: var(--v-radius-sm);
+      box-shadow: var(--v-elev-6);
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 14px;
+    }
+    .v-snackbar button { background: transparent; color: var(--v-accent); border: 0; font-weight: 500; cursor: pointer; text-transform: uppercase; font-size: 13px; letter-spacing: 0.0892857em; }
+
+    .v-banner {
+      display: flex;
+      gap: var(--v-space-3);
+      padding: var(--v-space-3) var(--v-space-4);
+      background: var(--v-surface-variant);
+      border-radius: var(--v-radius-sm);
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--v-divider);
+    }
+
+    .v-chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .v-chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 12px;
+      border-radius: var(--v-radius-pill);
+      background: rgba(0,0,0,0.08);
+      color: var(--v-on-surface);
+      font-size: 13px;
+      font-weight: 400;
+      height: 32px;
+    }
+    .v-chip--primary { background: var(--v-primary); color: #FFFFFF; }
+    .v-chip--outlined { background: transparent; border: 1px solid var(--v-outline); }
+    .v-chip--success { background: var(--v-success); color: #FFFFFF; }
+    .v-chip--warning { background: var(--v-warning); color: #FFFFFF; }
+    .v-chip--error { background: var(--v-error); color: #FFFFFF; }
+
+    .v-badge { background: var(--v-error); color: #FFFFFF; border-radius: var(--v-radius-pill); font-size: 12px; padding: 2px 6px; min-width: 20px; height: 20px; display: inline-flex; justify-content: center; align-items: center; font-weight: 500; }
+
+    .v-progress {
+      width: 100%; height: 4px;
+      background: rgba(25,118,210,0.2);
+      border-radius: var(--v-radius-pill);
+      overflow: hidden;
+    }
+    .v-progress::after {
+      content: ''; display: block;
+      height: 100%; width: 60%;
+      background: var(--v-primary);
+    }
+    .v-skeleton {
+      height: 14px;
+      background: linear-gradient(90deg, var(--v-surface-variant), #EEEEEE, var(--v-surface-variant));
+      background-size: 200% 100%;
+      border-radius: var(--v-radius-sm);
+      animation: shimmer 1.5s infinite;
+    }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+    .v-spinner {
+      width: 36px; height: 36px;
+      border: 3px solid rgba(25,118,210,0.2);
+      border-top-color: var(--v-primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Navigation */
+    .v-tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--v-divider);
+      margin-bottom: var(--v-space-3);
+    }
+    .v-tab {
+      padding: var(--v-space-4) var(--v-space-4);
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.0892857em;
+      text-transform: uppercase;
+      color: var(--v-on-surface-medium);
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+    }
+    .v-tab.active { color: var(--v-primary); border-bottom-color: var(--v-primary); }
+
+    .v-breadcrumbs { display: flex; gap: 8px; align-items: center; font-size: 14px; color: var(--v-on-surface-medium); padding: 0; list-style: none; margin: 0; }
+    .v-breadcrumbs a { color: var(--v-primary); text-decoration: none; }
+
+    .v-pagination { display: flex; gap: 4px; align-items: center; }
+    .v-pagination button {
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      border: 0;
+      background: transparent;
+      color: var(--v-on-surface);
+      cursor: pointer;
+      font-family: var(--v-font);
+      font-size: 14px;
+    }
+    .v-pagination button.active { background: var(--v-primary); color: #FFFFFF; }
+    .v-pagination button:hover:not(.active) { background: rgba(0,0,0,0.04); }
+
+    .v-stepper { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+    .v-stepper .step { display: inline-flex; align-items: center; gap: 8px; }
+    .v-stepper .num {
+      width: 24px; height: 24px; border-radius: 50%;
+      background: rgba(0,0,0,0.38); color: #FFFFFF;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 500;
+    }
+    .v-stepper .num.active { background: var(--v-primary); }
+    .v-stepper .line { flex: 1; height: 1px; background: var(--v-divider); }
+
+    .v-navigation-drawer {
+      background: var(--v-surface);
+      border-radius: var(--v-radius-sm);
+      padding: 8px;
+      width: 240px;
+      box-shadow: var(--v-elev-2);
+    }
+    .v-navigation-drawer a {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 16px;
+      border-radius: var(--v-radius-sm);
+      color: var(--v-on-surface);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 400;
+    }
+    .v-navigation-drawer a.active { background: rgba(25,118,210,0.12); color: var(--v-primary); }
+    .v-navigation-drawer a:hover { background: rgba(0,0,0,0.04); }
+
+    .v-app-bar {
+      display: flex; align-items: center; gap: 16px;
+      padding: 0 16px;
+      height: 64px;
+      background: var(--v-primary);
+      color: #FFFFFF;
+      border-radius: var(--v-radius-sm);
+      box-shadow: var(--v-elev-4);
+    }
+
+    /* Data */
+    table.v-data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      background: var(--v-surface);
+      border-radius: var(--v-radius-sm);
+      overflow: hidden;
+      box-shadow: var(--v-elev-1);
+    }
+    table.v-data-table th, table.v-data-table td {
+      text-align: left;
+      padding: 0 16px;
+      height: 48px;
+      border-bottom: 1px solid var(--v-divider);
+    }
+    table.v-data-table th { font-weight: 500; color: var(--v-on-surface-medium); font-size: 12px; }
+    table.v-data-table tr:hover { background: rgba(0,0,0,0.04); }
+
+    .v-list-flat { list-style: none; padding: 0; margin: 0; }
+    .v-list-flat li {
+      padding: 12px 16px;
+      display: flex; gap: 12px; align-items: center;
+      border-bottom: 1px solid var(--v-divider);
+    }
+    .v-list-flat li:last-child { border-bottom: 0; }
+    .v-kv { display: grid; grid-template-columns: 140px 1fr; gap: 12px; font-size: 14px; }
+    .v-kv dt { color: var(--v-on-surface-medium); font-weight: 500; }
+    .v-avatar {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: var(--v-primary);
+      color: #FFFFFF;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-weight: 500;
+    }
+    .v-empty {
+      text-align: center;
+      padding: var(--v-space-7) var(--v-space-4);
+      color: var(--v-on-surface-medium);
+    }
+    .v-empty svg { width: 48px; height: 48px; opacity: 0.4; }
+
+    /* Layout */
+    .grid-demo {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 16px;
+      background: var(--v-surface-variant);
+      padding: 16px;
+      border-radius: var(--v-radius-sm);
+    }
+    .grid-demo > div {
+      background: var(--v-primary);
+      color: #FFFFFF;
+      padding: 12px;
+      border-radius: var(--v-radius-sm);
+      font-size: 12px;
+      font-weight: 500;
+      text-align: center;
+    }
+    .scale-row {
+      display: flex;
+      gap: var(--v-space-3);
+      flex-wrap: wrap;
+      align-items: flex-end;
+      margin-bottom: var(--v-space-4);
+    }
+    .scale-item {
+      display: flex; flex-direction: column; gap: 6px;
+      align-items: center;
+    }
+    .scale-item .swatch { background: var(--v-primary); }
+    .scale-item .lbl { font-size: 11px; font-family: var(--v-mono); color: var(--v-on-surface-medium); }
+    .shadow-demo {
+      width: 80px; height: 80px;
+      background: var(--v-surface);
+      border-radius: var(--v-radius-sm);
+      display: inline-flex; align-items: center; justify-content: center;
+      margin-right: 16px; margin-bottom: 16px;
+      font-size: 11px; font-family: var(--v-mono); color: var(--v-on-surface-medium);
+    }
+
+    /* Footer */
+    .ds-footer {
+      background: var(--v-secondary);
+      color: rgba(255,255,255,0.92);
+      padding: var(--v-space-6);
+      margin-top: var(--v-space-7);
+    }
+    .ds-footer h3 { margin-top: 0; color: #FFFFFF; }
+    .ds-footer ul { padding-left: 20px; }
+    .ds-footer li { margin-bottom: 4px; word-break: break-all; font-size: 13px; }
+    .ds-footer a { color: var(--v-accent); text-decoration: none; }
+    .license-note { font-size: 13px; color: rgba(255,255,255,0.7); margin-top: var(--v-space-4); }
+    .meta-note { font-size: 12px; color: rgba(255,255,255,0.55); font-family: var(--v-mono); margin-top: var(--v-space-2); }
+
+    @media (max-width: 720px) {
+      .ds-header h1 { font-size: 32px; line-height: 40px; }
+      main { padding: var(--v-space-4); }
+      section { padding: var(--v-space-4); }
+      .type-row { grid-template-columns: 1fr; }
+      .color-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <header class="ds-header">
+    <a href="index.html" class="back-link">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Catalog
+    </a>
+    <h1>Vuetify</h1>
+    <div class="meta">
+      <span class="badge kind-cl">component-library</span>
+      <span class="badge fidelity-documented">documented</span>
+      <span class="badge source-verified">source: verified</span>
+      <a href="https://vuetifyjs.com" target="_blank" rel="noopener">Official ↗</a>
+    </div>
+    <p class="tagline">Vue 3 component framework built on Material Design with extensive theming and prop-driven customization.</p>
+  </header>
+
+  <nav class="toc" aria-label="Table of contents">
+    <ul>
+      <li><a href="#brand">Brand</a></li>
+      <li><a href="#color">Color</a></li>
+      <li><a href="#typography">Typography</a></li>
+      <li><a href="#iconography">Iconography</a></li>
+      <li><a href="#buttons">Buttons</a></li>
+      <li><a href="#form">Form</a></li>
+      <li><a href="#surfaces">Surfaces</a></li>
+      <li><a href="#feedback">Feedback</a></li>
+      <li><a href="#navigation">Navigation</a></li>
+      <li><a href="#data">Data</a></li>
+      <li><a href="#layout">Layout</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="brand" data-fidelity="documented">
+      <h2>
+        <span>Brand</span>
+        <span class="badge fidelity-documented">documented</span>
+      </h2>
+      <div class="brand-mark">
+        <svg viewBox="0 0 36 36" fill="none" width="32" height="32">
+          <path d="M6 6 L18 30 L30 6 L24 6 L18 18 L12 6 Z" fill="#FFFFFF"/>
+        </svg>
+        Vuetify
+      </div>
+      <p style="margin-top: 24px; max-width: 720px; font-size: 16px; color: var(--v-on-surface-medium);">
+        Vuetify is the most complete Vue UI component framework, providing 80+ Material Design-compliant components with rich theming, props-based variants, and accessibility built in. The default light theme uses Material Blue 700 (<code>#1976D2</code>) as primary.
+      </p>
+      <div class="pillars">
+        <div class="pillar">
+          <h4>Material</h4>
+          <p style="font-size:14px;color:var(--v-on-surface-medium);margin:0">Faithful to Google's Material Design specification with token-driven theming.</p>
+        </div>
+        <div class="pillar">
+          <h4>Vue-native</h4>
+          <p style="font-size:14px;color:var(--v-on-surface-medium);margin:0">Composition API, reactive props, and SSR-friendly rendering.</p>
+        </div>
+        <div class="pillar">
+          <h4>Themeable</h4>
+          <p style="font-size:14px;color:var(--v-on-surface-medium);margin:0">CSS variables, dark mode, and per-component variants out of the box.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="color" data-fidelity="documented">
+      <h2>
+        <span>Color</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://vuetifyjs.com/en/styles/colors/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--v-on-surface-medium)">Vuetify ships with the full Material Design color palette (16 hues × 10 tones). Default light theme tokens: primary <code>#1976D2</code>, secondary <code>#424242</code>, accent <code>#82B1FF</code>.</p>
+
+      <h3>Material palette (500 row)</h3>
+      <div class="color-grid">
+        <div class="color-cell" style="background:var(--v-red-500);color:white">Red</div>
+        <div class="color-cell" style="background:var(--v-pink-500);color:white">Pink</div>
+        <div class="color-cell" style="background:var(--v-purple-500);color:white">Purple</div>
+        <div class="color-cell" style="background:var(--v-deep-purple-500);color:white">D.Purple</div>
+        <div class="color-cell" style="background:var(--v-indigo-500);color:white">Indigo</div>
+        <div class="color-cell" style="background:var(--v-blue-500);color:white">Blue</div>
+        <div class="color-cell" style="background:var(--v-light-blue-500);color:white">L.Blue</div>
+        <div class="color-cell" style="background:var(--v-cyan-500);color:white">Cyan</div>
+      </div>
+      <div class="color-grid">
+        <div class="color-cell" style="background:var(--v-teal-500);color:white">Teal</div>
+        <div class="color-cell" style="background:var(--v-green-500);color:white">Green</div>
+        <div class="color-cell" style="background:var(--v-light-green-500);color:#1B5E20">L.Green</div>
+        <div class="color-cell" style="background:var(--v-lime-500);color:#1B5E20">Lime</div>
+        <div class="color-cell" style="background:var(--v-yellow-500);color:#212121">Yellow</div>
+        <div class="color-cell" style="background:var(--v-amber-500);color:#212121">Amber</div>
+        <div class="color-cell" style="background:var(--v-orange-500);color:white">Orange</div>
+        <div class="color-cell" style="background:var(--v-deep-orange-500);color:white">D.Orange</div>
+      </div>
+
+      <h3>Semantic roles</h3>
+      <div class="semantic-grid">
+        <div class="sem-card" style="background:var(--v-info-lighten);color:#0D47A1">
+          <span class="label">Info</span><span class="hex">#2196F3</span>
+        </div>
+        <div class="sem-card" style="background:var(--v-success-lighten);color:#1B5E20">
+          <span class="label">Success</span><span class="hex">#4CAF50</span>
+        </div>
+        <div class="sem-card" style="background:var(--v-warning-lighten);color:#E65100">
+          <span class="label">Warning</span><span class="hex">#FB8C00</span>
+        </div>
+        <div class="sem-card" style="background:var(--v-error-lighten);color:#B71C1C">
+          <span class="label">Error</span><span class="hex">#FF5252</span>
+        </div>
+      </div>
+
+      <h3>Theme tokens (Light)</h3>
+      <div class="role-grid">
+        <div class="role-chip" style="background:var(--v-primary);color:white">primary <code>#1976D2</code></div>
+        <div class="role-chip" style="background:var(--v-secondary);color:white">secondary <code>#424242</code></div>
+        <div class="role-chip" style="background:var(--v-accent);color:#0D2A55">accent <code>#82B1FF</code></div>
+        <div class="role-chip" style="background:var(--v-info);color:white">info <code>#2196F3</code></div>
+        <div class="role-chip" style="background:var(--v-success);color:white">success <code>#4CAF50</code></div>
+        <div class="role-chip" style="background:var(--v-warning);color:white">warning <code>#FB8C00</code></div>
+        <div class="role-chip" style="background:var(--v-error);color:white">error <code>#FF5252</code></div>
+        <div class="role-chip" style="background:var(--v-surface-variant);color:var(--v-on-surface);border:1px solid var(--v-divider)">surface <code>#FFFFFF</code></div>
+      </div>
+    </section>
+
+    <section id="typography" data-fidelity="documented">
+      <h2>
+        <span>Typography</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://vuetifyjs.com/en/styles/typography/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--v-on-surface-medium)">Roboto is the default. Vuetify exposes 13 utility classes from <code>text-h1</code> through <code>text-overline</code> aligned with Material's type scale.</p>
+
+      <div class="type-row"><div class="label">text-h1 · 96/96 · 300</div><div class="text-h1">Vuetify</div></div>
+      <div class="type-row"><div class="label">text-h2 · 60/60 · 300</div><div class="text-h2">Vue UI Framework</div></div>
+      <div class="type-row"><div class="label">text-h3 · 48/50 · 400</div><div class="text-h3">Material Design</div></div>
+      <div class="type-row"><div class="label">text-h4 · 34/40 · 400</div><div class="text-h4">Theming &amp; tokens</div></div>
+      <div class="type-row"><div class="label">text-h5 · 24/32 · 400</div><div class="text-h5">Component reference</div></div>
+      <div class="type-row"><div class="label">text-h6 · 20/32 · 500</div><div class="text-h6">Section title</div></div>
+      <div class="type-row"><div class="label">subtitle-1 · 16/28 · 400</div><div class="text-subtitle-1">Subtitle one</div></div>
+      <div class="type-row"><div class="label">subtitle-2 · 14/22 · 500</div><div class="text-subtitle-2">Subtitle two</div></div>
+      <div class="type-row"><div class="label">body-1 · 16/24 · 400</div><div class="text-body-1">Vuetify is a Vue 3 component framework built on Material Design. It provides a comprehensive set of components, themes, and utilities to build interfaces fast.</div></div>
+      <div class="type-row"><div class="label">body-2 · 14/20 · 400</div><div class="text-body-2">Body two is the default for paragraph copy in dense layouts. It pairs with subtitle-2 for compact lists.</div></div>
+      <div class="type-row"><div class="label">button · 14/36 · 500</div><div class="text-button">Material Button</div></div>
+      <div class="type-row"><div class="label">caption · 12/20 · 400</div><div class="text-caption">Caption — auxiliary text under inputs and images.</div></div>
+      <div class="type-row"><div class="label">overline · 10/32 · 500</div><div class="text-overline">Overline · Tag</div></div>
+      <div class="type-row"><div class="label">Mono · Roboto Mono</div><div class="mono-sample">$button-font-family: 'Roboto', sans-serif;</div></div>
+    </section>
+
+    <section id="iconography" data-fidelity="documented">
+      <h2>
+        <span>Iconography</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://vuetifyjs.com/en/features/icon-fonts/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--v-on-surface-medium)">Default icon set is Material Design Icons (MDI, Apache 2.0) with 7,000+ glyphs. Below: Lucide-style 24px stroke icons that approximate MDI outlined weight.</p>
+      <div class="icon-grid">
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12L12 3l9 9"/><path d="M5 10v10h14V10"/></svg><span>home</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><span>magnify</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg><span>account</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4l9 16 2.5-7L21 11z"/></svg><span>send</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h14v18l-7-3-7 3z"/></svg><span>bookmark</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>clock</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.5-2.5l2-1.5-2-3.5-2.5 1A7 7 0 0 0 13 4l-.5-2.5h-4L8 4a7 7 0 0 0-3 1.5l-2.5-1-2 3.5 2 1.5A7 7 0 0 0 5 12c0 .9.2 1.7.5 2.5l-2 1.5 2 3.5 2.5-1c.9.7 2 1.2 3 1.5l.5 2.5h4l.5-2.5c1-.3 2.1-.8 3-1.5l2.5 1 2-3.5-2-1.5c.3-.8.5-1.6.5-2.5z"/></svg><span>cog</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8c0-1-1-2-2-2h-2l-2-2H9L7 6H5c-1 0-2 1-2 2v8c0 1 1 2 2 2h14c1 0 2-1 2-2z"/><circle cx="12" cy="12" r="3.5"/></svg><span>camera</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>check</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg><span>close</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg><span>plus</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a4 4 0 0 1-4 4H7l-4 4V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/></svg><span>chat</span></div>
+      </div>
+    </section>
+
+    <section id="buttons" data-fidelity="documented">
+      <h2>
+        <span>Buttons</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://vuetifyjs.com/en/components/buttons/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--v-on-surface-medium)">Vuetify v3 ships variants: <code>elevated</code> (default), <code>flat</code>, <code>tonal</code>, <code>outlined</code>, <code>text</code>, <code>plain</code>. Default radius is 4px; uppercase label.</p>
+
+      <h3>Variants</h3>
+      <div class="button-row">
+        <button class="v-btn v-btn--elevated">Elevated</button>
+        <button class="v-btn v-btn--flat">Flat</button>
+        <button class="v-btn v-btn--tonal">Tonal</button>
+        <button class="v-btn v-btn--outlined">Outlined</button>
+        <button class="v-btn v-btn--text">Text</button>
+        <button class="v-btn v-btn--plain">Plain</button>
+        <button class="v-btn v-btn--icon" aria-label="favorite">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l8.8 8.8 8.8-8.8a5.5 5.5 0 0 0 0-7.8z"/></svg>
+        </button>
+      </div>
+
+      <h3>Sizes</h3>
+      <div class="button-row">
+        <button class="v-btn v-btn--elevated v-btn--sm">Small</button>
+        <button class="v-btn v-btn--elevated">Default</button>
+        <button class="v-btn v-btn--elevated v-btn--lg">Large</button>
+        <button class="v-btn v-btn--fab" aria-label="add">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+      </div>
+
+      <h3>States</h3>
+      <div class="button-row">
+        <button class="v-btn v-btn--elevated">Enabled</button>
+        <button class="v-btn v-btn--elevated" style="background:var(--v-primary-darken);box-shadow:var(--v-elev-4)">Hover</button>
+        <button class="v-btn v-btn--elevated" style="outline:2px solid var(--v-primary);outline-offset:2px">Focus</button>
+        <button class="v-btn v-btn--elevated" disabled>Disabled</button>
+      </div>
+
+      <h3>Color props</h3>
+      <div class="button-row">
+        <button class="v-btn v-btn--elevated">Primary</button>
+        <button class="v-btn v-btn--elevated" style="background:var(--v-secondary)">Secondary</button>
+        <button class="v-btn v-btn--elevated" style="background:var(--v-success)">Success</button>
+        <button class="v-btn v-btn--elevated" style="background:var(--v-warning)">Warning</button>
+        <button class="v-btn v-btn--elevated" style="background:var(--v-error)">Error</button>
+      </div>
+    </section>
+
+    <section id="form" data-fidelity="documented">
+      <h2>
+        <span>Form</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://vuetifyjs.com/en/components/text-fields/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--v-on-surface-medium)">Three text-field variants: <code>filled</code> (default), <code>outlined</code>, <code>solo</code>. Plus checkbox, radio, switch, slider, file input.</p>
+
+      <h3>Text fields</h3>
+      <div class="form-grid">
+        <div class="v-field v-field--filled">
+          <input class="v-input" type="text" id="vf1" value="Vuetify">
+          <label class="v-label" for="vf1">Project name</label>
+          <span class="v-helper">Filled · default</span>
+        </div>
+        <div class="v-field v-field--outlined">
+          <input class="v-input" type="email" id="vf2" placeholder=" ">
+          <label class="v-label" for="vf2">Email</label>
+          <span class="v-helper">Outlined variant</span>
+        </div>
+        <div class="v-field v-field--solo">
+          <input class="v-input" type="search" id="vf3" placeholder="Search components…">
+          <span class="v-helper">Solo variant</span>
+        </div>
+        <div class="v-field v-field--filled">
+          <textarea class="v-input" id="vf4" placeholder=" ">Multiline body content...</textarea>
+          <label class="v-label" for="vf4">Description</label>
+        </div>
+        <div class="v-field v-field--outlined">
+          <select class="v-input" id="vf5">
+            <option>Roboto</option>
+            <option>Material Sans</option>
+            <option>Roboto Mono</option>
+          </select>
+          <label class="v-label" for="vf5">Font</label>
+        </div>
+        <div class="v-field v-field--outlined">
+          <input class="v-input" type="text" id="vf6" value="invalid@" style="border-color:var(--v-error)">
+          <label class="v-label" for="vf6" style="color:var(--v-error)">Email</label>
+          <span class="v-helper v-error">Enter a valid email address</span>
+        </div>
+      </div>
+
+      <h3>Selection controls</h3>
+      <div class="button-row">
+        <label class="v-checkbox"><input type="checkbox" checked>Subscribe</label>
+        <label class="v-checkbox"><input type="checkbox">Marketing</label>
+        <label class="v-radio"><input type="radio" name="vr1" checked>Light</label>
+        <label class="v-radio"><input type="radio" name="vr1">Dark</label>
+        <label class="v-switch"><input type="checkbox" checked><span class="slider"></span></label>
+        <label class="v-switch"><input type="checkbox"><span class="slider"></span></label>
+      </div>
+
+      <h3>Slider &amp; file</h3>
+      <div style="max-width:400px;display:flex;flex-direction:column;gap:12px">
+        <input type="range" class="v-slider" min="0" max="100" value="60">
+        <input type="file" class="v-input v-field--outlined" style="padding:12px">
+      </div>
+    </section>
+
+    <section id="surfaces" data-fidelity="documented">
+      <h2>
+        <span>Surfaces</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://vuetifyjs.com/en/components/cards/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--v-on-surface-medium)">Cards default to elevated. Variants: <code>elevated</code>, <code>outlined</code>, <code>flat</code>, plus <code>v-list</code>, <code>v-dialog</code>.</p>
+
+      <div class="surface-grid">
+        <div class="v-card">
+          <div class="v-card-media"></div>
+          <div class="v-card-content">
+            <div class="v-card-title">Default Card</div>
+            <div class="v-card-subtitle">Elevation 2</div>
+            <p class="v-card-text">Vuetify cards default to elevation 2 and a 4px corner radius.</p>
+          </div>
+          <div class="v-card-actions">
+            <button class="v-btn v-btn--text">Action</button>
+            <button class="v-btn v-btn--text">More</button>
+          </div>
+        </div>
+        <div class="v-card v-card--outlined">
+          <div class="v-card-content">
+            <div class="v-card-title">Outlined</div>
+            <div class="v-card-subtitle">No elevation, 1px divider border</div>
+            <p class="v-card-text">Use outlined cards in dense layouts where elevation would be visual noise.</p>
+          </div>
+        </div>
+        <div class="v-card v-card--elevated">
+          <div class="v-card-content">
+            <div class="v-card-title">Elevated</div>
+            <div class="v-card-subtitle">Elevation 8</div>
+            <p class="v-card-text">High elevation pulls a card forward — pairs well with overlay/popover scenarios.</p>
+          </div>
+        </div>
+        <div class="v-stat">
+          <div class="num">2,847</div>
+          <div class="lbl">Active sessions</div>
+        </div>
+      </div>
+
+      <h3>Dialog</h3>
+      <div class="v-dialog">
+        <h4 style="margin-top:0">Reset preferences?</h4>
+        <p style="font-size:14px;color:var(--v-on-surface-medium)">This will revert color, type, and shape tokens to defaults. Saved presets are not affected.</p>
+        <div class="button-row" style="justify-content:flex-end;margin:0">
+          <button class="v-btn v-btn--text">Cancel</button>
+          <button class="v-btn v-btn--flat">Reset</button>
+        </div>
+      </div>
+
+      <h3>Menu &amp; navigation drawer</h3>
+      <div style="display:flex;gap:24px;flex-wrap:wrap">
+        <div class="v-list">
+          <div class="v-list-item">Edit</div>
+          <div class="v-list-item">Duplicate</div>
+          <div class="v-list-item">Archive</div>
+          <div class="v-list-item" style="color:var(--v-error)">Delete</div>
+        </div>
+        <div class="v-navigation-drawer">
+          <a href="#" class="active">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12L12 3l9 9"/><path d="M5 10v10h14V10"/></svg>
+            Home
+          </a>
+          <a href="#">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            Explore
+          </a>
+          <a href="#">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.5-2.5l2-1.5-2-3.5-2.5 1A7 7 0 0 0 13 4l-.5-2.5h-4L8 4a7 7 0 0 0-3 1.5l-2.5-1-2 3.5 2 1.5A7 7 0 0 0 5 12c0 .9.2 1.7.5 2.5l-2 1.5 2 3.5 2.5-1c.9.7 2 1.2 3 1.5l.5 2.5h4l.5-2.5c1-.3 2.1-.8 3-1.5l2.5 1 2-3.5-2-1.5c.3-.8.5-1.6.5-2.5z"/></svg>
+            Settings
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section id="feedback" data-fidelity="documented">
+      <h2>
+        <span>Feedback</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://vuetifyjs.com/en/components/alerts/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+
+      <h3>Alerts</h3>
+      <div class="v-alert v-alert--info">
+        <strong>Info ·</strong> Vuetify uses Material's tonal palette for alert colors.
+      </div>
+      <div class="v-alert v-alert--success">
+        <strong>Success ·</strong> Theme synced across all components.
+      </div>
+      <div class="v-alert v-alert--warning">
+        <strong>Warning ·</strong> Custom theme may not meet WCAG AA contrast at all tones.
+      </div>
+      <div class="v-alert v-alert--error">
+        <strong>Error ·</strong> Token resolution failed for primary color.
+      </div>
+
+      <h3>Snackbar</h3>
+      <div class="v-snackbar">
+        Theme reverted to defaults.
+        <button>Undo</button>
+      </div>
+
+      <h3>Banner</h3>
+      <div class="v-banner" style="margin-top:12px">
+        <span><strong>Vuetify 3 preview</strong> — switching between Material 2 and Material 3 design.</span>
+        <button class="v-btn v-btn--text">Dismiss</button>
+      </div>
+
+      <h3>Chips &amp; badges</h3>
+      <div class="v-chip-row">
+        <span class="v-chip">Filter</span>
+        <span class="v-chip v-chip--outlined">Outlined</span>
+        <span class="v-chip v-chip--primary">Primary</span>
+        <span class="v-chip v-chip--success">Success</span>
+        <span class="v-chip v-chip--warning">Warning</span>
+        <span class="v-chip v-chip--error">Error</span>
+        <span class="v-badge">3</span>
+        <span class="v-badge" style="background:var(--v-primary)">12</span>
+      </div>
+
+      <h3>Progress &amp; loading</h3>
+      <div style="display:flex;flex-direction:column;gap:12px;max-width:480px">
+        <div class="v-progress"></div>
+        <div class="v-skeleton" style="width:80%"></div>
+        <div class="v-skeleton" style="width:60%"></div>
+        <div class="v-spinner"></div>
+      </div>
+    </section>
+
+    <section id="navigation" data-fidelity="documented">
+      <h2>
+        <span>Navigation</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://vuetifyjs.com/en/components/tabs/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+
+      <h3>Tabs</h3>
+      <div class="v-tabs">
+        <div class="v-tab active">Overview</div>
+        <div class="v-tab">Tokens</div>
+        <div class="v-tab">Components</div>
+        <div class="v-tab">Examples</div>
+      </div>
+
+      <h3>Breadcrumbs</h3>
+      <ul class="v-breadcrumbs">
+        <li><a href="#">Home</a></li>
+        <li>/</li>
+        <li><a href="#">Components</a></li>
+        <li>/</li>
+        <li>Buttons</li>
+      </ul>
+
+      <h3>Pagination</h3>
+      <div class="v-pagination">
+        <button>‹</button>
+        <button class="active">1</button>
+        <button>2</button>
+        <button>3</button>
+        <button>4</button>
+        <button>›</button>
+      </div>
+
+      <h3>Stepper</h3>
+      <div class="v-stepper">
+        <div class="step"><span class="num active">1</span> Theme</div>
+        <span class="line"></span>
+        <div class="step"><span class="num active">2</span> Type</div>
+        <span class="line"></span>
+        <div class="step"><span class="num">3</span> Layout</div>
+        <span class="line"></span>
+        <div class="step"><span class="num">4</span> Review</div>
+      </div>
+
+      <h3>App bar</h3>
+      <div class="v-app-bar">
+        <button class="v-btn v-btn--icon" style="color:#FFFFFF"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+        <strong style="flex:1;font-size:18px">Vuetify</strong>
+        <button class="v-btn v-btn--icon" style="color:#FFFFFF"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></button>
+        <div class="v-avatar" style="background:var(--v-accent);color:#0D2A55">MK</div>
+      </div>
+    </section>
+
+    <section id="data" data-fidelity="documented">
+      <h2>
+        <span>Data</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://vuetifyjs.com/en/components/data-tables/basics/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+
+      <h3>Data table</h3>
+      <table class="v-data-table">
+        <thead>
+          <tr><th>Token</th><th>Value</th><th>Role</th><th>Section</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>$primary</code></td><td>#1976D2</td><td>Primary</td><td>theme</td></tr>
+          <tr><td><code>$secondary</code></td><td>#424242</td><td>Secondary</td><td>theme</td></tr>
+          <tr><td><code>$accent</code></td><td>#82B1FF</td><td>Accent</td><td>theme</td></tr>
+          <tr><td><code>$success</code></td><td>#4CAF50</td><td>Status</td><td>semantic</td></tr>
+          <tr><td><code>$error</code></td><td>#FF5252</td><td>Status</td><td>semantic</td></tr>
+        </tbody>
+      </table>
+
+      <h3>List</h3>
+      <ul class="v-list-flat">
+        <li><div class="v-avatar">A</div><div><strong>Avery Tan</strong><div style="font-size:13px;color:var(--v-on-surface-medium)">Updated theme · 2m ago</div></div></li>
+        <li><div class="v-avatar" style="background:var(--v-success)">B</div><div><strong>Brett Yu</strong><div style="font-size:13px;color:var(--v-on-surface-medium)">Imported tokens · 14m ago</div></div></li>
+        <li><div class="v-avatar" style="background:var(--v-warning)">C</div><div><strong>Cleo Park</strong><div style="font-size:13px;color:var(--v-on-surface-medium)">Created palette · 1h ago</div></div></li>
+      </ul>
+
+      <h3>Key – value</h3>
+      <dl class="v-kv">
+        <dt>Theme</dt><dd>Light · Material</dd>
+        <dt>Primary</dt><dd>#1976D2</dd>
+        <dt>Font family</dt><dd>Roboto</dd>
+        <dt>Generated</dt><dd>2026-05-05</dd>
+      </dl>
+
+      <h3>Empty state</h3>
+      <div class="v-empty">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><circle cx="9" cy="10" r="0.5" fill="currentColor"/><circle cx="15" cy="10" r="0.5" fill="currentColor"/></svg>
+        <h4 style="margin:8px 0 4px">No projects yet</h4>
+        <p style="font-size:14px;margin:0">Create one from a template or import a Vuetify config.</p>
+      </div>
+    </section>
+
+    <section id="layout" data-fidelity="documented">
+      <h2>
+        <span>Layout</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://vuetifyjs.com/en/components/grids/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--v-on-surface-medium)">Vuetify ships a flexbox-based 12-column grid (<code>v-row</code> + <code>v-col</code>) and 5 breakpoints: xs (&lt;600), sm (600), md (960), lg (1280), xl (1920).</p>
+
+      <h3>12-column grid</h3>
+      <div class="grid-demo">
+        <div style="grid-column:span 12">12</div>
+        <div style="grid-column:span 6">6</div>
+        <div style="grid-column:span 6">6</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+      </div>
+
+      <h3>Spacing scale</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div class="swatch" style="width:4px;height:32px"></div><span class="lbl">1 (4)</span></div>
+        <div class="scale-item"><div class="swatch" style="width:8px;height:32px"></div><span class="lbl">2 (8)</span></div>
+        <div class="scale-item"><div class="swatch" style="width:12px;height:32px"></div><span class="lbl">3 (12)</span></div>
+        <div class="scale-item"><div class="swatch" style="width:16px;height:32px"></div><span class="lbl">4 (16)</span></div>
+        <div class="scale-item"><div class="swatch" style="width:24px;height:32px"></div><span class="lbl">6 (24)</span></div>
+        <div class="scale-item"><div class="swatch" style="width:32px;height:32px"></div><span class="lbl">8 (32)</span></div>
+        <div class="scale-item"><div class="swatch" style="width:48px;height:32px"></div><span class="lbl">12 (48)</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:32px"></div><span class="lbl">16 (64)</span></div>
+      </div>
+
+      <h3>Shape scale</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:0;background:var(--v-primary)"></div><span class="lbl">none 0</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:2px;background:var(--v-primary)"></div><span class="lbl">xs 2</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:4px;background:var(--v-primary)"></div><span class="lbl">sm 4 (default)</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:8px;background:var(--v-primary)"></div><span class="lbl">md 8</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:16px;background:var(--v-primary)"></div><span class="lbl">lg 16</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:50%;background:var(--v-primary)"></div><span class="lbl">circle</span></div>
+      </div>
+
+      <h3>Elevation (24 levels — sample)</h3>
+      <div>
+        <div class="shadow-demo" style="box-shadow:none">0</div>
+        <div class="shadow-demo" style="box-shadow:var(--v-elev-1)">1</div>
+        <div class="shadow-demo" style="box-shadow:var(--v-elev-2)">2</div>
+        <div class="shadow-demo" style="box-shadow:var(--v-elev-4)">4</div>
+        <div class="shadow-demo" style="box-shadow:var(--v-elev-6)">6</div>
+        <div class="shadow-demo" style="box-shadow:var(--v-elev-8)">8</div>
+        <div class="shadow-demo" style="box-shadow:var(--v-elev-12)">12</div>
+        <div class="shadow-demo" style="box-shadow:var(--v-elev-16)">16</div>
+        <div class="shadow-demo" style="box-shadow:var(--v-elev-24)">24</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="ds-footer">
+    <h3>Sources</h3>
+    <ul>
+      <li><a href="https://vuetifyjs.com" target="_blank" rel="noopener">https://vuetifyjs.com</a></li>
+      <li><a href="https://vuetifyjs.com/en/styles/colors/" target="_blank" rel="noopener">https://vuetifyjs.com/en/styles/colors/</a></li>
+      <li><a href="https://vuetifyjs.com/en/styles/typography/" target="_blank" rel="noopener">https://vuetifyjs.com/en/styles/typography/</a></li>
+      <li><a href="https://vuetifyjs.com/en/features/icon-fonts/" target="_blank" rel="noopener">https://vuetifyjs.com/en/features/icon-fonts/</a></li>
+      <li><a href="https://vuetifyjs.com/en/components/buttons/" target="_blank" rel="noopener">https://vuetifyjs.com/en/components/buttons/</a></li>
+      <li><a href="https://vuetifyjs.com/en/components/text-fields/" target="_blank" rel="noopener">https://vuetifyjs.com/en/components/text-fields/</a></li>
+      <li><a href="https://vuetifyjs.com/en/components/cards/" target="_blank" rel="noopener">https://vuetifyjs.com/en/components/cards/</a></li>
+      <li><a href="https://vuetifyjs.com/en/components/alerts/" target="_blank" rel="noopener">https://vuetifyjs.com/en/components/alerts/</a></li>
+      <li><a href="https://vuetifyjs.com/en/components/tabs/" target="_blank" rel="noopener">https://vuetifyjs.com/en/components/tabs/</a></li>
+      <li><a href="https://vuetifyjs.com/en/components/data-tables/basics/" target="_blank" rel="noopener">https://vuetifyjs.com/en/components/data-tables/basics/</a></li>
+      <li><a href="https://vuetifyjs.com/en/components/grids/" target="_blank" rel="noopener">https://vuetifyjs.com/en/components/grids/</a></li>
+    </ul>
+    <p class="license-note">This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Vuetify Team. Vuetify and related trademarks belong to Vuetify Team. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</p>
+    <p class="meta-note">Reproduction date: 2026-05-05 · sourceStatus: verified · fidelity: documented</p>
+  </footer>
+</body>
+</html>

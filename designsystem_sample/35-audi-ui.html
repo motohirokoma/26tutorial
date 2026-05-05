@@ -1,0 +1,1416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Audi UI — Design System Reference</title>
+  <script id="ds-meta" type="application/json">
+{"id":"35-audi-ui","fileSlug":"35-audi-ui","schemaVersion":"1"}
+  </script>
+  <style>
+    :root {
+      /* Audi signature */
+      --au-red: #BB0A30;
+      --au-red-dark: #8C0823;
+      --au-red-light: #D52C4A;
+
+      /* Core */
+      --au-black: #000000;
+      --au-white: #FFFFFF;
+
+      /* Grays */
+      --au-gray-90: #1A1A1A;
+      --au-gray-80: #2D2D2D;
+      --au-gray-70: #3F3F3F;
+      --au-gray-60: #4C4C4C;
+      --au-gray-50: #6E6E6E;
+      --au-gray-40: #8A8A8A;
+      --au-gray-30: #B5B5B5;
+      --au-gray-20: #D6D6D6;
+      --au-gray-15: #E5E5E5;
+      --au-gray-10: #F2F2F2;
+      --au-gray-5: #F8F8F8;
+
+      /* Surfaces */
+      --au-bg: var(--au-white);
+      --au-bg-light: var(--au-gray-10);
+      --au-bg-dark: var(--au-black);
+      --au-bg-dark-2: var(--au-gray-90);
+
+      /* Text */
+      --au-text: var(--au-black);
+      --au-text-2: var(--au-gray-60);
+      --au-text-3: var(--au-gray-50);
+      --au-text-on-dark: var(--au-white);
+      --au-text-on-dark-2: var(--au-gray-30);
+
+      /* Borders */
+      --au-line: var(--au-gray-15);
+      --au-line-strong: var(--au-gray-30);
+
+      /* Semantic */
+      --au-success: #008736;
+      --au-warning: #C77B00;
+      --au-error: var(--au-red);
+      --au-info: #0F4778;
+
+      /* Type */
+      --au-font: 'AudiType', 'AudiType Web', Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      --au-mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+
+      /* Shape — Audi is angular */
+      --au-r-0: 0;
+      --au-r-1: 1px;
+      --au-r-2: 2px;
+      --au-r-4: 4px;
+      --au-r-pill: 999px;
+
+      /* Spacing */
+      --au-s-1: 4px;
+      --au-s-2: 8px;
+      --au-s-3: 12px;
+      --au-s-4: 16px;
+      --au-s-5: 20px;
+      --au-s-6: 24px;
+      --au-s-7: 32px;
+      --au-s-8: 48px;
+      --au-s-9: 64px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: var(--au-font);
+      background: var(--au-bg);
+      color: var(--au-text);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    code, kbd, pre { font-family: var(--au-mono); font-size: 0.9em; }
+
+    /* Header — black-on-red */
+    .ds-header {
+      background: var(--au-black);
+      color: var(--au-white);
+      padding: var(--au-s-9) var(--au-s-7) var(--au-s-7);
+      position: relative;
+      overflow: hidden;
+      border-bottom: 4px solid var(--au-red);
+    }
+    .ds-header::before {
+      content: '';
+      position: absolute;
+      right: 0; top: 0; bottom: 0;
+      width: 30%;
+      background: linear-gradient(90deg, transparent, rgba(187,10,48,0.15));
+      pointer-events: none;
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--au-s-2);
+      color: var(--au-white);
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: var(--au-r-0);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      border: 1px solid rgba(255,255,255,0.4);
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .back-link:hover { background: var(--au-red); border-color: var(--au-red); }
+    .ds-header h1 {
+      font-size: 64px;
+      line-height: 72px;
+      font-weight: 700;
+      letter-spacing: -1.2px;
+      margin: var(--au-s-6) 0 var(--au-s-3);
+    }
+    .ds-header .meta {
+      display: flex; flex-wrap: wrap;
+      gap: var(--au-s-2); align-items: center;
+      margin-bottom: var(--au-s-3);
+    }
+    .badge {
+      display: inline-flex; align-items: center;
+      padding: 4px 12px;
+      border-radius: var(--au-r-0);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      background: transparent;
+      color: var(--au-white);
+      border: 1px solid rgba(255,255,255,0.4);
+    }
+    .badge.kind-bg { background: var(--au-red); border-color: transparent; }
+    .badge.fidelity-documented { background: #1B5E20; color: white; border-color: transparent; }
+    .badge.fidelity-approximated { background: var(--au-warning); color: white; border-color: transparent; }
+    .badge.fidelity-inspired { background: #4A148C; color: white; border-color: transparent; }
+    .badge.source-unverified { background: var(--au-gray-70); color: white; border-color: transparent; }
+
+    .ds-header a.official {
+      color: var(--au-white);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border: 1px solid rgba(255,255,255,0.4);
+    }
+    .ds-header a.official:hover { background: var(--au-red); border-color: var(--au-red); }
+    .tagline {
+      font-size: 18px;
+      line-height: 28px;
+      max-width: 720px;
+      margin: var(--au-s-5) 0 0;
+      color: rgba(255,255,255,0.9);
+      font-weight: 400;
+    }
+
+    /* TOC */
+    .toc {
+      position: sticky; top: 0;
+      z-index: 50;
+      background: var(--au-white);
+      border-bottom: 1px solid var(--au-line);
+    }
+    .toc ul {
+      list-style: none; margin: 0;
+      padding: var(--au-s-3) var(--au-s-7);
+      display: flex; gap: 0;
+      overflow-x: auto;
+    }
+    .toc a {
+      display: inline-block;
+      padding: 8px 16px;
+      color: var(--au-text-2);
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      white-space: nowrap;
+      border-bottom: 2px solid transparent;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .toc a:hover { color: var(--au-red); border-bottom-color: var(--au-red); }
+
+    main {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: var(--au-s-7) var(--au-s-6);
+    }
+    section {
+      background: var(--au-bg);
+      padding: var(--au-s-7);
+      margin-bottom: var(--au-s-6);
+      border: 1px solid var(--au-line);
+    }
+    section h2 {
+      display: flex; align-items: center;
+      gap: var(--au-s-3); flex-wrap: wrap;
+      font-size: 32px; line-height: 40px;
+      font-weight: 700;
+      margin: 0 0 var(--au-s-6);
+      color: var(--au-text);
+      letter-spacing: -0.5px;
+      padding-bottom: var(--au-s-4);
+      border-bottom: 1px solid var(--au-line);
+    }
+    section h2 .accent {
+      width: 24px; height: 4px;
+      background: var(--au-red);
+      display: inline-block;
+    }
+    .source-link {
+      font-size: 11px;
+      color: var(--au-text-2);
+      text-decoration: none;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      padding-bottom: 1px;
+      border-bottom: 1px solid var(--au-line-strong);
+    }
+    .source-link:hover { color: var(--au-red); border-bottom-color: var(--au-red); }
+    h3 {
+      font-size: 18px; line-height: 26px;
+      font-weight: 700;
+      margin: var(--au-s-6) 0 var(--au-s-3);
+      color: var(--au-text);
+      letter-spacing: -0.2px;
+    }
+    h4 {
+      font-size: 12px; line-height: 18px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      margin: var(--au-s-4) 0 var(--au-s-2);
+      color: var(--au-text-2);
+    }
+    p { margin: 0 0 var(--au-s-3); color: var(--au-text); }
+    .sub-text { color: var(--au-text-2); font-size: 14px; }
+
+    /* Brand */
+    #brand .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--au-s-3);
+      padding: var(--au-s-5) var(--au-s-6);
+      background: var(--au-black);
+      color: var(--au-white);
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      border-left: 4px solid var(--au-red);
+    }
+    #brand .pillars {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: 1px;
+      margin-top: var(--au-s-6);
+      background: var(--au-line);
+    }
+    #brand .pillar {
+      padding: var(--au-s-5);
+      background: var(--au-white);
+    }
+    #brand .pillar h4 {
+      margin: 0 0 var(--au-s-2);
+      color: var(--au-red);
+      font-size: 11px;
+      letter-spacing: 1.5px;
+    }
+    #brand .pillar h5 {
+      font-size: 18px;
+      font-weight: 700;
+      margin: 0 0 var(--au-s-2);
+      letter-spacing: -0.2px;
+    }
+    #brand .pillar p {
+      font-size: 14px;
+      color: var(--au-text-2);
+      margin: 0;
+    }
+
+    /* Color */
+    .color-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px,1fr));
+      gap: 1px;
+      margin-bottom: var(--au-s-4);
+      background: var(--au-line);
+    }
+    .color-cell {
+      padding: var(--au-s-4);
+      font-size: 12px;
+      font-family: var(--au-mono);
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-height: 80px;
+      justify-content: flex-end;
+    }
+    .color-cell .name {
+      font-size: 13px;
+      font-family: var(--au-font);
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+    .color-cell .hex { font-size: 11px; opacity: 0.85; }
+
+    .gray-scale {
+      display: grid;
+      grid-template-columns: repeat(11, 1fr);
+      gap: 0;
+      margin-bottom: var(--au-s-4);
+      border: 1px solid var(--au-line);
+    }
+    .gray-cell {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: flex-end;
+      padding: 4px 6px;
+      font-size: 10px;
+      font-family: var(--au-mono);
+    }
+
+    .signature-block {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1px;
+      background: var(--au-line);
+      margin-bottom: var(--au-s-4);
+    }
+    .sig-cell {
+      padding: var(--au-s-6);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-height: 140px;
+      justify-content: flex-end;
+    }
+    .sig-cell .lbl {
+      font-size: 11px;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    .sig-cell .hex {
+      font-size: 14px;
+      font-family: var(--au-mono);
+    }
+
+    .semantic-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
+      gap: 1px;
+      background: var(--au-line);
+    }
+    .sem-card {
+      padding: var(--au-s-4);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .sem-card .label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .sem-card .hex {
+      font-family: var(--au-mono);
+      font-size: 12px;
+    }
+
+    /* Typography */
+    .type-row {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: var(--au-s-5);
+      padding: var(--au-s-4) 0;
+      border-bottom: 1px solid var(--au-line);
+      align-items: baseline;
+    }
+    .type-row:last-child { border-bottom: 0; }
+    .type-row .label {
+      font-family: var(--au-mono);
+      font-size: 11px;
+      color: var(--au-text-2);
+      letter-spacing: 0.5px;
+    }
+    .display-1 { font-size: 64px; line-height: 72px; font-weight: 700; letter-spacing: -1.2px; }
+    .display-2 { font-size: 48px; line-height: 56px; font-weight: 700; letter-spacing: -0.8px; }
+    .heading-1 { font-size: 36px; line-height: 44px; font-weight: 700; letter-spacing: -0.5px; }
+    .heading-2 { font-size: 28px; line-height: 36px; font-weight: 700; letter-spacing: -0.3px; }
+    .heading-3 { font-size: 22px; line-height: 30px; font-weight: 700; letter-spacing: -0.2px; }
+    .heading-4 { font-size: 18px; line-height: 26px; font-weight: 700; }
+    .copy-l { font-size: 18px; line-height: 28px; }
+    .copy-m { font-size: 16px; line-height: 26px; }
+    .copy-s { font-size: 14px; line-height: 22px; }
+    .caption { font-size: 12px; line-height: 18px; color: var(--au-text-2); letter-spacing: 0.3px; }
+    .label-caps { font-size: 12px; line-height: 18px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; }
+    .mono-sample { font-family: var(--au-mono); font-size: 13px; color: var(--au-red); }
+
+    /* Buttons */
+    .button-row {
+      display: flex; flex-wrap: wrap;
+      gap: var(--au-s-3);
+      align-items: center;
+      margin-bottom: var(--au-s-3);
+    }
+    .au-btn {
+      font-family: var(--au-font);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 14px 28px;
+      border-radius: var(--au-r-0);
+      border: 1px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      height: 44px;
+      transition: background 0.18s, color 0.18s, border 0.18s;
+    }
+    .au-btn--primary {
+      background: var(--au-red);
+      color: var(--au-white);
+    }
+    .au-btn--primary:hover { background: var(--au-red-dark); }
+    .au-btn--primary:disabled {
+      background: var(--au-gray-20);
+      color: var(--au-gray-40);
+      cursor: not-allowed;
+    }
+    .au-btn--secondary {
+      background: var(--au-black);
+      color: var(--au-white);
+    }
+    .au-btn--secondary:hover { background: var(--au-gray-80); }
+    .au-btn--outline {
+      background: transparent;
+      color: var(--au-black);
+      border-color: var(--au-black);
+    }
+    .au-btn--outline:hover { background: var(--au-black); color: var(--au-white); }
+    .au-btn--ghost {
+      background: transparent;
+      color: var(--au-black);
+      padding: 14px 12px;
+      letter-spacing: 1.5px;
+    }
+    .au-btn--ghost:hover { color: var(--au-red); }
+    .au-btn--ghost::after {
+      content: '→';
+      font-weight: 700;
+      transition: transform 0.18s;
+    }
+    .au-btn--ghost:hover::after { transform: translateX(4px); }
+    .au-btn--icon {
+      width: 44px; height: 44px; padding: 0;
+      justify-content: center;
+      background: transparent;
+      color: var(--au-text);
+      border-color: var(--au-line-strong);
+    }
+    .au-btn--icon:hover {
+      background: var(--au-black);
+      color: var(--au-white);
+      border-color: var(--au-black);
+    }
+    .au-btn--sm { height: 36px; padding: 10px 20px; font-size: 11px; }
+    .au-btn--lg { height: 52px; padding: 18px 36px; font-size: 13px; }
+    .au-btn:focus-visible { outline: 2px solid var(--au-red); outline-offset: 2px; }
+
+    /* Form */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+      gap: var(--au-s-5);
+    }
+    .au-field {
+      display: flex; flex-direction: column;
+      gap: 6px;
+    }
+    .au-field label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: var(--au-text-2);
+    }
+    .au-input, .au-select, .au-textarea {
+      font-family: var(--au-font);
+      font-size: 16px;
+      color: var(--au-text);
+      background: var(--au-white);
+      border: 0;
+      border-bottom: 1px solid var(--au-line-strong);
+      border-radius: var(--au-r-0);
+      padding: 10px 0;
+      width: 100%;
+      outline: none;
+      transition: border 0.15s;
+    }
+    .au-input:focus, .au-select:focus, .au-textarea:focus {
+      border-bottom-color: var(--au-red);
+      border-bottom-width: 2px;
+      padding-bottom: 9px;
+    }
+    .au-input--error {
+      border-bottom-color: var(--au-red);
+    }
+    .au-textarea {
+      min-height: 100px;
+      resize: vertical;
+      border: 1px solid var(--au-line-strong);
+      padding: 12px;
+    }
+    .au-textarea:focus { padding: 11px; border-width: 2px; border-color: var(--au-red); }
+    .au-helper {
+      font-size: 11px;
+      color: var(--au-text-2);
+      letter-spacing: 0.3px;
+    }
+    .au-error-text {
+      color: var(--au-red);
+      font-weight: 700;
+    }
+
+    .au-checkbox, .au-radio {
+      display: inline-flex; align-items: center;
+      gap: 10px; cursor: pointer; font-size: 14px;
+    }
+    .au-checkbox input, .au-radio input {
+      width: 18px; height: 18px;
+      accent-color: var(--au-red);
+    }
+
+    .au-switch { position: relative; display: inline-block; width: 44px; height: 22px; }
+    .au-switch input { opacity: 0; width: 0; height: 0; }
+    .au-switch .slider {
+      position: absolute; cursor: pointer; inset: 0;
+      background: var(--au-gray-20);
+      border-radius: var(--au-r-0);
+      transition: 0.2s;
+    }
+    .au-switch .slider::before {
+      content: ''; position: absolute;
+      width: 18px; height: 18px;
+      left: 2px; top: 2px;
+      background: var(--au-white);
+      border: 1px solid var(--au-gray-30);
+      transition: 0.2s;
+    }
+    .au-switch input:checked + .slider { background: var(--au-red); }
+    .au-switch input:checked + .slider::before {
+      transform: translateX(22px);
+      background: var(--au-white);
+      border-color: var(--au-white);
+    }
+
+    /* Surfaces */
+    .au-card {
+      background: var(--au-white);
+      border: 1px solid var(--au-line);
+      padding: 0;
+      transition: border-color 0.15s, transform 0.15s;
+    }
+    .au-card:hover { border-color: var(--au-black); }
+    .au-card .media {
+      height: 180px;
+      background: linear-gradient(135deg, var(--au-black), var(--au-gray-70));
+      position: relative;
+    }
+    .au-card .media::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--au-red);
+    }
+    .au-card .body {
+      padding: var(--au-s-5);
+    }
+    .au-card h4 {
+      margin: 0 0 var(--au-s-2);
+      font-size: 18px;
+      letter-spacing: -0.2px;
+      text-transform: none;
+      color: var(--au-text);
+      font-weight: 700;
+    }
+    .au-card p {
+      font-size: 14px;
+      color: var(--au-text-2);
+      margin: 0;
+    }
+    .surface-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+      gap: var(--au-s-4);
+    }
+    .au-stat {
+      padding: var(--au-s-6);
+      background: var(--au-black);
+      color: var(--au-white);
+      border-left: 4px solid var(--au-red);
+    }
+    .au-stat .num {
+      font-size: 48px;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -1px;
+    }
+    .au-stat .lbl {
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-top: var(--au-s-2);
+      color: var(--au-text-on-dark-2);
+    }
+
+    /* Hero panel — premium black */
+    .au-hero {
+      background: var(--au-black);
+      color: var(--au-white);
+      padding: var(--au-s-9) var(--au-s-7);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: var(--au-s-4);
+    }
+    .au-hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 80px; height: 4px;
+      background: var(--au-red);
+    }
+    .au-hero h3 {
+      color: var(--au-white);
+      font-size: 36px;
+      line-height: 44px;
+      margin: 0 0 var(--au-s-3);
+      letter-spacing: -0.5px;
+    }
+    .au-hero p {
+      color: rgba(255,255,255,0.85);
+      font-size: 16px;
+      max-width: 520px;
+      margin: 0 0 var(--au-s-5);
+    }
+
+    .au-modal {
+      background: var(--au-white);
+      padding: var(--au-s-7);
+      border-top: 4px solid var(--au-red);
+      max-width: 480px;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.30);
+    }
+
+    /* Navigation */
+    .au-tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--au-line);
+      margin-bottom: var(--au-s-4);
+    }
+    .au-tab {
+      padding: var(--au-s-3) var(--au-s-5);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: var(--au-text-2);
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      transform: translateY(1px);
+    }
+    .au-tab.active { color: var(--au-text); border-bottom-color: var(--au-red); }
+    .au-tab:hover:not(.active) { color: var(--au-red); }
+
+    .au-breadcrumb {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--au-text-2);
+      font-weight: 700;
+    }
+    .au-breadcrumb a {
+      color: var(--au-text);
+      text-decoration: none;
+    }
+    .au-breadcrumb a:hover { color: var(--au-red); }
+    .au-breadcrumb .sep { color: var(--au-line-strong); }
+
+    .au-pagination { display: flex; gap: 0; align-items: center; border: 1px solid var(--au-line); width: max-content; }
+    .au-pagination button {
+      min-width: 40px; height: 40px;
+      padding: 0 12px;
+      border: 0;
+      border-right: 1px solid var(--au-line);
+      background: var(--au-white);
+      color: var(--au-text);
+      cursor: pointer;
+      font-family: var(--au-font);
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .au-pagination button:last-child { border-right: 0; }
+    .au-pagination button.active { background: var(--au-black); color: var(--au-white); }
+    .au-pagination button:hover:not(.active) { background: var(--au-gray-10); }
+
+    .au-sidebar {
+      background: var(--au-black);
+      color: var(--au-white);
+      padding: var(--au-s-3);
+      width: 240px;
+    }
+    .au-sidebar a {
+      display: flex; align-items: center; gap: 14px;
+      padding: 12px 14px;
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      border-left: 3px solid transparent;
+    }
+    .au-sidebar a.active {
+      color: var(--au-white);
+      border-left-color: var(--au-red);
+      background: rgba(255,255,255,0.04);
+    }
+    .au-sidebar a:hover:not(.active) { color: var(--au-white); }
+
+    .au-topbar {
+      display: flex; align-items: center; gap: 24px;
+      padding: var(--au-s-4) var(--au-s-5);
+      background: var(--au-white);
+      border-bottom: 1px solid var(--au-line);
+    }
+    .au-topbar .brand-tag {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+    .au-topbar .nav-links {
+      display: flex; gap: 24px;
+      flex: 1;
+    }
+    .au-topbar .nav-links a {
+      color: var(--au-text-2);
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+    }
+    .au-topbar .nav-links a:hover { color: var(--au-red); }
+    .au-topbar .nav-links a.active { color: var(--au-text); }
+
+    .au-menu {
+      background: var(--au-white);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      padding: 0;
+      width: 240px;
+      border: 1px solid var(--au-line);
+    }
+    .au-menu .item {
+      padding: 12px 16px;
+      font-size: 13px;
+      cursor: pointer;
+      border-bottom: 1px solid var(--au-line);
+    }
+    .au-menu .item:last-child { border-bottom: 0; }
+    .au-menu .item:hover { background: var(--au-black); color: var(--au-white); }
+
+    /* Layout */
+    .grid-demo {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 1px;
+      background: var(--au-line);
+      padding: 1px;
+      border: 1px solid var(--au-line);
+    }
+    .grid-demo > div {
+      background: var(--au-gray-10);
+      color: var(--au-text);
+      padding: 14px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-align: center;
+    }
+    .scale-row {
+      display: flex;
+      gap: var(--au-s-4);
+      flex-wrap: wrap;
+      align-items: flex-end;
+      margin-bottom: var(--au-s-4);
+    }
+    .scale-item {
+      display: flex; flex-direction: column;
+      gap: 6px; align-items: center;
+    }
+    .scale-item .swatch { background: var(--au-black); }
+    .scale-item .lbl {
+      font-size: 11px;
+      font-family: var(--au-mono);
+      color: var(--au-text-2);
+    }
+    .shadow-demo {
+      width: 80px; height: 80px;
+      background: var(--au-white);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 24px;
+      margin-bottom: 24px;
+      font-size: 11px;
+      font-family: var(--au-mono);
+      color: var(--au-text-2);
+      border: 1px solid var(--au-line);
+    }
+
+    /* Footer */
+    .ds-footer {
+      background: var(--au-black);
+      padding: var(--au-s-7);
+      margin-top: var(--au-s-7);
+      color: var(--au-text-on-dark-2);
+      border-top: 4px solid var(--au-red);
+    }
+    .ds-footer h3 {
+      margin-top: 0;
+      color: var(--au-white);
+      font-size: 14px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+    .ds-footer ul { padding-left: 20px; }
+    .ds-footer li {
+      margin-bottom: 4px;
+      word-break: break-all;
+      font-size: 13px;
+    }
+    .ds-footer a {
+      color: var(--au-white);
+      text-decoration: none;
+    }
+    .ds-footer a:hover { color: var(--au-red-light); }
+    .license-note {
+      font-size: 13px;
+      color: var(--au-text-on-dark-2);
+      margin-top: var(--au-s-5);
+    }
+    .meta-note {
+      font-size: 11px;
+      color: var(--au-text-on-dark-2);
+      font-family: var(--au-mono);
+      margin-top: var(--au-s-2);
+      letter-spacing: 0.3px;
+    }
+
+    @media (max-width: 720px) {
+      .ds-header h1 { font-size: 40px; line-height: 48px; }
+      main { padding: var(--au-s-4); }
+      section { padding: var(--au-s-5); }
+      .type-row { grid-template-columns: 1fr; }
+      .gray-scale { grid-template-columns: repeat(6, 1fr); }
+      .signature-block { grid-template-columns: 1fr; }
+    }
+
+    /* Iconography */
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(80px,1fr));
+      gap: 1px;
+      background: var(--au-line);
+      border: 1px solid var(--au-line);
+    }
+    .icon-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: var(--au-s-4);
+      background: var(--au-white);
+    }
+    .icon-cell svg {
+      width: 22px; height: 22px;
+      stroke: var(--au-text);
+      fill: none;
+      stroke-width: 1.5;
+    }
+    .icon-cell span {
+      font-size: 10px;
+      color: var(--au-text-2);
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <header class="ds-header">
+    <a href="index.html" class="back-link">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Catalog
+    </a>
+    <h1>Audi UI</h1>
+    <div class="meta">
+      <span class="badge kind-bg">brand-guidelines</span>
+      <span class="badge fidelity-approximated">approximated</span>
+      <span class="badge source-unverified">source: unverified</span>
+      <a href="https://www.audi.com/ci/en/guides/user-interface.html" target="_blank" rel="noopener" class="official">Official</a>
+    </div>
+    <p class="tagline">Audi's premium automotive UI aesthetic — pure black surfaces, precise red accent, and condensed typography.</p>
+  </header>
+
+  <nav class="toc" aria-label="Table of contents">
+    <ul>
+      <li><a href="#brand">Brand</a></li>
+      <li><a href="#color">Color</a></li>
+      <li><a href="#typography">Typography</a></li>
+      <li><a href="#buttons">Buttons</a></li>
+      <li><a href="#form">Form</a></li>
+      <li><a href="#surfaces">Surfaces</a></li>
+      <li><a href="#navigation">Navigation</a></li>
+      <li><a href="#layout">Layout</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="brand" data-fidelity="approximated">
+      <h2>
+        <span class="accent"></span>
+        <span>Brand</span>
+        <span class="badge fidelity-approximated">approximated</span>
+      </h2>
+      <div class="brand-mark">
+        Audi UI
+      </div>
+      <p style="margin-top: var(--au-s-6); max-width: 720px; font-size: 16px; color: var(--au-text-2);">
+        Audi UI expresses the brand's premium automotive heritage in digital surfaces. Pure black backgrounds, sharp 0px-2px corners, and a single decisive red accent define a precision aesthetic — restrained chrome that lets product photography and content lead.
+      </p>
+      <div class="pillars">
+        <div class="pillar">
+          <h4>01 — Principle</h4>
+          <h5>Progressive</h5>
+          <p>Forward-looking digital craft, mirroring the engineering ambition of the Audi product.</p>
+        </div>
+        <div class="pillar">
+          <h4>02 — Principle</h4>
+          <h5>Sophisticated</h5>
+          <p>Restrained palette, precise typography, and angular geometry signal premium without ornament.</p>
+        </div>
+        <div class="pillar">
+          <h4>03 — Principle</h4>
+          <h5>Sportive</h5>
+          <p>Tight motion, decisive red accent, and confident contrast convey performance.</p>
+        </div>
+        <div class="pillar">
+          <h4>04 — Principle</h4>
+          <h5>Authentic</h5>
+          <p>Honest digital expression of Audi craft — no decorative effects, no false depth.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="color" data-fidelity="approximated">
+      <h2>
+        <span class="accent"></span>
+        <span>Color</span>
+        <span class="badge fidelity-approximated">approximated</span>
+        <a href="https://www.audi.com/ci/en/guides/user-interface/basics/colors.html" target="_blank" rel="noopener" class="source-link">Source</a>
+      </h2>
+      <p class="sub-text">Black and white form the dominant pair; Audi Red appears as a single, decisive accent. The gray scale is tuned for premium contrast — never warm.</p>
+
+      <h3>Signature</h3>
+      <div class="signature-block">
+        <div class="sig-cell" style="background:var(--au-black);color:var(--au-white)">
+          <span class="lbl">Black</span>
+          <span class="hex">#000000</span>
+        </div>
+        <div class="sig-cell" style="background:var(--au-white);color:var(--au-black);border:1px solid var(--au-line)">
+          <span class="lbl">White</span>
+          <span class="hex">#FFFFFF</span>
+        </div>
+        <div class="sig-cell" style="background:var(--au-red);color:var(--au-white)">
+          <span class="lbl">Audi Red</span>
+          <span class="hex">#BB0A30</span>
+        </div>
+      </div>
+
+      <h3>Gray scale</h3>
+      <div class="gray-scale">
+        <div class="gray-cell" style="background:var(--au-black);color:white">000</div>
+        <div class="gray-cell" style="background:var(--au-gray-90);color:white">90</div>
+        <div class="gray-cell" style="background:var(--au-gray-80);color:white">80</div>
+        <div class="gray-cell" style="background:var(--au-gray-70);color:white">70</div>
+        <div class="gray-cell" style="background:var(--au-gray-60);color:white">60</div>
+        <div class="gray-cell" style="background:var(--au-gray-50);color:white">50</div>
+        <div class="gray-cell" style="background:var(--au-gray-40);color:white">40</div>
+        <div class="gray-cell" style="background:var(--au-gray-30);color:black">30</div>
+        <div class="gray-cell" style="background:var(--au-gray-20);color:black">20</div>
+        <div class="gray-cell" style="background:var(--au-gray-10);color:black">10</div>
+        <div class="gray-cell" style="background:var(--au-gray-5);color:black">5</div>
+      </div>
+
+      <h3>Red scale</h3>
+      <div class="color-row">
+        <div class="color-cell" style="background:var(--au-red-dark);color:white"><span class="name">Red Dark</span><span class="hex">#8C0823</span></div>
+        <div class="color-cell" style="background:var(--au-red);color:white"><span class="name">Audi Red</span><span class="hex">#BB0A30</span></div>
+        <div class="color-cell" style="background:var(--au-red-light);color:white"><span class="name">Red Light</span><span class="hex">#D52C4A</span></div>
+      </div>
+
+      <h3>Semantic</h3>
+      <div class="semantic-grid">
+        <div class="sem-card" style="background:var(--au-success);color:white"><span class="label">Success</span><span class="hex">#008736</span></div>
+        <div class="sem-card" style="background:var(--au-info);color:white"><span class="label">Info</span><span class="hex">#0F4778</span></div>
+        <div class="sem-card" style="background:var(--au-warning);color:white"><span class="label">Warning</span><span class="hex">#C77B00</span></div>
+        <div class="sem-card" style="background:var(--au-error);color:white"><span class="label">Error</span><span class="hex">#BB0A30</span></div>
+      </div>
+    </section>
+
+    <section id="typography" data-fidelity="approximated">
+      <h2>
+        <span class="accent"></span>
+        <span>Typography</span>
+        <span class="badge fidelity-approximated">approximated</span>
+        <a href="https://www.audi.com/ci/en/guides/user-interface/basics/typography.html" target="_blank" rel="noopener" class="source-link">Source</a>
+      </h2>
+      <p class="sub-text">Audi's official AudiType is a proprietary, condensed sans-serif. This page uses Inter as a system fallback inside the AudiType stack. Tight letter-spacing and uppercase labels carry the brand voice.</p>
+
+      <div class="type-row"><div class="label">Display 1 · 64/72 · 700</div><div class="display-1">Vorsprung durch Technik</div></div>
+      <div class="type-row"><div class="label">Display 2 · 48/56 · 700</div><div class="display-2">Progress is design</div></div>
+      <div class="type-row"><div class="label">Heading 1 · 36/44 · 700</div><div class="heading-1">Performance and precision</div></div>
+      <div class="type-row"><div class="label">Heading 2 · 28/36 · 700</div><div class="heading-2">e-tron lineup</div></div>
+      <div class="type-row"><div class="label">Heading 3 · 22/30 · 700</div><div class="heading-3">Range and charging</div></div>
+      <div class="type-row"><div class="label">Heading 4 · 18/26 · 700</div><div class="heading-4">Configuration overview</div></div>
+      <div class="type-row"><div class="label">Copy L · 18/28</div><div class="copy-l">Audi UI typography balances technical precision with editorial weight. The system favors confident headings paired with calm body copy and uppercase labels at the chrome layer.</div></div>
+      <div class="type-row"><div class="label">Copy M · 16/26</div><div class="copy-m">Copy M is the default for descriptive product content. Generous line-height keeps premium content readable in long-form configurator flows.</div></div>
+      <div class="type-row"><div class="label">Copy S · 14/22</div><div class="copy-s">Copy S supports secondary product detail and footnotes within tight component layouts.</div></div>
+      <div class="type-row"><div class="label">Caption · 12/18</div><div class="caption">Caption — fine print, legal text, and meta data alongside larger copy blocks.</div></div>
+      <div class="type-row"><div class="label">Label · 12/18 · 700 caps</div><div class="label-caps">Configure your Audi</div></div>
+      <div class="type-row"><div class="label">Mono</div><div class="mono-sample">--audi-color-red: #BB0A30;</div></div>
+    </section>
+
+    <section id="buttons" data-fidelity="approximated">
+      <h2>
+        <span class="accent"></span>
+        <span>Buttons</span>
+        <span class="badge fidelity-approximated">approximated</span>
+        <a href="https://www.audi.com/ci/en/guides/user-interface/components/buttons.html" target="_blank" rel="noopener" class="source-link">Source</a>
+      </h2>
+      <p class="sub-text">Sharp 0px corners, all-caps labels with 1.5px letter-spacing, and a 44px tap target. Primary action uses Audi Red; secondary uses pure black; outline ghost is reserved for tertiary moves.</p>
+
+      <h3>Variants</h3>
+      <div class="button-row">
+        <button class="au-btn au-btn--primary">Configure now</button>
+        <button class="au-btn au-btn--secondary">Find dealer</button>
+        <button class="au-btn au-btn--outline">Learn more</button>
+        <button class="au-btn au-btn--ghost">Read article</button>
+        <button class="au-btn au-btn--icon" aria-label="search">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        </button>
+        <button class="au-btn au-btn--icon" aria-label="profile">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg>
+        </button>
+      </div>
+
+      <h3>Sizes</h3>
+      <div class="button-row">
+        <button class="au-btn au-btn--primary au-btn--sm">Small</button>
+        <button class="au-btn au-btn--primary">Default</button>
+        <button class="au-btn au-btn--primary au-btn--lg">Large</button>
+      </div>
+
+      <h3>States</h3>
+      <div class="button-row">
+        <button class="au-btn au-btn--primary">Enabled</button>
+        <button class="au-btn au-btn--primary" style="background:var(--au-red-dark)">Hover</button>
+        <button class="au-btn au-btn--primary" style="outline:2px solid var(--au-red);outline-offset:2px">Focus</button>
+        <button class="au-btn au-btn--primary" disabled>Disabled</button>
+      </div>
+    </section>
+
+    <section id="form" data-fidelity="approximated">
+      <h2>
+        <span class="accent"></span>
+        <span>Form</span>
+        <span class="badge fidelity-approximated">approximated</span>
+        <a href="https://www.audi.com/ci/en/guides/user-interface/components/inputs.html" target="_blank" rel="noopener" class="source-link">Source</a>
+      </h2>
+      <p class="sub-text">Audi inputs use a clean underline pattern: no background fill, a single 1px gray bottom border, and a thicker red border on focus. Labels are uppercase caps with strong letter-spacing.</p>
+
+      <h3>Text fields</h3>
+      <div class="form-grid">
+        <div class="au-field">
+          <label for="f1">Model</label>
+          <input class="au-input" id="f1" type="text" value="e-tron GT">
+          <span class="au-helper">Configure your Audi</span>
+        </div>
+        <div class="au-field">
+          <label for="f2">Email</label>
+          <input class="au-input" id="f2" type="email" placeholder="">
+        </div>
+        <div class="au-field">
+          <label for="f3">Postcode</label>
+          <input class="au-input" id="f3" type="text" value="80539">
+        </div>
+        <div class="au-field">
+          <label for="f4">Trim</label>
+          <select class="au-select" id="f4">
+            <option>Standard</option>
+            <option>S line</option>
+            <option>RS</option>
+          </select>
+        </div>
+        <div class="au-field" style="grid-column:span 2">
+          <label for="f5">Notes</label>
+          <textarea class="au-textarea" id="f5">Interested in test-drive availability for the GT performance trim.</textarea>
+        </div>
+        <div class="au-field">
+          <label for="f6" style="color:var(--au-red)">Email</label>
+          <input class="au-input au-input--error" id="f6" type="text" value="invalid@">
+          <span class="au-helper au-error-text">Please enter a valid email address.</span>
+        </div>
+      </div>
+
+      <h3>Selection controls</h3>
+      <div class="button-row">
+        <label class="au-checkbox"><input type="checkbox" checked>Subscribe to news</label>
+        <label class="au-checkbox"><input type="checkbox">Special offers</label>
+        <label class="au-radio"><input type="radio" name="r1" checked>Petrol</label>
+        <label class="au-radio"><input type="radio" name="r1">e-tron (electric)</label>
+        <label class="au-radio"><input type="radio" name="r1">PHEV</label>
+        <label class="au-switch"><input type="checkbox" checked><span class="slider"></span></label>
+        <label class="au-switch"><input type="checkbox"><span class="slider"></span></label>
+      </div>
+
+      <h3>Slider &amp; file</h3>
+      <div style="max-width:420px;display:flex;flex-direction:column;gap:14px">
+        <input type="range" min="0" max="100" value="60" style="accent-color:var(--au-red);width:100%">
+        <input type="file" class="au-input" style="padding:8px 0">
+      </div>
+    </section>
+
+    <section id="surfaces" data-fidelity="approximated">
+      <h2>
+        <span class="accent"></span>
+        <span>Surfaces</span>
+        <span class="badge fidelity-approximated">approximated</span>
+        <a href="https://www.audi.com/ci/en/guides/user-interface.html" target="_blank" rel="noopener" class="source-link">Source</a>
+      </h2>
+      <p class="sub-text">Cards are angular containers for product photography and content. The signature hero is a black panel with a single red accent line — used on landing pages and feature areas.</p>
+
+      <h3>Hero panel</h3>
+      <div class="au-hero">
+        <h3 style="margin-top:0">Engineered for performance.</h3>
+        <p>The new Audi RS e-tron GT performance redefines electric grand touring with 815 hp, sport differential, and a precision air suspension.</p>
+        <button class="au-btn au-btn--primary">Configure now</button>
+        <button class="au-btn au-btn--outline" style="border-color:white;color:white;margin-left:8px">View specs</button>
+      </div>
+
+      <h3>Cards &amp; stats</h3>
+      <div class="surface-grid">
+        <div class="au-card">
+          <div class="media"></div>
+          <div class="body">
+            <h4>Audi e-tron GT</h4>
+            <p>From €106,500 · 0–100 km/h in 3.4 s.</p>
+          </div>
+        </div>
+        <div class="au-card">
+          <div class="media" style="background:linear-gradient(135deg,var(--au-gray-70),var(--au-gray-90))"></div>
+          <div class="body">
+            <h4>Audi Q8 e-tron</h4>
+            <p>From €82,400 · Up to 600 km WLTP range.</p>
+          </div>
+        </div>
+        <div class="au-stat">
+          <div class="num">815</div>
+          <div class="lbl">HP / RS performance</div>
+        </div>
+        <div class="au-stat">
+          <div class="num">3.4s</div>
+          <div class="lbl">0–100 km/h</div>
+        </div>
+      </div>
+
+      <h3>Modal</h3>
+      <div class="au-modal">
+        <h4 style="margin:0 0 var(--au-s-3);text-transform:none;letter-spacing:-0.2px;font-size:22px;color:var(--au-text);font-weight:700">Save your configuration?</h4>
+        <p class="sub-text" style="margin:0 0 var(--au-s-5)">Your e-tron GT configuration will be saved to your Audi account. Reference: AC-2026-058221.</p>
+        <div class="button-row" style="justify-content:flex-end;margin:0">
+          <button class="au-btn au-btn--outline">Cancel</button>
+          <button class="au-btn au-btn--primary">Save configuration</button>
+        </div>
+      </div>
+
+      <h3>Popover</h3>
+      <div style="display:flex;gap:24px;flex-wrap:wrap">
+        <div class="au-menu">
+          <div class="item">View configuration</div>
+          <div class="item">Download specs</div>
+          <div class="item">Share</div>
+          <div class="item">Request test-drive</div>
+          <div class="item" style="color:var(--au-red)">Delete</div>
+        </div>
+
+        <div style="flex:1;min-width:280px;display:flex;flex-direction:column;gap:1px">
+          <div style="background:var(--au-gray-10);border-left:3px solid var(--au-info);padding:14px 18px;font-size:13px"><strong>Info</strong> · Pricing shown includes all taxes.</div>
+          <div style="background:var(--au-gray-10);border-left:3px solid var(--au-success);padding:14px 18px;font-size:13px"><strong>Success</strong> · Test-drive booked for 12 May.</div>
+          <div style="background:var(--au-gray-10);border-left:3px solid var(--au-warning);padding:14px 18px;font-size:13px"><strong>Warning</strong> · Selected trim has a 12-week lead time.</div>
+          <div style="background:var(--au-gray-10);border-left:3px solid var(--au-red);padding:14px 18px;font-size:13px"><strong>Error</strong> · Configuration could not be saved. Please retry.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="navigation" data-fidelity="approximated">
+      <h2>
+        <span class="accent"></span>
+        <span>Navigation</span>
+        <span class="badge fidelity-approximated">approximated</span>
+        <a href="https://www.audi.com/ci/en/guides/user-interface.html" target="_blank" rel="noopener" class="source-link">Source</a>
+      </h2>
+      <p class="sub-text">Audi navigation favors uppercase labels with strong letter-spacing. The black sidebar with red active-indicator references the in-vehicle MMI aesthetic.</p>
+
+      <h3>Topbar</h3>
+      <div class="au-topbar">
+        <span class="brand-tag">AUDI</span>
+        <div class="nav-links">
+          <a href="#" class="active">Models</a>
+          <a href="#">Configurator</a>
+          <a href="#">Charging</a>
+          <a href="#">Owners</a>
+          <a href="#">Magazine</a>
+        </div>
+        <button class="au-btn au-btn--icon" aria-label="search">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        </button>
+        <button class="au-btn au-btn--icon" aria-label="account">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg>
+        </button>
+      </div>
+
+      <h3>Tabs</h3>
+      <div class="au-tabs">
+        <div class="au-tab active">Overview</div>
+        <div class="au-tab">Performance</div>
+        <div class="au-tab">Interior</div>
+        <div class="au-tab">Technology</div>
+        <div class="au-tab">Charging</div>
+      </div>
+
+      <h3>Breadcrumb</h3>
+      <div class="au-breadcrumb">
+        <a href="#">Audi</a><span class="sep">/</span>
+        <a href="#">Models</a><span class="sep">/</span>
+        <a href="#">e-tron</a><span class="sep">/</span>
+        <span>RS e-tron GT</span>
+      </div>
+
+      <h3>Pagination</h3>
+      <div class="au-pagination">
+        <button>‹</button>
+        <button class="active">1</button>
+        <button>2</button>
+        <button>3</button>
+        <button>4</button>
+        <button>›</button>
+      </div>
+
+      <h3>Sidebar (in-vehicle MMI feel)</h3>
+      <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start">
+        <div class="au-sidebar">
+          <a href="#" class="active">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 12L12 3l9 9"/><path d="M5 10v10h14V10"/></svg>
+            Dashboard
+          </a>
+          <a href="#">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            Trip data
+          </a>
+          <a href="#">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 21V8l7-5 7 5v13"/><path d="M9 21v-7h6v7"/></svg>
+            Charging
+          </a>
+          <a href="#">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.5-2.5l2-1.5-2-3.5-2.5 1A7 7 0 0 0 13 4l-.5-2.5h-4L8 4a7 7 0 0 0-3 1.5l-2.5-1-2 3.5 2 1.5A7 7 0 0 0 5 12c0 .9.2 1.7.5 2.5l-2 1.5 2 3.5 2.5-1c.9.7 2 1.2 3 1.5l.5 2.5h4l.5-2.5c1-.3 2.1-.8 3-1.5l2.5 1 2-3.5-2-1.5c.3-.8.5-1.6.5-2.5z"/></svg>
+            Settings
+          </a>
+        </div>
+        <div style="flex:1;min-width:240px">
+          <h4 style="margin-top:0">Iconography (generic line)</h4>
+          <p class="sub-text" style="font-size:13px">Audi's official icon set is proprietary; this catalog uses minimal generic line icons (1.5px stroke, sharp ends) that match the angular brand register.</p>
+          <div class="icon-grid" style="margin-top:var(--au-s-3)">
+            <div class="icon-cell"><svg viewBox="0 0 24 24" stroke-linecap="butt" stroke-linejoin="miter"><path d="M3 12L12 3l9 9"/><path d="M5 10v10h14V10"/></svg><span>home</span></div>
+            <div class="icon-cell"><svg viewBox="0 0 24 24" stroke-linecap="butt" stroke-linejoin="miter"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><span>search</span></div>
+            <div class="icon-cell"><svg viewBox="0 0 24 24" stroke-linecap="butt" stroke-linejoin="miter"><path d="M3 4h18v8H3z"/><path d="M3 12l4 8h10l4-8"/></svg><span>vehicle</span></div>
+            <div class="icon-cell"><svg viewBox="0 0 24 24" stroke-linecap="butt" stroke-linejoin="miter"><path d="M5 21V8l7-5 7 5v13"/><path d="M10 21v-7h4v7"/></svg><span>dealer</span></div>
+            <div class="icon-cell"><svg viewBox="0 0 24 24" stroke-linecap="butt" stroke-linejoin="miter"><path d="M11 3l-7 11h7l-3 7 11-13h-8z"/></svg><span>charge</span></div>
+            <div class="icon-cell"><svg viewBox="0 0 24 24" stroke-linecap="butt" stroke-linejoin="miter"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>time</span></div>
+            <div class="icon-cell"><svg viewBox="0 0 24 24" stroke-linecap="butt" stroke-linejoin="miter"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg><span>account</span></div>
+            <div class="icon-cell"><svg viewBox="0 0 24 24" stroke-linecap="butt" stroke-linejoin="miter"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg><span>specs</span></div>
+            <div class="icon-cell"><svg viewBox="0 0 24 24" stroke-linecap="butt" stroke-linejoin="miter"><path d="M21 11.5a8 8 0 1 1-3.6-6.7"/><path d="M21 5l-9 9-3-3"/></svg><span>check</span></div>
+            <div class="icon-cell"><svg viewBox="0 0 24 24" stroke-linecap="butt" stroke-linejoin="miter"><path d="M12 5v14M5 12h14"/></svg><span>add</span></div>
+            <div class="icon-cell"><svg viewBox="0 0 24 24" stroke-linecap="butt" stroke-linejoin="miter"><path d="M18 6L6 18M6 6l12 12"/></svg><span>close</span></div>
+            <div class="icon-cell"><svg viewBox="0 0 24 24" stroke-linecap="butt" stroke-linejoin="miter"><path d="M12 21s-7-5.6-7-11a7 7 0 0 1 14 0c0 5.4-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><span>place</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="layout" data-fidelity="approximated">
+      <h2>
+        <span class="accent"></span>
+        <span>Layout</span>
+        <span class="badge fidelity-approximated">approximated</span>
+        <a href="https://www.audi.com/ci/en/guides/user-interface/basics/grid.html" target="_blank" rel="noopener" class="source-link">Source</a>
+      </h2>
+      <p class="sub-text">Audi UI uses a 12-column grid with sharp 0px corners across all surfaces. Spacing follows a 4px base; shape stays angular at 0/1/2/4px.</p>
+
+      <h3>12-column grid</h3>
+      <div class="grid-demo">
+        <div style="grid-column:span 12">12</div>
+        <div style="grid-column:span 6">6</div>
+        <div style="grid-column:span 6">6</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 2">2</div>
+        <div style="grid-column:span 2">2</div>
+        <div style="grid-column:span 2">2</div>
+        <div style="grid-column:span 2">2</div>
+        <div style="grid-column:span 2">2</div>
+        <div style="grid-column:span 2">2</div>
+      </div>
+
+      <h3>Spacing scale (4px base)</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div class="swatch" style="width:4px;height:32px"></div><span class="lbl">4</span></div>
+        <div class="scale-item"><div class="swatch" style="width:8px;height:32px"></div><span class="lbl">8</span></div>
+        <div class="scale-item"><div class="swatch" style="width:12px;height:32px"></div><span class="lbl">12</span></div>
+        <div class="scale-item"><div class="swatch" style="width:16px;height:32px"></div><span class="lbl">16</span></div>
+        <div class="scale-item"><div class="swatch" style="width:20px;height:32px"></div><span class="lbl">20</span></div>
+        <div class="scale-item"><div class="swatch" style="width:24px;height:32px"></div><span class="lbl">24</span></div>
+        <div class="scale-item"><div class="swatch" style="width:32px;height:32px"></div><span class="lbl">32</span></div>
+        <div class="scale-item"><div class="swatch" style="width:48px;height:32px"></div><span class="lbl">48</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:32px"></div><span class="lbl">64</span></div>
+      </div>
+
+      <h3>Shape scale (Audi is angular)</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:0;background:var(--au-black)"></div><span class="lbl">0</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:1px;background:var(--au-black)"></div><span class="lbl">1</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:2px;background:var(--au-black)"></div><span class="lbl">2</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:4px;background:var(--au-black)"></div><span class="lbl">4</span></div>
+      </div>
+
+      <h3>Elevation (restrained)</h3>
+      <div>
+        <div class="shadow-demo">0</div>
+        <div class="shadow-demo" style="box-shadow:0 1px 2px rgba(0,0,0,0.08)">1</div>
+        <div class="shadow-demo" style="box-shadow:0 4px 12px rgba(0,0,0,0.10)">2</div>
+        <div class="shadow-demo" style="box-shadow:0 16px 40px rgba(0,0,0,0.18)">3</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="ds-footer">
+    <h3>Sources</h3>
+    <ul>
+      <li><a href="https://www.audi.com/ci/en/guides/user-interface.html" target="_blank" rel="noopener">https://www.audi.com/ci/en/guides/user-interface.html</a></li>
+      <li><a href="https://www.audi.com/ci/en/guides/user-interface/basics/colors.html" target="_blank" rel="noopener">https://www.audi.com/ci/en/guides/user-interface/basics/colors.html</a></li>
+      <li><a href="https://www.audi.com/ci/en/guides/user-interface/basics/typography.html" target="_blank" rel="noopener">https://www.audi.com/ci/en/guides/user-interface/basics/typography.html</a></li>
+      <li><a href="https://www.audi.com/ci/en/guides/user-interface/components/buttons.html" target="_blank" rel="noopener">https://www.audi.com/ci/en/guides/user-interface/components/buttons.html</a></li>
+      <li><a href="https://www.audi.com/ci/en/guides/user-interface/components/inputs.html" target="_blank" rel="noopener">https://www.audi.com/ci/en/guides/user-interface/components/inputs.html</a></li>
+      <li><a href="https://www.audi.com/ci/en/guides/user-interface/basics/grid.html" target="_blank" rel="noopener">https://www.audi.com/ci/en/guides/user-interface/basics/grid.html</a></li>
+    </ul>
+    <p class="license-note">This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Audi. Audi UI and related trademarks belong to Audi. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</p>
+    <p class="meta-note">Reproduction date: 2026-05-05 · sourceStatus: unverified · fidelity: approximated · fontSource: system-stack</p>
+  </footer>
+</body>
+</html>

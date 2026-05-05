@@ -1,0 +1,1342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>U.S. Web Design System — Design System Reference</title>
+  <script id="ds-meta" type="application/json">
+{"id":"40-uswds","fileSlug":"40-uswds","schemaVersion":"1"}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Source+Sans+3:wght@400;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* USWDS Color Tokens (Light) */
+      --us-primary: #005EA2;
+      --us-primary-dark: #1A4480;
+      --us-primary-darker: #162E51;
+      --us-primary-light: #73B3E7;
+      --us-primary-lighter: #D9E8F6;
+      --us-primary-lightest: #E1F3F8;
+
+      --us-cyan-30v: #00BDE3;
+      --us-cyan-60v: #07648D;
+
+      --us-red: #B50909;
+      --us-red-warm-50v: #E52207;
+      --us-red-warm-60v: #B50909;
+
+      --us-gold: #FFBE2E;
+      --us-gold-30v: #FFCD2D;
+      --us-gold-50v: #B58500;
+
+      --us-green: #00A91C;
+      --us-green-50v: #538200;
+      --us-green-cool-50v: #00A91C;
+
+      --us-emergency: #9C3D10;
+
+      /* Grayscale */
+      --us-base-darkest: #1B1B1B;
+      --us-base-darker: #2E2E2E;
+      --us-base-dark: #565C65;
+      --us-base: #71767A;
+      --us-base-light: #A9AEB1;
+      --us-base-lighter: #DFE1E2;
+      --us-base-lightest: #F0F0F0;
+      --us-white: #FFFFFF;
+      --us-bg-default: #FFFFFF;
+      --us-bg-canvas: #F0F0F0;
+
+      /* Semantic */
+      --us-info: #00BDE3;
+      --us-info-light: #E7F6F8;
+      --us-info-dark: #2491AB;
+      --us-success: #00A91C;
+      --us-success-light: #ECF3EC;
+      --us-success-dark: #00A91C;
+      --us-warning: #FFBE2E;
+      --us-warning-light: #FAF3D1;
+      --us-warning-dark: #936F38;
+      --us-error: #B50909;
+      --us-error-light: #F4E3DB;
+      --us-error-dark: #8B0A03;
+
+      /* Type — USWDS uses a stacked pair: Source Sans for body/heading and Public Sans as alt; Roboto Mono for code */
+      --us-font: 'Source Sans 3', 'Source Sans Pro', 'Public Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      --us-font-alt: 'Public Sans', 'Source Sans 3', system-ui, sans-serif;
+      --us-font-mono: 'Roboto Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+      /* Shape — USWDS Federal: 0px sharp, no rounding */
+      --us-r-0: 0px;
+      --us-r-sm: 2px;
+      --us-r-md: 4px;
+      --us-r-lg: 8px;
+      --us-r-pill: 99px;
+
+      /* Spacing — 8px base */
+      --us-s-05: 4px;
+      --us-s-1: 8px;
+      --us-s-105: 12px;
+      --us-s-2: 16px;
+      --us-s-205: 20px;
+      --us-s-3: 24px;
+      --us-s-4: 32px;
+      --us-s-5: 40px;
+      --us-s-6: 48px;
+      --us-s-7: 56px;
+      --us-s-8: 64px;
+      --us-s-9: 72px;
+
+      /* Elevation */
+      --us-shadow-1: 0 1px 4px rgba(0,0,0,0.1);
+      --us-shadow-2: 0 4px 8px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08);
+      --us-shadow-3: 0 12px 24px rgba(0,0,0,0.14);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--us-font);
+      background: var(--us-bg-canvas);
+      color: var(--us-base-darkest);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    code, kbd, pre { font-family: var(--us-font-mono); }
+    a { color: var(--us-primary); }
+
+    /* Header — Federal banner-evoking with primary-darker */
+    .ds-header {
+      background: var(--us-primary-darker);
+      color: var(--us-white);
+      padding: var(--us-s-7) var(--us-s-5) var(--us-s-5);
+      border-bottom: 4px solid var(--us-primary);
+    }
+    .official-banner {
+      background: var(--us-base-lightest);
+      color: var(--us-base-darkest);
+      padding: 8px var(--us-s-5);
+      font-size: 12px;
+      font-family: var(--us-font-alt);
+      display: flex; gap: 10px; align-items: center;
+      border-bottom: 1px solid var(--us-base-lighter);
+    }
+    .official-banner svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+    .back-link {
+      display: inline-flex; align-items: center; gap: var(--us-s-1);
+      color: var(--us-white);
+      text-decoration: none;
+      padding: 6px 12px;
+      border-radius: var(--us-r-md);
+      font-size: 14px;
+      font-weight: 600;
+      border: 2px solid transparent;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .back-link:hover { background: var(--us-primary-dark); border-color: var(--us-cyan-30v); }
+
+    .ds-header h1 {
+      font-family: var(--us-font);
+      font-size: 48px; line-height: 56px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin: var(--us-s-3) 0 var(--us-s-2);
+    }
+
+    .ds-header .meta {
+      display: flex; flex-wrap: wrap; gap: var(--us-s-1); align-items: center;
+      margin-bottom: var(--us-s-2);
+    }
+
+    .badge {
+      display: inline-flex; align-items: center;
+      padding: 4px 12px;
+      border-radius: var(--us-r-sm);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      border: 2px solid transparent;
+      background: rgba(255,255,255,0.1);
+      color: var(--us-white);
+    }
+    .badge.kind-ds { background: var(--us-cyan-30v); color: var(--us-primary-darker); }
+    .badge.fidelity-documented { background: var(--us-success-light); color: #1A6B1A; }
+    .badge.fidelity-approximated { background: var(--us-warning-light); color: #936F38; }
+    .badge.fidelity-inspired { background: #F0E1F0; color: #5C2C82; }
+    .badge.source-verified { background: var(--us-info-light); color: var(--us-cyan-60v); }
+
+    .ds-header a.official {
+      color: var(--us-white);
+      text-decoration: underline;
+      font-weight: 600;
+      padding: 4px 8px;
+      font-size: 14px;
+    }
+    .ds-header a.official:hover { background: var(--us-primary-dark); }
+
+    .tagline {
+      font-size: 22px;
+      line-height: 30px;
+      max-width: 760px;
+      margin: var(--us-s-3) 0 0;
+      color: var(--us-primary-lighter);
+      font-weight: 400;
+    }
+
+    /* TOC */
+    .toc {
+      position: sticky; top: 0; z-index: 50;
+      background: var(--us-white);
+      border-bottom: 2px solid var(--us-primary);
+    }
+    .toc ul {
+      list-style: none; margin: 0;
+      padding: var(--us-s-105) var(--us-s-5);
+      display: flex; gap: var(--us-s-1); overflow-x: auto;
+    }
+    .toc a {
+      display: inline-block;
+      padding: 8px 16px;
+      border-radius: var(--us-r-0);
+      color: var(--us-primary);
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 600;
+      white-space: nowrap;
+      border-bottom: 4px solid transparent;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .toc a:hover { color: var(--us-primary-darker); border-bottom-color: var(--us-primary); }
+
+    /* Main */
+    main { max-width: 1280px; margin: 0 auto; padding: var(--us-s-5); }
+
+    section {
+      background: var(--us-white);
+      border-radius: var(--us-r-0);
+      padding: var(--us-s-5);
+      margin-bottom: var(--us-s-3);
+      border: 1px solid var(--us-base-lighter);
+      border-top: 4px solid var(--us-primary);
+    }
+    section h2 {
+      display: flex; align-items: center; gap: var(--us-s-2); flex-wrap: wrap;
+      font-size: 32px; line-height: 40px; font-weight: 700;
+      margin: 0 0 var(--us-s-3);
+      color: var(--us-base-darkest);
+    }
+    .source-link {
+      font-size: 14px;
+      color: var(--us-primary);
+      text-decoration: underline;
+      font-weight: 600;
+    }
+    .source-link:hover { color: var(--us-primary-darker); }
+
+    h3 {
+      font-size: 22px; line-height: 28px;
+      font-weight: 700;
+      margin: var(--us-s-4) 0 var(--us-s-2);
+      color: var(--us-base-darkest);
+    }
+    h4 {
+      font-size: 16px; line-height: 22px;
+      font-weight: 700;
+      margin: var(--us-s-2) 0 var(--us-s-1);
+      color: var(--us-base-darker);
+    }
+    p { margin: 0 0 var(--us-s-2); }
+
+    /* Brand */
+    #brand .brand-mark {
+      display: inline-flex; align-items: center; gap: var(--us-s-2);
+      padding: var(--us-s-2) var(--us-s-3);
+      background: var(--us-primary-darker);
+      border-radius: var(--us-r-0);
+      color: var(--us-white);
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+    #brand .brand-mark .star {
+      width: 24px; height: 24px;
+      background: var(--us-gold);
+      clip-path: polygon(50% 0, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    }
+    #brand .pillars {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--us-s-2);
+      margin-top: var(--us-s-3);
+    }
+    #brand .pillar {
+      padding: var(--us-s-3);
+      background: var(--us-primary-lightest);
+      border-left: 4px solid var(--us-primary);
+    }
+    #brand .pillar h4 {
+      margin-top: 0; color: var(--us-primary-darker);
+    }
+
+    /* Color */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 2px;
+      margin-bottom: var(--us-s-3);
+    }
+    .color-cell {
+      aspect-ratio: 1;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 8px;
+      font-size: 11px; font-family: var(--us-font-mono);
+      border-radius: var(--us-r-0);
+    }
+
+    .semantic-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+      gap: var(--us-s-2);
+    }
+    .sem-card {
+      padding: var(--us-s-3);
+      border-radius: var(--us-r-0);
+      display: flex; flex-direction: column; gap: 4px;
+      border-left: 4px solid;
+    }
+    .sem-card .label { font-size: 14px; font-weight: 700; }
+    .sem-card .hex { font-family: var(--us-font-mono); font-size: 12px; opacity: 0.85; }
+
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--us-s-1);
+      margin-bottom: var(--us-s-3);
+    }
+    .role-chip {
+      padding: var(--us-s-2) var(--us-s-3);
+      border-radius: var(--us-r-0);
+      font-size: 13px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .role-chip code { font-size: 11px; opacity: 0.85; font-family: var(--us-font-mono); }
+
+    /* Typography */
+    .type-row {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: var(--us-s-3);
+      padding: var(--us-s-2) 0;
+      border-bottom: 1px solid var(--us-base-lighter);
+      align-items: baseline;
+    }
+    .type-row:last-child { border-bottom: 0; }
+    .type-row .label {
+      font-family: var(--us-font-mono);
+      font-size: 12px;
+      color: var(--us-base-dark);
+    }
+    .heading-3xl { font-size: 56px; line-height: 64px; font-weight: 700; letter-spacing: -0.01em; }
+    .heading-2xl { font-size: 48px; line-height: 56px; font-weight: 700; }
+    .heading-xl { font-size: 40px; line-height: 48px; font-weight: 700; }
+    .heading-lg { font-size: 32px; line-height: 40px; font-weight: 700; }
+    .heading-md { font-size: 24px; line-height: 32px; font-weight: 700; }
+    .heading-sm { font-size: 20px; line-height: 26px; font-weight: 700; }
+    .heading-xs { font-size: 18px; line-height: 24px; font-weight: 700; }
+    .heading-2xs { font-size: 16px; line-height: 22px; font-weight: 700; }
+    .body-lg { font-size: 18px; line-height: 28px; }
+    .body-md { font-size: 16px; line-height: 24px; }
+    .body-sm { font-size: 14px; line-height: 20px; }
+    .body-xs { font-size: 12px; line-height: 16px; }
+    .alt-sample { font-family: var(--us-font-alt); }
+    .mono-sample { font-family: var(--us-font-mono); font-size: 14px; color: var(--us-base-darker); }
+
+    /* Iconography */
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(96px,1fr));
+      gap: var(--us-s-2);
+    }
+    .icon-cell {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 8px;
+      padding: var(--us-s-2);
+      background: var(--us-base-lightest);
+      border-radius: var(--us-r-0);
+      border: 1px solid var(--us-base-lighter);
+    }
+    .icon-cell svg { width: 24px; height: 24px; fill: var(--us-base-darker); }
+    .icon-cell span { font-size: 11px; color: var(--us-base-dark); }
+
+    /* Buttons */
+    .button-row {
+      display: flex; flex-wrap: wrap; gap: var(--us-s-1); align-items: center;
+      margin-bottom: var(--us-s-2);
+    }
+    .us-btn {
+      font-family: var(--us-font);
+      font-size: 17px;
+      font-weight: 700;
+      padding: 12px 20px;
+      border-radius: var(--us-r-md);
+      border: 0;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.15s, color 0.15s;
+      text-decoration: none;
+      line-height: 1;
+    }
+    .us-btn--primary { background: var(--us-primary); color: var(--us-white); }
+    .us-btn--primary:hover { background: var(--us-primary-dark); }
+    .us-btn--secondary { background: var(--us-red); color: var(--us-white); }
+    .us-btn--secondary:hover { background: #8B0A03; }
+    .us-btn--accent-cool { background: var(--us-cyan-30v); color: var(--us-primary-darker); }
+    .us-btn--accent-cool:hover { background: #28A0CB; }
+    .us-btn--accent-warm { background: var(--us-gold); color: var(--us-base-darkest); }
+    .us-btn--accent-warm:hover { background: #E5AB29; }
+    .us-btn--base { background: var(--us-base-dark); color: var(--us-white); }
+    .us-btn--base:hover { background: var(--us-base-darker); }
+    .us-btn--outline { background: var(--us-white); color: var(--us-primary); box-shadow: inset 0 0 0 2px var(--us-primary); }
+    .us-btn--outline:hover { color: var(--us-primary-dark); box-shadow: inset 0 0 0 2px var(--us-primary-dark); }
+    .us-btn--unstyled { background: transparent; color: var(--us-primary); padding: 12px 4px; text-decoration: underline; }
+    .us-btn:disabled { background: var(--us-base-light); color: var(--us-white); cursor: not-allowed; }
+    .us-btn--big { padding: 16px 28px; font-size: 19px; }
+    .us-btn--small { padding: 6px 12px; font-size: 15px; }
+    .us-btn:focus-visible { outline: 4px solid var(--us-cyan-30v); outline-offset: 0; }
+
+    /* Form */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+      gap: var(--us-s-3);
+    }
+    .us-field { display: flex; flex-direction: column; gap: 6px; }
+    .us-field label.field-label { font-size: 16px; font-weight: 700; color: var(--us-base-darkest); }
+    .us-field label.field-label.required::after { content: ' *'; color: var(--us-red); }
+    .us-input, .us-textarea, .us-select {
+      background: var(--us-white);
+      border: 1px solid var(--us-base-dark);
+      border-radius: var(--us-r-0);
+      padding: 8px 12px;
+      font-family: var(--us-font);
+      font-size: 17px;
+      color: var(--us-base-darkest);
+      width: 100%;
+      max-width: 30rem;
+      height: 40px;
+      outline-offset: 0;
+    }
+    .us-input:focus, .us-textarea:focus, .us-select:focus {
+      outline: 4px solid var(--us-cyan-30v);
+      border-color: var(--us-base-darkest);
+    }
+    .us-input.error { border-width: 4px; border-color: var(--us-red); }
+    .us-textarea { min-height: 100px; resize: vertical; height: auto; padding: 12px; }
+    .us-select {
+      appearance: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23565C65' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 40px;
+    }
+    .us-helper { font-size: 14px; color: var(--us-base-dark); }
+    .us-error-msg {
+      font-size: 14px;
+      color: var(--us-red);
+      font-weight: 700;
+      padding-left: 12px;
+      border-left: 4px solid var(--us-red);
+    }
+
+    .us-checkbox, .us-radio {
+      display: inline-flex; align-items: center; gap: 10px;
+      cursor: pointer;
+      font-size: 17px;
+      padding: 6px 0;
+    }
+    .us-checkbox input, .us-radio input {
+      width: 20px; height: 20px;
+      accent-color: var(--us-primary);
+    }
+
+    /* Surfaces */
+    .surface-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+      gap: var(--us-s-3);
+    }
+    .us-card {
+      background: var(--us-white);
+      border-radius: var(--us-r-0);
+      padding: 0;
+      border: 1px solid var(--us-base-lighter);
+      box-shadow: var(--us-shadow-1);
+      overflow: hidden;
+      display: flex; flex-direction: column;
+    }
+    .us-card .media {
+      height: 160px;
+      background: linear-gradient(135deg, var(--us-primary), var(--us-cyan-30v));
+    }
+    .us-card .body { padding: var(--us-s-3); }
+    .us-card .body h4 { margin: 0 0 8px; font-size: 18px; color: var(--us-base-darkest); font-weight: 700; }
+    .us-card .body p { font-size: 15px; color: var(--us-base-darker); margin: 0 0 var(--us-s-2); }
+    .us-card .footer { padding: 0 var(--us-s-3) var(--us-s-3); }
+
+    .us-stat {
+      padding: var(--us-s-3);
+      background: var(--us-primary);
+      color: var(--us-white);
+      border-left: 4px solid var(--us-cyan-30v);
+    }
+    .us-stat .num { font-size: 40px; font-weight: 700; line-height: 1; letter-spacing: -0.01em; }
+    .us-stat .lbl { font-size: 14px; opacity: 0.9; margin-top: 6px; }
+
+    .us-modal {
+      background: var(--us-white);
+      padding: var(--us-s-4);
+      border-radius: var(--us-r-0);
+      box-shadow: var(--us-shadow-3);
+      max-width: 480px;
+      border-top: 4px solid var(--us-primary);
+    }
+    .us-modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; }
+
+    .us-summary-box {
+      padding: var(--us-s-3);
+      background: var(--us-primary-lightest);
+      border-left: 4px solid var(--us-primary);
+    }
+    .us-summary-box h4 { margin-top: 0; color: var(--us-primary-darker); }
+
+    /* Feedback — USWDS Alert */
+    .us-alert {
+      display: flex;
+      gap: var(--us-s-2);
+      padding: var(--us-s-2) var(--us-s-3);
+      border-left: 8px solid;
+      margin-bottom: var(--us-s-1);
+      font-size: 16px;
+      align-items: flex-start;
+    }
+    .us-alert--info { background: var(--us-info-light); border-left-color: var(--us-info-dark); color: var(--us-base-darkest); }
+    .us-alert--success { background: var(--us-success-light); border-left-color: var(--us-success); color: var(--us-base-darkest); }
+    .us-alert--warning { background: var(--us-warning-light); border-left-color: var(--us-warning-dark); color: var(--us-base-darkest); }
+    .us-alert--error { background: var(--us-error-light); border-left-color: var(--us-error); color: var(--us-base-darkest); }
+    .us-alert--emergency { background: var(--us-emergency); color: var(--us-white); border-left-color: var(--us-emergency); }
+    .us-alert h4 { margin: 0 0 4px; font-size: 16px; }
+    .us-alert .body { flex: 1; }
+    .us-alert svg { width: 24px; height: 24px; flex-shrink: 0; }
+
+    .us-tag-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .us-tag {
+      display: inline-flex; align-items: center;
+      padding: 4px 10px;
+      border-radius: var(--us-r-md);
+      background: var(--us-base-dark);
+      color: var(--us-white);
+      font-size: 12px; font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .us-tag--big { padding: 6px 12px; font-size: 14px; }
+
+    .us-progress {
+      width: 100%; height: 12px;
+      background: var(--us-base-lighter);
+      border-radius: var(--us-r-pill);
+      overflow: hidden;
+    }
+    .us-progress::after { content: ''; display: block; height: 100%; width: 65%; background: var(--us-primary); }
+
+    .us-step-indicator {
+      display: flex; gap: 8px;
+      padding: var(--us-s-2) 0;
+    }
+    .us-step-indicator .step {
+      flex: 1;
+      padding: 8px 0;
+      border-top: 6px solid var(--us-base-lighter);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--us-base-dark);
+    }
+    .us-step-indicator .step.complete { border-top-color: var(--us-success); color: var(--us-success-dark); }
+    .us-step-indicator .step.current { border-top-color: var(--us-primary); color: var(--us-primary-darker); font-weight: 700; }
+
+    .us-skeleton {
+      height: 16px;
+      background: linear-gradient(90deg, var(--us-base-lighter), var(--us-base-lightest), var(--us-base-lighter));
+      background-size: 200% 100%;
+      border-radius: var(--us-r-0);
+      animation: us-shimmer 1.5s infinite;
+    }
+    @keyframes us-shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+    /* Navigation — USWDS Header */
+    .us-tabs {
+      display: flex; gap: 0;
+      border-bottom: 1px solid var(--us-base-lighter);
+      margin-bottom: var(--us-s-2);
+    }
+    .us-tab {
+      padding: var(--us-s-2) var(--us-s-3);
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--us-primary);
+      border-bottom: 4px solid transparent;
+      cursor: pointer;
+      margin-bottom: -1px;
+      text-decoration: none;
+    }
+    .us-tab.active { color: var(--us-primary-darker); border-bottom-color: var(--us-primary); }
+    .us-tab:hover { color: var(--us-primary-dark); border-bottom-color: var(--us-cyan-30v); }
+
+    .us-breadcrumb { display: flex; gap: 8px; align-items: center; font-size: 15px; flex-wrap: wrap; }
+    .us-breadcrumb a { color: var(--us-primary); text-decoration: underline; }
+    .us-breadcrumb span.sep::before { content: '›'; color: var(--us-base); margin: 0 4px; }
+
+    .us-pagination { display: flex; gap: 4px; align-items: center; }
+    .us-pagination button {
+      min-width: 40px; height: 40px;
+      border-radius: var(--us-r-md);
+      border: 0;
+      background: transparent;
+      color: var(--us-primary);
+      cursor: pointer;
+      font-family: var(--us-font);
+      font-size: 16px;
+      font-weight: 600;
+      padding: 0 12px;
+    }
+    .us-pagination button.active { background: var(--us-primary); color: var(--us-white); }
+    .us-pagination button:hover:not(.active) { background: var(--us-primary-lighter); }
+
+    .us-side-nav {
+      background: var(--us-white);
+      padding: 0;
+      width: 240px;
+      border-top: 4px solid var(--us-primary);
+    }
+    .us-side-nav a {
+      display: block;
+      padding: 8px 16px;
+      color: var(--us-primary);
+      text-decoration: none;
+      font-size: 15px;
+      border-bottom: 1px solid var(--us-base-lighter);
+    }
+    .us-side-nav a.active { font-weight: 700; color: var(--us-primary-darker); border-left: 4px solid var(--us-primary); padding-left: 12px; background: var(--us-primary-lightest); }
+    .us-side-nav a:hover:not(.active) { background: var(--us-base-lightest); }
+
+    .us-header-bar {
+      display: flex; align-items: center; gap: 16px;
+      padding: 16px 24px;
+      background: var(--us-white);
+      border-bottom: 1px solid var(--us-base-lighter);
+    }
+    .us-header-bar .gov-title {
+      font-size: 18px; font-weight: 700; color: var(--us-base-darkest);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .us-header-bar .gov-title .star {
+      width: 22px; height: 22px;
+      background: var(--us-primary);
+      clip-path: polygon(50% 0, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    }
+
+    /* Data — USWDS Table */
+    table.us-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 16px;
+      background: var(--us-white);
+      border: 1px solid var(--us-base-darkest);
+    }
+    table.us-table th, table.us-table td {
+      text-align: left;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--us-base-lighter);
+    }
+    table.us-table th {
+      font-weight: 700;
+      color: var(--us-base-darkest);
+      background: var(--us-base-lightest);
+      border-bottom: 2px solid var(--us-base-darkest);
+    }
+    table.us-table tr:nth-child(even) td { background: var(--us-base-lightest); }
+    table.us-table.borderless { border: 0; }
+    table.us-table.borderless th { background: transparent; border-bottom: 2px solid var(--us-base-darkest); }
+    table.us-table.borderless tr:nth-child(even) td { background: transparent; }
+
+    .us-list { padding-left: 20px; margin: 0; font-size: 16px; line-height: 26px; }
+    .us-list li { margin-bottom: 6px; }
+
+    .us-kv { display: grid; grid-template-columns: 160px 1fr; gap: 12px; font-size: 15px; }
+    .us-kv dt { color: var(--us-base-darker); font-weight: 700; }
+    .us-kv dd { margin: 0; }
+
+    .us-empty {
+      text-align: center;
+      padding: var(--us-s-7) var(--us-s-3);
+      color: var(--us-base-dark);
+      background: var(--us-base-lightest);
+      border-radius: var(--us-r-0);
+      border: 1px dashed var(--us-base-lighter);
+    }
+    .us-empty svg { width: 48px; height: 48px; opacity: 0.5; }
+
+    /* Layout */
+    .grid-demo {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 8px;
+      background: var(--us-base-lightest);
+      padding: 16px;
+      border-radius: var(--us-r-0);
+    }
+    .grid-demo > div {
+      background: var(--us-primary);
+      color: var(--us-white);
+      padding: 12px;
+      border-radius: var(--us-r-0);
+      font-size: 12px;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .scale-row {
+      display: flex; gap: var(--us-s-2); flex-wrap: wrap; align-items: flex-end;
+      margin-bottom: var(--us-s-3);
+    }
+    .scale-item { display: flex; flex-direction: column; gap: 6px; align-items: center; }
+    .scale-item .swatch { background: var(--us-primary); }
+    .scale-item .lbl { font-size: 11px; font-family: var(--us-font-mono); color: var(--us-base-dark); }
+
+    .shadow-demo {
+      width: 80px; height: 80px;
+      background: var(--us-white);
+      border-radius: var(--us-r-0);
+      display: inline-flex; align-items: center; justify-content: center;
+      margin-right: 16px; margin-bottom: 16px;
+      font-size: 11px; font-family: var(--us-font-mono); color: var(--us-base-dark);
+      border: 1px solid var(--us-base-lighter);
+    }
+
+    /* Footer */
+    .ds-footer {
+      background: var(--us-primary-darker);
+      color: var(--us-white);
+      padding: var(--us-s-5) var(--us-s-5) var(--us-s-3);
+      margin-top: var(--us-s-7);
+    }
+    .ds-footer h3 { margin-top: 0; color: var(--us-white); font-size: 22px; }
+    .ds-footer ul { padding-left: 20px; }
+    .ds-footer li { margin-bottom: 4px; word-break: break-all; font-size: 14px; }
+    .ds-footer a { color: var(--us-cyan-30v); text-decoration: underline; }
+    .ds-footer a:hover { color: var(--us-white); }
+    .license-note { font-size: 14px; color: var(--us-primary-lighter); margin-top: var(--us-s-3); max-width: 760px; }
+    .meta-note { font-size: 12px; color: var(--us-primary-light); font-family: var(--us-font-mono); margin-top: var(--us-s-1); }
+
+    @media (max-width: 720px) {
+      .ds-header h1 { font-size: 36px; line-height: 44px; }
+      main { padding: var(--us-s-2); }
+      section { padding: var(--us-s-3); }
+      .type-row { grid-template-columns: 1fr; }
+      .color-grid { grid-template-columns: repeat(4, 1fr); }
+      .grid-demo > div:nth-child(n+7) { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="official-banner">
+    <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm1 12H7V7h2v5zm0-6H7V4h2v2z"/></svg>
+    <span>An official website of the United States government — Internal visual reference reproduction.</span>
+  </div>
+  <header class="ds-header">
+    <a href="index.html" class="back-link">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Catalog
+    </a>
+    <h1>U.S. Web Design System</h1>
+    <div class="meta">
+      <span class="badge kind-ds">design-system</span>
+      <span class="badge fidelity-documented">documented</span>
+      <span class="badge source-verified">source: verified</span>
+      <a href="https://designsystem.digital.gov" target="_blank" rel="noopener" class="official">Official ↗</a>
+    </div>
+    <p class="tagline">The U.S. Web Design System for federal websites — accessible-first, sharp-edged, trust-conveying. Built by the General Services Administration in the public domain (CC0).</p>
+  </header>
+
+  <nav class="toc" aria-label="Table of contents">
+    <ul>
+      <li><a href="#brand">Brand</a></li>
+      <li><a href="#color">Color</a></li>
+      <li><a href="#typography">Typography</a></li>
+      <li><a href="#iconography">Iconography</a></li>
+      <li><a href="#buttons">Buttons</a></li>
+      <li><a href="#form">Form</a></li>
+      <li><a href="#surfaces">Surfaces</a></li>
+      <li><a href="#feedback">Feedback</a></li>
+      <li><a href="#navigation">Navigation</a></li>
+      <li><a href="#data">Data</a></li>
+      <li><a href="#layout">Layout</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="brand" data-fidelity="documented">
+      <h2>
+        <span>Brand</span>
+        <span class="badge fidelity-documented">documented</span>
+      </h2>
+      <div class="brand-mark">
+        <span class="star"></span>
+        USWDS
+      </div>
+      <p style="margin-top: 24px; max-width: 760px; font-size: 17px; color: var(--us-base-darker);">
+        The U.S. Web Design System (USWDS) is the open-source toolkit used across federal government websites. Its visual language is deliberately civic: bold blue (#005EA2) as the primary anchor, sharp 0px corner radii, generous 17px body type, and an accessibility-first posture that treats WCAG conformance as a default, not a feature.
+      </p>
+      <div class="pillars">
+        <div class="pillar">
+          <h4>Accessible</h4>
+          <p style="font-size:14px;color:var(--us-base-darker);margin:0">WCAG 2.1 AA conformance is built into every component, not bolted on.</p>
+        </div>
+        <div class="pillar">
+          <h4>Federal</h4>
+          <p style="font-size:14px;color:var(--us-base-darker);margin:0">Sharp shapes, civic blue, and the ever-present "Official site" banner.</p>
+        </div>
+        <div class="pillar">
+          <h4>Public-domain</h4>
+          <p style="font-size:14px;color:var(--us-base-darker);margin:0">Released under CC0 — every agency can adopt without licensing friction.</p>
+        </div>
+        <div class="pillar">
+          <h4>Plain language</h4>
+          <p style="font-size:14px;color:var(--us-base-darker);margin:0">Form labels, helper copy, and error messages are written for everyone.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="color" data-fidelity="documented">
+      <h2>
+        <span>Color</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://designsystem.digital.gov/design-tokens/color/overview/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--us-base-darker)">USWDS color tokens are organized into theme tokens and system tokens, with families for primary, secondary, accent-cool, accent-warm, base (gray), and the four semantic states. Below: the federal blue ramp, the gray ramp, semantic states, and key role swatches.</p>
+
+      <h3>Primary blue ramp</h3>
+      <div class="color-grid">
+        <div class="color-cell" style="background:var(--us-primary-lightest);color:var(--us-primary-darker)">lightest</div>
+        <div class="color-cell" style="background:var(--us-primary-lighter);color:var(--us-primary-darker)">lighter</div>
+        <div class="color-cell" style="background:var(--us-primary-light);color:var(--us-primary-darker)">light</div>
+        <div class="color-cell" style="background:var(--us-primary);color:white">primary</div>
+        <div class="color-cell" style="background:var(--us-primary-dark);color:white">dark</div>
+        <div class="color-cell" style="background:var(--us-primary-darker);color:white">darker</div>
+        <div class="color-cell" style="background:var(--us-cyan-30v);color:var(--us-primary-darker)">cyan-30v</div>
+      </div>
+
+      <h3>Base (gray) ramp</h3>
+      <div class="color-grid">
+        <div class="color-cell" style="background:var(--us-white);color:var(--us-base-darkest);border:1px solid var(--us-base-lighter)">white</div>
+        <div class="color-cell" style="background:var(--us-base-lightest);color:var(--us-base-darkest)">lightest</div>
+        <div class="color-cell" style="background:var(--us-base-lighter);color:var(--us-base-darkest)">lighter</div>
+        <div class="color-cell" style="background:var(--us-base-light);color:var(--us-white)">light</div>
+        <div class="color-cell" style="background:var(--us-base);color:var(--us-white)">base</div>
+        <div class="color-cell" style="background:var(--us-base-dark);color:var(--us-white)">dark</div>
+        <div class="color-cell" style="background:var(--us-base-darkest);color:var(--us-white)">darkest</div>
+      </div>
+
+      <h3>Semantic states</h3>
+      <div class="semantic-grid">
+        <div class="sem-card" style="background:var(--us-info-light);border-left-color:var(--us-info-dark);color:var(--us-base-darkest)">
+          <span class="label">Info</span><span class="hex">#00BDE3 / cyan-30v</span>
+        </div>
+        <div class="sem-card" style="background:var(--us-success-light);border-left-color:var(--us-success);color:var(--us-base-darkest)">
+          <span class="label">Success</span><span class="hex">#00A91C / green-cool-50v</span>
+        </div>
+        <div class="sem-card" style="background:var(--us-warning-light);border-left-color:var(--us-warning-dark);color:var(--us-base-darkest)">
+          <span class="label">Warning</span><span class="hex">#FFBE2E / gold</span>
+        </div>
+        <div class="sem-card" style="background:var(--us-error-light);border-left-color:var(--us-error);color:var(--us-base-darkest)">
+          <span class="label">Error</span><span class="hex">#B50909 / red-warm-60v</span>
+        </div>
+      </div>
+
+      <h3>Theme roles</h3>
+      <div class="role-grid">
+        <div class="role-chip" style="background:var(--us-primary);color:var(--us-white)">primary <code>#005EA2</code></div>
+        <div class="role-chip" style="background:var(--us-primary-dark);color:var(--us-white)">primary-dark <code>#1A4480</code></div>
+        <div class="role-chip" style="background:var(--us-primary-darker);color:var(--us-white)">primary-darker <code>#162E51</code></div>
+        <div class="role-chip" style="background:var(--us-cyan-30v);color:var(--us-primary-darker)">accent-cool <code>#00BDE3</code></div>
+        <div class="role-chip" style="background:var(--us-gold);color:var(--us-base-darkest)">accent-warm <code>#FFBE2E</code></div>
+        <div class="role-chip" style="background:var(--us-red);color:var(--us-white)">secondary <code>#B50909</code></div>
+        <div class="role-chip" style="background:var(--us-base-lightest);color:var(--us-base-darkest)">base-lightest <code>#F0F0F0</code></div>
+        <div class="role-chip" style="background:var(--us-base-darkest);color:var(--us-white)">base-darkest <code>#1B1B1B</code></div>
+      </div>
+    </section>
+
+    <section id="typography" data-fidelity="documented">
+      <h2>
+        <span>Typography</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://designsystem.digital.gov/design-tokens/typesetting/overview/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--us-base-darker)">USWDS uses a paired typeface system. Source Sans 3 is the body and heading default; Public Sans is the alternate sans (used by .gov agency sites such as veterans.gov); Roboto Mono for code. Body sets at 17px with 1.5 line-height — generous for civic readability.</p>
+
+      <div class="type-row"><div class="label">Heading 3xl · 56/64</div><div class="heading-3xl">Apply for benefits</div></div>
+      <div class="type-row"><div class="label">Heading 2xl · 48/56</div><div class="heading-2xl">Federal services</div></div>
+      <div class="type-row"><div class="label">Heading xl · 40/48</div><div class="heading-xl">Section title</div></div>
+      <div class="type-row"><div class="label">Heading lg · 32/40</div><div class="heading-lg">Subsection title</div></div>
+      <div class="type-row"><div class="label">Heading md · 24/32</div><div class="heading-md">Form section heading</div></div>
+      <div class="type-row"><div class="label">Heading sm · 20/26</div><div class="heading-sm">Card title</div></div>
+      <div class="type-row"><div class="label">Heading xs · 18/24</div><div class="heading-xs">Field group label</div></div>
+      <div class="type-row"><div class="label">Heading 2xs · 16/22</div><div class="heading-2xs">Inline emphasis</div></div>
+      <div class="type-row"><div class="label">Body lg · 18/28</div><div class="body-lg">USWDS sets body type at 16–18px so government services remain accessible without zoom.</div></div>
+      <div class="type-row"><div class="label">Body md · 17/26 default</div><div class="body-md">Body 17px is the default for paragraph copy on .gov sites — generous tracking and 1.5 line-height keep dense civic text readable.</div></div>
+      <div class="type-row"><div class="label">Body sm · 14/20</div><div class="body-sm">Used for helper text, table dense rows, and disclaimers.</div></div>
+      <div class="type-row"><div class="label">Body xs · 12/16</div><div class="body-xs">Reserved for citations and footnotes.</div></div>
+      <div class="type-row"><div class="label">Public Sans (alt)</div><div class="alt-sample body-md">Public Sans is the alternate face used by agencies that prefer a more geometric grotesque. It carries the same metrics for swap-in.</div></div>
+      <div class="type-row"><div class="label">Mono · Roboto Mono</div><div class="mono-sample">SSN_LAST_FOUR=1234 · CASE_ID=DOC-2026-00417</div></div>
+    </section>
+
+    <section id="iconography" data-fidelity="documented">
+      <h2>
+        <span>Iconography</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://designsystem.digital.gov/components/icon/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--us-base-darker)">USWDS Icons (CC0 public domain) are based on Google Material Symbols' filled style — 24px solid-fill at default size, optimized for federal civic UIs (mail, search, account, location, document, etc.).</p>
+      <div class="icon-grid">
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M12 3l9 8h-3v9h-5v-6H11v6H6v-9H3z"/></svg><span>home</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M10 4a6 6 0 1 1-4.2 10.3l-3.5 3.5-1.4-1.4 3.5-3.5A6 6 0 0 1 10 4zm0 2a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"/></svg><span>search</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M12 2a4 4 0 1 1 0 8 4 4 0 0 1 0-8zm0 10c4.4 0 8 2.7 8 6v2H4v-2c0-3.3 3.6-6 8-6z"/></svg><span>account</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M22 4H2v16h20V4zm-2 4l-8 5L4 8V6l8 5 8-5v2z"/></svg><span>mail</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M14 2H6v20h12V8l-4-4zm0 6V3.5L18.5 8H14z"/></svg><span>file</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg><span>location</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg><span>info</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M12 2 1 22h22zm1 16h-2v-2h2v2zm0-4h-2V9h2v5z"/></svg><span>warning</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19l12-12-1.4-1.4z"/></svg><span>check</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M19 6.4 17.6 5 12 10.6 6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12z"/></svg><span>close</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6z"/></svg><span>add</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M12 2L3 5v6c0 5.5 3.8 10.7 9 12 5.2-1.3 9-6.5 9-12V5z"/></svg><span>shield</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M19 4h-3V2h-2v2H10V2H8v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 16H5V9h14v11z"/></svg><span>calendar</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-1 4 9 9 0 0 1-12 4l-5 1.5 1.5-5a9 9 0 0 1 4-12 8.4 8.4 0 0 1 4-1A8.6 8.6 0 0 1 21 11.5z"/></svg><span>chat</span></div>
+      </div>
+    </section>
+
+    <section id="buttons" data-fidelity="documented">
+      <h2>
+        <span>Buttons</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://designsystem.digital.gov/components/button/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--us-base-darker)">USWDS buttons sit at 17px / weight 700, padding 12×20, and 4px corners. The 4px focus ring is cyan-30v — required for accessibility. Accent-cool and accent-warm buttons reference USWDS's secondary and tertiary callouts.</p>
+
+      <h3>Variants</h3>
+      <div class="button-row">
+        <button class="us-btn us-btn--primary">Primary</button>
+        <button class="us-btn us-btn--secondary">Secondary</button>
+        <button class="us-btn us-btn--accent-cool">Accent cool</button>
+        <button class="us-btn us-btn--accent-warm">Accent warm</button>
+        <button class="us-btn us-btn--base">Base</button>
+        <button class="us-btn us-btn--outline">Outline</button>
+        <button class="us-btn us-btn--unstyled">Unstyled link</button>
+      </div>
+
+      <h3>Sizes</h3>
+      <div class="button-row">
+        <button class="us-btn us-btn--primary us-btn--small">Small</button>
+        <button class="us-btn us-btn--primary">Default</button>
+        <button class="us-btn us-btn--primary us-btn--big">Big</button>
+      </div>
+
+      <h3>States</h3>
+      <div class="button-row">
+        <button class="us-btn us-btn--primary">Enabled</button>
+        <button class="us-btn us-btn--primary" style="background:var(--us-primary-dark)">Hover</button>
+        <button class="us-btn us-btn--primary" style="outline:4px solid var(--us-cyan-30v);outline-offset:0">Focus</button>
+        <button class="us-btn us-btn--primary" disabled>Disabled</button>
+      </div>
+
+      <h3>With icons</h3>
+      <div class="button-row">
+        <button class="us-btn us-btn--primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19l12-12-1.4-1.4z"/></svg>
+          Submit application
+        </button>
+        <button class="us-btn us-btn--outline">
+          Continue
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8.6 5 7.2 6.4 12.8 12l-5.6 5.6L8.6 19l7-7z"/></svg>
+        </button>
+      </div>
+    </section>
+
+    <section id="form" data-fidelity="documented">
+      <h2>
+        <span>Form</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://designsystem.digital.gov/components/text-input/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--us-base-darker)">Inputs are bordered (1px base, 4px error). Labels sit above the input as bold black text. Hint text follows below in muted gray. The required-field asterisk uses red-warm-60v.</p>
+
+      <h3>Text fields</h3>
+      <div class="form-grid">
+        <div class="us-field">
+          <label class="field-label required" for="u1">Full legal name</label>
+          <span class="us-helper">As it appears on your driver's license or passport.</span>
+          <input class="us-input" id="u1" type="text" value="Jane Q. Public">
+        </div>
+        <div class="us-field">
+          <label class="field-label" for="u2">Date of birth</label>
+          <span class="us-helper">Format: MM/DD/YYYY</span>
+          <input class="us-input" id="u2" type="text" placeholder="MM/DD/YYYY">
+        </div>
+        <div class="us-field">
+          <label class="field-label" for="u3">Mailing address</label>
+          <textarea class="us-textarea" id="u3">1600 Pennsylvania Avenue NW
+Washington, DC 20500</textarea>
+        </div>
+        <div class="us-field">
+          <label class="field-label" for="u4">State</label>
+          <select class="us-select" id="u4">
+            <option>- Select -</option>
+            <option>California</option>
+            <option>District of Columbia</option>
+            <option>New York</option>
+            <option>Texas</option>
+          </select>
+        </div>
+        <div class="us-field">
+          <label class="field-label required" for="u5">Email address</label>
+          <input class="us-input error" id="u5" type="email" value="not-an-email">
+          <span class="us-error-msg">Enter a valid email address — including the "@" sign.</span>
+        </div>
+        <div class="us-field">
+          <label class="field-label" for="u6">Case number</label>
+          <input class="us-input" id="u6" type="text" disabled value="DOC-2026-00417">
+          <span class="us-helper">Disabled — assigned automatically when filing.</span>
+        </div>
+      </div>
+
+      <h3>Selection controls</h3>
+      <div class="button-row" style="flex-direction:column;align-items:flex-start;gap:0">
+        <label class="us-checkbox"><input type="checkbox" checked> I agree to the Privacy Act statement</label>
+        <label class="us-checkbox"><input type="checkbox"> Send me email confirmations</label>
+        <label class="us-radio"><input type="radio" name="r2" checked> U.S. citizen</label>
+        <label class="us-radio"><input type="radio" name="r2"> Lawful permanent resident</label>
+        <label class="us-radio"><input type="radio" name="r2"> Other</label>
+      </div>
+    </section>
+
+    <section id="surfaces" data-fidelity="documented">
+      <h2>
+        <span>Surfaces</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://designsystem.digital.gov/components/card/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--us-base-darker)">Cards are bordered, sharp-cornered, and lightly shadowed. The "Summary box" pattern — a tinted background with a left primary stripe — is the USWDS signature for callouts, prerequisites, and important notices.</p>
+
+      <h3>Cards</h3>
+      <div class="surface-grid">
+        <div class="us-card">
+          <div class="media"></div>
+          <div class="body">
+            <h4>Apply for benefits</h4>
+            <p>Submit your application for federal benefits in 15 minutes or less.</p>
+          </div>
+          <div class="footer"><a class="us-btn us-btn--primary us-btn--small" href="#">Start application</a></div>
+        </div>
+        <div class="us-card">
+          <div class="media" style="background:linear-gradient(135deg,var(--us-base-darkest),var(--us-base-dark))"></div>
+          <div class="body">
+            <h4>Check your case status</h4>
+            <p>Look up the status of an existing application using your DOC case number.</p>
+          </div>
+          <div class="footer"><a class="us-btn us-btn--outline us-btn--small" href="#">Check status</a></div>
+        </div>
+        <div class="us-card">
+          <div class="media" style="background:linear-gradient(135deg,var(--us-gold),var(--us-red))"></div>
+          <div class="body">
+            <h4>Find services near you</h4>
+            <p>Locate the nearest federal field office or community partner.</p>
+          </div>
+          <div class="footer"><a class="us-btn us-btn--unstyled" href="#">Search by ZIP code →</a></div>
+        </div>
+      </div>
+
+      <h3>Statistics</h3>
+      <div class="surface-grid">
+        <div class="us-stat"><div class="num">142M</div><div class="lbl">Tax returns filed in 2025</div></div>
+        <div class="us-stat" style="background:var(--us-base-darkest);border-left-color:var(--us-gold)"><div class="num">98.7%</div><div class="lbl">Mobile-accessible pages</div></div>
+        <div class="us-stat" style="background:var(--us-success);border-left-color:var(--us-base-darkest)"><div class="num">24/7</div><div class="lbl">Online services available</div></div>
+      </div>
+
+      <h3>Modal & Summary box</h3>
+      <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start">
+        <div class="us-modal">
+          <h4 style="margin:0 0 8px;font-size:22px">Confirm submission</h4>
+          <p style="font-size:16px;color:var(--us-base-darker);margin:0 0 12px">By submitting, you certify that the information provided is true and correct under penalty of perjury (28 USC §1746).</p>
+          <div class="us-modal-actions">
+            <button class="us-btn us-btn--outline">Cancel</button>
+            <button class="us-btn us-btn--primary">I agree, submit</button>
+          </div>
+        </div>
+        <div class="us-summary-box" style="max-width:380px">
+          <h4>Before you start</h4>
+          <p style="margin:0;font-size:15px">You will need: a valid Social Security Number, your most recent W-2, and proof of mailing address (less than 60 days old).</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="feedback" data-fidelity="documented">
+      <h2>
+        <span>Feedback</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://designsystem.digital.gov/components/alert/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--us-base-darker)">USWDS Alerts use an 8px left bar in the semantic color, a tinted background, and an icon. The "Emergency" alert is unique to USWDS — solid emergency color (#9C3D10) for federal incident communication.</p>
+
+      <h3>Alerts</h3>
+      <div class="us-alert us-alert--info">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+        <div class="body"><h4>Informational</h4>This site is encrypted and the data you submit is protected by federal privacy law.</div>
+      </div>
+      <div class="us-alert us-alert--success">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19l12-12-1.4-1.4z"/></svg>
+        <div class="body"><h4>Success</h4>Your application has been submitted. Confirmation number: DOC-2026-00417.</div>
+      </div>
+      <div class="us-alert us-alert--warning">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 1 22h22zm1 16h-2v-2h2v2zm0-4h-2V9h2v5z"/></svg>
+        <div class="body"><h4>Warning</h4>Your session will expire in 5 minutes. Save your draft to avoid losing progress.</div>
+      </div>
+      <div class="us-alert us-alert--error">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm5 13.6L15.6 17 12 13.4 8.4 17 7 15.6 10.6 12 7 8.4 8.4 7 12 10.6 15.6 7 17 8.4 13.4 12z"/></svg>
+        <div class="body"><h4>Error</h4>We couldn't process your submission. Please correct the highlighted fields and try again.</div>
+      </div>
+      <div class="us-alert us-alert--emergency">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 1 22h22zm1 16h-2v-2h2v2zm0-4h-2V9h2v5z"/></svg>
+        <div class="body"><h4>Emergency</h4>This service is unavailable due to a system outage. Visit usa.gov for status updates.</div>
+      </div>
+
+      <h3>Tags</h3>
+      <div class="us-tag-row" style="margin-bottom:12px">
+        <span class="us-tag">Default</span>
+        <span class="us-tag" style="background:var(--us-primary)">Primary</span>
+        <span class="us-tag" style="background:var(--us-success-dark)">Approved</span>
+        <span class="us-tag" style="background:var(--us-warning-dark)">Pending</span>
+        <span class="us-tag" style="background:var(--us-error)">Rejected</span>
+        <span class="us-tag us-tag--big">Big tag</span>
+      </div>
+
+      <h3>Step indicator</h3>
+      <div class="us-step-indicator">
+        <div class="step complete">1. Personal info</div>
+        <div class="step complete">2. Documents</div>
+        <div class="step current">3. Review</div>
+        <div class="step">4. Submit</div>
+        <div class="step">5. Confirmation</div>
+      </div>
+
+      <h3>Progress & loading</h3>
+      <div class="us-progress" style="margin-bottom:12px"></div>
+      <div class="us-skeleton" style="width:60%;margin-bottom:8px"></div>
+      <div class="us-skeleton" style="width:80%"></div>
+    </section>
+
+    <section id="navigation" data-fidelity="documented">
+      <h2>
+        <span>Navigation</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://designsystem.digital.gov/components/header/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--us-base-darker)">USWDS navigation uses underline indicators and primary blue throughout. The federal Header pattern combines an "Official site" identifier band with a simple horizontal nav.</p>
+
+      <h3>Federal header</h3>
+      <div class="us-header-bar">
+        <span class="gov-title"><span class="star"></span> Department of Civic Services</span>
+        <nav style="display:flex;gap:0;margin-left:auto">
+          <a class="us-tab active" href="#">Apply</a>
+          <a class="us-tab" href="#">Track</a>
+          <a class="us-tab" href="#">Learn</a>
+          <a class="us-tab" href="#">Contact</a>
+        </nav>
+      </div>
+
+      <h3>Tabs</h3>
+      <div class="us-tabs">
+        <div class="us-tab active">Eligibility</div>
+        <div class="us-tab">Documents</div>
+        <div class="us-tab">Schedule</div>
+        <div class="us-tab">Payment</div>
+      </div>
+
+      <h3>Breadcrumb</h3>
+      <div class="us-breadcrumb">
+        <a href="#">Home</a><span class="sep"></span>
+        <a href="#">Benefits</a><span class="sep"></span>
+        <a href="#">Apply</a><span class="sep"></span>
+        <span>Eligibility</span>
+      </div>
+
+      <h3>Pagination</h3>
+      <div class="us-pagination" style="margin-top:12px">
+        <button>‹ Previous</button>
+        <button>1</button>
+        <button class="active">2</button>
+        <button>3</button>
+        <button>4</button>
+        <button>…</button>
+        <button>20</button>
+        <button>Next ›</button>
+      </div>
+
+      <h3>Side navigation</h3>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:12px">
+        <nav class="us-side-nav">
+          <a href="#" class="active">Eligibility</a>
+          <a href="#">Required documents</a>
+          <a href="#">Filing fees</a>
+          <a href="#">Processing time</a>
+          <a href="#">Privacy notice</a>
+        </nav>
+      </div>
+    </section>
+
+    <section id="data" data-fidelity="documented">
+      <h2>
+        <span>Data</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://designsystem.digital.gov/components/table/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--us-base-darker)">USWDS tables emphasize structure and accessibility — full borders, striped rows, and 17px body type for legibility. A "borderless" variant is available for gentler density.</p>
+
+      <table class="us-table">
+        <caption style="caption-side:top;text-align:left;padding-bottom:8px;color:var(--us-base-darker);font-size:14px">2026 federal benefit programs by region</caption>
+        <thead>
+          <tr>
+            <th scope="col">Program</th>
+            <th scope="col">Region</th>
+            <th scope="col">Annual cap</th>
+            <th scope="col">Application deadline</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Family Assistance</td><td>Region 1 — Northeast</td><td>$24,500</td><td>2026-06-30</td><td><span class="us-tag" style="background:var(--us-success-dark)">Open</span></td></tr>
+          <tr><td>Veteran Services</td><td>Region 2 — Mid-Atlantic</td><td>$32,800</td><td>2026-09-15</td><td><span class="us-tag" style="background:var(--us-success-dark)">Open</span></td></tr>
+          <tr><td>Disability Support</td><td>Region 3 — Southeast</td><td>$18,200</td><td>2026-04-30</td><td><span class="us-tag" style="background:var(--us-warning-dark)">Closing</span></td></tr>
+          <tr><td>Housing Vouchers</td><td>Region 4 — Midwest</td><td>$22,100</td><td>2026-03-31</td><td><span class="us-tag" style="background:var(--us-error)">Closed</span></td></tr>
+          <tr><td>Education Grants</td><td>Region 5 — West</td><td>$28,400</td><td>2026-08-01</td><td><span class="us-tag" style="background:var(--us-success-dark)">Open</span></td></tr>
+        </tbody>
+      </table>
+
+      <h3>Lists & Key-value</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:12px">
+        <ul class="us-list">
+          <li>Submit identity verification within 30 days.</li>
+          <li>Provide proof of income from the last 12 months.</li>
+          <li>Agree to the Privacy Act statement on submission.</li>
+          <li>Schedule an in-person verification if requested.</li>
+          <li>Receive a determination letter within 60 days.</li>
+        </ul>
+        <dl class="us-kv">
+          <dt>Case number</dt><dd>DOC-2026-00417</dd>
+          <dt>Filed</dt><dd>April 18, 2026</dd>
+          <dt>Status</dt><dd>Under review</dd>
+          <dt>Reviewer</dt><dd>Region 3 — Southeast</dd>
+          <dt>Estimated decision</dt><dd>June 16, 2026</dd>
+        </dl>
+      </div>
+
+      <h3>Empty state</h3>
+      <div class="us-empty">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6v20h12V8l-4-4zm0 6V3.5L18.5 8H14z"/></svg>
+        <h4 style="margin:8px 0 4px;color:var(--us-base-darkest)">No applications yet</h4>
+        <p style="margin:0;font-size:15px">When you start an application it will appear here. <a href="#">Start a new application</a>.</p>
+      </div>
+    </section>
+
+    <section id="layout" data-fidelity="documented">
+      <h2>
+        <span>Layout</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://designsystem.digital.gov/utilities/layout-grid/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--us-base-darker)">USWDS ships a 12-column responsive grid with 16/24/32px gutters at sm/md/lg breakpoints. Spacing follows an 8px base scale; corner radii stay at 0–8px to maintain federal sharpness.</p>
+
+      <h3>12-column grid</h3>
+      <div class="grid-demo">
+        <div style="grid-column:span 12">12</div>
+        <div style="grid-column:span 8">8</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 6">6</div>
+        <div style="grid-column:span 6">6</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+      </div>
+
+      <h3>Spacing scale (8px base)</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div class="swatch" style="width:4px;height:32px"></div><span class="lbl">05 · 4</span></div>
+        <div class="scale-item"><div class="swatch" style="width:8px;height:32px"></div><span class="lbl">1 · 8</span></div>
+        <div class="scale-item"><div class="swatch" style="width:12px;height:32px"></div><span class="lbl">105 · 12</span></div>
+        <div class="scale-item"><div class="swatch" style="width:16px;height:32px"></div><span class="lbl">2 · 16</span></div>
+        <div class="scale-item"><div class="swatch" style="width:24px;height:32px"></div><span class="lbl">3 · 24</span></div>
+        <div class="scale-item"><div class="swatch" style="width:32px;height:32px"></div><span class="lbl">4 · 32</span></div>
+        <div class="scale-item"><div class="swatch" style="width:48px;height:32px"></div><span class="lbl">6 · 48</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:32px"></div><span class="lbl">8 · 64</span></div>
+      </div>
+
+      <h3>Shape scale (federal sharp)</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:0"></div><span class="lbl">0 default</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:2px"></div><span class="lbl">sm 2</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:4px"></div><span class="lbl">md 4</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:8px"></div><span class="lbl">lg 8</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:50%"></div><span class="lbl">pill</span></div>
+      </div>
+
+      <h3>Elevation</h3>
+      <div>
+        <div class="shadow-demo" style="box-shadow:none">0</div>
+        <div class="shadow-demo" style="box-shadow:var(--us-shadow-1)">1</div>
+        <div class="shadow-demo" style="box-shadow:var(--us-shadow-2)">2</div>
+        <div class="shadow-demo" style="box-shadow:var(--us-shadow-3)">3</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="ds-footer">
+    <h3>Sources</h3>
+    <ul>
+      <li><a href="https://designsystem.digital.gov" target="_blank" rel="noopener">https://designsystem.digital.gov</a></li>
+      <li><a href="https://designsystem.digital.gov/design-tokens/color/overview/" target="_blank" rel="noopener">https://designsystem.digital.gov/design-tokens/color/overview/</a></li>
+      <li><a href="https://designsystem.digital.gov/design-tokens/typesetting/overview/" target="_blank" rel="noopener">https://designsystem.digital.gov/design-tokens/typesetting/overview/</a></li>
+      <li><a href="https://designsystem.digital.gov/components/icon/" target="_blank" rel="noopener">https://designsystem.digital.gov/components/icon/</a></li>
+      <li><a href="https://designsystem.digital.gov/components/button/" target="_blank" rel="noopener">https://designsystem.digital.gov/components/button/</a></li>
+      <li><a href="https://designsystem.digital.gov/components/text-input/" target="_blank" rel="noopener">https://designsystem.digital.gov/components/text-input/</a></li>
+      <li><a href="https://designsystem.digital.gov/components/card/" target="_blank" rel="noopener">https://designsystem.digital.gov/components/card/</a></li>
+      <li><a href="https://designsystem.digital.gov/components/alert/" target="_blank" rel="noopener">https://designsystem.digital.gov/components/alert/</a></li>
+      <li><a href="https://designsystem.digital.gov/components/header/" target="_blank" rel="noopener">https://designsystem.digital.gov/components/header/</a></li>
+      <li><a href="https://designsystem.digital.gov/components/table/" target="_blank" rel="noopener">https://designsystem.digital.gov/components/table/</a></li>
+      <li><a href="https://designsystem.digital.gov/utilities/layout-grid/" target="_blank" rel="noopener">https://designsystem.digital.gov/utilities/layout-grid/</a></li>
+    </ul>
+    <p class="license-note">This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with U.S. General Services Administration. U.S. Web Design System and related trademarks belong to U.S. General Services Administration. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</p>
+    <p class="meta-note">Reproduction date: 2026-05-05 · sourceStatus: verified · fidelity: documented</p>
+  </footer>
+</body>
+</html>

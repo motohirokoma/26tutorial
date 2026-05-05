@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Radix Themes — Design System Reference</title>
+  <script id="ds-meta" type="application/json">
+{"id":"14-radix-themes","fileSlug":"14-radix-themes","schemaVersion":"1"}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Radix Indigo (12-step) */
+      --rx-indigo-1: #FDFDFE;
+      --rx-indigo-2: #F7F9FF;
+      --rx-indigo-3: #EAF2FE;
+      --rx-indigo-4: #DBE9FE;
+      --rx-indigo-5: #C9DDFE;
+      --rx-indigo-6: #B5CDFA;
+      --rx-indigo-7: #99B7F1;
+      --rx-indigo-8: #758FE3;
+      --rx-indigo-9: #3E63DD;
+      --rx-indigo-10: #3358D4;
+      --rx-indigo-11: #3A5BC7;
+      --rx-indigo-12: #1F2D5C;
+
+      /* Radix Gray (12-step) */
+      --rx-gray-1: #FCFCFC;
+      --rx-gray-2: #F9F9F9;
+      --rx-gray-3: #F0F0F0;
+      --rx-gray-4: #E8E8E8;
+      --rx-gray-5: #E0E0E0;
+      --rx-gray-6: #D9D9D9;
+      --rx-gray-7: #CECECE;
+      --rx-gray-8: #BBBBBB;
+      --rx-gray-9: #8D8D8D;
+      --rx-gray-10: #838383;
+      --rx-gray-11: #646464;
+      --rx-gray-12: #1A1523;
+
+      /* Radix Red (12-step samples) */
+      --rx-red-3: #FFEFEF;
+      --rx-red-9: #E5484D;
+      --rx-red-11: #CD2B31;
+
+      /* Radix Green */
+      --rx-green-3: #DDF3E4;
+      --rx-green-9: #30A46C;
+      --rx-green-11: #18794E;
+
+      /* Radix Amber */
+      --rx-amber-3: #FFECBC;
+      --rx-amber-9: #FFB224;
+      --rx-amber-11: #AD5700;
+
+      /* Radix Blue (info) */
+      --rx-blue-3: #E1F0FF;
+      --rx-blue-9: #0090FF;
+      --rx-blue-11: #006ADC;
+
+      /* Radix Violet (alt accent) */
+      --rx-violet-9: #6E56CF;
+
+      /* Semantic */
+      --rx-bg: #FFFFFF;
+      --rx-fg: var(--rx-gray-12);
+      --rx-muted: var(--rx-gray-11);
+      --rx-border: var(--rx-gray-6);
+      --rx-accent: var(--rx-indigo-9);
+      --rx-accent-fg: white;
+
+      /* Type */
+      --rx-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --rx-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+      /* Radius (scale prop 1..6 -> 4-24px) */
+      --rx-r-1: 4px;
+      --rx-r-2: 6px;
+      --rx-r-3: 8px;
+      --rx-r-4: 10px;
+      --rx-r-5: 16px;
+      --rx-r-6: 24px;
+      --rx-r-full: 9999px;
+
+      /* Spacing (Radix scale 1-9) */
+      --rx-1: 4px;
+      --rx-2: 8px;
+      --rx-3: 12px;
+      --rx-4: 16px;
+      --rx-5: 24px;
+      --rx-6: 32px;
+      --rx-7: 40px;
+      --rx-8: 48px;
+      --rx-9: 64px;
+
+      /* Shadow (Radix shadow tokens) */
+      --rx-shadow-1: 0 0 0 1px rgba(0,0,0,0.06);
+      --rx-shadow-2: 0 1px 2px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.10);
+      --rx-shadow-3: 0 4px 8px -2px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.06);
+      --rx-shadow-4: 0 8px 16px -4px rgba(0,0,0,0.08), 0 4px 8px -2px rgba(0,0,0,0.04);
+      --rx-shadow-5: 0 16px 32px -8px rgba(0,0,0,0.10);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: var(--rx-font);
+      background: var(--rx-gray-2);
+      color: var(--rx-fg);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      font-feature-settings: 'cv11';
+    }
+
+    code, kbd, pre, samp { font-family: var(--rx-mono); }
+
+    /* Header */
+    .ds-header {
+      background: linear-gradient(135deg, var(--rx-indigo-3), var(--rx-bg));
+      color: var(--rx-fg);
+      padding: var(--rx-8) var(--rx-6) var(--rx-6);
+      border-bottom: 1px solid var(--rx-border);
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--rx-2);
+      color: var(--rx-indigo-11);
+      text-decoration: none;
+      padding: var(--rx-1) var(--rx-3);
+      border-radius: var(--rx-r-3);
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.15s;
+    }
+    .back-link:hover { background: var(--rx-indigo-3); color: var(--rx-indigo-11); }
+
+    .ds-header h1 {
+      font-size: 56px;
+      line-height: 1.1;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      margin: var(--rx-4) 0 var(--rx-3);
+    }
+
+    .ds-header .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--rx-2);
+      align-items: center;
+      margin-bottom: var(--rx-3);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 10px;
+      border-radius: var(--rx-r-full);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.025em;
+      border: 1px solid var(--rx-border);
+      background: var(--rx-bg);
+      color: var(--rx-gray-11);
+    }
+    .badge.kind-ds { background: var(--rx-indigo-9); color: white; border-color: transparent; }
+    .badge.fidelity-documented { background: var(--rx-green-3); color: var(--rx-green-11); border-color: transparent; }
+    .badge.fidelity-approximated { background: var(--rx-amber-3); color: var(--rx-amber-11); border-color: transparent; }
+    .badge.fidelity-inspired { background: #F4F0FF; color: #5B3CC4; border-color: transparent; }
+    .badge.source-verified { background: var(--rx-blue-3); color: var(--rx-blue-11); border-color: transparent; }
+
+    .ds-header a[href*="radix-ui.com"] {
+      color: var(--rx-indigo-11);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 2px 10px;
+      border: 1px solid var(--rx-border);
+      border-radius: var(--rx-r-full);
+      font-size: 13px;
+      background: var(--rx-bg);
+    }
+    .ds-header a[href*="radix-ui.com"]:hover { background: var(--rx-indigo-3); }
+
+    .tagline {
+      font-size: 20px;
+      line-height: 1.5;
+      max-width: 720px;
+      margin: var(--rx-4) 0 0;
+      color: var(--rx-gray-11);
+    }
+
+    /* TOC */
+    .toc {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(252,252,252,0.85);
+      border-bottom: 1px solid var(--rx-border);
+      backdrop-filter: blur(12px);
+    }
+    .toc ul {
+      list-style: none;
+      margin: 0;
+      padding: var(--rx-3) var(--rx-6);
+      display: flex;
+      gap: var(--rx-1);
+      overflow-x: auto;
+    }
+    .toc a {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: var(--rx-r-3);
+      color: var(--rx-gray-11);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      white-space: nowrap;
+      transition: all 0.15s;
+    }
+    .toc a:hover { background: var(--rx-indigo-3); color: var(--rx-indigo-11); }
+
+    /* Main */
+    main {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: var(--rx-6);
+    }
+
+    section {
+      background: var(--rx-bg);
+      border-radius: var(--rx-r-5);
+      padding: var(--rx-6);
+      margin-bottom: var(--rx-5);
+      box-shadow: var(--rx-shadow-1), var(--rx-shadow-2);
+    }
+
+    section h2 {
+      display: flex;
+      align-items: center;
+      gap: var(--rx-3);
+      flex-wrap: wrap;
+      font-size: 28px;
+      line-height: 1.2;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      margin: 0 0 var(--rx-5);
+      color: var(--rx-fg);
+    }
+
+    .source-link {
+      font-size: 13px;
+      color: var(--rx-indigo-11);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .source-link:hover { text-decoration: underline; }
+
+    h3 {
+      font-size: 20px;
+      line-height: 1.3;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin: var(--rx-5) 0 var(--rx-3);
+      color: var(--rx-fg);
+    }
+
+    h4 {
+      font-size: 15px;
+      line-height: 1.4;
+      font-weight: 600;
+      margin: var(--rx-4) 0 var(--rx-2);
+      color: var(--rx-fg);
+    }
+
+    p { margin: 0 0 var(--rx-3); color: var(--rx-gray-11); }
+
+    /* Brand */
+    #brand .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--rx-3);
+      padding: var(--rx-3) var(--rx-5);
+      background: var(--rx-fg);
+      border-radius: var(--rx-r-5);
+      color: white;
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+    }
+    #brand .brand-mark svg { width: 36px; height: 36px; }
+    #brand .pillars {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--rx-4);
+      margin-top: var(--rx-5);
+    }
+    #brand .pillar {
+      padding: var(--rx-4);
+      background: var(--rx-gray-2);
+      border-radius: var(--rx-r-4);
+      border: 1px solid var(--rx-gray-4);
+    }
+    #brand .pillar h4 { margin-top: 0; color: var(--rx-indigo-11); }
+
+    /* Color */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 2px;
+      margin-bottom: var(--rx-4);
+    }
+    .color-cell {
+      aspect-ratio: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 6px;
+      font-size: 10px;
+      font-family: var(--rx-mono);
+      font-weight: 500;
+    }
+    .color-cell:first-child { border-radius: var(--rx-r-3) 0 0 var(--rx-r-3); }
+    .color-cell:last-child { border-radius: 0 var(--rx-r-3) var(--rx-r-3) 0; }
+
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--rx-2);
+      margin-bottom: var(--rx-4);
+    }
+    .role-chip {
+      padding: var(--rx-3) var(--rx-4);
+      border-radius: var(--rx-r-3);
+      font-size: 13px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 500;
+    }
+    .role-chip code { font-size: 11px; opacity: 0.7; font-family: var(--rx-mono); }
+
+    /* Typography */
+    .type-row {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: var(--rx-4);
+      padding: var(--rx-3) 0;
+      border-bottom: 1px solid var(--rx-gray-4);
+      align-items: baseline;
+    }
+    .type-row:last-child { border-bottom: 0; }
+    .type-row .label {
+      font-family: var(--rx-mono);
+      font-size: 12px;
+      color: var(--rx-gray-11);
+    }
+    .text-1 { font-size: 12px; line-height: 16px; letter-spacing: 0.0025em; }
+    .text-2 { font-size: 14px; line-height: 20px; letter-spacing: 0; }
+    .text-3 { font-size: 16px; line-height: 24px; letter-spacing: 0; }
+    .text-4 { font-size: 18px; line-height: 26px; letter-spacing: -0.0025em; }
+    .text-5 { font-size: 20px; line-height: 28px; letter-spacing: -0.005em; }
+    .text-6 { font-size: 24px; line-height: 30px; letter-spacing: -0.00625em; }
+    .text-7 { font-size: 28px; line-height: 36px; letter-spacing: -0.01em; }
+    .text-8 { font-size: 35px; line-height: 40px; letter-spacing: -0.01em; font-weight: 600; }
+    .text-9 { font-size: 60px; line-height: 60px; letter-spacing: -0.025em; font-weight: 700; }
+    .heading { font-weight: 700; letter-spacing: -0.015em; }
+    .mono-sample { font-family: var(--rx-mono); font-size: 14px; color: var(--rx-gray-11); }
+
+    /* Iconography */
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(80px,1fr));
+      gap: var(--rx-3);
+    }
+    .icon-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: var(--rx-3);
+      background: var(--rx-gray-2);
+      border-radius: var(--rx-r-3);
+    }
+    .icon-cell svg { width: 20px; height: 20px; fill: var(--rx-fg); }
+    .icon-cell span { font-size: 11px; color: var(--rx-gray-11); }
+
+    /* Buttons */
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--rx-2);
+      align-items: center;
+      margin-bottom: var(--rx-3);
+    }
+
+    .rx-btn {
+      font-family: var(--rx-font);
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1;
+      padding: 0 12px;
+      border-radius: var(--rx-r-2);
+      border: 0;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      height: 32px;
+      transition: all 0.15s;
+    }
+    .rx-btn--solid { background: var(--rx-indigo-9); color: white; }
+    .rx-btn--solid:hover { background: var(--rx-indigo-10); }
+    .rx-btn--soft { background: var(--rx-indigo-3); color: var(--rx-indigo-11); }
+    .rx-btn--soft:hover { background: var(--rx-indigo-4); }
+    .rx-btn--surface { background: var(--rx-bg); color: var(--rx-fg); box-shadow: inset 0 0 0 1px var(--rx-gray-7); }
+    .rx-btn--surface:hover { background: var(--rx-gray-2); }
+    .rx-btn--outline { background: transparent; color: var(--rx-indigo-11); box-shadow: inset 0 0 0 1px var(--rx-indigo-8); }
+    .rx-btn--outline:hover { background: var(--rx-indigo-3); }
+    .rx-btn--ghost { background: transparent; color: var(--rx-fg); padding: 0 8px; }
+    .rx-btn--ghost:hover { background: var(--rx-gray-3); }
+    .rx-btn--classic { background: linear-gradient(180deg, var(--rx-indigo-9), var(--rx-indigo-10)); color: white; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.15), 0 1px 1px rgba(0,0,0,0.05); }
+    .rx-btn--danger { background: var(--rx-red-9); color: white; }
+    .rx-btn--icon { width: 32px; padding: 0; justify-content: center; }
+    .rx-btn--sm { height: 24px; padding: 0 8px; font-size: 12px; border-radius: var(--rx-r-1); }
+    .rx-btn--lg { height: 40px; padding: 0 16px; font-size: 15px; border-radius: var(--rx-r-3); }
+    .rx-btn--xl { height: 56px; padding: 0 24px; font-size: 17px; border-radius: var(--rx-r-4); font-weight: 600; }
+    .rx-btn:disabled { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
+    .rx-btn:focus-visible { outline: 2px solid var(--rx-indigo-9); outline-offset: 2px; }
+
+    /* Form */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+      gap: var(--rx-4);
+    }
+    .rx-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .rx-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--rx-fg);
+    }
+    .rx-input {
+      display: flex;
+      width: 100%;
+      height: 32px;
+      padding: 0 12px;
+      font-size: 14px;
+      line-height: 1;
+      color: var(--rx-fg);
+      background-color: var(--rx-bg);
+      border: 0;
+      border-radius: var(--rx-r-2);
+      box-shadow: inset 0 0 0 1px var(--rx-gray-7);
+      transition: all 0.15s;
+      font-family: inherit;
+    }
+    .rx-input:focus {
+      outline: 0;
+      box-shadow: inset 0 0 0 2px var(--rx-indigo-9);
+    }
+    .rx-input::placeholder { color: var(--rx-gray-9); }
+    .rx-input.invalid { box-shadow: inset 0 0 0 1px var(--rx-red-9); }
+    textarea.rx-input { height: auto; min-height: 80px; padding: 8px 12px; line-height: 1.4; resize: vertical; }
+    .rx-help { font-size: 12px; color: var(--rx-gray-11); }
+    .rx-error { font-size: 12px; color: var(--rx-red-11); font-weight: 500; }
+
+    .rx-check {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .rx-check input { width: 14px; height: 14px; accent-color: var(--rx-indigo-9); border-radius: var(--rx-r-1); }
+
+    .rx-switch {
+      position: relative; display: inline-block; width: 36px; height: 20px;
+    }
+    .rx-switch input { opacity: 0; width: 0; height: 0; }
+    .rx-switch .slider {
+      position: absolute; cursor: pointer; inset: 0;
+      background: var(--rx-gray-6);
+      border-radius: 9999px;
+      transition: 0.2s;
+    }
+    .rx-switch .slider::before {
+      content: ''; position: absolute;
+      width: 14px; height: 14px;
+      left: 3px; top: 3px;
+      background: white;
+      border-radius: 50%;
+      transition: 0.2s;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+    }
+    .rx-switch input:checked + .slider { background: var(--rx-indigo-9); }
+    .rx-switch input:checked + .slider::before { transform: translateX(16px); }
+
+    .rx-range { width: 100%; accent-color: var(--rx-indigo-9); }
+
+    /* Surfaces / Cards */
+    .surface-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
+      gap: var(--rx-4);
+    }
+    .rx-card {
+      background: var(--rx-bg);
+      border-radius: var(--rx-r-4);
+      box-shadow: 0 0 0 1px var(--rx-gray-5);
+      padding: var(--rx-4);
+    }
+    .rx-card--surface { background: var(--rx-gray-2); }
+    .rx-card--ghost { box-shadow: none; padding: var(--rx-3); }
+    .rx-card--classic {
+      background: var(--rx-bg);
+      box-shadow: 0 0 0 1px var(--rx-gray-4), 0 1px 1px rgba(0,0,0,0.04), 0 4px 8px -4px rgba(0,0,0,0.06);
+    }
+    .rx-card .media { height: 120px; background: linear-gradient(135deg, var(--rx-indigo-3), var(--rx-indigo-5)); border-radius: var(--rx-r-3); margin-bottom: var(--rx-3); }
+    .rx-card h4 { margin: 0 0 4px; font-size: 16px; }
+    .rx-card .desc { font-size: 13px; color: var(--rx-gray-11); margin: 0 0 12px; }
+
+    .rx-stat { padding: var(--rx-4); background: var(--rx-indigo-3); border-radius: var(--rx-r-4); color: var(--rx-indigo-12); }
+    .rx-stat .num { font-size: 32px; font-weight: 700; line-height: 1; letter-spacing: -0.015em; }
+    .rx-stat .lbl { font-size: 12px; color: var(--rx-indigo-11); margin-top: 6px; font-weight: 500; }
+
+    .rx-modal {
+      background: var(--rx-bg);
+      padding: var(--rx-5);
+      border-radius: var(--rx-r-5);
+      box-shadow: var(--rx-shadow-5);
+      max-width: 450px;
+    }
+
+    /* Feedback */
+    .rx-callout {
+      padding: var(--rx-3) var(--rx-4);
+      border-radius: var(--rx-r-3);
+      margin-bottom: var(--rx-2);
+      font-size: 14px;
+      display: flex;
+      gap: var(--rx-3);
+      align-items: flex-start;
+    }
+    .rx-callout--info { background: var(--rx-blue-3); color: var(--rx-blue-11); }
+    .rx-callout--success { background: var(--rx-green-3); color: var(--rx-green-11); }
+    .rx-callout--warn { background: var(--rx-amber-3); color: var(--rx-amber-11); }
+    .rx-callout--error { background: var(--rx-red-3); color: var(--rx-red-11); }
+    .rx-callout svg { flex-shrink: 0; margin-top: 2px; }
+
+    .rx-toast {
+      background: var(--rx-bg);
+      box-shadow: var(--rx-shadow-4);
+      border-radius: var(--rx-r-3);
+      padding: var(--rx-3) var(--rx-4);
+      max-width: 380px;
+      display: flex;
+      gap: var(--rx-3);
+      align-items: center;
+      border: 1px solid var(--rx-gray-4);
+    }
+    .rx-toast .title { font-weight: 500; font-size: 14px; }
+    .rx-toast .desc { font-size: 13px; color: var(--rx-gray-11); }
+
+    .rx-chip-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .rx-bdg {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: var(--rx-r-2);
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .rx-bdg--solid { background: var(--rx-indigo-9); color: white; }
+    .rx-bdg--soft { background: var(--rx-indigo-3); color: var(--rx-indigo-11); }
+    .rx-bdg--surface { background: var(--rx-bg); color: var(--rx-indigo-11); box-shadow: inset 0 0 0 1px var(--rx-indigo-7); }
+    .rx-bdg--success { background: var(--rx-green-3); color: var(--rx-green-11); }
+    .rx-bdg--warn { background: var(--rx-amber-3); color: var(--rx-amber-11); }
+    .rx-bdg--error { background: var(--rx-red-3); color: var(--rx-red-11); }
+
+    .rx-progress {
+      width: 100%; height: 6px;
+      background: var(--rx-gray-4);
+      border-radius: var(--rx-r-full);
+      overflow: hidden;
+    }
+    .rx-progress::after {
+      content: ''; display: block;
+      height: 100%; width: 60%;
+      background: var(--rx-indigo-9);
+      border-radius: var(--rx-r-full);
+    }
+
+    .rx-spinner {
+      width: 20px; height: 20px;
+      border: 2px solid var(--rx-gray-5);
+      border-top-color: var(--rx-indigo-9);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .rx-skeleton {
+      height: 14px;
+      background: linear-gradient(90deg, var(--rx-gray-3), var(--rx-gray-4), var(--rx-gray-3));
+      background-size: 200% 100%;
+      border-radius: var(--rx-r-1);
+      animation: shimmer 1.5s infinite;
+    }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+    /* Navigation */
+    .rx-tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--rx-gray-5);
+      margin-bottom: var(--rx-3);
+    }
+    .rx-tab {
+      padding: 8px 12px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--rx-gray-11);
+      border: 0;
+      background: transparent;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      letter-spacing: -0.005em;
+    }
+    .rx-tab.active { color: var(--rx-fg); border-bottom-color: var(--rx-indigo-9); }
+    .rx-tab:hover:not(.active) { color: var(--rx-fg); }
+
+    .rx-breadcrumb { display: flex; gap: 6px; align-items: center; font-size: 14px; color: var(--rx-gray-11); }
+    .rx-breadcrumb a { color: var(--rx-gray-11); text-decoration: none; }
+    .rx-breadcrumb a:hover { color: var(--rx-fg); }
+    .rx-breadcrumb .current { color: var(--rx-fg); font-weight: 500; }
+
+    .rx-pagination { display: flex; gap: 4px; align-items: center; }
+    .rx-pagination button {
+      min-width: 32px; height: 32px;
+      border-radius: var(--rx-r-2);
+      border: 0;
+      background: transparent;
+      color: var(--rx-fg);
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .rx-pagination button.active { background: var(--rx-indigo-9); color: white; }
+    .rx-pagination button:hover:not(.active) { background: var(--rx-gray-3); }
+
+    .rx-segmented {
+      display: inline-flex;
+      gap: 2px;
+      background: var(--rx-gray-3);
+      padding: 2px;
+      border-radius: var(--rx-r-2);
+    }
+    .rx-segmented button {
+      padding: 4px 10px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--rx-gray-11);
+      border: 0;
+      background: transparent;
+      cursor: pointer;
+      border-radius: var(--rx-r-1);
+    }
+    .rx-segmented button.active { background: var(--rx-bg); color: var(--rx-fg); box-shadow: var(--rx-shadow-2); }
+
+    .rx-navbar {
+      display: flex; align-items: center; gap: 16px;
+      padding: 8px 16px;
+      background: var(--rx-bg);
+      border-radius: var(--rx-r-3);
+      box-shadow: 0 0 0 1px var(--rx-gray-5);
+    }
+    .rx-navbar .brand { font-size: 16px; font-weight: 700; flex: 1; letter-spacing: -0.015em; }
+    .rx-navbar a { color: var(--rx-gray-11); text-decoration: none; padding: 6px 10px; border-radius: var(--rx-r-2); font-size: 14px; font-weight: 500; }
+    .rx-navbar a:hover { color: var(--rx-fg); background: var(--rx-gray-3); }
+
+    .rx-menu {
+      background: var(--rx-bg);
+      border-radius: var(--rx-r-3);
+      box-shadow: var(--rx-shadow-4);
+      padding: 4px;
+      width: 220px;
+    }
+    .rx-menu .item { padding: 6px 8px; font-size: 14px; cursor: pointer; border-radius: var(--rx-r-1); display: flex; align-items: center; gap: 8px; }
+    .rx-menu .item:hover { background: var(--rx-indigo-9); color: white; }
+    .rx-menu .separator { height: 1px; background: var(--rx-gray-4); margin: 4px 0; }
+    .rx-menu .shortcut { margin-left: auto; font-size: 12px; opacity: 0.7; font-family: var(--rx-mono); }
+
+    /* Data */
+    table.rx-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    table.rx-table th, table.rx-table td {
+      text-align: left;
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--rx-gray-4);
+    }
+    table.rx-table thead th {
+      font-weight: 500;
+      color: var(--rx-gray-11);
+      font-size: 12px;
+      letter-spacing: 0.025em;
+      text-transform: uppercase;
+    }
+    table.rx-table tbody tr:hover { background: var(--rx-gray-2); }
+
+    .rx-list { list-style: none; padding: 0; margin: 0; }
+    .rx-list li { padding: 12px 16px; display: flex; gap: 12px; align-items: center; border-bottom: 1px solid var(--rx-gray-4); }
+    .rx-list li:last-child { border-bottom: 0; }
+
+    .rx-kv { display: grid; grid-template-columns: 140px 1fr; gap: 12px; font-size: 14px; }
+    .rx-kv dt { color: var(--rx-gray-11); }
+    .rx-kv dd { margin: 0; color: var(--rx-fg); font-weight: 500; }
+
+    .rx-avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--rx-indigo-9);
+      color: white;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    .rx-empty {
+      text-align: center;
+      padding: var(--rx-8) var(--rx-4);
+      color: var(--rx-gray-11);
+    }
+    .rx-empty svg { width: 48px; height: 48px; opacity: 0.4; }
+
+    /* Layout */
+    .grid-demo {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 8px;
+      background: var(--rx-gray-2);
+      padding: var(--rx-4);
+      border-radius: var(--rx-r-3);
+    }
+    .grid-demo > div {
+      background: var(--rx-indigo-3);
+      color: var(--rx-indigo-11);
+      padding: 10px;
+      border-radius: var(--rx-r-1);
+      font-size: 12px;
+      font-weight: 500;
+      text-align: center;
+    }
+
+    .scale-row { display: flex; gap: var(--rx-3); flex-wrap: wrap; align-items: flex-end; margin-bottom: var(--rx-4); }
+    .scale-item { display: flex; flex-direction: column; gap: 6px; align-items: center; }
+    .scale-item .swatch { background: var(--rx-indigo-9); }
+    .scale-item .lbl { font-size: 11px; font-family: var(--rx-mono); color: var(--rx-gray-11); }
+
+    .shadow-demo {
+      width: 96px; height: 96px;
+      background: var(--rx-bg);
+      border-radius: var(--rx-r-3);
+      display: inline-flex; align-items: center; justify-content: center;
+      margin-right: 16px; margin-bottom: 16px;
+      font-size: 11px; font-family: var(--rx-mono); color: var(--rx-gray-11);
+    }
+
+    /* Footer */
+    .ds-footer {
+      background: var(--rx-gray-12);
+      padding: var(--rx-6);
+      margin-top: var(--rx-8);
+      color: var(--rx-gray-6);
+    }
+    .ds-footer h3 { margin-top: 0; color: white; }
+    .ds-footer ul { padding-left: 20px; }
+    .ds-footer li { margin-bottom: 4px; word-break: break-all; font-size: 13px; }
+    .ds-footer a { color: var(--rx-indigo-7); text-decoration: none; }
+    .ds-footer a:hover { color: var(--rx-indigo-5); text-decoration: underline; }
+    .license-note { font-size: 13px; color: var(--rx-gray-8); margin-top: var(--rx-4); }
+    .meta-note { font-size: 12px; color: var(--rx-gray-9); font-family: var(--rx-mono); margin-top: var(--rx-2); }
+
+    @media (max-width: 720px) {
+      .ds-header h1 { font-size: 36px; }
+      main { padding: var(--rx-4); }
+      section { padding: var(--rx-4); }
+      .type-row { grid-template-columns: 1fr; }
+      .color-grid { grid-template-columns: repeat(6, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <header class="ds-header">
+    <a href="index.html" class="back-link">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Catalog
+    </a>
+    <h1>Radix Themes</h1>
+    <div class="meta">
+      <span class="badge kind-ds">component-library</span>
+      <span class="badge fidelity-approximated">approximated</span>
+      <span class="badge source-verified">source: homepage-only</span>
+      <a href="https://www.radix-ui.com/themes" target="_blank" rel="noopener">Official ↗</a>
+    </div>
+    <p class="tagline">A pre-styled component library built on Radix Primitives with a 12-step radix color scale.</p>
+  </header>
+
+  <nav class="toc" aria-label="Table of contents">
+    <ul>
+      <li><a href="#brand">Brand</a></li>
+      <li><a href="#color">Color</a></li>
+      <li><a href="#typography">Typography</a></li>
+      <li><a href="#iconography">Iconography</a></li>
+      <li><a href="#buttons">Buttons</a></li>
+      <li><a href="#form">Form</a></li>
+      <li><a href="#surfaces">Surfaces</a></li>
+      <li><a href="#feedback">Feedback</a></li>
+      <li><a href="#navigation">Navigation</a></li>
+      <li><a href="#data">Data</a></li>
+      <li><a href="#layout">Layout</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="brand" data-fidelity="approximated">
+      <h2>
+        <span>Brand</span>
+        <span class="badge fidelity-approximated">approximated</span>
+      </h2>
+      <div class="brand-mark">
+        <svg viewBox="0 0 36 36" fill="none">
+          <rect x="6" y="6" width="24" height="24" rx="4" fill="white" opacity="0.95"/>
+          <circle cx="18" cy="18" r="4" fill="currentColor"/>
+        </svg>
+        Radix Themes
+      </div>
+      <p style="margin-top: 1.5rem; max-width: 720px; font-size: 16px; color: var(--rx-gray-11);">
+        Radix Themes is a pre-styled component library from WorkOS, built on top of Radix Primitives. It pairs accessible behavior with the renowned 12-step Radix Color scale, scale and accent props for theming, and a tightly composed type and shape system. Source status is homepage-only — fidelity is intentionally marked approximated.
+      </p>
+      <div class="pillars">
+        <div class="pillar">
+          <h4>12-step color</h4>
+          <p style="font-size:13px;color:var(--rx-gray-11);margin:0">Radix Colors are designed for every UI need: hover states, borders, accessible text, all in 12 perceptually balanced steps.</p>
+        </div>
+        <div class="pillar">
+          <h4>Theme prop</h4>
+          <p style="font-size:13px;color:var(--rx-gray-11);margin:0">Wrap your app in &lt;Theme&gt; and switch accent (12 colors), gray scale, scale (1-3), radius, and panel background.</p>
+        </div>
+        <div class="pillar">
+          <h4>Variant system</h4>
+          <p style="font-size:13px;color:var(--rx-gray-11);margin:0">Solid, soft, surface, outline, ghost, classic — each variant is consistent across Button, Badge, Card, IconButton.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="color" data-fidelity="documented">
+      <h2>
+        <span>Color</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://www.radix-ui.com/themes/docs/theme/color" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--rx-gray-11)">Radix exposes 12-step scales for every accent. Each step has a defined role: 1-2 backgrounds, 3-5 ui surfaces, 6-8 borders/separators, 9 solid (the brand step), 10 hover, 11 accessible text, 12 high-contrast text.</p>
+
+      <h3>Indigo (default accent)</h3>
+      <div class="color-grid">
+        <div class="color-cell" style="background:var(--rx-indigo-1);color:var(--rx-indigo-12);border:1px solid var(--rx-gray-5)">1</div>
+        <div class="color-cell" style="background:var(--rx-indigo-2);color:var(--rx-indigo-12)">2</div>
+        <div class="color-cell" style="background:var(--rx-indigo-3);color:var(--rx-indigo-12)">3</div>
+        <div class="color-cell" style="background:var(--rx-indigo-4);color:var(--rx-indigo-12)">4</div>
+        <div class="color-cell" style="background:var(--rx-indigo-5);color:var(--rx-indigo-12)">5</div>
+        <div class="color-cell" style="background:var(--rx-indigo-6);color:var(--rx-indigo-12)">6</div>
+        <div class="color-cell" style="background:var(--rx-indigo-7);color:var(--rx-indigo-12)">7</div>
+        <div class="color-cell" style="background:var(--rx-indigo-8);color:white">8</div>
+        <div class="color-cell" style="background:var(--rx-indigo-9);color:white">9</div>
+        <div class="color-cell" style="background:var(--rx-indigo-10);color:white">10</div>
+        <div class="color-cell" style="background:var(--rx-indigo-11);color:white">11</div>
+        <div class="color-cell" style="background:var(--rx-indigo-12);color:white">12</div>
+      </div>
+
+      <h3>Gray (neutral)</h3>
+      <div class="color-grid">
+        <div class="color-cell" style="background:var(--rx-gray-1);color:var(--rx-gray-12);border:1px solid var(--rx-gray-5)">1</div>
+        <div class="color-cell" style="background:var(--rx-gray-2);color:var(--rx-gray-12)">2</div>
+        <div class="color-cell" style="background:var(--rx-gray-3);color:var(--rx-gray-12)">3</div>
+        <div class="color-cell" style="background:var(--rx-gray-4);color:var(--rx-gray-12)">4</div>
+        <div class="color-cell" style="background:var(--rx-gray-5);color:var(--rx-gray-12)">5</div>
+        <div class="color-cell" style="background:var(--rx-gray-6);color:var(--rx-gray-12)">6</div>
+        <div class="color-cell" style="background:var(--rx-gray-7);color:var(--rx-gray-12)">7</div>
+        <div class="color-cell" style="background:var(--rx-gray-8);color:white">8</div>
+        <div class="color-cell" style="background:var(--rx-gray-9);color:white">9</div>
+        <div class="color-cell" style="background:var(--rx-gray-10);color:white">10</div>
+        <div class="color-cell" style="background:var(--rx-gray-11);color:white">11</div>
+        <div class="color-cell" style="background:var(--rx-gray-12);color:white">12</div>
+      </div>
+
+      <h3>Step semantics</h3>
+      <div class="role-grid">
+        <div class="role-chip" style="background:var(--rx-indigo-1);color:var(--rx-indigo-12)">1 · App background <code>indigo-1</code></div>
+        <div class="role-chip" style="background:var(--rx-indigo-3);color:var(--rx-indigo-12)">3 · UI element <code>indigo-3</code></div>
+        <div class="role-chip" style="background:var(--rx-indigo-7);color:var(--rx-indigo-12)">7 · Border <code>indigo-7</code></div>
+        <div class="role-chip" style="background:var(--rx-indigo-9);color:white">9 · Solid (brand step) <code>indigo-9</code></div>
+        <div class="role-chip" style="background:var(--rx-indigo-10);color:white">10 · Hovered solid <code>indigo-10</code></div>
+        <div class="role-chip" style="background:var(--rx-indigo-11);color:white">11 · Accessible text <code>indigo-11</code></div>
+      </div>
+
+      <h3>Semantic accents</h3>
+      <div class="role-grid">
+        <div class="role-chip" style="background:var(--rx-red-9);color:white">red-9 (danger) <code>#E5484D</code></div>
+        <div class="role-chip" style="background:var(--rx-green-9);color:white">green-9 (success) <code>#30A46C</code></div>
+        <div class="role-chip" style="background:var(--rx-amber-9);color:var(--rx-amber-11)">amber-9 (warning) <code>#FFB224</code></div>
+        <div class="role-chip" style="background:var(--rx-blue-9);color:white">blue-9 (info) <code>#0090FF</code></div>
+        <div class="role-chip" style="background:var(--rx-violet-9);color:white">violet-9 (alt) <code>#6E56CF</code></div>
+      </div>
+    </section>
+
+    <section id="typography" data-fidelity="documented">
+      <h2>
+        <span>Typography</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://www.radix-ui.com/themes/docs/theme/typography" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--rx-gray-11)">Radix Themes exposes a 9-step type scale (text 1-9), each with paired font-size, line-height, and letter-spacing tokens. Default font is Inter; the theme accepts a custom font family.</p>
+
+      <div class="type-row"><div class="label">.text-9 · 60/60 · 700</div><div class="text-9 heading">Sites of substance</div></div>
+      <div class="type-row"><div class="label">.text-8 · 35/40 · 600</div><div class="text-8 heading">Designed to compose</div></div>
+      <div class="type-row"><div class="label">.text-7 · 28/36</div><div class="text-7">Theme prop driven</div></div>
+      <div class="type-row"><div class="label">.text-6 · 24/30</div><div class="text-6">Section heading</div></div>
+      <div class="type-row"><div class="label">.text-5 · 20/28</div><div class="text-5">Subsection title</div></div>
+      <div class="type-row"><div class="label">.text-4 · 18/26</div><div class="text-4">Lead paragraph for emphasis copy.</div></div>
+      <div class="type-row"><div class="label">.text-3 · 16/24</div><div class="text-3">Default body text. Radix tunes letter-spacing per size for optical balance — display sizes get tighter tracking, small sizes loosen up. Inter is the default font, paired with JetBrains Mono for code.</div></div>
+      <div class="type-row"><div class="label">.text-2 · 14/20</div><div class="text-2">Compact UI text: helper labels, input descriptions, table cells.</div></div>
+      <div class="type-row"><div class="label">.text-1 · 12/16</div><div class="text-1">Captions, micro labels, badge text, dense data displays.</div></div>
+      <div class="type-row"><div class="label">code · monospace</div><div class="mono-sample">@radix-ui/themes &lt;Theme accent="indigo" /&gt;</div></div>
+    </section>
+
+    <section id="iconography" data-fidelity="documented">
+      <h2>
+        <span>Iconography</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://www.radix-ui.com/icons" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--rx-gray-11)">Radix Icons (MIT) is a crisp 15px icon set tuned for UI density. Each icon ships as both .svg and React component. The samples below approximate Radix's geometric, evenly-stroked silhouettes.</p>
+      <div class="icon-grid">
+        <div class="icon-cell"><svg viewBox="0 0 15 15"><path d="M7.07.272a.5.5 0 01.86 0l6.45 11.207A.5.5 0 0114 12H1a.5.5 0 01-.43-.521L7.07.272z" fill="currentColor" opacity="0"/><path d="M7.07 1.5a.5.5 0 01.86 0l5.553 9.5a.5.5 0 01-.43.75H1.947a.5.5 0 01-.43-.75L7.07 1.5z" stroke="currentColor" stroke-width="1" fill="none"/></svg><span>HomeIcon</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 15 15" stroke="currentColor" stroke-width="1.2" fill="none"><circle cx="6.5" cy="6.5" r="4"/><path d="M9.5 9.5L13 13" stroke-linecap="round"/></svg><span>MagnifyingGlass</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="7.5" cy="5" r="2.5"/><path d="M2.5 13c0-2.5 2-4.5 5-4.5s5 2 5 4.5"/></svg><span>PersonIcon</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"><path d="M1.5 13L13.5 7.5 1.5 2 3 7.5z" stroke-linecap="round"/></svg><span>PaperPlane</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M3 1.5h6L12 4.5v9H3z"/><path d="M9 1.5v3h3M5 7h5M5 9h5M5 11h3"/></svg><span>FileText</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="7.5" cy="7.5" r="6"/><path d="M7.5 4v3.5L9.5 9.5" stroke-linecap="round"/></svg><span>Clock</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="7.5" cy="7.5" r="2"/><path d="M7.5 1v2M7.5 12v2M1 7.5h2M12 7.5h2M2.8 2.8l1.4 1.4M10.8 10.8l1.4 1.4M2.8 12.2l1.4-1.4M10.8 4.2l1.4-1.4"/></svg><span>Gear</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M2 4h2.5L6 2.5h3L10.5 4H13v8H2z"/><circle cx="7.5" cy="8" r="2.5"/></svg><span>Camera</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8L6 11L12 4"/></svg><span>Check</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 3L12 12M12 3L3 12"/></svg><span>Cross</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7.5 3V12M3 7.5H12"/></svg><span>Plus</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"><path d="M2 3H13V10H6L3 12.5V10H2z"/></svg><span>ChatBubble</span></div>
+      </div>
+    </section>
+
+    <section id="buttons" data-fidelity="documented">
+      <h2>
+        <span>Buttons</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://www.radix-ui.com/themes/docs/components/button" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--rx-gray-11)">Radix Themes Buttons accept variant (solid, soft, surface, outline, ghost, classic) and size (1-4) props. The system uses a unified accent color and exposes a high-contrast option for solid buttons.</p>
+
+      <h3>Variants</h3>
+      <div class="button-row">
+        <button class="rx-btn rx-btn--classic">Classic</button>
+        <button class="rx-btn rx-btn--solid">Solid</button>
+        <button class="rx-btn rx-btn--soft">Soft</button>
+        <button class="rx-btn rx-btn--surface">Surface</button>
+        <button class="rx-btn rx-btn--outline">Outline</button>
+        <button class="rx-btn rx-btn--ghost">Ghost</button>
+        <button class="rx-btn rx-btn--danger">Danger</button>
+      </div>
+
+      <h3>Sizes (1-4)</h3>
+      <div class="button-row">
+        <button class="rx-btn rx-btn--solid rx-btn--sm">Size 1</button>
+        <button class="rx-btn rx-btn--solid">Size 2</button>
+        <button class="rx-btn rx-btn--solid rx-btn--lg">Size 3</button>
+        <button class="rx-btn rx-btn--solid rx-btn--xl">Size 4</button>
+      </div>
+
+      <h3>States</h3>
+      <div class="button-row">
+        <button class="rx-btn rx-btn--solid">Enabled</button>
+        <button class="rx-btn rx-btn--solid" style="background:var(--rx-indigo-10)">Hover</button>
+        <button class="rx-btn rx-btn--solid" style="outline:2px solid var(--rx-indigo-9);outline-offset:2px">Focus</button>
+        <button class="rx-btn rx-btn--solid" disabled>Disabled</button>
+        <button class="rx-btn rx-btn--solid"><div class="rx-spinner" style="width:14px;height:14px;border-width:1.5px;border-color:rgba(255,255,255,0.3);border-top-color:white"></div>Loading</button>
+      </div>
+    </section>
+
+    <section id="form" data-fidelity="documented">
+      <h2>
+        <span>Form</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://www.radix-ui.com/themes/docs/components/text-field" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--rx-gray-11)">TextField, TextArea, Select, RadioGroup, Switch, Slider — all share size prop, focus uses inset 2px ring matching accent-9.</p>
+
+      <h3>Inputs</h3>
+      <div class="form-grid">
+        <div class="rx-field">
+          <label class="rx-label" for="rx1">Email</label>
+          <input class="rx-input" type="email" id="rx1" placeholder="name@example.com">
+          <span class="rx-help">Used for sign-in and notifications.</span>
+        </div>
+        <div class="rx-field">
+          <label class="rx-label" for="rx2">API key</label>
+          <input class="rx-input" type="password" id="rx2" value="rxs_••••••••">
+        </div>
+        <div class="rx-field">
+          <label class="rx-label" for="rx3">Description</label>
+          <textarea class="rx-input" id="rx3" rows="3">Themed dashboard built with Radix Themes.</textarea>
+        </div>
+        <div class="rx-field">
+          <label class="rx-label" for="rx4">Accent</label>
+          <select class="rx-input" id="rx4">
+            <option>Indigo</option>
+            <option>Violet</option>
+            <option>Crimson</option>
+            <option>Mint</option>
+          </select>
+        </div>
+        <div class="rx-field">
+          <label class="rx-label" for="rx5">Invalid</label>
+          <input class="rx-input invalid" type="text" id="rx5" value="invalid@">
+          <span class="rx-error">Enter a valid email address.</span>
+        </div>
+        <div class="rx-field">
+          <label class="rx-label" for="rx6">Search</label>
+          <input class="rx-input" type="search" id="rx6" placeholder="Search docs...">
+        </div>
+      </div>
+
+      <h3>Selection controls</h3>
+      <div class="button-row">
+        <label class="rx-check"><input type="checkbox" checked>Subscribe</label>
+        <label class="rx-check"><input type="checkbox">Marketing</label>
+        <label class="rx-check"><input type="radio" name="r1" checked>Light</label>
+        <label class="rx-check"><input type="radio" name="r1">Dark</label>
+        <label class="rx-switch"><input type="checkbox" checked><span class="slider"></span></label>
+        <label class="rx-switch"><input type="checkbox"><span class="slider"></span></label>
+      </div>
+
+      <h3>Slider &amp; file</h3>
+      <div style="max-width:400px;display:flex;flex-direction:column;gap:12px">
+        <input type="range" class="rx-range" min="0" max="100" value="60">
+        <input type="file" class="rx-input" style="height:auto;padding:6px 12px">
+      </div>
+    </section>
+
+    <section id="surfaces" data-fidelity="documented">
+      <h2>
+        <span>Surfaces</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://www.radix-ui.com/themes/docs/components/card" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--rx-gray-11)">Card variants — surface (default), classic, ghost. Theme panel toggles a translucent background. Modals (Dialog) compose Card-like surfaces with a backdrop and Escape-to-close behavior from Radix Primitives.</p>
+
+      <div class="surface-grid">
+        <div class="rx-card">
+          <div class="media"></div>
+          <h4>Surface card</h4>
+          <p class="desc">Default panel surface. Renders as a 1px ring on top of the page background.</p>
+          <button class="rx-btn rx-btn--soft rx-btn--sm">Open</button>
+        </div>
+        <div class="rx-card rx-card--classic">
+          <div class="media"></div>
+          <h4>Classic card</h4>
+          <p class="desc">Adds a subtle shadow for slight elevation without leaving the panel surface.</p>
+          <button class="rx-btn rx-btn--soft rx-btn--sm">Open</button>
+        </div>
+        <div class="rx-card rx-card--surface">
+          <h4>Tinted surface</h4>
+          <p class="desc">Use the gray-2 background to nest a related grouping inside another panel.</p>
+        </div>
+        <div class="rx-stat">
+          <div class="num">2,847</div>
+          <div class="lbl">Active sessions</div>
+        </div>
+      </div>
+
+      <h3>Modal</h3>
+      <div class="rx-modal">
+        <h3 style="margin-top:0">Edit profile</h3>
+        <p style="font-size:14px;color:var(--rx-gray-11);margin:0 0 16px">Make changes to your profile. Click Save when you're done.</p>
+        <div class="rx-field" style="margin-bottom:12px"><label class="rx-label">Name</label><input class="rx-input" value="Vlad Moroz"></div>
+        <div class="rx-field" style="margin-bottom:16px"><label class="rx-label">Email</label><input class="rx-input" value="vlad@radix-ui.com"></div>
+        <div class="button-row" style="justify-content:flex-end;margin:0">
+          <button class="rx-btn rx-btn--soft">Cancel</button>
+          <button class="rx-btn rx-btn--solid">Save</button>
+        </div>
+      </div>
+
+      <h3>Dropdown menu</h3>
+      <div class="rx-menu">
+        <div class="item">New file <span class="shortcut">⌘N</span></div>
+        <div class="item">Open file <span class="shortcut">⌘O</span></div>
+        <div class="item">Save <span class="shortcut">⌘S</span></div>
+        <div class="separator"></div>
+        <div class="item">Share</div>
+        <div class="item">Settings</div>
+        <div class="separator"></div>
+        <div class="item" style="color:var(--rx-red-11)">Delete <span class="shortcut" style="color:var(--rx-red-11)">⌫</span></div>
+      </div>
+    </section>
+
+    <section id="feedback" data-fidelity="documented">
+      <h2>
+        <span>Feedback</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://www.radix-ui.com/themes/docs/components/callout" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+
+      <h3>Callouts</h3>
+      <div class="rx-callout rx-callout--info">
+        <svg width="18" height="18" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="7.5" cy="7.5" r="6"/><path d="M7.5 5.5v4M7.5 4v0.5" stroke-linecap="round"/></svg>
+        <span><strong>Heads up.</strong> You'll need admin permission to make changes.</span>
+      </div>
+      <div class="rx-callout rx-callout--success">
+        <svg width="18" height="18" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8L6 11L12 4"/></svg>
+        <span><strong>Success.</strong> Theme updated successfully.</span>
+      </div>
+      <div class="rx-callout rx-callout--warn">
+        <svg width="18" height="18" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M7.5 1L14 13H1z" stroke-linejoin="round"/><path d="M7.5 5v4M7.5 11v0.5" stroke-linecap="round"/></svg>
+        <span><strong>Warning.</strong> Custom radius may break Card alignment in dense layouts.</span>
+      </div>
+      <div class="rx-callout rx-callout--error">
+        <svg width="18" height="18" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="7.5" cy="7.5" r="6" stroke-width="1.2" fill="none"/><path d="M5 5L10 10M10 5L5 10"/></svg>
+        <span><strong>Error.</strong> Could not load theme tokens.</span>
+      </div>
+
+      <h3>Toast</h3>
+      <div class="rx-toast">
+        <div style="flex:1">
+          <div class="title">Theme synced</div>
+          <div class="desc">Your accent color is now Indigo.</div>
+        </div>
+        <button class="rx-btn rx-btn--ghost rx-btn--sm">Undo</button>
+      </div>
+
+      <h3>Badges</h3>
+      <div class="rx-chip-row">
+        <span class="rx-bdg rx-bdg--solid">Solid</span>
+        <span class="rx-bdg rx-bdg--soft">Soft</span>
+        <span class="rx-bdg rx-bdg--surface">Surface</span>
+        <span class="rx-bdg rx-bdg--success">Active</span>
+        <span class="rx-bdg rx-bdg--warn">Pending</span>
+        <span class="rx-bdg rx-bdg--error">Failed</span>
+      </div>
+
+      <h3>Progress &amp; loading</h3>
+      <div style="display:flex;flex-direction:column;gap:12px;max-width:480px">
+        <div class="rx-progress"></div>
+        <div style="display:flex;gap:12px;align-items:center"><div class="rx-spinner"></div><span style="font-size:14px;color:var(--rx-gray-11)">Loading...</span></div>
+        <div class="rx-skeleton" style="width:80%"></div>
+        <div class="rx-skeleton" style="width:60%"></div>
+        <div class="rx-skeleton" style="width:40%"></div>
+      </div>
+    </section>
+
+    <section id="navigation" data-fidelity="documented">
+      <h2>
+        <span>Navigation</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://www.radix-ui.com/themes/docs/components/tabs" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+
+      <h3>Tabs</h3>
+      <div class="rx-tabs">
+        <button class="rx-tab active">Account</button>
+        <button class="rx-tab">Documents</button>
+        <button class="rx-tab">Settings</button>
+        <button class="rx-tab">Activity</button>
+      </div>
+
+      <h3>Segmented control</h3>
+      <div class="rx-segmented">
+        <button class="active">Daily</button>
+        <button>Weekly</button>
+        <button>Monthly</button>
+        <button>Yearly</button>
+      </div>
+
+      <h3>Breadcrumb</h3>
+      <div class="rx-breadcrumb">
+        <a href="#">Home</a><span>/</span>
+        <a href="#">Themes</a><span>/</span>
+        <span class="current">Color</span>
+      </div>
+
+      <h3>Pagination</h3>
+      <div class="rx-pagination">
+        <button>‹</button>
+        <button class="active">1</button>
+        <button>2</button>
+        <button>3</button>
+        <button>4</button>
+        <button>›</button>
+      </div>
+
+      <h3>Navbar</h3>
+      <div class="rx-navbar">
+        <span class="brand">Radix</span>
+        <a href="#">Themes</a>
+        <a href="#">Primitives</a>
+        <a href="#">Icons</a>
+        <a href="#">Colors</a>
+        <button class="rx-btn rx-btn--solid rx-btn--sm">Get Started</button>
+      </div>
+    </section>
+
+    <section id="data" data-fidelity="documented">
+      <h2>
+        <span>Data</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://www.radix-ui.com/themes/docs/components/table" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+
+      <h3>Table</h3>
+      <table class="rx-table">
+        <thead>
+          <tr><th>User</th><th>Email</th><th>Role</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Vlad Moroz</td><td>vlad@radix-ui.com</td><td>Owner</td><td><span class="rx-bdg rx-bdg--success">Active</span></td></tr>
+          <tr><td>Colm Tuite</td><td>colm@radix-ui.com</td><td>Admin</td><td><span class="rx-bdg rx-bdg--success">Active</span></td></tr>
+          <tr><td>Pedro Duarte</td><td>pedro@radix-ui.com</td><td>Member</td><td><span class="rx-bdg rx-bdg--warn">Invited</span></td></tr>
+          <tr><td>Benoît Grélard</td><td>ben@radix-ui.com</td><td>Member</td><td><span class="rx-bdg rx-bdg--error">Suspended</span></td></tr>
+        </tbody>
+      </table>
+
+      <h3>List</h3>
+      <ul class="rx-list">
+        <li><div class="rx-avatar">VM</div><div><strong style="font-size:14px">Vlad Moroz</strong><div style="font-size:13px;color:var(--rx-gray-11)">Updated theme · 2m ago</div></div></li>
+        <li><div class="rx-avatar" style="background:var(--rx-violet-9)">CT</div><div><strong style="font-size:14px">Colm Tuite</strong><div style="font-size:13px;color:var(--rx-gray-11)">Imported tokens · 14m ago</div></div></li>
+        <li><div class="rx-avatar" style="background:var(--rx-green-9)">PD</div><div><strong style="font-size:14px">Pedro Duarte</strong><div style="font-size:13px;color:var(--rx-gray-11)">Created palette · 1h ago</div></div></li>
+      </ul>
+
+      <h3>Description list</h3>
+      <dl class="rx-kv">
+        <dt>Stack</dt><dd>Radix Primitives + CSS</dd>
+        <dt>License</dt><dd>MIT</dd>
+        <dt>Theme accent</dt><dd>Indigo · Light</dd>
+        <dt>Generated</dt><dd>2026-05-05</dd>
+      </dl>
+
+      <h3>Empty state</h3>
+      <div class="rx-empty">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><circle cx="9" cy="10" r="0.5" fill="currentColor"/><circle cx="15" cy="10" r="0.5" fill="currentColor"/></svg>
+        <h4 style="margin:8px 0 4px">No items yet</h4>
+        <p style="font-size:14px;margin:0">Get started by creating your first item.</p>
+      </div>
+    </section>
+
+    <section id="layout" data-fidelity="documented">
+      <h2>
+        <span>Layout</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://www.radix-ui.com/themes/docs/components/grid" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--rx-gray-11)">Radix Themes ships layout components: Box, Flex, Grid, Container, Section. The Grid component accepts columns / rows / gap / flow as responsive props.</p>
+
+      <h3>12-column grid</h3>
+      <div class="grid-demo">
+        <div style="grid-column:span 12">columns="12"</div>
+        <div style="grid-column:span 6">6</div>
+        <div style="grid-column:span 6">6</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+      </div>
+
+      <h3>Spacing scale (1-9)</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div class="swatch" style="width:4px;height:32px"></div><span class="lbl">1 · 4px</span></div>
+        <div class="scale-item"><div class="swatch" style="width:8px;height:32px"></div><span class="lbl">2 · 8px</span></div>
+        <div class="scale-item"><div class="swatch" style="width:12px;height:32px"></div><span class="lbl">3 · 12px</span></div>
+        <div class="scale-item"><div class="swatch" style="width:16px;height:32px"></div><span class="lbl">4 · 16px</span></div>
+        <div class="scale-item"><div class="swatch" style="width:24px;height:32px"></div><span class="lbl">5 · 24px</span></div>
+        <div class="scale-item"><div class="swatch" style="width:32px;height:32px"></div><span class="lbl">6 · 32px</span></div>
+        <div class="scale-item"><div class="swatch" style="width:40px;height:32px"></div><span class="lbl">7 · 40px</span></div>
+        <div class="scale-item"><div class="swatch" style="width:48px;height:32px"></div><span class="lbl">8 · 48px</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:32px"></div><span class="lbl">9 · 64px</span></div>
+      </div>
+
+      <h3>Radius scale (1-6)</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:0;background:var(--rx-indigo-3)"></div><span class="lbl">none</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:4px;background:var(--rx-indigo-3)"></div><span class="lbl">1 · 4px</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:6px;background:var(--rx-indigo-3)"></div><span class="lbl">2 · 6px</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:8px;background:var(--rx-indigo-3)"></div><span class="lbl">3 · 8px</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:10px;background:var(--rx-indigo-3)"></div><span class="lbl">4 · 10px</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:16px;background:var(--rx-indigo-3)"></div><span class="lbl">5 · 16px</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:24px;background:var(--rx-indigo-3)"></div><span class="lbl">6 · 24px</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:9999px;background:var(--rx-indigo-3)"></div><span class="lbl">full</span></div>
+      </div>
+
+      <h3>Shadow tokens (1-5)</h3>
+      <div>
+        <div class="shadow-demo" style="box-shadow:var(--rx-shadow-1)">1</div>
+        <div class="shadow-demo" style="box-shadow:var(--rx-shadow-2)">2</div>
+        <div class="shadow-demo" style="box-shadow:var(--rx-shadow-3)">3</div>
+        <div class="shadow-demo" style="box-shadow:var(--rx-shadow-4)">4</div>
+        <div class="shadow-demo" style="box-shadow:var(--rx-shadow-5)">5</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="ds-footer">
+    <h3>Sources</h3>
+    <ul>
+      <li><a href="https://www.radix-ui.com/themes" target="_blank" rel="noopener">https://www.radix-ui.com/themes</a></li>
+      <li><a href="https://www.radix-ui.com/themes/docs/theme/color" target="_blank" rel="noopener">https://www.radix-ui.com/themes/docs/theme/color</a></li>
+      <li><a href="https://www.radix-ui.com/themes/docs/theme/typography" target="_blank" rel="noopener">https://www.radix-ui.com/themes/docs/theme/typography</a></li>
+      <li><a href="https://www.radix-ui.com/icons" target="_blank" rel="noopener">https://www.radix-ui.com/icons</a></li>
+      <li><a href="https://www.radix-ui.com/themes/docs/components/button" target="_blank" rel="noopener">https://www.radix-ui.com/themes/docs/components/button</a></li>
+      <li><a href="https://www.radix-ui.com/themes/docs/components/text-field" target="_blank" rel="noopener">https://www.radix-ui.com/themes/docs/components/text-field</a></li>
+      <li><a href="https://www.radix-ui.com/themes/docs/components/card" target="_blank" rel="noopener">https://www.radix-ui.com/themes/docs/components/card</a></li>
+      <li><a href="https://www.radix-ui.com/themes/docs/components/callout" target="_blank" rel="noopener">https://www.radix-ui.com/themes/docs/components/callout</a></li>
+      <li><a href="https://www.radix-ui.com/themes/docs/components/tabs" target="_blank" rel="noopener">https://www.radix-ui.com/themes/docs/components/tabs</a></li>
+      <li><a href="https://www.radix-ui.com/themes/docs/components/table" target="_blank" rel="noopener">https://www.radix-ui.com/themes/docs/components/table</a></li>
+      <li><a href="https://www.radix-ui.com/themes/docs/components/grid" target="_blank" rel="noopener">https://www.radix-ui.com/themes/docs/components/grid</a></li>
+    </ul>
+    <p class="license-note">This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with WorkOS. Radix Themes and related trademarks belong to WorkOS. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</p>
+    <p class="meta-note">Reproduction date: 2026-05-05 · sourceStatus: homepage-only · fidelity: approximated</p>
+  </footer>
+</body>
+</html>

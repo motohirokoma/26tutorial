@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Slack Design — Design System Reference</title>
+  <script id="ds-meta" type="application/json">
+{"id":"33-slack-design","fileSlug":"33-slack-design","schemaVersion":"1"}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Slack signature 4-color palette + aubergine */
+      --sl-aubergine: #4A154B;
+      --sl-aubergine-dark: #350D36;
+      --sl-aubergine-light: #5C1A5D;
+      --sl-yellow: #ECB22E;
+      --sl-sky: #36C5F0;
+      --sl-mint: #2EB67D;
+      --sl-pink: #E01E5A;
+      --sl-pink-dark: #B11843;
+
+      /* Surfaces */
+      --sl-bg: #FFFFFF;
+      --sl-bg-2: #F8F8F8;
+      --sl-bg-3: #F4EDE4;
+      --sl-app-dark: #1A1D21;
+      --sl-panel-dark: #222529;
+      --sl-panel-dark-2: #2C2F33;
+
+      /* Text */
+      --sl-text: #1D1C1D;
+      --sl-text-2: #616061;
+      --sl-text-3: #868686;
+      --sl-text-on-dark: #D1D2D3;
+      --sl-text-on-dark-2: #ABABAD;
+      --sl-text-link: #1264A3;
+
+      /* Borders */
+      --sl-border: #DDDDDD;
+      --sl-border-2: #E8E8E8;
+      --sl-border-strong: #BABBBC;
+      --sl-border-dark: #35373B;
+
+      /* Semantic */
+      --sl-success: var(--sl-mint);
+      --sl-warning: var(--sl-yellow);
+      --sl-error: var(--sl-pink);
+      --sl-info: var(--sl-sky);
+
+      /* Typography */
+      --sl-font: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --sl-mono: 'SF Mono', Menlo, Consolas, monospace;
+
+      /* Shape */
+      --sl-r-xs: 4px;
+      --sl-r-sm: 6px;
+      --sl-r-md: 8px;
+      --sl-r-lg: 12px;
+      --sl-r-pill: 999px;
+
+      /* Spacing */
+      --sl-s-1: 4px;
+      --sl-s-2: 8px;
+      --sl-s-3: 12px;
+      --sl-s-4: 16px;
+      --sl-s-5: 20px;
+      --sl-s-6: 24px;
+      --sl-s-7: 32px;
+      --sl-s-8: 48px;
+
+      /* Shadows */
+      --sl-shadow-1: 0 1px 3px rgba(0,0,0,0.08);
+      --sl-shadow-2: 0 4px 12px rgba(0,0,0,0.10);
+      --sl-shadow-3: 0 12px 28px rgba(0,0,0,0.16);
+      --sl-shadow-modal: 0 20px 60px rgba(74,21,75,0.25);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: var(--sl-font);
+      font-weight: 400;
+      background: var(--sl-bg-2);
+      color: var(--sl-text);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    code, kbd, pre { font-family: var(--sl-mono); font-size: 0.92em; }
+
+    /* Header */
+    .ds-header {
+      background: linear-gradient(135deg, var(--sl-aubergine) 0%, var(--sl-aubergine-dark) 100%);
+      color: white;
+      padding: var(--sl-s-8) var(--sl-s-7) var(--sl-s-7);
+      position: relative;
+      overflow: hidden;
+    }
+    .ds-header::after {
+      content: '';
+      position: absolute;
+      right: -120px;
+      top: -120px;
+      width: 360px;
+      height: 360px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(236,178,46,0.18), transparent 70%);
+      pointer-events: none;
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--sl-s-2);
+      color: rgba(255,255,255,0.85);
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: var(--sl-r-sm);
+      font-size: 13px;
+      font-weight: 700;
+      border: 1px solid rgba(255,255,255,0.2);
+      transition: background 0.2s, color 0.2s;
+    }
+    .back-link:hover { background: rgba(255,255,255,0.12); color: white; }
+    .ds-header h1 {
+      font-size: 48px;
+      line-height: 56px;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      margin: var(--sl-s-5) 0 var(--sl-s-3);
+    }
+    .ds-header .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--sl-s-2);
+      align-items: center;
+      margin-bottom: var(--sl-s-3);
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: var(--sl-r-xs);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      background: rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.92);
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .badge.kind-bg { background: var(--sl-yellow); color: var(--sl-aubergine); border-color: transparent; }
+    .badge.fidelity-documented { background: #DCEDC8; color: #1B5E20; border-color: transparent; }
+    .badge.fidelity-approximated { background: #FFE7B0; color: #7A4D00; border-color: transparent; }
+    .badge.fidelity-inspired { background: #F3E5F5; color: var(--sl-aubergine); border-color: transparent; }
+    .badge.source-homepage { background: rgba(54,197,240,0.2); color: #B8E9FB; border-color: transparent; }
+
+    .ds-header a.official {
+      color: white;
+      text-decoration: none;
+      font-weight: 700;
+      padding: 4px 12px;
+      border: 1px solid rgba(255,255,255,0.4);
+      border-radius: var(--sl-r-sm);
+      font-size: 12px;
+    }
+    .ds-header a.official:hover { background: rgba(255,255,255,0.15); }
+    .tagline {
+      font-size: 18px;
+      line-height: 26px;
+      max-width: 720px;
+      margin: var(--sl-s-4) 0 0;
+      color: rgba(255,255,255,0.88);
+      font-weight: 400;
+    }
+
+    /* TOC */
+    .toc {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255,255,255,0.92);
+      border-bottom: 1px solid var(--sl-border);
+      backdrop-filter: blur(12px);
+    }
+    .toc ul {
+      list-style: none;
+      margin: 0;
+      padding: var(--sl-s-3) var(--sl-s-7);
+      display: flex;
+      gap: var(--sl-s-2);
+      overflow-x: auto;
+      max-width: 100%;
+    }
+    .toc a {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: var(--sl-r-sm);
+      color: var(--sl-text-2);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+      border: 1px solid transparent;
+      transition: all 0.15s;
+    }
+    .toc a:hover {
+      background: var(--sl-aubergine);
+      color: white;
+    }
+
+    main {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: var(--sl-s-7) var(--sl-s-6);
+    }
+
+    section {
+      background: var(--sl-bg);
+      border-radius: var(--sl-r-md);
+      padding: var(--sl-s-7);
+      margin-bottom: var(--sl-s-6);
+      box-shadow: var(--sl-shadow-1);
+      border: 1px solid var(--sl-border-2);
+    }
+
+    section h2 {
+      display: flex;
+      align-items: center;
+      gap: var(--sl-s-3);
+      flex-wrap: wrap;
+      font-size: 28px;
+      line-height: 36px;
+      font-weight: 900;
+      margin: 0 0 var(--sl-s-5);
+      color: var(--sl-aubergine);
+      letter-spacing: -0.3px;
+    }
+
+    .source-link {
+      font-size: 12px;
+      color: var(--sl-text-link);
+      text-decoration: none;
+      font-weight: 700;
+    }
+    .source-link:hover { text-decoration: underline; }
+
+    h3 {
+      font-size: 18px;
+      line-height: 26px;
+      font-weight: 700;
+      margin: var(--sl-s-6) 0 var(--sl-s-3);
+      color: var(--sl-text);
+    }
+    h4 {
+      font-size: 14px;
+      line-height: 20px;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+      text-transform: uppercase;
+      margin: var(--sl-s-4) 0 var(--sl-s-2);
+      color: var(--sl-text-2);
+    }
+    p { margin: 0 0 var(--sl-s-3); color: var(--sl-text); }
+    .sub-text { color: var(--sl-text-2); font-size: 14px; }
+
+    /* Brand */
+    #brand .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--sl-s-3);
+      padding: var(--sl-s-4) var(--sl-s-5);
+      background: var(--sl-aubergine);
+      border-radius: var(--sl-r-md);
+      color: white;
+      font-size: 26px;
+      font-weight: 900;
+      letter-spacing: -0.3px;
+    }
+    #brand .brand-mark .swatch-cluster {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3px;
+      width: 36px;
+      height: 36px;
+    }
+    #brand .brand-mark .swatch-cluster span {
+      border-radius: 4px;
+    }
+    #brand .pillars {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--sl-s-4);
+      margin-top: var(--sl-s-6);
+    }
+    #brand .pillar {
+      padding: var(--sl-s-5);
+      background: var(--sl-bg-3);
+      border-radius: var(--sl-r-md);
+      border-left: 4px solid var(--sl-aubergine);
+    }
+    #brand .pillar.p2 { border-left-color: var(--sl-yellow); }
+    #brand .pillar.p3 { border-left-color: var(--sl-mint); }
+    #brand .pillar.p4 { border-left-color: var(--sl-sky); }
+    #brand .pillar h4 {
+      margin: 0 0 var(--sl-s-2);
+      color: var(--sl-aubergine);
+      text-transform: none;
+      font-size: 16px;
+      letter-spacing: 0;
+    }
+    #brand .pillar p {
+      font-size: 14px;
+      color: var(--sl-text-2);
+      margin: 0;
+    }
+
+    /* Color */
+    .color-grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--sl-s-3);
+      margin-bottom: var(--sl-s-4);
+    }
+    .color-block {
+      aspect-ratio: 1.4;
+      border-radius: var(--sl-r-md);
+      padding: var(--sl-s-4);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      color: white;
+      font-weight: 700;
+    }
+    .color-block .name { font-size: 14px; }
+    .color-block .hex { font-family: var(--sl-mono); font-size: 12px; opacity: 0.9; }
+
+    .color-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px,1fr));
+      gap: var(--sl-s-2);
+      margin-bottom: var(--sl-s-4);
+    }
+    .color-cell {
+      padding: var(--sl-s-3) var(--sl-s-4);
+      border-radius: var(--sl-r-sm);
+      font-size: 12px;
+      font-family: var(--sl-mono);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .semantic-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
+      gap: var(--sl-s-3);
+    }
+    .sem-card {
+      padding: var(--sl-s-4);
+      border-radius: var(--sl-r-md);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      color: white;
+    }
+    .sem-card .label { font-size: 14px; font-weight: 700; }
+    .sem-card .hex { font-family: var(--sl-mono); font-size: 12px; opacity: 0.92; }
+
+    /* Typography */
+    .type-row {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: var(--sl-s-4);
+      padding: var(--sl-s-4) 0;
+      border-bottom: 1px solid var(--sl-border-2);
+      align-items: baseline;
+    }
+    .type-row:last-child { border-bottom: 0; }
+    .type-row .label {
+      font-family: var(--sl-mono);
+      font-size: 12px;
+      color: var(--sl-text-2);
+    }
+    .display-l { font-size: 48px; line-height: 56px; font-weight: 900; letter-spacing: -0.5px; }
+    .display-m { font-size: 36px; line-height: 44px; font-weight: 900; letter-spacing: -0.3px; }
+    .heading-l { font-size: 28px; line-height: 36px; font-weight: 700; }
+    .heading-m { font-size: 22px; line-height: 30px; font-weight: 700; }
+    .heading-s { font-size: 18px; line-height: 26px; font-weight: 700; }
+    .body-l { font-size: 16px; line-height: 24px; font-weight: 400; }
+    .body-m { font-size: 15px; line-height: 22px; font-weight: 400; }
+    .body-s { font-size: 13px; line-height: 18px; font-weight: 400; }
+    .label-text { font-size: 13px; line-height: 18px; font-weight: 700; }
+    .mono-sample { font-family: var(--sl-mono); font-size: 13px; color: var(--sl-aubergine); }
+
+    /* Iconography */
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(80px,1fr));
+      gap: var(--sl-s-3);
+    }
+    .icon-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: var(--sl-s-3);
+      background: var(--sl-bg-2);
+      border-radius: var(--sl-r-sm);
+      border: 1px solid var(--sl-border-2);
+    }
+    .icon-cell svg { width: 22px; height: 22px; stroke: var(--sl-aubergine); fill: none; stroke-width: 2; }
+    .icon-cell span { font-size: 11px; color: var(--sl-text-2); }
+
+    /* Buttons */
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--sl-s-3);
+      align-items: center;
+      margin-bottom: var(--sl-s-3);
+    }
+    .sl-btn {
+      font-family: var(--sl-font);
+      font-size: 15px;
+      font-weight: 900;
+      letter-spacing: 0.2px;
+      padding: 8px 16px;
+      border-radius: var(--sl-r-xs);
+      border: 0;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      height: 36px;
+      transition: background 0.15s, box-shadow 0.15s, transform 0.05s;
+    }
+    .sl-btn--primary {
+      background: var(--sl-mint);
+      color: white;
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1);
+    }
+    .sl-btn--primary:hover { background: #28A06D; }
+    .sl-btn--primary:active { background: #228B5F; }
+    .sl-btn--primary:disabled { background: #B7DCC8; color: rgba(255,255,255,0.85); cursor: not-allowed; }
+    .sl-btn--danger { background: var(--sl-pink); color: white; }
+    .sl-btn--danger:hover { background: var(--sl-pink-dark); }
+    .sl-btn--secondary {
+      background: var(--sl-bg);
+      color: var(--sl-text);
+      border: 1px solid var(--sl-border-strong);
+    }
+    .sl-btn--secondary:hover { background: var(--sl-bg-2); }
+    .sl-btn--ghost {
+      background: transparent;
+      color: var(--sl-aubergine);
+      font-weight: 700;
+    }
+    .sl-btn--ghost:hover { background: rgba(74,21,75,0.06); }
+    .sl-btn--icon {
+      width: 36px; height: 36px; padding: 0; justify-content: center;
+      background: transparent; color: var(--sl-text-2);
+      border-radius: var(--sl-r-sm);
+    }
+    .sl-btn--icon:hover { background: var(--sl-bg-2); color: var(--sl-text); }
+    .sl-btn--sm { height: 30px; padding: 6px 12px; font-size: 13px; }
+    .sl-btn--lg { height: 44px; padding: 12px 24px; font-size: 16px; }
+    .sl-btn:focus-visible { outline: 2px solid var(--sl-sky); outline-offset: 2px; }
+
+    /* Form */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+      gap: var(--sl-s-4);
+    }
+    .sl-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .sl-field label {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--sl-text);
+    }
+    .sl-input, .sl-select, .sl-textarea {
+      font-family: var(--sl-font);
+      font-size: 15px;
+      color: var(--sl-text);
+      background: var(--sl-bg);
+      border: 1px solid var(--sl-border-strong);
+      border-radius: var(--sl-r-xs);
+      padding: 8px 12px;
+      width: 100%;
+      outline: none;
+      transition: border 0.15s, box-shadow 0.15s;
+    }
+    .sl-input:focus, .sl-select:focus, .sl-textarea:focus {
+      border-color: var(--sl-aubergine);
+      box-shadow: 0 0 0 4px rgba(74,21,75,0.15);
+    }
+    .sl-input--error {
+      border-color: var(--sl-pink);
+    }
+    .sl-input--error:focus { box-shadow: 0 0 0 4px rgba(224,30,90,0.15); }
+    .sl-textarea { min-height: 90px; resize: vertical; }
+    .sl-helper { font-size: 12px; color: var(--sl-text-2); }
+    .sl-error { color: var(--sl-pink); font-weight: 700; }
+
+    .sl-checkbox, .sl-radio {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .sl-checkbox input, .sl-radio input { width: 18px; height: 18px; accent-color: var(--sl-aubergine); }
+
+    .sl-switch { position: relative; display: inline-block; width: 38px; height: 22px; }
+    .sl-switch input { opacity: 0; width: 0; height: 0; }
+    .sl-switch .slider {
+      position: absolute; cursor: pointer; inset: 0;
+      background: #C2C2C2;
+      border-radius: var(--sl-r-pill);
+      transition: 0.2s;
+    }
+    .sl-switch .slider::before {
+      content: ''; position: absolute;
+      width: 18px; height: 18px;
+      left: 2px; top: 2px;
+      background: white;
+      border-radius: 50%;
+      transition: 0.2s;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.18);
+    }
+    .sl-switch input:checked + .slider { background: var(--sl-mint); }
+    .sl-switch input:checked + .slider::before { transform: translateX(16px); }
+
+    /* Surfaces — Slack message thread style */
+    .sl-card {
+      background: var(--sl-bg);
+      border-radius: var(--sl-r-md);
+      padding: var(--sl-s-5);
+      border: 1px solid var(--sl-border-2);
+      box-shadow: var(--sl-shadow-1);
+    }
+    .surface-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+      gap: var(--sl-s-4);
+    }
+    .sl-stat {
+      padding: var(--sl-s-5);
+      background: linear-gradient(135deg, var(--sl-aubergine), var(--sl-aubergine-light));
+      border-radius: var(--sl-r-md);
+      color: white;
+    }
+    .sl-stat .num { font-size: 30px; font-weight: 900; line-height: 1; }
+    .sl-stat .lbl { font-size: 12px; opacity: 0.85; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    /* Slack message thread mock */
+    .sl-thread {
+      background: var(--sl-bg);
+      border: 1px solid var(--sl-border-2);
+      border-radius: var(--sl-r-md);
+      overflow: hidden;
+    }
+    .sl-thread .channel-bar {
+      padding: var(--sl-s-3) var(--sl-s-4);
+      background: var(--sl-bg);
+      border-bottom: 1px solid var(--sl-border-2);
+      font-weight: 900;
+      color: var(--sl-text);
+      display: flex;
+      align-items: center;
+      gap: var(--sl-s-2);
+    }
+    .sl-thread .messages {
+      padding: var(--sl-s-3);
+      display: flex;
+      flex-direction: column;
+      gap: var(--sl-s-3);
+      max-height: 300px;
+    }
+    .sl-msg {
+      display: grid;
+      grid-template-columns: 36px 1fr;
+      gap: var(--sl-s-3);
+      padding: var(--sl-s-2);
+      border-radius: var(--sl-r-sm);
+    }
+    .sl-msg:hover { background: var(--sl-bg-2); }
+    .sl-avatar {
+      width: 36px; height: 36px;
+      border-radius: var(--sl-r-sm);
+      background: var(--sl-yellow);
+      display: inline-flex;
+      align-items: center; justify-content: center;
+      font-weight: 900;
+      color: var(--sl-aubergine);
+    }
+    .sl-msg .head {
+      display: flex;
+      align-items: baseline;
+      gap: var(--sl-s-2);
+    }
+    .sl-msg .author { font-weight: 900; color: var(--sl-text); font-size: 15px; }
+    .sl-msg .time { font-size: 12px; color: var(--sl-text-2); }
+    .sl-msg .body { font-size: 15px; color: var(--sl-text); margin-top: 2px; line-height: 1.46; }
+
+    .sl-modal {
+      background: var(--sl-bg);
+      padding: var(--sl-s-6);
+      border-radius: var(--sl-r-md);
+      box-shadow: var(--sl-shadow-modal);
+      max-width: 420px;
+      border: 1px solid var(--sl-border-2);
+    }
+
+    /* Navigation */
+    .sl-tabs {
+      display: flex;
+      gap: var(--sl-s-2);
+      border-bottom: 1px solid var(--sl-border-2);
+      margin-bottom: var(--sl-s-4);
+    }
+    .sl-tab {
+      padding: var(--sl-s-3) var(--sl-s-4);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--sl-text-2);
+      border-bottom: 3px solid transparent;
+      cursor: pointer;
+      transform: translateY(1px);
+    }
+    .sl-tab.active { color: var(--sl-aubergine); border-bottom-color: var(--sl-aubergine); }
+    .sl-tab:hover:not(.active) { color: var(--sl-text); }
+
+    .sl-breadcrumb { display: flex; gap: 8px; align-items: center; font-size: 14px; color: var(--sl-text-2); }
+    .sl-breadcrumb a { color: var(--sl-text-link); text-decoration: none; }
+    .sl-breadcrumb a:hover { text-decoration: underline; }
+
+    .sl-pagination { display: flex; gap: 4px; align-items: center; }
+    .sl-pagination button {
+      min-width: 32px; height: 32px;
+      padding: 0 10px;
+      border-radius: var(--sl-r-xs);
+      border: 1px solid var(--sl-border-strong);
+      background: var(--sl-bg);
+      color: var(--sl-text);
+      cursor: pointer;
+      font-family: var(--sl-font);
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .sl-pagination button.active { background: var(--sl-aubergine); color: white; border-color: var(--sl-aubergine); }
+
+    /* Slack-style sidebar */
+    .sl-sidebar {
+      background: var(--sl-app-dark);
+      color: var(--sl-text-on-dark);
+      border-radius: var(--sl-r-md);
+      padding: var(--sl-s-3) var(--sl-s-2);
+      width: 240px;
+      max-width: 100%;
+    }
+    .sl-sidebar .workspace {
+      display: flex; align-items: center; gap: 10px;
+      padding: var(--sl-s-2) var(--sl-s-3);
+      font-weight: 900;
+      color: white;
+      font-size: 15px;
+    }
+    .sl-sidebar a {
+      display: flex; align-items: center; gap: 10px;
+      padding: 6px 12px;
+      border-radius: var(--sl-r-xs);
+      color: var(--sl-text-on-dark-2);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 400;
+    }
+    .sl-sidebar a:hover { background: rgba(255,255,255,0.06); color: white; }
+    .sl-sidebar a.active { background: rgba(54,197,240,0.95); color: white; font-weight: 700; }
+    .sl-sidebar .group-label {
+      padding: var(--sl-s-3) var(--sl-s-3) 4px;
+      color: var(--sl-text-on-dark-2);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .sl-topbar {
+      display: flex; align-items: center; gap: var(--sl-s-3);
+      padding: var(--sl-s-3) var(--sl-s-4);
+      background: var(--sl-aubergine);
+      border-radius: var(--sl-r-md);
+      color: white;
+    }
+    .sl-search-bar {
+      flex: 1;
+      background: rgba(255,255,255,0.15);
+      border-radius: var(--sl-r-sm);
+      padding: 6px 12px;
+      color: rgba(255,255,255,0.9);
+      font-size: 14px;
+      border: 1px solid rgba(255,255,255,0.18);
+    }
+
+    .sl-menu {
+      background: var(--sl-bg);
+      border-radius: var(--sl-r-sm);
+      box-shadow: var(--sl-shadow-3);
+      padding: 6px 0;
+      width: 220px;
+      border: 1px solid var(--sl-border-2);
+    }
+    .sl-menu .item { padding: 8px 14px; font-size: 14px; cursor: pointer; }
+    .sl-menu .item:hover { background: var(--sl-aubergine); color: white; }
+    .sl-menu .divider { height: 1px; background: var(--sl-border-2); margin: 4px 0; }
+
+    /* Footer */
+    .ds-footer {
+      background: var(--sl-app-dark);
+      padding: var(--sl-s-7);
+      margin-top: var(--sl-s-7);
+      color: var(--sl-text-on-dark);
+    }
+    .ds-footer h3 { margin-top: 0; color: white; }
+    .ds-footer ul { padding-left: 20px; }
+    .ds-footer li { margin-bottom: 4px; word-break: break-all; font-size: 13px; }
+    .ds-footer a { color: var(--sl-sky); text-decoration: none; }
+    .ds-footer a:hover { text-decoration: underline; }
+    .license-note { font-size: 13px; color: var(--sl-text-on-dark-2); margin-top: var(--sl-s-4); }
+    .meta-note { font-size: 12px; color: var(--sl-text-on-dark-2); font-family: var(--sl-mono); margin-top: var(--sl-s-2); }
+
+    @media (max-width: 720px) {
+      .ds-header h1 { font-size: 32px; line-height: 40px; }
+      main { padding: var(--sl-s-4); }
+      section { padding: var(--sl-s-5); }
+      .type-row { grid-template-columns: 1fr; }
+      .color-grid-4 { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <header class="ds-header">
+    <a href="index.html" class="back-link">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Catalog
+    </a>
+    <h1>Slack Design</h1>
+    <div class="meta">
+      <span class="badge kind-bg">brand-guidelines</span>
+      <span class="badge fidelity-inspired">inspired</span>
+      <span class="badge source-homepage">source: homepage-only</span>
+      <a href="https://slack.design" target="_blank" rel="noopener" class="official">Official</a>
+    </div>
+    <p class="tagline">Slack's iconic 4-color palette — aubergine, yellow, sky-blue, mint — anchoring a friendly enterprise messaging aesthetic.</p>
+  </header>
+
+  <nav class="toc" aria-label="Table of contents">
+    <ul>
+      <li><a href="#brand">Brand</a></li>
+      <li><a href="#color">Color</a></li>
+      <li><a href="#typography">Typography</a></li>
+      <li><a href="#iconography">Iconography</a></li>
+      <li><a href="#buttons">Buttons</a></li>
+      <li><a href="#form">Form</a></li>
+      <li><a href="#surfaces">Surfaces</a></li>
+      <li><a href="#navigation">Navigation</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="brand" data-fidelity="inspired">
+      <h2>
+        <span>Brand</span>
+        <span class="badge fidelity-inspired">inspired</span>
+      </h2>
+      <div class="brand-mark">
+        <span class="swatch-cluster">
+          <span style="background:var(--sl-yellow)"></span>
+          <span style="background:var(--sl-mint)"></span>
+          <span style="background:var(--sl-pink)"></span>
+          <span style="background:var(--sl-sky)"></span>
+        </span>
+        Slack
+      </div>
+      <p style="margin-top: var(--sl-s-5); max-width: 720px; font-size: 16px; color: var(--sl-text-2);">
+        Slack's design balances enterprise reliability with playful friendliness. The signature aubergine anchors a 4-color palette of yellow, sky, mint, and pink — each a distinct hue, applied generously to convey approachability inside professional software.
+      </p>
+      <div class="pillars">
+        <div class="pillar">
+          <h4>Friendly</h4>
+          <p>A 4-color palette and Lato's warm geometry soften the workplace tool into something people enjoy opening.</p>
+        </div>
+        <div class="pillar p2">
+          <h4>Focused</h4>
+          <p>Channel structure and message threads guide attention; chrome stays out of the way of conversations.</p>
+        </div>
+        <div class="pillar p3">
+          <h4>Reliable</h4>
+          <p>Density, contrast, and predictable affordances ensure Slack works under heavy daily enterprise use.</p>
+        </div>
+        <div class="pillar p4">
+          <h4>Expressive</h4>
+          <p>Emoji, custom statuses, and personalized themes let teams shape Slack to their culture.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="color" data-fidelity="inspired">
+      <h2>
+        <span>Color</span>
+        <span class="badge fidelity-inspired">inspired</span>
+        <a href="https://slack.design" target="_blank" rel="noopener" class="source-link">Official</a>
+      </h2>
+      <p class="sub-text">The aubergine purple anchors Slack chrome; the 4-color set (Yellow, Sky, Mint, Pink) is reserved for emphasis, illustration, and signature moments.</p>
+
+      <h3>Signature 4-color palette</h3>
+      <div class="color-grid-4">
+        <div class="color-block" style="background:var(--sl-yellow);color:var(--sl-aubergine)"><span class="name">Yellow</span><span class="hex">#ECB22E</span></div>
+        <div class="color-block" style="background:var(--sl-sky)"><span class="name">Sky</span><span class="hex">#36C5F0</span></div>
+        <div class="color-block" style="background:var(--sl-mint)"><span class="name">Mint</span><span class="hex">#2EB67D</span></div>
+        <div class="color-block" style="background:var(--sl-pink)"><span class="name">Pink</span><span class="hex">#E01E5A</span></div>
+      </div>
+
+      <h3>Aubergine (primary brand)</h3>
+      <div class="color-row">
+        <div class="color-cell" style="background:var(--sl-aubergine);color:white">aubergine<span>#4A154B</span></div>
+        <div class="color-cell" style="background:var(--sl-aubergine-dark);color:white">dark<span>#350D36</span></div>
+        <div class="color-cell" style="background:var(--sl-aubergine-light);color:white">light<span>#5C1A5D</span></div>
+      </div>
+
+      <h3>Surfaces &amp; text</h3>
+      <div class="color-row">
+        <div class="color-cell" style="background:var(--sl-bg);color:var(--sl-text);border:1px solid var(--sl-border)">bg<span>#FFFFFF</span></div>
+        <div class="color-cell" style="background:var(--sl-bg-2);color:var(--sl-text);border:1px solid var(--sl-border)">bg-2<span>#F8F8F8</span></div>
+        <div class="color-cell" style="background:var(--sl-app-dark);color:white">app-dark<span>#1A1D21</span></div>
+        <div class="color-cell" style="background:var(--sl-panel-dark);color:white">panel-dark<span>#222529</span></div>
+        <div class="color-cell" style="background:var(--sl-text);color:white">text<span>#1D1C1D</span></div>
+        <div class="color-cell" style="background:var(--sl-text-2);color:white">text-2<span>#616061</span></div>
+      </div>
+
+      <h3>Semantic roles</h3>
+      <div class="semantic-grid">
+        <div class="sem-card" style="background:var(--sl-mint)"><span class="label">Success</span><span class="hex">#2EB67D</span></div>
+        <div class="sem-card" style="background:var(--sl-sky);color:#0E3247"><span class="label">Info</span><span class="hex">#36C5F0</span></div>
+        <div class="sem-card" style="background:var(--sl-yellow);color:#5A4310"><span class="label">Warning</span><span class="hex">#ECB22E</span></div>
+        <div class="sem-card" style="background:var(--sl-pink)"><span class="label">Error</span><span class="hex">#E01E5A</span></div>
+      </div>
+    </section>
+
+    <section id="typography" data-fidelity="inspired">
+      <h2>
+        <span>Typography</span>
+        <span class="badge fidelity-inspired">inspired</span>
+        <a href="https://slack.design" target="_blank" rel="noopener" class="source-link">Official</a>
+      </h2>
+      <p class="sub-text">Lato (Google Fonts) is used as the primary brand typeface — warm humanist sans with strong italics. Weights: 400 / 700 / 900.</p>
+
+      <div class="type-row"><div class="label">Display L · 48/56 · 900</div><div class="display-l">Where work happens</div></div>
+      <div class="type-row"><div class="label">Display M · 36/44 · 900</div><div class="display-m">Channels, threads, focus</div></div>
+      <div class="type-row"><div class="label">Heading L · 28/36 · 700</div><div class="heading-l">Workspace overview</div></div>
+      <div class="type-row"><div class="label">Heading M · 22/30 · 700</div><div class="heading-m">Recent activity</div></div>
+      <div class="type-row"><div class="label">Heading S · 18/26 · 700</div><div class="heading-s">Channel section</div></div>
+      <div class="type-row"><div class="label">Body L · 16/24 · 400</div><div class="body-l">Slack's typography uses Lato for paragraph copy. The warm geometry feels approachable while keeping density acceptable inside a chat surface.</div></div>
+      <div class="type-row"><div class="label">Body M · 15/22 · 400</div><div class="body-m">Body M is the default for message text. Slack tunes line-height to 1.46 for comfortable scanning.</div></div>
+      <div class="type-row"><div class="label">Body S · 13/18 · 400</div><div class="body-s">Body S is reserved for timestamps, helper text, and meta info under messages.</div></div>
+      <div class="type-row"><div class="label">Label · 13/18 · 700</div><div class="label-text">Send · Reply · Save</div></div>
+      <div class="type-row"><div class="label">Mono</div><div class="mono-sample">/remind #design at 10am</div></div>
+    </section>
+
+    <section id="iconography" data-fidelity="inspired">
+      <h2>
+        <span>Iconography</span>
+        <span class="badge fidelity-inspired">inspired</span>
+        <a href="https://slack.design" target="_blank" rel="noopener" class="source-link">Official</a>
+      </h2>
+      <p class="sub-text">Slack's icons are proprietary; this catalog uses generic 22px stroke icons that match the visual register (rounded, friendly, minimum 1.6px stroke).</p>
+      <div class="icon-grid">
+        <div class="icon-cell"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12L12 3l9 9"/><path d="M5 10v10h14V10"/></svg><span>home</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><span>search</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8 8 0 1 1-3.6-6.7"/><path d="M21 5l-9 9-3-3"/></svg><span>check</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a4 4 0 0 1-4 4H7l-4 4V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/></svg><span>chat</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h14v16H5z"/><path d="M9 8h6M9 12h6M9 16h4"/></svg><span>channel</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg><span>profile</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>schedule</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4l9 16 2.5-7L21 11z"/></svg><span>send</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12c0 5.5-4.5 10-10 10S2 17.5 2 12 6.5 2 12 2c2 0 3.8.6 5.4 1.6"/><path d="M21 5l-9 9-3-3"/></svg><span>done</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><circle cx="9" cy="10" r="0.6" fill="currentColor"/><circle cx="15" cy="10" r="0.6" fill="currentColor"/></svg><span>react</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg><span>add</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg><span>close</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.5-2.5l2-1.5-2-3.5-2.5 1A7 7 0 0 0 13 4l-.5-2.5h-4L8 4a7 7 0 0 0-3 1.5l-2.5-1-2 3.5 2 1.5A7 7 0 0 0 5 12c0 .9.2 1.7.5 2.5l-2 1.5 2 3.5 2.5-1c.9.7 2 1.2 3 1.5l.5 2.5h4l.5-2.5c1-.3 2.1-.8 3-1.5l2.5 1 2-3.5-2-1.5c.3-.8.5-1.6.5-2.5z"/></svg><span>settings</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg><span>dm</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14V6a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v8"/><path d="M3 18h18"/></svg><span>huddle</span></div>
+      </div>
+    </section>
+
+    <section id="buttons" data-fidelity="inspired">
+      <h2>
+        <span>Buttons</span>
+        <span class="badge fidelity-inspired">inspired</span>
+        <a href="https://slack.com" target="_blank" rel="noopener" class="source-link">Slack.com</a>
+      </h2>
+      <p class="sub-text">Slack's primary CTA uses Mint Green (#2EB67D) — a confident, approachable affirmative. Danger uses the signature pink. All buttons are 900 weight.</p>
+
+      <h3>Variants</h3>
+      <div class="button-row">
+        <button class="sl-btn sl-btn--primary">Send message</button>
+        <button class="sl-btn sl-btn--secondary">Cancel</button>
+        <button class="sl-btn sl-btn--danger">Leave channel</button>
+        <button class="sl-btn sl-btn--ghost">Learn more</button>
+        <button class="sl-btn sl-btn--icon" aria-label="emoji">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><circle cx="9" cy="10" r="0.6" fill="currentColor"/><circle cx="15" cy="10" r="0.6" fill="currentColor"/></svg>
+        </button>
+        <button class="sl-btn sl-btn--icon" aria-label="attach">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.5l-9 9a5.5 5.5 0 0 1-7.8-7.8l9-9a3.5 3.5 0 0 1 5 5l-9 9a1.5 1.5 0 0 1-2-2l8-8"/></svg>
+        </button>
+      </div>
+
+      <h3>Sizes</h3>
+      <div class="button-row">
+        <button class="sl-btn sl-btn--primary sl-btn--sm">Small</button>
+        <button class="sl-btn sl-btn--primary">Default</button>
+        <button class="sl-btn sl-btn--primary sl-btn--lg">Large</button>
+      </div>
+
+      <h3>States</h3>
+      <div class="button-row">
+        <button class="sl-btn sl-btn--primary">Enabled</button>
+        <button class="sl-btn sl-btn--primary" style="background:#28A06D">Hover</button>
+        <button class="sl-btn sl-btn--primary" style="outline:2px solid var(--sl-sky);outline-offset:2px">Focus</button>
+        <button class="sl-btn sl-btn--primary" disabled>Disabled</button>
+      </div>
+    </section>
+
+    <section id="form" data-fidelity="inspired">
+      <h2>
+        <span>Form</span>
+        <span class="badge fidelity-inspired">inspired</span>
+        <a href="https://slack.com" target="_blank" rel="noopener" class="source-link">Slack.com</a>
+      </h2>
+      <p class="sub-text">Slack's text inputs are utilitarian: a strong border, generous padding, and focused glow in aubergine that matches the chrome.</p>
+
+      <h3>Text fields</h3>
+      <div class="form-grid">
+        <div class="sl-field">
+          <label for="f1">Channel name</label>
+          <input class="sl-input" id="f1" type="text" value="design-tokens">
+          <span class="sl-helper">Lowercase, no spaces.</span>
+        </div>
+        <div class="sl-field">
+          <label for="f2">Email</label>
+          <input class="sl-input" id="f2" type="email" placeholder="you@workspace.com">
+        </div>
+        <div class="sl-field">
+          <label for="f3">Status</label>
+          <input class="sl-input" id="f3" type="text" value="In a meeting">
+        </div>
+        <div class="sl-field">
+          <label for="f4">Workspace</label>
+          <select class="sl-select" id="f4">
+            <option>Acme Design</option>
+            <option>Acme Engineering</option>
+            <option>Acme Ops</option>
+          </select>
+        </div>
+        <div class="sl-field">
+          <label for="f5">Message</label>
+          <textarea class="sl-textarea" id="f5">Reminder: design review at 3pm.</textarea>
+        </div>
+        <div class="sl-field">
+          <label for="f6">Email <span style="color:var(--sl-pink)">·</span></label>
+          <input class="sl-input sl-input--error" id="f6" type="text" value="invalid@">
+          <span class="sl-helper sl-error">Please enter a valid email address.</span>
+        </div>
+      </div>
+
+      <h3>Selection controls</h3>
+      <div class="button-row">
+        <label class="sl-checkbox"><input type="checkbox" checked>Notify members</label>
+        <label class="sl-checkbox"><input type="checkbox">Announce in #general</label>
+        <label class="sl-radio"><input type="radio" name="r1" checked>Public</label>
+        <label class="sl-radio"><input type="radio" name="r1">Private</label>
+        <label class="sl-switch"><input type="checkbox" checked><span class="slider"></span></label>
+        <label class="sl-switch"><input type="checkbox"><span class="slider"></span></label>
+      </div>
+
+      <h3>Slider &amp; file</h3>
+      <div style="max-width:400px;display:flex;flex-direction:column;gap:12px">
+        <input type="range" min="0" max="100" value="60" style="accent-color:var(--sl-aubergine);width:100%">
+        <input type="file" class="sl-input" style="padding:8px">
+      </div>
+    </section>
+
+    <section id="surfaces" data-fidelity="inspired">
+      <h2>
+        <span>Surfaces</span>
+        <span class="badge fidelity-inspired">inspired</span>
+        <a href="https://slack.com" target="_blank" rel="noopener" class="source-link">Slack.com</a>
+      </h2>
+      <p class="sub-text">Cards, panels, modals, and the signature message-thread surface. Slack uses subtle borders and very low elevation for chrome — emphasis comes from color, not shadow.</p>
+
+      <h3>Cards &amp; stats</h3>
+      <div class="surface-grid">
+        <div class="sl-card">
+          <h4 style="margin:0 0 var(--sl-s-2);text-transform:none;letter-spacing:0;color:var(--sl-text);font-size:16px">Workspace settings</h4>
+          <p class="sub-text" style="margin:0">Configure permissions, retention, and integrations for your team.</p>
+        </div>
+        <div class="sl-card" style="border-left:4px solid var(--sl-mint)">
+          <h4 style="margin:0 0 var(--sl-s-2);text-transform:none;letter-spacing:0;color:var(--sl-mint);font-size:16px">All systems normal</h4>
+          <p class="sub-text" style="margin:0">No degraded services. Last incident: 14 days ago.</p>
+        </div>
+        <div class="sl-stat">
+          <div class="num">2,847</div>
+          <div class="lbl">Active users today</div>
+        </div>
+        <div class="sl-stat" style="background:linear-gradient(135deg,var(--sl-mint),#1F8E5F)">
+          <div class="num">98.4%</div>
+          <div class="lbl">Uptime · 30 days</div>
+        </div>
+      </div>
+
+      <h3>Message thread</h3>
+      <div class="sl-thread">
+        <div class="channel-bar">
+          <span style="color:var(--sl-text-2);font-weight:400">#</span>
+          design-tokens
+          <span style="margin-left:auto;color:var(--sl-text-2);font-weight:400;font-size:13px">12 members</span>
+        </div>
+        <div class="messages">
+          <div class="sl-msg">
+            <div class="sl-avatar">A</div>
+            <div>
+              <div class="head">
+                <span class="author">Avery Tan</span>
+                <span class="time">10:42 AM</span>
+              </div>
+              <div class="body">Just landed the aubergine token rename. Should be live in design.system v3.4.</div>
+            </div>
+          </div>
+          <div class="sl-msg">
+            <div class="sl-avatar" style="background:var(--sl-mint);color:white">B</div>
+            <div>
+              <div class="head">
+                <span class="author">Brett Yu</span>
+                <span class="time">10:44 AM</span>
+              </div>
+              <div class="body">Nice. Did the contrast check pass on the dark theme too?</div>
+            </div>
+          </div>
+          <div class="sl-msg">
+            <div class="sl-avatar" style="background:var(--sl-pink);color:white">C</div>
+            <div>
+              <div class="head">
+                <span class="author">Cleo Park</span>
+                <span class="time">10:46 AM</span>
+              </div>
+              <div class="body">Yes — AA at 4.5:1 across all surface roles.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h3>Modal</h3>
+      <div class="sl-modal">
+        <h4 style="margin:0 0 var(--sl-s-3);text-transform:none;letter-spacing:0;color:var(--sl-text);font-size:18px;font-weight:900">Leave #design-tokens?</h4>
+        <p class="sub-text" style="margin:0 0 var(--sl-s-5)">You'll stop receiving notifications. Members can re-add you anytime.</p>
+        <div class="button-row" style="justify-content:flex-end;margin:0">
+          <button class="sl-btn sl-btn--secondary">Cancel</button>
+          <button class="sl-btn sl-btn--danger">Leave channel</button>
+        </div>
+      </div>
+
+      <h3>Popover &amp; alerts</h3>
+      <div style="display:flex;gap:24px;flex-wrap:wrap">
+        <div class="sl-menu">
+          <div class="item">Edit message</div>
+          <div class="item">Add reaction</div>
+          <div class="item">Pin to channel</div>
+          <div class="divider"></div>
+          <div class="item" style="color:var(--sl-pink)">Delete message</div>
+        </div>
+        <div style="flex:1;min-width:280px;display:flex;flex-direction:column;gap:8px">
+          <div style="background:rgba(54,197,240,0.12);border-left:4px solid var(--sl-sky);padding:12px 16px;border-radius:var(--sl-r-sm);font-size:14px">
+            <strong>Info</strong> · A new app was added to this channel.
+          </div>
+          <div style="background:rgba(46,182,125,0.12);border-left:4px solid var(--sl-mint);padding:12px 16px;border-radius:var(--sl-r-sm);font-size:14px">
+            <strong>Success</strong> · Message scheduled for 9am Monday.
+          </div>
+          <div style="background:rgba(236,178,46,0.18);border-left:4px solid var(--sl-yellow);padding:12px 16px;border-radius:var(--sl-r-sm);font-size:14px">
+            <strong>Warning</strong> · You're at 90% of your free workspace quota.
+          </div>
+          <div style="background:rgba(224,30,90,0.10);border-left:4px solid var(--sl-pink);padding:12px 16px;border-radius:var(--sl-r-sm);font-size:14px">
+            <strong>Error</strong> · Could not deliver to 3 recipients.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="navigation" data-fidelity="inspired">
+      <h2>
+        <span>Navigation</span>
+        <span class="badge fidelity-inspired">inspired</span>
+        <a href="https://slack.com" target="_blank" rel="noopener" class="source-link">Slack.com</a>
+      </h2>
+      <p class="sub-text">Slack's primary navigation lives in the dark left sidebar with channel groups; the top bar carries search and actions. Tabs and breadcrumbs use the body-light surface.</p>
+
+      <h3>Workspace sidebar &amp; topbar</h3>
+      <div style="display:flex;gap:var(--sl-s-4);flex-wrap:wrap;align-items:flex-start">
+        <div class="sl-sidebar">
+          <div class="workspace">
+            <span style="width:24px;height:24px;border-radius:6px;background:var(--sl-yellow);display:inline-flex"></span>
+            Acme Design
+          </div>
+          <a href="#"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12L12 3l9 9"/><path d="M5 10v10h14V10"/></svg>Home</a>
+          <a href="#"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="18" height="14" rx="2"/></svg>DMs</a>
+          <a href="#"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg>Activity</a>
+          <div class="group-label">Channels</div>
+          <a href="#"><span style="color:var(--sl-text-on-dark-2)">#</span>general</a>
+          <a href="#" class="active"><span>#</span>design-tokens</a>
+          <a href="#"><span style="color:var(--sl-text-on-dark-2)">#</span>random</a>
+          <a href="#"><span style="color:var(--sl-text-on-dark-2)">#</span>announcements</a>
+          <div class="group-label">Direct messages</div>
+          <a href="#"><span style="width:8px;height:8px;border-radius:50%;background:var(--sl-mint);display:inline-block"></span>Avery</a>
+          <a href="#"><span style="width:8px;height:8px;border-radius:50%;background:#888;display:inline-block"></span>Brett</a>
+        </div>
+        <div style="flex:1;min-width:260px;display:flex;flex-direction:column;gap:var(--sl-s-3)">
+          <div class="sl-topbar">
+            <button class="sl-btn sl-btn--icon" style="color:white" aria-label="back"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
+            <button class="sl-btn sl-btn--icon" style="color:white" aria-label="forward"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></button>
+            <div class="sl-search-bar">Search Acme Design</div>
+            <button class="sl-btn sl-btn--icon" style="color:white" aria-label="help"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 17v.01M9.5 9.5a2.5 2.5 0 1 1 3.5 2.5c-1 .5-1 1-1 2"/></svg></button>
+          </div>
+
+          <h4 style="margin-top:var(--sl-s-3)">Tabs</h4>
+          <div class="sl-tabs">
+            <div class="sl-tab active">Messages</div>
+            <div class="sl-tab">Files</div>
+            <div class="sl-tab">Pinned</div>
+            <div class="sl-tab">Bookmarks</div>
+          </div>
+
+          <h4>Breadcrumb</h4>
+          <div class="sl-breadcrumb">
+            <a href="#">Workspace</a><span>›</span>
+            <a href="#">Channels</a><span>›</span>
+            <span>design-tokens</span>
+          </div>
+
+          <h4>Pagination</h4>
+          <div class="sl-pagination">
+            <button>‹ Prev</button>
+            <button class="active">1</button>
+            <button>2</button>
+            <button>3</button>
+            <button>4</button>
+            <button>Next ›</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="ds-footer">
+    <h3>Sources</h3>
+    <ul>
+      <li><a href="https://slack.design" target="_blank" rel="noopener">https://slack.design</a></li>
+      <li><a href="https://slack.com" target="_blank" rel="noopener">https://slack.com</a></li>
+      <li><a href="https://api.slack.com/reference/block-kit" target="_blank" rel="noopener">https://api.slack.com/reference/block-kit</a></li>
+    </ul>
+    <p class="license-note">This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Slack (Salesforce). Slack Design and related trademarks belong to Slack (Salesforce). Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</p>
+    <p class="meta-note">Reproduction date: 2026-05-05 · sourceStatus: homepage-only · fidelity: inspired · fontSource: google-fonts</p>
+  </footer>
+</body>
+</html>

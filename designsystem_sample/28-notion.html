@@ -1,0 +1,1309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Notion — Design System Reference</title>
+  <script id="ds-meta" type="application/json">
+{"id":"28-notion","fileSlug":"28-notion","schemaVersion":"1"}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Notion editorial palette */
+      --nt-text: #2F3437;
+      --nt-text-2: #6B6B6B;
+      --nt-text-3: #9B9B9B;
+      --nt-bg: #FFFFFF;
+      --nt-bg-warm: #FAFAF8;
+      --nt-bg-tint: #F7F6F3;
+      --nt-bg-hover: #EFEFEC;
+      --nt-border: #E0E0E0;
+      --nt-border-soft: #EDEDEC;
+      --nt-border-strong: #C7C7C5;
+
+      /* Notion brand accents */
+      --nt-red: #E03E3E;
+      --nt-red-bg: #FBEBEC;
+      --nt-pink: #AD1A72;
+      --nt-pink-bg: #F7E4F0;
+      --nt-blue: #0B6BCB;
+      --nt-blue-bg: #E1EEFB;
+      --nt-green: #0F7B6C;
+      --nt-green-bg: #DDEDEA;
+      --nt-yellow: #CB912F;
+      --nt-yellow-bg: #FBEFD9;
+      --nt-orange: #D9730D;
+      --nt-orange-bg: #FBE8D7;
+      --nt-purple: #6940A5;
+      --nt-purple-bg: #EBDFF9;
+      --nt-brown: #64473A;
+      --nt-brown-bg: #EEE5DD;
+      --nt-gray: #787774;
+      --nt-gray-bg: #EDEDEC;
+
+      /* Type */
+      --nt-font: 'Inter', ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      --nt-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+      --nt-serif: ui-serif, Georgia, 'Times New Roman', serif;
+
+      /* Shape — Notion is sharp */
+      --nt-r-xs: 2px;
+      --nt-r-sm: 3px;
+      --nt-r-md: 4px;
+      --nt-r-lg: 6px;
+      --nt-r-xl: 10px;
+      --nt-r-full: 999px;
+
+      /* Spacing */
+      --nt-s-1: 4px;
+      --nt-s-2: 8px;
+      --nt-s-3: 12px;
+      --nt-s-4: 16px;
+      --nt-s-5: 24px;
+      --nt-s-6: 32px;
+      --nt-s-7: 48px;
+      --nt-s-8: 64px;
+
+      /* Shadow — Notion is mostly flat */
+      --nt-shadow-1: rgba(15,15,15,0.05) 0px 0px 0px 1px, rgba(15,15,15,0.05) 0px 1px 2px;
+      --nt-shadow-2: rgba(15,15,15,0.1) 0px 0px 0px 1px, rgba(15,15,15,0.1) 0px 3px 6px, rgba(15,15,15,0.05) 0px 9px 24px;
+      --nt-shadow-3: rgba(15,15,15,0.05) 0px 0px 0px 1px, rgba(15,15,15,0.1) 0px 5px 10px, rgba(15,15,15,0.04) 0px 15px 40px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: var(--nt-font);
+      background: var(--nt-bg);
+      color: var(--nt-text);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    code, kbd, pre { font-family: var(--nt-mono); }
+
+    /* Header — Notion paper-like */
+    .ds-header {
+      background: var(--nt-bg-warm);
+      color: var(--nt-text);
+      padding: var(--nt-s-7) var(--nt-s-6) var(--nt-s-6);
+      border-bottom: 1px solid var(--nt-border);
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--nt-s-2);
+      color: var(--nt-text-2);
+      text-decoration: none;
+      padding: 4px 8px;
+      border-radius: var(--nt-r-md);
+      font-size: 13px;
+      font-weight: 500;
+      transition: background 0.15s;
+    }
+    .back-link:hover { background: var(--nt-bg-hover); color: var(--nt-text); }
+
+    .ds-header h1 {
+      font-size: 48px;
+      line-height: 1.15;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin: var(--nt-s-5) 0 var(--nt-s-3);
+      font-family: var(--nt-serif);
+    }
+
+    .ds-header .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--nt-s-2);
+      align-items: center;
+      margin-bottom: var(--nt-s-3);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 8px;
+      border-radius: var(--nt-r-md);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      background: var(--nt-bg-hover);
+      color: var(--nt-text-2);
+      border: 1px solid var(--nt-border);
+    }
+    .badge.kind-bg { background: var(--nt-purple-bg); color: var(--nt-purple); border-color: transparent; }
+    .badge.fidelity-documented { background: var(--nt-green-bg); color: var(--nt-green); border-color: transparent; }
+    .badge.fidelity-approximated { background: var(--nt-yellow-bg); color: var(--nt-yellow); border-color: transparent; }
+    .badge.fidelity-inspired { background: var(--nt-purple-bg); color: var(--nt-purple); border-color: transparent; }
+    .badge.source-homepage-only { background: var(--nt-bg-hover); color: var(--nt-text-2); border-color: var(--nt-border); }
+
+    .ds-header a.official {
+      color: var(--nt-text);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 3px 10px;
+      border: 1px solid var(--nt-border-strong);
+      border-radius: var(--nt-r-md);
+      font-size: 12px;
+      background: var(--nt-bg);
+    }
+    .ds-header a.official:hover { background: var(--nt-bg-hover); }
+
+    .tagline {
+      font-size: 18px;
+      line-height: 1.55;
+      max-width: 720px;
+      margin: var(--nt-s-4) 0 0;
+      color: var(--nt-text-2);
+      font-weight: 400;
+    }
+
+    /* TOC */
+    .toc {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--nt-border);
+    }
+    .toc ul {
+      list-style: none;
+      margin: 0;
+      padding: var(--nt-s-3) var(--nt-s-6);
+      display: flex;
+      gap: var(--nt-s-1);
+      overflow-x: auto;
+      max-width: 100%;
+    }
+    .toc a {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: var(--nt-r-sm);
+      color: var(--nt-text-2);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      white-space: nowrap;
+      transition: background 0.15s;
+    }
+    .toc a:hover { background: var(--nt-bg-hover); color: var(--nt-text); }
+
+    /* Main */
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: var(--nt-s-6) var(--nt-s-5);
+    }
+
+    section {
+      background: var(--nt-bg);
+      padding: var(--nt-s-5) 0;
+      margin-bottom: var(--nt-s-5);
+      border-bottom: 1px solid var(--nt-border-soft);
+    }
+    section:last-child { border-bottom: 0; }
+
+    section h2 {
+      display: flex;
+      align-items: center;
+      gap: var(--nt-s-3);
+      flex-wrap: wrap;
+      font-size: 30px;
+      line-height: 1.2;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin: 0 0 var(--nt-s-4);
+      color: var(--nt-text);
+      font-family: var(--nt-serif);
+    }
+
+    .source-link {
+      font-size: 12px;
+      color: var(--nt-text-2);
+      text-decoration: underline;
+      font-weight: 400;
+    }
+    .source-link:hover { color: var(--nt-blue); }
+
+    h3 {
+      font-size: 18px;
+      line-height: 1.3;
+      font-weight: 600;
+      margin: var(--nt-s-5) 0 var(--nt-s-3);
+      color: var(--nt-text);
+    }
+
+    h4 {
+      font-size: 14px;
+      line-height: 1.4;
+      font-weight: 600;
+      margin: var(--nt-s-4) 0 var(--nt-s-2);
+      color: var(--nt-text);
+    }
+
+    p { margin: 0 0 var(--nt-s-3); color: var(--nt-text); }
+
+    /* Brand */
+    #brand .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--nt-s-3);
+      padding: var(--nt-s-3) var(--nt-s-4);
+      background: var(--nt-bg-warm);
+      border-radius: var(--nt-r-md);
+      color: var(--nt-text);
+      font-size: 22px;
+      font-weight: 700;
+      border: 1px solid var(--nt-border);
+      font-family: var(--nt-serif);
+    }
+    #brand .brand-mark .glyph {
+      width: 32px; height: 32px;
+      display: inline-flex; align-items: center; justify-content: center;
+      background: var(--nt-text);
+      color: white;
+      border-radius: var(--nt-r-sm);
+      font-weight: 700;
+      font-size: 18px;
+      font-family: var(--nt-font);
+    }
+    #brand .pillars {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px,1fr));
+      gap: var(--nt-s-4);
+      margin-top: var(--nt-s-5);
+    }
+    #brand .pillar {
+      padding: var(--nt-s-4);
+      background: var(--nt-bg-warm);
+      border-radius: var(--nt-r-md);
+      border: 1px solid var(--nt-border-soft);
+    }
+    #brand .pillar h4 { margin-top: 0; color: var(--nt-text); font-family: var(--nt-serif); font-size: 16px; }
+
+    /* Color */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px,1fr));
+      gap: var(--nt-s-2);
+      margin-bottom: var(--nt-s-4);
+    }
+    .color-cell {
+      aspect-ratio: 5/4;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 8px;
+      font-size: 11px;
+      font-family: var(--nt-mono);
+      border-radius: var(--nt-r-sm);
+      border: 1px solid var(--nt-border-soft);
+    }
+
+    .semantic-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px,1fr));
+      gap: var(--nt-s-2);
+    }
+    .sem-card {
+      padding: var(--nt-s-3);
+      border-radius: var(--nt-r-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .sem-card .label { font-size: 13px; font-weight: 600; }
+    .sem-card .hex { font-family: var(--nt-mono); font-size: 11px; opacity: 0.75; }
+
+    /* Notion-style colored "tags" — match Notion's known palette */
+    .tag-row { display: flex; flex-wrap: wrap; gap: 6px; }
+    .nt-tag {
+      display: inline-flex; align-items: center;
+      padding: 1px 8px;
+      border-radius: var(--nt-r-sm);
+      font-size: 12px; font-weight: 500;
+    }
+    .nt-tag--red { background: var(--nt-red-bg); color: var(--nt-red); }
+    .nt-tag--pink { background: var(--nt-pink-bg); color: var(--nt-pink); }
+    .nt-tag--blue { background: var(--nt-blue-bg); color: var(--nt-blue); }
+    .nt-tag--green { background: var(--nt-green-bg); color: var(--nt-green); }
+    .nt-tag--yellow { background: var(--nt-yellow-bg); color: var(--nt-yellow); }
+    .nt-tag--orange { background: var(--nt-orange-bg); color: var(--nt-orange); }
+    .nt-tag--purple { background: var(--nt-purple-bg); color: var(--nt-purple); }
+    .nt-tag--brown { background: var(--nt-brown-bg); color: var(--nt-brown); }
+    .nt-tag--gray { background: var(--nt-gray-bg); color: var(--nt-gray); }
+
+    /* Typography */
+    .type-row {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: var(--nt-s-4);
+      padding: var(--nt-s-3) 0;
+      border-bottom: 1px solid var(--nt-border-soft);
+      align-items: baseline;
+    }
+    .type-row:last-child { border-bottom: 0; }
+    .type-row .label {
+      font-family: var(--nt-mono);
+      font-size: 11px;
+      color: var(--nt-text-3);
+    }
+    .heading-1 { font-size: 40px; line-height: 1.2; font-weight: 700; letter-spacing: -0.02em; font-family: var(--nt-serif); }
+    .heading-2 { font-size: 30px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01em; font-family: var(--nt-serif); }
+    .heading-3 { font-size: 24px; line-height: 1.3; font-weight: 600; }
+    .heading-4 { font-size: 18px; line-height: 1.4; font-weight: 600; }
+    .body-l { font-size: 16px; line-height: 1.6; }
+    .body-m { font-size: 15px; line-height: 1.55; }
+    .body-s { font-size: 13px; line-height: 1.5; color: var(--nt-text-2); }
+    .quote-sample { padding-left: 12px; border-left: 3px solid var(--nt-text); font-family: var(--nt-serif); font-size: 16px; font-style: italic; }
+    .mono-sample { font-family: var(--nt-mono); font-size: 14px; color: var(--nt-text); background: var(--nt-bg-warm); padding: 1px 5px; border-radius: 3px; }
+
+    /* Iconography */
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(72px,1fr));
+      gap: var(--nt-s-2);
+    }
+    .icon-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: var(--nt-s-3);
+      background: var(--nt-bg-warm);
+      border-radius: var(--nt-r-sm);
+      border: 1px solid var(--nt-border-soft);
+    }
+    .icon-cell svg { width: 18px; height: 18px; stroke: var(--nt-text-2); }
+    .icon-cell span { font-size: 10px; color: var(--nt-text-3); }
+
+    /* Notion-style emoji block */
+    .emoji-row { display: flex; flex-wrap: wrap; gap: 6px; }
+    .emoji-cell {
+      width: 36px; height: 36px;
+      display: inline-flex; align-items: center; justify-content: center;
+      background: var(--nt-bg-warm);
+      border-radius: var(--nt-r-md);
+      border: 1px solid var(--nt-border-soft);
+      font-size: 18px;
+    }
+
+    /* Buttons */
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--nt-s-2);
+      align-items: center;
+      margin-bottom: var(--nt-s-3);
+    }
+
+    .nt-btn {
+      font-family: var(--nt-font);
+      font-size: 14px;
+      font-weight: 500;
+      padding: 0 12px;
+      border-radius: var(--nt-r-md);
+      border: 1px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      height: 32px;
+      transition: background 0.15s, border-color 0.15s;
+      white-space: nowrap;
+    }
+    .nt-btn--primary { background: var(--nt-blue); color: white; }
+    .nt-btn--primary:hover { background: #0857A8; }
+    .nt-btn--primary:disabled { background: #B3CDEB; cursor: not-allowed; }
+    .nt-btn--secondary {
+      background: var(--nt-bg);
+      color: var(--nt-text);
+      border-color: var(--nt-border-strong);
+    }
+    .nt-btn--secondary:hover { background: var(--nt-bg-hover); }
+    .nt-btn--ghost {
+      background: transparent;
+      color: var(--nt-text-2);
+    }
+    .nt-btn--ghost:hover { background: var(--nt-bg-hover); color: var(--nt-text); }
+    .nt-btn--danger {
+      background: var(--nt-bg);
+      color: var(--nt-red);
+      border-color: var(--nt-border);
+    }
+    .nt-btn--danger:hover { background: var(--nt-red-bg); }
+    .nt-btn--icon { width: 28px; height: 28px; padding: 0; justify-content: center; background: transparent; color: var(--nt-text-2); }
+    .nt-btn--icon:hover { background: var(--nt-bg-hover); color: var(--nt-text); }
+    .nt-btn--sm { height: 26px; padding: 0 8px; font-size: 12px; }
+    .nt-btn--lg { height: 38px; padding: 0 16px; font-size: 15px; }
+    .nt-btn:focus-visible { outline: 2px solid var(--nt-blue); outline-offset: 1px; }
+
+    /* Notion "/" command-style block */
+    .cmd-block {
+      display: flex; align-items: center; gap: 10px;
+      padding: 6px 10px;
+      background: var(--nt-bg);
+      border: 1px solid var(--nt-border);
+      border-radius: var(--nt-r-md);
+      font-size: 14px;
+      width: fit-content;
+    }
+    .cmd-block .key {
+      font-family: var(--nt-mono);
+      background: var(--nt-bg-warm);
+      padding: 1px 6px;
+      border-radius: 3px;
+      font-size: 12px;
+      color: var(--nt-text-2);
+      border: 1px solid var(--nt-border);
+    }
+
+    /* Form */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+      gap: var(--nt-s-4);
+    }
+    .nt-field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .nt-field .nt-label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--nt-text);
+    }
+    .nt-field .nt-input {
+      font-family: var(--nt-font);
+      font-size: 14px;
+      color: var(--nt-text);
+      background: var(--nt-bg-warm);
+      border: 1px solid transparent;
+      border-radius: var(--nt-r-md);
+      padding: 6px 10px;
+      height: 32px;
+      outline: none;
+      transition: background 0.15s, border-color 0.15s;
+      box-shadow: rgba(15,15,15,0.1) 0px 0px 0px 1px inset;
+    }
+    .nt-field .nt-input:hover { background: var(--nt-bg-hover); }
+    .nt-field .nt-input:focus {
+      background: var(--nt-bg);
+      box-shadow: rgba(35,131,226,0.57) 0px 0px 0px 2px inset;
+    }
+    .nt-field .nt-input.error {
+      box-shadow: rgba(224,62,62,0.5) 0px 0px 0px 2px inset;
+    }
+    .nt-field textarea.nt-input { min-height: 80px; height: auto; resize: vertical; padding: 8px 10px; }
+    .nt-field select.nt-input {
+      appearance: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236B6B6B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 8px center;
+      padding-right: 28px;
+    }
+    .nt-helper { font-size: 12px; color: var(--nt-text-3); }
+    .nt-error { color: var(--nt-red); font-size: 12px; }
+
+    .nt-checkbox, .nt-radio {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      color: var(--nt-text);
+    }
+    .nt-checkbox input, .nt-radio input { width: 14px; height: 14px; accent-color: var(--nt-blue); }
+    .nt-switch { position: relative; display: inline-block; width: 26px; height: 14px; }
+    .nt-switch input { opacity: 0; width: 0; height: 0; }
+    .nt-switch .slider {
+      position: absolute; cursor: pointer; inset: 0;
+      background: var(--nt-border-strong);
+      border-radius: var(--nt-r-full);
+      transition: 0.15s;
+    }
+    .nt-switch .slider::before {
+      content: ''; position: absolute;
+      width: 10px; height: 10px;
+      left: 2px; top: 2px;
+      background: white;
+      border-radius: 50%;
+      transition: 0.15s;
+    }
+    .nt-switch input:checked + .slider { background: var(--nt-blue); }
+    .nt-switch input:checked + .slider::before { transform: translateX(12px); }
+
+    .nt-slider { width: 100%; accent-color: var(--nt-blue); }
+
+    /* Surfaces */
+    .surface-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px,1fr));
+      gap: var(--nt-s-3);
+    }
+    .nt-card {
+      background: var(--nt-bg);
+      border-radius: var(--nt-r-md);
+      padding: var(--nt-s-4);
+      border: 1px solid var(--nt-border);
+    }
+    .nt-card--warm { background: var(--nt-bg-warm); }
+    .nt-card--callout {
+      background: var(--nt-bg-warm);
+      border-left: 3px solid var(--nt-text);
+      border-radius: var(--nt-r-sm);
+    }
+    .nt-card .media {
+      height: 110px;
+      background: var(--nt-bg-tint);
+      border-radius: var(--nt-r-sm);
+      margin-bottom: var(--nt-s-3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px;
+    }
+    .nt-card h4 { margin: 0 0 4px; color: var(--nt-text); font-size: 15px; }
+    .nt-card p { font-size: 13px; color: var(--nt-text-2); margin: 0; line-height: 1.5; }
+
+    .nt-stat {
+      padding: var(--nt-s-4);
+      background: var(--nt-bg-warm);
+      border-radius: var(--nt-r-md);
+      border: 1px solid var(--nt-border-soft);
+    }
+    .nt-stat .num { font-size: 28px; font-weight: 700; line-height: 1; font-family: var(--nt-serif); letter-spacing: -0.01em; }
+    .nt-stat .lbl { font-size: 12px; color: var(--nt-text-2); margin-top: 4px; }
+
+    .nt-modal {
+      background: var(--nt-bg);
+      padding: var(--nt-s-5);
+      border-radius: var(--nt-r-md);
+      box-shadow: var(--nt-shadow-3);
+      max-width: 380px;
+      border: 1px solid var(--nt-border);
+    }
+
+    /* Feedback */
+    .nt-callout {
+      display: flex;
+      gap: var(--nt-s-3);
+      padding: var(--nt-s-3) var(--nt-s-4);
+      border-radius: var(--nt-r-sm);
+      margin-bottom: var(--nt-s-2);
+      font-size: 14px;
+      align-items: flex-start;
+      background: var(--nt-bg-warm);
+    }
+    .nt-callout .emoji { font-size: 18px; line-height: 1; }
+    .nt-callout--info { background: var(--nt-blue-bg); color: var(--nt-blue); }
+    .nt-callout--success { background: var(--nt-green-bg); color: var(--nt-green); }
+    .nt-callout--warn { background: var(--nt-yellow-bg); color: var(--nt-yellow); }
+    .nt-callout--error { background: var(--nt-red-bg); color: var(--nt-red); }
+
+    .nt-toast {
+      background: var(--nt-text);
+      color: white;
+      padding: 10px 14px;
+      border-radius: var(--nt-r-md);
+      box-shadow: var(--nt-shadow-2);
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 13px;
+    }
+    .nt-toast button { background: transparent; color: #B3CDEB; border: 0; font-weight: 500; cursor: pointer; font-family: inherit; }
+
+    .nt-banner {
+      display: flex;
+      gap: var(--nt-s-3);
+      padding: var(--nt-s-3) var(--nt-s-4);
+      background: var(--nt-bg-warm);
+      border-radius: var(--nt-r-sm);
+      align-items: center;
+      justify-content: space-between;
+      border-left: 3px solid var(--nt-blue);
+    }
+
+    .nt-progress {
+      width: 100%;
+      height: 4px;
+      background: var(--nt-bg-hover);
+      border-radius: var(--nt-r-full);
+      overflow: hidden;
+    }
+    .nt-progress::after {
+      content: '';
+      display: block;
+      height: 100%;
+      width: 65%;
+      background: var(--nt-blue);
+      border-radius: var(--nt-r-full);
+    }
+
+    .nt-skeleton {
+      height: 14px;
+      background: linear-gradient(90deg, var(--nt-bg-warm), var(--nt-bg-hover), var(--nt-bg-warm));
+      background-size: 200% 100%;
+      border-radius: var(--nt-r-xs);
+      animation: shimmer 1.5s infinite;
+    }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+    .nt-spinner {
+      width: 22px; height: 22px;
+      border: 2px solid var(--nt-border);
+      border-top-color: var(--nt-blue);
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Navigation */
+    .nt-tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--nt-border);
+      margin-bottom: var(--nt-s-3);
+    }
+    .nt-tab {
+      padding: 8px 12px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--nt-text-2);
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      margin-bottom: -1px;
+    }
+    .nt-tab:hover { color: var(--nt-text); }
+    .nt-tab.active { color: var(--nt-text); border-bottom-color: var(--nt-text); }
+
+    .nt-breadcrumb { display: flex; gap: 4px; align-items: center; font-size: 13px; color: var(--nt-text-2); }
+    .nt-breadcrumb a { color: var(--nt-text-2); text-decoration: none; padding: 2px 6px; border-radius: var(--nt-r-sm); }
+    .nt-breadcrumb a:hover { background: var(--nt-bg-hover); color: var(--nt-text); }
+
+    .nt-pagination { display: flex; gap: 2px; align-items: center; }
+    .nt-pagination button {
+      min-width: 28px; height: 28px;
+      padding: 0 8px;
+      border-radius: var(--nt-r-sm);
+      border: 0;
+      background: transparent;
+      color: var(--nt-text);
+      cursor: pointer;
+      font-family: var(--nt-font);
+      font-size: 13px;
+    }
+    .nt-pagination button.active { background: var(--nt-text); color: white; }
+    .nt-pagination button:hover:not(.active) { background: var(--nt-bg-hover); }
+
+    .nt-stepper { display: flex; align-items: center; gap: 6px; font-size: 13px; }
+    .nt-stepper .step { display: inline-flex; align-items: center; gap: 6px; color: var(--nt-text-2); }
+    .nt-stepper .step.active { color: var(--nt-text); font-weight: 500; }
+    .nt-stepper .num {
+      width: 20px; height: 20px; border-radius: 50%;
+      background: var(--nt-bg-warm); color: var(--nt-text-2);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 600;
+      border: 1px solid var(--nt-border);
+    }
+    .nt-stepper .num.active { background: var(--nt-text); color: white; border-color: transparent; }
+    .nt-stepper .line { flex: 1; height: 1px; background: var(--nt-border); }
+
+    /* Sidebar — Notion's signature column */
+    .nt-sidebar {
+      background: var(--nt-bg-tint);
+      padding: 8px 4px;
+      width: 240px;
+      font-size: 14px;
+    }
+    .nt-sidebar .workspace { padding: 6px 10px; font-size: 12px; color: var(--nt-text-2); font-weight: 500; }
+    .nt-sidebar a {
+      display: flex; align-items: center; gap: 8px;
+      padding: 4px 10px;
+      border-radius: var(--nt-r-sm);
+      color: var(--nt-text);
+      text-decoration: none;
+      font-size: 14px;
+    }
+    .nt-sidebar a:hover { background: var(--nt-bg-hover); }
+    .nt-sidebar a.active { background: var(--nt-bg-hover); }
+    .nt-sidebar .emoji { font-size: 14px; }
+
+    .nt-topbar {
+      display: flex; align-items: center; gap: 12px;
+      padding: 6px 12px;
+      background: var(--nt-bg);
+      border-radius: var(--nt-r-sm);
+      border: 1px solid var(--nt-border-soft);
+    }
+
+    .nt-menu {
+      background: var(--nt-bg);
+      border-radius: var(--nt-r-md);
+      box-shadow: var(--nt-shadow-2);
+      padding: 6px;
+      width: 220px;
+      border: 1px solid var(--nt-border);
+    }
+    .nt-menu .item {
+      padding: 6px 10px;
+      font-size: 13px;
+      cursor: pointer;
+      border-radius: var(--nt-r-sm);
+      color: var(--nt-text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .nt-menu .item:hover { background: var(--nt-bg-hover); }
+    .nt-menu .divider { height: 1px; background: var(--nt-border-soft); margin: 4px 0; }
+    .nt-menu .kbd { margin-left: auto; font-family: var(--nt-mono); font-size: 11px; color: var(--nt-text-3); }
+
+    /* Layout — Notion grid */
+    .grid-demo {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 8px;
+      background: var(--nt-bg-warm);
+      padding: 12px;
+      border-radius: var(--nt-r-sm);
+    }
+    .grid-demo > div {
+      background: var(--nt-bg);
+      color: var(--nt-text-2);
+      padding: 10px;
+      border-radius: var(--nt-r-xs);
+      font-size: 11px;
+      font-family: var(--nt-mono);
+      text-align: center;
+      border: 1px solid var(--nt-border-soft);
+    }
+
+    .scale-row {
+      display: flex;
+      gap: var(--nt-s-3);
+      flex-wrap: wrap;
+      align-items: flex-end;
+      margin-bottom: var(--nt-s-4);
+    }
+    .scale-item {
+      display: flex; flex-direction: column; gap: 4px;
+      align-items: center;
+    }
+    .scale-item .swatch { background: var(--nt-text); }
+    .scale-item .lbl { font-size: 11px; font-family: var(--nt-mono); color: var(--nt-text-3); }
+
+    /* Footer */
+    .ds-footer {
+      background: var(--nt-bg-warm);
+      padding: var(--nt-s-6);
+      margin-top: var(--nt-s-7);
+      color: var(--nt-text);
+      border-top: 1px solid var(--nt-border);
+    }
+    .ds-footer h3 { margin-top: 0; font-family: var(--nt-serif); }
+    .ds-footer ul { padding-left: 20px; }
+    .ds-footer li { margin-bottom: 4px; word-break: break-all; font-size: 13px; }
+    .ds-footer a { color: var(--nt-blue); text-decoration: underline; }
+    .license-note { font-size: 13px; color: var(--nt-text-2); margin-top: var(--nt-s-4); line-height: 1.5; }
+    .meta-note { font-size: 12px; color: var(--nt-text-3); font-family: var(--nt-mono); margin-top: var(--nt-s-2); }
+
+    @media (max-width: 720px) {
+      .ds-header h1 { font-size: 32px; }
+      main { padding: var(--nt-s-4); }
+      section { padding: var(--nt-s-4) 0; }
+      .type-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="ds-header">
+    <a href="index.html" class="back-link">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Catalog
+    </a>
+    <h1>Notion</h1>
+    <div class="meta">
+      <span class="badge kind-bg">brand-guidelines</span>
+      <span class="badge fidelity-inspired">inspired</span>
+      <span class="badge source-homepage-only">source: homepage-only</span>
+      <a class="official" href="https://www.notion.so/help/customize-and-style-your-content" target="_blank" rel="noopener">Official ↗</a>
+    </div>
+    <p class="tagline">Notion's calm, paper-like editor aesthetic — warm whites, ample whitespace, and editorial serif accents.</p>
+  </header>
+
+  <nav class="toc" aria-label="Table of contents">
+    <ul>
+      <li><a href="#brand">Brand</a></li>
+      <li><a href="#color">Color</a></li>
+      <li><a href="#typography">Typography</a></li>
+      <li><a href="#iconography">Iconography</a></li>
+      <li><a href="#buttons">Buttons</a></li>
+      <li><a href="#form">Form</a></li>
+      <li><a href="#surfaces">Surfaces</a></li>
+      <li><a href="#navigation">Navigation</a></li>
+      <li><a href="#layout">Layout</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="brand" data-fidelity="inspired">
+      <h2>
+        <span>Brand</span>
+        <span class="badge fidelity-inspired">inspired</span>
+      </h2>
+      <div class="brand-mark">
+        <span class="glyph">N</span>
+        Notion-inspired
+      </div>
+      <p style="margin-top: 24px; max-width: 720px; font-size: 16px;">
+        Notion's product aesthetic centers on a paper-like canvas — warm off-white surfaces, generous whitespace, and an editorial serif heading paired with Inter body text. The signature is calm: minimal radii, restrained color, and content that breathes.
+      </p>
+      <div class="pillars">
+        <div class="pillar">
+          <h4>Editorial</h4>
+          <p style="font-size:14px;color:var(--nt-text-2);margin:0">Serif headlines + Inter body create a magazine-like reading rhythm.</p>
+        </div>
+        <div class="pillar">
+          <h4>Warm whitespace</h4>
+          <p style="font-size:14px;color:var(--nt-text-2);margin:0">Off-white #FAFAF8 surfaces feel paper-like rather than screen-glare clinical.</p>
+        </div>
+        <div class="pillar">
+          <h4>Sharp &amp; flat</h4>
+          <p style="font-size:14px;color:var(--nt-text-2);margin:0">3–4px radii, no shadows by default. Hierarchy by spacing, not depth.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="color" data-fidelity="approximated">
+      <h2>
+        <span>Color</span>
+        <span class="badge fidelity-approximated">approximated</span>
+        <a href="https://www.notion.so" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p>Notion's palette is text-forward — neutrals carry 90% of the surface. Brand red #E03E3E appears sparingly as accent. The ten "tag" colors (red, orange, yellow, green, blue, purple, pink, brown, gray, default) form the canvas's expressive palette.</p>
+
+      <h3>Neutral palette</h3>
+      <div class="color-grid">
+        <div class="color-cell" style="background:var(--nt-bg);color:var(--nt-text);border:1px solid var(--nt-border)">#FFFFFF<br>bg</div>
+        <div class="color-cell" style="background:var(--nt-bg-warm);color:var(--nt-text);border:1px solid var(--nt-border)">#FAFAF8<br>bg-warm</div>
+        <div class="color-cell" style="background:var(--nt-bg-tint);color:var(--nt-text);border:1px solid var(--nt-border)">#F7F6F3<br>bg-tint</div>
+        <div class="color-cell" style="background:var(--nt-bg-hover);color:var(--nt-text)">#EFEFEC<br>hover</div>
+        <div class="color-cell" style="background:var(--nt-border);color:var(--nt-text)">#E0E0E0<br>border</div>
+        <div class="color-cell" style="background:var(--nt-text-3);color:white">#9B9B9B<br>text-3</div>
+        <div class="color-cell" style="background:var(--nt-text-2);color:white">#6B6B6B<br>text-2</div>
+        <div class="color-cell" style="background:var(--nt-text);color:white">#2F3437<br>text</div>
+      </div>
+
+      <h3>Brand accent</h3>
+      <div class="semantic-grid">
+        <div class="sem-card" style="background:var(--nt-red-bg);color:var(--nt-red)">
+          <span class="label">Brand red</span><span class="hex">#E03E3E</span>
+        </div>
+        <div class="sem-card" style="background:var(--nt-blue-bg);color:var(--nt-blue)">
+          <span class="label">Link blue</span><span class="hex">#0B6BCB</span>
+        </div>
+        <div class="sem-card" style="background:var(--nt-green-bg);color:var(--nt-green)">
+          <span class="label">Success</span><span class="hex">#0F7B6C</span>
+        </div>
+        <div class="sem-card" style="background:var(--nt-yellow-bg);color:var(--nt-yellow)">
+          <span class="label">Warning</span><span class="hex">#CB912F</span>
+        </div>
+      </div>
+
+      <h3>Tag palette (10 colors)</h3>
+      <div class="tag-row">
+        <span class="nt-tag nt-tag--gray">Default</span>
+        <span class="nt-tag nt-tag--gray">Gray</span>
+        <span class="nt-tag nt-tag--brown">Brown</span>
+        <span class="nt-tag nt-tag--orange">Orange</span>
+        <span class="nt-tag nt-tag--yellow">Yellow</span>
+        <span class="nt-tag nt-tag--green">Green</span>
+        <span class="nt-tag nt-tag--blue">Blue</span>
+        <span class="nt-tag nt-tag--purple">Purple</span>
+        <span class="nt-tag nt-tag--pink">Pink</span>
+        <span class="nt-tag nt-tag--red">Red</span>
+      </div>
+    </section>
+
+    <section id="typography" data-fidelity="approximated">
+      <h2>
+        <span>Typography</span>
+        <span class="badge fidelity-approximated">approximated</span>
+        <a href="https://www.notion.so" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p>Notion pairs a serif heading family with Inter body. Block-by-block hierarchy is structural — H1 / H2 / H3, then body, with quotes, callouts, and inline code as supporting blocks.</p>
+
+      <div class="type-row"><div class="label">Heading 1 · 40/48 · serif</div><div class="heading-1">Project plan</div></div>
+      <div class="type-row"><div class="label">Heading 2 · 30/38 · serif</div><div class="heading-2">Goals for Q3</div></div>
+      <div class="type-row"><div class="label">Heading 3 · 24/31 · 600</div><div class="heading-3">Weekly priorities</div></div>
+      <div class="type-row"><div class="label">Heading 4 · 18/25 · 600</div><div class="heading-4">Milestone checklist</div></div>
+      <div class="type-row"><div class="label">Body L · 16/26</div><div class="body-l">Notion treats every block as a building unit. Headings introduce sections; body paragraphs flow with comfortable line-height; lists, quotes, and callouts add structure without breaking the editorial rhythm.</div></div>
+      <div class="type-row"><div class="label">Body M · 15/23</div><div class="body-m">Body M is the page default — it pairs with H3 for compact note layouts.</div></div>
+      <div class="type-row"><div class="label">Body S · 13/20</div><div class="body-s">Body S is reserved for metadata, captions, and sidebar labels.</div></div>
+      <div class="type-row"><div class="label">Quote · serif italic</div><div class="quote-sample">"Notes you can shape into anything." — Notion product copy approximation</div></div>
+      <div class="type-row"><div class="label">Inline code</div><div><span class="mono-sample">page.title</span> + <span class="mono-sample">block.id</span></div></div>
+    </section>
+
+    <section id="iconography" data-fidelity="approximated">
+      <h2>
+        <span>Iconography</span>
+        <span class="badge fidelity-approximated">approximated</span>
+        <a href="https://www.notion.so" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p>Notion combines a small minimalist line-icon set (UI chrome) with rich emoji as page identifiers. The line set below approximates Notion's stroke weight via 18px Lucide-style icons.</p>
+
+      <h3>Line icons</h3>
+      <div class="icon-grid">
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg><span>page</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><span>search</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg><span>add</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg><span>close</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>check</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg><span>chevron</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="6" cy="12" r="1"/><circle cx="18" cy="12" r="1"/></svg><span>more</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg><span>menu</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.5-2.5l2-1.5-2-3.5-2.5 1A7 7 0 0 0 13 4l-.5-2.5h-4L8 4a7 7 0 0 0-3 1.5l-2.5-1-2 3.5 2 1.5A7 7 0 0 0 5 12c0 .9.2 1.7.5 2.5l-2 1.5 2 3.5 2.5-1c.9.7 2 1.2 3 1.5l.5 2.5h4l.5-2.5c1-.3 2.1-.8 3-1.5l2.5 1 2-3.5-2-1.5c.3-.8.5-1.6.5-2.5z"/></svg><span>settings</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg><span>user</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h18v13H3z"/><path d="M3 7l3-4h12l3 4"/></svg><span>archive</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6l3 14h12l3-14"/><path d="M8 10v6M16 10v6M12 10v6"/></svg><span>delete</span></div>
+      </div>
+
+      <h3>Page-icon emoji (approximation)</h3>
+      <div class="emoji-row">
+        <div class="emoji-cell">📝</div>
+        <div class="emoji-cell">📚</div>
+        <div class="emoji-cell">🚀</div>
+        <div class="emoji-cell">💡</div>
+        <div class="emoji-cell">🌱</div>
+        <div class="emoji-cell">🎯</div>
+        <div class="emoji-cell">📊</div>
+        <div class="emoji-cell">🗂️</div>
+        <div class="emoji-cell">⚙️</div>
+        <div class="emoji-cell">🎨</div>
+      </div>
+    </section>
+
+    <section id="buttons" data-fidelity="approximated">
+      <h2>
+        <span>Buttons</span>
+        <span class="badge fidelity-approximated">approximated</span>
+        <a href="https://www.notion.so" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p>Notion uses understated button styles. The blue primary CTA only appears on key actions; ghost and secondary styles dominate the editor chrome.</p>
+
+      <h3>Variants</h3>
+      <div class="button-row">
+        <button class="nt-btn nt-btn--primary">Share</button>
+        <button class="nt-btn nt-btn--secondary">Duplicate</button>
+        <button class="nt-btn nt-btn--ghost">Cancel</button>
+        <button class="nt-btn nt-btn--danger">Delete</button>
+        <button class="nt-btn nt-btn--icon" aria-label="more">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1.5"/><circle cx="6" cy="12" r="1.5"/><circle cx="18" cy="12" r="1.5"/></svg>
+        </button>
+      </div>
+
+      <h3>Sizes</h3>
+      <div class="button-row">
+        <button class="nt-btn nt-btn--primary nt-btn--sm">Small</button>
+        <button class="nt-btn nt-btn--primary">Default</button>
+        <button class="nt-btn nt-btn--primary nt-btn--lg">Large</button>
+      </div>
+
+      <h3>States</h3>
+      <div class="button-row">
+        <button class="nt-btn nt-btn--primary">Enabled</button>
+        <button class="nt-btn nt-btn--primary" style="background:#0857A8">Hover</button>
+        <button class="nt-btn nt-btn--primary" style="outline:2px solid var(--nt-blue);outline-offset:1px">Focus</button>
+        <button class="nt-btn nt-btn--primary" disabled>Disabled</button>
+      </div>
+
+      <h3>Slash command (signature)</h3>
+      <div class="cmd-block">
+        <span class="key">/</span>
+        <span style="color:var(--nt-text-2)">Type to insert a block…</span>
+      </div>
+    </section>
+
+    <section id="form" data-fidelity="approximated">
+      <h2>
+        <span>Form</span>
+        <span class="badge fidelity-approximated">approximated</span>
+        <a href="https://www.notion.so" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p>Inputs blend into the page. The default state shows a subtle inset shadow on a tinted background; focus reveals a blue ring at 57% opacity.</p>
+
+      <h3>Text fields</h3>
+      <div class="form-grid">
+        <div class="nt-field">
+          <label class="nt-label" for="f1">Page title</label>
+          <input class="nt-input" id="f1" value="Q3 Roadmap">
+          <span class="nt-helper">This becomes the page heading.</span>
+        </div>
+        <div class="nt-field">
+          <label class="nt-label" for="f2">Workspace email</label>
+          <input class="nt-input" type="email" id="f2" placeholder="you@workspace.com">
+        </div>
+        <div class="nt-field">
+          <label class="nt-label" for="f3">Description</label>
+          <textarea class="nt-input" id="f3">Plans for shipping the next iteration of the editor.</textarea>
+        </div>
+        <div class="nt-field">
+          <label class="nt-label" for="f4">Default page color</label>
+          <select class="nt-input" id="f4">
+            <option>Default</option>
+            <option>Gray</option>
+            <option>Blue</option>
+            <option>Yellow</option>
+          </select>
+        </div>
+        <div class="nt-field">
+          <label class="nt-label" for="f5">Slug</label>
+          <input class="nt-input error" id="f5" value="invalid slug!">
+          <span class="nt-error">Use lowercase letters, numbers, and hyphens only.</span>
+        </div>
+        <div class="nt-field">
+          <label class="nt-label" for="f6">Search pages</label>
+          <input class="nt-input" type="search" id="f6" placeholder="Type to search…">
+        </div>
+      </div>
+
+      <h3>Selection controls</h3>
+      <div class="button-row">
+        <label class="nt-checkbox"><input type="checkbox" checked>Notify members</label>
+        <label class="nt-checkbox"><input type="checkbox">Add to favorites</label>
+        <label class="nt-radio"><input type="radio" name="r1" checked>Public</label>
+        <label class="nt-radio"><input type="radio" name="r1">Workspace only</label>
+        <label class="nt-switch"><input type="checkbox" checked><span class="slider"></span></label>
+        <label class="nt-switch"><input type="checkbox"><span class="slider"></span></label>
+      </div>
+
+      <h3>Slider &amp; file</h3>
+      <div style="max-width:400px;display:flex;flex-direction:column;gap:12px">
+        <input type="range" class="nt-slider" min="0" max="100" value="50">
+        <input type="file" class="nt-input" style="height:auto;padding:6px">
+      </div>
+    </section>
+
+    <section id="surfaces" data-fidelity="approximated">
+      <h2>
+        <span>Surfaces</span>
+        <span class="badge fidelity-approximated">approximated</span>
+        <a href="https://www.notion.so" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p>Surfaces are mostly flat. Cards use 1px borders and gentle warm tints; callouts are Notion's signature highlighted block.</p>
+
+      <div class="surface-grid">
+        <div class="nt-card">
+          <div class="media">📝</div>
+          <h4>Outlined card</h4>
+          <p>Default Notion surface — 1px border, no shadow.</p>
+        </div>
+        <div class="nt-card nt-card--warm">
+          <div class="media" style="background:var(--nt-bg-tint)">📚</div>
+          <h4>Warm card</h4>
+          <p>Tinted background for emphasis without elevation.</p>
+        </div>
+        <div class="nt-card nt-card--callout">
+          <div class="media" style="background:var(--nt-bg)">💡</div>
+          <h4>Callout block</h4>
+          <p>The signature Notion content emphasis pattern.</p>
+        </div>
+        <div class="nt-stat">
+          <div class="num">1,284</div>
+          <div class="lbl">Pages in workspace</div>
+        </div>
+      </div>
+
+      <h3>Modal</h3>
+      <div class="nt-modal">
+        <h4 style="margin-top:0;font-size:18px;font-family:var(--nt-serif)">Move page to trash?</h4>
+        <p style="font-size:14px;color:var(--nt-text-2)">"Q3 Roadmap" and 4 sub-pages will be moved to trash. You can restore them within 30 days.</p>
+        <div class="button-row" style="justify-content:flex-end;margin:0">
+          <button class="nt-btn nt-btn--ghost">Cancel</button>
+          <button class="nt-btn nt-btn--danger">Move to trash</button>
+        </div>
+      </div>
+
+      <h3>Popover &amp; drawer</h3>
+      <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start">
+        <div class="nt-menu">
+          <div class="item">📝<span>Rename</span><span class="kbd">⌘R</span></div>
+          <div class="item">🔗<span>Copy link</span><span class="kbd">⌘L</span></div>
+          <div class="item">📋<span>Duplicate</span><span class="kbd">⌘D</span></div>
+          <div class="divider"></div>
+          <div class="item">⭐<span>Add to favorites</span></div>
+          <div class="item" style="color:var(--nt-red)">🗑️<span>Move to trash</span></div>
+        </div>
+        <div class="nt-sidebar">
+          <div class="workspace">MK Workspace</div>
+          <a href="#" class="active"><span class="emoji">🚀</span>Q3 Roadmap</a>
+          <a href="#"><span class="emoji">📝</span>Meeting notes</a>
+          <a href="#"><span class="emoji">📚</span>Reading list</a>
+          <a href="#"><span class="emoji">🎯</span>Goals 2026</a>
+          <a href="#"><span class="emoji">💡</span>Ideas</a>
+        </div>
+      </div>
+
+      <h3>Callouts (feedback)</h3>
+      <div class="nt-callout nt-callout--info">
+        <span class="emoji">ℹ️</span>
+        <strong>Info ·</strong> Inline comments are saved to the page revision history.
+      </div>
+      <div class="nt-callout nt-callout--success">
+        <span class="emoji">✅</span>
+        <strong>Success ·</strong> Workspace members notified about the new page.
+      </div>
+      <div class="nt-callout nt-callout--warn">
+        <span class="emoji">⚠️</span>
+        <strong>Warning ·</strong> This page has 12 unsynced edits.
+      </div>
+      <div class="nt-callout nt-callout--error">
+        <span class="emoji">⛔</span>
+        <strong>Error ·</strong> Couldn't save — check your connection.
+      </div>
+
+      <h3>Toast</h3>
+      <div class="nt-toast">
+        Page restored from trash.
+        <button>Undo</button>
+      </div>
+
+      <h3>Banner</h3>
+      <div class="nt-banner" style="margin-top:12px">
+        <span><strong>Tip ·</strong> Press <span class="mono-sample">/</span> on a new line to insert any block.</span>
+        <button class="nt-btn nt-btn--ghost nt-btn--sm">Got it</button>
+      </div>
+
+      <h3>Progress &amp; loading</h3>
+      <div style="display:flex;flex-direction:column;gap:12px;max-width:480px">
+        <div class="nt-progress"></div>
+        <div class="nt-skeleton" style="width:75%"></div>
+        <div class="nt-skeleton" style="width:55%"></div>
+        <div class="nt-spinner"></div>
+      </div>
+    </section>
+
+    <section id="navigation" data-fidelity="approximated">
+      <h2>
+        <span>Navigation</span>
+        <span class="badge fidelity-approximated">approximated</span>
+        <a href="https://www.notion.so" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+
+      <h3>Tabs</h3>
+      <div class="nt-tabs">
+        <div class="nt-tab active">Editor</div>
+        <div class="nt-tab">Outline</div>
+        <div class="nt-tab">Comments</div>
+        <div class="nt-tab">Updates</div>
+      </div>
+
+      <h3>Breadcrumb</h3>
+      <div class="nt-breadcrumb">
+        <a href="#">MK Workspace</a><span>/</span>
+        <a href="#">📚 Knowledge</a><span>/</span>
+        <a href="#">🚀 Q3 Roadmap</a>
+      </div>
+
+      <h3>Pagination</h3>
+      <div class="nt-pagination">
+        <button>‹</button>
+        <button class="active">1</button>
+        <button>2</button>
+        <button>3</button>
+        <button>…</button>
+        <button>12</button>
+        <button>›</button>
+      </div>
+
+      <h3>Stepper</h3>
+      <div class="nt-stepper">
+        <div class="step active"><span class="num active">1</span> Workspace</div>
+        <span class="line"></span>
+        <div class="step active"><span class="num active">2</span> Pages</div>
+        <span class="line"></span>
+        <div class="step"><span class="num">3</span> Members</div>
+        <span class="line"></span>
+        <div class="step"><span class="num">4</span> Done</div>
+      </div>
+
+      <h3>Top bar</h3>
+      <div class="nt-topbar">
+        <button class="nt-btn nt-btn--icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+        <span class="nt-breadcrumb" style="flex:1">
+          <a href="#">📚 Knowledge</a><span>/</span><a href="#">🚀 Q3 Roadmap</a>
+        </span>
+        <button class="nt-btn nt-btn--ghost nt-btn--sm">Share</button>
+        <button class="nt-btn nt-btn--icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1.5"/><circle cx="6" cy="12" r="1.5"/><circle cx="18" cy="12" r="1.5"/></svg></button>
+      </div>
+    </section>
+
+    <section id="layout" data-fidelity="approximated">
+      <h2>
+        <span>Layout</span>
+        <span class="badge fidelity-approximated">approximated</span>
+        <a href="https://www.notion.so" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p>Notion's content lives within a centered max-width column (~700–900px). Block-level columns can split horizontally into 2–4 sub-columns.</p>
+
+      <h3>Block columns</h3>
+      <div class="grid-demo">
+        <div style="grid-column:span 12">12 (full-width block)</div>
+        <div style="grid-column:span 6">6 (column)</div>
+        <div style="grid-column:span 6">6 (column)</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+      </div>
+
+      <h3>Spacing scale (4px base)</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div class="swatch" style="width:4px;height:32px"></div><span class="lbl">4</span></div>
+        <div class="scale-item"><div class="swatch" style="width:8px;height:32px"></div><span class="lbl">8</span></div>
+        <div class="scale-item"><div class="swatch" style="width:12px;height:32px"></div><span class="lbl">12</span></div>
+        <div class="scale-item"><div class="swatch" style="width:16px;height:32px"></div><span class="lbl">16</span></div>
+        <div class="scale-item"><div class="swatch" style="width:24px;height:32px"></div><span class="lbl">24</span></div>
+        <div class="scale-item"><div class="swatch" style="width:32px;height:32px"></div><span class="lbl">32</span></div>
+        <div class="scale-item"><div class="swatch" style="width:48px;height:32px"></div><span class="lbl">48</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:32px"></div><span class="lbl">64</span></div>
+      </div>
+
+      <h3>Radii (sharp scale)</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div class="swatch" style="width:56px;height:56px;border-radius:0"></div><span class="lbl">none</span></div>
+        <div class="scale-item"><div class="swatch" style="width:56px;height:56px;border-radius:2px"></div><span class="lbl">xs 2</span></div>
+        <div class="scale-item"><div class="swatch" style="width:56px;height:56px;border-radius:3px"></div><span class="lbl">sm 3</span></div>
+        <div class="scale-item"><div class="swatch" style="width:56px;height:56px;border-radius:4px"></div><span class="lbl">md 4</span></div>
+        <div class="scale-item"><div class="swatch" style="width:56px;height:56px;border-radius:6px"></div><span class="lbl">lg 6</span></div>
+        <div class="scale-item"><div class="swatch" style="width:56px;height:56px;border-radius:10px"></div><span class="lbl">xl 10</span></div>
+        <div class="scale-item"><div class="swatch" style="width:56px;height:56px;border-radius:50%"></div><span class="lbl">full</span></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="ds-footer">
+    <h3>Sources</h3>
+    <ul>
+      <li><a href="https://www.notion.so" target="_blank" rel="noopener">https://www.notion.so</a></li>
+      <li><a href="https://www.notion.so/help/customize-and-style-your-content" target="_blank" rel="noopener">https://www.notion.so/help/customize-and-style-your-content</a></li>
+    </ul>
+    <p class="license-note">This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Notion Labs. Notion and related trademarks belong to Notion Labs. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</p>
+    <p class="meta-note">Reproduction date: 2026-05-05 · sourceStatus: homepage-only · fidelity: inspired</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,1402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Stripe — Design System Reference</title>
+  <script id="ds-meta" type="application/json">
+{"id":"27-stripe","fileSlug":"27-stripe","schemaVersion":"1"}
+  </script>
+  <style>
+    :root {
+      /* Stripe Brand */
+      --st-purple: #635BFF;
+      --st-purple-light: #A6A4F0;
+      --st-purple-dark: #5048E5;
+      --st-purple-50: #F4F3FF;
+      --st-purple-100: #E5E2FF;
+      --st-cyan: #00D4FF;
+      --st-cyan-light: #B6F0FF;
+      --st-navy: #0A2540;
+      --st-navy-2: #1A2540;
+
+      /* Surface */
+      --st-bg: #FFFFFF;
+      --st-bg-light: #F6F9FC;
+      --st-bg-tint: #F5F8FB;
+      --st-text: #1A1F36;
+      --st-text-secondary: #425466;
+      --st-text-muted: #697386;
+      --st-border: #E3E8EE;
+      --st-border-strong: #C1C9D2;
+
+      /* Semantic */
+      --st-success: #3FBF6E;
+      --st-success-bg: #D4F5DF;
+      --st-success-fg: #0E5F36;
+      --st-error: #CD3D64;
+      --st-error-bg: #FCE8EE;
+      --st-error-fg: #6E1129;
+      --st-warning: #FF9E0F;
+      --st-warning-bg: #FFEDC9;
+      --st-warning-fg: #6B3F00;
+      --st-info: #3A88FE;
+      --st-info-bg: #E1ECFB;
+      --st-info-fg: #103A75;
+
+      /* Type — system-stack with Söhne fallback to Inter */
+      --st-font: 'Söhne', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', system-ui, sans-serif;
+      --st-mono: ui-monospace, SFMono-Regular, 'IBM Plex Mono', 'Menlo', monospace;
+
+      /* Shape */
+      --st-r-sm: 4px;
+      --st-r-md: 6px;
+      --st-r-lg: 8px;
+      --st-r-xl: 12px;
+      --st-r-2xl: 20px;
+      --st-r-full: 999px;
+
+      /* Spacing */
+      --st-s-1: 4px;
+      --st-s-2: 8px;
+      --st-s-3: 12px;
+      --st-s-4: 16px;
+      --st-s-5: 24px;
+      --st-s-6: 32px;
+      --st-s-7: 48px;
+      --st-s-8: 64px;
+
+      /* Shadow */
+      --st-shadow-1: 0 1px 2px rgba(60,66,87,0.08), 0 1px 1px rgba(0,0,0,0.04);
+      --st-shadow-2: 0 4px 8px rgba(60,66,87,0.10), 0 2px 4px rgba(0,0,0,0.05);
+      --st-shadow-3: 0 7px 14px rgba(60,66,87,0.10), 0 3px 6px rgba(0,0,0,0.06);
+      --st-shadow-4: 0 15px 35px rgba(60,66,87,0.10), 0 5px 15px rgba(0,0,0,0.07);
+      --st-shadow-5: 0 50px 100px rgba(60,66,87,0.15), 0 15px 35px rgba(0,0,0,0.07);
+
+      /* Stripe gradient signature */
+      --st-grad: linear-gradient(135deg, #635BFF 0%, #00D4FF 100%);
+      --st-grad-soft: linear-gradient(135deg, #A6A4F0 0%, #B6F0FF 100%);
+      --st-grad-dark: linear-gradient(180deg, #0A2540 0%, #1A2540 100%);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: var(--st-font);
+      background: var(--st-bg);
+      color: var(--st-text);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    code, kbd, pre { font-family: var(--st-mono); }
+
+    /* Header — Stripe-style hero with gradient */
+    .ds-header {
+      background: var(--st-grad-dark);
+      color: white;
+      padding: var(--st-s-7) var(--st-s-6) var(--st-s-7);
+      position: relative;
+      overflow: hidden;
+    }
+    .ds-header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at top right, rgba(99,91,255,0.5), transparent 60%),
+                  radial-gradient(ellipse at bottom left, rgba(0,212,255,0.3), transparent 60%);
+      pointer-events: none;
+    }
+    .ds-header > * { position: relative; }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--st-s-2);
+      color: rgba(255,255,255,0.85);
+      text-decoration: none;
+      padding: 6px 12px;
+      border-radius: var(--st-r-md);
+      font-size: 14px;
+      font-weight: 500;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      transition: background 0.2s;
+    }
+    .back-link:hover { background: rgba(255,255,255,0.16); color: white; }
+
+    .ds-header h1 {
+      font-size: 56px;
+      line-height: 1.1;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin: var(--st-s-5) 0 var(--st-s-3);
+      background: linear-gradient(135deg, #FFFFFF 30%, #A6A4F0 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .ds-header .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--st-s-2);
+      align-items: center;
+      margin-bottom: var(--st-s-3);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: var(--st-r-full);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      background: rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.9);
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+    .badge.kind-ds { background: var(--st-purple); color: white; border-color: transparent; }
+    .badge.fidelity-documented { background: #D4F5DF; color: #0E5F36; border-color: transparent; }
+    .badge.fidelity-approximated { background: #FFEDC9; color: #6B3F00; border-color: transparent; }
+    .badge.fidelity-inspired { background: #F4F3FF; color: #5048E5; border-color: transparent; }
+    .badge.source-verified { background: #D6EDFB; color: #0B4A6F; border-color: transparent; }
+
+    .ds-header a.official {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 4px 12px;
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: var(--st-r-md);
+      font-size: 13px;
+      background: rgba(255,255,255,0.05);
+    }
+    .ds-header a.official:hover { background: rgba(255,255,255,0.12); }
+
+    .tagline {
+      font-size: 20px;
+      line-height: 1.4;
+      max-width: 720px;
+      margin: var(--st-s-4) 0 0;
+      color: rgba(255,255,255,0.85);
+      font-weight: 400;
+    }
+
+    /* TOC */
+    .toc {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--st-border);
+    }
+    .toc ul {
+      list-style: none;
+      margin: 0;
+      padding: var(--st-s-3) var(--st-s-6);
+      display: flex;
+      gap: var(--st-s-2);
+      overflow-x: auto;
+      max-width: 100%;
+    }
+    .toc a {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: var(--st-r-md);
+      color: var(--st-text-secondary);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .toc a:hover { background: var(--st-purple-50); color: var(--st-purple); }
+
+    /* Main */
+    main {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: var(--st-s-6);
+    }
+
+    section {
+      background: white;
+      border-radius: var(--st-r-xl);
+      padding: var(--st-s-6);
+      margin-bottom: var(--st-s-5);
+      border: 1px solid var(--st-border);
+      box-shadow: var(--st-shadow-1);
+    }
+
+    section h2 {
+      display: flex;
+      align-items: center;
+      gap: var(--st-s-3);
+      flex-wrap: wrap;
+      font-size: 28px;
+      line-height: 1.2;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin: 0 0 var(--st-s-5);
+      color: var(--st-text);
+    }
+
+    .source-link {
+      font-size: 13px;
+      color: var(--st-purple);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .source-link:hover { text-decoration: underline; }
+
+    h3 {
+      font-size: 18px;
+      line-height: 1.3;
+      font-weight: 600;
+      margin: var(--st-s-5) 0 var(--st-s-3);
+      color: var(--st-text);
+    }
+
+    h4 {
+      font-size: 14px;
+      line-height: 1.4;
+      font-weight: 600;
+      margin: var(--st-s-4) 0 var(--st-s-2);
+      color: var(--st-text-secondary);
+    }
+
+    p { margin: 0 0 var(--st-s-3); color: var(--st-text-secondary); }
+
+    /* Brand */
+    #brand .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--st-s-3);
+      padding: var(--st-s-3) var(--st-s-5);
+      background: var(--st-grad);
+      border-radius: var(--st-r-xl);
+      color: white;
+      font-size: 24px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      box-shadow: var(--st-shadow-3);
+    }
+    #brand .brand-mark .glyph {
+      width: 32px; height: 32px;
+      display: inline-flex; align-items: center; justify-content: center;
+      background: rgba(255,255,255,0.2);
+      border-radius: var(--st-r-md);
+      font-weight: 700;
+    }
+    #brand .pillars {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--st-s-4);
+      margin-top: var(--st-s-5);
+    }
+    #brand .pillar {
+      padding: var(--st-s-4);
+      background: var(--st-bg-light);
+      border-radius: var(--st-r-lg);
+      border: 1px solid var(--st-border);
+    }
+    #brand .pillar h4 { color: var(--st-purple); margin-top: 0; }
+
+    /* Color */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px,1fr));
+      gap: var(--st-s-2);
+      margin-bottom: var(--st-s-4);
+    }
+    .color-cell {
+      aspect-ratio: 5/4;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 10px;
+      font-size: 11px;
+      font-family: var(--st-mono);
+      border-radius: var(--st-r-md);
+      border: 1px solid rgba(0,0,0,0.05);
+    }
+
+    .semantic-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
+      gap: var(--st-s-3);
+    }
+    .sem-card {
+      padding: var(--st-s-4);
+      border-radius: var(--st-r-lg);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .sem-card .label { font-size: 14px; font-weight: 600; }
+    .sem-card .hex { font-family: var(--st-mono); font-size: 12px; opacity: 0.75; }
+
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--st-s-2);
+      margin-bottom: var(--st-s-4);
+    }
+    .role-chip {
+      padding: var(--st-s-3) var(--st-s-4);
+      border-radius: var(--st-r-md);
+      font-size: 13px;
+      font-weight: 500;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .role-chip code { font-size: 11px; opacity: 0.75; }
+
+    .gradient-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--st-s-3);
+      margin-top: var(--st-s-3);
+    }
+    .gradient-card {
+      height: 88px;
+      border-radius: var(--st-r-lg);
+      display: flex; align-items: flex-end;
+      padding: var(--st-s-3);
+      color: white;
+      font-size: 12px;
+      font-weight: 500;
+      font-family: var(--st-mono);
+    }
+
+    /* Typography */
+    .type-row {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: var(--st-s-4);
+      padding: var(--st-s-3) 0;
+      border-bottom: 1px solid var(--st-border);
+      align-items: baseline;
+    }
+    .type-row:last-child { border-bottom: 0; }
+    .type-row .label {
+      font-family: var(--st-mono);
+      font-size: 12px;
+      color: var(--st-text-muted);
+    }
+    .display-1 { font-size: 56px; line-height: 1.1; font-weight: 600; letter-spacing: -0.02em; }
+    .display-2 { font-size: 40px; line-height: 1.15; font-weight: 600; letter-spacing: -0.02em; }
+    .heading-1 { font-size: 32px; line-height: 1.2; font-weight: 600; letter-spacing: -0.01em; }
+    .heading-2 { font-size: 24px; line-height: 1.25; font-weight: 600; letter-spacing: -0.01em; }
+    .heading-3 { font-size: 18px; line-height: 1.3; font-weight: 600; }
+    .body-l { font-size: 18px; line-height: 1.55; }
+    .body-m { font-size: 16px; line-height: 1.5; }
+    .body-s { font-size: 14px; line-height: 1.5; }
+    .caption { font-size: 12px; line-height: 1.4; color: var(--st-text-muted); }
+    .mono-sample { font-family: var(--st-mono); font-size: 14px; color: var(--st-text-secondary); }
+
+    /* Iconography */
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(80px,1fr));
+      gap: var(--st-s-3);
+    }
+    .icon-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: var(--st-s-3);
+      background: var(--st-bg-light);
+      border-radius: var(--st-r-md);
+      border: 1px solid var(--st-border);
+    }
+    .icon-cell svg { width: 22px; height: 22px; stroke: var(--st-text); }
+    .icon-cell span { font-size: 11px; color: var(--st-text-muted); }
+
+    /* Buttons — Stripe sharp polished */
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--st-s-3);
+      align-items: center;
+      margin-bottom: var(--st-s-3);
+    }
+
+    .st-btn {
+      font-family: var(--st-font);
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      padding: 0 16px;
+      border-radius: var(--st-r-md);
+      border: 1px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      height: 36px;
+      transition: all 0.18s;
+      white-space: nowrap;
+    }
+    .st-btn--primary {
+      background: var(--st-purple);
+      color: white;
+      box-shadow: 0 1px 1px rgba(0,0,0,0.05), 0 1px 0 rgba(255,255,255,0.07) inset, 0 0 0 1px rgba(80,72,229,0.4);
+    }
+    .st-btn--primary:hover { background: var(--st-purple-dark); }
+    .st-btn--primary:disabled { background: var(--st-purple-light); cursor: not-allowed; }
+    .st-btn--gradient {
+      background: var(--st-grad);
+      color: white;
+      box-shadow: var(--st-shadow-2);
+    }
+    .st-btn--gradient:hover { box-shadow: var(--st-shadow-3); transform: translateY(-1px); }
+    .st-btn--secondary {
+      background: white;
+      color: var(--st-text);
+      border-color: var(--st-border);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+    }
+    .st-btn--secondary:hover { background: var(--st-bg-light); border-color: var(--st-border-strong); }
+    .st-btn--tertiary {
+      background: transparent;
+      color: var(--st-purple);
+      padding: 0 8px;
+    }
+    .st-btn--tertiary:hover { background: var(--st-purple-50); }
+    .st-btn--destructive {
+      background: var(--st-error);
+      color: white;
+    }
+    .st-btn--destructive:hover { background: #B33055; }
+    .st-btn--icon { width: 36px; padding: 0; justify-content: center; background: white; color: var(--st-text-secondary); border-color: var(--st-border); }
+    .st-btn--icon:hover { background: var(--st-bg-light); }
+    .st-btn--sm { height: 28px; padding: 0 10px; font-size: 12px; }
+    .st-btn--lg { height: 44px; padding: 0 22px; font-size: 16px; }
+    .st-btn:focus-visible { outline: 2px solid var(--st-purple); outline-offset: 2px; }
+
+    /* Form */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+      gap: var(--st-s-4);
+    }
+    .st-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .st-field .st-label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--st-text);
+    }
+    .st-field .st-input {
+      font-family: var(--st-font);
+      font-size: 14px;
+      color: var(--st-text);
+      background: white;
+      border: 1px solid var(--st-border);
+      border-radius: var(--st-r-md);
+      padding: 8px 12px;
+      height: 36px;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      box-shadow: 0 1px 2px rgba(60,66,87,0.05);
+    }
+    .st-field .st-input:focus {
+      border-color: var(--st-purple);
+      box-shadow: 0 0 0 3px rgba(99,91,255,0.18), 0 1px 2px rgba(60,66,87,0.05);
+    }
+    .st-field .st-input.error {
+      border-color: var(--st-error);
+      box-shadow: 0 0 0 3px rgba(205,61,100,0.15);
+    }
+    .st-field textarea.st-input { min-height: 88px; height: auto; resize: vertical; padding: 10px 12px; }
+    .st-field select.st-input {
+      appearance: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      padding-right: 32px;
+    }
+    .st-helper { font-size: 12px; color: var(--st-text-muted); }
+    .st-error { color: var(--st-error); font-size: 12px; }
+
+    .st-checkbox, .st-radio {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      color: var(--st-text);
+    }
+    .st-checkbox input, .st-radio input { width: 16px; height: 16px; accent-color: var(--st-purple); }
+    .st-switch { position: relative; display: inline-block; width: 36px; height: 20px; }
+    .st-switch input { opacity: 0; width: 0; height: 0; }
+    .st-switch .slider {
+      position: absolute; cursor: pointer; inset: 0;
+      background: #D8DEE5;
+      border-radius: var(--st-r-full);
+      transition: 0.18s;
+    }
+    .st-switch .slider::before {
+      content: ''; position: absolute;
+      width: 16px; height: 16px;
+      left: 2px; top: 2px;
+      background: white;
+      border-radius: 50%;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      transition: 0.18s;
+    }
+    .st-switch input:checked + .slider { background: var(--st-purple); }
+    .st-switch input:checked + .slider::before { transform: translateX(16px); }
+
+    .st-slider { width: 100%; accent-color: var(--st-purple); }
+
+    /* Surfaces */
+    .surface-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
+      gap: var(--st-s-4);
+    }
+    .st-card {
+      background: white;
+      border-radius: var(--st-r-lg);
+      padding: var(--st-s-4);
+      border: 1px solid var(--st-border);
+      box-shadow: var(--st-shadow-1);
+    }
+    .st-card--elevated { box-shadow: var(--st-shadow-3); border-color: transparent; }
+    .st-card--gradient { background: var(--st-grad); color: white; border: none; }
+    .st-card--gradient h4, .st-card--gradient p { color: white; }
+    .st-card .media {
+      height: 120px;
+      background: var(--st-grad-soft);
+      border-radius: var(--st-r-md);
+      margin-bottom: var(--st-s-3);
+    }
+    .st-card h4 { margin: 0 0 4px; color: var(--st-text); font-size: 16px; }
+    .st-card p { font-size: 13px; color: var(--st-text-secondary); margin: 0; }
+
+    .st-stat {
+      padding: var(--st-s-4);
+      background: var(--st-grad-dark);
+      border-radius: var(--st-r-lg);
+      color: white;
+      box-shadow: var(--st-shadow-2);
+    }
+    .st-stat .num { font-size: 32px; font-weight: 600; line-height: 1; letter-spacing: -0.02em; }
+    .st-stat .lbl { font-size: 12px; opacity: 0.75; margin-top: 4px; }
+
+    .st-modal {
+      background: white;
+      padding: var(--st-s-5);
+      border-radius: var(--st-r-xl);
+      box-shadow: var(--st-shadow-5);
+      max-width: 380px;
+      border: 1px solid var(--st-border);
+    }
+
+    /* Feedback */
+    .st-alert {
+      display: flex;
+      gap: var(--st-s-3);
+      padding: var(--st-s-3) var(--st-s-4);
+      border-radius: var(--st-r-md);
+      margin-bottom: var(--st-s-2);
+      font-size: 14px;
+      align-items: flex-start;
+      border: 1px solid transparent;
+    }
+    .st-alert--info { background: var(--st-info-bg); color: var(--st-info-fg); border-color: rgba(58,136,254,0.25); }
+    .st-alert--success { background: var(--st-success-bg); color: var(--st-success-fg); border-color: rgba(63,191,110,0.25); }
+    .st-alert--warn { background: var(--st-warning-bg); color: var(--st-warning-fg); border-color: rgba(255,158,15,0.25); }
+    .st-alert--error { background: var(--st-error-bg); color: var(--st-error-fg); border-color: rgba(205,61,100,0.25); }
+
+    .st-toast {
+      background: var(--st-navy);
+      color: white;
+      padding: 12px 16px;
+      border-radius: var(--st-r-md);
+      box-shadow: var(--st-shadow-3);
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 14px;
+    }
+    .st-toast button {
+      background: transparent;
+      color: var(--st-cyan);
+      border: 0;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .st-banner {
+      display: flex;
+      gap: var(--st-s-3);
+      padding: var(--st-s-3) var(--st-s-4);
+      background: var(--st-purple-50);
+      border: 1px solid rgba(99,91,255,0.2);
+      border-radius: var(--st-r-md);
+      align-items: center;
+      justify-content: space-between;
+      color: var(--st-text);
+    }
+
+    .st-chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .st-chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 10px;
+      border-radius: var(--st-r-full);
+      border: 1px solid var(--st-border);
+      background: white;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--st-text-secondary);
+    }
+    .st-chip--filled { background: var(--st-purple-50); color: var(--st-purple-dark); border-color: rgba(99,91,255,0.2); }
+    .st-chip--primary { background: var(--st-purple); color: white; border-color: transparent; }
+    .st-chip--success { background: var(--st-success-bg); color: var(--st-success-fg); border-color: transparent; }
+    .st-chip--warn { background: var(--st-warning-bg); color: var(--st-warning-fg); border-color: transparent; }
+    .st-chip--error { background: var(--st-error-bg); color: var(--st-error-fg); border-color: transparent; }
+
+    .st-badge {
+      background: var(--st-error);
+      color: white;
+      border-radius: var(--st-r-full);
+      font-size: 11px;
+      padding: 2px 6px;
+      min-width: 18px;
+      display: inline-flex;
+      justify-content: center;
+      font-weight: 600;
+    }
+
+    .st-progress {
+      width: 100%;
+      height: 6px;
+      background: var(--st-border);
+      border-radius: var(--st-r-full);
+      overflow: hidden;
+    }
+    .st-progress::after {
+      content: '';
+      display: block;
+      height: 100%;
+      width: 65%;
+      background: var(--st-grad);
+      border-radius: var(--st-r-full);
+    }
+
+    .st-skeleton {
+      height: 14px;
+      background: linear-gradient(90deg, var(--st-bg-light), #EEF2F6, var(--st-bg-light));
+      background-size: 200% 100%;
+      border-radius: var(--st-r-sm);
+      animation: shimmer 1.5s infinite;
+    }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+    .st-spinner {
+      width: 28px; height: 28px;
+      border: 2.5px solid var(--st-border);
+      border-top-color: var(--st-purple);
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Navigation */
+    .st-tabs {
+      display: flex;
+      gap: var(--st-s-2);
+      border-bottom: 1px solid var(--st-border);
+      margin-bottom: var(--st-s-3);
+    }
+    .st-tab {
+      padding: 10px 14px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--st-text-secondary);
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      margin-bottom: -1px;
+    }
+    .st-tab:hover { color: var(--st-text); }
+    .st-tab.active { color: var(--st-purple); border-bottom-color: var(--st-purple); }
+
+    .st-breadcrumb {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      font-size: 13px;
+      color: var(--st-text-muted);
+    }
+    .st-breadcrumb a {
+      color: var(--st-purple);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .st-pagination { display: flex; gap: 4px; align-items: center; }
+    .st-pagination button {
+      min-width: 32px;
+      height: 32px;
+      padding: 0 10px;
+      border-radius: var(--st-r-md);
+      border: 1px solid var(--st-border);
+      background: white;
+      color: var(--st-text);
+      cursor: pointer;
+      font-family: var(--st-font);
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .st-pagination button.active { background: var(--st-purple); color: white; border-color: transparent; }
+    .st-pagination button:hover:not(.active) { background: var(--st-bg-light); }
+
+    .st-stepper { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+    .st-stepper .step { display: inline-flex; align-items: center; gap: 8px; color: var(--st-text-muted); }
+    .st-stepper .step.active { color: var(--st-text); font-weight: 500; }
+    .st-stepper .num {
+      width: 22px; height: 22px; border-radius: 50%;
+      background: var(--st-bg-light); color: var(--st-text-muted);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 600;
+      border: 1px solid var(--st-border);
+    }
+    .st-stepper .num.active { background: var(--st-purple); color: white; border-color: transparent; }
+    .st-stepper .line { flex: 1; height: 1px; background: var(--st-border); }
+
+    .st-sidebar {
+      background: var(--st-bg-light);
+      border-radius: var(--st-r-lg);
+      padding: 8px;
+      width: 240px;
+      border: 1px solid var(--st-border);
+    }
+    .st-sidebar a {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 12px;
+      border-radius: var(--st-r-md);
+      color: var(--st-text-secondary);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .st-sidebar a:hover { background: white; color: var(--st-text); }
+    .st-sidebar a.active { background: var(--st-purple-50); color: var(--st-purple-dark); }
+
+    .st-topbar {
+      display: flex; align-items: center; gap: 16px;
+      padding: 10px 16px;
+      background: white;
+      border-radius: var(--st-r-md);
+      border: 1px solid var(--st-border);
+      box-shadow: var(--st-shadow-1);
+    }
+
+    .st-menu {
+      background: white;
+      border-radius: var(--st-r-md);
+      box-shadow: var(--st-shadow-3);
+      padding: 6px;
+      width: 200px;
+      border: 1px solid var(--st-border);
+    }
+    .st-menu .item {
+      padding: 7px 10px;
+      font-size: 13px;
+      cursor: pointer;
+      border-radius: var(--st-r-sm);
+      color: var(--st-text);
+    }
+    .st-menu .item:hover { background: var(--st-bg-light); }
+    .st-menu .divider { height: 1px; background: var(--st-border); margin: 4px 0; }
+
+    /* Data */
+    table.st-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    table.st-table th, table.st-table td {
+      text-align: left;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--st-border);
+    }
+    table.st-table th {
+      font-weight: 600;
+      color: var(--st-text-secondary);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      background: var(--st-bg-light);
+    }
+    table.st-table tr:hover td { background: var(--st-bg-light); }
+
+    .st-list { list-style: none; padding: 0; margin: 0; border: 1px solid var(--st-border); border-radius: var(--st-r-md); }
+    .st-list li {
+      padding: 12px 16px;
+      display: flex; gap: 12px; align-items: center;
+      border-bottom: 1px solid var(--st-border);
+    }
+    .st-list li:last-child { border-bottom: 0; }
+
+    .st-kv { display: grid; grid-template-columns: 140px 1fr; gap: 10px 16px; font-size: 13px; }
+    .st-kv dt { color: var(--st-text-muted); font-weight: 500; }
+    .st-kv dd { margin: 0; color: var(--st-text); font-family: var(--st-mono); }
+
+    .st-avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--st-grad);
+      color: white;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .st-empty {
+      text-align: center;
+      padding: var(--st-s-7) var(--st-s-4);
+      color: var(--st-text-muted);
+      background: var(--st-bg-light);
+      border-radius: var(--st-r-md);
+      border: 1px dashed var(--st-border-strong);
+    }
+    .st-empty svg { width: 40px; height: 40px; opacity: 0.5; }
+
+    /* Footer */
+    .ds-footer {
+      background: var(--st-bg-light);
+      padding: var(--st-s-6);
+      margin-top: var(--st-s-7);
+      color: var(--st-text);
+      border-top: 1px solid var(--st-border);
+    }
+    .ds-footer h3 { margin-top: 0; }
+    .ds-footer ul { padding-left: 20px; }
+    .ds-footer li { margin-bottom: 4px; word-break: break-all; font-size: 13px; }
+    .ds-footer a { color: var(--st-purple); text-decoration: none; }
+    .license-note { font-size: 13px; color: var(--st-text-muted); margin-top: var(--st-s-4); }
+    .meta-note { font-size: 12px; color: var(--st-text-muted); font-family: var(--st-mono); margin-top: var(--st-s-2); }
+
+    @media (max-width: 720px) {
+      .ds-header h1 { font-size: 36px; }
+      main { padding: var(--st-s-4); }
+      section { padding: var(--st-s-4); }
+      .type-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="ds-header">
+    <a href="index.html" class="back-link">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Catalog
+    </a>
+    <h1>Stripe</h1>
+    <div class="meta">
+      <span class="badge kind-ds">design-system</span>
+      <span class="badge fidelity-approximated">approximated</span>
+      <span class="badge source-verified">source: verified</span>
+      <a class="official" href="https://docs.stripe.com/stripe-apps/components" target="_blank" rel="noopener">Official ↗</a>
+    </div>
+    <p class="tagline">The fintech aesthetic standard — purple accent, glossy gradients, and Söhne-driven editorial typography.</p>
+  </header>
+
+  <nav class="toc" aria-label="Table of contents">
+    <ul>
+      <li><a href="#brand">Brand</a></li>
+      <li><a href="#color">Color</a></li>
+      <li><a href="#typography">Typography</a></li>
+      <li><a href="#iconography">Iconography</a></li>
+      <li><a href="#buttons">Buttons</a></li>
+      <li><a href="#form">Form</a></li>
+      <li><a href="#surfaces">Surfaces</a></li>
+      <li><a href="#feedback">Feedback</a></li>
+      <li><a href="#navigation">Navigation</a></li>
+      <li><a href="#data">Data</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="brand" data-fidelity="approximated">
+      <h2>
+        <span>Brand</span>
+        <span class="badge fidelity-approximated">approximated</span>
+      </h2>
+      <div class="brand-mark">
+        <span class="glyph">S</span>
+        Stripe-style
+      </div>
+      <p style="margin-top: 24px; max-width: 720px; font-size: 16px;">
+        Stripe's design language pairs editorial Söhne typography with a signature purple-to-cyan gradient, layered subtly across hero surfaces and CTAs. The palette is restrained, the typography is razor-sharp, and the overall mood is engineered yet human — financial infrastructure that feels approachable.
+      </p>
+      <div class="pillars">
+        <div class="pillar">
+          <h4>Editorial</h4>
+          <p style="font-size:13px;color:var(--st-text-secondary);margin:0">Söhne-driven type system with deliberate weight and rhythm; copy is part of the product surface.</p>
+        </div>
+        <div class="pillar">
+          <h4>Iridescent</h4>
+          <p style="font-size:13px;color:var(--st-text-secondary);margin:0">Purple-to-cyan gradients carry brand memory across hero, CTA, and visual divider treatments.</p>
+        </div>
+        <div class="pillar">
+          <h4>Engineered</h4>
+          <p style="font-size:13px;color:var(--st-text-secondary);margin:0">Tight 4px grid, 6/8/12px radii, subtle shadows — every pixel placed with intent.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="color" data-fidelity="documented">
+      <h2>
+        <span>Color</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://docs.stripe.com/stripe-apps/style" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p>Stripe's brand purple #635BFF is the signature accent, paired with deep navy #0A2540 and an accent cyan #00D4FF. The neutral palette is light, clean, and finance-grade.</p>
+
+      <h3>Brand palette</h3>
+      <div class="color-grid">
+        <div class="color-cell" style="background:var(--st-purple);color:white">#635BFF<br>purple</div>
+        <div class="color-cell" style="background:var(--st-purple-dark);color:white">#5048E5<br>purple dark</div>
+        <div class="color-cell" style="background:var(--st-purple-light);color:#21205F">#A6A4F0<br>purple light</div>
+        <div class="color-cell" style="background:var(--st-cyan);color:#0A2540">#00D4FF<br>cyan</div>
+        <div class="color-cell" style="background:var(--st-navy);color:white">#0A2540<br>navy</div>
+      </div>
+
+      <h3>Surface palette</h3>
+      <div class="color-grid">
+        <div class="color-cell" style="background:var(--st-bg);color:var(--st-text);border:1px solid var(--st-border)">#FFFFFF<br>bg</div>
+        <div class="color-cell" style="background:var(--st-bg-light);color:var(--st-text);border:1px solid var(--st-border)">#F6F9FC<br>bg-light</div>
+        <div class="color-cell" style="background:var(--st-border);color:var(--st-text)">#E3E8EE<br>border</div>
+        <div class="color-cell" style="background:var(--st-text-secondary);color:white">#425466<br>text-2</div>
+        <div class="color-cell" style="background:var(--st-text);color:white">#1A1F36<br>text</div>
+      </div>
+
+      <h3>Semantic roles</h3>
+      <div class="semantic-grid">
+        <div class="sem-card" style="background:var(--st-success-bg);color:var(--st-success-fg)">
+          <span class="label">Success</span><span class="hex">#3FBF6E</span>
+        </div>
+        <div class="sem-card" style="background:var(--st-error-bg);color:var(--st-error-fg)">
+          <span class="label">Error</span><span class="hex">#CD3D64</span>
+        </div>
+        <div class="sem-card" style="background:var(--st-warning-bg);color:var(--st-warning-fg)">
+          <span class="label">Warning</span><span class="hex">#FF9E0F</span>
+        </div>
+        <div class="sem-card" style="background:var(--st-info-bg);color:var(--st-info-fg)">
+          <span class="label">Info</span><span class="hex">#3A88FE</span>
+        </div>
+      </div>
+
+      <h3>Roles</h3>
+      <div class="role-grid">
+        <div class="role-chip" style="background:var(--st-purple);color:white">Primary <code>#635BFF</code></div>
+        <div class="role-chip" style="background:var(--st-purple-50);color:var(--st-purple-dark)">Primary subtle <code>#F4F3FF</code></div>
+        <div class="role-chip" style="background:var(--st-navy);color:white">Surface dark <code>#0A2540</code></div>
+        <div class="role-chip" style="background:var(--st-bg-light);color:var(--st-text);border:1px solid var(--st-border)">Surface light <code>#F6F9FC</code></div>
+      </div>
+
+      <h3>Signature gradients</h3>
+      <div class="gradient-row">
+        <div class="gradient-card" style="background:var(--st-grad)">purple → cyan</div>
+        <div class="gradient-card" style="background:var(--st-grad-soft);color:var(--st-navy)">purple-light → cyan-light</div>
+        <div class="gradient-card" style="background:var(--st-grad-dark)">navy depth</div>
+      </div>
+    </section>
+
+    <section id="typography" data-fidelity="approximated">
+      <h2>
+        <span>Typography</span>
+        <span class="badge fidelity-approximated">approximated</span>
+        <a href="https://stripe.com/about" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p>Stripe uses Söhne (proprietary). This page falls back to a system stack with Inter heuristic so the rhythm and weight pairing remains close. Editorial scale: tight letter-spacing on display, comfortable body lead.</p>
+
+      <div class="type-row"><div class="label">Display 1 · 56/61 · 600</div><div class="display-1">Build a financial OS</div></div>
+      <div class="type-row"><div class="label">Display 2 · 40/46 · 600</div><div class="display-2">Modern checkout</div></div>
+      <div class="type-row"><div class="label">Heading 1 · 32/38 · 600</div><div class="heading-1">Programmable money movement</div></div>
+      <div class="type-row"><div class="label">Heading 2 · 24/30 · 600</div><div class="heading-2">A unified API surface</div></div>
+      <div class="type-row"><div class="label">Heading 3 · 18/23 · 600</div><div class="heading-3">Component primitives</div></div>
+      <div class="type-row"><div class="label">Body L · 18/28</div><div class="body-l">Stripe's typography sets the tone for documentation, marketing, and the dashboard alike — clear hierarchy carries developers from headline to API in seconds.</div></div>
+      <div class="type-row"><div class="label">Body M · 16/24</div><div class="body-m">Body M is the default for paragraph copy. It pairs naturally with Heading 2 and Heading 3 across product surfaces.</div></div>
+      <div class="type-row"><div class="label">Body S · 14/21</div><div class="body-s">Body S is reserved for compact UI surfaces, helper text, and dense data tables.</div></div>
+      <div class="type-row"><div class="label">Caption · 12/17</div><div class="caption">Caption text · supporting metadata</div></div>
+      <div class="type-row"><div class="label">Mono · IBM Plex stack</div><div class="mono-sample">stripe.charges.create({ amount: 2000 })</div></div>
+    </section>
+
+    <section id="iconography" data-fidelity="approximated">
+      <h2>
+        <span>Iconography</span>
+        <span class="badge fidelity-approximated">approximated</span>
+        <a href="https://docs.stripe.com/stripe-apps/components" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p>Stripe's icon set is proprietary; the icons below are generic 22px stroke icons (Lucide-style) that approximate Stripe's clean, balanced line weight.</p>
+      <div class="icon-grid">
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/></svg><span>card</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 6v6l4 2"/></svg><span>clock</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M5 9l7-7 7 7"/></svg><span>send</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><span>search</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg><span>user</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z"/></svg><span>grid</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18l6-6 4 4 8-8"/><path d="M14 8h7v7"/></svg><span>chart</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.5-2.5l2-1.5-2-3.5-2.5 1A7 7 0 0 0 13 4l-.5-2.5h-4L8 4a7 7 0 0 0-3 1.5l-2.5-1-2 3.5 2 1.5A7 7 0 0 0 5 12c0 .9.2 1.7.5 2.5l-2 1.5 2 3.5 2.5-1c.9.7 2 1.2 3 1.5l.5 2.5h4l.5-2.5c1-.3 2.1-.8 3-1.5l2.5 1 2-3.5-2-1.5c.3-.8.5-1.6.5-2.5z"/></svg><span>settings</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>check</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg><span>close</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg><span>add</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2"/></svg><span>info</span></div>
+      </div>
+    </section>
+
+    <section id="buttons" data-fidelity="documented">
+      <h2>
+        <span>Buttons</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://docs.stripe.com/stripe-apps/components/button" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p>Stripe Apps defines Primary, Secondary, Tertiary, Destructive button styles with 36px default height, 6px radius, and subtle inset highlight on the primary purple variant.</p>
+
+      <h3>Variants</h3>
+      <div class="button-row">
+        <button class="st-btn st-btn--primary">Primary</button>
+        <button class="st-btn st-btn--gradient">Gradient CTA</button>
+        <button class="st-btn st-btn--secondary">Secondary</button>
+        <button class="st-btn st-btn--tertiary">Tertiary</button>
+        <button class="st-btn st-btn--destructive">Delete</button>
+        <button class="st-btn st-btn--icon" aria-label="more">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1.5"/><circle cx="6" cy="12" r="1.5"/><circle cx="18" cy="12" r="1.5"/></svg>
+        </button>
+      </div>
+
+      <h3>Sizes</h3>
+      <div class="button-row">
+        <button class="st-btn st-btn--primary st-btn--sm">Small</button>
+        <button class="st-btn st-btn--primary">Default</button>
+        <button class="st-btn st-btn--primary st-btn--lg">Large</button>
+      </div>
+
+      <h3>States</h3>
+      <div class="button-row">
+        <button class="st-btn st-btn--primary">Enabled</button>
+        <button class="st-btn st-btn--primary" style="background:var(--st-purple-dark)">Hover</button>
+        <button class="st-btn st-btn--primary" style="outline:2px solid var(--st-purple);outline-offset:2px">Focus</button>
+        <button class="st-btn st-btn--primary" disabled>Disabled</button>
+        <button class="st-btn st-btn--secondary">
+          <span class="st-spinner" style="width:14px;height:14px;border-width:2px"></span>
+          Loading
+        </button>
+      </div>
+    </section>
+
+    <section id="form" data-fidelity="documented">
+      <h2>
+        <span>Form</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://docs.stripe.com/stripe-apps/components/textfield" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p>Stripe text fields use a clean outlined style with subtle inset shadow. Focus state shows a 3px purple ring at 18% opacity — a hallmark of Stripe form polish.</p>
+
+      <h3>Text fields</h3>
+      <div class="form-grid">
+        <div class="st-field">
+          <label class="st-label" for="f1">Email</label>
+          <input class="st-input" id="f1" type="email" value="koma@example.com">
+          <span class="st-helper">We'll send a receipt here.</span>
+        </div>
+        <div class="st-field">
+          <label class="st-label" for="f2">Card number</label>
+          <input class="st-input" id="f2" placeholder="4242 4242 4242 4242">
+          <span class="st-helper">14–19 digits, no spaces required.</span>
+        </div>
+        <div class="st-field">
+          <label class="st-label" for="f3">Description</label>
+          <textarea class="st-input" id="f3">Subscription · monthly · pro plan</textarea>
+        </div>
+        <div class="st-field">
+          <label class="st-label" for="f4">Currency</label>
+          <select class="st-input" id="f4">
+            <option>USD — United States dollar</option>
+            <option>JPY — Japanese yen</option>
+            <option>EUR — Euro</option>
+          </select>
+        </div>
+        <div class="st-field">
+          <label class="st-label" for="f5">Statement descriptor</label>
+          <input class="st-input error" id="f5" value="invalid characters!">
+          <span class="st-error">Use only A–Z, 0–9, period, and hyphen.</span>
+        </div>
+        <div class="st-field">
+          <label class="st-label" for="f6">Search payments</label>
+          <input class="st-input" type="search" id="f6" placeholder="ch_3OPq…">
+        </div>
+      </div>
+
+      <h3>Selection controls</h3>
+      <div class="button-row">
+        <label class="st-checkbox"><input type="checkbox" checked>Save card</label>
+        <label class="st-checkbox"><input type="checkbox">Email receipt</label>
+        <label class="st-radio"><input type="radio" name="r1" checked>One-time</label>
+        <label class="st-radio"><input type="radio" name="r1">Subscription</label>
+        <label class="st-switch"><input type="checkbox" checked><span class="slider"></span></label>
+        <label class="st-switch"><input type="checkbox"><span class="slider"></span></label>
+      </div>
+
+      <h3>Slider &amp; file</h3>
+      <div style="max-width:400px;display:flex;flex-direction:column;gap:12px">
+        <input type="range" class="st-slider" min="0" max="100" value="42">
+        <input type="file" class="st-input" style="height:auto;padding:8px">
+      </div>
+    </section>
+
+    <section id="surfaces" data-fidelity="documented">
+      <h2>
+        <span>Surfaces</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://docs.stripe.com/stripe-apps/components/box" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p>Cards layer subtle shadows over flat surfaces. The signature Stripe gradient appears on hero cards and key stats to anchor brand presence.</p>
+
+      <div class="surface-grid">
+        <div class="st-card">
+          <div class="media"></div>
+          <h4>Outlined card</h4>
+          <p>1px border + subtle shadow. The default Stripe surface.</p>
+        </div>
+        <div class="st-card st-card--elevated">
+          <div class="media"></div>
+          <h4>Elevated card</h4>
+          <p>Borderless, with shadow-3 — for emphasized content.</p>
+        </div>
+        <div class="st-card st-card--gradient">
+          <div class="media" style="background:rgba(255,255,255,0.2)"></div>
+          <h4>Gradient feature</h4>
+          <p>Purple→cyan gradient surface for hero placement.</p>
+        </div>
+        <div class="st-stat">
+          <div class="num">$2.84M</div>
+          <div class="lbl">Volume processed · 30d</div>
+        </div>
+      </div>
+
+      <h3>Modal</h3>
+      <div class="st-modal">
+        <h4 style="margin-top:0;font-size:18px">Confirm payout</h4>
+        <p style="font-size:14px">$1,240.00 will be transferred to •••• 6411. This action typically completes within 1–2 business days.</p>
+        <div class="button-row" style="justify-content:flex-end;margin:0">
+          <button class="st-btn st-btn--secondary">Cancel</button>
+          <button class="st-btn st-btn--primary">Confirm payout</button>
+        </div>
+      </div>
+
+      <h3>Popover &amp; drawer</h3>
+      <div style="display:flex;gap:24px;flex-wrap:wrap">
+        <div class="st-menu">
+          <div class="item">View payment</div>
+          <div class="item">Refund</div>
+          <div class="item">Dispute</div>
+          <div class="divider"></div>
+          <div class="item" style="color:var(--st-error)">Archive</div>
+        </div>
+        <div class="st-sidebar">
+          <a href="#" class="active">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12L12 3l9 9"/><path d="M5 10v10h14V10"/></svg>
+            Home
+          </a>
+          <a href="#">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/></svg>
+            Payments
+          </a>
+          <a href="#">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 18l6-6 4 4 8-8"/><path d="M14 8h7v7"/></svg>
+            Reports
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section id="feedback" data-fidelity="documented">
+      <h2>
+        <span>Feedback</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://docs.stripe.com/stripe-apps/components/banner" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+
+      <h3>Banners (Notes)</h3>
+      <div class="st-alert st-alert--info">
+        <strong>Info ·</strong> Test mode is active. No real charges will occur.
+      </div>
+      <div class="st-alert st-alert--success">
+        <strong>Success ·</strong> Webhook endpoint registered for evt.payment_intent.succeeded.
+      </div>
+      <div class="st-alert st-alert--warn">
+        <strong>Warning ·</strong> Your account will require additional verification before December 31.
+      </div>
+      <div class="st-alert st-alert--error">
+        <strong>Error ·</strong> Customer's card was declined (insufficient_funds).
+      </div>
+
+      <h3>Toast</h3>
+      <div class="st-toast">
+        Payment succeeded · $42.00
+        <button>View</button>
+      </div>
+
+      <h3>Banner</h3>
+      <div class="st-banner" style="margin-top:12px">
+        <span><strong>New: Stripe Apps SDK 2.0</strong> — declarative components with TypeScript bindings.</span>
+        <button class="st-btn st-btn--tertiary" style="height:28px;font-size:12px">Read changelog</button>
+      </div>
+
+      <h3>Chips &amp; badges</h3>
+      <div class="st-chip-row">
+        <span class="st-chip">All</span>
+        <span class="st-chip st-chip--filled">Succeeded</span>
+        <span class="st-chip st-chip--primary">Active</span>
+        <span class="st-chip st-chip--success">Paid</span>
+        <span class="st-chip st-chip--warn">Pending</span>
+        <span class="st-chip st-chip--error">Failed</span>
+        <span class="st-badge">3</span>
+        <span class="st-badge" style="background:var(--st-purple)">12</span>
+      </div>
+
+      <h3>Progress &amp; loading</h3>
+      <div style="display:flex;flex-direction:column;gap:12px;max-width:480px">
+        <div class="st-progress"></div>
+        <div class="st-skeleton" style="width:80%"></div>
+        <div class="st-skeleton" style="width:60%"></div>
+        <div class="st-spinner"></div>
+      </div>
+    </section>
+
+    <section id="navigation" data-fidelity="documented">
+      <h2>
+        <span>Navigation</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://docs.stripe.com/stripe-apps/components/tabs" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+
+      <h3>Tabs</h3>
+      <div class="st-tabs">
+        <div class="st-tab active">Overview</div>
+        <div class="st-tab">Payments</div>
+        <div class="st-tab">Customers</div>
+        <div class="st-tab">Reports</div>
+        <div class="st-tab">Developers</div>
+      </div>
+
+      <h3>Breadcrumb</h3>
+      <div class="st-breadcrumb">
+        <a href="#">Home</a><span>/</span>
+        <a href="#">Payments</a><span>/</span>
+        <span>pi_3OPqA1B2C3</span>
+      </div>
+
+      <h3>Pagination</h3>
+      <div class="st-pagination">
+        <button>‹ Prev</button>
+        <button class="active">1</button>
+        <button>2</button>
+        <button>3</button>
+        <button>4</button>
+        <button>Next ›</button>
+      </div>
+
+      <h3>Stepper</h3>
+      <div class="st-stepper">
+        <div class="step active"><span class="num active">1</span> Account</div>
+        <span class="line"></span>
+        <div class="step active"><span class="num active">2</span> Verify</div>
+        <span class="line"></span>
+        <div class="step"><span class="num">3</span> Payouts</div>
+        <span class="line"></span>
+        <div class="step"><span class="num">4</span> Activate</div>
+      </div>
+
+      <h3>Top bar</h3>
+      <div class="st-topbar">
+        <button class="st-btn st-btn--icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+        <strong style="flex:1">Stripe Dashboard</strong>
+        <button class="st-btn st-btn--icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></button>
+        <div class="st-avatar">MK</div>
+      </div>
+    </section>
+
+    <section id="data" data-fidelity="documented">
+      <h2>
+        <span>Data</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://docs.stripe.com/stripe-apps/components/list" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+
+      <h3>Table</h3>
+      <table class="st-table">
+        <thead>
+          <tr><th>Customer</th><th>Amount</th><th>Status</th><th>Date</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Avery Tan</td><td><code>$129.00</code></td><td><span class="st-chip st-chip--success">Paid</span></td><td>May 5</td></tr>
+          <tr><td>Brett Yu</td><td><code>$2,400.00</code></td><td><span class="st-chip st-chip--warn">Pending</span></td><td>May 5</td></tr>
+          <tr><td>Cleo Park</td><td><code>$48.50</code></td><td><span class="st-chip st-chip--error">Failed</span></td><td>May 4</td></tr>
+          <tr><td>Dax Lin</td><td><code>$890.00</code></td><td><span class="st-chip st-chip--success">Paid</span></td><td>May 4</td></tr>
+        </tbody>
+      </table>
+
+      <h3>List</h3>
+      <ul class="st-list">
+        <li><div class="st-avatar">A</div><div><strong>ch_3OPq…aA1B2</strong><div style="font-size:13px;color:var(--st-text-muted)">$129.00 · Visa •••• 4242 · 2m ago</div></div></li>
+        <li><div class="st-avatar">B</div><div><strong>ch_3OPq…bB2C3</strong><div style="font-size:13px;color:var(--st-text-muted)">$2,400.00 · Mastercard •••• 6411 · 14m ago</div></div></li>
+        <li><div class="st-avatar">C</div><div><strong>ch_3OPq…cC3D4</strong><div style="font-size:13px;color:var(--st-text-muted)">$48.50 · Amex •••• 2007 · 1h ago</div></div></li>
+      </ul>
+
+      <h3>Key – value</h3>
+      <dl class="st-kv">
+        <dt>Charge ID</dt><dd>ch_3OPqA1B2C3</dd>
+        <dt>Amount</dt><dd>$2,400.00 USD</dd>
+        <dt>Status</dt><dd>succeeded</dd>
+        <dt>Created</dt><dd>2026-05-05 09:14:22 UTC</dd>
+      </dl>
+
+      <h3>Empty state</h3>
+      <div class="st-empty">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/></svg>
+        <h4 style="margin:8px 0 4px;color:var(--st-text)">No payments yet</h4>
+        <p style="font-size:13px;margin:0">Once your first charge succeeds, it will appear here.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="ds-footer">
+    <h3>Sources</h3>
+    <ul>
+      <li><a href="https://docs.stripe.com/stripe-apps/components" target="_blank" rel="noopener">https://docs.stripe.com/stripe-apps/components</a></li>
+      <li><a href="https://docs.stripe.com/stripe-apps/style" target="_blank" rel="noopener">https://docs.stripe.com/stripe-apps/style</a></li>
+      <li><a href="https://stripe.com/about" target="_blank" rel="noopener">https://stripe.com/about</a></li>
+      <li><a href="https://docs.stripe.com/stripe-apps/components/button" target="_blank" rel="noopener">https://docs.stripe.com/stripe-apps/components/button</a></li>
+      <li><a href="https://docs.stripe.com/stripe-apps/components/textfield" target="_blank" rel="noopener">https://docs.stripe.com/stripe-apps/components/textfield</a></li>
+      <li><a href="https://docs.stripe.com/stripe-apps/components/box" target="_blank" rel="noopener">https://docs.stripe.com/stripe-apps/components/box</a></li>
+      <li><a href="https://docs.stripe.com/stripe-apps/components/banner" target="_blank" rel="noopener">https://docs.stripe.com/stripe-apps/components/banner</a></li>
+      <li><a href="https://docs.stripe.com/stripe-apps/components/tabs" target="_blank" rel="noopener">https://docs.stripe.com/stripe-apps/components/tabs</a></li>
+      <li><a href="https://docs.stripe.com/stripe-apps/components/list" target="_blank" rel="noopener">https://docs.stripe.com/stripe-apps/components/list</a></li>
+    </ul>
+    <p class="license-note">This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Stripe. Stripe and related trademarks belong to Stripe. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</p>
+    <p class="meta-note">Reproduction date: 2026-05-05 · sourceStatus: verified · fidelity: approximated</p>
+  </footer>
+</body>
+</html>

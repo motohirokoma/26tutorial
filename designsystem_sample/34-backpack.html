@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Backpack — Design System Reference</title>
+  <script id="ds-meta" type="application/json">
+{"id":"34-backpack","fileSlug":"34-backpack","schemaVersion":"1"}
+  </script>
+  <style>
+    :root {
+      /* Skyscanner Blue scale */
+      --bp-blue: #0770E3;
+      --bp-blue-dark: #002C9D;
+      --bp-blue-light: #0095EE;
+      --bp-blue-subtle: #E1F4FF;
+
+      /* Neutrals */
+      --bp-text: #111236;
+      --bp-text-2: #6E7BA0;
+      --bp-text-3: #98A0BC;
+      --bp-bg: #FFFFFF;
+      --bp-bg-light: #F5F8FA;
+      --bp-bg-2: #EEF2F5;
+      --bp-line: #DCE0E6;
+      --bp-line-2: #E8ECF1;
+
+      /* Semantic */
+      --bp-success: #2EB67D;
+      --bp-success-bg: #E1F7EC;
+      --bp-error: #FF5050;
+      --bp-error-bg: #FFE9E9;
+      --bp-warning: #FFB000;
+      --bp-warning-bg: #FFF4DD;
+      --bp-info: #0095EE;
+      --bp-info-bg: var(--bp-blue-subtle);
+
+      /* Typography */
+      --bp-font: 'BkpkSans', 'Relative Pro', -apple-system, BlinkMacSystemFont, Inter, system-ui, sans-serif;
+      --bp-mono: 'SF Mono', ui-monospace, Menlo, monospace;
+
+      /* Shape */
+      --bp-r-xs: 4px;
+      --bp-r-sm: 6px;
+      --bp-r-md: 8px;
+      --bp-r-lg: 12px;
+      --bp-r-pill: 999px;
+
+      /* Spacing — Backpack 4px base */
+      --bp-s-1: 4px;
+      --bp-s-2: 8px;
+      --bp-s-3: 12px;
+      --bp-s-4: 16px;
+      --bp-s-5: 20px;
+      --bp-s-6: 24px;
+      --bp-s-7: 32px;
+      --bp-s-8: 48px;
+
+      /* Shadow */
+      --bp-shadow-1: 0 1px 2px rgba(17,18,54,0.08);
+      --bp-shadow-2: 0 4px 12px rgba(17,18,54,0.10);
+      --bp-shadow-3: 0 12px 28px rgba(17,18,54,0.16);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: var(--bp-font);
+      background: var(--bp-bg-light);
+      color: var(--bp-text);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    code, kbd, pre { font-family: var(--bp-mono); font-size: 0.92em; }
+
+    /* Header */
+    .ds-header {
+      background: linear-gradient(180deg, var(--bp-blue) 0%, var(--bp-blue-dark) 100%);
+      color: white;
+      padding: var(--bp-s-8) var(--bp-s-7) var(--bp-s-7);
+      position: relative;
+      overflow: hidden;
+    }
+    .ds-header::after {
+      content: '';
+      position: absolute;
+      right: -80px;
+      top: -80px;
+      width: 320px; height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,0.08), transparent 70%);
+      pointer-events: none;
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--bp-s-2);
+      color: rgba(255,255,255,0.92);
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: var(--bp-r-pill);
+      font-size: 13px;
+      font-weight: 700;
+      border: 1px solid rgba(255,255,255,0.3);
+      background: rgba(255,255,255,0.08);
+      transition: background 0.2s;
+    }
+    .back-link:hover { background: rgba(255,255,255,0.16); color: white; }
+    .ds-header h1 {
+      font-size: 48px;
+      line-height: 56px;
+      font-weight: 700;
+      letter-spacing: -0.4px;
+      margin: var(--bp-s-5) 0 var(--bp-s-3);
+    }
+    .ds-header .meta {
+      display: flex; flex-wrap: wrap;
+      gap: var(--bp-s-2); align-items: center;
+      margin-bottom: var(--bp-s-3);
+    }
+    .badge {
+      display: inline-flex; align-items: center;
+      padding: 4px 10px;
+      border-radius: var(--bp-r-pill);
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 0.4px; text-transform: uppercase;
+      background: rgba(255,255,255,0.12);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.25);
+    }
+    .badge.kind-ds { background: white; color: var(--bp-blue-dark); border-color: transparent; }
+    .badge.fidelity-documented { background: #DCEDC8; color: #1B5E20; border-color: transparent; }
+    .badge.fidelity-approximated { background: #FFE7B0; color: #7A4D00; border-color: transparent; }
+    .badge.fidelity-inspired { background: #F3E5F5; color: #4A148C; border-color: transparent; }
+    .badge.source-legacy { background: rgba(255,255,255,0.18); color: rgba(255,255,255,0.95); border-color: transparent; }
+
+    .ds-header a.official {
+      color: white; text-decoration: none;
+      font-weight: 700;
+      padding: 4px 12px;
+      border: 1px solid rgba(255,255,255,0.4);
+      border-radius: var(--bp-r-pill);
+      font-size: 12px;
+    }
+    .ds-header a.official:hover { background: rgba(255,255,255,0.16); }
+    .tagline {
+      font-size: 18px; line-height: 28px;
+      max-width: 720px;
+      margin: var(--bp-s-4) 0 0;
+      color: rgba(255,255,255,0.92);
+    }
+
+    /* TOC */
+    .toc {
+      position: sticky; top: 0;
+      z-index: 50;
+      background: rgba(255,255,255,0.92);
+      border-bottom: 1px solid var(--bp-line);
+      backdrop-filter: blur(12px);
+    }
+    .toc ul {
+      list-style: none; margin: 0;
+      padding: var(--bp-s-3) var(--bp-s-7);
+      display: flex; gap: var(--bp-s-2);
+      overflow-x: auto;
+    }
+    .toc a {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: var(--bp-r-pill);
+      color: var(--bp-text-2);
+      text-decoration: none;
+      font-size: 13px; font-weight: 700;
+      white-space: nowrap;
+      border: 1px solid var(--bp-line);
+      transition: all 0.15s;
+      background: white;
+    }
+    .toc a:hover { background: var(--bp-blue); color: white; border-color: var(--bp-blue); }
+
+    main {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: var(--bp-s-7) var(--bp-s-6);
+    }
+    section {
+      background: var(--bp-bg);
+      border-radius: var(--bp-r-lg);
+      padding: var(--bp-s-7);
+      margin-bottom: var(--bp-s-6);
+      box-shadow: var(--bp-shadow-1);
+      border: 1px solid var(--bp-line-2);
+    }
+    section h2 {
+      display: flex; align-items: center;
+      gap: var(--bp-s-3); flex-wrap: wrap;
+      font-size: 28px; line-height: 36px;
+      font-weight: 700;
+      margin: 0 0 var(--bp-s-5);
+      color: var(--bp-text);
+      letter-spacing: -0.3px;
+    }
+    .source-link {
+      font-size: 12px;
+      color: var(--bp-blue);
+      text-decoration: none;
+      font-weight: 700;
+    }
+    .source-link:hover { text-decoration: underline; }
+    h3 {
+      font-size: 18px; line-height: 26px;
+      font-weight: 700;
+      margin: var(--bp-s-6) 0 var(--bp-s-3);
+      color: var(--bp-text);
+    }
+    h4 {
+      font-size: 14px; line-height: 20px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+      margin: var(--bp-s-4) 0 var(--bp-s-2);
+      color: var(--bp-text-2);
+    }
+    p { margin: 0 0 var(--bp-s-3); color: var(--bp-text); }
+    .sub-text { color: var(--bp-text-2); font-size: 14px; }
+
+    /* Brand */
+    #brand .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--bp-s-3);
+      padding: var(--bp-s-4) var(--bp-s-6);
+      background: var(--bp-blue);
+      border-radius: var(--bp-r-md);
+      color: white;
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.2px;
+    }
+    #brand .brand-mark .pack-icon {
+      width: 36px; height: 36px;
+      background: white;
+      border-radius: var(--bp-r-sm);
+      display: inline-flex;
+      align-items: center; justify-content: center;
+      color: var(--bp-blue);
+      font-weight: 700;
+    }
+    #brand .pillars {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--bp-s-4);
+      margin-top: var(--bp-s-6);
+    }
+    #brand .pillar {
+      padding: var(--bp-s-5);
+      background: var(--bp-bg-light);
+      border-radius: var(--bp-r-md);
+      border: 1px solid var(--bp-line-2);
+    }
+    #brand .pillar h4 {
+      margin: 0 0 var(--bp-s-2);
+      color: var(--bp-blue);
+      text-transform: none;
+      font-size: 16px;
+      letter-spacing: 0;
+    }
+    #brand .pillar p { font-size: 14px; color: var(--bp-text-2); margin: 0; }
+
+    /* Color */
+    .color-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px,1fr));
+      gap: var(--bp-s-2);
+      margin-bottom: var(--bp-s-4);
+    }
+    .color-cell {
+      padding: var(--bp-s-3) var(--bp-s-4);
+      border-radius: var(--bp-r-sm);
+      font-size: 12px;
+      font-family: var(--bp-mono);
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .color-cell .hex { font-size: 11px; opacity: 0.85; }
+
+    .color-grid-blue {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--bp-s-2);
+      margin-bottom: var(--bp-s-4);
+    }
+    .blue-block {
+      padding: var(--bp-s-4);
+      border-radius: var(--bp-r-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-height: 88px;
+      justify-content: flex-end;
+    }
+
+    .semantic-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
+      gap: var(--bp-s-3);
+    }
+    .sem-card {
+      padding: var(--bp-s-4);
+      border-radius: var(--bp-r-md);
+      display: flex; flex-direction: column;
+      gap: 4px;
+    }
+    .sem-card .label { font-size: 14px; font-weight: 700; }
+    .sem-card .hex { font-family: var(--bp-mono); font-size: 12px; opacity: 0.9; }
+
+    /* Typography */
+    .type-row {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: var(--bp-s-4);
+      padding: var(--bp-s-4) 0;
+      border-bottom: 1px solid var(--bp-line-2);
+      align-items: baseline;
+    }
+    .type-row:last-child { border-bottom: 0; }
+    .type-row .label {
+      font-family: var(--bp-mono);
+      font-size: 12px;
+      color: var(--bp-text-2);
+    }
+    .hero { font-size: 56px; line-height: 64px; font-weight: 700; letter-spacing: -0.5px; }
+    .heading-1 { font-size: 36px; line-height: 44px; font-weight: 700; letter-spacing: -0.3px; }
+    .heading-2 { font-size: 28px; line-height: 36px; font-weight: 700; }
+    .heading-3 { font-size: 22px; line-height: 30px; font-weight: 700; }
+    .heading-4 { font-size: 18px; line-height: 26px; font-weight: 700; }
+    .heading-5 { font-size: 16px; line-height: 22px; font-weight: 700; }
+    .body-lg { font-size: 18px; line-height: 26px; }
+    .body-default { font-size: 16px; line-height: 24px; }
+    .body-sm { font-size: 14px; line-height: 20px; }
+    .caption { font-size: 12px; line-height: 16px; color: var(--bp-text-2); }
+    .label-emphasized { font-size: 14px; line-height: 20px; font-weight: 700; }
+    .mono-sample { font-family: var(--bp-mono); font-size: 13px; color: var(--bp-blue); }
+
+    /* Iconography */
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(80px,1fr));
+      gap: var(--bp-s-3);
+    }
+    .icon-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center; gap: 6px;
+      padding: var(--bp-s-3);
+      background: var(--bp-bg-light);
+      border-radius: var(--bp-r-sm);
+      border: 1px solid var(--bp-line-2);
+    }
+    .icon-cell svg { width: 22px; height: 22px; stroke: var(--bp-blue); fill: none; stroke-width: 2; }
+    .icon-cell span { font-size: 11px; color: var(--bp-text-2); }
+
+    /* Buttons */
+    .button-row {
+      display: flex; flex-wrap: wrap;
+      gap: var(--bp-s-3);
+      align-items: center;
+      margin-bottom: var(--bp-s-3);
+    }
+    .bp-btn {
+      font-family: var(--bp-font);
+      font-size: 15px;
+      font-weight: 700;
+      padding: 10px 20px;
+      border-radius: var(--bp-r-pill);
+      border: 0;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      height: 40px;
+      transition: background 0.15s, color 0.15s;
+    }
+    .bp-btn--primary { background: var(--bp-blue); color: white; }
+    .bp-btn--primary:hover { background: var(--bp-blue-dark); }
+    .bp-btn--primary:active { background: #001E6B; }
+    .bp-btn--primary:disabled { background: #B6CDE8; color: rgba(255,255,255,0.95); cursor: not-allowed; }
+    .bp-btn--secondary { background: var(--bp-bg-light); color: var(--bp-blue); border: 1px solid var(--bp-line); }
+    .bp-btn--secondary:hover { background: var(--bp-bg-2); }
+    .bp-btn--featured { background: var(--bp-success); color: white; }
+    .bp-btn--featured:hover { background: #239466; }
+    .bp-btn--destructive { background: var(--bp-error); color: white; }
+    .bp-btn--destructive:hover { background: #E63D3D; }
+    .bp-btn--link {
+      background: transparent;
+      color: var(--bp-blue);
+      padding: 10px 12px;
+      text-decoration: none;
+    }
+    .bp-btn--link:hover { text-decoration: underline; }
+    .bp-btn--icon {
+      width: 40px; height: 40px; padding: 0;
+      justify-content: center;
+      background: white;
+      border: 1px solid var(--bp-line);
+      color: var(--bp-text);
+    }
+    .bp-btn--icon:hover { background: var(--bp-bg-light); }
+    .bp-btn--sm { height: 32px; padding: 6px 14px; font-size: 13px; }
+    .bp-btn--lg { height: 48px; padding: 12px 28px; font-size: 17px; }
+    .bp-btn:focus-visible { outline: 3px solid rgba(7,112,227,0.4); outline-offset: 2px; }
+
+    /* Form */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+      gap: var(--bp-s-4);
+    }
+    .bp-field {
+      display: flex; flex-direction: column;
+      gap: 6px;
+    }
+    .bp-field label {
+      font-size: 13px; font-weight: 700;
+      color: var(--bp-text);
+    }
+    .bp-input, .bp-select, .bp-textarea {
+      font-family: var(--bp-font);
+      font-size: 16px;
+      color: var(--bp-text);
+      background: white;
+      border: 2px solid var(--bp-line);
+      border-radius: var(--bp-r-md);
+      padding: 10px 14px;
+      width: 100%;
+      outline: none;
+      transition: border 0.15s;
+    }
+    .bp-input:focus, .bp-select:focus, .bp-textarea:focus {
+      border-color: var(--bp-blue);
+    }
+    .bp-input--error { border-color: var(--bp-error); }
+    .bp-textarea { min-height: 90px; resize: vertical; }
+    .bp-helper { font-size: 12px; color: var(--bp-text-2); }
+    .bp-error-text { color: var(--bp-error); font-weight: 700; }
+
+    .bp-checkbox, .bp-radio {
+      display: inline-flex; align-items: center;
+      gap: 8px; cursor: pointer; font-size: 14px;
+    }
+    .bp-checkbox input, .bp-radio input {
+      width: 18px; height: 18px;
+      accent-color: var(--bp-blue);
+    }
+
+    .bp-switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+    .bp-switch input { opacity: 0; width: 0; height: 0; }
+    .bp-switch .slider {
+      position: absolute; cursor: pointer; inset: 0;
+      background: #C2C8D2;
+      border-radius: var(--bp-r-pill);
+      transition: 0.2s;
+    }
+    .bp-switch .slider::before {
+      content: ''; position: absolute;
+      width: 20px; height: 20px;
+      left: 2px; top: 2px;
+      background: white;
+      border-radius: 50%;
+      transition: 0.2s;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.18);
+    }
+    .bp-switch input:checked + .slider { background: var(--bp-blue); }
+    .bp-switch input:checked + .slider::before { transform: translateX(20px); }
+
+    /* Surfaces */
+    .bp-card {
+      background: var(--bp-bg);
+      border-radius: var(--bp-r-lg);
+      padding: var(--bp-s-5);
+      border: 1px solid var(--bp-line-2);
+      box-shadow: var(--bp-shadow-1);
+      transition: box-shadow 0.15s, transform 0.1s;
+    }
+    .bp-card:hover { box-shadow: var(--bp-shadow-2); }
+    .bp-card .media {
+      height: 120px;
+      background: linear-gradient(135deg, var(--bp-blue), var(--bp-blue-light));
+      border-radius: var(--bp-r-md);
+      margin-bottom: var(--bp-s-3);
+    }
+    .bp-card h4 {
+      margin: 0 0 var(--bp-s-2);
+      text-transform: none;
+      letter-spacing: 0;
+      font-size: 17px;
+      color: var(--bp-text);
+    }
+    .bp-card p {
+      font-size: 14px;
+      color: var(--bp-text-2);
+      margin: 0;
+    }
+    .surface-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
+      gap: var(--bp-s-4);
+    }
+    .bp-stat {
+      padding: var(--bp-s-5);
+      background: var(--bp-blue-subtle);
+      border-radius: var(--bp-r-md);
+      color: var(--bp-blue-dark);
+    }
+    .bp-stat .num {
+      font-size: 36px;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -0.5px;
+    }
+    .bp-stat .lbl {
+      font-size: 13px;
+      opacity: 0.85;
+      margin-top: 4px;
+    }
+
+    /* Travel-card mock */
+    .bp-flight {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr auto;
+      gap: var(--bp-s-4);
+      align-items: center;
+      padding: var(--bp-s-5);
+      background: white;
+      border: 1px solid var(--bp-line-2);
+      border-radius: var(--bp-r-md);
+      margin-bottom: var(--bp-s-3);
+    }
+    .bp-flight .city {
+      font-size: 22px;
+      font-weight: 700;
+    }
+    .bp-flight .meta {
+      font-size: 12px;
+      color: var(--bp-text-2);
+    }
+    .bp-flight .arrow {
+      color: var(--bp-blue);
+      font-size: 20px;
+    }
+    .bp-flight .price {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--bp-blue);
+    }
+
+    .bp-modal {
+      background: var(--bp-bg);
+      padding: var(--bp-s-6);
+      border-radius: var(--bp-r-lg);
+      box-shadow: var(--bp-shadow-3);
+      max-width: 420px;
+      border: 1px solid var(--bp-line-2);
+    }
+
+    /* Feedback */
+    .bp-banner {
+      display: flex;
+      gap: var(--bp-s-3);
+      padding: var(--bp-s-4) var(--bp-s-5);
+      border-radius: var(--bp-r-md);
+      margin-bottom: var(--bp-s-2);
+      font-size: 14px;
+      align-items: flex-start;
+      border-left: 4px solid;
+    }
+    .bp-banner--info { background: var(--bp-info-bg); border-color: var(--bp-info); color: var(--bp-blue-dark); }
+    .bp-banner--success { background: var(--bp-success-bg); border-color: var(--bp-success); color: #105D3F; }
+    .bp-banner--warning { background: var(--bp-warning-bg); border-color: var(--bp-warning); color: #7A4D00; }
+    .bp-banner--error { background: var(--bp-error-bg); border-color: var(--bp-error); color: #8E1F1F; }
+    .bp-banner svg { width: 20px; height: 20px; flex: none; margin-top: 1px; }
+
+    .bp-toast {
+      background: var(--bp-text);
+      color: white;
+      padding: 14px 18px;
+      border-radius: var(--bp-r-md);
+      box-shadow: var(--bp-shadow-3);
+      display: inline-flex;
+      align-items: center; gap: 16px;
+      font-size: 14px;
+    }
+    .bp-toast button {
+      background: transparent; color: var(--bp-blue-light);
+      border: 0; font-weight: 700; cursor: pointer;
+    }
+
+    .bp-chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .bp-chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 14px;
+      border-radius: var(--bp-r-pill);
+      border: 1px solid var(--bp-line);
+      background: white;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .bp-chip--filled { background: var(--bp-blue-subtle); color: var(--bp-blue-dark); border-color: transparent; }
+    .bp-chip--primary { background: var(--bp-blue); color: white; border-color: transparent; }
+    .bp-chip--success { background: var(--bp-success-bg); color: #105D3F; border-color: transparent; }
+    .bp-chip--warn { background: var(--bp-warning-bg); color: #7A4D00; border-color: transparent; }
+    .bp-chip--error { background: var(--bp-error-bg); color: #8E1F1F; border-color: transparent; }
+
+    .bp-badge {
+      background: var(--bp-error);
+      color: white;
+      border-radius: var(--bp-r-pill);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      min-width: 18px;
+      display: inline-flex;
+      justify-content: center;
+    }
+
+    .bp-progress {
+      width: 100%; height: 6px;
+      background: var(--bp-line);
+      border-radius: var(--bp-r-pill);
+      overflow: hidden;
+    }
+    .bp-progress::after {
+      content: ''; display: block;
+      height: 100%; width: 64%;
+      background: var(--bp-blue);
+      border-radius: var(--bp-r-pill);
+    }
+
+    .bp-skeleton {
+      height: 14px;
+      background: linear-gradient(90deg, var(--bp-bg-2), var(--bp-line-2), var(--bp-bg-2));
+      background-size: 200% 100%;
+      border-radius: var(--bp-r-xs);
+      animation: shimmer 1.5s infinite;
+    }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+    .bp-spinner {
+      width: 32px; height: 32px;
+      border: 3px solid var(--bp-line);
+      border-top-color: var(--bp-blue);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Navigation */
+    .bp-tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 2px solid var(--bp-line-2);
+      margin-bottom: var(--bp-s-4);
+    }
+    .bp-tab {
+      padding: var(--bp-s-3) var(--bp-s-5);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--bp-text-2);
+      border-bottom: 3px solid transparent;
+      cursor: pointer;
+      transform: translateY(2px);
+    }
+    .bp-tab.active { color: var(--bp-blue); border-bottom-color: var(--bp-blue); }
+    .bp-tab:hover:not(.active) { color: var(--bp-text); }
+
+    .bp-breadcrumb { display: flex; gap: 8px; align-items: center; font-size: 14px; color: var(--bp-text-2); }
+    .bp-breadcrumb a { color: var(--bp-blue); text-decoration: none; font-weight: 700; }
+    .bp-breadcrumb a:hover { text-decoration: underline; }
+
+    .bp-pagination { display: flex; gap: 4px; align-items: center; }
+    .bp-pagination button {
+      min-width: 40px; height: 40px;
+      padding: 0 12px;
+      border-radius: var(--bp-r-pill);
+      border: 1px solid var(--bp-line);
+      background: white;
+      color: var(--bp-text);
+      cursor: pointer;
+      font-family: var(--bp-font);
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .bp-pagination button.active { background: var(--bp-blue); color: white; border-color: var(--bp-blue); }
+    .bp-pagination button:hover:not(.active) { background: var(--bp-bg-light); }
+
+    .bp-stepper { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+    .bp-stepper .step { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; }
+    .bp-stepper .num {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--bp-bg-2); color: var(--bp-text-2);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700;
+    }
+    .bp-stepper .num.active { background: var(--bp-blue); color: white; }
+    .bp-stepper .num.done { background: var(--bp-success); color: white; }
+    .bp-stepper .line { flex: 1; height: 2px; background: var(--bp-line); border-radius: var(--bp-r-pill); }
+    .bp-stepper .line.done { background: var(--bp-success); }
+
+    .bp-sidebar {
+      background: white;
+      border-radius: var(--bp-r-md);
+      padding: 12px;
+      width: 220px;
+      border: 1px solid var(--bp-line-2);
+    }
+    .bp-sidebar a {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 14px;
+      border-radius: var(--bp-r-md);
+      color: var(--bp-text-2);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .bp-sidebar a.active { background: var(--bp-blue-subtle); color: var(--bp-blue-dark); }
+    .bp-sidebar a:hover:not(.active) { background: var(--bp-bg-light); color: var(--bp-text); }
+
+    .bp-topbar {
+      display: flex; align-items: center; gap: 16px;
+      padding: 12px 16px;
+      background: white;
+      border-radius: var(--bp-r-md);
+      border: 1px solid var(--bp-line-2);
+    }
+    .bp-menu {
+      background: white;
+      border-radius: var(--bp-r-md);
+      box-shadow: var(--bp-shadow-3);
+      padding: 8px 0;
+      width: 220px;
+      border: 1px solid var(--bp-line-2);
+    }
+    .bp-menu .item { padding: 10px 16px; font-size: 14px; cursor: pointer; }
+    .bp-menu .item:hover { background: var(--bp-bg-light); color: var(--bp-blue); }
+
+    /* Layout */
+    .grid-demo {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 8px;
+      background: var(--bp-bg-light);
+      padding: 16px;
+      border-radius: var(--bp-r-md);
+    }
+    .grid-demo > div {
+      background: var(--bp-blue-subtle);
+      color: var(--bp-blue-dark);
+      padding: 12px;
+      border-radius: var(--bp-r-xs);
+      font-size: 12px;
+      font-weight: 700;
+      text-align: center;
+    }
+    .scale-row {
+      display: flex;
+      gap: var(--bp-s-3);
+      flex-wrap: wrap;
+      align-items: flex-end;
+      margin-bottom: var(--bp-s-4);
+    }
+    .scale-item {
+      display: flex; flex-direction: column; gap: 6px;
+      align-items: center;
+    }
+    .scale-item .swatch { background: var(--bp-blue); }
+    .scale-item .lbl {
+      font-size: 11px;
+      font-family: var(--bp-mono);
+      color: var(--bp-text-2);
+    }
+    .shadow-demo {
+      width: 80px; height: 80px;
+      background: white;
+      border-radius: var(--bp-r-md);
+      display: inline-flex; align-items: center; justify-content: center;
+      margin-right: 16px; margin-bottom: 16px;
+      font-size: 11px; font-family: var(--bp-mono);
+      color: var(--bp-text-2);
+    }
+
+    /* Footer */
+    .ds-footer {
+      background: #0A1F44;
+      padding: var(--bp-s-7);
+      margin-top: var(--bp-s-7);
+      color: rgba(255,255,255,0.85);
+    }
+    .ds-footer h3 { margin-top: 0; color: white; }
+    .ds-footer ul { padding-left: 20px; }
+    .ds-footer li { margin-bottom: 4px; word-break: break-all; font-size: 13px; }
+    .ds-footer a { color: var(--bp-blue-light); text-decoration: none; }
+    .ds-footer a:hover { text-decoration: underline; }
+    .license-note { font-size: 13px; color: rgba(255,255,255,0.7); margin-top: var(--bp-s-4); }
+    .meta-note { font-size: 12px; color: rgba(255,255,255,0.6); font-family: var(--bp-mono); margin-top: var(--bp-s-2); }
+
+    @media (max-width: 720px) {
+      .ds-header h1 { font-size: 32px; line-height: 40px; }
+      main { padding: var(--bp-s-4); }
+      section { padding: var(--bp-s-5); }
+      .type-row { grid-template-columns: 1fr; }
+      .color-grid-blue { grid-template-columns: repeat(2, 1fr); }
+      .bp-flight { grid-template-columns: 1fr; gap: var(--bp-s-2); }
+    }
+  </style>
+</head>
+<body>
+  <header class="ds-header">
+    <a href="index.html" class="back-link">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Catalog
+    </a>
+    <h1>Backpack</h1>
+    <div class="meta">
+      <span class="badge kind-ds">design-system</span>
+      <span class="badge fidelity-approximated">approximated</span>
+      <span class="badge source-legacy">source: legacy</span>
+      <a href="https://backpack.github.io" target="_blank" rel="noopener" class="official">Official</a>
+    </div>
+    <p class="tagline">Skyscanner's travel-tech design system with refined Skyscanner blue and balanced multi-language support.</p>
+  </header>
+
+  <nav class="toc" aria-label="Table of contents">
+    <ul>
+      <li><a href="#brand">Brand</a></li>
+      <li><a href="#color">Color</a></li>
+      <li><a href="#typography">Typography</a></li>
+      <li><a href="#iconography">Iconography</a></li>
+      <li><a href="#buttons">Buttons</a></li>
+      <li><a href="#form">Form</a></li>
+      <li><a href="#surfaces">Surfaces</a></li>
+      <li><a href="#feedback">Feedback</a></li>
+      <li><a href="#navigation">Navigation</a></li>
+      <li><a href="#layout">Layout</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="brand" data-fidelity="approximated">
+      <h2>
+        <span>Brand</span>
+        <span class="badge fidelity-approximated">approximated</span>
+      </h2>
+      <div class="brand-mark">
+        <span class="pack-icon">B</span>
+        Backpack
+      </div>
+      <p style="margin-top: var(--bp-s-5); max-width: 720px; font-size: 16px; color: var(--bp-text-2);">
+        Backpack is Skyscanner's open-source design system, built around a confident Skyscanner blue and friendly travel illustrations. The system supports web, iOS, and Android with shared tokens, and is tuned for multi-language travel UX across many global markets.
+      </p>
+      <div class="pillars">
+        <div class="pillar">
+          <h4>Honest</h4>
+          <p>Show traveler-friendly information clearly — no hidden fees, no dark patterns. Trust is core to the brand.</p>
+        </div>
+        <div class="pillar">
+          <h4>Inviting</h4>
+          <p>Soft rounding and the bright Skyscanner blue make the product feel welcoming across cultures.</p>
+        </div>
+        <div class="pillar">
+          <h4>Helpful</h4>
+          <p>Components are tuned for international UI: long German strings, RTL Arabic, and dense East Asian text.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="color" data-fidelity="documented">
+      <h2>
+        <span>Color</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://backpack.github.io/tokens/colors" target="_blank" rel="noopener" class="source-link">Tokens</a>
+      </h2>
+      <p class="sub-text">Skyscanner Blue is the primary brand identity, with a tonal scale running from subtle backgrounds to dark navy depths. Neutrals carry a warm blue undertone for harmony.</p>
+
+      <h3>Skyscanner Blue scale</h3>
+      <div class="color-grid-blue">
+        <div class="blue-block" style="background:var(--bp-blue-subtle);color:var(--bp-blue-dark)">subtle<span class="hex">#E1F4FF</span></div>
+        <div class="blue-block" style="background:var(--bp-blue-light);color:white">light<span class="hex">#0095EE</span></div>
+        <div class="blue-block" style="background:var(--bp-blue);color:white">primary<span class="hex">#0770E3</span></div>
+        <div class="blue-block" style="background:var(--bp-blue-dark);color:white">dark<span class="hex">#002C9D</span></div>
+      </div>
+
+      <h3>Neutrals (warm-blue undertone)</h3>
+      <div class="color-row">
+        <div class="color-cell" style="background:white;color:var(--bp-text);border:1px solid var(--bp-line)">bg<span class="hex">#FFFFFF</span></div>
+        <div class="color-cell" style="background:var(--bp-bg-light);color:var(--bp-text);border:1px solid var(--bp-line)">bg-light<span class="hex">#F5F8FA</span></div>
+        <div class="color-cell" style="background:var(--bp-bg-2);color:var(--bp-text);border:1px solid var(--bp-line)">bg-2<span class="hex">#EEF2F5</span></div>
+        <div class="color-cell" style="background:var(--bp-line);color:var(--bp-text)">line<span class="hex">#DCE0E6</span></div>
+        <div class="color-cell" style="background:var(--bp-text-2);color:white">text-2<span class="hex">#6E7BA0</span></div>
+        <div class="color-cell" style="background:var(--bp-text);color:white">text<span class="hex">#111236</span></div>
+      </div>
+
+      <h3>Semantic roles</h3>
+      <div class="semantic-grid">
+        <div class="sem-card" style="background:var(--bp-success-bg);color:#105D3F">
+          <span class="label">Success</span><span class="hex">#2EB67D</span>
+        </div>
+        <div class="sem-card" style="background:var(--bp-info-bg);color:var(--bp-blue-dark)">
+          <span class="label">Info</span><span class="hex">#0095EE</span>
+        </div>
+        <div class="sem-card" style="background:var(--bp-warning-bg);color:#7A4D00">
+          <span class="label">Warning</span><span class="hex">#FFB000</span>
+        </div>
+        <div class="sem-card" style="background:var(--bp-error-bg);color:#8E1F1F">
+          <span class="label">Error</span><span class="hex">#FF5050</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="typography" data-fidelity="documented">
+      <h2>
+        <span>Typography</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://backpack.github.io/tokens/typography" target="_blank" rel="noopener" class="source-link">Tokens</a>
+      </h2>
+      <p class="sub-text">Backpack ships custom 'BkpkSans' and 'Relative Pro' for production; this reference uses a system stack fallback. Scale is tuned for travel content density.</p>
+
+      <div class="type-row"><div class="label">Hero · 56/64 · 700</div><div class="hero">Plan your next trip</div></div>
+      <div class="type-row"><div class="label">Heading 1 · 36/44 · 700</div><div class="heading-1">Find flights to anywhere</div></div>
+      <div class="type-row"><div class="label">Heading 2 · 28/36 · 700</div><div class="heading-2">Popular destinations</div></div>
+      <div class="type-row"><div class="label">Heading 3 · 22/30 · 700</div><div class="heading-3">Edinburgh in autumn</div></div>
+      <div class="type-row"><div class="label">Heading 4 · 18/26 · 700</div><div class="heading-4">Hotels near city center</div></div>
+      <div class="type-row"><div class="label">Heading 5 · 16/22 · 700</div><div class="heading-5">Filter results</div></div>
+      <div class="type-row"><div class="label">Body L · 18/26</div><div class="body-lg">Backpack types are tuned across English, German, Japanese, and Arabic — with line-heights and letter-spacing chosen to keep travel fares scannable in dense lists.</div></div>
+      <div class="type-row"><div class="label">Body Default · 16/24</div><div class="body-default">Body Default is used for descriptions, fare summaries, and most paragraph copy. The 16px size keeps copy comfortable on mobile.</div></div>
+      <div class="type-row"><div class="label">Body S · 14/20</div><div class="body-sm">Body S is reserved for secondary metadata and helper text alongside form fields.</div></div>
+      <div class="type-row"><div class="label">Caption · 12/16</div><div class="caption">Caption captures fine print, terms, and footnote-style content.</div></div>
+      <div class="type-row"><div class="label">Label · 14/20 · 700</div><div class="label-emphasized">Search flights · Add traveler</div></div>
+      <div class="type-row"><div class="label">Mono</div><div class="mono-sample">--bpk-color-sky-blue: #0770E3;</div></div>
+    </section>
+
+    <section id="iconography" data-fidelity="documented">
+      <h2>
+        <span>Iconography</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://backpack.github.io/icons" target="_blank" rel="noopener" class="source-link">Icons</a>
+      </h2>
+      <p class="sub-text">Backpack Icons are open-source (Apache 2.0). This page uses generic 22px stroke icons in the same friendly travel register — rounded ends, 2px stroke.</p>
+      <div class="icon-grid">
+        <div class="icon-cell"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12L12 3l9 9"/><path d="M5 10v10h14V10"/></svg><span>home</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><span>search</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M3 16l4-4 8 8M3 16l4 4M21 3l-9 9-3-3"/></svg><span>flight</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8a4 4 0 0 1 4-4h12a4 4 0 0 1 4 4v8a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z"/><path d="M2 12h20"/></svg><span>hotel</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17a4 4 0 1 0 4 0M19 17a4 4 0 1 0-4 0"/><path d="M3 14h18M3 10h18"/></svg><span>car</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span>calendar</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg><span>profile</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8 8 0 1 1-3.6-6.7"/><path d="M21 5l-9 9-3-3"/></svg><span>check</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>schedule</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.6-7-11a7 7 0 0 1 14 0c0 5.4-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><span>place</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M5 9h14l-1 11H6z"/><path d="M9 9V5a3 3 0 0 1 6 0v4"/></svg><span>bag</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l8.8 8.8 8.8-8.8a5.5 5.5 0 0 0 0-7.8z"/></svg><span>save</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg><span>add</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg><span>close</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.5-2.5l2-1.5-2-3.5-2.5 1A7 7 0 0 0 13 4l-.5-2.5h-4L8 4a7 7 0 0 0-3 1.5l-2.5-1-2 3.5 2 1.5A7 7 0 0 0 5 12c0 .9.2 1.7.5 2.5l-2 1.5 2 3.5 2.5-1c.9.7 2 1.2 3 1.5l.5 2.5h4l.5-2.5c1-.3 2.1-.8 3-1.5l2.5 1 2-3.5-2-1.5c.3-.8.5-1.6.5-2.5z"/></svg><span>settings</span></div>
+      </div>
+    </section>
+
+    <section id="buttons" data-fidelity="documented">
+      <h2>
+        <span>Buttons</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://backpack.github.io/components/button" target="_blank" rel="noopener" class="source-link">Component</a>
+      </h2>
+      <p class="sub-text">Backpack defines Primary, Secondary, Featured, Destructive, and Link styles. Pill shape, 700 weight, generous padding for travel-friendly tappable targets.</p>
+
+      <h3>Variants</h3>
+      <div class="button-row">
+        <button class="bp-btn bp-btn--primary">Search flights</button>
+        <button class="bp-btn bp-btn--secondary">Cancel</button>
+        <button class="bp-btn bp-btn--featured">Book now</button>
+        <button class="bp-btn bp-btn--destructive">Cancel booking</button>
+        <button class="bp-btn bp-btn--link">Learn more</button>
+        <button class="bp-btn bp-btn--icon" aria-label="favorite">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l8.8 8.8 8.8-8.8a5.5 5.5 0 0 0 0-7.8z"/></svg>
+        </button>
+      </div>
+
+      <h3>Sizes</h3>
+      <div class="button-row">
+        <button class="bp-btn bp-btn--primary bp-btn--sm">Small</button>
+        <button class="bp-btn bp-btn--primary">Default</button>
+        <button class="bp-btn bp-btn--primary bp-btn--lg">Large</button>
+      </div>
+
+      <h3>States</h3>
+      <div class="button-row">
+        <button class="bp-btn bp-btn--primary">Enabled</button>
+        <button class="bp-btn bp-btn--primary" style="background:var(--bp-blue-dark)">Hover</button>
+        <button class="bp-btn bp-btn--primary" style="outline:3px solid rgba(7,112,227,0.4);outline-offset:2px">Focus</button>
+        <button class="bp-btn bp-btn--primary" disabled>Disabled</button>
+      </div>
+    </section>
+
+    <section id="form" data-fidelity="documented">
+      <h2>
+        <span>Form</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://backpack.github.io/components/text-input" target="_blank" rel="noopener" class="source-link">Component</a>
+      </h2>
+      <p class="sub-text">Backpack inputs use 2px borders, generous 16px text, and 8px corner radius. Focus is delivered via a strong blue border swap rather than a glow.</p>
+
+      <h3>Text fields</h3>
+      <div class="form-grid">
+        <div class="bp-field">
+          <label for="f1">From</label>
+          <input class="bp-input" id="f1" type="text" value="Edinburgh (EDI)">
+          <span class="bp-helper">City or airport.</span>
+        </div>
+        <div class="bp-field">
+          <label for="f2">To</label>
+          <input class="bp-input" id="f2" type="text" value="Tokyo (HND)">
+        </div>
+        <div class="bp-field">
+          <label for="f3">Depart</label>
+          <input class="bp-input" id="f3" type="date" value="2026-09-12">
+        </div>
+        <div class="bp-field">
+          <label for="f4">Cabin class</label>
+          <select class="bp-select" id="f4">
+            <option>Economy</option>
+            <option>Premium economy</option>
+            <option>Business</option>
+            <option>First</option>
+          </select>
+        </div>
+        <div class="bp-field">
+          <label for="f5">Notes for traveler</label>
+          <textarea class="bp-textarea" id="f5">Window seat preferred, dietary: vegetarian.</textarea>
+        </div>
+        <div class="bp-field">
+          <label for="f6" style="color:var(--bp-error)">Email</label>
+          <input class="bp-input bp-input--error" id="f6" type="text" value="invalid@">
+          <span class="bp-helper bp-error-text">Please enter a valid email address.</span>
+        </div>
+      </div>
+
+      <h3>Selection controls</h3>
+      <div class="button-row">
+        <label class="bp-checkbox"><input type="checkbox" checked>Direct flights only</label>
+        <label class="bp-checkbox"><input type="checkbox">Refundable fares</label>
+        <label class="bp-radio"><input type="radio" name="r1" checked>Round trip</label>
+        <label class="bp-radio"><input type="radio" name="r1">One way</label>
+        <label class="bp-radio"><input type="radio" name="r1">Multi-city</label>
+        <label class="bp-switch"><input type="checkbox" checked><span class="slider"></span></label>
+        <label class="bp-switch"><input type="checkbox"><span class="slider"></span></label>
+      </div>
+
+      <h3>Slider &amp; file</h3>
+      <div style="max-width:420px;display:flex;flex-direction:column;gap:12px">
+        <input type="range" min="0" max="100" value="60" style="accent-color:var(--bp-blue);width:100%">
+        <input type="file" class="bp-input" style="padding:8px">
+      </div>
+    </section>
+
+    <section id="surfaces" data-fidelity="documented">
+      <h2>
+        <span>Surfaces</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://backpack.github.io/components/card" target="_blank" rel="noopener" class="source-link">Component</a>
+      </h2>
+      <p class="sub-text">Cards anchor flight/hotel results with media, headline, supporting copy, and a primary action. The signature flight-result row uses a 4-column layout with city codes flanking a directional arrow.</p>
+
+      <div class="surface-grid">
+        <div class="bp-card">
+          <div class="media"></div>
+          <h4>Tokyo · 5 nights</h4>
+          <p>From £612 · Direct from Edinburgh, Sep 12 – 17.</p>
+        </div>
+        <div class="bp-card">
+          <div class="media" style="background:linear-gradient(135deg,#FF8B5D,#E01E5A)"></div>
+          <h4>Lisbon · 7 nights</h4>
+          <p>From £288 · 1 stop, Oct 4 – 11.</p>
+        </div>
+        <div class="bp-stat">
+          <div class="num">1,284</div>
+          <div class="lbl">Flight results in 12s</div>
+        </div>
+        <div class="bp-stat" style="background:var(--bp-success-bg);color:#105D3F">
+          <div class="num">£612</div>
+          <div class="lbl">Cheapest fare today</div>
+        </div>
+      </div>
+
+      <h3>Flight result row</h3>
+      <div class="bp-flight">
+        <div>
+          <div class="city">EDI</div>
+          <div class="meta">Edinburgh · 09:40</div>
+        </div>
+        <div class="arrow">→</div>
+        <div>
+          <div class="city">HND</div>
+          <div class="meta">Tokyo Haneda · +1 06:25</div>
+        </div>
+        <div class="price">£612</div>
+      </div>
+      <div class="bp-flight">
+        <div>
+          <div class="city">EDI</div>
+          <div class="meta">Edinburgh · 14:20</div>
+        </div>
+        <div class="arrow">→</div>
+        <div>
+          <div class="city">LIS</div>
+          <div class="meta">Lisbon · 17:55</div>
+        </div>
+        <div class="price">£288</div>
+      </div>
+
+      <h3>Modal</h3>
+      <div class="bp-modal">
+        <h4 style="margin:0 0 var(--bp-s-3);text-transform:none;letter-spacing:0;font-size:18px;font-weight:700;color:var(--bp-text)">Confirm booking?</h4>
+        <p class="sub-text" style="margin:0 0 var(--bp-s-5)">Edinburgh to Tokyo, Sep 12 – 17. Total £612 incl. taxes.</p>
+        <div class="button-row" style="justify-content:flex-end;margin:0">
+          <button class="bp-btn bp-btn--secondary">Back</button>
+          <button class="bp-btn bp-btn--featured">Confirm &amp; book</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="feedback" data-fidelity="documented">
+      <h2>
+        <span>Feedback</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://backpack.github.io/components/banner-alert" target="_blank" rel="noopener" class="source-link">Component</a>
+      </h2>
+
+      <h3>Banner alerts</h3>
+      <div class="bp-banner bp-banner--info">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v.01M11 12h1v4h1"/></svg>
+        <span><strong>Info ·</strong> Prices update every 15 minutes from airline systems.</span>
+      </div>
+      <div class="bp-banner bp-banner--success">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>
+        <span><strong>Success ·</strong> Booking reference #SK4421-EDI emailed to you.</span>
+      </div>
+      <div class="bp-banner bp-banner--warning">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4l10 17H2z"/><path d="M12 10v5M12 18v.01"/></svg>
+        <span><strong>Warning ·</strong> Visa may be required for travel to this destination.</span>
+      </div>
+      <div class="bp-banner bp-banner--error">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15 9l-6 6M9 9l6 6"/></svg>
+        <span><strong>Error ·</strong> The fare you selected is no longer available. Please try a similar option.</span>
+      </div>
+
+      <h3>Toast</h3>
+      <div class="bp-toast">
+        Saved to favorites.
+        <button>Undo</button>
+      </div>
+
+      <h3>Chips &amp; badges</h3>
+      <div class="bp-chip-row">
+        <span class="bp-chip">Direct</span>
+        <span class="bp-chip bp-chip--filled">≤ 1 stop</span>
+        <span class="bp-chip bp-chip--primary">Best value</span>
+        <span class="bp-chip bp-chip--success">Refundable</span>
+        <span class="bp-chip bp-chip--warn">Limited seats</span>
+        <span class="bp-chip bp-chip--error">Sold out</span>
+        <span class="bp-badge">3</span>
+        <span class="bp-badge" style="background:var(--bp-blue)">12</span>
+      </div>
+
+      <h3>Progress &amp; loading</h3>
+      <div style="display:flex;flex-direction:column;gap:12px;max-width:480px">
+        <div class="bp-progress"></div>
+        <div class="bp-skeleton" style="width:80%"></div>
+        <div class="bp-skeleton" style="width:60%"></div>
+        <div class="bp-spinner"></div>
+      </div>
+    </section>
+
+    <section id="navigation" data-fidelity="documented">
+      <h2>
+        <span>Navigation</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://backpack.github.io/components/horizontal-nav" target="_blank" rel="noopener" class="source-link">Component</a>
+      </h2>
+
+      <h3>Tabs (horizontal nav)</h3>
+      <div class="bp-tabs">
+        <div class="bp-tab active">Flights</div>
+        <div class="bp-tab">Hotels</div>
+        <div class="bp-tab">Cars</div>
+        <div class="bp-tab">Trips</div>
+      </div>
+
+      <h3>Breadcrumb</h3>
+      <div class="bp-breadcrumb">
+        <a href="#">Home</a><span>›</span>
+        <a href="#">Flights</a><span>›</span>
+        <a href="#">Edinburgh → Tokyo</a><span>›</span>
+        <span>Sep 12</span>
+      </div>
+
+      <h3>Pagination</h3>
+      <div class="bp-pagination">
+        <button>‹</button>
+        <button class="active">1</button>
+        <button>2</button>
+        <button>3</button>
+        <button>4</button>
+        <button>›</button>
+      </div>
+
+      <h3>Stepper (booking flow)</h3>
+      <div class="bp-stepper">
+        <div class="step"><span class="num done">✓</span> Search</div>
+        <span class="line done"></span>
+        <div class="step"><span class="num done">✓</span> Select</div>
+        <span class="line done"></span>
+        <div class="step"><span class="num active">3</span> Travelers</div>
+        <span class="line"></span>
+        <div class="step"><span class="num">4</span> Payment</div>
+        <span class="line"></span>
+        <div class="step"><span class="num">5</span> Confirm</div>
+      </div>
+
+      <h3>Sidebar &amp; topbar</h3>
+      <div style="display:flex;gap:24px;flex-wrap:wrap">
+        <div class="bp-sidebar">
+          <a href="#" class="active">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 16l4-4 8 8M3 16l4 4M21 3l-9 9-3-3"/></svg>
+            Flights
+          </a>
+          <a href="#">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 8a4 4 0 0 1 4-4h12a4 4 0 0 1 4 4v8a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z"/></svg>
+            Hotels
+          </a>
+          <a href="#">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="17" r="3"/><circle cx="18" cy="17" r="3"/><path d="M3 14h18"/></svg>
+            Car hire
+          </a>
+          <a href="#">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg>
+            Account
+          </a>
+        </div>
+        <div class="bp-topbar" style="flex:1;min-width:280px">
+          <button class="bp-btn bp-btn--icon" style="border:0">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+          </button>
+          <strong style="flex:1">Backpack</strong>
+          <button class="bp-btn bp-btn--icon" style="border:0">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          </button>
+          <button class="bp-btn bp-btn--icon" style="border:0">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <h3>Menu</h3>
+      <div class="bp-menu" style="margin-top:var(--bp-s-3)">
+        <div class="item">My trips</div>
+        <div class="item">Saved</div>
+        <div class="item">Price alerts</div>
+        <div class="item">Account settings</div>
+        <div class="item" style="color:var(--bp-error)">Sign out</div>
+      </div>
+    </section>
+
+    <section id="layout" data-fidelity="documented">
+      <h2>
+        <span>Layout</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://backpack.github.io/tokens/spacings" target="_blank" rel="noopener" class="source-link">Tokens</a>
+      </h2>
+      <p class="sub-text">Backpack uses a 4px base spacing unit. Layout is responsive across mobile/tablet/desktop with content max-widths optimized for travel results.</p>
+
+      <h3>12-column grid</h3>
+      <div class="grid-demo">
+        <div style="grid-column:span 12">12</div>
+        <div style="grid-column:span 6">6</div>
+        <div style="grid-column:span 6">6</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+      </div>
+
+      <h3>Spacing scale (4px base)</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div class="swatch" style="width:4px;height:32px"></div><span class="lbl">4</span></div>
+        <div class="scale-item"><div class="swatch" style="width:8px;height:32px"></div><span class="lbl">8</span></div>
+        <div class="scale-item"><div class="swatch" style="width:12px;height:32px"></div><span class="lbl">12</span></div>
+        <div class="scale-item"><div class="swatch" style="width:16px;height:32px"></div><span class="lbl">16</span></div>
+        <div class="scale-item"><div class="swatch" style="width:20px;height:32px"></div><span class="lbl">20</span></div>
+        <div class="scale-item"><div class="swatch" style="width:24px;height:32px"></div><span class="lbl">24</span></div>
+        <div class="scale-item"><div class="swatch" style="width:32px;height:32px"></div><span class="lbl">32</span></div>
+        <div class="scale-item"><div class="swatch" style="width:48px;height:32px"></div><span class="lbl">48</span></div>
+      </div>
+
+      <h3>Shape scale</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:0;background:var(--bp-blue-subtle)"></div><span class="lbl">none 0</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:4px;background:var(--bp-blue-subtle)"></div><span class="lbl">xs 4</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:6px;background:var(--bp-blue-subtle)"></div><span class="lbl">sm 6</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:8px;background:var(--bp-blue-subtle)"></div><span class="lbl">md 8</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:12px;background:var(--bp-blue-subtle)"></div><span class="lbl">lg 12</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:50%;background:var(--bp-blue-subtle)"></div><span class="lbl">pill</span></div>
+      </div>
+
+      <h3>Elevation</h3>
+      <div>
+        <div class="shadow-demo" style="box-shadow:none;border:1px solid var(--bp-line)">0</div>
+        <div class="shadow-demo" style="box-shadow:var(--bp-shadow-1)">1</div>
+        <div class="shadow-demo" style="box-shadow:var(--bp-shadow-2)">2</div>
+        <div class="shadow-demo" style="box-shadow:var(--bp-shadow-3)">3</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="ds-footer">
+    <h3>Sources</h3>
+    <ul>
+      <li><a href="https://backpack.github.io" target="_blank" rel="noopener">https://backpack.github.io</a></li>
+      <li><a href="https://backpack.github.io/tokens/colors" target="_blank" rel="noopener">https://backpack.github.io/tokens/colors</a></li>
+      <li><a href="https://backpack.github.io/tokens/typography" target="_blank" rel="noopener">https://backpack.github.io/tokens/typography</a></li>
+      <li><a href="https://backpack.github.io/icons" target="_blank" rel="noopener">https://backpack.github.io/icons</a></li>
+      <li><a href="https://backpack.github.io/components/button" target="_blank" rel="noopener">https://backpack.github.io/components/button</a></li>
+      <li><a href="https://backpack.github.io/components/text-input" target="_blank" rel="noopener">https://backpack.github.io/components/text-input</a></li>
+      <li><a href="https://backpack.github.io/components/card" target="_blank" rel="noopener">https://backpack.github.io/components/card</a></li>
+      <li><a href="https://backpack.github.io/components/banner-alert" target="_blank" rel="noopener">https://backpack.github.io/components/banner-alert</a></li>
+      <li><a href="https://backpack.github.io/components/horizontal-nav" target="_blank" rel="noopener">https://backpack.github.io/components/horizontal-nav</a></li>
+      <li><a href="https://backpack.github.io/tokens/spacings" target="_blank" rel="noopener">https://backpack.github.io/tokens/spacings</a></li>
+    </ul>
+    <p class="license-note">This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Skyscanner. Backpack and related trademarks belong to Skyscanner. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</p>
+    <p class="meta-note">Reproduction date: 2026-05-05 · sourceStatus: legacy · fidelity: approximated · fontSource: system-stack</p>
+  </footer>
+</body>
+</html>

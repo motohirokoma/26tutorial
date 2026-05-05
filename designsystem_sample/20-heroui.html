@@ -1,0 +1,1407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HeroUI — Design System Reference</title>
+  <script id="ds-meta" type="application/json">
+{"id":"20-heroui","fileSlug":"20-heroui","schemaVersion":"1"}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* HeroUI Light Tokens (target v3) */
+      --hero-primary: #006FEE;
+      --hero-primary-50: #E6F1FE;
+      --hero-primary-100: #CCE3FD;
+      --hero-primary-200: #99C7FB;
+      --hero-primary-300: #66AAF9;
+      --hero-primary-400: #338EF7;
+      --hero-primary-500: #006FEE;
+      --hero-primary-600: #005BC4;
+      --hero-primary-700: #004493;
+      --hero-primary-800: #002E62;
+      --hero-primary-900: #001731;
+
+      --hero-secondary: #7828C8;
+      --hero-secondary-50: #F2EAFA;
+      --hero-secondary-100: #E4D4F4;
+      --hero-secondary-200: #C9A9E9;
+      --hero-secondary-500: #7828C8;
+      --hero-secondary-600: #6020A0;
+
+      --hero-success: #17C964;
+      --hero-success-50: #E8FAF0;
+      --hero-success-100: #D1F4E0;
+      --hero-success-500: #17C964;
+      --hero-success-600: #12A150;
+
+      --hero-warning: #F5A524;
+      --hero-warning-50: #FEFCE8;
+      --hero-warning-100: #FDEDD3;
+      --hero-warning-500: #F5A524;
+      --hero-warning-600: #C4841D;
+
+      --hero-danger: #F31260;
+      --hero-danger-50: #FEE7EF;
+      --hero-danger-100: #FDD0DF;
+      --hero-danger-500: #F31260;
+      --hero-danger-600: #C20E4D;
+
+      --hero-default: #D4D4D8;
+      --hero-default-50: #FAFAFA;
+      --hero-default-100: #F4F4F5;
+      --hero-default-200: #E4E4E7;
+      --hero-default-300: #D4D4D8;
+      --hero-default-400: #A1A1AA;
+      --hero-default-500: #71717A;
+
+      --hero-foreground: #11181C;
+      --hero-foreground-500: #11181C;
+      --hero-foreground-600: #687076;
+      --hero-foreground-400: #889096;
+      --hero-background: #FFFFFF;
+      --hero-content1: #FFFFFF;
+      --hero-content2: #F4F4F5;
+      --hero-content3: #E4E4E7;
+      --hero-content4: #D4D4D8;
+      --hero-divider: rgba(17,24,28,0.15);
+      --hero-focus: #006FEE;
+      --hero-overlay: rgba(0,0,0,0.5);
+
+      /* Typography */
+      --hero-font: 'Inter', system-ui, -apple-system, sans-serif;
+      --hero-mono: ui-monospace, 'JetBrains Mono', SFMono-Regular, monospace;
+
+      /* Shape — HeroUI uses larger radii than Material */
+      --hero-radius-none: 0;
+      --hero-radius-sm: 8px;
+      --hero-radius-md: 12px;
+      --hero-radius-lg: 14px;
+      --hero-radius-xl: 16px;
+      --hero-radius-2xl: 20px;
+      --hero-radius-full: 9999px;
+
+      /* Spacing */
+      --hero-space-1: 4px;
+      --hero-space-2: 8px;
+      --hero-space-3: 12px;
+      --hero-space-4: 16px;
+      --hero-space-5: 20px;
+      --hero-space-6: 24px;
+      --hero-space-8: 32px;
+      --hero-space-10: 40px;
+      --hero-space-12: 48px;
+
+      /* Shadows */
+      --hero-shadow-sm: 0 2px 8px 0 rgba(0,0,0,0.05);
+      --hero-shadow-md: 0 4px 14px 0 rgba(0,0,0,0.08);
+      --hero-shadow-lg: 0 8px 24px 0 rgba(0,0,0,0.12);
+      --hero-shadow-xl: 0 12px 36px 0 rgba(0,0,0,0.16);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--hero-font);
+      background: var(--hero-default-50);
+      color: var(--hero-foreground);
+      line-height: 1.5;
+      font-feature-settings: "cv11", "ss01";
+      -webkit-font-smoothing: antialiased;
+    }
+    code, kbd, pre { font-family: var(--hero-mono); }
+
+    /* Header */
+    .ds-header {
+      background: linear-gradient(135deg, var(--hero-primary) 0%, var(--hero-secondary) 100%);
+      color: #FFFFFF;
+      padding: var(--hero-space-12) var(--hero-space-8) var(--hero-space-8);
+      position: relative;
+      overflow: hidden;
+    }
+    .ds-header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -10%;
+      width: 60%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.12), transparent 60%);
+      pointer-events: none;
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--hero-space-2);
+      color: rgba(255,255,255,0.92);
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: var(--hero-radius-full);
+      font-size: 13px;
+      font-weight: 500;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(8px);
+      transition: background 0.2s;
+      position: relative;
+      z-index: 1;
+    }
+    .back-link:hover { background: rgba(255,255,255,0.18); }
+    .ds-header h1 {
+      font-size: 56px;
+      line-height: 1.1;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      margin: var(--hero-space-4) 0 var(--hero-space-3);
+      position: relative;
+      z-index: 1;
+    }
+    .ds-header .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--hero-space-2);
+      align-items: center;
+      margin-bottom: var(--hero-space-3);
+      position: relative;
+      z-index: 1;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 12px;
+      border-radius: var(--hero-radius-full);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      background: rgba(255,255,255,0.18);
+      color: #FFFFFF;
+      backdrop-filter: blur(8px);
+    }
+    .badge.kind-cl { background: rgba(255,255,255,0.95); color: var(--hero-primary); }
+    .badge.fidelity-documented { background: var(--hero-success-100); color: var(--hero-success-600); }
+    .badge.fidelity-approximated { background: var(--hero-warning-100); color: var(--hero-warning-600); }
+    .badge.fidelity-inspired { background: var(--hero-secondary-100); color: var(--hero-secondary-600); }
+    .badge.source-homepage { background: var(--hero-warning-100); color: var(--hero-warning-600); }
+    .ds-header a[href*="heroui.com"] {
+      color: #FFFFFF;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 4px 12px;
+      border: 1px solid rgba(255,255,255,0.5);
+      border-radius: var(--hero-radius-full);
+      font-size: 13px;
+      position: relative;
+      z-index: 1;
+    }
+    .ds-header a[href*="heroui.com"]:hover { background: rgba(255,255,255,0.15); }
+    .tagline {
+      font-size: 20px;
+      line-height: 1.5;
+      max-width: 720px;
+      margin: var(--hero-space-4) 0 0;
+      font-weight: 400;
+      opacity: 0.94;
+      position: relative;
+      z-index: 1;
+    }
+    .rebrand-note {
+      margin-top: 16px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.85);
+      font-family: var(--hero-mono);
+      background: rgba(0,0,0,0.18);
+      padding: 6px 12px;
+      border-radius: var(--hero-radius-md);
+      display: inline-block;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* TOC */
+    .toc {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255,255,255,0.85);
+      border-bottom: 1px solid var(--hero-divider);
+      backdrop-filter: blur(12px);
+    }
+    .toc ul {
+      list-style: none;
+      margin: 0;
+      padding: var(--hero-space-3) var(--hero-space-8);
+      display: flex;
+      gap: var(--hero-space-2);
+      overflow-x: auto;
+    }
+    .toc a {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: var(--hero-radius-full);
+      color: var(--hero-foreground-600);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .toc a:hover { background: var(--hero-default-100); color: var(--hero-foreground); }
+
+    main {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: var(--hero-space-8);
+    }
+    section {
+      background: var(--hero-content1);
+      border-radius: var(--hero-radius-2xl);
+      padding: var(--hero-space-8);
+      margin-bottom: var(--hero-space-6);
+      box-shadow: var(--hero-shadow-sm);
+      border: 1px solid var(--hero-divider);
+    }
+    section h2 {
+      display: flex;
+      align-items: center;
+      gap: var(--hero-space-3);
+      flex-wrap: wrap;
+      font-size: 32px;
+      line-height: 1.2;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin: 0 0 var(--hero-space-6);
+      color: var(--hero-foreground);
+    }
+    .source-link {
+      font-size: 13px;
+      color: var(--hero-primary);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .source-link:hover { text-decoration: underline; }
+    h3 {
+      font-size: 20px;
+      line-height: 1.4;
+      font-weight: 600;
+      margin: var(--hero-space-6) 0 var(--hero-space-3);
+      letter-spacing: -0.01em;
+    }
+    h4 {
+      font-size: 15px;
+      line-height: 1.4;
+      font-weight: 600;
+      margin: var(--hero-space-4) 0 var(--hero-space-2);
+    }
+    p { margin: 0 0 var(--hero-space-3); }
+
+    /* Brand */
+    #brand .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--hero-space-3);
+      padding: var(--hero-space-3) var(--hero-space-5);
+      background: linear-gradient(135deg, var(--hero-primary), var(--hero-secondary));
+      border-radius: var(--hero-radius-xl);
+      color: #FFFFFF;
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    #brand .pillars {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--hero-space-4);
+      margin-top: var(--hero-space-6);
+    }
+    #brand .pillar {
+      padding: var(--hero-space-5);
+      background: var(--hero-content2);
+      border-radius: var(--hero-radius-xl);
+      border: 1px solid var(--hero-divider);
+    }
+    #brand .pillar h4 { margin-top: 0; color: var(--hero-primary); }
+
+    /* Color */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 4px;
+      margin-bottom: var(--hero-space-4);
+    }
+    .color-cell {
+      aspect-ratio: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 6px;
+      font-size: 10px;
+      font-family: var(--hero-mono);
+      border-radius: var(--hero-radius-sm);
+    }
+    .semantic-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
+      gap: var(--hero-space-3);
+    }
+    .sem-card {
+      padding: var(--hero-space-4);
+      border-radius: var(--hero-radius-lg);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .sem-card .label { font-size: 14px; font-weight: 600; }
+    .sem-card .hex { font-family: var(--hero-mono); font-size: 12px; opacity: 0.85; }
+
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--hero-space-2);
+      margin-bottom: var(--hero-space-4);
+    }
+    .role-chip {
+      padding: var(--hero-space-3) var(--hero-space-4);
+      border-radius: var(--hero-radius-md);
+      font-size: 13px;
+      font-weight: 500;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .role-chip code { font-size: 11px; opacity: 0.85; }
+
+    /* Typography */
+    .type-row {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: var(--hero-space-4);
+      padding: var(--hero-space-3) 0;
+      border-bottom: 1px solid var(--hero-divider);
+      align-items: baseline;
+    }
+    .type-row:last-child { border-bottom: 0; }
+    .type-row .label {
+      font-family: var(--hero-mono);
+      font-size: 12px;
+      color: var(--hero-foreground-600);
+    }
+    .text-display { font-size: 60px; line-height: 1; font-weight: 800; letter-spacing: -0.04em; }
+    .text-h1 { font-size: 48px; line-height: 1.1; font-weight: 700; letter-spacing: -0.03em; }
+    .text-h2 { font-size: 36px; line-height: 1.2; font-weight: 700; letter-spacing: -0.025em; }
+    .text-h3 { font-size: 30px; line-height: 1.3; font-weight: 600; letter-spacing: -0.02em; }
+    .text-h4 { font-size: 24px; line-height: 1.4; font-weight: 600; letter-spacing: -0.015em; }
+    .text-large { font-size: 18px; line-height: 1.5; font-weight: 500; }
+    .text-md { font-size: 16px; line-height: 1.5; font-weight: 400; }
+    .text-sm { font-size: 14px; line-height: 1.45; font-weight: 400; }
+    .text-tiny { font-size: 12px; line-height: 1.4; font-weight: 400; }
+    .mono-sample { font-family: var(--hero-mono); font-size: 14px; color: var(--hero-foreground-600); }
+
+    /* Buttons */
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--hero-space-3);
+      align-items: center;
+      margin-bottom: var(--hero-space-3);
+    }
+    .hero-btn {
+      font-family: var(--hero-font);
+      font-size: 14px;
+      font-weight: 500;
+      padding: 0 16px;
+      border-radius: var(--hero-radius-md);
+      border: 0;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      height: 40px;
+      transition: opacity 0.2s, transform 0.1s, box-shadow 0.2s;
+    }
+    .hero-btn:active { transform: scale(0.97); }
+    .hero-btn--solid { background: var(--hero-primary); color: #FFFFFF; }
+    .hero-btn--solid:hover { opacity: 0.85; }
+    .hero-btn--solid.secondary { background: var(--hero-secondary); }
+    .hero-btn--solid.success { background: var(--hero-success); }
+    .hero-btn--solid.warning { background: var(--hero-warning); color: var(--hero-foreground); }
+    .hero-btn--solid.danger { background: var(--hero-danger); }
+    .hero-btn--bordered { background: transparent; color: var(--hero-primary); border: 2px solid var(--hero-primary); }
+    .hero-btn--bordered:hover { background: var(--hero-primary-50); }
+    .hero-btn--light { background: transparent; color: var(--hero-primary); }
+    .hero-btn--light:hover { background: var(--hero-primary-50); }
+    .hero-btn--flat { background: var(--hero-primary-100); color: var(--hero-primary-600); }
+    .hero-btn--flat:hover { background: var(--hero-primary-200); }
+    .hero-btn--shadow { background: var(--hero-primary); color: #FFFFFF; box-shadow: 0 8px 16px -4px rgba(0,111,238,0.6); }
+    .hero-btn--shadow:hover { opacity: 0.9; }
+    .hero-btn--ghost { background: transparent; color: var(--hero-foreground); border: 2px solid var(--hero-default); }
+    .hero-btn--ghost:hover { background: var(--hero-default-100); }
+    .hero-btn--icon { width: 40px; height: 40px; padding: 0; justify-content: center; background: transparent; color: var(--hero-foreground); }
+    .hero-btn--icon:hover { background: var(--hero-default-100); }
+    .hero-btn--sm { height: 32px; padding: 0 12px; font-size: 13px; border-radius: var(--hero-radius-sm); }
+    .hero-btn--md { height: 40px; }
+    .hero-btn--lg { height: 48px; padding: 0 24px; font-size: 16px; border-radius: var(--hero-radius-lg); }
+    .hero-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .hero-btn:focus-visible { outline: 2px solid var(--hero-focus); outline-offset: 2px; }
+
+    /* Form */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+      gap: var(--hero-space-4);
+    }
+    .hero-field { display: flex; flex-direction: column; gap: 6px; }
+    .hero-field label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--hero-foreground);
+    }
+    .hero-input {
+      background: var(--hero-default-100);
+      border: 2px solid transparent;
+      border-radius: var(--hero-radius-md);
+      padding: 10px 12px;
+      font-family: var(--hero-font);
+      font-size: 14px;
+      color: var(--hero-foreground);
+      outline: none;
+      width: 100%;
+      height: 40px;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .hero-input:focus { background: var(--hero-content1); border-color: var(--hero-focus); }
+    .hero-input--bordered { background: transparent; border: 2px solid var(--hero-default); }
+    .hero-input--bordered:focus { border-color: var(--hero-focus); }
+    .hero-input--faded { background: var(--hero-default-100); border: 2px solid var(--hero-default-200); }
+    .hero-input--faded:focus { border-color: var(--hero-focus); background: var(--hero-content1); }
+    .hero-input--underlined { background: transparent; border: 0; border-bottom: 2px solid var(--hero-default); border-radius: 0; padding-left: 0; padding-right: 0; }
+    .hero-input--underlined:focus { border-bottom-color: var(--hero-focus); }
+    .hero-input--invalid { border-color: var(--hero-danger); }
+    .hero-helper { font-size: 12px; color: var(--hero-foreground-600); }
+    .hero-error { color: var(--hero-danger); }
+    .hero-input.textarea { min-height: 80px; resize: vertical; padding: 10px 12px; height: auto; }
+    .hero-input.select { appearance: none; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23687076' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>"); background-repeat: no-repeat; background-position: right 10px center; padding-right: 36px; }
+
+    .hero-checkbox, .hero-radio {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .hero-checkbox input, .hero-radio input { width: 18px; height: 18px; accent-color: var(--hero-primary); }
+    .hero-switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+    .hero-switch input { opacity: 0; width: 0; height: 0; }
+    .hero-switch .slider {
+      position: absolute; cursor: pointer; inset: 0;
+      background: var(--hero-default);
+      border-radius: var(--hero-radius-full);
+      transition: 0.2s;
+    }
+    .hero-switch .slider::before {
+      content: ''; position: absolute;
+      width: 20px; height: 20px;
+      left: 2px; top: 2px;
+      background: #FFFFFF;
+      border-radius: 50%;
+      transition: 0.2s;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+    }
+    .hero-switch input:checked + .slider { background: var(--hero-primary); }
+    .hero-switch input:checked + .slider::before { transform: translateX(20px); }
+    .hero-slider { width: 100%; accent-color: var(--hero-primary); }
+
+    /* Surfaces */
+    .surface-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
+      gap: var(--hero-space-4);
+    }
+    .hero-card {
+      background: var(--hero-content1);
+      border-radius: var(--hero-radius-xl);
+      padding: 0;
+      box-shadow: var(--hero-shadow-md);
+      overflow: hidden;
+      border: 1px solid var(--hero-divider);
+    }
+    .hero-card--shadow { box-shadow: var(--hero-shadow-lg); border: 0; }
+    .hero-card--bordered { box-shadow: none; border: 2px solid var(--hero-divider); }
+    .hero-card .header { padding: 16px; border-bottom: 1px solid var(--hero-divider); display: flex; flex-direction: column; gap: 4px; }
+    .hero-card .body { padding: 16px; font-size: 14px; }
+    .hero-card .footer { padding: 12px 16px; border-top: 1px solid var(--hero-divider); display: flex; gap: 8px; }
+    .hero-card .title { font-size: 16px; font-weight: 600; }
+    .hero-card .subtitle { font-size: 13px; color: var(--hero-foreground-600); }
+    .hero-card .media { height: 120px; background: linear-gradient(135deg, var(--hero-primary), var(--hero-secondary)); }
+
+    .hero-stat { padding: var(--hero-space-5); background: linear-gradient(135deg, var(--hero-primary), var(--hero-secondary)); border-radius: var(--hero-radius-xl); color: #FFFFFF; box-shadow: 0 8px 16px -4px rgba(120,40,200,0.3); }
+    .hero-stat .num { font-size: 36px; font-weight: 800; line-height: 1; letter-spacing: -0.03em; }
+    .hero-stat .lbl { font-size: 13px; opacity: 0.85; margin-top: 6px; font-weight: 500; }
+
+    .hero-modal {
+      background: var(--hero-content1);
+      padding: var(--hero-space-6);
+      border-radius: var(--hero-radius-2xl);
+      box-shadow: var(--hero-shadow-xl);
+      max-width: 380px;
+      border: 1px solid var(--hero-divider);
+    }
+
+    .hero-popover {
+      background: var(--hero-content1);
+      border-radius: var(--hero-radius-lg);
+      box-shadow: var(--hero-shadow-lg);
+      padding: 8px;
+      width: 200px;
+      border: 1px solid var(--hero-divider);
+    }
+    .hero-popover .item { padding: 8px 12px; font-size: 14px; cursor: pointer; border-radius: var(--hero-radius-sm); }
+    .hero-popover .item:hover { background: var(--hero-default-100); }
+
+    /* Feedback */
+    .hero-alert {
+      display: flex;
+      gap: var(--hero-space-3);
+      padding: var(--hero-space-4);
+      border-radius: var(--hero-radius-lg);
+      margin-bottom: var(--hero-space-2);
+      font-size: 14px;
+      align-items: flex-start;
+    }
+    .hero-alert--default { background: var(--hero-default-100); color: var(--hero-foreground); }
+    .hero-alert--primary { background: var(--hero-primary-50); color: var(--hero-primary-700); }
+    .hero-alert--success { background: var(--hero-success-50); color: var(--hero-success-600); }
+    .hero-alert--warning { background: var(--hero-warning-50); color: var(--hero-warning-600); }
+    .hero-alert--danger { background: var(--hero-danger-50); color: var(--hero-danger-600); }
+
+    .hero-toast {
+      background: var(--hero-foreground);
+      color: #FFFFFF;
+      padding: 12px 16px;
+      border-radius: var(--hero-radius-md);
+      box-shadow: var(--hero-shadow-lg);
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 14px;
+    }
+    .hero-toast button { background: transparent; color: var(--hero-primary-300); border: 0; font-weight: 500; cursor: pointer; }
+
+    .hero-banner {
+      display: flex;
+      gap: var(--hero-space-3);
+      padding: var(--hero-space-4);
+      background: var(--hero-default-100);
+      border-radius: var(--hero-radius-lg);
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .hero-chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .hero-chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: var(--hero-radius-full);
+      background: var(--hero-default-100);
+      color: var(--hero-foreground);
+      font-size: 13px;
+      font-weight: 500;
+      height: 28px;
+    }
+    .hero-chip--primary { background: var(--hero-primary); color: #FFFFFF; }
+    .hero-chip--secondary { background: var(--hero-secondary); color: #FFFFFF; }
+    .hero-chip--bordered { background: transparent; border: 2px solid var(--hero-primary); color: var(--hero-primary); }
+    .hero-chip--success { background: var(--hero-success); color: #FFFFFF; }
+    .hero-chip--warning { background: var(--hero-warning); color: var(--hero-foreground); }
+    .hero-chip--danger { background: var(--hero-danger); color: #FFFFFF; }
+
+    .hero-badge { background: var(--hero-danger); color: #FFFFFF; border-radius: var(--hero-radius-full); font-size: 11px; padding: 2px 6px; min-width: 18px; height: 18px; display: inline-flex; justify-content: center; align-items: center; font-weight: 600; }
+
+    .hero-progress {
+      width: 100%; height: 6px;
+      background: var(--hero-default-200);
+      border-radius: var(--hero-radius-full);
+      overflow: hidden;
+    }
+    .hero-progress::after {
+      content: ''; display: block;
+      height: 100%; width: 60%;
+      background: linear-gradient(90deg, var(--hero-primary), var(--hero-secondary));
+      border-radius: var(--hero-radius-full);
+    }
+    .hero-skeleton {
+      height: 14px;
+      background: linear-gradient(90deg, var(--hero-default-100), var(--hero-default-200), var(--hero-default-100));
+      background-size: 200% 100%;
+      border-radius: var(--hero-radius-md);
+      animation: shimmer 1.5s infinite;
+    }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+    .hero-spinner {
+      width: 36px; height: 36px;
+      border: 3px solid var(--hero-default-200);
+      border-top-color: var(--hero-primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Navigation */
+    .hero-tabs {
+      display: inline-flex;
+      gap: 4px;
+      padding: 4px;
+      background: var(--hero-default-100);
+      border-radius: var(--hero-radius-md);
+      margin-bottom: var(--hero-space-3);
+    }
+    .hero-tab {
+      padding: 8px 16px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--hero-foreground-600);
+      border-radius: var(--hero-radius-sm);
+      cursor: pointer;
+    }
+    .hero-tab.active { background: var(--hero-content1); color: var(--hero-foreground); box-shadow: var(--hero-shadow-sm); }
+
+    .hero-breadcrumbs { display: flex; gap: 8px; align-items: center; font-size: 14px; color: var(--hero-foreground-600); padding: 0; list-style: none; margin: 0; }
+    .hero-breadcrumbs a { color: var(--hero-primary); text-decoration: none; font-weight: 500; }
+
+    .hero-pagination { display: flex; gap: 4px; align-items: center; }
+    .hero-pagination button {
+      width: 36px; height: 36px;
+      border-radius: var(--hero-radius-md);
+      border: 0;
+      background: transparent;
+      color: var(--hero-foreground);
+      cursor: pointer;
+      font-family: var(--hero-font);
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .hero-pagination button.active { background: var(--hero-primary); color: #FFFFFF; }
+    .hero-pagination button:hover:not(.active) { background: var(--hero-default-100); }
+
+    .hero-stepper { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+    .hero-stepper .step { display: inline-flex; align-items: center; gap: 8px; }
+    .hero-stepper .num {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--hero-default-200); color: var(--hero-foreground-600);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 600;
+    }
+    .hero-stepper .num.active { background: var(--hero-primary); color: #FFFFFF; }
+    .hero-stepper .line { flex: 1; height: 2px; background: var(--hero-divider); border-radius: 2px; }
+
+    .hero-navbar {
+      display: flex; align-items: center; gap: 16px;
+      padding: 0 20px;
+      height: 64px;
+      background: var(--hero-content1);
+      border-radius: var(--hero-radius-xl);
+      box-shadow: var(--hero-shadow-sm);
+      border: 1px solid var(--hero-divider);
+    }
+    .hero-sidebar {
+      background: var(--hero-content1);
+      border-radius: var(--hero-radius-xl);
+      padding: 8px;
+      width: 240px;
+      box-shadow: var(--hero-shadow-sm);
+      border: 1px solid var(--hero-divider);
+    }
+    .hero-sidebar a {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 14px;
+      border-radius: var(--hero-radius-md);
+      color: var(--hero-foreground-600);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 2px;
+    }
+    .hero-sidebar a.active { background: var(--hero-primary-50); color: var(--hero-primary); }
+    .hero-sidebar a:hover:not(.active) { background: var(--hero-default-100); color: var(--hero-foreground); }
+
+    /* Data */
+    table.hero-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      background: var(--hero-content1);
+      border-radius: var(--hero-radius-lg);
+      overflow: hidden;
+    }
+    table.hero-table th, table.hero-table td {
+      text-align: left;
+      padding: 12px 16px;
+    }
+    table.hero-table thead { background: var(--hero-default-100); }
+    table.hero-table th { font-weight: 600; font-size: 12px; color: var(--hero-foreground-600); text-transform: uppercase; letter-spacing: 0.05em; }
+    table.hero-table tbody tr { border-top: 1px solid var(--hero-divider); }
+    table.hero-table tr:hover { background: var(--hero-default-50); }
+
+    .hero-list { list-style: none; padding: 0; margin: 0; }
+    .hero-list li {
+      padding: 12px 16px;
+      display: flex; gap: 12px; align-items: center;
+      border-bottom: 1px solid var(--hero-divider);
+    }
+    .hero-list li:last-child { border-bottom: 0; }
+    .hero-kv { display: grid; grid-template-columns: 140px 1fr; gap: 12px; font-size: 14px; }
+    .hero-kv dt { color: var(--hero-foreground-600); font-weight: 500; }
+    .hero-avatar {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--hero-primary), var(--hero-secondary));
+      color: #FFFFFF;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-weight: 600;
+    }
+    .hero-empty {
+      text-align: center;
+      padding: var(--hero-space-12) var(--hero-space-4);
+      color: var(--hero-foreground-600);
+    }
+    .hero-empty svg { width: 48px; height: 48px; opacity: 0.4; }
+
+    /* Layout */
+    .grid-demo {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 12px;
+      background: var(--hero-default-100);
+      padding: 12px;
+      border-radius: var(--hero-radius-lg);
+    }
+    .grid-demo > div {
+      background: var(--hero-primary);
+      color: #FFFFFF;
+      padding: 12px;
+      border-radius: var(--hero-radius-md);
+      font-size: 12px;
+      font-weight: 600;
+      text-align: center;
+    }
+    .scale-row {
+      display: flex;
+      gap: var(--hero-space-3);
+      flex-wrap: wrap;
+      align-items: flex-end;
+      margin-bottom: var(--hero-space-4);
+    }
+    .scale-item {
+      display: flex; flex-direction: column; gap: 6px;
+      align-items: center;
+    }
+    .scale-item .swatch { background: var(--hero-primary); }
+    .scale-item .lbl { font-size: 11px; font-family: var(--hero-mono); color: var(--hero-foreground-600); }
+    .shadow-demo {
+      width: 84px; height: 84px;
+      background: var(--hero-content1);
+      border-radius: var(--hero-radius-md);
+      display: inline-flex; align-items: center; justify-content: center;
+      margin-right: 16px; margin-bottom: 16px;
+      font-size: 11px; font-family: var(--hero-mono); color: var(--hero-foreground-600);
+    }
+
+    /* Footer */
+    .ds-footer {
+      background: var(--hero-foreground);
+      color: rgba(255,255,255,0.86);
+      padding: var(--hero-space-8);
+      margin-top: var(--hero-space-12);
+    }
+    .ds-footer h3 { margin-top: 0; color: #FFFFFF; }
+    .ds-footer ul { padding-left: 20px; }
+    .ds-footer li { margin-bottom: 4px; word-break: break-all; font-size: 13px; }
+    .ds-footer a { color: var(--hero-primary-300); text-decoration: none; }
+    .license-note { font-size: 13px; color: rgba(255,255,255,0.65); margin-top: var(--hero-space-4); }
+    .meta-note { font-size: 12px; color: rgba(255,255,255,0.5); font-family: var(--hero-mono); margin-top: var(--hero-space-2); }
+
+    @media (max-width: 720px) {
+      .ds-header h1 { font-size: 36px; }
+      main { padding: var(--hero-space-4); }
+      section { padding: var(--hero-space-5); }
+      .type-row { grid-template-columns: 1fr; }
+      .color-grid { grid-template-columns: repeat(5, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <header class="ds-header">
+    <a href="index.html" class="back-link">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Catalog
+    </a>
+    <h1>HeroUI</h1>
+    <div class="meta">
+      <span class="badge kind-cl">component-library</span>
+      <span class="badge fidelity-inspired">inspired</span>
+      <span class="badge source-homepage">source: homepage-only</span>
+      <a href="https://www.heroui.com" target="_blank" rel="noopener">Official ↗</a>
+    </div>
+    <p class="tagline">A beautiful React component library with vibrant, modern aesthetics, formerly known as NextUI.</p>
+    <div class="rebrand-note">rebranded-from-NextUI-2025-01 · target-version: HeroUI v3 · sourceStatus: homepage-only</div>
+  </header>
+
+  <nav class="toc" aria-label="Table of contents">
+    <ul>
+      <li><a href="#brand">Brand</a></li>
+      <li><a href="#color">Color</a></li>
+      <li><a href="#typography">Typography</a></li>
+      <li><a href="#buttons">Buttons</a></li>
+      <li><a href="#form">Form</a></li>
+      <li><a href="#surfaces">Surfaces</a></li>
+      <li><a href="#feedback">Feedback</a></li>
+      <li><a href="#navigation">Navigation</a></li>
+      <li><a href="#data">Data</a></li>
+      <li><a href="#layout">Layout</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="brand" data-fidelity="inspired">
+      <h2>
+        <span>Brand</span>
+        <span class="badge fidelity-inspired">inspired</span>
+      </h2>
+      <div class="brand-mark">
+        <svg viewBox="0 0 36 36" fill="none" width="32" height="32">
+          <path d="M6 8 L18 4 L30 8 L30 22 Q18 32 6 22 Z" fill="#FFFFFF"/>
+        </svg>
+        HeroUI
+      </div>
+      <p style="margin-top: 24px; max-width: 720px; font-size: 16px; color: var(--hero-foreground-600);">
+        HeroUI is a modern React component library that succeeded NextUI in January 2025. It targets v3 with a vibrant gradient identity, rounded geometry (12-16px default radius), and an Inter-based type system. Because docs were only homepage-verified, this page is marked <strong>inspired</strong>.
+      </p>
+      <div class="pillars">
+        <div class="pillar">
+          <h4>Modern</h4>
+          <p style="font-size:14px;color:var(--hero-foreground-600);margin:0">Larger radii (12-16px), gradient surfaces, and Inter geometry feel contemporary.</p>
+        </div>
+        <div class="pillar">
+          <h4>React-first</h4>
+          <p style="font-size:14px;color:var(--hero-foreground-600);margin:0">Built atop React Aria for keyboard, screen-reader, and focus correctness by default.</p>
+        </div>
+        <div class="pillar">
+          <h4>Themed via Tailwind</h4>
+          <p style="font-size:14px;color:var(--hero-foreground-600);margin:0">Tailwind plugin model — utility classes compose with the component theme.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="color" data-fidelity="documented">
+      <h2>
+        <span>Color</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://www.heroui.com/docs/customization/colors" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--hero-foreground-600)">HeroUI exposes 6 semantic palettes (default / primary / secondary / success / warning / danger), each with 50-900 tones plus DEFAULT and foreground roles.</p>
+
+      <h3>Primary tonal scale</h3>
+      <div class="color-grid">
+        <div class="color-cell" style="background:var(--hero-primary-50);color:#001731">50</div>
+        <div class="color-cell" style="background:var(--hero-primary-100);color:#001731">100</div>
+        <div class="color-cell" style="background:var(--hero-primary-200);color:#001731">200</div>
+        <div class="color-cell" style="background:var(--hero-primary-300);color:white">300</div>
+        <div class="color-cell" style="background:var(--hero-primary-400);color:white">400</div>
+        <div class="color-cell" style="background:var(--hero-primary-500);color:white">500</div>
+        <div class="color-cell" style="background:var(--hero-primary-600);color:white">600</div>
+        <div class="color-cell" style="background:var(--hero-primary-700);color:white">700</div>
+        <div class="color-cell" style="background:var(--hero-primary-800);color:white">800</div>
+        <div class="color-cell" style="background:var(--hero-primary-900);color:white">900</div>
+      </div>
+
+      <h3>Default (zinc-based) scale</h3>
+      <div class="color-grid">
+        <div class="color-cell" style="background:var(--hero-default-50);color:var(--hero-foreground);border:1px solid var(--hero-divider)">50</div>
+        <div class="color-cell" style="background:var(--hero-default-100);color:var(--hero-foreground)">100</div>
+        <div class="color-cell" style="background:var(--hero-default-200);color:var(--hero-foreground)">200</div>
+        <div class="color-cell" style="background:var(--hero-default-300);color:var(--hero-foreground)">300</div>
+        <div class="color-cell" style="background:var(--hero-default-400);color:white">400</div>
+        <div class="color-cell" style="background:var(--hero-default-500);color:white">500</div>
+        <div class="color-cell" style="background:#52525B;color:white">600</div>
+        <div class="color-cell" style="background:#3F3F46;color:white">700</div>
+        <div class="color-cell" style="background:#27272A;color:white">800</div>
+        <div class="color-cell" style="background:#18181B;color:white">900</div>
+      </div>
+
+      <h3>Semantic roles</h3>
+      <div class="semantic-grid">
+        <div class="sem-card" style="background:var(--hero-primary-50);color:var(--hero-primary-700)">
+          <span class="label">Primary</span><span class="hex">#006FEE</span>
+        </div>
+        <div class="sem-card" style="background:var(--hero-secondary-100);color:var(--hero-secondary-600)">
+          <span class="label">Secondary</span><span class="hex">#7828C8</span>
+        </div>
+        <div class="sem-card" style="background:var(--hero-success-50);color:var(--hero-success-600)">
+          <span class="label">Success</span><span class="hex">#17C964</span>
+        </div>
+        <div class="sem-card" style="background:var(--hero-warning-50);color:var(--hero-warning-600)">
+          <span class="label">Warning</span><span class="hex">#F5A524</span>
+        </div>
+        <div class="sem-card" style="background:var(--hero-danger-50);color:var(--hero-danger-600)">
+          <span class="label">Danger</span><span class="hex">#F31260</span>
+        </div>
+      </div>
+
+      <h3>Theme tokens (Light)</h3>
+      <div class="role-grid">
+        <div class="role-chip" style="background:var(--hero-primary);color:white">primary <code>#006FEE</code></div>
+        <div class="role-chip" style="background:var(--hero-secondary);color:white">secondary <code>#7828C8</code></div>
+        <div class="role-chip" style="background:var(--hero-success);color:white">success <code>#17C964</code></div>
+        <div class="role-chip" style="background:var(--hero-warning);color:var(--hero-foreground)">warning <code>#F5A524</code></div>
+        <div class="role-chip" style="background:var(--hero-danger);color:white">danger <code>#F31260</code></div>
+        <div class="role-chip" style="background:var(--hero-content2);color:var(--hero-foreground);border:1px solid var(--hero-divider)">content2 <code>#F4F4F5</code></div>
+        <div class="role-chip" style="background:var(--hero-foreground);color:white">foreground <code>#11181C</code></div>
+        <div class="role-chip" style="background:var(--hero-default);color:var(--hero-foreground)">default <code>#D4D4D8</code></div>
+      </div>
+    </section>
+
+    <section id="typography" data-fidelity="approximated">
+      <h2>
+        <span>Typography</span>
+        <span class="badge fidelity-approximated">approximated</span>
+        <a href="https://www.heroui.com/docs/customization/theme" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--hero-foreground-600)">Inter is the default sans, with negative letter-spacing for large display sizes. Tokens approximated from Tailwind defaults that HeroUI builds atop.</p>
+
+      <div class="type-row"><div class="label">display · 60/1 · 800</div><div class="text-display">HeroUI</div></div>
+      <div class="type-row"><div class="label">h1 · 48/1.1 · 700</div><div class="text-h1">Modern React DX</div></div>
+      <div class="type-row"><div class="label">h2 · 36/1.2 · 700</div><div class="text-h2">Vibrant by default</div></div>
+      <div class="type-row"><div class="label">h3 · 30/1.3 · 600</div><div class="text-h3">Theme via Tailwind</div></div>
+      <div class="type-row"><div class="label">h4 · 24/1.4 · 600</div><div class="text-h4">Section title</div></div>
+      <div class="type-row"><div class="label">large · 18/1.5 · 500</div><div class="text-large">Lead body — slightly heavier than the default body for emphasis.</div></div>
+      <div class="type-row"><div class="label">md · 16/1.5 · 400</div><div class="text-md">HeroUI uses Inter as the default sans with cv11 / ss01 features enabled, giving rounded letterforms a softer cadence in body copy.</div></div>
+      <div class="type-row"><div class="label">sm · 14/1.45 · 400</div><div class="text-sm">Small body for secondary copy and helper text.</div></div>
+      <div class="type-row"><div class="label">tiny · 12/1.4 · 400</div><div class="text-tiny">Tiny — labels, captions, and microcopy.</div></div>
+      <div class="type-row"><div class="label">Mono · JetBrains</div><div class="mono-sample">colors.primary.DEFAULT = "#006FEE"</div></div>
+    </section>
+
+    <section id="buttons" data-fidelity="documented">
+      <h2>
+        <span>Buttons</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://www.heroui.com/docs/components/button" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--hero-foreground-600)">HeroUI Button supports variants <code>solid</code>, <code>bordered</code>, <code>light</code>, <code>flat</code>, <code>shadow</code>, <code>ghost</code>, plus icon-only.</p>
+
+      <h3>Variants</h3>
+      <div class="button-row">
+        <button class="hero-btn hero-btn--solid">Solid</button>
+        <button class="hero-btn hero-btn--bordered">Bordered</button>
+        <button class="hero-btn hero-btn--light">Light</button>
+        <button class="hero-btn hero-btn--flat">Flat</button>
+        <button class="hero-btn hero-btn--shadow">Shadow</button>
+        <button class="hero-btn hero-btn--ghost">Ghost</button>
+        <button class="hero-btn hero-btn--icon" aria-label="like">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l8.8 8.8 8.8-8.8a5.5 5.5 0 0 0 0-7.8z"/></svg>
+        </button>
+      </div>
+
+      <h3>Sizes</h3>
+      <div class="button-row">
+        <button class="hero-btn hero-btn--solid hero-btn--sm">Small</button>
+        <button class="hero-btn hero-btn--solid hero-btn--md">Medium</button>
+        <button class="hero-btn hero-btn--solid hero-btn--lg">Large</button>
+      </div>
+
+      <h3>Color props</h3>
+      <div class="button-row">
+        <button class="hero-btn hero-btn--solid">Primary</button>
+        <button class="hero-btn hero-btn--solid secondary">Secondary</button>
+        <button class="hero-btn hero-btn--solid success">Success</button>
+        <button class="hero-btn hero-btn--solid warning">Warning</button>
+        <button class="hero-btn hero-btn--solid danger">Danger</button>
+      </div>
+
+      <h3>States</h3>
+      <div class="button-row">
+        <button class="hero-btn hero-btn--solid">Enabled</button>
+        <button class="hero-btn hero-btn--solid" style="opacity:0.85">Hover</button>
+        <button class="hero-btn hero-btn--solid" style="outline:2px solid var(--hero-focus);outline-offset:2px">Focus</button>
+        <button class="hero-btn hero-btn--solid" disabled>Disabled</button>
+      </div>
+    </section>
+
+    <section id="form" data-fidelity="documented">
+      <h2>
+        <span>Form</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://www.heroui.com/docs/components/input" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--hero-foreground-600)">Input variants: <code>flat</code> (default), <code>bordered</code>, <code>faded</code>, <code>underlined</code>. Includes label, description, error, and prefix/suffix slots.</p>
+
+      <h3>Text inputs</h3>
+      <div class="form-grid">
+        <div class="hero-field">
+          <label for="hf1">Project name</label>
+          <input class="hero-input" type="text" id="hf1" value="HeroUI">
+          <span class="hero-helper">Flat · default</span>
+        </div>
+        <div class="hero-field">
+          <label for="hf2">Email</label>
+          <input class="hero-input hero-input--bordered" type="email" id="hf2" placeholder="you@example.com">
+          <span class="hero-helper">Bordered variant</span>
+        </div>
+        <div class="hero-field">
+          <label for="hf3">Search</label>
+          <input class="hero-input hero-input--faded" type="search" id="hf3" placeholder="Search components…">
+          <span class="hero-helper">Faded variant</span>
+        </div>
+        <div class="hero-field">
+          <label for="hf4">Title</label>
+          <input class="hero-input hero-input--underlined" type="text" id="hf4" placeholder="Untitled">
+          <span class="hero-helper">Underlined variant</span>
+        </div>
+        <div class="hero-field">
+          <label for="hf5">Description</label>
+          <textarea class="hero-input textarea" id="hf5">Multiline description…</textarea>
+        </div>
+        <div class="hero-field">
+          <label for="hf6">Email</label>
+          <input class="hero-input hero-input--bordered hero-input--invalid" type="text" id="hf6" value="invalid@">
+          <span class="hero-helper hero-error">Enter a valid email address</span>
+        </div>
+        <div class="hero-field">
+          <label for="hf7">Theme</label>
+          <select class="hero-input select" id="hf7">
+            <option>Light</option>
+            <option>Dark</option>
+            <option>System</option>
+          </select>
+        </div>
+      </div>
+
+      <h3>Selection controls</h3>
+      <div class="button-row">
+        <label class="hero-checkbox"><input type="checkbox" checked>Subscribe</label>
+        <label class="hero-checkbox"><input type="checkbox">Marketing</label>
+        <label class="hero-radio"><input type="radio" name="hr1" checked>Light</label>
+        <label class="hero-radio"><input type="radio" name="hr1">Dark</label>
+        <label class="hero-switch"><input type="checkbox" checked><span class="slider"></span></label>
+        <label class="hero-switch"><input type="checkbox"><span class="slider"></span></label>
+      </div>
+
+      <h3>Slider &amp; file</h3>
+      <div style="max-width:400px;display:flex;flex-direction:column;gap:12px">
+        <input type="range" class="hero-slider" min="0" max="100" value="60">
+        <input type="file" class="hero-input hero-input--bordered" style="padding:8px 12px">
+      </div>
+    </section>
+
+    <section id="surfaces" data-fidelity="documented">
+      <h2>
+        <span>Surfaces</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://www.heroui.com/docs/components/card" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--hero-foreground-600)">Card, Modal, Popover, and Sheet share a 12-16px radius and a layered shadow scale.</p>
+
+      <div class="surface-grid">
+        <div class="hero-card">
+          <div class="header">
+            <div class="title">Default Card</div>
+            <div class="subtitle">md shadow · 16px radius</div>
+          </div>
+          <div class="body">HeroUI cards default to a soft shadow with subtle border for separation.</div>
+          <div class="footer">
+            <button class="hero-btn hero-btn--flat hero-btn--sm">Action</button>
+            <button class="hero-btn hero-btn--light hero-btn--sm">More</button>
+          </div>
+        </div>
+        <div class="hero-card hero-card--shadow">
+          <div class="media"></div>
+          <div class="body">
+            <div class="title">Shadow Card</div>
+            <div class="subtitle" style="margin-top:4px">Larger drop shadow</div>
+            <p style="font-size:14px;margin:8px 0 0;color:var(--hero-foreground-600)">Use shadow cards for hero modules and feature highlights.</p>
+          </div>
+        </div>
+        <div class="hero-card hero-card--bordered">
+          <div class="header">
+            <div class="title">Bordered Card</div>
+            <div class="subtitle">No shadow · 2px border</div>
+          </div>
+          <div class="body">Bordered cards work in dense layouts where stacked shadows are noisy.</div>
+        </div>
+        <div class="hero-stat">
+          <div class="num">2,847</div>
+          <div class="lbl">Active sessions today</div>
+        </div>
+      </div>
+
+      <h3>Modal</h3>
+      <div class="hero-modal">
+        <h4 style="margin-top:0;font-size:18px">Reset preferences?</h4>
+        <p style="font-size:14px;color:var(--hero-foreground-600)">This will revert color, type, and shape tokens to defaults. Saved presets are not affected.</p>
+        <div class="button-row" style="justify-content:flex-end;margin:0">
+          <button class="hero-btn hero-btn--light">Cancel</button>
+          <button class="hero-btn hero-btn--solid danger">Reset</button>
+        </div>
+      </div>
+
+      <h3>Popover</h3>
+      <div style="display:flex;gap:24px;flex-wrap:wrap">
+        <div class="hero-popover">
+          <div class="item">Edit</div>
+          <div class="item">Duplicate</div>
+          <div class="item">Archive</div>
+          <div class="item" style="color:var(--hero-danger)">Delete</div>
+        </div>
+        <div class="hero-sidebar">
+          <a href="#" class="active">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12L12 3l9 9"/><path d="M5 10v10h14V10"/></svg>
+            Home
+          </a>
+          <a href="#">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            Explore
+          </a>
+          <a href="#">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.5-2.5l2-1.5-2-3.5-2.5 1A7 7 0 0 0 13 4l-.5-2.5h-4L8 4a7 7 0 0 0-3 1.5l-2.5-1-2 3.5 2 1.5A7 7 0 0 0 5 12c0 .9.2 1.7.5 2.5l-2 1.5 2 3.5 2.5-1c.9.7 2 1.2 3 1.5l.5 2.5h4l.5-2.5c1-.3 2.1-.8 3-1.5l2.5 1 2-3.5-2-1.5c.3-.8.5-1.6.5-2.5z"/></svg>
+            Settings
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section id="feedback" data-fidelity="documented">
+      <h2>
+        <span>Feedback</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://www.heroui.com/docs/components/alert" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+
+      <h3>Alerts</h3>
+      <div class="hero-alert hero-alert--primary">
+        <strong>Primary ·</strong> HeroUI alerts ship in 6 colors with title + description slots.
+      </div>
+      <div class="hero-alert hero-alert--success">
+        <strong>Success ·</strong> Theme synced across all surfaces.
+      </div>
+      <div class="hero-alert hero-alert--warning">
+        <strong>Warning ·</strong> Custom palette may not meet WCAG AA contrast at light tones.
+      </div>
+      <div class="hero-alert hero-alert--danger">
+        <strong>Danger ·</strong> Token resolution failed for primary color.
+      </div>
+
+      <h3>Toast</h3>
+      <div class="hero-toast">
+        Theme reverted to defaults.
+        <button>Undo</button>
+      </div>
+
+      <h3>Banner</h3>
+      <div class="hero-banner" style="margin-top:12px">
+        <span><strong>HeroUI v3</strong> — successor to NextUI with refreshed gradients and tokens.</span>
+        <button class="hero-btn hero-btn--light hero-btn--sm">Dismiss</button>
+      </div>
+
+      <h3>Chips &amp; badges</h3>
+      <div class="hero-chip-row">
+        <span class="hero-chip">Default</span>
+        <span class="hero-chip hero-chip--primary">Primary</span>
+        <span class="hero-chip hero-chip--secondary">Secondary</span>
+        <span class="hero-chip hero-chip--bordered">Bordered</span>
+        <span class="hero-chip hero-chip--success">Success</span>
+        <span class="hero-chip hero-chip--warning">Warning</span>
+        <span class="hero-chip hero-chip--danger">Danger</span>
+        <span class="hero-badge">3</span>
+        <span class="hero-badge" style="background:var(--hero-primary)">12</span>
+      </div>
+
+      <h3>Progress &amp; loading</h3>
+      <div style="display:flex;flex-direction:column;gap:12px;max-width:480px">
+        <div class="hero-progress"></div>
+        <div class="hero-skeleton" style="width:80%"></div>
+        <div class="hero-skeleton" style="width:60%"></div>
+        <div class="hero-spinner"></div>
+      </div>
+    </section>
+
+    <section id="navigation" data-fidelity="documented">
+      <h2>
+        <span>Navigation</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://www.heroui.com/docs/components/tabs" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+
+      <h3>Tabs (pill style)</h3>
+      <div class="hero-tabs">
+        <div class="hero-tab active">Overview</div>
+        <div class="hero-tab">Components</div>
+        <div class="hero-tab">Themes</div>
+        <div class="hero-tab">Examples</div>
+      </div>
+
+      <h3>Breadcrumbs</h3>
+      <ul class="hero-breadcrumbs">
+        <li><a href="#">Home</a></li>
+        <li>›</li>
+        <li><a href="#">Components</a></li>
+        <li>›</li>
+        <li>Button</li>
+      </ul>
+
+      <h3>Pagination</h3>
+      <div class="hero-pagination">
+        <button>‹</button>
+        <button class="active">1</button>
+        <button>2</button>
+        <button>3</button>
+        <button>4</button>
+        <button>›</button>
+      </div>
+
+      <h3>Stepper</h3>
+      <div class="hero-stepper">
+        <div class="step"><span class="num active">1</span> Theme</div>
+        <span class="line"></span>
+        <div class="step"><span class="num active">2</span> Type</div>
+        <span class="line"></span>
+        <div class="step"><span class="num">3</span> Layout</div>
+        <span class="line"></span>
+        <div class="step"><span class="num">4</span> Review</div>
+      </div>
+
+      <h3>Navbar</h3>
+      <div class="hero-navbar">
+        <div style="font-weight:700;font-size:18px;letter-spacing:-0.02em">HeroUI</div>
+        <div style="flex:1;display:flex;gap:16px;font-size:14px;color:var(--hero-foreground-600)">
+          <a href="#" style="color:var(--hero-primary);text-decoration:none;font-weight:500">Docs</a>
+          <a href="#" style="color:inherit;text-decoration:none">Components</a>
+          <a href="#" style="color:inherit;text-decoration:none">Themes</a>
+        </div>
+        <button class="hero-btn hero-btn--flat hero-btn--sm">Sign in</button>
+        <div class="hero-avatar">MK</div>
+      </div>
+    </section>
+
+    <section id="data" data-fidelity="documented">
+      <h2>
+        <span>Data</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://www.heroui.com/docs/components/table" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+
+      <h3>Table</h3>
+      <table class="hero-table">
+        <thead>
+          <tr><th>Token</th><th>Value</th><th>Color</th><th>Variant</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>colors.primary</code></td><td>#006FEE</td><td>Blue</td><td>solid</td></tr>
+          <tr><td><code>colors.secondary</code></td><td>#7828C8</td><td>Purple</td><td>solid</td></tr>
+          <tr><td><code>colors.success</code></td><td>#17C964</td><td>Green</td><td>solid</td></tr>
+          <tr><td><code>colors.warning</code></td><td>#F5A524</td><td>Amber</td><td>solid</td></tr>
+          <tr><td><code>colors.danger</code></td><td>#F31260</td><td>Pink-Red</td><td>solid</td></tr>
+        </tbody>
+      </table>
+
+      <h3>List</h3>
+      <ul class="hero-list">
+        <li><div class="hero-avatar">A</div><div><strong>Avery Tan</strong><div style="font-size:13px;color:var(--hero-foreground-600)">Updated theme · 2m ago</div></div></li>
+        <li><div class="hero-avatar" style="background:var(--hero-success)">B</div><div><strong>Brett Yu</strong><div style="font-size:13px;color:var(--hero-foreground-600)">Imported tokens · 14m ago</div></div></li>
+        <li><div class="hero-avatar" style="background:var(--hero-warning)">C</div><div><strong>Cleo Park</strong><div style="font-size:13px;color:var(--hero-foreground-600)">Created palette · 1h ago</div></div></li>
+      </ul>
+
+      <h3>Key – value</h3>
+      <dl class="hero-kv">
+        <dt>Theme</dt><dd>Light · HeroUI</dd>
+        <dt>Primary</dt><dd>#006FEE</dd>
+        <dt>Font</dt><dd>Inter</dd>
+        <dt>Generated</dt><dd>2026-05-05</dd>
+      </dl>
+
+      <h3>Empty state</h3>
+      <div class="hero-empty">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><circle cx="9" cy="10" r="0.5" fill="currentColor"/><circle cx="15" cy="10" r="0.5" fill="currentColor"/></svg>
+        <h4 style="margin:8px 0 4px">No projects yet</h4>
+        <p style="font-size:14px;margin:0">Create one from a HeroUI starter or import a config.</p>
+      </div>
+    </section>
+
+    <section id="layout" data-fidelity="approximated">
+      <h2>
+        <span>Layout</span>
+        <span class="badge fidelity-approximated">approximated</span>
+        <a href="https://www.heroui.com/docs/components/spacer" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--hero-foreground-600)">HeroUI uses Tailwind's spacing/breakpoint scale. The grid system is composed via Tailwind's <code>grid-cols-*</code> utilities; below mirrors that 12-column convention.</p>
+
+      <h3>12-column grid</h3>
+      <div class="grid-demo">
+        <div style="grid-column:span 12">12</div>
+        <div style="grid-column:span 6">6</div>
+        <div style="grid-column:span 6">6</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+      </div>
+
+      <h3>Spacing scale (Tailwind)</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div class="swatch" style="width:4px;height:32px"></div><span class="lbl">1 (4)</span></div>
+        <div class="scale-item"><div class="swatch" style="width:8px;height:32px"></div><span class="lbl">2 (8)</span></div>
+        <div class="scale-item"><div class="swatch" style="width:12px;height:32px"></div><span class="lbl">3 (12)</span></div>
+        <div class="scale-item"><div class="swatch" style="width:16px;height:32px"></div><span class="lbl">4 (16)</span></div>
+        <div class="scale-item"><div class="swatch" style="width:20px;height:32px"></div><span class="lbl">5 (20)</span></div>
+        <div class="scale-item"><div class="swatch" style="width:24px;height:32px"></div><span class="lbl">6 (24)</span></div>
+        <div class="scale-item"><div class="swatch" style="width:32px;height:32px"></div><span class="lbl">8 (32)</span></div>
+        <div class="scale-item"><div class="swatch" style="width:48px;height:32px"></div><span class="lbl">12 (48)</span></div>
+      </div>
+
+      <h3>Radius scale</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:0;background:var(--hero-primary)"></div><span class="lbl">none</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:8px;background:var(--hero-primary)"></div><span class="lbl">sm 8</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:12px;background:var(--hero-primary)"></div><span class="lbl">md 12</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:14px;background:var(--hero-primary)"></div><span class="lbl">lg 14</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:16px;background:var(--hero-primary)"></div><span class="lbl">xl 16</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:20px;background:var(--hero-primary)"></div><span class="lbl">2xl 20</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:50%;background:var(--hero-primary)"></div><span class="lbl">full</span></div>
+      </div>
+
+      <h3>Shadow scale</h3>
+      <div>
+        <div class="shadow-demo" style="box-shadow:none">none</div>
+        <div class="shadow-demo" style="box-shadow:var(--hero-shadow-sm)">sm</div>
+        <div class="shadow-demo" style="box-shadow:var(--hero-shadow-md)">md</div>
+        <div class="shadow-demo" style="box-shadow:var(--hero-shadow-lg)">lg</div>
+        <div class="shadow-demo" style="box-shadow:var(--hero-shadow-xl)">xl</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="ds-footer">
+    <h3>Sources</h3>
+    <ul>
+      <li><a href="https://www.heroui.com" target="_blank" rel="noopener">https://www.heroui.com</a></li>
+      <li><a href="https://www.heroui.com/docs/customization/colors" target="_blank" rel="noopener">https://www.heroui.com/docs/customization/colors</a></li>
+      <li><a href="https://www.heroui.com/docs/customization/theme" target="_blank" rel="noopener">https://www.heroui.com/docs/customization/theme</a></li>
+      <li><a href="https://www.heroui.com/docs/components/button" target="_blank" rel="noopener">https://www.heroui.com/docs/components/button</a></li>
+      <li><a href="https://www.heroui.com/docs/components/input" target="_blank" rel="noopener">https://www.heroui.com/docs/components/input</a></li>
+      <li><a href="https://www.heroui.com/docs/components/card" target="_blank" rel="noopener">https://www.heroui.com/docs/components/card</a></li>
+      <li><a href="https://www.heroui.com/docs/components/alert" target="_blank" rel="noopener">https://www.heroui.com/docs/components/alert</a></li>
+      <li><a href="https://www.heroui.com/docs/components/tabs" target="_blank" rel="noopener">https://www.heroui.com/docs/components/tabs</a></li>
+      <li><a href="https://www.heroui.com/docs/components/table" target="_blank" rel="noopener">https://www.heroui.com/docs/components/table</a></li>
+      <li><a href="https://www.heroui.com/docs/components/spacer" target="_blank" rel="noopener">https://www.heroui.com/docs/components/spacer</a></li>
+    </ul>
+    <p class="license-note">This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with HeroUI Team. HeroUI and related trademarks belong to HeroUI Team. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</p>
+    <p class="meta-note">Reproduction date: 2026-05-05 · sourceStatus: homepage-only · fidelity: inspired</p>
+  </footer>
+</body>
+</html>

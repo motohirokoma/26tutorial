@@ -1,0 +1,1364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Spectrum 2 — Design System Reference</title>
+  <script id="ds-meta" type="application/json">
+{"id":"05-spectrum-2","fileSlug":"05-spectrum-2","schemaVersion":"1"}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Spectrum 2 Blue Ramp */
+      --sp-blue-100: #E0F2FF;
+      --sp-blue-200: #CAE8FF;
+      --sp-blue-300: #B0DAFC;
+      --sp-blue-400: #84C5F4;
+      --sp-blue-500: #2680EB;
+      --sp-blue-600: #1473E6;
+      --sp-blue-700: #0D66D0;
+      --sp-blue-800: #095ABA;
+      --sp-blue-900: #0D4FA0;
+      --sp-blue-1000: #003877;
+      --sp-blue-1100: #002C5C;
+
+      /* Gray (Light theme) */
+      --sp-gray-50: #FFFFFF;
+      --sp-gray-75: #FAFAFA;
+      --sp-gray-100: #F5F5F5;
+      --sp-gray-200: #EAEAEA;
+      --sp-gray-300: #E1E1E1;
+      --sp-gray-400: #CACACA;
+      --sp-gray-500: #B3B3B3;
+      --sp-gray-600: #8E8E8E;
+      --sp-gray-700: #6E6E6E;
+      --sp-gray-800: #4B4B4B;
+      --sp-gray-900: #2C2C2C;
+      --sp-gray-1000: #1B1B1B;
+
+      /* Accents */
+      --sp-purple-600: #7575F1;
+      --sp-purple-700: #6767CE;
+      --sp-fuchsia-600: #C038CC;
+      --sp-orange-600: #DA7B11;
+      --sp-yellow-600: #E8C600;
+      --sp-magenta-600: #D83790;
+      --sp-celery-600: #44B556;
+      --sp-seafoam-600: #1B959A;
+      --sp-indigo-600: #6767EC;
+      --sp-chartreuse-600: #85D044;
+
+      /* Status */
+      --sp-positive: #268E6C;
+      --sp-positive-bg: #E0F4EC;
+      --sp-notice: #DA7B11;
+      --sp-notice-bg: #FCEFE0;
+      --sp-negative: #D7373F;
+      --sp-negative-bg: #FCE4E5;
+      --sp-informative: #1473E6;
+      --sp-informative-bg: #E0EEFC;
+
+      /* Type */
+      --font-primary: 'Inter', 'Adobe Clean', -apple-system, system-ui, sans-serif;
+      --font-mono: 'Source Code Pro', 'SF Mono', monospace;
+
+      /* Shape */
+      --sp-radius-0: 0;
+      --sp-radius-50: 2px;
+      --sp-radius-75: 4px;
+      --sp-radius-100: 6px;
+      --sp-radius-200: 8px;
+      --sp-radius-300: 12px;
+      --sp-radius-400: 16px;
+      --sp-radius-pill: 999px;
+
+      /* Spacing */
+      --sp-space-50: 2px;
+      --sp-space-75: 4px;
+      --sp-space-100: 8px;
+      --sp-space-150: 12px;
+      --sp-space-200: 16px;
+      --sp-space-300: 20px;
+      --sp-space-400: 24px;
+      --sp-space-500: 32px;
+      --sp-space-600: 40px;
+      --sp-space-700: 48px;
+
+      /* Shadow */
+      --sp-shadow-100: 0 1px 4px rgba(0,0,0,0.04);
+      --sp-shadow-200: 0 2px 8px rgba(0,0,0,0.10);
+      --sp-shadow-300: 0 4px 16px rgba(0,0,0,0.12);
+      --sp-shadow-400: 0 12px 32px rgba(0,0,0,0.15);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--font-primary);
+      font-size: 14px;
+      line-height: 1.43;
+      color: var(--sp-gray-900);
+      background: var(--sp-gray-100);
+      -webkit-font-smoothing: antialiased;
+      letter-spacing: -0.005em;
+    }
+    code, kbd, pre { font-family: var(--font-mono); }
+
+    /* Header */
+    .ds-header {
+      background: var(--sp-gray-50);
+      padding: var(--sp-space-600) var(--sp-space-500) var(--sp-space-400);
+      border-bottom: 1px solid var(--sp-gray-200);
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--sp-blue-600);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .back-link:hover { color: var(--sp-blue-700); }
+
+    .ds-header h1 {
+      font-size: 44px;
+      line-height: 1.14;
+      font-weight: 700;
+      margin: var(--sp-space-200) 0 var(--sp-space-150);
+      letter-spacing: -0.02em;
+    }
+    .ds-header .meta {
+      display: flex;
+      gap: var(--sp-space-100);
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: var(--sp-space-200);
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 10px;
+      border-radius: var(--sp-radius-pill);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0;
+      background: var(--sp-gray-200);
+      color: var(--sp-gray-800);
+    }
+    .badge.kind-ds { background: var(--sp-blue-600); color: white; }
+    .badge.fidelity-documented { background: var(--sp-positive-bg); color: #186F50; }
+    .badge.fidelity-approximated { background: var(--sp-notice-bg); color: #8E4B00; }
+    .badge.fidelity-inspired { background: #F4E5F7; color: #6B2C91; }
+    .badge.source-verified { background: var(--sp-informative-bg); color: var(--sp-blue-700); }
+
+    .ds-header a[href*="spectrum.adobe.com"] {
+      color: var(--sp-blue-600);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 4px 12px;
+      border: 1px solid var(--sp-gray-300);
+      border-radius: var(--sp-radius-pill);
+    }
+    .tagline {
+      font-size: 18px;
+      line-height: 1.45;
+      max-width: 720px;
+      color: var(--sp-gray-700);
+      margin: var(--sp-space-200) 0 0;
+    }
+
+    /* TOC */
+    .toc {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--sp-gray-200);
+    }
+    .toc ul {
+      list-style: none;
+      margin: 0;
+      padding: var(--sp-space-150) var(--sp-space-500);
+      display: flex;
+      gap: var(--sp-space-100);
+      overflow-x: auto;
+    }
+    .toc a {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: var(--sp-radius-pill);
+      color: var(--sp-gray-800);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      white-space: nowrap;
+      border: 1px solid var(--sp-gray-300);
+    }
+    .toc a:hover { background: var(--sp-blue-100); color: var(--sp-blue-700); border-color: var(--sp-blue-300); }
+
+    /* Main */
+    main {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: var(--sp-space-500);
+    }
+    section {
+      background: var(--sp-gray-50);
+      border-radius: var(--sp-radius-200);
+      padding: var(--sp-space-500);
+      margin-bottom: var(--sp-space-400);
+      border: 1px solid var(--sp-gray-200);
+    }
+    section h2 {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-space-150);
+      flex-wrap: wrap;
+      font-size: 28px;
+      line-height: 1.18;
+      font-weight: 700;
+      margin: 0 0 var(--sp-space-400);
+      letter-spacing: -0.015em;
+    }
+    h3 {
+      font-size: 18px;
+      line-height: 1.33;
+      font-weight: 700;
+      margin: var(--sp-space-400) 0 var(--sp-space-200);
+      letter-spacing: -0.01em;
+    }
+    h4 {
+      font-size: 14px;
+      font-weight: 700;
+      margin: var(--sp-space-200) 0 var(--sp-space-100);
+      color: var(--sp-gray-800);
+    }
+    p { margin: 0 0 var(--sp-space-150); color: var(--sp-gray-800); }
+    .source-link {
+      font-size: 13px;
+      color: var(--sp-blue-600);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .source-link:hover { text-decoration: underline; }
+
+    /* Brand */
+    #brand .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--sp-space-200);
+      padding: var(--sp-space-300) var(--sp-space-400);
+      background: linear-gradient(135deg, var(--sp-blue-500), var(--sp-purple-600));
+      border-radius: var(--sp-radius-300);
+      color: white;
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    #brand .brand-mark svg { width: 36px; height: 36px; }
+    #brand .pillars {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--sp-space-150);
+      margin-top: var(--sp-space-400);
+    }
+    #brand .pillar {
+      padding: var(--sp-space-200);
+      background: var(--sp-gray-75);
+      border-radius: var(--sp-radius-100);
+      border: 1px solid var(--sp-gray-200);
+    }
+    #brand .pillar h4 { margin-top: 0; color: var(--sp-blue-700); }
+
+    /* Color */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(11, 1fr);
+      gap: 0;
+      margin-bottom: var(--sp-space-200);
+      border-radius: var(--sp-radius-100);
+      overflow: hidden;
+    }
+    .color-cell {
+      aspect-ratio: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 5px;
+      font-size: 9px;
+      font-family: var(--font-mono);
+      font-weight: 500;
+    }
+
+    .semantic-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px,1fr));
+      gap: var(--sp-space-150);
+    }
+    .sem-card {
+      padding: var(--sp-space-200);
+      border-radius: var(--sp-radius-100);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .sem-card .label { font-size: 14px; font-weight: 600; }
+    .sem-card .hex { font-family: var(--font-mono); font-size: 11px; opacity: 0.85; }
+
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--sp-space-100);
+    }
+    .role-chip {
+      padding: var(--sp-space-150) var(--sp-space-200);
+      border-radius: var(--sp-radius-100);
+      font-size: 13px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 500;
+    }
+    .role-chip code { font-family: var(--font-mono); font-size: 11px; opacity: 0.9; }
+
+    /* Typography */
+    .type-row {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: var(--sp-space-200);
+      padding: var(--sp-space-150) 0;
+      border-bottom: 1px solid var(--sp-gray-200);
+      align-items: baseline;
+    }
+    .type-row:last-child { border-bottom: 0; }
+    .type-row .label { font-family: var(--font-mono); font-size: 11px; color: var(--sp-gray-700); }
+    .t-display { font-size: 60px; line-height: 1.1; font-weight: 800; letter-spacing: -0.025em; }
+    .t-heading-xxxl { font-size: 44px; line-height: 1.14; font-weight: 700; letter-spacing: -0.02em; }
+    .t-heading-xxl { font-size: 36px; line-height: 1.16; font-weight: 700; letter-spacing: -0.02em; }
+    .t-heading-xl { font-size: 28px; line-height: 1.18; font-weight: 700; letter-spacing: -0.015em; }
+    .t-heading-l { font-size: 22px; line-height: 1.27; font-weight: 700; letter-spacing: -0.01em; }
+    .t-heading-m { font-size: 18px; line-height: 1.33; font-weight: 700; }
+    .t-heading-s { font-size: 16px; line-height: 1.37; font-weight: 700; }
+    .t-body-l { font-size: 17px; line-height: 1.5; font-weight: 400; }
+    .t-body { font-size: 14px; line-height: 1.43; font-weight: 400; }
+    .t-body-s { font-size: 12px; line-height: 1.5; font-weight: 400; }
+    .t-detail { font-size: 11px; line-height: 1.45; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+    .t-mono { font-family: var(--font-mono); font-size: 13px; }
+
+    /* Iconography */
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(80px,1fr));
+      gap: var(--sp-space-100);
+    }
+    .icon-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: var(--sp-space-150);
+      background: var(--sp-gray-75);
+      border-radius: var(--sp-radius-75);
+      border: 1px solid var(--sp-gray-200);
+    }
+    .icon-cell svg { width: 18px; height: 18px; color: var(--sp-gray-900); stroke-width: 2; }
+    .icon-cell span { font-size: 11px; color: var(--sp-gray-700); }
+
+    /* Buttons */
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--sp-space-100);
+      align-items: center;
+      margin-bottom: var(--sp-space-150);
+    }
+    .sp-btn {
+      font-family: var(--font-primary);
+      font-size: 14px;
+      font-weight: 700;
+      padding: 5px 18px;
+      border-radius: var(--sp-radius-pill);
+      border: 2px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 32px;
+      letter-spacing: 0;
+      transition: background 0.13s, border 0.13s;
+    }
+    .sp-btn--accent { background: var(--sp-blue-600); color: white; border-color: var(--sp-blue-600); }
+    .sp-btn--accent:hover { background: var(--sp-blue-700); border-color: var(--sp-blue-700); }
+    .sp-btn--accent:active { background: var(--sp-blue-800); border-color: var(--sp-blue-800); }
+    .sp-btn--accent:disabled { background: var(--sp-gray-300); border-color: var(--sp-gray-300); color: var(--sp-gray-600); cursor: not-allowed; }
+    .sp-btn--primary { background: var(--sp-gray-900); color: white; border-color: var(--sp-gray-900); }
+    .sp-btn--primary:hover { background: var(--sp-gray-1000); border-color: var(--sp-gray-1000); }
+    .sp-btn--secondary { background: transparent; color: var(--sp-gray-900); border-color: var(--sp-gray-900); }
+    .sp-btn--secondary:hover { background: var(--sp-gray-200); }
+    .sp-btn--negative { background: var(--sp-negative); color: white; border-color: var(--sp-negative); }
+    .sp-btn--negative:hover { background: #B92E36; border-color: #B92E36; }
+    .sp-btn--outline-accent { background: transparent; color: var(--sp-blue-600); border-color: var(--sp-blue-600); }
+    .sp-btn--outline-accent:hover { background: var(--sp-blue-100); }
+    .sp-btn--quiet { background: transparent; color: var(--sp-gray-900); border-color: transparent; }
+    .sp-btn--quiet:hover { background: var(--sp-gray-200); }
+    .sp-btn--sm { font-size: 13px; padding: 3px 12px; min-height: 24px; }
+    .sp-btn--lg { font-size: 16px; padding: 9px 22px; min-height: 40px; }
+    .sp-btn:focus-visible { outline: 2px solid var(--sp-blue-600); outline-offset: 2px; }
+
+    /* Form */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: var(--sp-space-200);
+    }
+    .sp-field { display: flex; flex-direction: column; gap: 4px; }
+    .sp-field label { font-size: 14px; font-weight: 600; color: var(--sp-gray-900); }
+    .sp-field label .req { color: var(--sp-negative); }
+    .sp-input {
+      background: var(--sp-gray-50);
+      border: 1px solid var(--sp-gray-500);
+      border-radius: var(--sp-radius-75);
+      padding: 5px 12px;
+      font-family: var(--font-primary);
+      font-size: 14px;
+      color: var(--sp-gray-900);
+      outline: none;
+      width: 100%;
+      min-height: 32px;
+      transition: border 0.13s;
+    }
+    .sp-input:hover { border-color: var(--sp-gray-700); }
+    .sp-input:focus { border-color: var(--sp-blue-600); border-width: 2px; padding: 4px 11px; }
+    .sp-input.error { border-color: var(--sp-negative); }
+    .sp-input::placeholder { color: var(--sp-gray-700); }
+    .sp-helper { font-size: 12px; color: var(--sp-gray-700); }
+    .sp-helper.error { color: var(--sp-negative); }
+    textarea.sp-input { resize: vertical; min-height: 80px; padding: 8px 12px; }
+    select.sp-input {
+      appearance: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none' stroke='%234B4B4B' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><polyline points='3 4.5 6 7.5 9 4.5'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 36px;
+    }
+    .sp-checkbox, .sp-radio {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .sp-checkbox input, .sp-radio input { accent-color: var(--sp-blue-600); width: 16px; height: 16px; }
+
+    .sp-switch { position: relative; display: inline-block; width: 36px; height: 20px; }
+    .sp-switch input { opacity: 0; width: 0; height: 0; }
+    .sp-switch .slider {
+      position: absolute; cursor: pointer; inset: 0;
+      background: var(--sp-gray-500);
+      border-radius: 999px;
+      transition: 0.18s;
+    }
+    .sp-switch .slider::before {
+      content: '';
+      position: absolute;
+      width: 14px; height: 14px;
+      left: 3px; top: 3px;
+      background: white;
+      border-radius: 50%;
+      transition: 0.18s;
+    }
+    .sp-switch input:checked + .slider { background: var(--sp-blue-600); }
+    .sp-switch input:checked + .slider::before { transform: translateX(16px); }
+
+    .sp-slider { width: 100%; accent-color: var(--sp-blue-600); }
+    .sp-search { position: relative; }
+    .sp-search .sp-input { padding-left: 32px; }
+    .sp-search svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--sp-gray-700); }
+
+    /* Surfaces */
+    .surface-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: var(--sp-space-200);
+    }
+    .sp-card {
+      background: var(--sp-gray-50);
+      border: 1px solid var(--sp-gray-200);
+      border-radius: var(--sp-radius-200);
+      padding: var(--sp-space-200);
+      box-shadow: var(--sp-shadow-100);
+      transition: box-shadow 0.15s;
+    }
+    .sp-card:hover { box-shadow: var(--sp-shadow-200); }
+    .sp-card .media {
+      height: 140px;
+      background: linear-gradient(135deg, var(--sp-blue-500), var(--sp-purple-600));
+      border-radius: var(--sp-radius-75);
+      margin-bottom: var(--sp-space-150);
+    }
+    .sp-card h4 { margin: 0 0 4px; font-size: 16px; }
+    .sp-card p { font-size: 13px; color: var(--sp-gray-700); margin: 0; }
+
+    .sp-stat {
+      padding: var(--sp-space-200);
+      background: var(--sp-blue-100);
+      border-radius: var(--sp-radius-200);
+    }
+    .sp-stat .num { font-size: 36px; font-weight: 800; line-height: 1; color: var(--sp-blue-700); letter-spacing: -0.025em; }
+    .sp-stat .lbl { font-size: 12px; color: var(--sp-gray-700); margin-top: 6px; font-weight: 600; }
+
+    .sp-modal {
+      background: var(--sp-gray-50);
+      padding: var(--sp-space-400);
+      border-radius: var(--sp-radius-200);
+      box-shadow: var(--sp-shadow-400);
+      max-width: 460px;
+    }
+    .sp-modal h4 { font-size: 22px; font-weight: 700; margin: 0 0 8px; letter-spacing: -0.01em; }
+
+    /* Feedback */
+    .sp-alert {
+      display: flex;
+      gap: var(--sp-space-150);
+      padding: var(--sp-space-150) var(--sp-space-200);
+      border-radius: var(--sp-radius-100);
+      margin-bottom: var(--sp-space-100);
+      align-items: center;
+      font-size: 14px;
+      border-left: 4px solid;
+    }
+    .sp-alert--info { background: var(--sp-informative-bg); border-color: var(--sp-informative); color: #094778; }
+    .sp-alert--positive { background: var(--sp-positive-bg); border-color: var(--sp-positive); color: #15533D; }
+    .sp-alert--notice { background: var(--sp-notice-bg); border-color: var(--sp-notice); color: #6E3A00; }
+    .sp-alert--negative { background: var(--sp-negative-bg); border-color: var(--sp-negative); color: #8A1F25; }
+
+    .sp-toast {
+      background: var(--sp-gray-900);
+      color: white;
+      padding: 10px 16px;
+      border-radius: var(--sp-radius-100);
+      box-shadow: var(--sp-shadow-300);
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 14px;
+    }
+
+    .sp-banner {
+      display: flex;
+      gap: var(--sp-space-150);
+      padding: var(--sp-space-150) var(--sp-space-200);
+      background: var(--sp-blue-100);
+      color: var(--sp-blue-1000);
+      border-radius: var(--sp-radius-100);
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .badge-row { display: flex; flex-wrap: wrap; gap: var(--sp-space-100); }
+    .sp-tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 10px;
+      border-radius: var(--sp-radius-pill);
+      font-size: 12px;
+      font-weight: 600;
+      background: var(--sp-gray-200);
+      color: var(--sp-gray-800);
+      border: 1px solid var(--sp-gray-300);
+    }
+    .sp-tag--accent { background: var(--sp-blue-600); color: white; border-color: transparent; }
+    .sp-tag--positive { background: var(--sp-positive-bg); color: #15533D; border-color: transparent; }
+    .sp-tag--notice { background: var(--sp-notice-bg); color: #6E3A00; border-color: transparent; }
+    .sp-tag--negative { background: var(--sp-negative-bg); color: #8A1F25; border-color: transparent; }
+    .sp-tag--informative { background: var(--sp-informative-bg); color: var(--sp-blue-700); border-color: transparent; }
+
+    .sp-num-badge { background: var(--sp-negative); color: white; border-radius: 999px; font-size: 11px; font-weight: 700; padding: 2px 8px; min-width: 18px; text-align: center; display: inline-flex; align-items: center; justify-content: center; }
+
+    .sp-progress {
+      width: 100%; height: 4px;
+      background: var(--sp-gray-200);
+      border-radius: var(--sp-radius-pill);
+      overflow: hidden;
+    }
+    .sp-progress::after {
+      content: ''; display: block;
+      height: 100%; width: 65%;
+      background: var(--sp-blue-600);
+    }
+
+    .sp-skeleton {
+      height: 12px;
+      background: linear-gradient(90deg, var(--sp-gray-200), var(--sp-gray-75), var(--sp-gray-200));
+      background-size: 200% 100%;
+      border-radius: var(--sp-radius-50);
+      animation: shimmer 1.5s infinite;
+    }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+    .sp-spinner {
+      width: 28px; height: 28px;
+      border: 2px solid var(--sp-gray-200);
+      border-top-color: var(--sp-blue-600);
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Navigation */
+    .sp-tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 2px solid var(--sp-gray-200);
+      margin-bottom: var(--sp-space-150);
+    }
+    .sp-tab {
+      padding: var(--sp-space-150) var(--sp-space-200);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--sp-gray-800);
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      margin-bottom: -2px;
+    }
+    .sp-tab.active { color: var(--sp-gray-1000); border-bottom-color: var(--sp-blue-600); }
+    .sp-tab:hover { color: var(--sp-gray-1000); }
+
+    .sp-breadcrumb { display: flex; gap: 6px; align-items: center; font-size: 14px; color: var(--sp-gray-700); }
+    .sp-breadcrumb a { color: var(--sp-gray-900); text-decoration: none; font-weight: 500; }
+    .sp-breadcrumb a:hover { text-decoration: underline; }
+    .sp-breadcrumb svg { width: 12px; height: 12px; }
+
+    .sp-pagination { display: flex; gap: 4px; align-items: center; }
+    .sp-pagination button {
+      width: 32px; height: 32px;
+      border-radius: var(--sp-radius-75);
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--sp-gray-900);
+      cursor: pointer;
+      font-family: var(--font-primary);
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .sp-pagination button.active { background: var(--sp-gray-900); color: white; }
+    .sp-pagination button:hover:not(.active) { background: var(--sp-gray-200); }
+
+    .sp-stepper { display: flex; align-items: center; gap: 10px; font-size: 13px; }
+    .sp-stepper .num {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--sp-gray-200); color: var(--sp-gray-800);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700;
+    }
+    .sp-stepper .num.active { background: var(--sp-blue-600); color: white; }
+    .sp-stepper .num.done { background: var(--sp-positive); color: white; }
+    .sp-stepper .line { flex: 1; height: 2px; background: var(--sp-gray-200); }
+
+    .sp-sidebar {
+      background: var(--sp-gray-75);
+      border: 1px solid var(--sp-gray-200);
+      border-radius: var(--sp-radius-100);
+      padding: 6px;
+      width: 240px;
+    }
+    .sp-sidebar a {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 12px;
+      border-radius: var(--sp-radius-75);
+      color: var(--sp-gray-900);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .sp-sidebar a:hover { background: var(--sp-gray-200); }
+    .sp-sidebar a.active { background: var(--sp-blue-100); color: var(--sp-blue-700); font-weight: 600; }
+
+    .sp-topbar {
+      display: flex; align-items: center; gap: 16px;
+      padding: 10px 16px;
+      background: var(--sp-gray-50);
+      border: 1px solid var(--sp-gray-200);
+      border-radius: var(--sp-radius-100);
+      box-shadow: var(--sp-shadow-100);
+    }
+    .sp-topbar .title { font-size: 15px; font-weight: 700; }
+
+    .sp-menu {
+      background: var(--sp-gray-50);
+      border: 1px solid var(--sp-gray-200);
+      border-radius: var(--sp-radius-100);
+      box-shadow: var(--sp-shadow-300);
+      padding: 6px 0;
+      width: 220px;
+    }
+    .sp-menu .item {
+      padding: 8px 14px;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+    }
+    .sp-menu .item:hover { background: var(--sp-blue-100); color: var(--sp-blue-700); }
+    .sp-menu .divider { height: 1px; background: var(--sp-gray-200); margin: 4px 0; }
+
+    /* Data */
+    table.sp-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    table.sp-table th, table.sp-table td {
+      text-align: left;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--sp-gray-200);
+    }
+    table.sp-table th { font-weight: 700; color: var(--sp-gray-900); background: var(--sp-gray-75); font-size: 13px; text-transform: uppercase; letter-spacing: 0.04em; }
+    table.sp-table tr:hover { background: var(--sp-gray-75); }
+
+    .sp-list { list-style: none; padding: 0; margin: 0; }
+    .sp-list li {
+      padding: 12px 14px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      border-bottom: 1px solid var(--sp-gray-200);
+      font-size: 14px;
+    }
+    .sp-list li:last-child { border-bottom: 0; }
+
+    .sp-kv { display: grid; grid-template-columns: 140px 1fr; gap: 10px; font-size: 14px; }
+    .sp-kv dt { color: var(--sp-gray-700); font-weight: 600; }
+
+    .sp-avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--sp-blue-500), var(--sp-fuchsia-600));
+      color: white;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .sp-empty {
+      text-align: center;
+      padding: var(--sp-space-600) var(--sp-space-200);
+      color: var(--sp-gray-700);
+    }
+    .sp-empty svg { width: 56px; height: 56px; opacity: 0.4; }
+
+    /* Layout */
+    .grid-demo {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 12px;
+      background: var(--sp-gray-75);
+      padding: 12px;
+      border-radius: var(--sp-radius-100);
+      border: 1px solid var(--sp-gray-200);
+    }
+    .grid-demo > div {
+      background: var(--sp-blue-200);
+      color: var(--sp-blue-1000);
+      padding: 8px;
+      border-radius: var(--sp-radius-50);
+      font-size: 12px;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .scale-row { display: flex; gap: var(--sp-space-150); flex-wrap: wrap; align-items: flex-end; margin-bottom: var(--sp-space-200); }
+    .scale-item { display: flex; flex-direction: column; gap: 4px; align-items: center; }
+    .scale-item .swatch { background: var(--sp-blue-600); border-radius: var(--sp-radius-50); }
+    .scale-item .lbl { font-size: 11px; font-family: var(--font-mono); color: var(--sp-gray-700); }
+
+    .shadow-demo {
+      width: 80px; height: 80px;
+      background: var(--sp-gray-50);
+      border-radius: var(--sp-radius-100);
+      display: inline-flex; align-items: center; justify-content: center;
+      margin-right: 12px; margin-bottom: 12px;
+      font-size: 11px; font-family: var(--font-mono);
+      color: var(--sp-gray-700);
+    }
+
+    /* Footer */
+    .ds-footer {
+      background: var(--sp-gray-50);
+      padding: var(--sp-space-500);
+      margin-top: var(--sp-space-600);
+      color: var(--sp-gray-900);
+      border-top: 1px solid var(--sp-gray-200);
+    }
+    .ds-footer h3 { margin-top: 0; }
+    .ds-footer ul { padding-left: 20px; }
+    .ds-footer li { margin-bottom: 4px; word-break: break-all; font-size: 13px; }
+    .ds-footer a { color: var(--sp-blue-600); text-decoration: none; }
+    .license-note { font-size: 13px; color: var(--sp-gray-700); margin-top: var(--sp-space-200); max-width: 720px; }
+    .meta-note { font-size: 12px; color: var(--sp-gray-700); font-family: var(--font-mono); margin-top: var(--sp-space-100); }
+
+    @media (max-width: 720px) {
+      .ds-header h1 { font-size: 32px; }
+      main { padding: var(--sp-space-200); }
+      section { padding: var(--sp-space-200); }
+      .type-row { grid-template-columns: 1fr; }
+      .color-grid { grid-template-columns: repeat(6, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <header class="ds-header">
+    <a href="index.html" class="back-link">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Catalog
+    </a>
+    <h1>Spectrum 2</h1>
+    <div class="meta">
+      <span class="badge kind-ds">design-system</span>
+      <span class="badge fidelity-approximated">approximated</span>
+      <span class="badge source-verified">source: verified</span>
+      <a href="https://spectrum.adobe.com" target="_blank" rel="noopener">Official ↗</a>
+    </div>
+    <p class="tagline">Adobe's design system unifying Creative Cloud and Document Cloud experiences with rich tokens and adaptive themes.</p>
+  </header>
+
+  <nav class="toc" aria-label="Table of contents">
+    <ul>
+      <li><a href="#brand">Brand</a></li>
+      <li><a href="#color">Color</a></li>
+      <li><a href="#typography">Typography</a></li>
+      <li><a href="#iconography">Iconography</a></li>
+      <li><a href="#buttons">Buttons</a></li>
+      <li><a href="#form">Form</a></li>
+      <li><a href="#surfaces">Surfaces</a></li>
+      <li><a href="#feedback">Feedback</a></li>
+      <li><a href="#navigation">Navigation</a></li>
+      <li><a href="#data">Data</a></li>
+      <li><a href="#layout">Layout</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="brand" data-fidelity="documented">
+      <h2><span>Brand</span><span class="badge fidelity-documented">documented</span></h2>
+      <div class="brand-mark">
+        <svg viewBox="0 0 36 36" fill="none">
+          <path d="M6 30 L18 6 L30 30 Z" fill="white" opacity="0.95"/>
+          <circle cx="18" cy="22" r="3" fill="#2680EB"/>
+        </svg>
+        Spectrum 2
+      </div>
+      <p style="margin-top: 24px; max-width: 720px; color: var(--sp-gray-800);">
+        Spectrum 2 is Adobe's evolution of its open design system, unifying Creative Cloud, Document Cloud, and Experience Cloud surfaces. The system emphasizes content-forward layouts, refined density, and an adaptive token model that scales across desktop, web, and mobile.
+      </p>
+      <div class="pillars">
+        <div class="pillar">
+          <h4>Adaptive</h4>
+          <p style="font-size:13px;color:var(--sp-gray-700);margin:0">Density and scale tokens flex from desktop to mobile while preserving visual rhythm.</p>
+        </div>
+        <div class="pillar">
+          <h4>Expressive</h4>
+          <p style="font-size:13px;color:var(--sp-gray-700);margin:0">A rich, signature palette led by Spectrum Blue, complemented by saturated accents.</p>
+        </div>
+        <div class="pillar">
+          <h4>Consistent</h4>
+          <p style="font-size:13px;color:var(--sp-gray-700);margin:0">Token-driven foundations harmonize Adobe's product family while permitting brand voice.</p>
+        </div>
+        <div class="pillar">
+          <h4>Inclusive</h4>
+          <p style="font-size:13px;color:var(--sp-gray-700);margin:0">WCAG-aligned contrast and tested motion patterns center accessibility from day one.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="color" data-fidelity="documented">
+      <h2>
+        <span>Color</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://spectrum.adobe.com/page/color-system/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--sp-gray-700)">Spectrum 2 ramps span 100–1100 across hue families. Blue is the system accent. Gray neutralizes interface chrome; semantics tint with positive/notice/negative/informative roles.</p>
+
+      <h3>Spectrum Blue (Accent)</h3>
+      <div class="color-grid">
+        <div class="color-cell" style="background:var(--sp-blue-100);color:#0D4FA0">100</div>
+        <div class="color-cell" style="background:var(--sp-blue-200);color:#0D4FA0">200</div>
+        <div class="color-cell" style="background:var(--sp-blue-300);color:#0D4FA0">300</div>
+        <div class="color-cell" style="background:var(--sp-blue-400);color:#0D4FA0">400</div>
+        <div class="color-cell" style="background:var(--sp-blue-500);color:white">500</div>
+        <div class="color-cell" style="background:var(--sp-blue-600);color:white">600</div>
+        <div class="color-cell" style="background:var(--sp-blue-700);color:white">700</div>
+        <div class="color-cell" style="background:var(--sp-blue-800);color:white">800</div>
+        <div class="color-cell" style="background:var(--sp-blue-900);color:white">900</div>
+        <div class="color-cell" style="background:var(--sp-blue-1000);color:white">1000</div>
+        <div class="color-cell" style="background:var(--sp-blue-1100);color:white">1100</div>
+      </div>
+
+      <h3>Gray ramp (Light)</h3>
+      <div class="color-grid">
+        <div class="color-cell" style="background:#FFFFFF;color:#2C2C2C;outline:1px solid var(--sp-gray-200);outline-offset:-1px">50</div>
+        <div class="color-cell" style="background:var(--sp-gray-75);color:#2C2C2C">75</div>
+        <div class="color-cell" style="background:var(--sp-gray-100);color:#2C2C2C">100</div>
+        <div class="color-cell" style="background:var(--sp-gray-200);color:#2C2C2C">200</div>
+        <div class="color-cell" style="background:var(--sp-gray-300);color:#2C2C2C">300</div>
+        <div class="color-cell" style="background:var(--sp-gray-400);color:#2C2C2C">400</div>
+        <div class="color-cell" style="background:var(--sp-gray-500);color:white">500</div>
+        <div class="color-cell" style="background:var(--sp-gray-700);color:white">700</div>
+        <div class="color-cell" style="background:var(--sp-gray-800);color:white">800</div>
+        <div class="color-cell" style="background:var(--sp-gray-900);color:white">900</div>
+        <div class="color-cell" style="background:var(--sp-gray-1000);color:white">1000</div>
+      </div>
+
+      <h3>Semantic roles</h3>
+      <div class="semantic-grid">
+        <div class="sem-card" style="background:var(--sp-positive-bg);color:#15533D"><span class="label">Positive</span><span class="hex">#268E6C</span></div>
+        <div class="sem-card" style="background:var(--sp-notice-bg);color:#6E3A00"><span class="label">Notice</span><span class="hex">#DA7B11</span></div>
+        <div class="sem-card" style="background:var(--sp-negative-bg);color:#8A1F25"><span class="label">Negative</span><span class="hex">#D7373F</span></div>
+        <div class="sem-card" style="background:var(--sp-informative-bg);color:var(--sp-blue-700)"><span class="label">Informative</span><span class="hex">#1473E6</span></div>
+      </div>
+
+      <h3>Static accent hues</h3>
+      <div class="role-grid">
+        <div class="role-chip" style="background:var(--sp-purple-600);color:white">Purple <code>#7575F1</code></div>
+        <div class="role-chip" style="background:var(--sp-fuchsia-600);color:white">Fuchsia <code>#C038CC</code></div>
+        <div class="role-chip" style="background:var(--sp-magenta-600);color:white">Magenta <code>#D83790</code></div>
+        <div class="role-chip" style="background:var(--sp-orange-600);color:white">Orange <code>#DA7B11</code></div>
+        <div class="role-chip" style="background:var(--sp-yellow-600);color:#3D3000">Yellow <code>#E8C600</code></div>
+        <div class="role-chip" style="background:var(--sp-celery-600);color:white">Celery <code>#44B556</code></div>
+        <div class="role-chip" style="background:var(--sp-seafoam-600);color:white">Seafoam <code>#1B959A</code></div>
+        <div class="role-chip" style="background:var(--sp-chartreuse-600);color:#1F3A00">Chartreuse <code>#85D044</code></div>
+      </div>
+    </section>
+
+    <section id="typography" data-fidelity="documented">
+      <h2>
+        <span>Typography</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://spectrum.adobe.com/page/typography/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--sp-gray-700)">Adobe Clean is Spectrum's primary typeface (proprietary). This reproduction uses Inter as a fallback with comparable metrics. Spectrum 2 type ramps include Display through Detail.</p>
+
+      <div class="type-row"><div class="label">Display · 60/66 · 800</div><div class="t-display">Make it real</div></div>
+      <div class="type-row"><div class="label">Heading XXXL · 44/50 · 700</div><div class="t-heading-xxxl">Designed at Adobe</div></div>
+      <div class="type-row"><div class="label">Heading XXL · 36/42 · 700</div><div class="t-heading-xxl">Tools for creators</div></div>
+      <div class="type-row"><div class="label">Heading XL · 28/33 · 700</div><div class="t-heading-xl">Across Creative Cloud</div></div>
+      <div class="type-row"><div class="label">Heading L · 22/28 · 700</div><div class="t-heading-l">Subheading hierarchy</div></div>
+      <div class="type-row"><div class="label">Heading M · 18/24 · 700</div><div class="t-heading-m">Section headline</div></div>
+      <div class="type-row"><div class="label">Heading S · 16/22 · 700</div><div class="t-heading-s">Module title</div></div>
+      <div class="type-row"><div class="label">Body L · 17/26 · 400</div><div class="t-body-l">Body L sets a generous reading rhythm for marketing surfaces and onboarding flows.</div></div>
+      <div class="type-row"><div class="label">Body · 14/20 · 400</div><div class="t-body">Body is the default density for application UI, offering balanced legibility without crowding.</div></div>
+      <div class="type-row"><div class="label">Body S · 12/18 · 400</div><div class="t-body-s">Body S is reserved for dense data UIs and supplementary metadata.</div></div>
+      <div class="type-row"><div class="label">Detail · 11/16 · 700 · uppercase</div><div class="t-detail">Detail label</div></div>
+      <div class="type-row"><div class="label">Mono</div><div class="t-mono">// Source Code Pro · const accent = "#1473E6";</div></div>
+    </section>
+
+    <section id="iconography" data-fidelity="approximated">
+      <h2>
+        <span>Iconography</span>
+        <span class="badge fidelity-approximated">approximated</span>
+        <a href="https://spectrum.adobe.com/page/icons/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--sp-gray-700)">Spectrum Workflow Icons ship at 18/24 sizes with a 2px stroke. Reference uses generic line icons with comparable metrics.</p>
+      <div class="icon-grid">
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg><span>home</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span>search</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/></svg><span>document</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>image</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg><span>edit</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09a1.65 1.65 0 00-1-1.51 1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 110-4h.09a1.65 1.65 0 001.51-1 1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06a1.65 1.65 0 001.82.33h.01a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82v.01a1.65 1.65 0 001.51 1H21a2 2 0 110 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg><span>settings</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span>clock</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>checkmark</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg><span>close</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>info</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span>star</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span>download</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><span>chat</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="6" x2="12" y2="12"/><line x1="12" y1="14" x2="12" y2="18"/></svg><span>more</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg><span>menu</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="8 12 12 8 16 12"/><line x1="12" y1="8" x2="12" y2="16"/></svg><span>upload</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"/><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/></svg><span>user</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg><span>bookmark</span></div>
+      </div>
+    </section>
+
+    <section id="buttons" data-fidelity="documented">
+      <h2>
+        <span>Buttons</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://spectrum.adobe.com/page/button/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--sp-gray-700)">Spectrum 2 buttons: Accent (primary action), Primary (neutral high-emphasis), Secondary, Negative (destructive), Outline, Quiet. Pill-shaped corners. Sizes S (24h), M (32h, default), L (40h).</p>
+
+      <h3>Variants</h3>
+      <div class="button-row">
+        <button class="sp-btn sp-btn--accent">Accent</button>
+        <button class="sp-btn sp-btn--primary">Primary</button>
+        <button class="sp-btn sp-btn--secondary">Secondary</button>
+        <button class="sp-btn sp-btn--negative">Negative</button>
+        <button class="sp-btn sp-btn--outline-accent">Outline Accent</button>
+        <button class="sp-btn sp-btn--quiet">Quiet</button>
+      </div>
+
+      <h3>Sizes</h3>
+      <div class="button-row">
+        <button class="sp-btn sp-btn--accent sp-btn--sm">Small</button>
+        <button class="sp-btn sp-btn--accent">Medium</button>
+        <button class="sp-btn sp-btn--accent sp-btn--lg">Large</button>
+      </div>
+
+      <h3>States</h3>
+      <div class="button-row">
+        <button class="sp-btn sp-btn--accent">Default</button>
+        <button class="sp-btn sp-btn--accent" style="background:var(--sp-blue-700);border-color:var(--sp-blue-700)">Hover</button>
+        <button class="sp-btn sp-btn--accent" style="background:var(--sp-blue-800);border-color:var(--sp-blue-800)">Pressed</button>
+        <button class="sp-btn sp-btn--accent" disabled>Disabled</button>
+        <button class="sp-btn sp-btn--accent"><span class="sp-spinner" style="width:14px;height:14px;border-width:2px;border-color:rgba(255,255,255,0.35);border-top-color:white"></span> Loading</button>
+      </div>
+    </section>
+
+    <section id="form" data-fidelity="documented">
+      <h2>
+        <span>Form</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://spectrum.adobe.com/page/text-field/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--sp-gray-700)">Inputs use top-aligned labels with 1px gray-500 border at rest, 2px blue-600 on focus. Error states color the border and helper text negative.</p>
+
+      <div class="form-grid">
+        <div class="sp-field">
+          <label>Project name <span class="req">*</span></label>
+          <input class="sp-input" type="text" placeholder="Untitled project">
+          <span class="sp-helper">Visible to collaborators in your workspace.</span>
+        </div>
+        <div class="sp-field">
+          <label>Email</label>
+          <input class="sp-input error" type="email" value="not.an.email">
+          <span class="sp-helper error">Enter a valid email address.</span>
+        </div>
+        <div class="sp-field">
+          <label>Plan</label>
+          <select class="sp-input">
+            <option>Creative Cloud All Apps</option>
+            <option>Photography Plan</option>
+            <option>Single App</option>
+          </select>
+        </div>
+        <div class="sp-field">
+          <label>Description</label>
+          <textarea class="sp-input" placeholder="Describe your project..."></textarea>
+        </div>
+        <div class="sp-field sp-search">
+          <label>Search assets</label>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="top:auto;bottom:9px"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input class="sp-input" type="search" placeholder="Search by name or tag">
+        </div>
+        <div class="sp-field">
+          <label>Upload</label>
+          <input class="sp-input" type="file">
+        </div>
+      </div>
+
+      <h3>Selection</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:var(--sp-space-300);align-items:center">
+        <label class="sp-checkbox"><input type="checkbox" checked> Send me product updates</label>
+        <label class="sp-checkbox"><input type="checkbox"> Subscribe to weekly digest</label>
+        <label class="sp-radio"><input type="radio" name="r" checked> Light theme</label>
+        <label class="sp-radio"><input type="radio" name="r"> Dark theme</label>
+        <label class="sp-switch"><input type="checkbox" checked><span class="slider"></span></label>
+        <label class="sp-switch"><input type="checkbox"><span class="slider"></span></label>
+      </div>
+
+      <h3>Slider</h3>
+      <input class="sp-slider" type="range" min="0" max="100" value="55">
+    </section>
+
+    <section id="surfaces" data-fidelity="documented">
+      <h2>
+        <span>Surfaces</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://spectrum.adobe.com/page/card/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--sp-gray-700)">Cards present discrete content with optional media, body, and footer. Tray, Modal, and Tooltip surfaces follow Spectrum elevation tokens.</p>
+
+      <h3>Cards & Stat Tiles</h3>
+      <div class="surface-grid">
+        <div class="sp-card">
+          <div class="media"></div>
+          <h4>Cinematic gradient</h4>
+          <p>Generated from your photo's dominant hues using AI tools.</p>
+        </div>
+        <div class="sp-card">
+          <div class="media" style="background:linear-gradient(135deg,var(--sp-fuchsia-600),var(--sp-orange-600))"></div>
+          <h4>Asset library</h4>
+          <p>Reusable styles and components synced to your Creative Cloud.</p>
+        </div>
+        <div class="sp-stat"><div class="num">12,481</div><div class="lbl">Renders this month</div></div>
+        <div class="sp-stat" style="background:var(--sp-positive-bg)"><div class="num" style="color:#15533D">99.4%</div><div class="lbl">Sync success rate</div></div>
+      </div>
+
+      <h3>Modal (Dialog)</h3>
+      <div class="sp-modal">
+        <h4>Delete project?</h4>
+        <p style="color:var(--sp-gray-700)">"Brand Refresh" and its 24 assets will be permanently removed. Collaborators will lose access immediately.</p>
+        <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:24px">
+          <button class="sp-btn sp-btn--secondary">Cancel</button>
+          <button class="sp-btn sp-btn--negative">Delete project</button>
+        </div>
+      </div>
+
+      <h3>Popover</h3>
+      <div style="background:var(--sp-gray-50);border:1px solid var(--sp-gray-200);border-radius:var(--sp-radius-100);padding:var(--sp-space-200);box-shadow:var(--sp-shadow-300);width:280px">
+        <strong style="display:block;font-size:14px;margin-bottom:6px">Spectrum tip</strong>
+        <span style="font-size:13px;color:var(--sp-gray-700)">Popovers carry contextual actions or rich helper content beside a triggering element.</span>
+      </div>
+
+      <h3>Drawer (Tray)</h3>
+      <div style="background:var(--sp-gray-50);border:1px solid var(--sp-gray-200);border-radius:var(--sp-radius-200) var(--sp-radius-200) 0 0;padding:var(--sp-space-300);max-width:420px;box-shadow:var(--sp-shadow-300)">
+        <div style="width:36px;height:5px;background:var(--sp-gray-400);border-radius:3px;margin:0 auto 14px"></div>
+        <h4 style="margin:0 0 6px">Asset details</h4>
+        <p style="margin:0;font-size:13px;color:var(--sp-gray-700)">Slide up to inspect metadata, edit history, and version timeline.</p>
+      </div>
+    </section>
+
+    <section id="feedback" data-fidelity="documented">
+      <h2>
+        <span>Feedback</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://spectrum.adobe.com/page/alert-banner/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--sp-gray-700)">Alert Banners convey persistent system messages. Toasts appear briefly. Both follow semantic intent (informative / positive / notice / negative).</p>
+
+      <h3>Alerts</h3>
+      <div class="sp-alert sp-alert--info"><strong>Heads up.</strong>&nbsp;Spectrum 2 ships across Creative Cloud later this quarter.</div>
+      <div class="sp-alert sp-alert--positive"><strong>Saved.</strong>&nbsp;Your render preset is published to your team library.</div>
+      <div class="sp-alert sp-alert--notice"><strong>Quota almost full.</strong>&nbsp;Free up cloud storage to keep syncing assets.</div>
+      <div class="sp-alert sp-alert--negative"><strong>Render failed.</strong>&nbsp;The export couldn't complete. Retry from the queue.</div>
+
+      <h3>Toast</h3>
+      <div class="sp-toast">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Asset added to library.
+        <button style="background:transparent;border:0;color:white;cursor:pointer;text-decoration:underline;font-weight:600">Undo</button>
+      </div>
+
+      <h3>Banner</h3>
+      <div class="sp-banner">
+        <span><strong>New: Generative Recolor.</strong> Try AI-driven palette experiments in Illustrator.</span>
+        <button class="sp-btn sp-btn--quiet sp-btn--sm" style="color:var(--sp-blue-700)">Try it</button>
+      </div>
+
+      <h3>Tags / Badges</h3>
+      <div class="badge-row">
+        <span class="sp-tag">Default</span>
+        <span class="sp-tag sp-tag--accent">Accent</span>
+        <span class="sp-tag sp-tag--positive">Positive</span>
+        <span class="sp-tag sp-tag--notice">Notice</span>
+        <span class="sp-tag sp-tag--negative">Negative</span>
+        <span class="sp-tag sp-tag--informative">Informative</span>
+        <span class="sp-num-badge">5</span>
+        <span class="sp-num-badge">99+</span>
+      </div>
+
+      <h3>Progress / Skeleton / Spinner</h3>
+      <div style="display:flex;flex-direction:column;gap:var(--sp-space-150);max-width:480px">
+        <div class="sp-progress"></div>
+        <div class="sp-skeleton" style="width:80%"></div>
+        <div class="sp-skeleton" style="width:60%"></div>
+        <div class="sp-skeleton" style="width:90%"></div>
+        <div class="sp-spinner"></div>
+      </div>
+    </section>
+
+    <section id="navigation" data-fidelity="documented">
+      <h2>
+        <span>Navigation</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://spectrum.adobe.com/page/tabs/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+
+      <h3>Tabs</h3>
+      <div class="sp-tabs">
+        <div class="sp-tab active">Designs</div>
+        <div class="sp-tab">Assets</div>
+        <div class="sp-tab">Comments</div>
+        <div class="sp-tab">Versions</div>
+      </div>
+
+      <h3>Breadcrumb</h3>
+      <div class="sp-breadcrumb">
+        <a href="#">Projects</a>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        <a href="#">Brand 2026</a>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        <span>Hero composition</span>
+      </div>
+
+      <h3>Pagination</h3>
+      <div class="sp-pagination">
+        <button>‹</button>
+        <button class="active">1</button>
+        <button>2</button>
+        <button>3</button>
+        <button>4</button>
+        <button>5</button>
+        <button>›</button>
+      </div>
+
+      <h3>Stepper</h3>
+      <div class="sp-stepper">
+        <div class="num done">✓</div><span>Workspace</span>
+        <div class="line"></div>
+        <div class="num active">2</div><span>Members</span>
+        <div class="line"></div>
+        <div class="num">3</div><span>Apps</span>
+        <div class="line"></div>
+        <div class="num">4</div><span>Done</span>
+      </div>
+
+      <h3>Sidebar (Side Nav)</h3>
+      <div class="sp-sidebar">
+        <a href="#" class="active">Files</a>
+        <a href="#">Recent</a>
+        <a href="#">Shared</a>
+        <a href="#">Trash</a>
+        <a href="#">Libraries</a>
+      </div>
+
+      <h3>Top Bar</h3>
+      <div class="sp-topbar">
+        <strong style="font-size:14px">Spectrum 2 Studio</strong>
+        <span style="margin-left:auto;display:flex;gap:8px"><button class="sp-btn sp-btn--quiet sp-btn--sm">Help</button><button class="sp-btn sp-btn--accent sp-btn--sm">Share</button></span>
+      </div>
+
+      <h3>Menu (Action)</h3>
+      <div class="sp-menu">
+        <div class="item">Open <span style="font-family:var(--font-mono);color:var(--sp-gray-700)">⌘O</span></div>
+        <div class="item">Duplicate <span style="font-family:var(--font-mono);color:var(--sp-gray-700)">⌘D</span></div>
+        <div class="item">Rename</div>
+        <div class="divider"></div>
+        <div class="item">Move to…</div>
+        <div class="item" style="color:var(--sp-negative)">Delete</div>
+      </div>
+    </section>
+
+    <section id="data" data-fidelity="documented">
+      <h2>
+        <span>Data</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://spectrum.adobe.com/page/table/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+
+      <h3>Table</h3>
+      <table class="sp-table">
+        <thead><tr><th>Asset</th><th>Type</th><th>Size</th><th>Owner</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>Hero-final.psd</td><td>Image</td><td>184 MB</td><td>Sara K.</td><td><span class="sp-tag sp-tag--positive">Approved</span></td></tr>
+          <tr><td>Logomarks.ai</td><td>Vector</td><td>2.1 MB</td><td>Tomás L.</td><td><span class="sp-tag sp-tag--informative">In Review</span></td></tr>
+          <tr><td>Brand-systems.fig</td><td>Figma</td><td>—</td><td>Aki M.</td><td><span class="sp-tag sp-tag--notice">Draft</span></td></tr>
+          <tr><td>Trailer.prproj</td><td>Premiere</td><td>1.6 GB</td><td>Eitan O.</td><td><span class="sp-tag">Idle</span></td></tr>
+        </tbody>
+      </table>
+
+      <h3>List</h3>
+      <ul class="sp-list">
+        <li><span class="sp-avatar">SK</span><div><strong>Sara Khan</strong><div style="font-size:12px;color:var(--sp-gray-700)">Color systems</div></div><span style="margin-left:auto;color:var(--sp-gray-700);font-size:12px">2 min</span></li>
+        <li><span class="sp-avatar" style="background:linear-gradient(135deg,var(--sp-purple-600),var(--sp-magenta-600))">TL</span><div><strong>Tomás Leite</strong><div style="font-size:12px;color:var(--sp-gray-700)">Component team</div></div><span style="margin-left:auto;color:var(--sp-gray-700);font-size:12px">1 hr</span></li>
+        <li><span class="sp-avatar" style="background:linear-gradient(135deg,var(--sp-orange-600),var(--sp-yellow-600))">AM</span><div><strong>Aki Morimoto</strong><div style="font-size:12px;color:var(--sp-gray-700)">Motion guild</div></div><span style="margin-left:auto;color:var(--sp-gray-700);font-size:12px">Yesterday</span></li>
+      </ul>
+
+      <h3>Key-Value</h3>
+      <dl class="sp-kv">
+        <dt>Workspace</dt><dd>Adobe Studio</dd>
+        <dt>Plan</dt><dd>Creative Cloud All Apps</dd>
+        <dt>Renders</dt><dd>12,481 / 25,000</dd>
+        <dt>Storage</dt><dd>146 GB / 2 TB</dd>
+      </dl>
+
+      <h3>Empty state</h3>
+      <div class="sp-empty">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+        <p style="margin-top:10px"><strong>This folder is empty</strong></p>
+        <p style="font-size:13px">Drop files here or import from Creative Cloud Libraries.</p>
+      </div>
+    </section>
+
+    <section id="layout" data-fidelity="documented">
+      <h2>
+        <span>Layout</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://spectrum.adobe.com/page/responsive-grid/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--sp-gray-700)">Spectrum 2 uses a responsive grid (4/8/12 columns) with token-driven gutters and a 4px base unit.</p>
+
+      <h3>12-column grid</h3>
+      <div class="grid-demo">
+        <div style="grid-column:span 12">12</div>
+        <div style="grid-column:span 6">6</div><div style="grid-column:span 6">6</div>
+        <div style="grid-column:span 4">4</div><div style="grid-column:span 4">4</div><div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 3">3</div><div style="grid-column:span 3">3</div><div style="grid-column:span 3">3</div><div style="grid-column:span 3">3</div>
+      </div>
+
+      <h3>Spacing scale (4px base)</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div class="swatch" style="width:2px;height:32px"></div><span class="lbl">50 · 2</span></div>
+        <div class="scale-item"><div class="swatch" style="width:4px;height:32px"></div><span class="lbl">75 · 4</span></div>
+        <div class="scale-item"><div class="swatch" style="width:8px;height:32px"></div><span class="lbl">100 · 8</span></div>
+        <div class="scale-item"><div class="swatch" style="width:12px;height:32px"></div><span class="lbl">150 · 12</span></div>
+        <div class="scale-item"><div class="swatch" style="width:16px;height:32px"></div><span class="lbl">200 · 16</span></div>
+        <div class="scale-item"><div class="swatch" style="width:20px;height:32px"></div><span class="lbl">300 · 20</span></div>
+        <div class="scale-item"><div class="swatch" style="width:24px;height:32px"></div><span class="lbl">400 · 24</span></div>
+        <div class="scale-item"><div class="swatch" style="width:32px;height:32px"></div><span class="lbl">500 · 32</span></div>
+        <div class="scale-item"><div class="swatch" style="width:40px;height:32px"></div><span class="lbl">600 · 40</span></div>
+        <div class="scale-item"><div class="swatch" style="width:48px;height:32px"></div><span class="lbl">700 · 48</span></div>
+      </div>
+
+      <h3>Radius scale</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div class="swatch" style="width:48px;height:48px;border-radius:0"></div><span class="lbl">0 · 0</span></div>
+        <div class="scale-item"><div class="swatch" style="width:48px;height:48px;border-radius:2px"></div><span class="lbl">50 · 2</span></div>
+        <div class="scale-item"><div class="swatch" style="width:48px;height:48px;border-radius:4px"></div><span class="lbl">75 · 4</span></div>
+        <div class="scale-item"><div class="swatch" style="width:48px;height:48px;border-radius:6px"></div><span class="lbl">100 · 6</span></div>
+        <div class="scale-item"><div class="swatch" style="width:48px;height:48px;border-radius:8px"></div><span class="lbl">200 · 8</span></div>
+        <div class="scale-item"><div class="swatch" style="width:48px;height:48px;border-radius:12px"></div><span class="lbl">300 · 12</span></div>
+        <div class="scale-item"><div class="swatch" style="width:48px;height:48px;border-radius:16px"></div><span class="lbl">400 · 16</span></div>
+        <div class="scale-item"><div class="swatch" style="width:48px;height:48px;border-radius:999px"></div><span class="lbl">pill</span></div>
+      </div>
+
+      <h3>Shadow tokens</h3>
+      <div>
+        <div class="shadow-demo" style="box-shadow:var(--sp-shadow-100)">100</div>
+        <div class="shadow-demo" style="box-shadow:var(--sp-shadow-200)">200</div>
+        <div class="shadow-demo" style="box-shadow:var(--sp-shadow-300)">300</div>
+        <div class="shadow-demo" style="box-shadow:var(--sp-shadow-400)">400</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="ds-footer">
+    <h3>Sources</h3>
+    <ul>
+      <li><a href="https://spectrum.adobe.com" target="_blank" rel="noopener">https://spectrum.adobe.com</a></li>
+      <li><a href="https://spectrum.adobe.com/page/color-system/" target="_blank" rel="noopener">https://spectrum.adobe.com/page/color-system/</a></li>
+      <li><a href="https://spectrum.adobe.com/page/typography/" target="_blank" rel="noopener">https://spectrum.adobe.com/page/typography/</a></li>
+      <li><a href="https://spectrum.adobe.com/page/icons/" target="_blank" rel="noopener">https://spectrum.adobe.com/page/icons/</a></li>
+      <li><a href="https://spectrum.adobe.com/page/button/" target="_blank" rel="noopener">https://spectrum.adobe.com/page/button/</a></li>
+      <li><a href="https://spectrum.adobe.com/page/text-field/" target="_blank" rel="noopener">https://spectrum.adobe.com/page/text-field/</a></li>
+      <li><a href="https://spectrum.adobe.com/page/card/" target="_blank" rel="noopener">https://spectrum.adobe.com/page/card/</a></li>
+      <li><a href="https://spectrum.adobe.com/page/alert-banner/" target="_blank" rel="noopener">https://spectrum.adobe.com/page/alert-banner/</a></li>
+      <li><a href="https://spectrum.adobe.com/page/tabs/" target="_blank" rel="noopener">https://spectrum.adobe.com/page/tabs/</a></li>
+      <li><a href="https://spectrum.adobe.com/page/table/" target="_blank" rel="noopener">https://spectrum.adobe.com/page/table/</a></li>
+      <li><a href="https://spectrum.adobe.com/page/responsive-grid/" target="_blank" rel="noopener">https://spectrum.adobe.com/page/responsive-grid/</a></li>
+    </ul>
+    <p class="license-note">This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Adobe. Spectrum 2 and related trademarks belong to Adobe. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</p>
+    <p class="meta-note">Reproduction date: 2026-05-05 ・ sourceStatus: verified ・ fidelity: approximated</p>
+  </footer>
+</body>
+</html>

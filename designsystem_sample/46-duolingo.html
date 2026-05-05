@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Duolingo Design — Design System Reference</title>
+  <script id="ds-meta" type="application/json">
+{"id":"46-duolingo","fileSlug":"46-duolingo","schemaVersion":"1"}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Duolingo Brand */
+      --dlg-green: #58CC02;          /* Owl Green - signature primary */
+      --dlg-green-dark: #46A302;     /* hover/pressed (3D button bottom) */
+      --dlg-green-darker: #388700;   /* deep shadow accent */
+      --dlg-green-tint: #D7FFB8;
+      --dlg-green-bg: #E5F8D3;
+
+      --dlg-cardinal: #FF4B4B;       /* error / streak accent */
+      --dlg-cardinal-dark: #E03B3B;
+      --dlg-cardinal-tint: #FFDFE0;
+
+      --dlg-macaw: #1CB0F6;          /* link / secondary action */
+      --dlg-macaw-dark: #0A91D6;
+      --dlg-macaw-tint: #DDF4FD;
+
+      --dlg-bee: #FFC800;            /* gold / XP / star */
+      --dlg-bee-dark: #E0AE00;
+      --dlg-bee-tint: #FFF1B8;
+
+      --dlg-fox: #FF9600;            /* streak fire */
+      --dlg-beetle: #CE82FF;         /* premium purple */
+
+      /* Neutrals (animal-named) */
+      --dlg-eel: #4B4B4B;            /* primary text */
+      --dlg-wolf: #777777;           /* secondary text */
+      --dlg-hare: #AFAFAF;           /* placeholder/disabled */
+      --dlg-swan: #E5E5E5;           /* divider/border */
+      --dlg-polar: #F7F7F7;          /* light surface */
+      --dlg-snow: #FFFFFF;           /* white */
+      --dlg-feather: #DDDDDD;        /* extra-light border */
+      --dlg-stone: #C4C4C4;          /* mid neutral */
+
+      /* Type */
+      --dlg-font: 'Nunito', 'Feather Bold', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      --dlg-mono: ui-monospace, 'SF Mono', Menlo, monospace;
+
+      /* Shape (chunky friendly) */
+      --dlg-radius-sm: 12px;
+      --dlg-radius: 16px;
+      --dlg-radius-lg: 20px;
+      --dlg-radius-xl: 24px;
+      --dlg-radius-pill: 999px;
+
+      /* Spacing */
+      --dlg-s-1: 4px;
+      --dlg-s-2: 8px;
+      --dlg-s-3: 12px;
+      --dlg-s-4: 16px;
+      --dlg-s-5: 20px;
+      --dlg-s-6: 24px;
+      --dlg-s-7: 32px;
+      --dlg-s-8: 48px;
+      --dlg-s-9: 64px;
+
+      /* 3D button shadow (Duolingo signature) */
+      --dlg-btn-shadow-green: inset 0 -4px 0 var(--dlg-green-dark);
+      --dlg-btn-shadow-blue: inset 0 -4px 0 var(--dlg-macaw-dark);
+      --dlg-btn-shadow-red: inset 0 -4px 0 var(--dlg-cardinal-dark);
+      --dlg-btn-shadow-yellow: inset 0 -4px 0 var(--dlg-bee-dark);
+      --dlg-btn-shadow-white: inset 0 -4px 0 var(--dlg-swan);
+
+      /* Card chunky shadow */
+      --dlg-card-shadow: 0 2px 0 var(--dlg-swan);
+      --dlg-card-shadow-strong: 0 4px 0 var(--dlg-swan);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--dlg-font);
+      font-weight: 700;
+      background: var(--dlg-polar);
+      color: var(--dlg-eel);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    code, kbd, pre { font-family: var(--dlg-mono); font-weight: 500; }
+
+    /* Header */
+    .ds-header {
+      background: linear-gradient(180deg, var(--dlg-green-bg) 0%, var(--dlg-snow) 100%);
+      padding: var(--dlg-s-8) var(--dlg-s-7) var(--dlg-s-7);
+      border-bottom: 2px solid var(--dlg-swan);
+      position: relative;
+      overflow: hidden;
+    }
+    .ds-header::after {
+      content: "";
+      position: absolute;
+      right: -40px; top: -40px;
+      width: 240px; height: 240px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(88,204,2,0.08), transparent 70%);
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--dlg-s-2);
+      color: var(--dlg-macaw);
+      text-decoration: none;
+      padding: 8px 14px;
+      border-radius: var(--dlg-radius-pill);
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      background: var(--dlg-macaw-tint);
+      transition: transform 0.1s, background 0.2s;
+    }
+    .back-link:hover { background: #C7EBFB; transform: translateY(-1px); }
+
+    .ds-header h1 {
+      font-size: 56px;
+      line-height: 1.1;
+      font-weight: 900;
+      letter-spacing: -1.2px;
+      margin: var(--dlg-s-5) 0 var(--dlg-s-3);
+      color: var(--dlg-eel);
+    }
+
+    .ds-header .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--dlg-s-2);
+      align-items: center;
+      margin-bottom: var(--dlg-s-3);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 12px;
+      border-radius: var(--dlg-radius-pill);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      border: 2px solid var(--dlg-swan);
+      background: var(--dlg-snow);
+      color: var(--dlg-wolf);
+    }
+    .badge.kind-bg { background: var(--dlg-green); color: white; border-color: transparent; }
+    .badge.fidelity-documented { background: var(--dlg-green-tint); color: #2A6700; border-color: transparent; }
+    .badge.fidelity-approximated { background: var(--dlg-bee-tint); color: #715200; border-color: transparent; }
+    .badge.fidelity-inspired { background: #F2DCFF; color: #5A1E80; border-color: transparent; }
+    .badge.source-homepage { background: var(--dlg-bee-tint); color: #715200; border-color: transparent; }
+
+    .official-link {
+      color: var(--dlg-macaw);
+      text-decoration: none;
+      font-weight: 800;
+      padding: 4px 12px;
+      border: 2px solid var(--dlg-macaw);
+      border-radius: var(--dlg-radius-pill);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+    .official-link:hover { background: var(--dlg-macaw); color: white; }
+
+    .tagline {
+      font-size: 20px;
+      line-height: 1.45;
+      max-width: 720px;
+      margin: var(--dlg-s-5) 0 0;
+      color: var(--dlg-wolf);
+      font-weight: 700;
+    }
+
+    /* TOC */
+    .toc {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(247,247,247,0.95);
+      border-bottom: 2px solid var(--dlg-swan);
+      backdrop-filter: blur(10px);
+    }
+    .toc ul {
+      list-style: none;
+      margin: 0;
+      padding: var(--dlg-s-3) var(--dlg-s-7);
+      display: flex;
+      gap: var(--dlg-s-2);
+      overflow-x: auto;
+      max-width: 100%;
+    }
+    .toc a {
+      display: inline-block;
+      padding: 8px 16px;
+      border-radius: var(--dlg-radius-pill);
+      color: var(--dlg-wolf);
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      border: 2px solid var(--dlg-swan);
+      background: var(--dlg-snow);
+      transition: all 0.15s;
+    }
+    .toc a:hover { background: var(--dlg-green); color: white; border-color: transparent; transform: translateY(-1px); }
+
+    /* Main */
+    main {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: var(--dlg-s-7);
+    }
+
+    section {
+      background: var(--dlg-snow);
+      border-radius: var(--dlg-radius-xl);
+      padding: var(--dlg-s-7);
+      margin-bottom: var(--dlg-s-6);
+      border: 2px solid var(--dlg-swan);
+      box-shadow: var(--dlg-card-shadow);
+    }
+
+    section h2 {
+      display: flex;
+      align-items: center;
+      gap: var(--dlg-s-3);
+      flex-wrap: wrap;
+      font-size: 32px;
+      line-height: 1.2;
+      font-weight: 900;
+      margin: 0 0 var(--dlg-s-5);
+      color: var(--dlg-eel);
+      letter-spacing: -0.5px;
+    }
+    section h2 .ico {
+      width: 36px; height: 36px;
+      background: var(--dlg-green-bg);
+      border-radius: 12px;
+      display: inline-flex; align-items: center; justify-content: center;
+      color: var(--dlg-green);
+    }
+
+    .source-link {
+      font-size: 12px;
+      color: var(--dlg-macaw);
+      text-decoration: none;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      margin-left: auto;
+    }
+    .source-link:hover { text-decoration: underline; }
+
+    h3 {
+      font-size: 20px;
+      line-height: 1.3;
+      font-weight: 800;
+      margin: var(--dlg-s-6) 0 var(--dlg-s-3);
+      color: var(--dlg-eel);
+    }
+    h4 {
+      font-size: 13px;
+      line-height: 1.4;
+      font-weight: 800;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      margin: var(--dlg-s-4) 0 var(--dlg-s-2);
+      color: var(--dlg-wolf);
+    }
+    p { margin: 0 0 var(--dlg-s-3); }
+    .muted { color: var(--dlg-wolf); font-weight: 700; }
+
+    /* Brand */
+    #brand .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--dlg-s-3);
+      padding: var(--dlg-s-4) var(--dlg-s-6);
+      background: var(--dlg-green);
+      border-radius: var(--dlg-radius-xl);
+      color: white;
+      font-size: 28px;
+      font-weight: 900;
+      box-shadow: inset 0 -5px 0 var(--dlg-green-dark);
+      letter-spacing: -0.5px;
+    }
+    #brand .brand-mark svg { width: 40px; height: 40px; }
+    #brand .pillars {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--dlg-s-4);
+      margin-top: var(--dlg-s-6);
+    }
+    #brand .pillar {
+      padding: var(--dlg-s-5);
+      background: var(--dlg-polar);
+      border-radius: var(--dlg-radius-lg);
+      border: 2px solid var(--dlg-swan);
+    }
+    #brand .pillar .icon-circle {
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      background: var(--dlg-green);
+      display: inline-flex; align-items: center; justify-content: center;
+      color: white;
+      margin-bottom: var(--dlg-s-3);
+    }
+    #brand .pillar h4 { color: var(--dlg-eel); margin-top: 0; font-size: 16px; text-transform: none; letter-spacing: 0;}
+    #brand .pillar p { font-size: 14px; margin: 0; color: var(--dlg-wolf); }
+
+    /* Color */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px,1fr));
+      gap: var(--dlg-s-3);
+      margin-bottom: var(--dlg-s-4);
+    }
+    .palette-card {
+      border-radius: var(--dlg-radius);
+      padding: var(--dlg-s-4);
+      min-height: 110px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      gap: 4px;
+      box-shadow: 0 2px 0 rgba(0,0,0,0.06);
+    }
+    .palette-card .name { font-size: 14px; font-weight: 900; letter-spacing: -0.2px; }
+    .palette-card .hex { font-family: var(--dlg-mono); font-size: 11px; opacity: 0.85; font-weight: 600; }
+    .palette-card .role { font-size: 11px; font-weight: 700; opacity: 0.85; text-transform: uppercase; letter-spacing: 0.6px; }
+
+    .neutrals-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(110px,1fr));
+      gap: var(--dlg-s-2);
+      margin-bottom: var(--dlg-s-4);
+    }
+    .neutral-cell {
+      border-radius: var(--dlg-radius-sm);
+      padding: var(--dlg-s-3);
+      min-height: 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      font-family: var(--dlg-mono);
+      font-size: 10px;
+      font-weight: 600;
+      border: 2px solid var(--dlg-swan);
+    }
+    .neutral-cell .nm { font-family: var(--dlg-font); font-weight: 900; font-size: 13px; }
+
+    .semantic-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px,1fr));
+      gap: var(--dlg-s-3);
+    }
+    .sem-card {
+      padding: var(--dlg-s-4);
+      border-radius: var(--dlg-radius);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .sem-card .label { font-size: 14px; font-weight: 900; }
+    .sem-card .hex { font-family: var(--dlg-mono); font-size: 11px; opacity: 0.85; font-weight: 600; }
+
+    /* Typography */
+    .type-row {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: var(--dlg-s-4);
+      padding: var(--dlg-s-3) 0;
+      border-bottom: 1px solid var(--dlg-swan);
+      align-items: baseline;
+    }
+    .type-row:last-child { border-bottom: 0; }
+    .type-row .label {
+      font-family: var(--dlg-mono);
+      font-size: 11px;
+      color: var(--dlg-wolf);
+      font-weight: 600;
+    }
+    .display-l { font-size: 56px; line-height: 1.05; font-weight: 900; letter-spacing: -1.2px; }
+    .display-m { font-size: 44px; line-height: 1.1; font-weight: 900; letter-spacing: -1px; }
+    .display-s { font-size: 36px; line-height: 1.15; font-weight: 900; letter-spacing: -0.8px; }
+    .heading-l { font-size: 28px; line-height: 1.2; font-weight: 800; letter-spacing: -0.5px; }
+    .heading-m { font-size: 22px; line-height: 1.25; font-weight: 800; letter-spacing: -0.3px; }
+    .heading-s { font-size: 18px; line-height: 1.3; font-weight: 800; }
+    .body-l { font-size: 17px; line-height: 1.5; font-weight: 700; }
+    .body-m { font-size: 15px; line-height: 1.5; font-weight: 700; }
+    .body-s { font-size: 13px; line-height: 1.45; font-weight: 700; }
+    .label-cap { font-size: 12px; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase; }
+    .mono-sample { font-family: var(--dlg-mono); font-size: 13px; font-weight: 600; background: var(--dlg-polar); padding: 8px 12px; border-radius: 6px; display: inline-block; }
+
+    /* Iconography */
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(110px,1fr));
+      gap: var(--dlg-s-3);
+    }
+    .icon-cell {
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: var(--dlg-s-4);
+      background: var(--dlg-polar);
+      border-radius: var(--dlg-radius);
+      border: 2px solid var(--dlg-swan);
+      gap: var(--dlg-s-2);
+      transition: transform 0.15s;
+    }
+    .icon-cell:hover { transform: translateY(-2px); border-color: var(--dlg-green); background: var(--dlg-green-bg); }
+    .icon-cell svg { width: 28px; height: 28px; color: var(--dlg-eel); }
+    .icon-cell span { font-size: 11px; color: var(--dlg-wolf); font-weight: 700; }
+
+    /* Buttons (signature 3D) */
+    .button-row {
+      display: flex;
+      gap: var(--dlg-s-3);
+      flex-wrap: wrap;
+      align-items: flex-end;
+      margin-bottom: var(--dlg-s-3);
+    }
+    .dlg-btn {
+      font-family: var(--dlg-font);
+      font-weight: 800;
+      font-size: 15px;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      padding: 14px 22px;
+      border: none;
+      border-radius: var(--dlg-radius);
+      cursor: pointer;
+      color: white;
+      background: var(--dlg-green);
+      box-shadow: var(--dlg-btn-shadow-green);
+      transition: transform 0.05s, box-shadow 0.05s;
+      min-width: 130px;
+    }
+    .dlg-btn:hover { background: #61D906; }
+    .dlg-btn:active { transform: translateY(2px); box-shadow: inset 0 -2px 0 var(--dlg-green-dark); }
+
+    .dlg-btn--blue { background: var(--dlg-macaw); box-shadow: var(--dlg-btn-shadow-blue); }
+    .dlg-btn--blue:hover { background: #2BBDFF; }
+    .dlg-btn--red { background: var(--dlg-cardinal); box-shadow: var(--dlg-btn-shadow-red); }
+    .dlg-btn--red:hover { background: #FF5E5E; }
+    .dlg-btn--yellow { background: var(--dlg-bee); box-shadow: var(--dlg-btn-shadow-yellow); color: var(--dlg-eel); }
+    .dlg-btn--yellow:hover { background: #FFD11A; }
+    .dlg-btn--ghost {
+      background: var(--dlg-snow); color: var(--dlg-macaw);
+      box-shadow: var(--dlg-btn-shadow-white);
+      border: 2px solid var(--dlg-swan);
+    }
+    .dlg-btn--ghost:hover { background: var(--dlg-polar); }
+
+    .dlg-btn--sm { padding: 10px 16px; font-size: 12px; min-width: 100px; border-radius: 12px; }
+    .dlg-btn--lg { padding: 18px 28px; font-size: 17px; min-width: 160px; }
+
+    .dlg-btn[disabled] {
+      background: var(--dlg-swan); color: var(--dlg-hare);
+      box-shadow: inset 0 -4px 0 var(--dlg-feather);
+      cursor: not-allowed;
+    }
+
+    .dlg-btn--icon {
+      width: 50px; min-width: 50px; height: 50px;
+      padding: 0; border-radius: 50%;
+      display: inline-flex; align-items: center; justify-content: center;
+    }
+
+    /* Form */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
+      gap: var(--dlg-s-4);
+      margin-bottom: var(--dlg-s-4);
+    }
+    .dlg-field { display: flex; flex-direction: column; gap: var(--dlg-s-2); }
+    .dlg-field label {
+      font-size: 12px; font-weight: 800;
+      text-transform: uppercase; letter-spacing: 0.6px;
+      color: var(--dlg-wolf);
+    }
+    .dlg-input,
+    .dlg-textarea,
+    .dlg-select {
+      font-family: var(--dlg-font);
+      font-weight: 700;
+      font-size: 16px;
+      padding: 14px 16px;
+      border: 2px solid var(--dlg-swan);
+      border-radius: var(--dlg-radius);
+      background: var(--dlg-snow);
+      color: var(--dlg-eel);
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .dlg-input:focus,
+    .dlg-textarea:focus,
+    .dlg-select:focus {
+      border-color: var(--dlg-macaw);
+    }
+    .dlg-input.error { border-color: var(--dlg-cardinal); }
+    .dlg-textarea { min-height: 90px; resize: vertical; }
+    .dlg-helper { font-size: 12px; color: var(--dlg-wolf); font-weight: 700; }
+    .dlg-helper.error { color: var(--dlg-cardinal); }
+
+    /* Choice tile (lesson choice) */
+    .choices {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px,1fr));
+      gap: var(--dlg-s-3);
+    }
+    .choice {
+      background: var(--dlg-snow);
+      border: 2px solid var(--dlg-swan);
+      border-bottom-width: 5px;
+      border-radius: var(--dlg-radius);
+      padding: var(--dlg-s-5);
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.05s;
+      font-weight: 800;
+      font-size: 16px;
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+    }
+    .choice:hover { background: var(--dlg-polar); }
+    .choice.selected { background: var(--dlg-macaw-tint); border-color: var(--dlg-macaw); color: var(--dlg-macaw-dark); }
+    .choice .num { width: 26px; height: 26px; border-radius: 6px; border: 2px solid var(--dlg-swan); display: inline-flex; align-items: center; justify-content: center; font-size: 11px; color: var(--dlg-wolf); }
+    .choice.selected .num { border-color: var(--dlg-macaw); color: var(--dlg-macaw-dark); }
+
+    /* Toggle / Checkbox / Radio */
+    .toggle-row { display: flex; gap: var(--dlg-s-5); flex-wrap: wrap; align-items: center; margin-top: var(--dlg-s-3); }
+    .dlg-switch {
+      position: relative; display: inline-flex; align-items: center; gap: var(--dlg-s-2);
+      cursor: pointer; user-select: none;
+    }
+    .dlg-switch input { display: none; }
+    .dlg-switch .track {
+      width: 50px; height: 28px;
+      background: var(--dlg-swan);
+      border-radius: 99px;
+      position: relative;
+      transition: background 0.2s;
+      border-bottom: 4px solid var(--dlg-feather);
+    }
+    .dlg-switch .knob {
+      position: absolute; top: 2px; left: 3px;
+      width: 22px; height: 22px;
+      background: white;
+      border-radius: 50%;
+      transition: left 0.2s;
+      box-shadow: 0 1px 0 rgba(0,0,0,0.1);
+    }
+    .dlg-switch input:checked + .track { background: var(--dlg-green); border-bottom-color: var(--dlg-green-dark); }
+    .dlg-switch input:checked + .track .knob { left: 25px; }
+
+    .dlg-check {
+      display: inline-flex; align-items: center; gap: var(--dlg-s-2);
+      cursor: pointer; user-select: none; font-weight: 700; font-size: 14px;
+    }
+    .dlg-check input { display: none; }
+    .dlg-check .box {
+      width: 22px; height: 22px;
+      border: 2px solid var(--dlg-swan);
+      border-bottom-width: 4px;
+      border-radius: 6px;
+      background: white;
+      display: inline-flex; align-items: center; justify-content: center;
+      color: white;
+    }
+    .dlg-check input:checked + .box { background: var(--dlg-green); border-color: var(--dlg-green-dark); }
+    .dlg-check input:checked + .box::after { content: "✓"; font-weight: 900; }
+
+    /* Surfaces (cards) */
+    .surface-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px,1fr));
+      gap: var(--dlg-s-4);
+    }
+    .dlg-card {
+      background: var(--dlg-snow);
+      border: 2px solid var(--dlg-swan);
+      border-radius: var(--dlg-radius-lg);
+      padding: var(--dlg-s-5);
+      box-shadow: var(--dlg-card-shadow);
+    }
+    .dlg-card h4 {
+      margin-top: 0; font-size: 16px; color: var(--dlg-eel);
+      letter-spacing: 0; text-transform: none; font-weight: 900;
+    }
+    .dlg-card p { font-size: 14px; color: var(--dlg-wolf); margin: 0 0 var(--dlg-s-3); }
+
+    .lesson-card {
+      background: var(--dlg-green-bg);
+      border: 2px solid var(--dlg-green);
+      border-bottom-width: 5px;
+      border-radius: var(--dlg-radius-lg);
+      padding: var(--dlg-s-5);
+    }
+    .lesson-card .crown {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--dlg-bee); color: var(--dlg-eel);
+      padding: 4px 10px; border-radius: 99px;
+      font-size: 11px; font-weight: 900; text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+
+    /* Streak/XP/progress (gamified) */
+    .gamified-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
+      gap: var(--dlg-s-4);
+      margin-bottom: var(--dlg-s-4);
+    }
+    .gam-card {
+      background: var(--dlg-polar);
+      border: 2px solid var(--dlg-swan);
+      border-radius: var(--dlg-radius);
+      padding: var(--dlg-s-4);
+      display: flex; align-items: center; gap: var(--dlg-s-3);
+    }
+    .gam-card .icon-pop {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      display: inline-flex; align-items: center; justify-content: center;
+      color: white;
+      flex-shrink: 0;
+    }
+    .gam-card .num { font-size: 22px; font-weight: 900; line-height: 1; }
+    .gam-card .lab { font-size: 11px; color: var(--dlg-wolf); font-weight: 800; text-transform: uppercase; letter-spacing: 0.6px; }
+
+    .progress-ring {
+      width: 84px; height: 84px;
+      position: relative;
+    }
+    .progress-ring svg { transform: rotate(-90deg); }
+    .progress-ring .ring-bg { stroke: var(--dlg-swan); }
+    .progress-ring .ring-fg { stroke: var(--dlg-green); stroke-linecap: round; }
+    .progress-ring .ring-num {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 18px; color: var(--dlg-eel);
+    }
+
+    .progress-bar {
+      height: 18px; background: var(--dlg-swan);
+      border-radius: 99px; overflow: hidden; position: relative;
+      border-bottom: 3px solid var(--dlg-feather);
+    }
+    .progress-bar .fill {
+      height: 100%; background: var(--dlg-green);
+      border-bottom: 3px solid var(--dlg-green-dark);
+      border-radius: 99px;
+    }
+    .progress-bar.striped .fill {
+      background: linear-gradient(90deg, var(--dlg-green) 0%, #6FE018 100%);
+    }
+
+    /* Flag chips (language) */
+    .flag-row {
+      display: flex; flex-wrap: wrap; gap: var(--dlg-s-2);
+    }
+    .flag-chip {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--dlg-snow); border: 2px solid var(--dlg-swan);
+      padding: 8px 14px; border-radius: 99px;
+      font-weight: 800; font-size: 13px;
+      box-shadow: 0 2px 0 var(--dlg-swan);
+    }
+    .flag-chip .flag {
+      width: 24px; height: 18px; border-radius: 3px;
+      display: inline-block; overflow: hidden;
+    }
+
+    /* Feedback */
+    .alert-grid {
+      display: grid; gap: var(--dlg-s-3);
+    }
+    .dlg-alert {
+      padding: var(--dlg-s-4) var(--dlg-s-5);
+      border-radius: var(--dlg-radius-lg);
+      display: flex; gap: var(--dlg-s-3);
+      align-items: flex-start;
+      border: 2px solid;
+      border-bottom-width: 5px;
+    }
+    .dlg-alert .ic {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: inline-flex; align-items: center; justify-content: center;
+      color: white;
+    }
+    .dlg-alert .body { flex: 1; }
+    .dlg-alert .ttl { font-weight: 900; font-size: 15px; margin-bottom: 2px; }
+    .dlg-alert .msg { font-size: 13px; font-weight: 700; }
+    .dlg-alert.ok { background: var(--dlg-green-bg); border-color: var(--dlg-green); color: #2A6700; }
+    .dlg-alert.ok .ic { background: var(--dlg-green); }
+    .dlg-alert.err { background: var(--dlg-cardinal-tint); border-color: var(--dlg-cardinal); color: #8A1B1B; }
+    .dlg-alert.err .ic { background: var(--dlg-cardinal); }
+    .dlg-alert.warn { background: var(--dlg-bee-tint); border-color: var(--dlg-bee); color: #715200; }
+    .dlg-alert.warn .ic { background: var(--dlg-bee); color: var(--dlg-eel); }
+    .dlg-alert.info { background: var(--dlg-macaw-tint); border-color: var(--dlg-macaw); color: #04557E; }
+    .dlg-alert.info .ic { background: var(--dlg-macaw); }
+
+    /* Heart system / streak */
+    .hearts {
+      display: inline-flex; gap: 4px;
+      background: var(--dlg-snow);
+      border: 2px solid var(--dlg-swan);
+      padding: 6px 10px;
+      border-radius: 99px;
+      font-weight: 900;
+      align-items: center;
+    }
+    .hearts svg { color: var(--dlg-cardinal); }
+
+    /* Toast */
+    .toast {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--dlg-eel);
+      color: white;
+      padding: 14px 18px;
+      border-radius: var(--dlg-radius);
+      font-size: 14px; font-weight: 800;
+      box-shadow: 0 4px 0 #2D2D2D;
+    }
+
+    /* Spacing visualization */
+    .space-row { display: flex; align-items: center; gap: 16px; padding: 8px 0; }
+    .space-bar { background: var(--dlg-green); height: 14px; border-radius: 4px; }
+    .space-row .lbl { width: 80px; font-family: var(--dlg-mono); font-size: 12px; color: var(--dlg-wolf); font-weight: 600; }
+    .space-row .px { width: 60px; font-family: var(--dlg-mono); font-size: 11px; color: var(--dlg-hare); font-weight: 600; }
+
+    /* Shape */
+    .shape-row { display: flex; gap: 16px; flex-wrap: wrap; }
+    .shape-block {
+      width: 80px; height: 80px;
+      background: var(--dlg-green-bg);
+      border: 2px solid var(--dlg-green);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-family: var(--dlg-mono); color: var(--dlg-green-darker); font-weight: 700;
+    }
+
+    /* Footer */
+    .ds-footer {
+      background: var(--dlg-eel);
+      color: var(--dlg-snow);
+      padding: var(--dlg-s-7);
+      margin-top: var(--dlg-s-8);
+    }
+    .ds-footer h3 { margin-top: 0; color: var(--dlg-bee); font-weight: 900; }
+    .ds-footer ul { padding-left: 20px; }
+    .ds-footer li { margin-bottom: 4px; word-break: break-all; font-size: 13px; font-weight: 600; color: #C4C4C4; }
+    .ds-footer a { color: var(--dlg-bee); text-decoration: none; }
+    .license-note { font-size: 12px; color: #AFAFAF; margin-top: var(--dlg-s-5); font-weight: 600; line-height: 1.5; }
+    .meta-note { font-size: 11px; color: #777; font-family: var(--dlg-mono); margin-top: var(--dlg-s-2); font-weight: 600; }
+
+    @media (max-width: 720px) {
+      .ds-header h1 { font-size: 36px; }
+      main { padding: var(--dlg-s-4); }
+      section { padding: var(--dlg-s-5); }
+      .type-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="ds-header">
+    <a href="index.html" class="back-link">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Catalog
+    </a>
+    <h1>Duolingo Design</h1>
+    <div class="meta">
+      <span class="badge kind-bg">brand-guidelines</span>
+      <span class="badge fidelity-inspired">inspired</span>
+      <span class="badge source-homepage">source: homepage-only</span>
+      <a class="official-link" href="https://design.duolingo.com" target="_blank" rel="noopener">Official ↗</a>
+    </div>
+    <p class="tagline">Duolingo's famously joyful brand — chunky owl-green primary, friendly Feather typography, and gamified UI patterns.</p>
+  </header>
+
+  <nav class="toc" aria-label="Table of contents">
+    <ul>
+      <li><a href="#brand">Brand</a></li>
+      <li><a href="#color">Color</a></li>
+      <li><a href="#typography">Typography</a></li>
+      <li><a href="#iconography">Iconography</a></li>
+      <li><a href="#buttons">Buttons</a></li>
+      <li><a href="#form">Form</a></li>
+      <li><a href="#surfaces">Surfaces</a></li>
+      <li><a href="#feedback">Feedback</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="brand" data-fidelity="approximated">
+      <h2>
+        <span class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L1 21h22L12 2z"/></svg></span>
+        <span>Brand</span>
+        <span class="badge fidelity-approximated">approximated</span>
+      </h2>
+      <div class="brand-mark">
+        <svg viewBox="0 0 40 40" fill="none">
+          <ellipse cx="20" cy="22" rx="14" ry="15" fill="white"/>
+          <circle cx="14" cy="18" r="3" fill="#4B4B4B"/>
+          <circle cx="26" cy="18" r="3" fill="#4B4B4B"/>
+          <circle cx="14" cy="17" r="1" fill="white"/>
+          <circle cx="26" cy="17" r="1" fill="white"/>
+          <path d="M16 24c1 1.5 3 1.5 4 1.5s3 0 4-1.5" stroke="#4B4B4B" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+        </svg>
+        Duolingo
+      </div>
+      <p style="margin-top:24px;max-width:720px;font-size:16px;color:var(--dlg-wolf);">
+        Duolingo's brand revolves around a friendly green owl mascot and a chunky, generous visual language designed to make language learning approachable and rewarding. Type runs heavy (700-900), shapes round (16-20px radius), and every interaction has a tactile, slightly bouncy quality that turns study sessions into a game.
+      </p>
+      <div class="pillars">
+        <div class="pillar">
+          <div class="icon-circle"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+          <h4>Joyful</h4>
+          <p>Bright primary green, playful illustrations, and surprise rewards keep practice sessions lighthearted.</p>
+        </div>
+        <div class="pillar">
+          <div class="icon-circle" style="background:var(--dlg-bee);color:var(--dlg-eel)"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.3L12 16.7l-6.2 4.5 2.4-7.3L2 9.4h7.6z"/></svg></div>
+          <h4>Rewarding</h4>
+          <p>Streaks, XP, gems, and chest animations celebrate every win, however small.</p>
+        </div>
+        <div class="pillar">
+          <div class="icon-circle" style="background:var(--dlg-cardinal)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h20M12 2v20"/></svg></div>
+          <h4>Universal</h4>
+          <p>Built for 40+ languages, low literacy, and global cultures — UI relies on icons, color, and motion over copy.</p>
+        </div>
+        <div class="pillar">
+          <div class="icon-circle" style="background:var(--dlg-macaw)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></div>
+          <h4>Habit-forming</h4>
+          <p>Daily goals, friend leagues, and gentle owl reminders nudge consistent practice.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="color" data-fidelity="approximated">
+      <h2>
+        <span class="ico" style="background:#FFF1B8;color:#E0A100"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg></span>
+        <span>Color</span>
+        <span class="badge fidelity-approximated">approximated</span>
+        <a href="https://design.duolingo.com" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p class="muted">Duolingo names colors after animals. Eel, Wolf, Hare, Swan, and Polar form the neutral scale; Owl Green is the unmistakable primary.</p>
+
+      <h3>Brand palette</h3>
+      <div class="palette-grid">
+        <div class="palette-card" style="background:var(--dlg-green);color:white">
+          <span class="role">Primary</span>
+          <span class="name">DLG Green (Owl)</span>
+          <span class="hex">#58CC02</span>
+        </div>
+        <div class="palette-card" style="background:var(--dlg-cardinal);color:white">
+          <span class="role">Error / Streak</span>
+          <span class="name">Cardinal</span>
+          <span class="hex">#FF4B4B</span>
+        </div>
+        <div class="palette-card" style="background:var(--dlg-macaw);color:white">
+          <span class="role">Link / Action</span>
+          <span class="name">Macaw</span>
+          <span class="hex">#1CB0F6</span>
+        </div>
+        <div class="palette-card" style="background:var(--dlg-bee);color:var(--dlg-eel)">
+          <span class="role">XP / Gold</span>
+          <span class="name">Bee</span>
+          <span class="hex">#FFC800</span>
+        </div>
+        <div class="palette-card" style="background:var(--dlg-fox);color:white">
+          <span class="role">Streak Fire</span>
+          <span class="name">Fox</span>
+          <span class="hex">#FF9600</span>
+        </div>
+        <div class="palette-card" style="background:var(--dlg-beetle);color:white">
+          <span class="role">Premium</span>
+          <span class="name">Beetle</span>
+          <span class="hex">#CE82FF</span>
+        </div>
+      </div>
+
+      <h3>Neutrals (animal-named scale)</h3>
+      <div class="neutrals-row">
+        <div class="neutral-cell" style="background:var(--dlg-snow)">
+          <span class="nm" style="color:var(--dlg-eel)">Snow</span>
+          <span style="color:var(--dlg-wolf)">#FFFFFF</span>
+        </div>
+        <div class="neutral-cell" style="background:var(--dlg-polar)">
+          <span class="nm" style="color:var(--dlg-eel)">Polar</span>
+          <span style="color:var(--dlg-wolf)">#F7F7F7</span>
+        </div>
+        <div class="neutral-cell" style="background:var(--dlg-swan)">
+          <span class="nm" style="color:var(--dlg-eel)">Swan</span>
+          <span style="color:var(--dlg-wolf)">#E5E5E5</span>
+        </div>
+        <div class="neutral-cell" style="background:var(--dlg-hare);color:white;border-color:transparent">
+          <span class="nm">Hare</span>
+          <span>#AFAFAF</span>
+        </div>
+        <div class="neutral-cell" style="background:var(--dlg-wolf);color:white;border-color:transparent">
+          <span class="nm">Wolf</span>
+          <span>#777777</span>
+        </div>
+        <div class="neutral-cell" style="background:var(--dlg-eel);color:white;border-color:transparent">
+          <span class="nm">Eel</span>
+          <span>#4B4B4B</span>
+        </div>
+      </div>
+
+      <h3>Semantic roles</h3>
+      <div class="semantic-grid">
+        <div class="sem-card" style="background:var(--dlg-green-bg);color:#2A6700">
+          <span class="label">Success / Correct</span>
+          <span class="hex">#58CC02</span>
+        </div>
+        <div class="sem-card" style="background:var(--dlg-cardinal-tint);color:#8A1B1B">
+          <span class="label">Error / Wrong</span>
+          <span class="hex">#FF4B4B</span>
+        </div>
+        <div class="sem-card" style="background:var(--dlg-bee-tint);color:#715200">
+          <span class="label">Warning</span>
+          <span class="hex">#FFC800</span>
+        </div>
+        <div class="sem-card" style="background:var(--dlg-macaw-tint);color:#04557E">
+          <span class="label">Info</span>
+          <span class="hex">#1CB0F6</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="typography" data-fidelity="approximated">
+      <h2>
+        <span class="ico" style="background:#DDF4FD;color:var(--dlg-macaw)"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M5 4h14v3H5zM7 9h10v2H7zM9 13h6v2H9z"/></svg></span>
+        <span>Typography</span>
+        <span class="badge fidelity-approximated">approximated</span>
+        <a href="https://design.duolingo.com" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p class="muted">Duolingo's brand typeface is Feather Bold (proprietary). This page substitutes Nunito 700/800/900 — a similarly rounded, friendly geometric sans that captures the chunky cheerful weight Duolingo uses.</p>
+
+      <div class="type-row"><div class="label">Display L · 56/61 · 900</div><div class="display-l">Hello, world!</div></div>
+      <div class="type-row"><div class="label">Display M · 44/49 · 900</div><div class="display-m">Learn a new language</div></div>
+      <div class="type-row"><div class="label">Display S · 36/41 · 900</div><div class="display-s">Practice every day</div></div>
+      <div class="type-row"><div class="label">Heading L · 28/34 · 800</div><div class="heading-l">Section heading goes here</div></div>
+      <div class="type-row"><div class="label">Heading M · 22/28 · 800</div><div class="heading-m">Lesson title</div></div>
+      <div class="type-row"><div class="label">Heading S · 18/23 · 800</div><div class="heading-s">Sub-heading</div></div>
+      <div class="type-row"><div class="label">Body L · 17/26 · 700</div><div class="body-l">Tap the matching pairs to complete the practice. Earn XP for every correct answer and keep your streak alive.</div></div>
+      <div class="type-row"><div class="label">Body M · 15/23 · 700</div><div class="body-m">Default paragraph copy. Sentences stay short and direct so learners can focus on the target language.</div></div>
+      <div class="type-row"><div class="label">Body S · 13/19 · 700</div><div class="body-s">Helper text, captions, and metadata. Used sparingly because every label competes for attention with translation copy.</div></div>
+      <div class="type-row"><div class="label">Label · 12 · 800 caps</div><div class="label-cap">Practice now</div></div>
+      <div class="type-row"><div class="label">Mono</div><div class="mono-sample">--dlg-green: #58CC02;</div></div>
+    </section>
+
+    <section id="iconography" data-fidelity="approximated">
+      <h2>
+        <span class="ico" style="background:#FFDFE0;color:var(--dlg-cardinal)"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.3L12 16.7l-6.2 4.5 2.4-7.3L2 9.4h7.6z"/></svg></span>
+        <span>Iconography</span>
+        <span class="badge fidelity-approximated">approximated</span>
+        <a href="https://design.duolingo.com" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p class="muted">Duolingo uses chunky friendly icons with thick 2.5px strokes and rounded caps. Below: Lucide-style icons rendered at 28px with stroke-width 2.5.</p>
+      <div class="icon-grid">
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12L12 3l9 9"/><path d="M5 10v10h14V10"/></svg><span>home</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><span>search</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg><span>profile</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.3L12 16.7l-6.2 4.5 2.4-7.3L2 9.4h7.6z"/></svg><span>star</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>heart</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4c0 4-4 6-4 10a4 4 0 1 0 8 0c0-2-2-3-2-6 0-2 2-3 2-3l-4-1z"/></svg><span>fire</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>clock</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a4 4 0 0 1-4 4H7l-4 4V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/></svg><span>chat</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>check</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg><span>close</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg><span>add</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.5-2.5l2-1.5-2-3.5-2.5 1A7 7 0 0 0 13 4l-.5-2.5h-4L8 4a7 7 0 0 0-3 1.5l-2.5-1-2 3.5 2 1.5A7 7 0 0 0 5 12c0 .9.2 1.7.5 2.5l-2 1.5 2 3.5 2.5-1c.9.7 2 1.2 3 1.5l.5 2.5h4l.5-2.5c1-.3 2.1-.8 3-1.5l2.5 1 2-3.5-2-1.5c.3-.8.5-1.6.5-2.5z"/></svg><span>settings</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h18M3 12h18M3 19h18"/></svg><span>menu</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5zM15.54 8.46a5 5 0 0 1 0 7.07M19.07 4.93a10 10 0 0 1 0 14.14"/></svg><span>volume</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10a7 7 0 0 1-14 0M12 19v3"/></svg><span>mic</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 5h12M8 12h12M8 19h12M3 5h.01M3 12h.01M3 19h.01"/></svg><span>list</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg><span>arrow</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17l-5 3 1-6-4-4 6-1 2-5 2 5 6 1-4 4 1 6z"/></svg><span>achievement</span></div>
+      </div>
+    </section>
+
+    <section id="buttons" data-fidelity="approximated">
+      <h2>
+        <span class="ico" style="background:var(--dlg-green-bg);color:var(--dlg-green)"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="8" width="20" height="9" rx="3"/></svg></span>
+        <span>Buttons</span>
+        <span class="badge fidelity-approximated">approximated</span>
+        <a href="https://design.duolingo.com" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p class="muted">Duolingo's signature button has a chunky 4-5px bottom shadow that creates a tactile 3D press feel — pushing on the button visually translates it down by 2px.</p>
+
+      <h3>Variants</h3>
+      <div class="button-row">
+        <button class="dlg-btn">Continue</button>
+        <button class="dlg-btn dlg-btn--blue">Check</button>
+        <button class="dlg-btn dlg-btn--red">Skip</button>
+        <button class="dlg-btn dlg-btn--yellow">Get Plus</button>
+        <button class="dlg-btn dlg-btn--ghost">Cancel</button>
+      </div>
+
+      <h3>Sizes</h3>
+      <div class="button-row">
+        <button class="dlg-btn dlg-btn--sm">Small</button>
+        <button class="dlg-btn">Default</button>
+        <button class="dlg-btn dlg-btn--lg">Large</button>
+      </div>
+
+      <h3>States</h3>
+      <div class="button-row">
+        <button class="dlg-btn">Enabled</button>
+        <button class="dlg-btn" style="background:#61D906">Hover</button>
+        <button class="dlg-btn" style="transform:translateY(2px);box-shadow:inset 0 -2px 0 var(--dlg-green-dark)">Pressed</button>
+        <button class="dlg-btn" disabled>Disabled</button>
+      </div>
+
+      <h3>Icon button</h3>
+      <div class="button-row">
+        <button class="dlg-btn dlg-btn--icon" aria-label="play">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M6 4l14 8-14 8z"/></svg>
+        </button>
+        <button class="dlg-btn dlg-btn--icon dlg-btn--blue" aria-label="audio">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5zM15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+        </button>
+        <button class="dlg-btn dlg-btn--icon dlg-btn--red" aria-label="heart">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+        <button class="dlg-btn dlg-btn--icon dlg-btn--ghost" aria-label="share">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>
+        </button>
+      </div>
+    </section>
+
+    <section id="form" data-fidelity="approximated">
+      <h2>
+        <span class="ico" style="background:#DDF4FD;color:var(--dlg-macaw)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="6" width="18" height="12" rx="3"/></svg></span>
+        <span>Form</span>
+        <span class="badge fidelity-approximated">approximated</span>
+        <a href="https://design.duolingo.com" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p class="muted">Duolingo forms favor large rounded inputs (16-20px radius), big tap targets (44px+ height), and obvious selection states. Errors borrow the Cardinal red from streak/heart loss patterns.</p>
+
+      <h3>Inputs</h3>
+      <div class="form-grid">
+        <div class="dlg-field">
+          <label>Username</label>
+          <input class="dlg-input" type="text" value="duolingo_fan99">
+          <span class="dlg-helper">3-20 characters, letters and numbers only</span>
+        </div>
+        <div class="dlg-field">
+          <label>Email</label>
+          <input class="dlg-input" type="email" placeholder="you@example.com">
+          <span class="dlg-helper">We'll never share your email.</span>
+        </div>
+        <div class="dlg-field">
+          <label>Goal</label>
+          <select class="dlg-select">
+            <option>Casual · 5 min/day</option>
+            <option>Regular · 10 min/day</option>
+            <option>Serious · 15 min/day</option>
+            <option>Intense · 20 min/day</option>
+          </select>
+        </div>
+        <div class="dlg-field">
+          <label>About you</label>
+          <textarea class="dlg-textarea" placeholder="Tell us about your language journey..."></textarea>
+        </div>
+        <div class="dlg-field">
+          <label>Password</label>
+          <input class="dlg-input error" type="password" value="123">
+          <span class="dlg-helper error">Password must be at least 8 characters.</span>
+        </div>
+        <div class="dlg-field">
+          <label>Search</label>
+          <input class="dlg-input" type="search" placeholder="Search lessons, words, friends...">
+        </div>
+      </div>
+
+      <h3>Choice tiles (lesson interaction)</h3>
+      <p class="muted" style="font-size:14px">Numbered choices replicate Duolingo's tap-to-answer pattern with multiple-choice or matching prompts.</p>
+      <div class="choices">
+        <div class="choice"><span class="num">1</span><span>el gato</span></div>
+        <div class="choice selected"><span class="num">2</span><span>el perro</span></div>
+        <div class="choice"><span class="num">3</span><span>el pájaro</span></div>
+        <div class="choice"><span class="num">4</span><span>el ratón</span></div>
+      </div>
+
+      <h3>Toggle / Checkbox</h3>
+      <div class="toggle-row">
+        <label class="dlg-switch">
+          <input type="checkbox" checked>
+          <span class="track"><span class="knob"></span></span>
+          <span>Daily reminder</span>
+        </label>
+        <label class="dlg-switch">
+          <input type="checkbox">
+          <span class="track"><span class="knob"></span></span>
+          <span>Sound effects</span>
+        </label>
+        <label class="dlg-check">
+          <input type="checkbox" checked>
+          <span class="box"></span>
+          <span>I agree to the terms</span>
+        </label>
+        <label class="dlg-check">
+          <input type="checkbox">
+          <span class="box"></span>
+          <span>Send me weekly tips</span>
+        </label>
+      </div>
+    </section>
+
+    <section id="surfaces" data-fidelity="approximated">
+      <h2>
+        <span class="ico" style="background:#F2DCFF;color:var(--dlg-beetle)"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="18" height="18" rx="4"/></svg></span>
+        <span>Surfaces</span>
+        <span class="badge fidelity-approximated">approximated</span>
+        <a href="https://design.duolingo.com" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p class="muted">Duolingo cards, lesson tiles, and language chips share the same chunky border-bottom shadow trick — a 2-5px bottom border in a darker tone gives objects a tactile, slightly raised look without using box-shadow blur.</p>
+
+      <h3>Card</h3>
+      <div class="surface-grid">
+        <div class="dlg-card">
+          <h4>Daily Goal</h4>
+          <p>Practice 15 minutes today to keep your streak alive and earn XP.</p>
+          <button class="dlg-btn dlg-btn--sm">Start</button>
+        </div>
+        <div class="dlg-card lesson-card">
+          <span class="crown">★ Crown 3</span>
+          <h4 style="margin-top:10px">Greetings</h4>
+          <p style="color:#3B7000">Practice "hola, buenos días" and 12 more phrases.</p>
+          <button class="dlg-btn dlg-btn--sm">Practice</button>
+        </div>
+        <div class="dlg-card" style="background:var(--dlg-bee-tint);border-color:var(--dlg-bee)">
+          <h4 style="color:#715200">Super Duolingo</h4>
+          <p style="color:#7A5A00">Unlimited hearts, no ads, and exclusive practice lessons.</p>
+          <button class="dlg-btn dlg-btn--yellow dlg-btn--sm">Try Free</button>
+        </div>
+      </div>
+
+      <h3>Language flag chips</h3>
+      <div class="flag-row" style="margin-bottom:16px">
+        <span class="flag-chip"><span class="flag" style="background:linear-gradient(180deg,#C8102E 33%,#FFCD00 33%,#FFCD00 66%,#C8102E 66%)"></span>Spanish</span>
+        <span class="flag-chip"><span class="flag" style="background:linear-gradient(90deg,#0055A4 33%,white 33%,white 66%,#EF4135 66%)"></span>French</span>
+        <span class="flag-chip"><span class="flag" style="background:linear-gradient(180deg,#000 33%,#DD0000 33%,#DD0000 66%,#FFCE00 66%)"></span>German</span>
+        <span class="flag-chip"><span class="flag" style="background:linear-gradient(180deg,white 50%,#BC002D 50%)"></span>Japanese</span>
+        <span class="flag-chip"><span class="flag" style="background:linear-gradient(180deg,#012169 33%,white 33%,white 66%,#C8102E 66%)"></span>English</span>
+        <span class="flag-chip"><span class="flag" style="background:linear-gradient(180deg,#009246 33%,white 33%,white 66%,#CE2B37 66%)"></span>Italian</span>
+        <span class="flag-chip"><span class="flag" style="background:linear-gradient(180deg,#DE2910 50%,#FFDE00 50%)"></span>Mandarin</span>
+      </div>
+
+      <h3>Gamified indicators</h3>
+      <div class="gamified-row">
+        <div class="gam-card">
+          <div class="icon-pop" style="background:var(--dlg-fox)">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M14 4c0 4-4 6-4 10a4 4 0 1 0 8 0c0-2-2-3-2-6 0-2 2-3 2-3l-4-1z"/></svg>
+          </div>
+          <div>
+            <div class="num">42</div>
+            <div class="lab">Day streak</div>
+          </div>
+        </div>
+        <div class="gam-card">
+          <div class="icon-pop" style="background:var(--dlg-bee);color:var(--dlg-eel)">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.3L12 16.7l-6.2 4.5 2.4-7.3L2 9.4h7.6z"/></svg>
+          </div>
+          <div>
+            <div class="num">1,240</div>
+            <div class="lab">Total XP</div>
+          </div>
+        </div>
+        <div class="gam-card">
+          <div class="icon-pop" style="background:var(--dlg-cardinal)">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </div>
+          <div>
+            <div class="num">5</div>
+            <div class="lab">Hearts</div>
+          </div>
+        </div>
+        <div class="gam-card">
+          <div class="icon-pop" style="background:var(--dlg-macaw)">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          </div>
+          <div>
+            <div class="num">Sapphire</div>
+            <div class="lab">League</div>
+          </div>
+        </div>
+      </div>
+
+      <h3>Progress ring + bar</h3>
+      <div style="display:flex;align-items:center;gap:32px;flex-wrap:wrap;margin-bottom:16px">
+        <div class="progress-ring">
+          <svg width="84" height="84" viewBox="0 0 84 84">
+            <circle class="ring-bg" cx="42" cy="42" r="36" fill="none" stroke-width="8"/>
+            <circle class="ring-fg" cx="42" cy="42" r="36" fill="none" stroke-width="8"
+              stroke-dasharray="226" stroke-dashoffset="68"/>
+          </svg>
+          <div class="ring-num">70%</div>
+        </div>
+        <div style="flex:1;min-width:240px">
+          <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:800;text-transform:uppercase;color:var(--dlg-wolf);margin-bottom:6px">
+            <span>XP this week</span>
+            <span>180 / 250</span>
+          </div>
+          <div class="progress-bar striped"><div class="fill" style="width:72%"></div></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:800;text-transform:uppercase;color:var(--dlg-wolf);margin:14px 0 6px">
+            <span>Lesson 3 of 5</span>
+            <span>60%</span>
+          </div>
+          <div class="progress-bar"><div class="fill" style="width:60%"></div></div>
+        </div>
+      </div>
+
+      <h3>Hearts indicator</h3>
+      <div class="hearts">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--dlg-hare)" stroke-width="2.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--dlg-hare)" stroke-width="2.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        <span style="margin-left:6px;font-size:13px;color:var(--dlg-eel)">3 / 5</span>
+      </div>
+
+      <h3>Shape scale</h3>
+      <div class="shape-row">
+        <div class="shape-block" style="border-radius:12px">12px</div>
+        <div class="shape-block" style="border-radius:16px">16px</div>
+        <div class="shape-block" style="border-radius:20px">20px</div>
+        <div class="shape-block" style="border-radius:24px">24px</div>
+        <div class="shape-block" style="border-radius:999px">pill</div>
+      </div>
+
+      <h3>Spacing scale (4px base)</h3>
+      <div>
+        <div class="space-row"><span class="lbl">s-1</span><span class="px">4px</span><span class="space-bar" style="width:4px"></span></div>
+        <div class="space-row"><span class="lbl">s-2</span><span class="px">8px</span><span class="space-bar" style="width:8px"></span></div>
+        <div class="space-row"><span class="lbl">s-3</span><span class="px">12px</span><span class="space-bar" style="width:12px"></span></div>
+        <div class="space-row"><span class="lbl">s-4</span><span class="px">16px</span><span class="space-bar" style="width:16px"></span></div>
+        <div class="space-row"><span class="lbl">s-5</span><span class="px">20px</span><span class="space-bar" style="width:20px"></span></div>
+        <div class="space-row"><span class="lbl">s-6</span><span class="px">24px</span><span class="space-bar" style="width:24px"></span></div>
+        <div class="space-row"><span class="lbl">s-7</span><span class="px">32px</span><span class="space-bar" style="width:32px"></span></div>
+        <div class="space-row"><span class="lbl">s-8</span><span class="px">48px</span><span class="space-bar" style="width:48px"></span></div>
+        <div class="space-row"><span class="lbl">s-9</span><span class="px">64px</span><span class="space-bar" style="width:64px"></span></div>
+      </div>
+    </section>
+
+    <section id="feedback" data-fidelity="approximated">
+      <h2>
+        <span class="ico" style="background:var(--dlg-cardinal-tint);color:var(--dlg-cardinal)"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L1 21h22L12 2zm0 6v6m0 2v2"/></svg></span>
+        <span>Feedback</span>
+        <span class="badge fidelity-approximated">approximated</span>
+        <a href="https://design.duolingo.com" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p class="muted">Feedback in Duolingo is loud and animated. Correct answers get a satisfying green chime; wrong answers nudge with red and a friendly hint. The visual side is borrowed from card patterns: solid bottom border for tactility.</p>
+
+      <h3>Alerts</h3>
+      <div class="alert-grid">
+        <div class="dlg-alert ok">
+          <span class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+          <div class="body">
+            <div class="ttl">¡Excelente! That's correct.</div>
+            <div class="msg">+10 XP awarded. Keep going to earn a bonus chest at the end of the lesson.</div>
+          </div>
+        </div>
+        <div class="dlg-alert err">
+          <span class="ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></span>
+          <div class="body">
+            <div class="ttl">Almost there.</div>
+            <div class="msg">The correct answer is "el perro". You lost 1 heart — practice in shop to refill.</div>
+          </div>
+        </div>
+        <div class="dlg-alert warn">
+          <span class="ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L1 21h22L12 2z"/></svg></span>
+          <div class="body">
+            <div class="ttl">Streak about to expire.</div>
+            <div class="msg">Practice in the next 4 hours to keep your 42-day streak alive.</div>
+          </div>
+        </div>
+        <div class="dlg-alert info">
+          <span class="ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg></span>
+          <div class="body">
+            <div class="ttl">New lesson unlocked!</div>
+            <div class="msg">"Animals" is now available — 8 new words and 12 phrases waiting for you.</div>
+          </div>
+        </div>
+      </div>
+
+      <h3>Toast</h3>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:16px">
+        <div class="toast">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="color:var(--dlg-bee)"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.3L12 16.7l-6.2 4.5 2.4-7.3L2 9.4h7.6z"/></svg>
+          You've earned 50 XP today!
+        </div>
+        <div class="toast" style="background:var(--dlg-green);box-shadow:0 4px 0 var(--dlg-green-darker)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20 6L9 17l-5-5"/></svg>
+          Lesson complete!
+        </div>
+        <div class="toast" style="background:var(--dlg-cardinal);box-shadow:0 4px 0 #B82828">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M14 4c0 4-4 6-4 10a4 4 0 1 0 8 0c0-2-2-3-2-6 0-2 2-3 2-3l-4-1z"/></svg>
+          Streak saved!
+        </div>
+      </div>
+
+      <h3>Owl mascot encouragement</h3>
+      <div style="display:flex;align-items:center;gap:16px;margin-top:16px;background:var(--dlg-green-bg);padding:20px;border-radius:20px;border:2px solid var(--dlg-green)">
+        <svg width="80" height="80" viewBox="0 0 80 80">
+          <ellipse cx="40" cy="44" rx="28" ry="30" fill="white" stroke="var(--dlg-green)" stroke-width="3"/>
+          <ellipse cx="28" cy="36" rx="6" ry="6" fill="white" stroke="var(--dlg-green)" stroke-width="2"/>
+          <ellipse cx="52" cy="36" rx="6" ry="6" fill="white" stroke="var(--dlg-green)" stroke-width="2"/>
+          <circle cx="28" cy="36" r="2.5" fill="#4B4B4B"/>
+          <circle cx="52" cy="36" r="2.5" fill="#4B4B4B"/>
+          <path d="M36 46l4 4 4-4" stroke="var(--dlg-bee-dark)" stroke-width="2" fill="var(--dlg-bee)" stroke-linejoin="round"/>
+          <path d="M28 60c4 3 16 3 24 0" stroke="var(--dlg-green)" stroke-width="2" fill="none" stroke-linecap="round"/>
+        </svg>
+        <div>
+          <div style="font-size:18px;font-weight:900;color:#2A6700;margin-bottom:4px">Welcome back! Ready for a quick lesson?</div>
+          <div style="font-size:14px;color:#3B7000;margin-bottom:10px">Just 5 minutes today and you'll keep your streak going strong.</div>
+          <button class="dlg-btn dlg-btn--sm">Let's go!</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="ds-footer">
+    <h3>Reference & sources</h3>
+    <ul>
+      <li><a href="https://design.duolingo.com" target="_blank" rel="noopener">https://design.duolingo.com</a> (homepage-only · checked 2026-05-05)</li>
+      <li><a href="https://www.duolingo.com" target="_blank" rel="noopener">https://www.duolingo.com</a> (live product UI reference)</li>
+      <li>Brand colors and animal-named neutrals are inferred from the public Duolingo brand and product UI. Token names approximate Duolingo's known internal naming.</li>
+    </ul>
+    <p class="license-note">This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Duolingo. Duolingo Design and related trademarks belong to Duolingo. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</p>
+    <p class="meta-note">id: 46-duolingo · fidelity: inspired · source: homepage-only · sourceCheckedAt: 2026-05-05</p>
+  </footer>
+</body>
+</html>

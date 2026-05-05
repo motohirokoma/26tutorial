@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bootstrap 5 — Design System Reference</title>
+  <script id="ds-meta" type="application/json">
+{"id":"11-bootstrap-5","fileSlug":"11-bootstrap-5","schemaVersion":"1"}
+  </script>
+  <style>
+    :root {
+      /* Bootstrap 5 Theme Colors */
+      --bs-primary: #0D6EFD;
+      --bs-secondary: #6C757D;
+      --bs-success: #198754;
+      --bs-info: #0DCAF0;
+      --bs-warning: #FFC107;
+      --bs-danger: #DC3545;
+      --bs-light: #F8F9FA;
+      --bs-dark: #212529;
+
+      /* Body */
+      --bs-body-bg: #FFFFFF;
+      --bs-body-color: #212529;
+      --bs-body-bg-rgb: 255,255,255;
+      --bs-body-color-rgb: 33,37,41;
+
+      /* Grays (Bootstrap official) */
+      --bs-gray-100: #F8F9FA;
+      --bs-gray-200: #E9ECEF;
+      --bs-gray-300: #DEE2E6;
+      --bs-gray-400: #CED4DA;
+      --bs-gray-500: #ADB5BD;
+      --bs-gray-600: #6C757D;
+      --bs-gray-700: #495057;
+      --bs-gray-800: #343A40;
+      --bs-gray-900: #212529;
+      --bs-white: #FFFFFF;
+      --bs-black: #000000;
+
+      /* Subtle / Emphasis (BS 5.3) */
+      --bs-primary-bg-subtle: #CFE2FF;
+      --bs-success-bg-subtle: #D1E7DD;
+      --bs-info-bg-subtle: #CFF4FC;
+      --bs-warning-bg-subtle: #FFF3CD;
+      --bs-danger-bg-subtle: #F8D7DA;
+
+      /* Border */
+      --bs-border-color: #DEE2E6;
+      --bs-border-color-translucent: rgba(0,0,0,0.175);
+      --bs-border-radius-sm: 0.25rem;
+      --bs-border-radius: 0.375rem;
+      --bs-border-radius-lg: 0.5rem;
+      --bs-border-radius-xl: 1rem;
+      --bs-border-radius-pill: 50rem;
+
+      /* Type */
+      --bs-font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+      --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+      /* Shadow */
+      --bs-box-shadow-sm: 0 0.125rem 0.25rem rgba(0,0,0,0.075);
+      --bs-box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
+      --bs-box-shadow-lg: 0 1rem 3rem rgba(0,0,0,0.175);
+
+      /* Spacing (rem-based) */
+      --bs-space-1: 0.25rem;
+      --bs-space-2: 0.5rem;
+      --bs-space-3: 1rem;
+      --bs-space-4: 1.5rem;
+      --bs-space-5: 3rem;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: var(--bs-font-sans);
+      background: var(--bs-gray-100);
+      color: var(--bs-body-color);
+      line-height: 1.5;
+      font-size: 1rem;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    code, kbd, pre, samp { font-family: var(--bs-font-monospace); }
+
+    /* Header */
+    .ds-header {
+      background: linear-gradient(135deg, #E7F1FF, #F8F9FA);
+      color: var(--bs-dark);
+      padding: 3rem 2rem 2rem;
+      border-bottom: 1px solid var(--bs-border-color);
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--bs-primary);
+      text-decoration: none;
+      padding: 0.375rem 0.75rem;
+      border-radius: var(--bs-border-radius);
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: background 0.15s ease-in-out;
+    }
+    .back-link:hover { background: rgba(13,110,253,0.1); }
+
+    .ds-header h1 {
+      font-size: 3rem;
+      line-height: 1.2;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      margin: 1rem 0 0.75rem;
+    }
+
+    .ds-header .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.25rem 0.65em;
+      border-radius: var(--bs-border-radius-pill);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.025em;
+      text-transform: uppercase;
+      border: 1px solid var(--bs-border-color);
+      background: var(--bs-white);
+      color: var(--bs-gray-700);
+    }
+    .badge.kind-ds { background: var(--bs-primary); color: var(--bs-white); border-color: transparent; }
+    .badge.fidelity-documented { background: var(--bs-success-bg-subtle); color: #0F5132; border-color: transparent; }
+    .badge.fidelity-approximated { background: var(--bs-warning-bg-subtle); color: #664D03; border-color: transparent; }
+    .badge.fidelity-inspired { background: #E2D9F3; color: #432874; border-color: transparent; }
+    .badge.source-verified { background: var(--bs-info-bg-subtle); color: #055160; border-color: transparent; }
+
+    .ds-header a[href*="getbootstrap.com"] {
+      color: var(--bs-primary);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 0.25rem 0.65rem;
+      border: 1px solid var(--bs-border-color);
+      border-radius: var(--bs-border-radius-pill);
+      font-size: 0.8125rem;
+      background: var(--bs-white);
+    }
+    .ds-header a[href*="getbootstrap.com"]:hover { background: var(--bs-light); }
+
+    .tagline {
+      font-size: 1.25rem;
+      line-height: 1.5;
+      max-width: 720px;
+      margin: 1rem 0 0;
+      color: var(--bs-gray-700);
+    }
+
+    /* TOC */
+    .toc {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255,255,255,0.95);
+      border-bottom: 1px solid var(--bs-border-color);
+      backdrop-filter: blur(8px);
+    }
+    .toc ul {
+      list-style: none;
+      margin: 0;
+      padding: 0.75rem 2rem;
+      display: flex;
+      gap: 0.5rem;
+      overflow-x: auto;
+    }
+    .toc a {
+      display: inline-block;
+      padding: 0.375rem 0.75rem;
+      border-radius: var(--bs-border-radius);
+      color: var(--bs-gray-700);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      white-space: nowrap;
+      border: 1px solid var(--bs-border-color);
+      background: var(--bs-white);
+      transition: all 0.15s ease-in-out;
+    }
+    .toc a:hover { background: var(--bs-primary); color: var(--bs-white); border-color: var(--bs-primary); }
+
+    /* Main */
+    main {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    section {
+      background: var(--bs-white);
+      border-radius: var(--bs-border-radius-lg);
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      box-shadow: var(--bs-box-shadow-sm);
+      border: 1px solid var(--bs-border-color);
+    }
+
+    section h2 {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      font-size: 2rem;
+      line-height: 1.2;
+      font-weight: 500;
+      margin: 0 0 1.5rem;
+      color: var(--bs-dark);
+    }
+
+    .source-link {
+      font-size: 0.8125rem;
+      color: var(--bs-primary);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .source-link:hover { text-decoration: underline; }
+
+    h3 {
+      font-size: 1.375rem;
+      line-height: 1.3;
+      font-weight: 500;
+      margin: 1.5rem 0 0.75rem;
+      color: var(--bs-dark);
+    }
+
+    h4 {
+      font-size: 1rem;
+      line-height: 1.4;
+      font-weight: 500;
+      margin: 1rem 0 0.5rem;
+      color: var(--bs-gray-700);
+    }
+
+    p { margin: 0 0 0.75rem; }
+
+    /* Brand */
+    #brand .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1.25rem;
+      background: linear-gradient(135deg, #563D7C, #7952B3);
+      border-radius: var(--bs-border-radius-lg);
+      color: white;
+      font-size: 1.625rem;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+    }
+    #brand .brand-mark svg { width: 36px; height: 36px; }
+    #brand .pillars {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    #brand .pillar {
+      padding: 1rem;
+      background: var(--bs-gray-100);
+      border-radius: var(--bs-border-radius);
+      border: 1px solid var(--bs-border-color);
+    }
+    #brand .pillar h4 { margin-top: 0; color: var(--bs-primary); }
+
+    /* Color */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(9, 1fr);
+      gap: 2px;
+      margin-bottom: 1rem;
+    }
+    .color-cell {
+      aspect-ratio: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 6px;
+      font-size: 10px;
+      font-family: var(--bs-font-monospace);
+    }
+    .color-cell:first-child { border-radius: var(--bs-border-radius) 0 0 var(--bs-border-radius); }
+    .color-cell:last-child { border-radius: 0 var(--bs-border-radius) var(--bs-border-radius) 0; }
+
+    .semantic-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px,1fr));
+      gap: 0.75rem;
+    }
+    .sem-card {
+      padding: 1rem;
+      border-radius: var(--bs-border-radius);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .sem-card .label { font-size: 0.875rem; font-weight: 600; }
+    .sem-card .hex { font-family: var(--bs-font-monospace); font-size: 0.75rem; opacity: 0.85; }
+
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .role-chip {
+      padding: 0.75rem 1rem;
+      border-radius: var(--bs-border-radius);
+      font-size: 0.8125rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 500;
+    }
+    .role-chip code { font-size: 11px; opacity: 0.85; }
+
+    /* Typography */
+    .type-row {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 1rem;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--bs-border-color);
+      align-items: baseline;
+    }
+    .type-row:last-child { border-bottom: 0; }
+    .type-row .label {
+      font-family: var(--bs-font-monospace);
+      font-size: 0.75rem;
+      color: var(--bs-gray-600);
+    }
+    .display-1 { font-size: 5rem; font-weight: 300; line-height: 1.2; }
+    .display-2 { font-size: 4.5rem; font-weight: 300; line-height: 1.2; }
+    .display-3 { font-size: 4rem; font-weight: 300; line-height: 1.2; }
+    .display-4 { font-size: 3.5rem; font-weight: 300; line-height: 1.2; }
+    .h1-style { font-size: 2.5rem; font-weight: 500; line-height: 1.2; }
+    .h2-style { font-size: 2rem; font-weight: 500; line-height: 1.2; }
+    .h3-style { font-size: 1.75rem; font-weight: 500; line-height: 1.2; }
+    .h4-style { font-size: 1.5rem; font-weight: 500; line-height: 1.2; }
+    .h5-style { font-size: 1.25rem; font-weight: 500; line-height: 1.2; }
+    .h6-style { font-size: 1rem; font-weight: 500; line-height: 1.2; }
+    .lead { font-size: 1.25rem; font-weight: 300; line-height: 1.5; }
+    .body-base { font-size: 1rem; line-height: 1.5; }
+    .small { font-size: 0.875rem; line-height: 1.5; }
+    .mono-sample { font-family: var(--bs-font-monospace); font-size: 0.875rem; color: var(--bs-gray-700); }
+
+    /* Iconography */
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(80px,1fr));
+      gap: 0.75rem;
+    }
+    .icon-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 0.75rem;
+      background: var(--bs-gray-100);
+      border-radius: var(--bs-border-radius);
+      border: 1px solid var(--bs-border-color);
+    }
+    .icon-cell svg { width: 24px; height: 24px; fill: var(--bs-dark); }
+    .icon-cell span { font-size: 11px; color: var(--bs-gray-600); }
+
+    /* Buttons */
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+
+    .bs-btn {
+      font-family: var(--bs-font-sans);
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.5;
+      padding: 0.375rem 0.75rem;
+      border-radius: var(--bs-border-radius);
+      border: 1px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-align: center;
+      vertical-align: middle;
+      transition: color 0.15s ease-in-out, background-color 0.15s, border-color 0.15s, box-shadow 0.15s;
+      user-select: none;
+    }
+    .bs-btn--primary { background: var(--bs-primary); color: var(--bs-white); border-color: var(--bs-primary); }
+    .bs-btn--primary:hover { background: #0B5ED7; border-color: #0A58CA; }
+    .bs-btn--secondary { background: var(--bs-secondary); color: var(--bs-white); border-color: var(--bs-secondary); }
+    .bs-btn--secondary:hover { background: #5C636A; border-color: #565E64; }
+    .bs-btn--success { background: var(--bs-success); color: var(--bs-white); border-color: var(--bs-success); }
+    .bs-btn--danger { background: var(--bs-danger); color: var(--bs-white); border-color: var(--bs-danger); }
+    .bs-btn--warning { background: var(--bs-warning); color: var(--bs-dark); border-color: var(--bs-warning); }
+    .bs-btn--info { background: var(--bs-info); color: var(--bs-dark); border-color: var(--bs-info); }
+    .bs-btn--light { background: var(--bs-light); color: var(--bs-dark); border-color: var(--bs-light); }
+    .bs-btn--dark { background: var(--bs-dark); color: var(--bs-white); border-color: var(--bs-dark); }
+    .bs-btn--outline-primary { background: transparent; color: var(--bs-primary); border-color: var(--bs-primary); }
+    .bs-btn--outline-primary:hover { background: var(--bs-primary); color: var(--bs-white); }
+    .bs-btn--outline-secondary { background: transparent; color: var(--bs-secondary); border-color: var(--bs-secondary); }
+    .bs-btn--link { background: transparent; color: var(--bs-primary); border-color: transparent; text-decoration: underline; }
+    .bs-btn--sm { padding: 0.25rem 0.5rem; font-size: 0.875rem; border-radius: var(--bs-border-radius-sm); }
+    .bs-btn--lg { padding: 0.5rem 1rem; font-size: 1.25rem; border-radius: var(--bs-border-radius-lg); }
+    .bs-btn:disabled { opacity: 0.65; cursor: not-allowed; pointer-events: none; }
+    .bs-btn:focus-visible { box-shadow: 0 0 0 0.25rem rgba(13,110,253,0.25); outline: 0; }
+
+    /* Form */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+      gap: 1rem;
+    }
+    .bs-form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .bs-form-label {
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--bs-dark);
+      margin-bottom: 0.5rem;
+    }
+    .bs-form-control {
+      display: block;
+      width: 100%;
+      padding: 0.375rem 0.75rem;
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.5;
+      color: var(--bs-body-color);
+      background-color: var(--bs-white);
+      border: 1px solid var(--bs-gray-400);
+      border-radius: var(--bs-border-radius);
+      transition: border-color 0.15s, box-shadow 0.15s;
+      font-family: inherit;
+    }
+    .bs-form-control:focus {
+      border-color: #86B7FE;
+      outline: 0;
+      box-shadow: 0 0 0 0.25rem rgba(13,110,253,0.25);
+    }
+    .bs-form-control.is-invalid { border-color: var(--bs-danger); }
+    .bs-form-control.is-valid { border-color: var(--bs-success); }
+    .bs-form-text { font-size: 0.875em; color: var(--bs-gray-600); }
+    .bs-invalid-feedback { font-size: 0.875em; color: var(--bs-danger); }
+
+    .bs-form-check {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    .bs-form-check input[type="checkbox"], .bs-form-check input[type="radio"] {
+      width: 1em; height: 1em;
+      accent-color: var(--bs-primary);
+    }
+    .bs-form-switch {
+      position: relative; display: inline-block; width: 2rem; height: 1rem;
+    }
+    .bs-form-switch input { opacity: 0; width: 0; height: 0; }
+    .bs-form-switch .slider {
+      position: absolute; cursor: pointer; inset: 0;
+      background: var(--bs-gray-300);
+      border-radius: 50rem;
+      transition: 0.2s;
+    }
+    .bs-form-switch .slider::before {
+      content: ''; position: absolute;
+      width: 0.75rem; height: 0.75rem;
+      left: 0.125rem; top: 0.125rem;
+      background: var(--bs-white);
+      border-radius: 50%;
+      transition: 0.2s;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    }
+    .bs-form-switch input:checked + .slider { background: var(--bs-primary); }
+    .bs-form-switch input:checked + .slider::before { transform: translateX(1rem); }
+
+    .bs-form-range { width: 100%; accent-color: var(--bs-primary); }
+
+    /* Surfaces / Cards */
+    .surface-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
+      gap: 1rem;
+    }
+    .bs-card {
+      background: var(--bs-white);
+      border: 1px solid var(--bs-border-color);
+      border-radius: var(--bs-border-radius);
+      overflow: hidden;
+    }
+    .bs-card .card-img {
+      height: 140px;
+      background: linear-gradient(135deg, #E7F1FF, #CFE2FF);
+    }
+    .bs-card-body { padding: 1rem; }
+    .bs-card-title { margin: 0 0 0.5rem; font-size: 1.125rem; font-weight: 500; }
+    .bs-card-text { font-size: 0.9375rem; color: var(--bs-gray-700); margin: 0 0 0.75rem; }
+    .bs-card-header { padding: 0.5rem 1rem; background: var(--bs-gray-100); border-bottom: 1px solid var(--bs-border-color); font-weight: 500; font-size: 0.9375rem; }
+
+    .bs-stat { padding: 1rem; background: var(--bs-primary); border-radius: var(--bs-border-radius); color: var(--bs-white); }
+    .bs-stat .num { font-size: 2rem; font-weight: 500; line-height: 1; }
+    .bs-stat .lbl { font-size: 0.75rem; opacity: 0.85; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
+
+    .bs-modal {
+      background: var(--bs-white);
+      padding: 0;
+      border-radius: var(--bs-border-radius-lg);
+      box-shadow: var(--bs-box-shadow-lg);
+      max-width: 400px;
+      border: 1px solid var(--bs-border-color);
+    }
+    .bs-modal-header {
+      padding: 1rem;
+      border-bottom: 1px solid var(--bs-border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .bs-modal-body { padding: 1rem; }
+    .bs-modal-footer {
+      padding: 0.75rem;
+      border-top: 1px solid var(--bs-border-color);
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.5rem;
+    }
+
+    /* Feedback */
+    .bs-alert {
+      padding: 1rem;
+      border-radius: var(--bs-border-radius);
+      margin-bottom: 0.75rem;
+      font-size: 1rem;
+      border: 1px solid transparent;
+    }
+    .bs-alert--primary { background: var(--bs-primary-bg-subtle); color: #084298; border-color: #B6D4FE; }
+    .bs-alert--success { background: var(--bs-success-bg-subtle); color: #0F5132; border-color: #BADBCC; }
+    .bs-alert--warning { background: var(--bs-warning-bg-subtle); color: #664D03; border-color: #FFECB5; }
+    .bs-alert--danger { background: var(--bs-danger-bg-subtle); color: #842029; border-color: #F5C2C7; }
+    .bs-alert--info { background: var(--bs-info-bg-subtle); color: #055160; border-color: #B6EFFB; }
+
+    .bs-toast {
+      background: var(--bs-white);
+      border: 1px solid var(--bs-border-color-translucent);
+      border-radius: var(--bs-border-radius);
+      box-shadow: var(--bs-box-shadow);
+      padding: 0;
+      max-width: 350px;
+      overflow: hidden;
+    }
+    .bs-toast-header { padding: 0.5rem 0.75rem; background: var(--bs-gray-100); border-bottom: 1px solid var(--bs-border-color); display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; font-weight: 500; }
+    .bs-toast-body { padding: 0.75rem; font-size: 0.9375rem; }
+
+    .bs-chip-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+    .bs-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.35em 0.65em;
+      border-radius: var(--bs-border-radius-pill);
+      font-size: 0.75em;
+      font-weight: 600;
+      color: var(--bs-white);
+    }
+    .bs-pill--primary { background: var(--bs-primary); }
+    .bs-pill--secondary { background: var(--bs-secondary); }
+    .bs-pill--success { background: var(--bs-success); }
+    .bs-pill--danger { background: var(--bs-danger); }
+    .bs-pill--warning { background: var(--bs-warning); color: var(--bs-dark); }
+    .bs-pill--info { background: var(--bs-info); color: var(--bs-dark); }
+    .bs-pill--light { background: var(--bs-light); color: var(--bs-dark); border: 1px solid var(--bs-border-color); }
+    .bs-pill--dark { background: var(--bs-dark); }
+
+    .bs-progress {
+      width: 100%; height: 1rem;
+      background: var(--bs-gray-200);
+      border-radius: var(--bs-border-radius);
+      overflow: hidden;
+    }
+    .bs-progress-bar {
+      height: 100%;
+      background: var(--bs-primary);
+      color: var(--bs-white);
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .bs-spinner {
+      width: 2rem; height: 2rem;
+      border: 0.25em solid currentColor;
+      border-right-color: transparent;
+      border-radius: 50%;
+      animation: spin 0.75s linear infinite;
+      color: var(--bs-primary);
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .bs-placeholder {
+      height: 1em;
+      background: currentColor;
+      opacity: 0.5;
+      border-radius: var(--bs-border-radius);
+      display: inline-block;
+    }
+
+    /* Navigation */
+    .bs-nav-tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--bs-border-color);
+      margin-bottom: 0.75rem;
+    }
+    .bs-nav-tab {
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      color: var(--bs-primary);
+      border: 1px solid transparent;
+      border-top-left-radius: var(--bs-border-radius);
+      border-top-right-radius: var(--bs-border-radius);
+      cursor: pointer;
+      margin-bottom: -1px;
+      background: transparent;
+    }
+    .bs-nav-tab:hover { border-color: var(--bs-gray-200) var(--bs-gray-200) var(--bs-border-color); }
+    .bs-nav-tab.active { color: var(--bs-dark); background: var(--bs-white); border-color: var(--bs-border-color) var(--bs-border-color) var(--bs-white); }
+
+    .bs-breadcrumb { display: flex; gap: 0.5rem; align-items: center; font-size: 1rem; color: var(--bs-gray-600); padding: 0; margin: 0; list-style: none; }
+    .bs-breadcrumb a { color: var(--bs-primary); text-decoration: none; }
+    .bs-breadcrumb a:hover { text-decoration: underline; }
+
+    .bs-pagination { display: flex; gap: 0; align-items: center; }
+    .bs-pagination button {
+      padding: 0.375rem 0.75rem;
+      border: 1px solid var(--bs-border-color);
+      background: var(--bs-white);
+      color: var(--bs-primary);
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 1rem;
+    }
+    .bs-pagination button:first-child { border-radius: var(--bs-border-radius) 0 0 var(--bs-border-radius); }
+    .bs-pagination button:last-child { border-radius: 0 var(--bs-border-radius) var(--bs-border-radius) 0; }
+    .bs-pagination button + button { margin-left: -1px; }
+    .bs-pagination button.active { background: var(--bs-primary); color: var(--bs-white); border-color: var(--bs-primary); }
+    .bs-pagination button:hover:not(.active) { background: var(--bs-gray-100); }
+
+    .bs-navbar {
+      display: flex; align-items: center; gap: 1rem;
+      padding: 0.5rem 1rem;
+      background: var(--bs-light);
+      border-radius: var(--bs-border-radius);
+      border: 1px solid var(--bs-border-color);
+    }
+    .bs-navbar .brand { font-size: 1.25rem; font-weight: 500; flex: 1; }
+    .bs-navbar a { color: var(--bs-gray-700); text-decoration: none; padding: 0.5rem 0.75rem; border-radius: var(--bs-border-radius); }
+    .bs-navbar a:hover { color: var(--bs-primary); background: rgba(13,110,253,0.05); }
+
+    .bs-dropdown {
+      background: var(--bs-white);
+      border: 1px solid var(--bs-border-color-translucent);
+      border-radius: var(--bs-border-radius);
+      box-shadow: var(--bs-box-shadow-sm);
+      padding: 0.5rem 0;
+      width: 200px;
+    }
+    .bs-dropdown .item { padding: 0.25rem 1rem; font-size: 1rem; cursor: pointer; color: var(--bs-gray-800); }
+    .bs-dropdown .item:hover { background: var(--bs-gray-100); }
+    .bs-dropdown .divider { height: 1px; background: var(--bs-border-color); margin: 0.5rem 0; }
+
+    /* Data */
+    table.bs-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 1rem;
+    }
+    table.bs-table th, table.bs-table td {
+      text-align: left;
+      padding: 0.5rem;
+      border-bottom: 1px solid var(--bs-border-color);
+    }
+    table.bs-table thead th { font-weight: 500; border-bottom: 2px solid var(--bs-border-color); color: var(--bs-gray-800); }
+    table.bs-table tbody tr:hover { background: var(--bs-gray-100); }
+    table.bs-table.striped tbody tr:nth-of-type(odd) { background: rgba(0,0,0,0.05); }
+
+    .bs-list-group {
+      list-style: none; padding: 0; margin: 0;
+      border: 1px solid var(--bs-border-color);
+      border-radius: var(--bs-border-radius);
+      overflow: hidden;
+    }
+    .bs-list-group li {
+      padding: 0.5rem 1rem;
+      display: flex; gap: 0.75rem; align-items: center;
+      border-bottom: 1px solid var(--bs-border-color);
+      background: var(--bs-white);
+    }
+    .bs-list-group li:last-child { border-bottom: 0; }
+
+    .bs-kv { display: grid; grid-template-columns: 140px 1fr; gap: 0.75rem; font-size: 1rem; }
+    .bs-kv dt { color: var(--bs-gray-700); font-weight: 500; }
+
+    .bs-avatar {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: var(--bs-primary-bg-subtle);
+      color: var(--bs-primary);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-weight: 600;
+    }
+
+    .bs-empty {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--bs-gray-600);
+    }
+    .bs-empty svg { width: 48px; height: 48px; opacity: 0.4; }
+
+    /* Layout */
+    .grid-demo {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 1rem;
+      background: var(--bs-gray-100);
+      padding: 1rem;
+      border-radius: var(--bs-border-radius);
+    }
+    .grid-demo > div {
+      background: var(--bs-primary-bg-subtle);
+      color: #084298;
+      padding: 0.75rem;
+      border-radius: var(--bs-border-radius-sm);
+      font-size: 0.8125rem;
+      font-weight: 500;
+      text-align: center;
+    }
+
+    .scale-row {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      margin-bottom: 1rem;
+    }
+    .scale-item { display: flex; flex-direction: column; gap: 6px; align-items: center; }
+    .scale-item .swatch { background: var(--bs-primary); }
+    .scale-item .lbl { font-size: 11px; font-family: var(--bs-font-monospace); color: var(--bs-gray-600); }
+
+    .shadow-demo {
+      width: 80px; height: 80px;
+      background: var(--bs-white);
+      border-radius: var(--bs-border-radius);
+      display: inline-flex; align-items: center; justify-content: center;
+      margin-right: 1rem; margin-bottom: 1rem;
+      font-size: 11px; font-family: var(--bs-font-monospace); color: var(--bs-gray-600);
+    }
+
+    /* Footer */
+    .ds-footer {
+      background: var(--bs-gray-900);
+      padding: 2rem;
+      margin-top: 3rem;
+      color: var(--bs-gray-300);
+    }
+    .ds-footer h3 { margin-top: 0; color: var(--bs-white); }
+    .ds-footer ul { padding-left: 1.25rem; }
+    .ds-footer li { margin-bottom: 4px; word-break: break-all; font-size: 0.8125rem; }
+    .ds-footer a { color: #6EA8FE; text-decoration: none; }
+    .ds-footer a:hover { text-decoration: underline; }
+    .license-note { font-size: 0.8125rem; color: var(--bs-gray-500); margin-top: 1rem; }
+    .meta-note { font-size: 0.75rem; color: var(--bs-gray-500); font-family: var(--bs-font-monospace); margin-top: 0.5rem; }
+
+    @media (max-width: 720px) {
+      .ds-header h1 { font-size: 2.25rem; }
+      main { padding: 1rem; }
+      section { padding: 1rem; }
+      .type-row { grid-template-columns: 1fr; }
+      .color-grid { grid-template-columns: repeat(5, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <header class="ds-header">
+    <a href="index.html" class="back-link">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Catalog
+    </a>
+    <h1>Bootstrap 5</h1>
+    <div class="meta">
+      <span class="badge kind-ds">component-library</span>
+      <span class="badge fidelity-documented">documented</span>
+      <span class="badge source-verified">source: verified</span>
+      <a href="https://getbootstrap.com" target="_blank" rel="noopener">Official ↗</a>
+    </div>
+    <p class="tagline">The world's most popular CSS framework with rapid prototyping utilities and a familiar component set.</p>
+  </header>
+
+  <nav class="toc" aria-label="Table of contents">
+    <ul>
+      <li><a href="#brand">Brand</a></li>
+      <li><a href="#color">Color</a></li>
+      <li><a href="#typography">Typography</a></li>
+      <li><a href="#iconography">Iconography</a></li>
+      <li><a href="#buttons">Buttons</a></li>
+      <li><a href="#form">Form</a></li>
+      <li><a href="#surfaces">Surfaces</a></li>
+      <li><a href="#feedback">Feedback</a></li>
+      <li><a href="#navigation">Navigation</a></li>
+      <li><a href="#data">Data</a></li>
+      <li><a href="#layout">Layout</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="brand" data-fidelity="documented">
+      <h2>
+        <span>Brand</span>
+        <span class="badge fidelity-documented">documented</span>
+      </h2>
+      <div class="brand-mark">
+        <svg viewBox="0 0 36 36" fill="none">
+          <rect x="3" y="3" width="30" height="30" rx="6" fill="white" opacity="0.95"/>
+          <text x="18" y="24" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#7952B3">B</text>
+        </svg>
+        Bootstrap
+      </div>
+      <p style="margin-top: 1.5rem; max-width: 720px; font-size: 1rem; color: var(--bs-gray-700);">
+        Bootstrap is the world's most popular open-source toolkit for building responsive, mobile-first sites. Authored by the Bootstrap team since 2011 and licensed under MIT, it ships a sweeping collection of components, utilities, and a consistent grid that works across browsers and screen sizes.
+      </p>
+      <div class="pillars">
+        <div class="pillar">
+          <h4>Familiar</h4>
+          <p style="font-size:0.875rem;color:var(--bs-gray-700);margin:0">Decade-deep ecosystem. Most front-end engineers can read Bootstrap markup at a glance.</p>
+        </div>
+        <div class="pillar">
+          <h4>Responsive</h4>
+          <p style="font-size:0.875rem;color:var(--bs-gray-700);margin:0">Mobile-first 12-column grid with five breakpoints scales the same markup to any viewport.</p>
+        </div>
+        <div class="pillar">
+          <h4>Customizable</h4>
+          <p style="font-size:0.875rem;color:var(--bs-gray-700);margin:0">Sass variables, CSS custom properties, and utility API let you theme the whole framework.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="color" data-fidelity="documented">
+      <h2>
+        <span>Color</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://getbootstrap.com/docs/5.3/customize/color/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--bs-gray-700)">Bootstrap 5.3 ships eight theme colors plus a 9-step gray scale. Each theme color exposes <code>-bg-subtle</code>, <code>-border-subtle</code>, and <code>-text-emphasis</code> variants for low-emphasis surfaces.</p>
+
+      <h3>Gray scale (100–900)</h3>
+      <div class="color-grid">
+        <div class="color-cell" style="background:var(--bs-gray-100);color:var(--bs-dark);border:1px solid var(--bs-border-color)">100</div>
+        <div class="color-cell" style="background:var(--bs-gray-200);color:var(--bs-dark)">200</div>
+        <div class="color-cell" style="background:var(--bs-gray-300);color:var(--bs-dark)">300</div>
+        <div class="color-cell" style="background:var(--bs-gray-400);color:var(--bs-dark)">400</div>
+        <div class="color-cell" style="background:var(--bs-gray-500);color:var(--bs-dark)">500</div>
+        <div class="color-cell" style="background:var(--bs-gray-600);color:white">600</div>
+        <div class="color-cell" style="background:var(--bs-gray-700);color:white">700</div>
+        <div class="color-cell" style="background:var(--bs-gray-800);color:white">800</div>
+        <div class="color-cell" style="background:var(--bs-gray-900);color:white">900</div>
+      </div>
+
+      <h3>Theme colors</h3>
+      <div class="semantic-grid">
+        <div class="sem-card" style="background:var(--bs-primary);color:white">
+          <span class="label">Primary</span><span class="hex">#0D6EFD</span>
+        </div>
+        <div class="sem-card" style="background:var(--bs-secondary);color:white">
+          <span class="label">Secondary</span><span class="hex">#6C757D</span>
+        </div>
+        <div class="sem-card" style="background:var(--bs-success);color:white">
+          <span class="label">Success</span><span class="hex">#198754</span>
+        </div>
+        <div class="sem-card" style="background:var(--bs-danger);color:white">
+          <span class="label">Danger</span><span class="hex">#DC3545</span>
+        </div>
+        <div class="sem-card" style="background:var(--bs-warning);color:var(--bs-dark)">
+          <span class="label">Warning</span><span class="hex">#FFC107</span>
+        </div>
+        <div class="sem-card" style="background:var(--bs-info);color:var(--bs-dark)">
+          <span class="label">Info</span><span class="hex">#0DCAF0</span>
+        </div>
+        <div class="sem-card" style="background:var(--bs-light);color:var(--bs-dark);border:1px solid var(--bs-border-color)">
+          <span class="label">Light</span><span class="hex">#F8F9FA</span>
+        </div>
+        <div class="sem-card" style="background:var(--bs-dark);color:white">
+          <span class="label">Dark</span><span class="hex">#212529</span>
+        </div>
+      </div>
+
+      <h3>Subtle backgrounds (5.3)</h3>
+      <div class="role-grid">
+        <div class="role-chip" style="background:var(--bs-primary-bg-subtle);color:#084298">Primary subtle <code>#CFE2FF</code></div>
+        <div class="role-chip" style="background:var(--bs-success-bg-subtle);color:#0F5132">Success subtle <code>#D1E7DD</code></div>
+        <div class="role-chip" style="background:var(--bs-warning-bg-subtle);color:#664D03">Warning subtle <code>#FFF3CD</code></div>
+        <div class="role-chip" style="background:var(--bs-danger-bg-subtle);color:#842029">Danger subtle <code>#F8D7DA</code></div>
+        <div class="role-chip" style="background:var(--bs-info-bg-subtle);color:#055160">Info subtle <code>#CFF4FC</code></div>
+      </div>
+    </section>
+
+    <section id="typography" data-fidelity="documented">
+      <h2>
+        <span>Typography</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://getbootstrap.com/docs/5.3/content/typography/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--bs-gray-700)">Bootstrap relies on the system native font stack, ensuring fast rendering and OS-native feel without web font requests. Heading and display classes follow a clear modular scale.</p>
+
+      <div class="type-row"><div class="label">.display-1 · 5rem · 300</div><div class="display-1">Build fast.</div></div>
+      <div class="type-row"><div class="label">.display-2 · 4.5rem · 300</div><div class="display-2">Ship faster.</div></div>
+      <div class="type-row"><div class="label">.display-3 · 4rem · 300</div><div class="display-3">Mobile first.</div></div>
+      <div class="type-row"><div class="label">.display-4 · 3.5rem · 300</div><div class="display-4">Responsive grid.</div></div>
+      <div class="type-row"><div class="label">h1 · 2.5rem · 500</div><div class="h1-style">Heading level 1</div></div>
+      <div class="type-row"><div class="label">h2 · 2rem · 500</div><div class="h2-style">Heading level 2</div></div>
+      <div class="type-row"><div class="label">h3 · 1.75rem · 500</div><div class="h3-style">Heading level 3</div></div>
+      <div class="type-row"><div class="label">h4 · 1.5rem · 500</div><div class="h4-style">Heading level 4</div></div>
+      <div class="type-row"><div class="label">h5 · 1.25rem · 500</div><div class="h5-style">Heading level 5</div></div>
+      <div class="type-row"><div class="label">h6 · 1rem · 500</div><div class="h6-style">Heading level 6</div></div>
+      <div class="type-row"><div class="label">.lead · 1.25rem · 300</div><div class="lead">A lead paragraph stands out from regular body text with a slightly larger size and lighter weight.</div></div>
+      <div class="type-row"><div class="label">body · 1rem · 400</div><div class="body-base">Bootstrap defaults to a 16px root size and 1.5 line height. The native font stack picks the best available system font: -apple-system on macOS, Segoe UI on Windows, Roboto on Android.</div></div>
+      <div class="type-row"><div class="label">.small · 0.875rem</div><div class="small">Smaller text for secondary content, footnotes, and dense list items.</div></div>
+      <div class="type-row"><div class="label">code · monospace</div><div class="mono-sample">--bs-primary: #0D6EFD;</div></div>
+    </section>
+
+    <section id="iconography" data-fidelity="documented">
+      <h2>
+        <span>Iconography</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://icons.getbootstrap.com/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--bs-gray-700)">Bootstrap Icons (MIT) is the official open-source SVG library. ~2000 icons in two styles: outlined (default) and filled. The samples below use simplified SVG forms approximating common Bootstrap Icons.</p>
+      <div class="icon-grid">
+        <div class="icon-cell"><svg viewBox="0 0 16 16"><path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146z"/></svg><span>house</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg><span>search</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg><span>person</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 16 16"><path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855a.75.75 0 0 0-.124 1.329l4.995 3.178 1.531 2.406a.5.5 0 0 0 .844-.536L6.637 10.07l7.494-7.494-1.895 4.738 2.728 1.737a.75.75 0 0 0 1.124-.366z"/></svg><span>send</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 16 16"><path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm5 4a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5A.5.5 0 0 1 7 4m-1.496-.854a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708L4 4.293l1.146-1.147a.5.5 0 0 1 .708 0M7 8.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5A.5.5 0 0 1 7 8.5"/></svg><span>list-check</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 16 16"><path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"/><path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0"/></svg><span>clock</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 16 16"><path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492M5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0"/><path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52z"/></svg><span>gear</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 16 16"><path d="M15 12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h1.172a3 3 0 0 0 2.12-.879l.83-.828A1 1 0 0 1 6.827 3h2.344a1 1 0 0 1 .707.293l.828.828A3 3 0 0 0 12.828 5H14a1 1 0 0 1 1 1zM2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4z"/><path d="M8 11a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5m0 1a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7M3 6.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0"/></svg><span>camera</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 16 16"><path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/></svg><span>check</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 16 16"><path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/></svg><span>x</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 16 16"><path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/></svg><span>plus</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 16 16"><path d="M2.678 11.894a1 1 0 0 1 .287.801 11 11 0 0 1-.398 2c1.395-.323 2.247-.697 2.634-.893a1 1 0 0 1 .71-.074A8 8 0 0 0 8 14c3.996 0 7-2.807 7-6 0-3.192-3.004-6-7-6S1 4.808 1 8c0 1.468.617 2.83 1.678 3.894m-.493 3.905a22 22 0 0 1-.713.129c-.2.032-.352-.176-.273-.362a10 10 0 0 0 .244-.637l.003-.01c.248-.72.45-1.548.524-2.319C.743 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7-3.582 7-8 7a9 9 0 0 1-2.347-.306c-.52.263-1.639.742-3.468 1.105"/></svg><span>chat</span></div>
+      </div>
+    </section>
+
+    <section id="buttons" data-fidelity="documented">
+      <h2>
+        <span>Buttons</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://getbootstrap.com/docs/5.3/components/buttons/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--bs-gray-700)">Bootstrap exposes one button per theme color, plus outline variants and a link variant. Default radius 0.375rem, two size modifiers (sm, lg).</p>
+
+      <h3>Theme variants</h3>
+      <div class="button-row">
+        <button class="bs-btn bs-btn--primary">Primary</button>
+        <button class="bs-btn bs-btn--secondary">Secondary</button>
+        <button class="bs-btn bs-btn--success">Success</button>
+        <button class="bs-btn bs-btn--danger">Danger</button>
+        <button class="bs-btn bs-btn--warning">Warning</button>
+        <button class="bs-btn bs-btn--info">Info</button>
+        <button class="bs-btn bs-btn--light">Light</button>
+        <button class="bs-btn bs-btn--dark">Dark</button>
+        <button class="bs-btn bs-btn--link">Link</button>
+      </div>
+
+      <h3>Outline variants</h3>
+      <div class="button-row">
+        <button class="bs-btn bs-btn--outline-primary">Primary</button>
+        <button class="bs-btn bs-btn--outline-secondary">Secondary</button>
+      </div>
+
+      <h3>Sizes</h3>
+      <div class="button-row">
+        <button class="bs-btn bs-btn--primary bs-btn--sm">Small</button>
+        <button class="bs-btn bs-btn--primary">Default</button>
+        <button class="bs-btn bs-btn--primary bs-btn--lg">Large</button>
+      </div>
+
+      <h3>States</h3>
+      <div class="button-row">
+        <button class="bs-btn bs-btn--primary">Enabled</button>
+        <button class="bs-btn bs-btn--primary" style="background:#0B5ED7;border-color:#0A58CA">Hover</button>
+        <button class="bs-btn bs-btn--primary" style="box-shadow:0 0 0 0.25rem rgba(13,110,253,0.25)">Focus</button>
+        <button class="bs-btn bs-btn--primary" disabled>Disabled</button>
+      </div>
+    </section>
+
+    <section id="form" data-fidelity="documented">
+      <h2>
+        <span>Form</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://getbootstrap.com/docs/5.3/forms/overview/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--bs-gray-700)">Form controls share a 0.375rem radius and a focus ring of 0.25rem at 25% opacity. Validation maps to <code>.is-valid</code> and <code>.is-invalid</code> classes.</p>
+
+      <h3>Inputs</h3>
+      <div class="form-grid">
+        <div class="bs-form-group">
+          <label class="bs-form-label" for="bs1">Email address</label>
+          <input class="bs-form-control" type="email" id="bs1" value="hello@example.com">
+          <span class="bs-form-text">We'll never share your email.</span>
+        </div>
+        <div class="bs-form-group">
+          <label class="bs-form-label" for="bs2">Password</label>
+          <input class="bs-form-control" type="password" id="bs2" value="••••••••">
+        </div>
+        <div class="bs-form-group">
+          <label class="bs-form-label" for="bs3">Bio</label>
+          <textarea class="bs-form-control" id="bs3" rows="3">Bootstrap-powered admin dashboard.</textarea>
+        </div>
+        <div class="bs-form-group">
+          <label class="bs-form-label" for="bs4">Country</label>
+          <select class="bs-form-control" id="bs4">
+            <option>Japan</option>
+            <option>United States</option>
+            <option>United Kingdom</option>
+          </select>
+        </div>
+        <div class="bs-form-group">
+          <label class="bs-form-label" for="bs5">Invalid email</label>
+          <input class="bs-form-control is-invalid" type="text" id="bs5" value="invalid@">
+          <span class="bs-invalid-feedback">Please provide a valid email.</span>
+        </div>
+        <div class="bs-form-group">
+          <label class="bs-form-label" for="bs6">Search</label>
+          <input class="bs-form-control" type="search" id="bs6" placeholder="Search components...">
+        </div>
+      </div>
+
+      <h3>Selection controls</h3>
+      <div class="button-row">
+        <label class="bs-form-check"><input type="checkbox" checked>Subscribe to newsletter</label>
+        <label class="bs-form-check"><input type="checkbox">Marketing emails</label>
+        <label class="bs-form-check"><input type="radio" name="r1" checked>Light</label>
+        <label class="bs-form-check"><input type="radio" name="r1">Dark</label>
+        <label class="bs-form-switch"><input type="checkbox" checked><span class="slider"></span></label>
+        <label class="bs-form-switch"><input type="checkbox"><span class="slider"></span></label>
+      </div>
+
+      <h3>Range &amp; file</h3>
+      <div style="max-width:400px;display:flex;flex-direction:column;gap:0.75rem">
+        <input type="range" class="bs-form-range" min="0" max="100" value="60">
+        <input type="file" class="bs-form-control">
+      </div>
+    </section>
+
+    <section id="surfaces" data-fidelity="documented">
+      <h2>
+        <span>Surfaces</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://getbootstrap.com/docs/5.3/components/card/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--bs-gray-700)">Cards are flexible content containers with a header, body, and footer. Modals overlay the page with an inline dialog and backdrop.</p>
+
+      <div class="surface-grid">
+        <div class="bs-card">
+          <div class="card-img"></div>
+          <div class="bs-card-body">
+            <div class="bs-card-title">Card title</div>
+            <p class="bs-card-text">Some quick example text to build on the card title and make up the bulk of the content.</p>
+            <button class="bs-btn bs-btn--primary bs-btn--sm">Go somewhere</button>
+          </div>
+        </div>
+        <div class="bs-card">
+          <div class="bs-card-header">Featured</div>
+          <div class="bs-card-body">
+            <div class="bs-card-title">Special title</div>
+            <p class="bs-card-text">With supporting text below as a natural lead-in to additional content.</p>
+            <button class="bs-btn bs-btn--outline-primary bs-btn--sm">Learn more</button>
+          </div>
+        </div>
+        <div class="bs-card">
+          <div class="bs-card-body">
+            <div class="bs-card-title">Outline only</div>
+            <p class="bs-card-text">Use cards without imagery for high-density information surfaces.</p>
+          </div>
+        </div>
+        <div class="bs-stat">
+          <div class="num">2,847</div>
+          <div class="lbl">Active sessions</div>
+        </div>
+      </div>
+
+      <h3>Modal</h3>
+      <div class="bs-modal">
+        <div class="bs-modal-header">
+          <strong>Confirm action</strong>
+          <button class="bs-btn bs-btn--link" style="padding:0;text-decoration:none;color:var(--bs-gray-600)">×</button>
+        </div>
+        <div class="bs-modal-body">
+          <p style="margin:0;font-size:0.9375rem">This will permanently revert the theme. You can re-import a theme later from the Customize page.</p>
+        </div>
+        <div class="bs-modal-footer">
+          <button class="bs-btn bs-btn--secondary bs-btn--sm">Cancel</button>
+          <button class="bs-btn bs-btn--primary bs-btn--sm">Confirm</button>
+        </div>
+      </div>
+
+      <h3>Dropdown menu</h3>
+      <div class="bs-dropdown">
+        <div class="item">Edit</div>
+        <div class="item">Duplicate</div>
+        <div class="item">Archive</div>
+        <div class="divider"></div>
+        <div class="item" style="color:var(--bs-danger)">Delete</div>
+      </div>
+    </section>
+
+    <section id="feedback" data-fidelity="documented">
+      <h2>
+        <span>Feedback</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://getbootstrap.com/docs/5.3/components/alerts/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+
+      <h3>Alerts</h3>
+      <div class="bs-alert bs-alert--primary"><strong>Heads up!</strong> A new theme is available.</div>
+      <div class="bs-alert bs-alert--success"><strong>Saved.</strong> Your changes are synced.</div>
+      <div class="bs-alert bs-alert--warning"><strong>Warning!</strong> Custom CSS may be overridden on update.</div>
+      <div class="bs-alert bs-alert--danger"><strong>Error.</strong> Couldn't reach the build server.</div>
+      <div class="bs-alert bs-alert--info"><strong>FYI:</strong> Bootstrap 5.3 supports color modes natively.</div>
+
+      <h3>Toast</h3>
+      <div class="bs-toast">
+        <div class="bs-toast-header">
+          <span style="width:8px;height:8px;background:var(--bs-primary);border-radius:50%"></span>
+          <strong style="flex:1">Bootstrap</strong>
+          <span style="font-size:0.75rem;color:var(--bs-gray-600)">2m ago</span>
+        </div>
+        <div class="bs-toast-body">Your build completed in 1.2 seconds.</div>
+      </div>
+
+      <h3>Badges</h3>
+      <div class="bs-chip-row">
+        <span class="bs-pill bs-pill--primary">Primary</span>
+        <span class="bs-pill bs-pill--secondary">Secondary</span>
+        <span class="bs-pill bs-pill--success">Success</span>
+        <span class="bs-pill bs-pill--danger">Danger</span>
+        <span class="bs-pill bs-pill--warning">Warning</span>
+        <span class="bs-pill bs-pill--info">Info</span>
+        <span class="bs-pill bs-pill--light">Light</span>
+        <span class="bs-pill bs-pill--dark">Dark</span>
+      </div>
+
+      <h3>Progress &amp; loading</h3>
+      <div style="display:flex;flex-direction:column;gap:0.75rem;max-width:480px">
+        <div class="bs-progress"><div class="bs-progress-bar" style="width:60%">60%</div></div>
+        <div class="bs-progress"><div class="bs-progress-bar" style="width:25%;background:var(--bs-success)">25%</div></div>
+        <div style="display:flex;gap:0.5rem;align-items:center">
+          <div class="bs-spinner"></div>
+          <span style="font-size:0.875rem;color:var(--bs-gray-600)">Loading...</span>
+        </div>
+        <div><span class="bs-placeholder" style="width:80%"></span></div>
+        <div><span class="bs-placeholder" style="width:60%"></span></div>
+      </div>
+    </section>
+
+    <section id="navigation" data-fidelity="documented">
+      <h2>
+        <span>Navigation</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://getbootstrap.com/docs/5.3/components/navs-tabs/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+
+      <h3>Tabs</h3>
+      <div class="bs-nav-tabs">
+        <button class="bs-nav-tab active">Overview</button>
+        <button class="bs-nav-tab">Components</button>
+        <button class="bs-nav-tab">Utilities</button>
+        <button class="bs-nav-tab">Customize</button>
+      </div>
+
+      <h3>Breadcrumb</h3>
+      <ol class="bs-breadcrumb">
+        <li><a href="#">Home</a></li>
+        <li>/</li>
+        <li><a href="#">Docs</a></li>
+        <li>/</li>
+        <li>Components</li>
+      </ol>
+
+      <h3>Pagination</h3>
+      <div class="bs-pagination">
+        <button>‹</button>
+        <button class="active">1</button>
+        <button>2</button>
+        <button>3</button>
+        <button>4</button>
+        <button>›</button>
+      </div>
+
+      <h3>Navbar</h3>
+      <div class="bs-navbar">
+        <span class="brand">Bootstrap</span>
+        <a href="#">Docs</a>
+        <a href="#">Examples</a>
+        <a href="#">Icons</a>
+        <button class="bs-btn bs-btn--outline-primary bs-btn--sm">Sign in</button>
+      </div>
+    </section>
+
+    <section id="data" data-fidelity="documented">
+      <h2>
+        <span>Data</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://getbootstrap.com/docs/5.3/content/tables/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+
+      <h3>Striped table</h3>
+      <table class="bs-table striped">
+        <thead>
+          <tr><th>#</th><th>Class</th><th>Output</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td><code>.btn-primary</code></td><td>Primary button</td><td>Default emphasis</td></tr>
+          <tr><td>2</td><td><code>.btn-outline-primary</code></td><td>Outline button</td><td>Lower emphasis</td></tr>
+          <tr><td>3</td><td><code>.btn-link</code></td><td>Link button</td><td>Inline action</td></tr>
+          <tr><td>4</td><td><code>.btn-sm</code></td><td>Compact size</td><td>Dense UI</td></tr>
+        </tbody>
+      </table>
+
+      <h3>List group</h3>
+      <ul class="bs-list-group">
+        <li><div class="bs-avatar">A</div><div><strong>Alex Park</strong><div style="font-size:0.8125rem;color:var(--bs-gray-600)">Updated theme · 2m ago</div></div></li>
+        <li><div class="bs-avatar" style="background:var(--bs-success-bg-subtle);color:#0F5132">B</div><div><strong>Beth Lin</strong><div style="font-size:0.8125rem;color:var(--bs-gray-600)">Imported tokens · 14m ago</div></div></li>
+        <li><div class="bs-avatar" style="background:var(--bs-warning-bg-subtle);color:#664D03">C</div><div><strong>Cleo Park</strong><div style="font-size:0.8125rem;color:var(--bs-gray-600)">Created palette · 1h ago</div></div></li>
+      </ul>
+
+      <h3>Definition list</h3>
+      <dl class="bs-kv">
+        <dt>Version</dt><dd>5.3</dd>
+        <dt>License</dt><dd>MIT</dd>
+        <dt>Year</dt><dd>2011 (initial release)</dd>
+        <dt>Generated</dt><dd>2026-05-05</dd>
+      </dl>
+
+      <h3>Empty state</h3>
+      <div class="bs-empty">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><circle cx="9" cy="10" r="0.5" fill="currentColor"/><circle cx="15" cy="10" r="0.5" fill="currentColor"/></svg>
+        <h4 style="margin:0.5rem 0 0.25rem">No themes saved</h4>
+        <p style="font-size:0.875rem;margin:0">Create one from the customize page.</p>
+      </div>
+    </section>
+
+    <section id="layout" data-fidelity="documented">
+      <h2>
+        <span>Layout</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://getbootstrap.com/docs/5.3/layout/grid/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--bs-gray-700)">Bootstrap's flex-based grid uses a 12-column structure with five breakpoints: sm (≥576), md (≥768), lg (≥992), xl (≥1200), xxl (≥1400).</p>
+
+      <h3>12-column grid</h3>
+      <div class="grid-demo">
+        <div style="grid-column:span 12">col-12</div>
+        <div style="grid-column:span 6">col-6</div>
+        <div style="grid-column:span 6">col-6</div>
+        <div style="grid-column:span 4">col-4</div>
+        <div style="grid-column:span 4">col-4</div>
+        <div style="grid-column:span 4">col-4</div>
+        <div style="grid-column:span 3">col-3</div>
+        <div style="grid-column:span 3">col-3</div>
+        <div style="grid-column:span 3">col-3</div>
+        <div style="grid-column:span 3">col-3</div>
+      </div>
+
+      <h3>Spacing scale</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div class="swatch" style="width:4px;height:32px"></div><span class="lbl">1 · 0.25rem</span></div>
+        <div class="scale-item"><div class="swatch" style="width:8px;height:32px"></div><span class="lbl">2 · 0.5rem</span></div>
+        <div class="scale-item"><div class="swatch" style="width:16px;height:32px"></div><span class="lbl">3 · 1rem</span></div>
+        <div class="scale-item"><div class="swatch" style="width:24px;height:32px"></div><span class="lbl">4 · 1.5rem</span></div>
+        <div class="scale-item"><div class="swatch" style="width:48px;height:32px"></div><span class="lbl">5 · 3rem</span></div>
+      </div>
+
+      <h3>Border radius</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:0;background:var(--bs-primary-bg-subtle)"></div><span class="lbl">0</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:0.25rem;background:var(--bs-primary-bg-subtle)"></div><span class="lbl">sm 4</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:0.375rem;background:var(--bs-primary-bg-subtle)"></div><span class="lbl">default 6</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:0.5rem;background:var(--bs-primary-bg-subtle)"></div><span class="lbl">lg 8</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:1rem;background:var(--bs-primary-bg-subtle)"></div><span class="lbl">xl 16</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:50rem;background:var(--bs-primary-bg-subtle)"></div><span class="lbl">pill</span></div>
+      </div>
+
+      <h3>Shadows (3 levels)</h3>
+      <div>
+        <div class="shadow-demo" style="box-shadow:none;border:1px solid var(--bs-border-color)">none</div>
+        <div class="shadow-demo" style="box-shadow:var(--bs-box-shadow-sm)">sm</div>
+        <div class="shadow-demo" style="box-shadow:var(--bs-box-shadow)">default</div>
+        <div class="shadow-demo" style="box-shadow:var(--bs-box-shadow-lg)">lg</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="ds-footer">
+    <h3>Sources</h3>
+    <ul>
+      <li><a href="https://getbootstrap.com" target="_blank" rel="noopener">https://getbootstrap.com</a></li>
+      <li><a href="https://getbootstrap.com/docs/5.3/customize/color/" target="_blank" rel="noopener">https://getbootstrap.com/docs/5.3/customize/color/</a></li>
+      <li><a href="https://getbootstrap.com/docs/5.3/content/typography/" target="_blank" rel="noopener">https://getbootstrap.com/docs/5.3/content/typography/</a></li>
+      <li><a href="https://icons.getbootstrap.com/" target="_blank" rel="noopener">https://icons.getbootstrap.com/</a></li>
+      <li><a href="https://getbootstrap.com/docs/5.3/components/buttons/" target="_blank" rel="noopener">https://getbootstrap.com/docs/5.3/components/buttons/</a></li>
+      <li><a href="https://getbootstrap.com/docs/5.3/forms/overview/" target="_blank" rel="noopener">https://getbootstrap.com/docs/5.3/forms/overview/</a></li>
+      <li><a href="https://getbootstrap.com/docs/5.3/components/card/" target="_blank" rel="noopener">https://getbootstrap.com/docs/5.3/components/card/</a></li>
+      <li><a href="https://getbootstrap.com/docs/5.3/components/alerts/" target="_blank" rel="noopener">https://getbootstrap.com/docs/5.3/components/alerts/</a></li>
+      <li><a href="https://getbootstrap.com/docs/5.3/components/navs-tabs/" target="_blank" rel="noopener">https://getbootstrap.com/docs/5.3/components/navs-tabs/</a></li>
+      <li><a href="https://getbootstrap.com/docs/5.3/content/tables/" target="_blank" rel="noopener">https://getbootstrap.com/docs/5.3/content/tables/</a></li>
+      <li><a href="https://getbootstrap.com/docs/5.3/layout/grid/" target="_blank" rel="noopener">https://getbootstrap.com/docs/5.3/layout/grid/</a></li>
+    </ul>
+    <p class="license-note">This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Bootstrap Team. Bootstrap 5 and related trademarks belong to Bootstrap Team. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</p>
+    <p class="meta-note">Reproduction date: 2026-05-05 · sourceStatus: verified · fidelity: documented</p>
+  </footer>
+</body>
+</html>

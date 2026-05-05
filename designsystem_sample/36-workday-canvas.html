@@ -1,0 +1,1463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Workday Canvas — Design System Reference</title>
+  <script id="ds-meta" type="application/json">
+{"id":"36-workday-canvas","fileSlug":"36-workday-canvas","schemaVersion":"1"}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Workday Canvas — Brand */
+      --wd-blue-100: #D8E5F1;
+      --wd-blue-200: #B5CDE6;
+      --wd-blue-300: #79A7D7;
+      --wd-blue-400: #4082C6;
+      --wd-blue-500: #0875E1;
+      --wd-blue-600: #0660B7;
+      --wd-blue-700: #1F4880;
+      --wd-blue-800: #143557;
+      --wd-blue-900: #0A2237;
+
+      /* Surface */
+      --wd-surface: #FAFBFC;
+      --wd-surface-strong: #FFFFFF;
+      --wd-body-bg: #F0F5F9;
+      --wd-soap-100: #F1F2F4;
+      --wd-soap-200: #E8EAED;
+      --wd-soap-300: #D4D7DC;
+      --wd-soap-400: #BBBFC4;
+      --wd-soap-500: #8D9295;
+
+      /* Text */
+      --wd-text-1: #2A2D32;
+      --wd-text-2: #58595B;
+      --wd-text-3: #8D9295;
+      --wd-text-link: #0875E1;
+      --wd-text-inverse: #FFFFFF;
+
+      /* Semantic */
+      --wd-success: #3D811A;
+      --wd-success-bg: #E0EFD3;
+      --wd-warning: #A6620C;
+      --wd-warning-bg: #FBE6CC;
+      --wd-error: #D8202D;
+      --wd-error-bg: #F8DADD;
+      --wd-info: #0875E1;
+      --wd-info-bg: #D8E5F1;
+
+      /* Type */
+      --wd-font: 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+      --wd-mono: 'Roboto Mono', ui-monospace, monospace;
+
+      /* Shape — Workday is conservative, enterprise-grade 4px */
+      --wd-radius-0: 0;
+      --wd-radius-s: 2px;
+      --wd-radius: 4px;
+      --wd-radius-m: 6px;
+      --wd-radius-l: 8px;
+      --wd-radius-pill: 999px;
+
+      /* Spacing — 4dp scale */
+      --wd-s-2: 4px;
+      --wd-s-3: 8px;
+      --wd-s-4: 12px;
+      --wd-s-5: 16px;
+      --wd-s-6: 24px;
+      --wd-s-7: 32px;
+      --wd-s-8: 48px;
+      --wd-s-9: 64px;
+
+      /* Elevation — calm enterprise shadows */
+      --wd-elev-1: 0 1px 2px rgba(20,53,87,0.08), 0 1px 3px rgba(20,53,87,0.06);
+      --wd-elev-2: 0 2px 4px rgba(20,53,87,0.10), 0 4px 8px rgba(20,53,87,0.06);
+      --wd-elev-3: 0 4px 8px rgba(20,53,87,0.12), 0 8px 16px rgba(20,53,87,0.08);
+      --wd-elev-4: 0 8px 16px rgba(20,53,87,0.14), 0 16px 32px rgba(20,53,87,0.10);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--wd-font);
+      background: var(--wd-body-bg);
+      color: var(--wd-text-1);
+      line-height: 1.5;
+      font-size: 14px;
+      -webkit-font-smoothing: antialiased;
+    }
+    code, kbd, pre { font-family: var(--wd-mono); font-size: 13px; }
+
+    /* Header */
+    .ds-header {
+      background: linear-gradient(180deg, var(--wd-blue-700) 0%, var(--wd-blue-800) 100%);
+      color: var(--wd-text-inverse);
+      padding: var(--wd-s-8) var(--wd-s-7) var(--wd-s-7);
+      border-bottom: 3px solid var(--wd-blue-500);
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--wd-s-3);
+      color: var(--wd-blue-100);
+      text-decoration: none;
+      padding: 6px 12px;
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: var(--wd-radius);
+      font-size: 13px;
+      font-weight: 500;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .back-link:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.5); }
+
+    .ds-header h1 {
+      font-size: 40px;
+      line-height: 48px;
+      font-weight: 500;
+      margin: var(--wd-s-5) 0 var(--wd-s-4);
+      letter-spacing: -0.4px;
+    }
+    .ds-header .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--wd-s-3);
+      align-items: center;
+      margin-bottom: var(--wd-s-4);
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 10px;
+      border-radius: var(--wd-radius-pill);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      border: 1px solid rgba(255,255,255,0.25);
+      background: rgba(255,255,255,0.1);
+      color: white;
+    }
+    .badge.kind-ds { background: var(--wd-blue-500); color: white; border-color: transparent; }
+    .badge.fidelity-documented { background: var(--wd-success-bg); color: #1A4710; border-color: transparent; }
+    .badge.fidelity-approximated { background: var(--wd-warning-bg); color: #5A3508; border-color: transparent; }
+    .badge.fidelity-inspired { background: #ECDCFB; color: #4A1F7F; border-color: transparent; }
+    .badge.source-verified { background: var(--wd-info-bg); color: var(--wd-blue-700); border-color: transparent; }
+    .badge.source-unverified { background: var(--wd-soap-200); color: var(--wd-text-2); border-color: transparent; }
+    .ds-header a[href*="canvas.workday"] {
+      color: white;
+      text-decoration: none;
+      padding: 4px 12px;
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: var(--wd-radius);
+      font-size: 12px;
+      background: rgba(255,255,255,0.08);
+    }
+    .ds-header a[href*="canvas.workday"]:hover { background: rgba(255,255,255,0.16); }
+    .tagline {
+      font-size: 18px;
+      line-height: 28px;
+      max-width: 720px;
+      margin: var(--wd-s-5) 0 0;
+      color: var(--wd-blue-100);
+      font-weight: 400;
+    }
+
+    /* TOC */
+    .toc {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: var(--wd-surface-strong);
+      border-bottom: 1px solid var(--wd-soap-200);
+      box-shadow: var(--wd-elev-1);
+    }
+    .toc ul {
+      list-style: none;
+      margin: 0;
+      padding: var(--wd-s-3) var(--wd-s-7);
+      display: flex;
+      gap: 2px;
+      overflow-x: auto;
+      max-width: 100%;
+    }
+    .toc a {
+      display: inline-block;
+      padding: 8px 14px;
+      color: var(--wd-text-2);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      white-space: nowrap;
+      border-radius: var(--wd-radius);
+      transition: all 0.15s;
+    }
+    .toc a:hover { background: var(--wd-blue-100); color: var(--wd-blue-700); }
+
+    main {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: var(--wd-s-7);
+    }
+
+    section {
+      background: var(--wd-surface-strong);
+      border: 1px solid var(--wd-soap-200);
+      border-radius: var(--wd-radius-l);
+      padding: var(--wd-s-7);
+      margin-bottom: var(--wd-s-6);
+      box-shadow: var(--wd-elev-1);
+    }
+    section h2 {
+      display: flex;
+      align-items: center;
+      gap: var(--wd-s-4);
+      flex-wrap: wrap;
+      font-size: 24px;
+      line-height: 32px;
+      font-weight: 500;
+      margin: 0 0 var(--wd-s-5);
+      color: var(--wd-text-1);
+      padding-bottom: var(--wd-s-4);
+      border-bottom: 1px solid var(--wd-soap-200);
+    }
+    .source-link {
+      font-size: 12px;
+      color: var(--wd-blue-500);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .source-link:hover { text-decoration: underline; }
+    h3 {
+      font-size: 16px;
+      line-height: 24px;
+      font-weight: 500;
+      margin: var(--wd-s-6) 0 var(--wd-s-4);
+      color: var(--wd-text-1);
+    }
+    h4 {
+      font-size: 13px;
+      line-height: 20px;
+      font-weight: 500;
+      margin: var(--wd-s-4) 0 var(--wd-s-3);
+      color: var(--wd-text-2);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    p { margin: 0 0 var(--wd-s-4); }
+
+    /* Brand */
+    #brand .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--wd-s-4);
+      padding: var(--wd-s-5) var(--wd-s-6);
+      background: var(--wd-blue-700);
+      border-radius: var(--wd-radius);
+      color: white;
+      font-size: 24px;
+      font-weight: 500;
+      letter-spacing: -0.2px;
+    }
+    #brand .brand-mark svg { width: 36px; height: 36px; }
+    #brand .pillars {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--wd-s-5);
+      margin-top: var(--wd-s-6);
+    }
+    #brand .pillar {
+      padding: var(--wd-s-5);
+      background: var(--wd-soap-100);
+      border-left: 3px solid var(--wd-blue-500);
+      border-radius: var(--wd-radius);
+    }
+    #brand .pillar h4 { margin-top: 0; color: var(--wd-blue-700); }
+
+    /* Color */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(9, 1fr);
+      gap: 2px;
+      margin-bottom: var(--wd-s-5);
+    }
+    .color-cell {
+      aspect-ratio: 1.2;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 8px;
+      font-size: 10px;
+      font-family: var(--wd-mono);
+      border-radius: 0;
+    }
+    .color-cell:first-child { border-radius: var(--wd-radius) 0 0 var(--wd-radius); }
+    .color-cell:last-child { border-radius: 0 var(--wd-radius) var(--wd-radius) 0; }
+    .color-cell .hex { opacity: 0.85; font-size: 9px; }
+
+    .semantic-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
+      gap: var(--wd-s-4);
+    }
+    .sem-card {
+      padding: var(--wd-s-5);
+      border-radius: var(--wd-radius);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      border-left: 3px solid currentColor;
+    }
+    .sem-card .label { font-size: 13px; font-weight: 500; }
+    .sem-card .hex { font-family: var(--wd-mono); font-size: 11px; opacity: 0.9; }
+
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--wd-s-3);
+      margin-bottom: var(--wd-s-4);
+    }
+    .role-chip {
+      padding: var(--wd-s-4) var(--wd-s-5);
+      border-radius: var(--wd-radius);
+      font-size: 13px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .role-chip code { font-size: 11px; opacity: 0.85; }
+
+    /* Typography */
+    .type-row {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: var(--wd-s-5);
+      padding: var(--wd-s-4) 0;
+      border-bottom: 1px solid var(--wd-soap-200);
+      align-items: baseline;
+    }
+    .type-row:last-child { border-bottom: 0; }
+    .type-row .label {
+      font-family: var(--wd-mono);
+      font-size: 11px;
+      color: var(--wd-text-3);
+    }
+    .display-l { font-size: 56px; line-height: 64px; font-weight: 500; letter-spacing: -0.6px; }
+    .display-m { font-size: 40px; line-height: 48px; font-weight: 500; letter-spacing: -0.4px; }
+    .display-s { font-size: 32px; line-height: 40px; font-weight: 500; letter-spacing: -0.3px; }
+    .heading-l { font-size: 28px; line-height: 36px; font-weight: 500; }
+    .heading-m { font-size: 24px; line-height: 32px; font-weight: 500; }
+    .heading-s { font-size: 20px; line-height: 28px; font-weight: 500; }
+    .title-l { font-size: 18px; line-height: 24px; font-weight: 500; }
+    .title-m { font-size: 16px; line-height: 24px; font-weight: 500; }
+    .title-s { font-size: 14px; line-height: 20px; font-weight: 500; }
+    .body-l { font-size: 16px; line-height: 24px; }
+    .body-m { font-size: 14px; line-height: 20px; }
+    .body-s { font-size: 12px; line-height: 16px; }
+    .caption { font-size: 12px; line-height: 16px; color: var(--wd-text-3); }
+    .mono-sample { font-family: var(--wd-mono); font-size: 13px; color: var(--wd-text-2); }
+
+    /* Iconography */
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(80px,1fr));
+      gap: var(--wd-s-4);
+    }
+    .icon-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: var(--wd-s-4);
+      background: var(--wd-soap-100);
+      border-radius: var(--wd-radius);
+      border: 1px solid transparent;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .icon-cell:hover { border-color: var(--wd-blue-300); background: var(--wd-blue-100); }
+    .icon-cell svg { width: 24px; height: 24px; stroke: var(--wd-text-2); }
+    .icon-cell span { font-size: 11px; color: var(--wd-text-3); }
+
+    /* Buttons */
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--wd-s-4);
+      align-items: center;
+      margin-bottom: var(--wd-s-4);
+    }
+    .wd-btn {
+      font-family: var(--wd-font);
+      font-size: 14px;
+      font-weight: 500;
+      padding: 8px 20px;
+      border-radius: var(--wd-radius);
+      border: 1px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      height: 36px;
+      transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
+      letter-spacing: 0.1px;
+    }
+    .wd-btn--primary { background: var(--wd-blue-500); color: white; }
+    .wd-btn--primary:hover { background: var(--wd-blue-600); }
+    .wd-btn--primary:focus-visible { outline: 2px solid var(--wd-blue-700); outline-offset: 2px; }
+    .wd-btn--primary:disabled { background: var(--wd-soap-300); color: var(--wd-text-3); cursor: not-allowed; }
+
+    .wd-btn--secondary { background: white; color: var(--wd-blue-500); border-color: var(--wd-blue-500); }
+    .wd-btn--secondary:hover { background: var(--wd-blue-100); }
+
+    .wd-btn--tertiary { background: transparent; color: var(--wd-blue-500); padding: 8px 12px; }
+    .wd-btn--tertiary:hover { background: var(--wd-soap-100); }
+
+    .wd-btn--inverse { background: white; color: var(--wd-blue-700); }
+    .wd-btn--inverse:hover { background: var(--wd-soap-100); }
+
+    .wd-btn--delete { background: var(--wd-error); color: white; }
+    .wd-btn--delete:hover { background: #B81B25; }
+
+    .wd-btn--icon { width: 36px; height: 36px; padding: 0; justify-content: center; background: transparent; color: var(--wd-text-2); border-color: transparent; }
+    .wd-btn--icon:hover { background: var(--wd-soap-100); color: var(--wd-blue-500); }
+
+    .wd-btn--sm { height: 28px; padding: 4px 14px; font-size: 13px; }
+    .wd-btn--lg { height: 44px; padding: 12px 24px; font-size: 15px; }
+
+    /* Form */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+      gap: var(--wd-s-5);
+    }
+    .wd-field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .wd-field .wd-label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--wd-text-2);
+    }
+    .wd-field .wd-required { color: var(--wd-error); margin-left: 2px; }
+    .wd-input {
+      font-family: var(--wd-font);
+      font-size: 14px;
+      padding: 8px 12px;
+      border: 1px solid var(--wd-soap-300);
+      border-radius: var(--wd-radius);
+      background: white;
+      color: var(--wd-text-1);
+      height: 36px;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      width: 100%;
+    }
+    .wd-input:hover { border-color: var(--wd-soap-500); }
+    .wd-input:focus { border-color: var(--wd-blue-500); box-shadow: 0 0 0 2px var(--wd-blue-100); }
+    .wd-input:disabled { background: var(--wd-soap-100); color: var(--wd-text-3); cursor: not-allowed; }
+    .wd-input--error { border-color: var(--wd-error); }
+    .wd-input--error:focus { border-color: var(--wd-error); box-shadow: 0 0 0 2px var(--wd-error-bg); }
+
+    textarea.wd-input { min-height: 80px; resize: vertical; height: auto; padding: 8px 12px; }
+    select.wd-input { appearance: none; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%2358595B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>"); background-repeat: no-repeat; background-position: right 8px center; padding-right: 32px; }
+
+    .wd-helper { font-size: 12px; color: var(--wd-text-3); }
+    .wd-error-msg { font-size: 12px; color: var(--wd-error); display: inline-flex; align-items: center; gap: 4px; }
+
+    .wd-checkbox, .wd-radio {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .wd-checkbox input, .wd-radio input {
+      width: 18px; height: 18px;
+      accent-color: var(--wd-blue-500);
+    }
+
+    .wd-switch {
+      position: relative; display: inline-block; width: 44px; height: 24px;
+    }
+    .wd-switch input { opacity: 0; width: 0; height: 0; }
+    .wd-switch .slider {
+      position: absolute; cursor: pointer; inset: 0;
+      background: var(--wd-soap-400);
+      border-radius: 999px;
+      transition: 0.15s;
+    }
+    .wd-switch .slider::before {
+      content: ''; position: absolute;
+      width: 18px; height: 18px;
+      left: 3px; top: 3px;
+      background: white;
+      border-radius: 50%;
+      transition: 0.15s;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    }
+    .wd-switch input:checked + .slider { background: var(--wd-blue-500); }
+    .wd-switch input:checked + .slider::before { transform: translateX(20px); }
+
+    .wd-slider { width: 100%; accent-color: var(--wd-blue-500); }
+
+    /* Surfaces */
+    .surface-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
+      gap: var(--wd-s-5);
+    }
+    .wd-card {
+      background: white;
+      border: 1px solid var(--wd-soap-200);
+      border-radius: var(--wd-radius-l);
+      padding: var(--wd-s-5);
+      transition: box-shadow 0.15s;
+    }
+    .wd-card:hover { box-shadow: var(--wd-elev-2); }
+    .wd-card--elevated { box-shadow: var(--wd-elev-2); border-color: transparent; }
+    .wd-card--accent { border-top: 4px solid var(--wd-blue-500); }
+    .wd-card .media { height: 120px; background: linear-gradient(135deg, var(--wd-blue-300), var(--wd-blue-500)); border-radius: var(--wd-radius); margin-bottom: var(--wd-s-4); }
+    .wd-card h4 { margin: 0 0 4px; color: var(--wd-text-1); font-size: 16px; text-transform: none; letter-spacing: 0; }
+    .wd-card p { font-size: 13px; color: var(--wd-text-2); margin: 0; }
+    .wd-stat { padding: var(--wd-s-5); background: linear-gradient(135deg, var(--wd-blue-700), var(--wd-blue-500)); border-radius: var(--wd-radius-l); color: white; }
+    .wd-stat .num { font-size: 32px; font-weight: 500; line-height: 1; }
+    .wd-stat .lbl { font-size: 12px; opacity: 0.9; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    .wd-modal {
+      background: white;
+      padding: var(--wd-s-6);
+      border-radius: var(--wd-radius-l);
+      box-shadow: var(--wd-elev-4);
+      max-width: 480px;
+      border-top: 4px solid var(--wd-blue-500);
+    }
+
+    .wd-popup {
+      background: white;
+      border: 1px solid var(--wd-soap-200);
+      border-radius: var(--wd-radius);
+      box-shadow: var(--wd-elev-2);
+      padding: 6px 0;
+      width: 200px;
+    }
+    .wd-popup .item { padding: 8px 16px; font-size: 13px; cursor: pointer; }
+    .wd-popup .item:hover { background: var(--wd-soap-100); color: var(--wd-blue-500); }
+
+    /* Feedback */
+    .wd-banner {
+      display: flex;
+      gap: var(--wd-s-4);
+      padding: var(--wd-s-4) var(--wd-s-5);
+      border-left: 4px solid;
+      border-radius: var(--wd-radius);
+      margin-bottom: var(--wd-s-3);
+      font-size: 13px;
+      align-items: flex-start;
+    }
+    .wd-banner--info { background: var(--wd-info-bg); border-color: var(--wd-info); color: var(--wd-blue-700); }
+    .wd-banner--success { background: var(--wd-success-bg); border-color: var(--wd-success); color: #1A4710; }
+    .wd-banner--warn { background: var(--wd-warning-bg); border-color: var(--wd-warning); color: #5A3508; }
+    .wd-banner--error { background: var(--wd-error-bg); border-color: var(--wd-error); color: #7B1218; }
+
+    .wd-toast {
+      background: var(--wd-blue-800);
+      color: white;
+      padding: 12px 16px;
+      border-radius: var(--wd-radius);
+      box-shadow: var(--wd-elev-3);
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 13px;
+    }
+    .wd-toast button { background: transparent; color: var(--wd-blue-200); border: 0; font-weight: 500; cursor: pointer; }
+
+    .wd-pill-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .wd-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: var(--wd-radius-pill);
+      border: 1px solid var(--wd-soap-300);
+      background: white;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--wd-text-2);
+    }
+    .wd-pill--blue { background: var(--wd-blue-100); color: var(--wd-blue-700); border-color: transparent; }
+    .wd-pill--success { background: var(--wd-success-bg); color: #1A4710; border-color: transparent; }
+    .wd-pill--warn { background: var(--wd-warning-bg); color: #5A3508; border-color: transparent; }
+    .wd-pill--error { background: var(--wd-error-bg); color: #7B1218; border-color: transparent; }
+    .wd-pill--solid { background: var(--wd-blue-500); color: white; border-color: transparent; }
+
+    .wd-status-indicator {
+      display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--wd-text-2);
+    }
+    .wd-status-indicator .dot { width: 8px; height: 8px; border-radius: 50%; }
+
+    .wd-progress {
+      width: 100%; height: 8px;
+      background: var(--wd-soap-200);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .wd-progress::after {
+      content: ''; display: block;
+      height: 100%; width: 65%;
+      background: var(--wd-blue-500);
+      transition: width 0.3s;
+    }
+    .wd-skeleton {
+      height: 14px;
+      background: linear-gradient(90deg, var(--wd-soap-200), var(--wd-soap-100), var(--wd-soap-200));
+      background-size: 200% 100%;
+      border-radius: var(--wd-radius);
+      animation: wd-shimmer 1.5s infinite;
+    }
+    @keyframes wd-shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+    .wd-spinner {
+      width: 28px; height: 28px;
+      border: 3px solid var(--wd-soap-200);
+      border-top-color: var(--wd-blue-500);
+      border-radius: 50%;
+      animation: wd-spin 0.9s linear infinite;
+    }
+    @keyframes wd-spin { to { transform: rotate(360deg); } }
+
+    /* Navigation */
+    .wd-tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--wd-soap-200);
+      margin-bottom: var(--wd-s-4);
+    }
+    .wd-tab {
+      padding: var(--wd-s-4) var(--wd-s-5);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--wd-text-2);
+      border-bottom: 3px solid transparent;
+      cursor: pointer;
+      margin-bottom: -1px;
+    }
+    .wd-tab:hover { color: var(--wd-blue-500); }
+    .wd-tab.active { color: var(--wd-blue-500); border-bottom-color: var(--wd-blue-500); }
+
+    .wd-breadcrumb { display: flex; gap: 6px; align-items: center; font-size: 13px; color: var(--wd-text-2); }
+    .wd-breadcrumb a { color: var(--wd-blue-500); text-decoration: none; }
+    .wd-breadcrumb a:hover { text-decoration: underline; }
+
+    .wd-pagination { display: flex; gap: 4px; align-items: center; }
+    .wd-pagination button {
+      min-width: 32px; height: 32px;
+      border-radius: var(--wd-radius);
+      border: 1px solid var(--wd-soap-200);
+      background: white;
+      color: var(--wd-text-1);
+      cursor: pointer;
+      font-family: var(--wd-font);
+      font-size: 13px;
+      padding: 0 8px;
+    }
+    .wd-pagination button.active { background: var(--wd-blue-500); color: white; border-color: var(--wd-blue-500); }
+    .wd-pagination button:hover:not(.active) { background: var(--wd-soap-100); border-color: var(--wd-soap-300); }
+
+    .wd-stepper { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+    .wd-stepper .step { display: inline-flex; align-items: center; gap: 8px; }
+    .wd-stepper .num {
+      width: 24px; height: 24px; border-radius: 50%;
+      background: var(--wd-soap-200); color: var(--wd-text-2);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 500;
+    }
+    .wd-stepper .num.active { background: var(--wd-blue-500); color: white; }
+    .wd-stepper .num.done { background: var(--wd-success); color: white; }
+    .wd-stepper .line { flex: 1; height: 1px; background: var(--wd-soap-300); min-width: 24px; }
+
+    .wd-sidebar {
+      background: white;
+      border: 1px solid var(--wd-soap-200);
+      border-radius: var(--wd-radius);
+      padding: 8px;
+      width: 240px;
+    }
+    .wd-sidebar a {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 12px;
+      border-radius: var(--wd-radius);
+      color: var(--wd-text-1);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .wd-sidebar a.active { background: var(--wd-blue-100); color: var(--wd-blue-700); border-left: 3px solid var(--wd-blue-500); padding-left: 9px; }
+    .wd-sidebar a:hover:not(.active) { background: var(--wd-soap-100); }
+
+    .wd-topbar {
+      display: flex; align-items: center; gap: 16px;
+      padding: 8px 16px;
+      background: white;
+      border-bottom: 1px solid var(--wd-soap-200);
+      border-radius: var(--wd-radius);
+      box-shadow: var(--wd-elev-1);
+    }
+    .wd-topbar .brand-mini { font-weight: 500; color: var(--wd-blue-700); display: inline-flex; align-items: center; gap: 8px; }
+
+    .wd-menu {
+      background: white;
+      border: 1px solid var(--wd-soap-200);
+      border-radius: var(--wd-radius);
+      box-shadow: var(--wd-elev-2);
+      padding: 6px 0;
+      width: 200px;
+    }
+    .wd-menu .item { padding: 8px 16px; font-size: 13px; cursor: pointer; }
+    .wd-menu .item:hover { background: var(--wd-soap-100); color: var(--wd-blue-500); }
+
+    /* Data */
+    table.wd-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      border: 1px solid var(--wd-soap-200);
+      border-radius: var(--wd-radius);
+      overflow: hidden;
+    }
+    table.wd-table th {
+      background: var(--wd-soap-100);
+      text-align: left;
+      padding: 10px 14px;
+      font-weight: 500;
+      color: var(--wd-text-2);
+      border-bottom: 1px solid var(--wd-soap-200);
+      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: 0.4px;
+    }
+    table.wd-table td {
+      text-align: left;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--wd-soap-200);
+      color: var(--wd-text-1);
+    }
+    table.wd-table tr:last-child td { border-bottom: 0; }
+    table.wd-table tr:hover td { background: var(--wd-soap-100); }
+
+    .wd-list { list-style: none; padding: 0; margin: 0; border: 1px solid var(--wd-soap-200); border-radius: var(--wd-radius); }
+    .wd-list li {
+      padding: 12px 16px;
+      display: flex; gap: 12px; align-items: center;
+      border-bottom: 1px solid var(--wd-soap-200);
+      background: white;
+    }
+    .wd-list li:last-child { border-bottom: 0; }
+    .wd-list li:hover { background: var(--wd-soap-100); }
+
+    .wd-kv { display: grid; grid-template-columns: 160px 1fr; gap: 8px 12px; font-size: 13px; }
+    .wd-kv dt { color: var(--wd-text-2); font-weight: 500; }
+    .wd-kv dd { margin: 0; color: var(--wd-text-1); }
+
+    .wd-avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--wd-blue-700);
+      color: white;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    .wd-empty {
+      text-align: center;
+      padding: var(--wd-s-8) var(--wd-s-5);
+      color: var(--wd-text-3);
+    }
+    .wd-empty svg { width: 48px; height: 48px; opacity: 0.4; margin-bottom: 8px; }
+    .wd-empty h4 { color: var(--wd-text-2); text-transform: none; letter-spacing: 0; font-size: 16px; }
+
+    /* Layout */
+    .grid-demo {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 8px;
+      background: var(--wd-soap-100);
+      padding: 12px;
+      border-radius: var(--wd-radius);
+    }
+    .grid-demo > div {
+      background: var(--wd-blue-100);
+      color: var(--wd-blue-700);
+      padding: 10px;
+      border-radius: var(--wd-radius-s);
+      font-size: 12px;
+      font-family: var(--wd-mono);
+      text-align: center;
+      font-weight: 500;
+    }
+
+    .scale-row {
+      display: flex;
+      gap: var(--wd-s-4);
+      flex-wrap: wrap;
+      align-items: flex-end;
+      margin-bottom: var(--wd-s-5);
+    }
+    .scale-item {
+      display: flex; flex-direction: column; gap: 6px;
+      align-items: center;
+    }
+    .scale-item .swatch { background: var(--wd-blue-500); }
+    .scale-item .lbl { font-size: 11px; font-family: var(--wd-mono); color: var(--wd-text-3); }
+
+    .shadow-demo {
+      width: 80px; height: 80px;
+      background: white;
+      border-radius: var(--wd-radius);
+      display: inline-flex; align-items: center; justify-content: center;
+      margin: 8px 16px 16px 8px;
+      font-size: 11px; font-family: var(--wd-mono); color: var(--wd-text-3);
+    }
+
+    /* Footer */
+    .ds-footer {
+      background: var(--wd-blue-800);
+      padding: var(--wd-s-7);
+      margin-top: var(--wd-s-8);
+      color: var(--wd-blue-100);
+    }
+    .ds-footer h3 { margin-top: 0; color: white; }
+    .ds-footer ul { padding-left: 20px; }
+    .ds-footer li { margin-bottom: 4px; word-break: break-all; font-size: 12px; }
+    .ds-footer a { color: var(--wd-blue-200); text-decoration: none; }
+    .ds-footer a:hover { text-decoration: underline; color: white; }
+    .license-note { font-size: 12px; color: var(--wd-blue-200); margin-top: var(--wd-s-5); opacity: 0.85; }
+    .meta-note { font-size: 11px; color: var(--wd-blue-300); font-family: var(--wd-mono); margin-top: var(--wd-s-3); }
+
+    @media (max-width: 720px) {
+      .ds-header h1 { font-size: 28px; line-height: 36px; }
+      main { padding: var(--wd-s-5); }
+      section { padding: var(--wd-s-5); }
+      .type-row { grid-template-columns: 1fr; }
+      .color-grid { grid-template-columns: repeat(5, 1fr); }
+      .wd-kv { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="ds-header">
+    <a href="index.html" class="back-link">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Catalog
+    </a>
+    <h1>Workday Canvas</h1>
+    <div class="meta">
+      <span class="badge kind-ds">design-system</span>
+      <span class="badge fidelity-approximated">approximated</span>
+      <span class="badge source-unverified">source: unverified</span>
+      <a href="https://canvas.workday.com" target="_blank" rel="noopener">Official ↗</a>
+    </div>
+    <p class="tagline">Workday's enterprise HR and finance design system. Calm blue tokens, conservative 4px corners, and dense table-driven layouts built for finance, payroll, and people-management workflows.</p>
+  </header>
+
+  <nav class="toc" aria-label="Table of contents">
+    <ul>
+      <li><a href="#brand">Brand</a></li>
+      <li><a href="#color">Color</a></li>
+      <li><a href="#typography">Typography</a></li>
+      <li><a href="#iconography">Iconography</a></li>
+      <li><a href="#buttons">Buttons</a></li>
+      <li><a href="#form">Form</a></li>
+      <li><a href="#surfaces">Surfaces</a></li>
+      <li><a href="#feedback">Feedback</a></li>
+      <li><a href="#navigation">Navigation</a></li>
+      <li><a href="#data">Data</a></li>
+      <li><a href="#layout">Layout</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="brand" data-fidelity="approximated">
+      <h2>
+        <span>Brand</span>
+        <span class="badge fidelity-approximated">approximated</span>
+      </h2>
+      <div class="brand-mark">
+        <svg viewBox="0 0 36 36" fill="none">
+          <rect x="3" y="3" width="30" height="30" rx="4" fill="white" opacity="0.15"/>
+          <path d="M9 12 L13 24 L18 14 L23 24 L27 12" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+        Canvas
+      </div>
+      <p style="margin-top: 24px; max-width: 720px; font-size: 15px; color: var(--wd-text-2);">
+        Canvas is Workday's design system for enterprise HR, finance, and operations products. The system favors conservative 4px corners, calm blue tokens, and dense data-grid layouts that work at scale across payroll, HCM, and ledger surfaces.
+      </p>
+      <div class="pillars">
+        <div class="pillar">
+          <h4>Trustworthy</h4>
+          <p style="font-size:13px;color:var(--wd-text-2);margin:0">Conservative shapes and saturated blues signal reliability for finance-grade workflows.</p>
+        </div>
+        <div class="pillar">
+          <h4>Efficient</h4>
+          <p style="font-size:13px;color:var(--wd-text-2);margin:0">Dense tables, batch actions, and inline editing keep payroll and ledger work fast.</p>
+        </div>
+        <div class="pillar">
+          <h4>Inclusive</h4>
+          <p style="font-size:13px;color:var(--wd-text-2);margin:0">All token pairs target WCAG AA, with high-contrast variants for sensitive views.</p>
+        </div>
+        <div class="pillar">
+          <h4>Consistent</h4>
+          <p style="font-size:13px;color:var(--wd-text-2);margin:0">Shared tokens unify React, iOS, and Android surfaces across the Workday suite.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="color" data-fidelity="documented">
+      <h2>
+        <span>Color</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://canvas.workday.com/tokens/color" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--wd-text-2)">Canvas Blue is the dominant brand hue, supported by a calm Soap neutral ramp. The 9-step blue ramp spans 100 - 900 with 500 as the primary action color and 700 as the deep brand tone.</p>
+
+      <h3>Blue scale</h3>
+      <div class="color-grid">
+        <div class="color-cell" style="background:var(--wd-blue-100);color:var(--wd-blue-900)">100<span class="hex">#D8E5F1</span></div>
+        <div class="color-cell" style="background:var(--wd-blue-200);color:var(--wd-blue-900)">200<span class="hex">#B5CDE6</span></div>
+        <div class="color-cell" style="background:var(--wd-blue-300);color:var(--wd-blue-900)">300<span class="hex">#79A7D7</span></div>
+        <div class="color-cell" style="background:var(--wd-blue-400);color:white">400<span class="hex">#4082C6</span></div>
+        <div class="color-cell" style="background:var(--wd-blue-500);color:white">500<span class="hex">#0875E1</span></div>
+        <div class="color-cell" style="background:var(--wd-blue-600);color:white">600<span class="hex">#0660B7</span></div>
+        <div class="color-cell" style="background:var(--wd-blue-700);color:white">700<span class="hex">#1F4880</span></div>
+        <div class="color-cell" style="background:var(--wd-blue-800);color:white">800<span class="hex">#143557</span></div>
+        <div class="color-cell" style="background:var(--wd-blue-900);color:white">900<span class="hex">#0A2237</span></div>
+      </div>
+
+      <h3>Soap (neutral) scale</h3>
+      <div class="color-grid">
+        <div class="color-cell" style="background:#FFFFFF;color:var(--wd-text-1);border:1px solid var(--wd-soap-200)">0<span class="hex">#FFFFFF</span></div>
+        <div class="color-cell" style="background:var(--wd-surface);color:var(--wd-text-1);border:1px solid var(--wd-soap-200)">50<span class="hex">#FAFBFC</span></div>
+        <div class="color-cell" style="background:var(--wd-soap-100);color:var(--wd-text-1)">100<span class="hex">#F1F2F4</span></div>
+        <div class="color-cell" style="background:var(--wd-soap-200);color:var(--wd-text-1)">200<span class="hex">#E8EAED</span></div>
+        <div class="color-cell" style="background:var(--wd-soap-300);color:var(--wd-text-1)">300<span class="hex">#D4D7DC</span></div>
+        <div class="color-cell" style="background:var(--wd-soap-400);color:var(--wd-text-1)">400<span class="hex">#BBBFC4</span></div>
+        <div class="color-cell" style="background:var(--wd-soap-500);color:white">500<span class="hex">#8D9295</span></div>
+        <div class="color-cell" style="background:var(--wd-text-2);color:white">700<span class="hex">#58595B</span></div>
+        <div class="color-cell" style="background:var(--wd-text-1);color:white">900<span class="hex">#2A2D32</span></div>
+      </div>
+
+      <h3>Semantic roles</h3>
+      <div class="semantic-grid">
+        <div class="sem-card" style="background:var(--wd-info-bg);color:var(--wd-blue-700)">
+          <span class="label">Info</span><span class="hex">#0875E1</span>
+        </div>
+        <div class="sem-card" style="background:var(--wd-success-bg);color:#1A4710">
+          <span class="label">Success</span><span class="hex">#3D811A</span>
+        </div>
+        <div class="sem-card" style="background:var(--wd-warning-bg);color:#5A3508">
+          <span class="label">Warning</span><span class="hex">#A6620C</span>
+        </div>
+        <div class="sem-card" style="background:var(--wd-error-bg);color:#7B1218">
+          <span class="label">Error</span><span class="hex">#D8202D</span>
+        </div>
+      </div>
+
+      <h3>Color roles</h3>
+      <div class="role-grid">
+        <div class="role-chip" style="background:var(--wd-blue-500);color:white">Primary <code>#0875E1</code></div>
+        <div class="role-chip" style="background:var(--wd-blue-700);color:white">Brand Deep <code>#1F4880</code></div>
+        <div class="role-chip" style="background:var(--wd-blue-100);color:var(--wd-blue-700)">Container <code>#D8E5F1</code></div>
+        <div class="role-chip" style="background:var(--wd-surface);color:var(--wd-text-1);border:1px solid var(--wd-soap-200)">Surface <code>#FAFBFC</code></div>
+        <div class="role-chip" style="background:var(--wd-body-bg);color:var(--wd-text-1);border:1px solid var(--wd-soap-200)">Body BG <code>#F0F5F9</code></div>
+        <div class="role-chip" style="background:var(--wd-text-1);color:white">Text Primary <code>#2A2D32</code></div>
+        <div class="role-chip" style="background:var(--wd-text-2);color:white">Text Secondary <code>#58595B</code></div>
+        <div class="role-chip" style="background:var(--wd-soap-200);color:var(--wd-text-2)">Border <code>#E8EAED</code></div>
+      </div>
+    </section>
+
+    <section id="typography" data-fidelity="documented">
+      <h2>
+        <span>Typography</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://canvas.workday.com/tokens/type" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--wd-text-2)">Workday Canvas uses Roboto across products: 400 regular for body, 500 medium for emphasis and labels, and 700 bold for highlights. The scale is grouped into Display, Heading, Title, Body, and Caption.</p>
+
+      <div class="type-row"><div class="label">Display L · 56/64</div><div class="display-l">Workday Canvas</div></div>
+      <div class="type-row"><div class="label">Display M · 40/48</div><div class="display-m">People &amp; finance unified</div></div>
+      <div class="type-row"><div class="label">Display S · 32/40</div><div class="display-s">Built for HR-grade scale</div></div>
+      <div class="type-row"><div class="label">Heading L · 28/36</div><div class="heading-l">Calm enterprise tokens</div></div>
+      <div class="type-row"><div class="label">Heading M · 24/32</div><div class="heading-m">Conservative 4px corners</div></div>
+      <div class="type-row"><div class="label">Heading S · 20/28</div><div class="heading-s">Density meets accessibility</div></div>
+      <div class="type-row"><div class="label">Title L · 18/24 · 500</div><div class="title-l">Section title</div></div>
+      <div class="type-row"><div class="label">Title M · 16/24 · 500</div><div class="title-m">Sub-section title</div></div>
+      <div class="type-row"><div class="label">Title S · 14/20 · 500</div><div class="title-s">List heading</div></div>
+      <div class="type-row"><div class="label">Body L · 16/24</div><div class="body-l">Canvas body copy is sized for dense ledger and roster screens. The default 14px reads comfortably at standard density and scales up to 16px for marketing surfaces.</div></div>
+      <div class="type-row"><div class="label">Body M · 14/20</div><div class="body-m">Body M is the default paragraph size for HR and finance UI; it pairs with Title M for steady rhythm in tables.</div></div>
+      <div class="type-row"><div class="label">Body S · 12/16</div><div class="body-s">Body S is reserved for table cells, helper text, and high-density data displays.</div></div>
+      <div class="type-row"><div class="label">Caption · 12/16</div><div class="caption">Captions are quiet metadata: timestamps, IDs, footnotes.</div></div>
+      <div class="type-row"><div class="label">Mono · Roboto Mono</div><div class="mono-sample">--canvas-color-blueberry-500: #0875E1;</div></div>
+    </section>
+
+    <section id="iconography" data-fidelity="documented">
+      <h2>
+        <span>Iconography</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://canvas.workday.com/styles/iconography" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--wd-text-2)">Canvas Icons (Apache 2.0) ship in System, Accent, Applet, and Brand sets. Below: 24px stroke icons that approximate the System set used for actions, navigation, and table affordances.</p>
+      <div class="icon-grid">
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12L12 3l9 9"/><path d="M5 10v10h14V10"/></svg><span>home</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><span>search</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg><span>person</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M8 4v4M16 4v4"/></svg><span>calendar</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h18v12H3z"/><path d="M3 11h18M7 7V5h10v2"/></svg><span>briefcase</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M5 9l7-7 7 7"/></svg><span>upload</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V2M5 15l7 7 7-7"/></svg><span>download</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg><span>menu</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>clock</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8 8 0 1 1-2.7-6"/><path d="M21 4v7h-7"/></svg><span>refresh</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.5-2.5l2-1.5-2-3.5-2.5 1A7 7 0 0 0 13 4l-.5-2.5h-4L8 4a7 7 0 0 0-3 1.5l-2.5-1-2 3.5 2 1.5A7 7 0 0 0 5 12c0 .9.2 1.7.5 2.5l-2 1.5 2 3.5 2.5-1c.9.7 2 1.2 3 1.5l.5 2.5h4l.5-2.5c1-.3 2.1-.8 3-1.5l2.5 1 2-3.5-2-1.5c.3-.8.5-1.6.5-2.5z"/></svg><span>settings</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>check</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg><span>close</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg><span>add</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l9 6 9-6"/><rect x="3" y="5" width="18" height="14" rx="2"/></svg><span>email</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span>bell</span></div>
+      </div>
+    </section>
+
+    <section id="buttons" data-fidelity="documented">
+      <h2>
+        <span>Buttons</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://canvas.workday.com/components/buttons" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--wd-text-2)">Canvas defines five button variants: Primary (blue 500), Secondary (outline), Tertiary (text), Inverse (on dark surfaces), and Delete (destructive). Heights: 28 / 36 (default) / 44.</p>
+
+      <h3>Variants</h3>
+      <div class="button-row">
+        <button class="wd-btn wd-btn--primary">Primary</button>
+        <button class="wd-btn wd-btn--secondary">Secondary</button>
+        <button class="wd-btn wd-btn--tertiary">Tertiary</button>
+        <button class="wd-btn wd-btn--delete">Delete</button>
+        <button class="wd-btn wd-btn--icon" aria-label="more">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="6" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="18" r="1.5" fill="currentColor"/></svg>
+        </button>
+      </div>
+
+      <h3>On dark</h3>
+      <div class="button-row" style="background:var(--wd-blue-700);padding:16px;border-radius:var(--wd-radius)">
+        <button class="wd-btn wd-btn--inverse">Inverse</button>
+        <button class="wd-btn" style="background:transparent;color:white;border-color:white">Outline on dark</button>
+      </div>
+
+      <h3>Sizes</h3>
+      <div class="button-row">
+        <button class="wd-btn wd-btn--primary wd-btn--sm">Small</button>
+        <button class="wd-btn wd-btn--primary">Default</button>
+        <button class="wd-btn wd-btn--primary wd-btn--lg">Large</button>
+      </div>
+
+      <h3>States</h3>
+      <div class="button-row">
+        <button class="wd-btn wd-btn--primary">Enabled</button>
+        <button class="wd-btn wd-btn--primary" style="background:var(--wd-blue-600)">Hover</button>
+        <button class="wd-btn wd-btn--primary" style="outline:2px solid var(--wd-blue-700);outline-offset:2px">Focus</button>
+        <button class="wd-btn wd-btn--primary" disabled>Disabled</button>
+        <button class="wd-btn wd-btn--primary"><span class="wd-spinner" style="width:14px;height:14px;border-width:2px;border-color:rgba(255,255,255,0.4);border-top-color:white"></span>Loading</button>
+      </div>
+    </section>
+
+    <section id="form" data-fidelity="documented">
+      <h2>
+        <span>Form</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://canvas.workday.com/components/inputs/text-input" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--wd-text-2)">Standard text inputs are 36px tall, 4px corners, 1px border. Focus states use a 2px Blue 100 ring. Required markers use Error red.</p>
+
+      <h3>Text fields</h3>
+      <div class="form-grid">
+        <div class="wd-field">
+          <label class="wd-label" for="wf1">Worker name<span class="wd-required">*</span></label>
+          <input class="wd-input" id="wf1" type="text" value="Avery Tanaka">
+          <span class="wd-helper">As shown on government ID.</span>
+        </div>
+        <div class="wd-field">
+          <label class="wd-label" for="wf2">Email</label>
+          <input class="wd-input" id="wf2" type="email" placeholder="name@workday.com">
+          <span class="wd-helper">We'll send the next pay statement here.</span>
+        </div>
+        <div class="wd-field">
+          <label class="wd-label" for="wf3">Notes</label>
+          <textarea class="wd-input" id="wf3" placeholder="Add internal notes..."></textarea>
+        </div>
+        <div class="wd-field">
+          <label class="wd-label" for="wf4">Pay group</label>
+          <select class="wd-input" id="wf4">
+            <option>US Salaried (Bi-weekly)</option>
+            <option>US Hourly (Weekly)</option>
+            <option>EMEA Salaried (Monthly)</option>
+            <option>APAC Salaried (Monthly)</option>
+          </select>
+        </div>
+        <div class="wd-field">
+          <label class="wd-label" for="wf5">Tax ID</label>
+          <input class="wd-input wd-input--error" id="wf5" type="text" value="123-AB-789">
+          <span class="wd-error-msg">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+            Tax ID must be 9 digits.
+          </span>
+        </div>
+        <div class="wd-field">
+          <label class="wd-label" for="wf6">Disabled</label>
+          <input class="wd-input" id="wf6" type="text" value="Locked field" disabled>
+        </div>
+      </div>
+
+      <h3>Selection controls</h3>
+      <div class="button-row">
+        <label class="wd-checkbox"><input type="checkbox" checked>Direct deposit</label>
+        <label class="wd-checkbox"><input type="checkbox">Paper statements</label>
+        <label class="wd-radio"><input type="radio" name="r1" checked>Salaried</label>
+        <label class="wd-radio"><input type="radio" name="r1">Hourly</label>
+        <label class="wd-switch"><input type="checkbox" checked><span class="slider"></span></label>
+        <label class="wd-switch"><input type="checkbox"><span class="slider"></span></label>
+      </div>
+
+      <h3>Slider &amp; file</h3>
+      <div style="max-width:400px;display:flex;flex-direction:column;gap:12px">
+        <input type="range" class="wd-slider" min="0" max="100" value="40">
+        <input type="file" class="wd-input" style="padding:6px 8px">
+      </div>
+    </section>
+
+    <section id="surfaces" data-fidelity="documented">
+      <h2>
+        <span>Surfaces</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://canvas.workday.com/components/containers/card" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--wd-text-2)">Cards rest on body BG #F0F5F9. Default cards use a 1px border and gentle elev-1 shadow on hover. Modals and popups use elev-3.</p>
+
+      <div class="surface-grid">
+        <div class="wd-card">
+          <div class="media"></div>
+          <h4>Standard card</h4>
+          <p>Border + hover shadow. Used for grouping form inputs and dashboard tiles.</p>
+        </div>
+        <div class="wd-card wd-card--elevated">
+          <div class="media"></div>
+          <h4>Elevated card</h4>
+          <p>No border, persistent elev-2 shadow. Floats above body in dashboard contexts.</p>
+        </div>
+        <div class="wd-card wd-card--accent">
+          <div class="media" style="background:linear-gradient(135deg,var(--wd-blue-100),var(--wd-blue-300))"></div>
+          <h4>Accent card</h4>
+          <p>Top blue accent line marks featured tiles, like onboarding steps.</p>
+        </div>
+        <div class="wd-stat">
+          <div class="num">$2.41M</div>
+          <div class="lbl">Pay run total</div>
+        </div>
+      </div>
+
+      <h3>Modal</h3>
+      <div class="wd-modal">
+        <h4 style="margin-top:0;text-transform:none;letter-spacing:0;font-size:18px;color:var(--wd-text-1)">Approve pay run?</h4>
+        <p style="font-size:13px;color:var(--wd-text-2)">2,847 employees will be paid on May 12, 2026 from US Salaried (Bi-weekly). Once approved, payments cannot be reversed without a journal correction.</p>
+        <div class="button-row" style="justify-content:flex-end;margin:0">
+          <button class="wd-btn wd-btn--tertiary">Cancel</button>
+          <button class="wd-btn wd-btn--primary">Approve pay run</button>
+        </div>
+      </div>
+
+      <h3>Popup &amp; sidebar</h3>
+      <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start">
+        <div class="wd-popup">
+          <div class="item">Edit worker</div>
+          <div class="item">Initiate change job</div>
+          <div class="item">Add additional pay</div>
+          <div class="item" style="color:var(--wd-error)">Terminate worker</div>
+        </div>
+        <div class="wd-sidebar">
+          <a href="#" class="active">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12L12 3l9 9"/><path d="M5 10v10h14V10"/></svg>
+            My tasks
+          </a>
+          <a href="#">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg>
+            People
+          </a>
+          <a href="#">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h18v12H3z"/><path d="M3 11h18M7 7V5h10v2"/></svg>
+            Pay
+          </a>
+          <a href="#">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/></svg>
+            Reports
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section id="feedback" data-fidelity="documented">
+      <h2>
+        <span>Feedback</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://canvas.workday.com/components/popups/banner" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+
+      <h3>Banners</h3>
+      <div class="wd-banner wd-banner--info">
+        <strong>Info ·</strong> Your next pay run is scheduled for May 12, 2026 at 2:00 PM PT.
+      </div>
+      <div class="wd-banner wd-banner--success">
+        <strong>Success ·</strong> Pay run approved. 2,847 employees were paid $2.41M.
+      </div>
+      <div class="wd-banner wd-banner--warn">
+        <strong>Warning ·</strong> 12 timesheets are still pending manager approval.
+      </div>
+      <div class="wd-banner wd-banner--error">
+        <strong>Error ·</strong> Tax ID validation failed for 3 workers. Review before approving.
+      </div>
+
+      <h3>Toast</h3>
+      <div class="wd-toast">
+        Time-off request submitted.
+        <button>Undo</button>
+      </div>
+
+      <h3>Status pills &amp; indicators</h3>
+      <div class="wd-pill-row">
+        <span class="wd-pill">Default</span>
+        <span class="wd-pill wd-pill--blue">Active</span>
+        <span class="wd-pill wd-pill--solid">Selected</span>
+        <span class="wd-pill wd-pill--success">Approved</span>
+        <span class="wd-pill wd-pill--warn">Pending</span>
+        <span class="wd-pill wd-pill--error">Rejected</span>
+      </div>
+      <div style="margin-top:16px;display:flex;gap:24px;flex-wrap:wrap">
+        <span class="wd-status-indicator"><span class="dot" style="background:var(--wd-success)"></span>On track</span>
+        <span class="wd-status-indicator"><span class="dot" style="background:var(--wd-warning)"></span>At risk</span>
+        <span class="wd-status-indicator"><span class="dot" style="background:var(--wd-error)"></span>Blocked</span>
+        <span class="wd-status-indicator"><span class="dot" style="background:var(--wd-soap-400)"></span>Inactive</span>
+      </div>
+
+      <h3>Progress &amp; loading</h3>
+      <div style="display:flex;flex-direction:column;gap:12px;max-width:480px">
+        <div class="wd-progress"></div>
+        <div class="wd-skeleton" style="width:80%"></div>
+        <div class="wd-skeleton" style="width:60%"></div>
+        <div class="wd-skeleton" style="width:40%"></div>
+        <div class="wd-spinner"></div>
+      </div>
+    </section>
+
+    <section id="navigation" data-fidelity="documented">
+      <h2>
+        <span>Navigation</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://canvas.workday.com/components/navigation/tabs" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+
+      <h3>Tabs</h3>
+      <div class="wd-tabs">
+        <div class="wd-tab active">Summary</div>
+        <div class="wd-tab">Compensation</div>
+        <div class="wd-tab">Time</div>
+        <div class="wd-tab">Benefits</div>
+        <div class="wd-tab">Job</div>
+      </div>
+
+      <h3>Breadcrumb</h3>
+      <div class="wd-breadcrumb">
+        <a href="#">Home</a><span>/</span>
+        <a href="#">People</a><span>/</span>
+        <a href="#">Avery Tanaka</a><span>/</span>
+        <span>Compensation</span>
+      </div>
+
+      <h3>Pagination</h3>
+      <div class="wd-pagination">
+        <button>‹ Prev</button>
+        <button class="active">1</button>
+        <button>2</button>
+        <button>3</button>
+        <button>4</button>
+        <button>5</button>
+        <button>Next ›</button>
+      </div>
+
+      <h3>Stepper</h3>
+      <div class="wd-stepper">
+        <div class="step"><span class="num done">✓</span> Worker info</div>
+        <span class="line"></span>
+        <div class="step"><span class="num done">✓</span> Pay group</div>
+        <span class="line"></span>
+        <div class="step"><span class="num active">3</span> Compensation</div>
+        <span class="line"></span>
+        <div class="step"><span class="num">4</span> Review</div>
+      </div>
+
+      <h3>Top bar</h3>
+      <div class="wd-topbar">
+        <button class="wd-btn wd-btn--icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+        <span class="brand-mini">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9 L7 18 L12 11 L17 18 L21 9"/></svg>
+          Workday
+        </span>
+        <input class="wd-input" placeholder="Search workers, reports..." style="flex:1;max-width:400px">
+        <button class="wd-btn wd-btn--icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/></svg></button>
+        <div class="wd-avatar">MK</div>
+      </div>
+    </section>
+
+    <section id="data" data-fidelity="documented">
+      <h2>
+        <span>Data</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://canvas.workday.com/components/containers/table" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+
+      <h3>Table</h3>
+      <table class="wd-table">
+        <thead>
+          <tr><th>Worker</th><th>Position</th><th>Pay group</th><th>Status</th><th>Last action</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div style="display:flex;align-items:center;gap:10px"><div class="wd-avatar" style="width:28px;height:28px;font-size:11px">AT</div>Avery Tanaka</div></td>
+            <td>Senior People Partner</td><td>US Salaried</td>
+            <td><span class="wd-pill wd-pill--success">Active</span></td>
+            <td>2m ago</td>
+          </tr>
+          <tr>
+            <td><div style="display:flex;align-items:center;gap:10px"><div class="wd-avatar" style="width:28px;height:28px;font-size:11px;background:var(--wd-blue-500)">BY</div>Brett Yu</div></td>
+            <td>Finance Analyst</td><td>US Salaried</td>
+            <td><span class="wd-pill wd-pill--warn">Pending</span></td>
+            <td>14m ago</td>
+          </tr>
+          <tr>
+            <td><div style="display:flex;align-items:center;gap:10px"><div class="wd-avatar" style="width:28px;height:28px;font-size:11px;background:var(--wd-blue-300);color:var(--wd-blue-900)">CP</div>Cleo Park</div></td>
+            <td>Payroll Manager</td><td>US Salaried</td>
+            <td><span class="wd-pill wd-pill--success">Active</span></td>
+            <td>1h ago</td>
+          </tr>
+          <tr>
+            <td><div style="display:flex;align-items:center;gap:10px"><div class="wd-avatar" style="width:28px;height:28px;font-size:11px;background:var(--wd-soap-500)">DK</div>Dakota Kim</div></td>
+            <td>HRIS Specialist</td><td>EMEA Monthly</td>
+            <td><span class="wd-pill wd-pill--error">Blocked</span></td>
+            <td>3h ago</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>List</h3>
+      <ul class="wd-list">
+        <li><div class="wd-avatar">A</div><div><strong>Avery Tanaka</strong><div style="font-size:12px;color:var(--wd-text-3)">Submitted timesheet · 2m ago</div></div></li>
+        <li><div class="wd-avatar" style="background:var(--wd-blue-500)">B</div><div><strong>Brett Yu</strong><div style="font-size:12px;color:var(--wd-text-3)">Approved expense $128.40 · 14m ago</div></div></li>
+        <li><div class="wd-avatar" style="background:var(--wd-blue-300);color:var(--wd-blue-900)">C</div><div><strong>Cleo Park</strong><div style="font-size:12px;color:var(--wd-text-3)">Initiated pay run · 1h ago</div></div></li>
+      </ul>
+
+      <h3>Key – value</h3>
+      <dl class="wd-kv">
+        <dt>Worker ID</dt><dd>WD-08475</dd>
+        <dt>Hire date</dt><dd>2022-04-18</dd>
+        <dt>Pay group</dt><dd>US Salaried (Bi-weekly)</dd>
+        <dt>Manager</dt><dd>Cleo Park</dd>
+        <dt>Cost center</dt><dd>CC-1042 — Engineering</dd>
+        <dt>Last reviewed</dt><dd>2026-04-30</dd>
+      </dl>
+
+      <h3>Empty state</h3>
+      <div class="wd-empty">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M8 4v4M16 4v4"/></svg>
+        <h4>No upcoming pay runs</h4>
+        <p style="font-size:13px;margin:0">Pay runs appear here 7 days before the scheduled pay date.</p>
+      </div>
+    </section>
+
+    <section id="layout" data-fidelity="documented">
+      <h2>
+        <span>Layout</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://canvas.workday.com/tokens/space" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--wd-text-2)">Canvas uses a 4dp spacing grid and a 12-column responsive layout. Breakpoints: zero (≤480), small (481–767), medium (768–1023), large (1024–1439), xlarge (1440+).</p>
+
+      <h3>12-column grid</h3>
+      <div class="grid-demo">
+        <div style="grid-column:span 12">12</div>
+        <div style="grid-column:span 8">8</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 6">6</div>
+        <div style="grid-column:span 6">6</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+      </div>
+
+      <h3>Spacing scale (4dp)</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div class="swatch" style="width:4px;height:32px"></div><span class="lbl">2 (4)</span></div>
+        <div class="scale-item"><div class="swatch" style="width:8px;height:32px"></div><span class="lbl">3 (8)</span></div>
+        <div class="scale-item"><div class="swatch" style="width:12px;height:32px"></div><span class="lbl">4 (12)</span></div>
+        <div class="scale-item"><div class="swatch" style="width:16px;height:32px"></div><span class="lbl">5 (16)</span></div>
+        <div class="scale-item"><div class="swatch" style="width:24px;height:32px"></div><span class="lbl">6 (24)</span></div>
+        <div class="scale-item"><div class="swatch" style="width:32px;height:32px"></div><span class="lbl">7 (32)</span></div>
+        <div class="scale-item"><div class="swatch" style="width:48px;height:32px"></div><span class="lbl">8 (48)</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:32px"></div><span class="lbl">9 (64)</span></div>
+      </div>
+
+      <h3>Shape scale</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:0;background:var(--wd-blue-100)"></div><span class="lbl">none 0</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:2px;background:var(--wd-blue-100)"></div><span class="lbl">xs 2</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:4px;background:var(--wd-blue-100)"></div><span class="lbl">sm 4</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:6px;background:var(--wd-blue-100)"></div><span class="lbl">md 6</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:8px;background:var(--wd-blue-100)"></div><span class="lbl">lg 8</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:50%;background:var(--wd-blue-100)"></div><span class="lbl">circle</span></div>
+      </div>
+
+      <h3>Elevation (4 levels)</h3>
+      <div>
+        <div class="shadow-demo" style="box-shadow:none;border:1px solid var(--wd-soap-200)">flat</div>
+        <div class="shadow-demo" style="box-shadow:var(--wd-elev-1)">elev-1</div>
+        <div class="shadow-demo" style="box-shadow:var(--wd-elev-2)">elev-2</div>
+        <div class="shadow-demo" style="box-shadow:var(--wd-elev-3)">elev-3</div>
+        <div class="shadow-demo" style="box-shadow:var(--wd-elev-4)">elev-4</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="ds-footer">
+    <h3>Sources</h3>
+    <ul>
+      <li><a href="https://canvas.workday.com" target="_blank" rel="noopener">https://canvas.workday.com</a></li>
+      <li><a href="https://canvas.workday.com/tokens/color" target="_blank" rel="noopener">https://canvas.workday.com/tokens/color</a></li>
+      <li><a href="https://canvas.workday.com/tokens/type" target="_blank" rel="noopener">https://canvas.workday.com/tokens/type</a></li>
+      <li><a href="https://canvas.workday.com/styles/iconography" target="_blank" rel="noopener">https://canvas.workday.com/styles/iconography</a></li>
+      <li><a href="https://canvas.workday.com/components/buttons" target="_blank" rel="noopener">https://canvas.workday.com/components/buttons</a></li>
+      <li><a href="https://canvas.workday.com/components/inputs/text-input" target="_blank" rel="noopener">https://canvas.workday.com/components/inputs/text-input</a></li>
+      <li><a href="https://canvas.workday.com/components/containers/card" target="_blank" rel="noopener">https://canvas.workday.com/components/containers/card</a></li>
+      <li><a href="https://canvas.workday.com/components/popups/banner" target="_blank" rel="noopener">https://canvas.workday.com/components/popups/banner</a></li>
+      <li><a href="https://canvas.workday.com/components/navigation/tabs" target="_blank" rel="noopener">https://canvas.workday.com/components/navigation/tabs</a></li>
+      <li><a href="https://canvas.workday.com/components/containers/table" target="_blank" rel="noopener">https://canvas.workday.com/components/containers/table</a></li>
+      <li><a href="https://canvas.workday.com/tokens/space" target="_blank" rel="noopener">https://canvas.workday.com/tokens/space</a></li>
+    </ul>
+    <p class="license-note">This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Workday. Workday Canvas and related trademarks belong to Workday. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</p>
+    <p class="meta-note">Reproduction date: 2026-05-05 · sourceStatus: unverified · fidelity: approximated</p>
+  </footer>
+</body>
+</html>

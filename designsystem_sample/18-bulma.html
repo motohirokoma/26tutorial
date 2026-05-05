@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bulma — Design System Reference</title>
+  <script id="ds-meta" type="application/json">
+{"id":"18-bulma","fileSlug":"18-bulma","schemaVersion":"1"}
+  </script>
+  <style>
+    :root {
+      /* Bulma rainbow palette */
+      --bulma-turquoise: #00D1B2;
+      --bulma-turquoise-dark: #00C4A7;
+      --bulma-turquoise-light: #EBFFFC;
+      --bulma-cyan: #209CEE;
+      --bulma-cyan-dark: #118FE4;
+      --bulma-blue: #3273DC;
+      --bulma-blue-dark: #2366D1;
+      --bulma-green: #23D160;
+      --bulma-green-dark: #20BC56;
+      --bulma-yellow: #FFDD57;
+      --bulma-yellow-dark: #FFD83D;
+      --bulma-red: #FF3860;
+      --bulma-red-dark: #FF1F4B;
+      --bulma-purple: #B86BFF;
+
+      /* Bulma neutrals */
+      --bulma-white: #FFFFFF;
+      --bulma-white-bis: #FAFAFA;
+      --bulma-white-ter: #F5F5F5;
+      --bulma-light: #F5F5F5;
+      --bulma-light-grey: #DBDBDB;
+      --bulma-grey-lighter: #DBDBDB;
+      --bulma-grey-light: #B5B5B5;
+      --bulma-grey: #7A7A7A;
+      --bulma-grey-dark: #4A4A4A;
+      --bulma-grey-darker: #363636;
+      --bulma-dark: #363636;
+      --bulma-black-ter: #242424;
+      --bulma-black-bis: #121212;
+      --bulma-black: #0A0A0A;
+
+      /* Body */
+      --bulma-bg: #FFFFFF;
+      --bulma-text: #4A4A4A;
+      --bulma-text-strong: #363636;
+      --bulma-text-light: #7A7A7A;
+      --bulma-link: #485FC7;
+      --bulma-border: #DBDBDB;
+      --bulma-background: #F5F5F5;
+
+      /* Type — Bulma's default system stack */
+      --bulma-font: BlinkMacSystemFont, -apple-system, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      --bulma-mono: monospace;
+
+      /* Bulma radius */
+      --bulma-radius-small: 2px;
+      --bulma-radius: 4px;          /* Bulma default */
+      --bulma-radius-large: 6px;
+      --bulma-radius-rounded: 9999px;
+
+      /* Spacing */
+      --bulma-sp-1: 8px;
+      --bulma-sp-2: 12px;
+      --bulma-sp-3: 16px;
+      --bulma-sp-4: 24px;
+      --bulma-sp-5: 32px;
+      --bulma-sp-6: 48px;
+
+      /* Shadow */
+      --bulma-sh-soft: 0 0.5em 1em -0.125em rgba(10,10,10,0.1), 0 0 0 1px rgba(10,10,10,0.02);
+      --bulma-sh-card: 0 2px 3px rgba(10,10,10,0.1), 0 0 0 1px rgba(10,10,10,0.1);
+      --bulma-sh-modal: 0 8px 16px rgba(10,10,10,0.1), 0 0 0 1px rgba(10,10,10,0.05);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: var(--bulma-font);
+      background: var(--bulma-bg);
+      color: var(--bulma-text);
+      line-height: 1.5;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    code, kbd, pre { font-family: var(--bulma-mono); }
+
+    /* Header */
+    .ds-header {
+      background: linear-gradient(135deg, var(--bulma-turquoise), var(--bulma-cyan));
+      color: var(--bulma-white);
+      padding: var(--bulma-sp-6) var(--bulma-sp-5) var(--bulma-sp-5);
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--bulma-sp-1);
+      color: rgba(255,255,255,0.95);
+      text-decoration: none;
+      padding: 6px 12px;
+      border-radius: var(--bulma-radius);
+      font-size: 14px;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+    .back-link:hover { background: rgba(255,255,255,0.15); }
+
+    .ds-header h1 {
+      font-size: 48px;
+      line-height: 1.125;
+      font-weight: 700;
+      margin: var(--bulma-sp-3) 0 var(--bulma-sp-2);
+    }
+
+    .ds-header .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--bulma-sp-1);
+      align-items: center;
+      margin-bottom: var(--bulma-sp-2);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: var(--bulma-radius);
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      background: rgba(255,255,255,0.18);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.4);
+    }
+    .badge.kind-cl { background: var(--bulma-purple); color: white; border-color: transparent; }
+    .badge.fidelity-documented { background: var(--bulma-green); color: white; border-color: transparent; }
+    .badge.fidelity-approximated { background: var(--bulma-yellow); color: var(--bulma-text-strong); border-color: transparent; }
+    .badge.fidelity-inspired { background: var(--bulma-purple); color: white; border-color: transparent; }
+    .badge.source-verified { background: var(--bulma-blue); color: white; border-color: transparent; }
+
+    .ds-header a[href*="bulma.io"] {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 4px 12px;
+      border: 1px solid rgba(255,255,255,0.6);
+      border-radius: var(--bulma-radius);
+      font-size: 13px;
+      background: rgba(255,255,255,0.1);
+    }
+    .ds-header a[href*="bulma.io"]:hover { background: rgba(255,255,255,0.22); }
+
+    .tagline {
+      font-size: 20px;
+      line-height: 1.5;
+      max-width: 720px;
+      margin: var(--bulma-sp-3) 0 0;
+      opacity: 0.95;
+    }
+
+    /* TOC */
+    .toc {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: var(--bulma-white);
+      border-bottom: 1px solid var(--bulma-border);
+      box-shadow: 0 2px 4px rgba(10,10,10,0.04);
+    }
+    .toc ul {
+      list-style: none;
+      margin: 0 auto;
+      padding: var(--bulma-sp-2) var(--bulma-sp-5);
+      display: flex;
+      gap: 4px;
+      overflow-x: auto;
+      max-width: 1280px;
+    }
+    .toc a {
+      display: inline-block;
+      padding: 8px 14px;
+      border-radius: var(--bulma-radius);
+      color: var(--bulma-text);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      white-space: nowrap;
+      transition: all 0.15s;
+    }
+    .toc a:hover { background: var(--bulma-turquoise-light); color: var(--bulma-turquoise-dark); }
+
+    /* Main */
+    main {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: var(--bulma-sp-5);
+    }
+
+    section {
+      background: var(--bulma-white);
+      border-radius: var(--bulma-radius-large);
+      padding: var(--bulma-sp-5);
+      margin-bottom: var(--bulma-sp-4);
+      box-shadow: var(--bulma-sh-card);
+    }
+
+    section h2 {
+      display: flex;
+      align-items: center;
+      gap: var(--bulma-sp-2);
+      flex-wrap: wrap;
+      font-size: 32px;
+      line-height: 1.125;
+      font-weight: 600;
+      color: var(--bulma-text-strong);
+      margin: 0 0 var(--bulma-sp-4);
+    }
+
+    .source-link {
+      font-size: 13px;
+      color: var(--bulma-link);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .source-link:hover { text-decoration: underline; }
+
+    h3 {
+      font-size: 20px;
+      line-height: 1.25;
+      font-weight: 600;
+      color: var(--bulma-text-strong);
+      margin: var(--bulma-sp-4) 0 var(--bulma-sp-2);
+    }
+
+    h4 {
+      font-size: 16px;
+      line-height: 1.25;
+      font-weight: 600;
+      color: var(--bulma-text-strong);
+      margin: var(--bulma-sp-3) 0 var(--bulma-sp-1);
+    }
+
+    p { margin: 0 0 var(--bulma-sp-2); }
+    section > p { color: var(--bulma-text); }
+
+    /* Brand */
+    #brand .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--bulma-sp-2);
+      padding: var(--bulma-sp-2) var(--bulma-sp-4);
+      background: var(--bulma-turquoise);
+      border-radius: var(--bulma-radius);
+      color: white;
+      font-size: 28px;
+      font-weight: 700;
+    }
+    #brand .brand-mark svg { width: 36px; height: 36px; }
+    #brand .pillars {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--bulma-sp-3);
+      margin-top: var(--bulma-sp-4);
+    }
+    #brand .pillar {
+      padding: var(--bulma-sp-3);
+      background: var(--bulma-white-ter);
+      border-radius: var(--bulma-radius);
+      border-left: 4px solid var(--bulma-turquoise);
+    }
+    #brand .pillar h4 { margin-top: 0; color: var(--bulma-turquoise-dark); }
+
+    /* Color */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px,1fr));
+      gap: var(--bulma-sp-1);
+      margin-bottom: var(--bulma-sp-3);
+    }
+    .color-cell {
+      height: 72px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 8px 10px;
+      font-size: 12px;
+      font-family: var(--bulma-mono);
+      border-radius: var(--bulma-radius);
+    }
+    .color-cell .role { font-weight: 700; font-family: var(--bulma-font); margin-bottom: 2px; }
+
+    .semantic-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
+      gap: var(--bulma-sp-2);
+    }
+    .sem-card {
+      padding: var(--bulma-sp-3);
+      border-radius: var(--bulma-radius);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      color: white;
+    }
+    .sem-card .label { font-size: 14px; font-weight: 700; }
+    .sem-card .hex { font-family: var(--bulma-mono); font-size: 12px; opacity: 0.9; }
+
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--bulma-sp-1);
+      margin-bottom: var(--bulma-sp-3);
+    }
+    .role-chip {
+      padding: var(--bulma-sp-2) var(--bulma-sp-3);
+      border-radius: var(--bulma-radius);
+      font-size: 13px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 500;
+    }
+    .role-chip code { font-size: 11px; opacity: 0.85; }
+
+    /* Typography */
+    .type-row {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: var(--bulma-sp-3);
+      padding: var(--bulma-sp-2) 0;
+      border-bottom: 1px solid var(--bulma-border);
+      align-items: baseline;
+    }
+    .type-row:last-child { border-bottom: 0; }
+    .type-row .label {
+      font-family: var(--bulma-mono);
+      font-size: 12px;
+      color: var(--bulma-text-light);
+    }
+    /* Bulma's title sizes (1-6) */
+    .title-1 { font-size: 48px; line-height: 1.125; font-weight: 600; }
+    .title-2 { font-size: 40px; line-height: 1.125; font-weight: 600; }
+    .title-3 { font-size: 32px; line-height: 1.125; font-weight: 600; }
+    .title-4 { font-size: 28px; line-height: 1.125; font-weight: 600; }
+    .title-5 { font-size: 24px; line-height: 1.125; font-weight: 600; }
+    .title-6 { font-size: 20px; line-height: 1.125; font-weight: 600; }
+    .subtitle-3 { font-size: 24px; line-height: 1.25; font-weight: 400; color: var(--bulma-text); }
+    .subtitle-5 { font-size: 18px; line-height: 1.25; font-weight: 400; color: var(--bulma-text); }
+    .text-md { font-size: 16px; line-height: 1.5; }
+    .text-sm { font-size: 14px; line-height: 1.5; }
+    .text-xs { font-size: 12px; line-height: 1.5; }
+    .mono-sample { font-family: var(--bulma-mono); font-size: 14px; color: var(--bulma-text-light); }
+
+    /* Buttons */
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--bulma-sp-1);
+      align-items: center;
+      margin-bottom: var(--bulma-sp-2);
+    }
+
+    .b-btn {
+      font-family: var(--bulma-font);
+      font-size: 16px;
+      font-weight: 400;
+      padding: calc(0.5em - 1px) 1em;
+      border-radius: var(--bulma-radius);
+      border: 1px solid var(--bulma-border);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      height: 40px;
+      background: var(--bulma-white);
+      color: var(--bulma-text);
+      transition: all 0.15s;
+      line-height: 1.5;
+    }
+    .b-btn:hover { border-color: var(--bulma-grey-light); color: var(--bulma-text-strong); }
+    .b-btn--primary { background: var(--bulma-turquoise); color: white; border-color: transparent; }
+    .b-btn--primary:hover { background: var(--bulma-turquoise-dark); color: white; }
+    .b-btn--info { background: var(--bulma-cyan); color: white; border-color: transparent; }
+    .b-btn--info:hover { background: var(--bulma-cyan-dark); color: white; }
+    .b-btn--success { background: var(--bulma-green); color: white; border-color: transparent; }
+    .b-btn--success:hover { background: var(--bulma-green-dark); color: white; }
+    .b-btn--warning { background: var(--bulma-yellow); color: var(--bulma-text-strong); border-color: transparent; }
+    .b-btn--warning:hover { background: var(--bulma-yellow-dark); }
+    .b-btn--danger { background: var(--bulma-red); color: white; border-color: transparent; }
+    .b-btn--danger:hover { background: var(--bulma-red-dark); color: white; }
+    .b-btn--link { background: var(--bulma-link); color: white; border-color: transparent; }
+    .b-btn--light { background: var(--bulma-white-ter); border-color: transparent; }
+    .b-btn--dark { background: var(--bulma-dark); color: white; border-color: transparent; }
+    .b-btn--outlined { background: transparent; color: var(--bulma-turquoise-dark); border-color: var(--bulma-turquoise); }
+    .b-btn--outlined:hover { background: var(--bulma-turquoise); color: white; }
+    .b-btn--inverted { background: white; color: var(--bulma-turquoise); border-color: transparent; }
+    .b-btn--rounded { border-radius: var(--bulma-radius-rounded); padding-left: 1.5em; padding-right: 1.5em; }
+    .b-btn--small { font-size: 12px; height: 30px; }
+    .b-btn--medium { font-size: 18px; height: 44px; }
+    .b-btn--large { font-size: 20px; height: 50px; padding-left: 1.25em; padding-right: 1.25em; }
+    .b-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .b-btn:focus-visible { outline: 2px solid var(--bulma-turquoise); outline-offset: 2px; }
+
+    /* Form */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+      gap: var(--bulma-sp-3);
+    }
+    .b-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .b-field-label {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--bulma-text-strong);
+    }
+    .b-input {
+      background: var(--bulma-white);
+      border: 1px solid var(--bulma-border);
+      border-radius: var(--bulma-radius);
+      padding: calc(0.5em - 1px) calc(0.75em - 1px);
+      height: 40px;
+      font-family: var(--bulma-font);
+      font-size: 16px;
+      color: var(--bulma-text-strong);
+      outline: none;
+      width: 100%;
+      box-shadow: inset 0 0.0625em 0.125em rgba(10,10,10,0.05);
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .b-input:hover { border-color: var(--bulma-grey-light); }
+    .b-input:focus { border-color: var(--bulma-turquoise); box-shadow: 0 0 0 0.125em rgba(0,209,178,0.25); }
+    .b-input--error { border-color: var(--bulma-red); }
+    .b-input--error:focus { box-shadow: 0 0 0 0.125em rgba(255,56,96,0.25); }
+    .b-input--rounded { border-radius: var(--bulma-radius-rounded); padding-left: 1em; padding-right: 1em; }
+    .b-helper { font-size: 13px; color: var(--bulma-text-light); }
+    .b-error-text { font-size: 13px; color: var(--bulma-red-dark); }
+
+    .b-textarea { min-height: 80px; padding: 8px 12px; resize: vertical; height: auto; line-height: 1.5; }
+    select.b-input { appearance: none; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2300D1B2' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>"); background-repeat: no-repeat; background-position: right 8px center; padding-right: 32px; }
+
+    .b-checkbox, .b-radio {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .b-checkbox input, .b-radio input { width: 16px; height: 16px; accent-color: var(--bulma-turquoise); }
+    .b-switch { position: relative; display: inline-block; width: 48px; height: 28px; }
+    .b-switch input { opacity: 0; width: 0; height: 0; }
+    .b-switch .slider {
+      position: absolute; cursor: pointer; inset: 0;
+      background: var(--bulma-grey-light);
+      border-radius: var(--bulma-radius-rounded);
+      transition: 0.2s;
+    }
+    .b-switch .slider::before {
+      content: ''; position: absolute;
+      width: 20px; height: 20px;
+      left: 4px; top: 4px;
+      background: white;
+      border-radius: 50%;
+      transition: 0.2s;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    }
+    .b-switch input:checked + .slider { background: var(--bulma-turquoise); }
+    .b-switch input:checked + .slider::before { transform: translateX(20px); }
+
+    .b-slider { width: 100%; accent-color: var(--bulma-turquoise); }
+
+    /* Surfaces */
+    .surface-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
+      gap: var(--bulma-sp-3);
+    }
+    .b-card {
+      background: var(--bulma-white);
+      border-radius: var(--bulma-radius-large);
+      padding: 0;
+      box-shadow: var(--bulma-sh-card);
+      overflow: hidden;
+    }
+    .b-card .card-image { height: 140px; background: linear-gradient(135deg, var(--bulma-turquoise), var(--bulma-cyan)); }
+    .b-card .card-content { padding: var(--bulma-sp-3); }
+    .b-card h4 { margin: 0 0 4px; }
+    .b-card p { font-size: 14px; color: var(--bulma-text); margin: 0; }
+    .b-box {
+      background: var(--bulma-white);
+      border-radius: var(--bulma-radius-large);
+      padding: var(--bulma-sp-3);
+      box-shadow: 0 0.5em 1em -0.125em rgba(10,10,10,0.1), 0 0 0 1px rgba(10,10,10,0.02);
+    }
+
+    .b-stat { padding: var(--bulma-sp-3); background: var(--bulma-turquoise); border-radius: var(--bulma-radius-large); color: white; }
+    .b-stat .num { font-size: 32px; font-weight: 700; line-height: 1.125; }
+    .b-stat .lbl { font-size: 14px; opacity: 0.9; margin-top: 4px; }
+
+    .b-modal {
+      background: var(--bulma-white);
+      padding: var(--bulma-sp-4);
+      border-radius: var(--bulma-radius-large);
+      box-shadow: var(--bulma-sh-modal);
+      max-width: 480px;
+    }
+
+    /* Feedback (Bulma calls these notifications) */
+    .b-notification {
+      padding: 1.25rem 1.5rem;
+      border-radius: var(--bulma-radius);
+      margin-bottom: var(--bulma-sp-1);
+      font-size: 16px;
+      position: relative;
+    }
+    .b-notification--info { background: #EFF5FB; color: #1D4D80; }
+    .b-notification--success { background: #EFFAF3; color: #257942; }
+    .b-notification--warning { background: #FFFAEB; color: #946C00; }
+    .b-notification--danger { background: #FEECF0; color: #CC0F35; }
+    .b-notification--primary { background: #EBFFFC; color: #00674F; }
+
+    .b-toast {
+      background: var(--bulma-dark);
+      color: white;
+      padding: 0.75rem 1rem;
+      border-radius: var(--bulma-radius);
+      box-shadow: var(--bulma-sh-modal);
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 14px;
+    }
+    .b-toast button { background: transparent; color: var(--bulma-turquoise); border: 0; font-weight: 600; cursor: pointer; }
+
+    .b-message {
+      background: var(--bulma-white-ter);
+      border-radius: var(--bulma-radius);
+      overflow: hidden;
+      margin-top: var(--bulma-sp-2);
+    }
+    .b-message-header {
+      background: var(--bulma-turquoise);
+      color: white;
+      padding: 0.75em 1em;
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .b-message-body { padding: 1em 1.25em; font-size: 14px; }
+
+    .b-tag-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .b-tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 0 0.75em;
+      height: 24px;
+      border-radius: var(--bulma-radius);
+      background: var(--bulma-white-ter);
+      color: var(--bulma-text-strong);
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 1.5;
+    }
+    .b-tag--primary { background: var(--bulma-turquoise); color: white; }
+    .b-tag--info { background: var(--bulma-cyan); color: white; }
+    .b-tag--success { background: var(--bulma-green); color: white; }
+    .b-tag--warning { background: var(--bulma-yellow); color: var(--bulma-text-strong); }
+    .b-tag--danger { background: var(--bulma-red); color: white; }
+    .b-tag--dark { background: var(--bulma-dark); color: white; }
+    .b-tag--rounded { border-radius: var(--bulma-radius-rounded); }
+
+    .b-progress {
+      width: 100%;
+      height: 12px;
+      background: var(--bulma-white-ter);
+      border-radius: var(--bulma-radius-rounded);
+      overflow: hidden;
+    }
+    .b-progress::after {
+      content: '';
+      display: block;
+      height: 100%;
+      width: 60%;
+      background: var(--bulma-turquoise);
+    }
+
+    .b-skeleton {
+      height: 16px;
+      background: linear-gradient(90deg, var(--bulma-white-ter), var(--bulma-light-grey), var(--bulma-white-ter));
+      background-size: 200% 100%;
+      border-radius: var(--bulma-radius);
+      animation: shimmer 1.5s infinite;
+    }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+    .b-spinner {
+      width: 32px; height: 32px;
+      border: 3px solid var(--bulma-light-grey);
+      border-top-color: var(--bulma-turquoise);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Navigation */
+    .b-tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--bulma-border);
+      margin-bottom: var(--bulma-sp-2);
+    }
+    .b-tab {
+      padding: 0.5em 1em;
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--bulma-text);
+      border-bottom: 1px solid transparent;
+      margin-bottom: -1px;
+      cursor: pointer;
+    }
+    .b-tab.active { color: var(--bulma-link); border-bottom-color: var(--bulma-link); border-bottom-width: 2px; font-weight: 500; }
+
+    .b-tabs--boxed .b-tab { border: 1px solid transparent; border-radius: var(--bulma-radius) var(--bulma-radius) 0 0; }
+    .b-tabs--boxed .b-tab.active { background: var(--bulma-white); border-color: var(--bulma-border); border-bottom-color: var(--bulma-white); color: var(--bulma-link); }
+
+    .b-breadcrumb { display: flex; gap: 8px; align-items: center; font-size: 16px; color: var(--bulma-text); }
+    .b-breadcrumb a { color: var(--bulma-link); text-decoration: none; }
+    .b-breadcrumb a:hover { color: var(--bulma-text-strong); }
+    .b-breadcrumb .sep { color: var(--bulma-grey-light); }
+
+    .b-pagination { display: flex; gap: 4px; align-items: center; flex-wrap: wrap; }
+    .b-pagination button {
+      min-width: 40px; height: 40px;
+      border-radius: var(--bulma-radius);
+      border: 1px solid var(--bulma-border);
+      background: var(--bulma-white);
+      color: var(--bulma-text-strong);
+      cursor: pointer;
+      font-family: var(--bulma-font);
+      font-size: 16px;
+      padding: 0 0.75em;
+    }
+    .b-pagination button.active { background: var(--bulma-link); color: white; border-color: var(--bulma-link); }
+    .b-pagination button:hover:not(.active) { border-color: var(--bulma-grey-light); }
+
+    .b-stepper { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+    .b-stepper .step { display: inline-flex; align-items: center; gap: 8px; }
+    .b-stepper .num {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--bulma-white-ter); color: var(--bulma-text-light);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 700;
+      border: 2px solid var(--bulma-border);
+    }
+    .b-stepper .num.active { background: var(--bulma-turquoise); color: white; border-color: var(--bulma-turquoise); }
+    .b-stepper .num.complete { background: var(--bulma-green); color: white; border-color: var(--bulma-green); }
+    .b-stepper .line { flex: 1; height: 2px; background: var(--bulma-border); }
+
+    .b-sidebar {
+      background: var(--bulma-white);
+      border-radius: var(--bulma-radius-large);
+      padding: var(--bulma-sp-1);
+      width: 240px;
+      box-shadow: var(--bulma-sh-card);
+    }
+    .b-sidebar a {
+      display: flex; align-items: center; gap: 12px;
+      padding: 8px 12px;
+      border-radius: var(--bulma-radius);
+      color: var(--bulma-text-strong);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .b-sidebar a:hover { background: var(--bulma-white-ter); }
+    .b-sidebar a.active { background: var(--bulma-turquoise); color: white; }
+
+    .b-navbar {
+      display: flex; align-items: center; gap: 16px;
+      padding: 10px 16px;
+      background: var(--bulma-white);
+      border-radius: var(--bulma-radius);
+      box-shadow: var(--bulma-sh-card);
+      min-height: 52px;
+    }
+    .b-navbar .brand { font-weight: 700; font-size: 18px; color: var(--bulma-text-strong); flex: 1; }
+
+    .b-dropdown {
+      background: var(--bulma-white);
+      border-radius: var(--bulma-radius);
+      box-shadow: var(--bulma-sh-modal);
+      padding: 8px 0;
+      width: 200px;
+    }
+    .b-dropdown .item { padding: 6px 16px; font-size: 14px; cursor: pointer; }
+    .b-dropdown .item:hover { background: var(--bulma-white-ter); }
+
+    /* Data */
+    table.b-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    table.b-table th, table.b-table td {
+      text-align: left;
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--bulma-border);
+    }
+    table.b-table th { font-weight: 700; color: var(--bulma-text-strong); }
+    table.b-table--striped tbody tr:nth-child(odd) { background: var(--bulma-white-bis); }
+    table.b-table--hover tbody tr:hover { background: var(--bulma-white-ter); }
+
+    .b-list { list-style: none; padding: 0; margin: 0; }
+    .b-list li {
+      padding: 12px 0;
+      display: flex; gap: 12px; align-items: center;
+      border-bottom: 1px solid var(--bulma-border);
+    }
+    .b-list li:last-child { border-bottom: 0; }
+
+    .b-kv { display: grid; grid-template-columns: 140px 1fr; gap: 12px; font-size: 14px; }
+    .b-kv dt { color: var(--bulma-text-light); font-weight: 600; }
+
+    .b-avatar {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: var(--bulma-turquoise);
+      color: white;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-weight: 700;
+    }
+
+    .b-empty {
+      text-align: center;
+      padding: var(--bulma-sp-6) var(--bulma-sp-3);
+      color: var(--bulma-text-light);
+    }
+    .b-empty svg { width: 48px; height: 48px; opacity: 0.5; }
+
+    /* Layout — Bulma uses 12 columns via .columns / .column */
+    .columns-demo {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 12px;
+      background: var(--bulma-white-ter);
+      padding: 16px;
+      border-radius: var(--bulma-radius);
+    }
+    .columns-demo > div {
+      background: var(--bulma-turquoise-light);
+      color: var(--bulma-turquoise-dark);
+      padding: 10px;
+      border-radius: var(--bulma-radius);
+      font-size: 12px;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .scale-row {
+      display: flex;
+      gap: var(--bulma-sp-2);
+      flex-wrap: wrap;
+      align-items: flex-end;
+      margin-bottom: var(--bulma-sp-3);
+    }
+    .scale-item {
+      display: flex; flex-direction: column; gap: 6px;
+      align-items: center;
+    }
+    .scale-item .swatch {
+      background: var(--bulma-turquoise);
+    }
+    .scale-item .lbl { font-size: 11px; font-family: var(--bulma-mono); color: var(--bulma-text-light); }
+
+    .shadow-demo {
+      width: 80px; height: 80px;
+      background: var(--bulma-white);
+      border-radius: var(--bulma-radius);
+      display: inline-flex; align-items: center; justify-content: center;
+      margin-right: 16px; margin-bottom: 16px;
+      font-size: 11px; font-family: var(--bulma-mono); color: var(--bulma-text-light);
+    }
+
+    /* Footer */
+    .ds-footer {
+      background: var(--bulma-dark);
+      color: rgba(255,255,255,0.85);
+      padding: var(--bulma-sp-5);
+      margin-top: var(--bulma-sp-6);
+    }
+    .ds-footer h3 { margin-top: 0; color: white; }
+    .ds-footer ul { padding-left: 20px; }
+    .ds-footer li { margin-bottom: 4px; word-break: break-all; font-size: 13px; }
+    .ds-footer a { color: var(--bulma-turquoise); text-decoration: none; }
+    .ds-footer a:hover { text-decoration: underline; }
+    .license-note { font-size: 13px; color: rgba(255,255,255,0.65); margin-top: var(--bulma-sp-3); }
+    .meta-note { font-size: 12px; color: rgba(255,255,255,0.5); font-family: var(--bulma-mono); margin-top: var(--bulma-sp-1); }
+
+    @media (max-width: 720px) {
+      .ds-header h1 { font-size: 32px; }
+      main { padding: var(--bulma-sp-3); }
+      section { padding: var(--bulma-sp-3); }
+      .type-row { grid-template-columns: 1fr; }
+      .title-1 { font-size: 36px; }
+      .title-2 { font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="ds-header">
+    <a href="index.html" class="back-link">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Catalog
+    </a>
+    <h1>Bulma</h1>
+    <div class="meta">
+      <span class="badge kind-cl">component-library</span>
+      <span class="badge fidelity-documented">documented</span>
+      <span class="badge source-verified">source: verified</span>
+      <a href="https://bulma.io" target="_blank" rel="noopener">Official ↗</a>
+    </div>
+    <p class="tagline">A Flexbox-based CSS framework with a vibrant rainbow palette and zero JavaScript dependency.</p>
+  </header>
+
+  <nav class="toc" aria-label="Table of contents">
+    <ul>
+      <li><a href="#brand">Brand</a></li>
+      <li><a href="#color">Color</a></li>
+      <li><a href="#typography">Typography</a></li>
+      <li><a href="#buttons">Buttons</a></li>
+      <li><a href="#form">Form</a></li>
+      <li><a href="#surfaces">Surfaces</a></li>
+      <li><a href="#feedback">Feedback</a></li>
+      <li><a href="#navigation">Navigation</a></li>
+      <li><a href="#data">Data</a></li>
+      <li><a href="#layout">Layout</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="brand" data-fidelity="documented">
+      <h2>
+        <span>Brand</span>
+        <span class="badge fidelity-documented">documented</span>
+      </h2>
+      <div class="brand-mark">
+        <svg viewBox="0 0 36 36" fill="none">
+          <path d="M11 4 L19 14 L13 18 L24 32 L18 22 L26 18 Z" fill="white" stroke="white" stroke-width="1" stroke-linejoin="round"/>
+        </svg>
+        Bulma
+      </div>
+      <p style="margin-top: 24px; max-width: 720px; font-size: 16px;">
+        Bulma is a Flexbox-based CSS framework written in Sass. Built without JavaScript dependency, it ships modular CSS classes with a recognizable rainbow palette of vivid turquoise, blue, green, yellow, and red — branded color names mapped directly to semantic intent.
+      </p>
+      <div class="pillars">
+        <div class="pillar">
+          <h4>CSS-only</h4>
+          <p style="font-size:14px;color:var(--bulma-text);margin:0">Zero JavaScript dependency — the framework provides class hooks; behaviors are user-implemented.</p>
+        </div>
+        <div class="pillar">
+          <h4>Flexbox</h4>
+          <p style="font-size:14px;color:var(--bulma-text);margin:0">.columns / .column powers responsive layout via modern Flexbox at every breakpoint.</p>
+        </div>
+        <div class="pillar">
+          <h4>Modular Sass</h4>
+          <p style="font-size:14px;color:var(--bulma-text);margin:0">Import only the modifiers, components, and utilities you need; customize via Sass variables.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="color" data-fidelity="documented">
+      <h2>
+        <span>Color</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://bulma.io/documentation/customize/variables/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p>Bulma's signature palette pairs primary turquoise with five additional accents. Each color is named both by hue and by semantic role (primary, info, success, warning, danger).</p>
+
+      <h3>Rainbow palette (primary + semantics)</h3>
+      <div class="semantic-grid">
+        <div class="sem-card" style="background:var(--bulma-turquoise)"><span class="label">primary · turquoise</span><span class="hex">#00D1B2</span></div>
+        <div class="sem-card" style="background:var(--bulma-cyan)"><span class="label">info · cyan</span><span class="hex">#209CEE</span></div>
+        <div class="sem-card" style="background:var(--bulma-blue)"><span class="label">link · blue</span><span class="hex">#3273DC</span></div>
+        <div class="sem-card" style="background:var(--bulma-green)"><span class="label">success · green</span><span class="hex">#23D160</span></div>
+        <div class="sem-card" style="background:var(--bulma-yellow);color:var(--bulma-text-strong)"><span class="label">warning · yellow</span><span class="hex">#FFDD57</span></div>
+        <div class="sem-card" style="background:var(--bulma-red)"><span class="label">danger · red</span><span class="hex">#FF3860</span></div>
+      </div>
+
+      <h3>Neutrals</h3>
+      <div class="color-grid">
+        <div class="color-cell" style="background:var(--bulma-white);color:var(--bulma-text);border:1px solid var(--bulma-border)"><span class="role">white</span>#FFFFFF</div>
+        <div class="color-cell" style="background:var(--bulma-white-bis);color:var(--bulma-text)"><span class="role">white-bis</span>#FAFAFA</div>
+        <div class="color-cell" style="background:var(--bulma-white-ter);color:var(--bulma-text)"><span class="role">white-ter</span>#F5F5F5</div>
+        <div class="color-cell" style="background:var(--bulma-light);color:var(--bulma-text)"><span class="role">light</span>#F5F5F5</div>
+        <div class="color-cell" style="background:var(--bulma-grey-lighter);color:var(--bulma-text)"><span class="role">grey-lighter</span>#DBDBDB</div>
+        <div class="color-cell" style="background:var(--bulma-grey-light);color:var(--bulma-text-strong)"><span class="role">grey-light</span>#B5B5B5</div>
+        <div class="color-cell" style="background:var(--bulma-grey);color:white"><span class="role">grey</span>#7A7A7A</div>
+        <div class="color-cell" style="background:var(--bulma-grey-dark);color:white"><span class="role">grey-dark</span>#4A4A4A</div>
+        <div class="color-cell" style="background:var(--bulma-dark);color:white"><span class="role">dark</span>#363636</div>
+        <div class="color-cell" style="background:var(--bulma-black-ter);color:white"><span class="role">black-ter</span>#242424</div>
+        <div class="color-cell" style="background:var(--bulma-black-bis);color:white"><span class="role">black-bis</span>#121212</div>
+        <div class="color-cell" style="background:var(--bulma-black);color:white"><span class="role">black</span>#0A0A0A</div>
+      </div>
+
+      <h3>Token roles (Light)</h3>
+      <div class="role-grid">
+        <div class="role-chip" style="background:var(--bulma-turquoise);color:white">primary <code>#00D1B2</code></div>
+        <div class="role-chip" style="background:var(--bulma-link);color:white">link <code>#485FC7</code></div>
+        <div class="role-chip" style="background:var(--bulma-bg);color:var(--bulma-text);border:1px solid var(--bulma-border)">background <code>#FFFFFF</code></div>
+        <div class="role-chip" style="background:var(--bulma-white-ter);color:var(--bulma-text)">background-light <code>#F5F5F5</code></div>
+        <div class="role-chip" style="background:var(--bulma-text-strong);color:white">text-strong <code>#363636</code></div>
+        <div class="role-chip" style="background:var(--bulma-text);color:white">text <code>#4A4A4A</code></div>
+        <div class="role-chip" style="background:var(--bulma-text-light);color:white">text-light <code>#7A7A7A</code></div>
+        <div class="role-chip" style="background:var(--bulma-border);color:var(--bulma-text-strong)">border <code>#DBDBDB</code></div>
+      </div>
+    </section>
+
+    <section id="typography" data-fidelity="documented">
+      <h2>
+        <span>Typography</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://bulma.io/documentation/elements/title/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p>Bulma uses the system font stack — BlinkMacSystemFont, -apple-system, 'Segoe UI', Roboto. Titles come in 6 sizes (.title.is-1 through .title.is-6); body sizes use .is-size-1 through .is-size-7.</p>
+
+      <div class="type-row"><div class="label">title is-1 · 48/1.125 · 600</div><div class="title-1">Bulma</div></div>
+      <div class="type-row"><div class="label">title is-2 · 40/1.125 · 600</div><div class="title-2">Flexbox CSS framework</div></div>
+      <div class="type-row"><div class="label">title is-3 · 32/1.125 · 600</div><div class="title-3">Modular Sass design</div></div>
+      <div class="type-row"><div class="label">title is-4 · 28/1.125 · 600</div><div class="title-4">Rainbow palette tokens</div></div>
+      <div class="type-row"><div class="label">title is-5 · 24/1.125 · 600</div><div class="title-5">Section title</div></div>
+      <div class="type-row"><div class="label">title is-6 · 20/1.125 · 600</div><div class="title-6">List heading</div></div>
+      <div class="type-row"><div class="label">subtitle is-3 · 24/1.25</div><div class="subtitle-3">Subtitle for secondary headings paired with titles.</div></div>
+      <div class="type-row"><div class="label">subtitle is-5 · 18/1.25</div><div class="subtitle-5">Smaller subtitle for table captions and intro text.</div></div>
+      <div class="type-row"><div class="label">size 6 · 16/1.5</div><div class="text-md">Default body voice. Bulma sets html font-size to 16px and body inherits with 1.5 line-height. Most paragraph copy in pages uses this size.</div></div>
+      <div class="type-row"><div class="label">size 7 · 14/1.5</div><div class="text-sm">is-size-7 is reserved for table cells, helper text, and dense content areas.</div></div>
+      <div class="type-row"><div class="label">small · 12/1.5</div><div class="text-xs">Captions, image labels, and inline metadata.</div></div>
+      <div class="type-row"><div class="label">Mono · monospace</div><div class="mono-sample">$primary: hsl(171, 100%, 41%); // #00D1B2</div></div>
+    </section>
+
+    <section id="buttons" data-fidelity="documented">
+      <h2>
+        <span>Buttons</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://bulma.io/documentation/elements/button/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p>Bulma Button uses .button class plus modifiers: .is-primary / .is-info / .is-success / .is-warning / .is-danger / .is-link / .is-light / .is-dark, plus .is-outlined, .is-inverted, .is-rounded.</p>
+
+      <h3>Color modifiers</h3>
+      <div class="button-row">
+        <button class="b-btn">Default</button>
+        <button class="b-btn b-btn--primary">Primary</button>
+        <button class="b-btn b-btn--info">Info</button>
+        <button class="b-btn b-btn--success">Success</button>
+        <button class="b-btn b-btn--warning">Warning</button>
+        <button class="b-btn b-btn--danger">Danger</button>
+        <button class="b-btn b-btn--link">Link</button>
+        <button class="b-btn b-btn--light">Light</button>
+        <button class="b-btn b-btn--dark">Dark</button>
+      </div>
+
+      <h3>Style modifiers</h3>
+      <div class="button-row">
+        <button class="b-btn b-btn--outlined">Outlined</button>
+        <button class="b-btn b-btn--primary b-btn--rounded">Rounded</button>
+        <button class="b-btn b-btn--primary" style="background:var(--bulma-turquoise-dark)">Hover</button>
+        <button class="b-btn b-btn--primary" style="outline:2px solid var(--bulma-turquoise);outline-offset:2px">Focus</button>
+        <button class="b-btn b-btn--primary" disabled>Disabled</button>
+      </div>
+
+      <h3>Sizes</h3>
+      <div class="button-row">
+        <button class="b-btn b-btn--primary b-btn--small">Small</button>
+        <button class="b-btn b-btn--primary">Normal</button>
+        <button class="b-btn b-btn--primary b-btn--medium">Medium</button>
+        <button class="b-btn b-btn--primary b-btn--large">Large</button>
+      </div>
+    </section>
+
+    <section id="form" data-fidelity="documented">
+      <h2>
+        <span>Form</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://bulma.io/documentation/form/general/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p>Bulma forms use .field, .label, .control, and .input. Modifiers .is-rounded, .is-danger, .is-success drive shape and validation state. Subtle inset box-shadow gives every input a soft 3D feel.</p>
+
+      <h3>Text inputs</h3>
+      <div class="form-grid">
+        <div class="b-field">
+          <label class="b-field-label" for="bm1">Project name</label>
+          <input class="b-input" type="text" id="bm1" value="Bulma">
+          <span class="b-helper">Default · normal variant</span>
+        </div>
+        <div class="b-field">
+          <label class="b-field-label" for="bm2">Email</label>
+          <input class="b-input b-input--rounded" type="email" id="bm2" placeholder="you@example.com">
+          <span class="b-helper">Rounded variant</span>
+        </div>
+        <div class="b-field">
+          <label class="b-field-label" for="bm3">Username</label>
+          <input class="b-input" type="text" id="bm3" value="motohirokoma">
+          <span class="b-helper">Help text via .help</span>
+        </div>
+        <div class="b-field">
+          <label class="b-field-label" for="bm4">Description</label>
+          <textarea class="b-input b-textarea" id="bm4">Multiline content for the .textarea control...</textarea>
+        </div>
+        <div class="b-field">
+          <label class="b-field-label" for="bm5">Color theme</label>
+          <select class="b-input" id="bm5">
+            <option>Light</option>
+            <option>Dark</option>
+            <option>System</option>
+          </select>
+        </div>
+        <div class="b-field">
+          <label class="b-field-label" for="bm6" style="color:var(--bulma-red-dark)">Email</label>
+          <input class="b-input b-input--error" type="text" id="bm6" value="invalid@">
+          <span class="b-error-text">This email is invalid.</span>
+        </div>
+      </div>
+
+      <h3>Selection controls</h3>
+      <div class="button-row">
+        <label class="b-checkbox"><input type="checkbox" checked>I accept terms</label>
+        <label class="b-checkbox"><input type="checkbox">Subscribe</label>
+        <label class="b-radio"><input type="radio" name="br" checked>CSS-only</label>
+        <label class="b-radio"><input type="radio" name="br">With JS</label>
+        <label class="b-switch"><input type="checkbox" checked><span class="slider"></span></label>
+        <label class="b-switch"><input type="checkbox"><span class="slider"></span></label>
+      </div>
+
+      <h3>Slider &amp; file</h3>
+      <div style="max-width:400px;display:flex;flex-direction:column;gap:12px">
+        <input type="range" class="b-slider" min="0" max="100" value="60">
+        <input type="file" class="b-input" style="padding:6px 12px;height:auto">
+      </div>
+    </section>
+
+    <section id="surfaces" data-fidelity="documented">
+      <h2>
+        <span>Surfaces</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://bulma.io/documentation/components/card/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p>Card composes .card-image, .card-content, .card-footer. Box is a simpler container with soft shadow. Modal overlays support .modal-card with header / body / footer.</p>
+
+      <div class="surface-grid">
+        <div class="b-card">
+          <div class="card-image"></div>
+          <div class="card-content">
+            <h4>Card</h4>
+            <p>Standard Bulma card — image header, content body, optional footer slot.</p>
+          </div>
+        </div>
+        <div class="b-card">
+          <div class="card-image" style="background:linear-gradient(135deg, var(--bulma-purple), var(--bulma-blue))"></div>
+          <div class="card-content">
+            <h4>Card with gradient</h4>
+            <p>Card-image accepts any background — use rainbow gradients freely.</p>
+          </div>
+        </div>
+        <div class="b-box">
+          <h4>Box</h4>
+          <p>Lightweight surface — soft shadow, rounded corners. Great for forms and grouped content.</p>
+        </div>
+        <div class="b-stat">
+          <div class="num">2,847</div>
+          <div class="lbl">Active sessions</div>
+        </div>
+      </div>
+
+      <h3>Modal</h3>
+      <div class="b-modal">
+        <h4 style="margin-top:0">Reset preferences?</h4>
+        <p style="font-size:14px">This will revert Sass variable overrides and component classes to Bulma defaults. This action cannot be undone.</p>
+        <div class="button-row" style="justify-content:flex-end;margin:0">
+          <button class="b-btn">Cancel</button>
+          <button class="b-btn b-btn--primary">Reset</button>
+        </div>
+      </div>
+
+      <h3>Dropdown &amp; sidebar</h3>
+      <div style="display:flex;gap:24px;flex-wrap:wrap">
+        <div class="b-dropdown">
+          <div class="item">Edit</div>
+          <div class="item">Duplicate</div>
+          <div class="item">Archive</div>
+          <div class="item" style="color:var(--bulma-red-dark)">Delete</div>
+        </div>
+        <div class="b-sidebar">
+          <a href="#" class="active">Dashboard</a>
+          <a href="#">Search</a>
+          <a href="#">Analytics</a>
+          <a href="#">Settings</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="feedback" data-fidelity="documented">
+      <h2>
+        <span>Feedback</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://bulma.io/documentation/elements/notification/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+
+      <h3>Notifications</h3>
+      <div class="b-notification b-notification--info">
+        <strong>Info ·</strong> Bulma is written entirely in Sass and ships ~200kb of pure CSS.
+      </div>
+      <div class="b-notification b-notification--success">
+        <strong>Success ·</strong> Sass compiled and minified.
+      </div>
+      <div class="b-notification b-notification--warning">
+        <strong>Warning ·</strong> Custom $primary may break is-primary contrast at &lt;AA.
+      </div>
+      <div class="b-notification b-notification--danger">
+        <strong>Error ·</strong> SCSS variable @import path failed.
+      </div>
+      <div class="b-notification b-notification--primary">
+        <strong>Primary ·</strong> Notifications support all six Bulma color modifiers.
+      </div>
+
+      <h3>Toast</h3>
+      <div class="b-toast">
+        Theme reverted to default.
+        <button>Undo</button>
+      </div>
+
+      <h3>Message</h3>
+      <div class="b-message">
+        <div class="b-message-header">
+          <span>Hello world</span>
+          <span style="cursor:pointer">×</span>
+        </div>
+        <div class="b-message-body">
+          A Bulma <code>.message</code> component is a colored block bubble with a labelled header and a body. Used for richer notifications.
+        </div>
+      </div>
+
+      <h3>Tags</h3>
+      <div class="b-tag-row">
+        <span class="b-tag">Default</span>
+        <span class="b-tag b-tag--primary">Primary</span>
+        <span class="b-tag b-tag--info">Info</span>
+        <span class="b-tag b-tag--success">Success</span>
+        <span class="b-tag b-tag--warning">Warning</span>
+        <span class="b-tag b-tag--danger">Danger</span>
+        <span class="b-tag b-tag--dark">Dark</span>
+        <span class="b-tag b-tag--primary b-tag--rounded">Rounded</span>
+      </div>
+
+      <h3>Progress &amp; loading</h3>
+      <div style="display:flex;flex-direction:column;gap:12px;max-width:480px">
+        <div class="b-progress"></div>
+        <div class="b-skeleton" style="width:80%"></div>
+        <div class="b-skeleton" style="width:60%"></div>
+        <div class="b-spinner"></div>
+      </div>
+    </section>
+
+    <section id="navigation" data-fidelity="documented">
+      <h2>
+        <span>Navigation</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://bulma.io/documentation/components/tabs/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+
+      <h3>Tabs</h3>
+      <div class="b-tabs">
+        <div class="b-tab active">Overview</div>
+        <div class="b-tab">Documentation</div>
+        <div class="b-tab">Customize</div>
+        <div class="b-tab">Sass</div>
+      </div>
+
+      <h3>Tabs (boxed)</h3>
+      <div class="b-tabs b-tabs--boxed">
+        <div class="b-tab active">Overview</div>
+        <div class="b-tab">Components</div>
+        <div class="b-tab">Variables</div>
+      </div>
+
+      <h3>Breadcrumb</h3>
+      <div class="b-breadcrumb">
+        <a href="#">Bulma</a><span class="sep">/</span>
+        <a href="#">Documentation</a><span class="sep">/</span>
+        <span>Components</span>
+      </div>
+
+      <h3>Pagination</h3>
+      <div class="b-pagination">
+        <button>‹</button>
+        <button class="active">1</button>
+        <button>2</button>
+        <button>3</button>
+        <button>…</button>
+        <button>10</button>
+        <button>›</button>
+      </div>
+
+      <h3>Stepper (custom)</h3>
+      <div class="b-stepper">
+        <div class="step"><span class="num complete">✓</span> Theme</div>
+        <span class="line"></span>
+        <div class="step"><span class="num active">2</span> Type</div>
+        <span class="line"></span>
+        <div class="step"><span class="num">3</span> Shape</div>
+        <span class="line"></span>
+        <div class="step"><span class="num">4</span> Review</div>
+      </div>
+
+      <h3>Navbar</h3>
+      <div class="b-navbar">
+        <button class="b-btn b-btn--light" style="padding:0 10px;height:36px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+        <span class="brand">Bulma</span>
+        <button class="b-btn">Documentation</button>
+        <button class="b-btn b-btn--primary">GitHub</button>
+        <div class="b-avatar">MK</div>
+      </div>
+    </section>
+
+    <section id="data" data-fidelity="documented">
+      <h2>
+        <span>Data</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://bulma.io/documentation/elements/table/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+
+      <h3>Table (striped &amp; hover)</h3>
+      <table class="b-table b-table--striped b-table--hover">
+        <thead>
+          <tr><th>Variable</th><th>Value</th><th>Role</th><th>Stop</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>$primary</code></td><td>#00D1B2</td><td>primary</td><td>turquoise</td></tr>
+          <tr><td><code>$info</code></td><td>#209CEE</td><td>semantic</td><td>cyan</td></tr>
+          <tr><td><code>$success</code></td><td>#23D160</td><td>semantic</td><td>green</td></tr>
+          <tr><td><code>$warning</code></td><td>#FFDD57</td><td>semantic</td><td>yellow</td></tr>
+          <tr><td><code>$danger</code></td><td>#FF3860</td><td>semantic</td><td>red</td></tr>
+        </tbody>
+      </table>
+
+      <h3>List</h3>
+      <ul class="b-list">
+        <li><div class="b-avatar">A</div><div><strong>Avery Tan</strong><div style="font-size:13px;color:var(--bulma-text-light)">Updated theme · 2m ago</div></div></li>
+        <li><div class="b-avatar" style="background:var(--bulma-cyan)">B</div><div><strong>Brett Yu</strong><div style="font-size:13px;color:var(--bulma-text-light)">Imported tokens · 14m ago</div></div></li>
+        <li><div class="b-avatar" style="background:var(--bulma-purple)">C</div><div><strong>Cleo Park</strong><div style="font-size:13px;color:var(--bulma-text-light)">Created palette · 1h ago</div></div></li>
+      </ul>
+
+      <h3>Key – value</h3>
+      <dl class="b-kv">
+        <dt>Mode</dt><dd>Light · default</dd>
+        <dt>Primary color</dt><dd>$turquoise · #00D1B2</dd>
+        <dt>Default radius</dt><dd>4px</dd>
+        <dt>Generated</dt><dd>2026-05-05</dd>
+      </dl>
+
+      <h3>Empty state</h3>
+      <div class="b-empty">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><circle cx="9" cy="10" r="0.5" fill="currentColor"/><circle cx="15" cy="10" r="0.5" fill="currentColor"/></svg>
+        <h4 style="margin:8px 0 4px">No themes yet</h4>
+        <p style="font-size:14px;margin:0">Create one by overriding Sass variables and recompiling Bulma.</p>
+      </div>
+    </section>
+
+    <section id="layout" data-fidelity="documented">
+      <h2>
+        <span>Layout</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://bulma.io/documentation/columns/basics/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p>Bulma's flagship layout primitive is .columns / .column built on Flexbox. Modifiers .is-half, .is-one-third, .is-three-quarters, plus .is-1 through .is-12 for fine width control.</p>
+
+      <h3>12-column grid</h3>
+      <div class="columns-demo">
+        <div style="grid-column:span 12">is-12</div>
+        <div style="grid-column:span 6">is-6</div>
+        <div style="grid-column:span 6">is-6</div>
+        <div style="grid-column:span 4">is-4</div>
+        <div style="grid-column:span 4">is-4</div>
+        <div style="grid-column:span 4">is-4</div>
+        <div style="grid-column:span 3">is-3</div>
+        <div style="grid-column:span 3">is-3</div>
+        <div style="grid-column:span 3">is-3</div>
+        <div style="grid-column:span 3">is-3</div>
+      </div>
+
+      <h3>Spacing scale (helper utilities)</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div class="swatch" style="width:8px;height:32px"></div><span class="lbl">m-1 · 8</span></div>
+        <div class="scale-item"><div class="swatch" style="width:12px;height:32px"></div><span class="lbl">m-2 · 12</span></div>
+        <div class="scale-item"><div class="swatch" style="width:16px;height:32px"></div><span class="lbl">m-3 · 16</span></div>
+        <div class="scale-item"><div class="swatch" style="width:24px;height:32px"></div><span class="lbl">m-4 · 24</span></div>
+        <div class="scale-item"><div class="swatch" style="width:32px;height:32px"></div><span class="lbl">m-5 · 32</span></div>
+        <div class="scale-item"><div class="swatch" style="width:48px;height:32px"></div><span class="lbl">m-6 · 48</span></div>
+      </div>
+
+      <h3>Radius scale</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:0;background:var(--bulma-turquoise)"></div><span class="lbl">none</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:2px;background:var(--bulma-turquoise)"></div><span class="lbl">small 2</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:4px;background:var(--bulma-turquoise)"></div><span class="lbl">default 4</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:6px;background:var(--bulma-turquoise)"></div><span class="lbl">large 6</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:9999px;background:var(--bulma-turquoise)"></div><span class="lbl">rounded</span></div>
+      </div>
+
+      <h3>Shadow scale</h3>
+      <div>
+        <div class="shadow-demo" style="box-shadow:none">none</div>
+        <div class="shadow-demo" style="box-shadow:var(--bulma-sh-card)">card</div>
+        <div class="shadow-demo" style="box-shadow:var(--bulma-sh-soft)">soft</div>
+        <div class="shadow-demo" style="box-shadow:var(--bulma-sh-modal)">modal</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="ds-footer">
+    <h3>Sources</h3>
+    <ul>
+      <li><a href="https://bulma.io" target="_blank" rel="noopener">https://bulma.io</a></li>
+      <li><a href="https://bulma.io/documentation/customize/variables/" target="_blank" rel="noopener">https://bulma.io/documentation/customize/variables/</a></li>
+      <li><a href="https://bulma.io/documentation/elements/title/" target="_blank" rel="noopener">https://bulma.io/documentation/elements/title/</a></li>
+      <li><a href="https://bulma.io/documentation/elements/button/" target="_blank" rel="noopener">https://bulma.io/documentation/elements/button/</a></li>
+      <li><a href="https://bulma.io/documentation/form/general/" target="_blank" rel="noopener">https://bulma.io/documentation/form/general/</a></li>
+      <li><a href="https://bulma.io/documentation/components/card/" target="_blank" rel="noopener">https://bulma.io/documentation/components/card/</a></li>
+      <li><a href="https://bulma.io/documentation/elements/notification/" target="_blank" rel="noopener">https://bulma.io/documentation/elements/notification/</a></li>
+      <li><a href="https://bulma.io/documentation/components/tabs/" target="_blank" rel="noopener">https://bulma.io/documentation/components/tabs/</a></li>
+      <li><a href="https://bulma.io/documentation/elements/table/" target="_blank" rel="noopener">https://bulma.io/documentation/elements/table/</a></li>
+      <li><a href="https://bulma.io/documentation/columns/basics/" target="_blank" rel="noopener">https://bulma.io/documentation/columns/basics/</a></li>
+    </ul>
+    <p class="license-note">This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Jeremy Thomas. Bulma and related trademarks belong to Jeremy Thomas. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</p>
+    <p class="meta-note">Reproduction date: 2026-05-05 · sourceStatus: verified · fidelity: documented</p>
+  </footer>
+</body>
+</html>

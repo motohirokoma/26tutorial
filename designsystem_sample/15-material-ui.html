@@ -1,0 +1,1489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Material UI (MUI) — Design System Reference</title>
+  <script id="ds-meta" type="application/json">
+{"id":"15-material-ui","fileSlug":"15-material-ui","schemaVersion":"1"}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* MUI Light palette */
+      --mui-primary-main: #1976D2;
+      --mui-primary-dark: #1565C0;
+      --mui-primary-light: #42A5F5;
+      --mui-primary-contrast: #FFFFFF;
+      --mui-secondary-main: #9C27B0;
+      --mui-secondary-dark: #7B1FA2;
+      --mui-secondary-light: #BA68C8;
+      --mui-secondary-contrast: #FFFFFF;
+      --mui-error-main: #D32F2F;
+      --mui-error-light: #EF5350;
+      --mui-error-dark: #C62828;
+      --mui-warning-main: #ED6C02;
+      --mui-warning-light: #FF9800;
+      --mui-warning-dark: #E65100;
+      --mui-info-main: #0288D1;
+      --mui-info-light: #03A9F4;
+      --mui-info-dark: #01579B;
+      --mui-success-main: #2E7D32;
+      --mui-success-light: #4CAF50;
+      --mui-success-dark: #1B5E20;
+
+      /* Text */
+      --mui-text-primary: rgba(0,0,0,0.87);
+      --mui-text-secondary: rgba(0,0,0,0.6);
+      --mui-text-disabled: rgba(0,0,0,0.38);
+
+      /* Background */
+      --mui-bg-default: #FFFFFF;
+      --mui-bg-paper: #FFFFFF;
+      --mui-bg-soft: #FAFAFA;
+
+      /* Divider / outline */
+      --mui-divider: rgba(0,0,0,0.12);
+      --mui-action-hover: rgba(0,0,0,0.04);
+      --mui-action-selected: rgba(0,0,0,0.08);
+      --mui-action-disabled-bg: rgba(0,0,0,0.12);
+
+      /* Grey scale (MUI grey palette) */
+      --mui-grey-50: #FAFAFA;
+      --mui-grey-100: #F5F5F5;
+      --mui-grey-200: #EEEEEE;
+      --mui-grey-300: #E0E0E0;
+      --mui-grey-400: #BDBDBD;
+      --mui-grey-500: #9E9E9E;
+      --mui-grey-600: #757575;
+      --mui-grey-700: #616161;
+      --mui-grey-800: #424242;
+      --mui-grey-900: #212121;
+
+      /* Type */
+      --mui-font: 'Roboto', Helvetica, Arial, sans-serif;
+      --mui-font-mono: 'Roboto Mono', ui-monospace, monospace;
+
+      /* Shape */
+      --mui-radius: 4px;
+      --mui-radius-sm: 2px;
+      --mui-radius-lg: 8px;
+      --mui-radius-xl: 16px;
+
+      /* Spacing — 8px base */
+      --mui-sp-1: 8px;
+      --mui-sp-2: 16px;
+      --mui-sp-3: 24px;
+      --mui-sp-4: 32px;
+      --mui-sp-5: 40px;
+      --mui-sp-6: 48px;
+      --mui-sp-7: 56px;
+      --mui-sp-8: 64px;
+
+      /* Elevation — MUI 24 levels (representative subset) */
+      --mui-elev-1: 0 2px 1px -1px rgba(0,0,0,0.2), 0 1px 1px 0 rgba(0,0,0,0.14), 0 1px 3px 0 rgba(0,0,0,0.12);
+      --mui-elev-2: 0 3px 1px -2px rgba(0,0,0,0.2), 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12);
+      --mui-elev-4: 0 2px 4px -1px rgba(0,0,0,0.2), 0 4px 5px 0 rgba(0,0,0,0.14), 0 1px 10px 0 rgba(0,0,0,0.12);
+      --mui-elev-6: 0 3px 5px -1px rgba(0,0,0,0.2), 0 6px 10px 0 rgba(0,0,0,0.14), 0 1px 18px 0 rgba(0,0,0,0.12);
+      --mui-elev-8: 0 5px 5px -3px rgba(0,0,0,0.2), 0 8px 10px 1px rgba(0,0,0,0.14), 0 3px 14px 2px rgba(0,0,0,0.12);
+      --mui-elev-12: 0 7px 8px -4px rgba(0,0,0,0.2), 0 12px 17px 2px rgba(0,0,0,0.14), 0 5px 22px 4px rgba(0,0,0,0.12);
+      --mui-elev-16: 0 8px 10px -5px rgba(0,0,0,0.2), 0 16px 24px 2px rgba(0,0,0,0.14), 0 6px 30px 5px rgba(0,0,0,0.12);
+      --mui-elev-24: 0 11px 15px -7px rgba(0,0,0,0.2), 0 24px 38px 3px rgba(0,0,0,0.14), 0 9px 46px 8px rgba(0,0,0,0.12);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: var(--mui-font);
+      font-weight: 400;
+      background: var(--mui-grey-100);
+      color: var(--mui-text-primary);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    code, kbd, pre { font-family: var(--mui-font-mono); }
+
+    /* Header */
+    .ds-header {
+      background: linear-gradient(135deg, var(--mui-primary-main), var(--mui-primary-dark));
+      color: var(--mui-primary-contrast);
+      padding: var(--mui-sp-7) var(--mui-sp-4) var(--mui-sp-4);
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--mui-sp-1);
+      color: rgba(255,255,255,0.95);
+      text-decoration: none;
+      padding: 6px 12px;
+      border-radius: var(--mui-radius);
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      transition: background 0.2s;
+    }
+    .back-link:hover { background: rgba(255,255,255,0.1); }
+
+    .ds-header h1 {
+      font-size: 48px;
+      line-height: 1.167;
+      font-weight: 300;
+      letter-spacing: -0.5px;
+      margin: var(--mui-sp-2) 0 var(--mui-sp-1);
+    }
+
+    .ds-header .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--mui-sp-1);
+      align-items: center;
+      margin-bottom: var(--mui-sp-1);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: var(--mui-radius-xl);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      border: 1px solid rgba(255,255,255,0.4);
+      background: rgba(255,255,255,0.1);
+      color: white;
+    }
+    .badge.kind-cl { background: var(--mui-secondary-main); color: white; border-color: transparent; }
+    .badge.fidelity-documented { background: #E8F5E9; color: #1B5E20; border-color: transparent; }
+    .badge.fidelity-approximated { background: #FFF3E0; color: #E65100; border-color: transparent; }
+    .badge.fidelity-inspired { background: #F3E5F5; color: #4A148C; border-color: transparent; }
+    .badge.source-homepage-only { background: #FFF8E1; color: #F57F17; border-color: transparent; }
+
+    .ds-header a[href*="mui.com"] {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 4px 12px;
+      border: 1px solid rgba(255,255,255,0.5);
+      border-radius: var(--mui-radius);
+      font-size: 13px;
+      background: rgba(255,255,255,0.08);
+    }
+    .ds-header a[href*="mui.com"]:hover { background: rgba(255,255,255,0.18); }
+
+    .tagline {
+      font-size: 20px;
+      line-height: 1.5;
+      max-width: 720px;
+      margin: var(--mui-sp-2) 0 0;
+      opacity: 0.92;
+      font-weight: 400;
+    }
+
+    /* TOC */
+    .toc {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: var(--mui-bg-paper);
+      border-bottom: 1px solid var(--mui-divider);
+      box-shadow: var(--mui-elev-1);
+    }
+    .toc ul {
+      list-style: none;
+      margin: 0;
+      padding: 0 var(--mui-sp-4);
+      display: flex;
+      gap: 0;
+      overflow-x: auto;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+    .toc a {
+      display: inline-block;
+      padding: 14px 16px;
+      color: var(--mui-text-secondary);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      white-space: nowrap;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+    }
+    .toc a:hover { color: var(--mui-primary-main); border-bottom-color: var(--mui-primary-light); }
+
+    /* Main */
+    main {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: var(--mui-sp-4);
+    }
+
+    section {
+      background: var(--mui-bg-paper);
+      border-radius: var(--mui-radius);
+      padding: var(--mui-sp-4);
+      margin-bottom: var(--mui-sp-3);
+      box-shadow: var(--mui-elev-1);
+    }
+
+    section h2 {
+      display: flex;
+      align-items: center;
+      gap: var(--mui-sp-2);
+      flex-wrap: wrap;
+      font-size: 34px;
+      line-height: 1.235;
+      font-weight: 400;
+      margin: 0 0 var(--mui-sp-3);
+      color: var(--mui-text-primary);
+    }
+
+    .source-link {
+      font-size: 13px;
+      color: var(--mui-primary-main);
+      text-decoration: none;
+      font-weight: 500;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+    }
+    .source-link:hover { text-decoration: underline; }
+
+    h3 {
+      font-size: 20px;
+      line-height: 1.6;
+      font-weight: 500;
+      margin: var(--mui-sp-3) 0 var(--mui-sp-2);
+      color: var(--mui-text-primary);
+    }
+
+    h4 {
+      font-size: 16px;
+      line-height: 1.5;
+      font-weight: 500;
+      margin: var(--mui-sp-2) 0 var(--mui-sp-1);
+      color: var(--mui-text-primary);
+    }
+
+    p { margin: 0 0 var(--mui-sp-2); color: var(--mui-text-primary); }
+    section p { color: var(--mui-text-secondary); }
+
+    /* Brand */
+    #brand .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--mui-sp-2);
+      padding: var(--mui-sp-2) var(--mui-sp-3);
+      background: linear-gradient(135deg, var(--mui-primary-main), var(--mui-secondary-main));
+      border-radius: var(--mui-radius);
+      color: white;
+      font-size: 28px;
+      font-weight: 500;
+      box-shadow: var(--mui-elev-4);
+    }
+    #brand .brand-mark svg { width: 36px; height: 36px; }
+    #brand .pillars {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--mui-sp-2);
+      margin-top: var(--mui-sp-3);
+    }
+    #brand .pillar {
+      padding: var(--mui-sp-2);
+      background: var(--mui-grey-50);
+      border-radius: var(--mui-radius);
+      border-left: 4px solid var(--mui-primary-main);
+    }
+    #brand .pillar h4 { margin-top: 0; color: var(--mui-primary-main); }
+
+    /* Color */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 2px;
+      margin-bottom: var(--mui-sp-2);
+    }
+    .color-cell {
+      aspect-ratio: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 6px;
+      font-size: 10px;
+      font-family: var(--mui-font-mono);
+      border-radius: 0;
+    }
+    .color-cell:first-child { border-radius: var(--mui-radius) 0 0 var(--mui-radius); }
+    .color-cell:last-child { border-radius: 0 var(--mui-radius) var(--mui-radius) 0; }
+
+    .semantic-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
+      gap: var(--mui-sp-1);
+    }
+    .sem-card {
+      padding: var(--mui-sp-2);
+      border-radius: var(--mui-radius);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      color: white;
+    }
+    .sem-card .label { font-size: 14px; font-weight: 500; }
+    .sem-card .hex { font-family: var(--mui-font-mono); font-size: 12px; opacity: 0.85; }
+
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--mui-sp-1);
+      margin-bottom: var(--mui-sp-2);
+    }
+    .role-chip {
+      padding: var(--mui-sp-2);
+      border-radius: var(--mui-radius);
+      font-size: 13px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .role-chip code { font-size: 11px; opacity: 0.85; }
+
+    /* Typography */
+    .type-row {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: var(--mui-sp-3);
+      padding: var(--mui-sp-2) 0;
+      border-bottom: 1px solid var(--mui-divider);
+      align-items: baseline;
+    }
+    .type-row:last-child { border-bottom: 0; }
+    .type-row .label {
+      font-family: var(--mui-font-mono);
+      font-size: 12px;
+      color: var(--mui-text-secondary);
+    }
+    .h1-style { font-size: 96px; line-height: 1.167; font-weight: 300; letter-spacing: -1.5px; }
+    .h2-style { font-size: 60px; line-height: 1.2; font-weight: 300; letter-spacing: -0.5px; }
+    .h3-style { font-size: 48px; line-height: 1.167; font-weight: 400; }
+    .h4-style { font-size: 34px; line-height: 1.235; font-weight: 400; letter-spacing: 0.25px; }
+    .h5-style { font-size: 24px; line-height: 1.334; font-weight: 400; }
+    .h6-style { font-size: 20px; line-height: 1.6; font-weight: 500; letter-spacing: 0.15px; }
+    .subtitle1 { font-size: 16px; line-height: 1.75; font-weight: 400; letter-spacing: 0.15px; }
+    .subtitle2 { font-size: 14px; line-height: 1.57; font-weight: 500; letter-spacing: 0.1px; }
+    .body1 { font-size: 16px; line-height: 1.5; font-weight: 400; letter-spacing: 0.15px; }
+    .body2 { font-size: 14px; line-height: 1.43; font-weight: 400; letter-spacing: 0.15px; }
+    .button-text { font-size: 14px; line-height: 1.75; font-weight: 500; letter-spacing: 0.4px; text-transform: uppercase; }
+    .caption { font-size: 12px; line-height: 1.66; font-weight: 400; letter-spacing: 0.4px; }
+    .overline { font-size: 12px; line-height: 2.66; font-weight: 400; letter-spacing: 1px; text-transform: uppercase; }
+    .mono-sample { font-family: var(--mui-font-mono); font-size: 14px; color: var(--mui-text-secondary); }
+
+    /* Iconography */
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(80px,1fr));
+      gap: var(--mui-sp-1);
+    }
+    .icon-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: var(--mui-sp-2);
+      background: var(--mui-grey-50);
+      border-radius: var(--mui-radius);
+      transition: background 0.2s;
+    }
+    .icon-cell:hover { background: var(--mui-grey-100); }
+    .icon-cell svg { width: 24px; height: 24px; fill: var(--mui-text-secondary); }
+    .icon-cell span { font-size: 11px; color: var(--mui-text-secondary); }
+
+    /* Buttons */
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--mui-sp-1);
+      align-items: center;
+      margin-bottom: var(--mui-sp-2);
+    }
+
+    .mui-btn {
+      font-family: var(--mui-font);
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: var(--mui-radius);
+      border: 0;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 36.5px;
+      transition: box-shadow 0.25s, background 0.25s;
+    }
+    .mui-btn--contained { background: var(--mui-primary-main); color: white; box-shadow: var(--mui-elev-2); }
+    .mui-btn--contained:hover { background: var(--mui-primary-dark); box-shadow: var(--mui-elev-4); }
+    .mui-btn--contained:disabled { background: var(--mui-action-disabled-bg); color: var(--mui-text-disabled); box-shadow: none; cursor: not-allowed; }
+    .mui-btn--outlined { background: transparent; color: var(--mui-primary-main); border: 1px solid rgba(25,118,210,0.5); padding: 5px 15px; }
+    .mui-btn--outlined:hover { background: rgba(25,118,210,0.04); border-color: var(--mui-primary-main); }
+    .mui-btn--text { background: transparent; color: var(--mui-primary-main); padding: 6px 8px; }
+    .mui-btn--text:hover { background: rgba(25,118,210,0.04); }
+    .mui-btn--secondary { background: var(--mui-secondary-main); color: white; box-shadow: var(--mui-elev-2); }
+    .mui-btn--secondary:hover { background: var(--mui-secondary-dark); box-shadow: var(--mui-elev-4); }
+    .mui-btn--icon { width: 40px; height: 40px; padding: 0; min-height: 40px; justify-content: center; background: transparent; color: var(--mui-text-secondary); border-radius: 50%; }
+    .mui-btn--icon:hover { background: var(--mui-action-hover); }
+    .mui-btn--fab {
+      width: 56px; height: 56px; padding: 0; min-height: 56px; justify-content: center;
+      background: var(--mui-secondary-main); color: white;
+      border-radius: 50%; box-shadow: var(--mui-elev-6);
+    }
+    .mui-btn--fab:hover { background: var(--mui-secondary-dark); box-shadow: var(--mui-elev-12); }
+    .mui-btn--sm { padding: 4px 10px; font-size: 13px; min-height: 30px; }
+    .mui-btn--lg { padding: 8px 22px; font-size: 15px; min-height: 42px; }
+    .mui-btn:focus-visible { outline: 2px solid var(--mui-primary-main); outline-offset: 2px; }
+
+    /* Form */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+      gap: var(--mui-sp-3);
+    }
+    .mui-field {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .mui-field--filled .mui-input {
+      background: rgba(0,0,0,0.06);
+      border: 0;
+      border-bottom: 1px solid rgba(0,0,0,0.42);
+      border-radius: var(--mui-radius) var(--mui-radius) 0 0;
+      padding: 24px 12px 8px;
+      font-family: var(--mui-font);
+      font-size: 16px;
+      color: var(--mui-text-primary);
+      outline: none;
+      width: 100%;
+    }
+    .mui-field--filled .mui-label {
+      position: absolute;
+      top: 8px;
+      left: 12px;
+      font-size: 12px;
+      color: var(--mui-text-secondary);
+    }
+    .mui-field--filled .mui-input:focus { border-bottom: 2px solid var(--mui-primary-main); }
+    .mui-field--filled .mui-input:focus + .mui-label { color: var(--mui-primary-main); }
+    .mui-field--outlined .mui-input {
+      background: transparent;
+      border: 1px solid rgba(0,0,0,0.23);
+      border-radius: var(--mui-radius);
+      padding: 16.5px 14px;
+      font-family: var(--mui-font);
+      font-size: 16px;
+      color: var(--mui-text-primary);
+      outline: none;
+      width: 100%;
+    }
+    .mui-field--outlined .mui-input:focus { border: 2px solid var(--mui-primary-main); padding: 15.5px 13px; }
+    .mui-field--outlined .mui-label {
+      position: absolute;
+      top: -7px;
+      left: 10px;
+      font-size: 12px;
+      color: var(--mui-text-secondary);
+      background: var(--mui-bg-paper);
+      padding: 0 4px;
+    }
+    .mui-field--standard .mui-input {
+      background: transparent;
+      border: 0;
+      border-bottom: 1px solid rgba(0,0,0,0.42);
+      border-radius: 0;
+      padding: 4px 0 5px;
+      font-family: var(--mui-font);
+      font-size: 16px;
+      color: var(--mui-text-primary);
+      outline: none;
+      width: 100%;
+    }
+    .mui-field--standard .mui-input:focus { border-bottom: 2px solid var(--mui-primary-main); }
+    .mui-field--standard .mui-label {
+      font-size: 12px;
+      color: var(--mui-text-secondary);
+      transform: translateY(0);
+    }
+    .mui-helper { font-size: 12px; color: var(--mui-text-secondary); padding-left: 14px; letter-spacing: 0.4px; }
+    .mui-error-text { color: var(--mui-error-main); }
+
+    .mui-field textarea.mui-input { min-height: 80px; resize: vertical; }
+    .mui-field select.mui-input { appearance: none; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='%23757575'><path d='M7 10l5 5 5-5z'/></svg>"); background-repeat: no-repeat; background-position: right 8px center; padding-right: 36px; }
+
+    .mui-checkbox, .mui-radio {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      padding: 6px;
+    }
+    .mui-checkbox input, .mui-radio input { width: 18px; height: 18px; accent-color: var(--mui-primary-main); }
+    .mui-switch { position: relative; display: inline-block; width: 58px; height: 38px; padding: 9px; }
+    .mui-switch input { opacity: 0; width: 0; height: 0; }
+    .mui-switch .track {
+      position: absolute;
+      top: 13px; bottom: 13px; left: 9px; right: 9px;
+      background: rgba(0,0,0,0.38);
+      border-radius: 7px;
+      transition: 0.2s;
+    }
+    .mui-switch .thumb {
+      position: absolute;
+      width: 20px; height: 20px;
+      top: 9px; left: 9px;
+      background: #FAFAFA;
+      border-radius: 50%;
+      box-shadow: var(--mui-elev-1);
+      transition: 0.2s;
+    }
+    .mui-switch input:checked + .track { background: rgba(25,118,210,0.5); }
+    .mui-switch input:checked ~ .thumb { left: 29px; background: var(--mui-primary-main); }
+
+    .mui-slider { width: 100%; accent-color: var(--mui-primary-main); }
+
+    /* Surfaces */
+    .surface-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
+      gap: var(--mui-sp-3);
+    }
+    .mui-card {
+      background: var(--mui-bg-paper);
+      border-radius: var(--mui-radius);
+      padding: var(--mui-sp-2);
+      box-shadow: var(--mui-elev-1);
+    }
+    .mui-card--elevated { box-shadow: var(--mui-elev-4); }
+    .mui-card--outlined { box-shadow: none; border: 1px solid var(--mui-divider); }
+    .mui-card .media { height: 140px; background: linear-gradient(135deg, var(--mui-primary-light), var(--mui-secondary-light)); border-radius: var(--mui-radius-sm); margin: calc(-1 * var(--mui-sp-2)) calc(-1 * var(--mui-sp-2)) var(--mui-sp-2); }
+    .mui-card h4 { margin: 0 0 4px; }
+    .mui-card p { font-size: 14px; color: var(--mui-text-secondary); margin: 0; }
+
+    .mui-stat { padding: var(--mui-sp-2); background: var(--mui-primary-main); border-radius: var(--mui-radius); color: white; box-shadow: var(--mui-elev-2); }
+    .mui-stat .num { font-size: 34px; font-weight: 400; line-height: 1.2; }
+    .mui-stat .lbl { font-size: 12px; opacity: 0.85; margin-top: 4px; letter-spacing: 0.4px; }
+
+    .mui-modal {
+      background: var(--mui-bg-paper);
+      padding: var(--mui-sp-3);
+      border-radius: var(--mui-radius);
+      box-shadow: var(--mui-elev-24);
+      max-width: 444px;
+    }
+
+    /* Feedback */
+    .mui-alert {
+      display: flex;
+      gap: var(--mui-sp-1);
+      padding: 6px 16px;
+      border-radius: var(--mui-radius);
+      margin-bottom: var(--mui-sp-1);
+      font-size: 14px;
+      align-items: flex-start;
+      letter-spacing: 0.15px;
+    }
+    .mui-alert--info { background: #E3F2FD; color: #014361; }
+    .mui-alert--success { background: #EDF7ED; color: #1E4620; }
+    .mui-alert--warn { background: #FFF4E5; color: #663C00; }
+    .mui-alert--error { background: #FDEDED; color: #5F2120; }
+
+    .mui-snackbar {
+      background: #323232;
+      color: rgba(255,255,255,0.95);
+      padding: 6px 16px;
+      border-radius: var(--mui-radius);
+      box-shadow: var(--mui-elev-6);
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 14px;
+      min-height: 48px;
+    }
+    .mui-snackbar button { background: transparent; color: #90CAF9; border: 0; font-weight: 500; cursor: pointer; text-transform: uppercase; padding: 6px 8px; }
+
+    .mui-banner {
+      display: flex;
+      gap: var(--mui-sp-1);
+      padding: var(--mui-sp-1) var(--mui-sp-2);
+      background: var(--mui-grey-50);
+      border-bottom: 1px solid var(--mui-divider);
+      border-radius: var(--mui-radius);
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .mui-chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .mui-chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 12px;
+      height: 32px;
+      border-radius: 16px;
+      border: 1px solid rgba(0,0,0,0.23);
+      background: transparent;
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.16px;
+    }
+    .mui-chip--filled { background: var(--mui-grey-200); color: var(--mui-text-primary); border-color: transparent; }
+    .mui-chip--primary { background: var(--mui-primary-main); color: white; border-color: transparent; }
+    .mui-chip--secondary { background: var(--mui-secondary-main); color: white; border-color: transparent; }
+    .mui-chip--success { background: var(--mui-success-main); color: white; border-color: transparent; }
+    .mui-chip--warn { background: var(--mui-warning-main); color: white; border-color: transparent; }
+    .mui-chip--error { background: var(--mui-error-main); color: white; border-color: transparent; }
+
+    .mui-badge {
+      background: var(--mui-error-main);
+      color: white;
+      border-radius: 10px;
+      font-size: 12px;
+      padding: 0 6px;
+      min-width: 20px;
+      height: 20px;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: 500;
+    }
+
+    .mui-progress {
+      width: 100%;
+      height: 4px;
+      background: rgba(25,118,210,0.5);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .mui-progress::after {
+      content: '';
+      display: block;
+      height: 100%;
+      width: 60%;
+      background: var(--mui-primary-main);
+    }
+
+    .mui-skeleton {
+      height: 14px;
+      background: linear-gradient(90deg, rgba(0,0,0,0.11), rgba(0,0,0,0.16), rgba(0,0,0,0.11));
+      background-size: 200% 100%;
+      border-radius: var(--mui-radius);
+      animation: shimmer 1.5s infinite;
+    }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+    .mui-spinner {
+      width: 32px; height: 32px;
+      border: 3px solid rgba(25,118,210,0.2);
+      border-top-color: var(--mui-primary-main);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Navigation */
+    .mui-tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--mui-divider);
+      margin-bottom: var(--mui-sp-2);
+    }
+    .mui-tab {
+      padding: var(--mui-sp-2) var(--mui-sp-2);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--mui-text-secondary);
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      min-width: 90px;
+      text-align: center;
+    }
+    .mui-tab.active { color: var(--mui-primary-main); border-bottom-color: var(--mui-primary-main); }
+
+    .mui-breadcrumb { display: flex; gap: 8px; align-items: center; font-size: 14px; color: var(--mui-text-secondary); }
+    .mui-breadcrumb a { color: var(--mui-text-secondary); text-decoration: underline; }
+    .mui-breadcrumb a:hover { color: var(--mui-primary-main); }
+
+    .mui-pagination { display: flex; gap: 4px; align-items: center; }
+    .mui-pagination button {
+      width: 32px; height: 32px;
+      border-radius: var(--mui-radius-xl);
+      border: 0;
+      background: transparent;
+      color: var(--mui-text-primary);
+      cursor: pointer;
+      font-family: var(--mui-font);
+      font-size: 14px;
+    }
+    .mui-pagination button.active { background: var(--mui-primary-main); color: white; }
+    .mui-pagination button:hover:not(.active) { background: var(--mui-action-hover); }
+
+    .mui-stepper { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+    .mui-stepper .step { display: inline-flex; align-items: center; gap: 8px; }
+    .mui-stepper .num {
+      width: 24px; height: 24px; border-radius: 50%;
+      background: rgba(0,0,0,0.38); color: white;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 500;
+    }
+    .mui-stepper .num.active { background: var(--mui-primary-main); }
+    .mui-stepper .num.complete { background: var(--mui-primary-main); }
+    .mui-stepper .line { flex: 1; height: 1px; background: var(--mui-divider); }
+
+    .mui-sidebar {
+      background: var(--mui-bg-paper);
+      border-radius: var(--mui-radius);
+      padding: 8px;
+      width: 240px;
+      box-shadow: var(--mui-elev-2);
+    }
+    .mui-sidebar a {
+      display: flex; align-items: center; gap: 12px;
+      padding: 8px 16px;
+      border-radius: var(--mui-radius);
+      color: var(--mui-text-primary);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 400;
+    }
+    .mui-sidebar a:hover { background: var(--mui-action-hover); }
+    .mui-sidebar a.active { background: rgba(25,118,210,0.08); color: var(--mui-primary-main); }
+
+    .mui-topbar {
+      display: flex; align-items: center; gap: 16px;
+      padding: 12px 16px;
+      background: var(--mui-primary-main);
+      color: white;
+      border-radius: var(--mui-radius);
+      box-shadow: var(--mui-elev-4);
+    }
+    .mui-topbar .mui-btn--icon { color: white; }
+    .mui-topbar .mui-btn--icon:hover { background: rgba(255,255,255,0.1); }
+
+    .mui-menu {
+      background: var(--mui-bg-paper);
+      border-radius: var(--mui-radius);
+      box-shadow: var(--mui-elev-8);
+      padding: 8px 0;
+      width: 200px;
+    }
+    .mui-menu .item { padding: 6px 16px; font-size: 16px; cursor: pointer; line-height: 1.5; }
+    .mui-menu .item:hover { background: var(--mui-action-hover); }
+
+    /* Data */
+    table.mui-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    table.mui-table th, table.mui-table td {
+      text-align: left;
+      padding: 16px;
+      border-bottom: 1px solid var(--mui-divider);
+    }
+    table.mui-table th { font-weight: 500; color: var(--mui-text-primary); letter-spacing: 0.16px; }
+    table.mui-table tbody tr:hover { background: var(--mui-action-hover); }
+
+    .mui-list { list-style: none; padding: 0; margin: 0; }
+    .mui-list li {
+      padding: 8px 16px;
+      display: flex; gap: 16px; align-items: center;
+      min-height: 56px;
+    }
+    .mui-list li:hover { background: var(--mui-action-hover); }
+
+    .mui-kv { display: grid; grid-template-columns: 140px 1fr; gap: 12px; font-size: 14px; }
+    .mui-kv dt { color: var(--mui-text-secondary); font-weight: 500; }
+
+    .mui-avatar {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: var(--mui-primary-main);
+      color: white;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-weight: 500;
+    }
+
+    .mui-empty {
+      text-align: center;
+      padding: var(--mui-sp-7) var(--mui-sp-2);
+      color: var(--mui-text-secondary);
+    }
+    .mui-empty svg { width: 48px; height: 48px; opacity: 0.4; }
+
+    /* Layout */
+    .grid-demo {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 16px;
+      background: var(--mui-grey-100);
+      padding: 16px;
+      border-radius: var(--mui-radius);
+    }
+    .grid-demo > div {
+      background: var(--mui-primary-light);
+      color: white;
+      padding: 12px;
+      border-radius: var(--mui-radius);
+      font-size: 12px;
+      font-weight: 500;
+      text-align: center;
+    }
+
+    .scale-row {
+      display: flex;
+      gap: var(--mui-sp-2);
+      flex-wrap: wrap;
+      align-items: flex-end;
+      margin-bottom: var(--mui-sp-2);
+    }
+    .scale-item {
+      display: flex; flex-direction: column; gap: 6px;
+      align-items: center;
+    }
+    .scale-item .swatch {
+      background: var(--mui-primary-main);
+    }
+    .scale-item .lbl { font-size: 11px; font-family: var(--mui-font-mono); color: var(--mui-text-secondary); }
+
+    .shadow-demo {
+      width: 80px; height: 80px;
+      background: var(--mui-bg-paper);
+      border-radius: var(--mui-radius);
+      display: inline-flex; align-items: center; justify-content: center;
+      margin-right: 16px; margin-bottom: 16px;
+      font-size: 11px; font-family: var(--mui-font-mono); color: var(--mui-text-secondary);
+    }
+
+    /* Footer */
+    .ds-footer {
+      background: var(--mui-grey-900);
+      color: rgba(255,255,255,0.85);
+      padding: var(--mui-sp-4);
+      margin-top: var(--mui-sp-6);
+    }
+    .ds-footer h3 { margin-top: 0; color: white; }
+    .ds-footer ul { padding-left: 20px; }
+    .ds-footer li { margin-bottom: 4px; word-break: break-all; font-size: 13px; }
+    .ds-footer a { color: var(--mui-primary-light); text-decoration: none; }
+    .ds-footer a:hover { text-decoration: underline; }
+    .license-note { font-size: 13px; color: rgba(255,255,255,0.65); margin-top: var(--mui-sp-2); }
+    .meta-note { font-size: 12px; color: rgba(255,255,255,0.5); font-family: var(--mui-font-mono); margin-top: var(--mui-sp-1); }
+
+    @media (max-width: 720px) {
+      .ds-header h1 { font-size: 32px; }
+      main { padding: var(--mui-sp-2); }
+      section { padding: var(--mui-sp-2); }
+      .type-row { grid-template-columns: 1fr; }
+      .color-grid { grid-template-columns: repeat(5, 1fr); }
+      .h1-style { font-size: 56px; }
+      .h2-style { font-size: 40px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="ds-header">
+    <a href="index.html" class="back-link">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Catalog
+    </a>
+    <h1>Material UI (MUI)</h1>
+    <div class="meta">
+      <span class="badge kind-cl">component-library</span>
+      <span class="badge fidelity-approximated">approximated</span>
+      <span class="badge source-homepage-only">source: homepage-only</span>
+      <a href="https://mui.com" target="_blank" rel="noopener">Official ↗</a>
+    </div>
+    <p class="tagline">React component library implementing Material Design with extensive theming and emotional density.</p>
+  </header>
+
+  <nav class="toc" aria-label="Table of contents">
+    <ul>
+      <li><a href="#brand">Brand</a></li>
+      <li><a href="#color">Color</a></li>
+      <li><a href="#typography">Typography</a></li>
+      <li><a href="#iconography">Iconography</a></li>
+      <li><a href="#buttons">Buttons</a></li>
+      <li><a href="#form">Form</a></li>
+      <li><a href="#surfaces">Surfaces</a></li>
+      <li><a href="#feedback">Feedback</a></li>
+      <li><a href="#navigation">Navigation</a></li>
+      <li><a href="#data">Data</a></li>
+      <li><a href="#layout">Layout</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="brand" data-fidelity="documented">
+      <h2>
+        <span>Brand</span>
+        <span class="badge fidelity-documented">documented</span>
+      </h2>
+      <div class="brand-mark">
+        <svg viewBox="0 0 36 36" fill="none">
+          <path d="M3 6 L18 30 L33 6 L26 6 L18 18 L10 6 Z" fill="white"/>
+        </svg>
+        MUI
+      </div>
+      <p style="margin-top: 24px; max-width: 720px; font-size: 16px;">
+        MUI (Material UI) is the most popular React component library implementing Material Design. It ships a comprehensive theming system based on createTheme(), supports emotion + styled-components, and includes 50+ components ranging from Button to Data Grid.
+      </p>
+      <div class="pillars">
+        <div class="pillar">
+          <h4>Composable</h4>
+          <p style="font-size:14px;color:var(--mui-text-secondary);margin:0">sx prop, styled() utility, and theme override layers in a clear inheritance chain.</p>
+        </div>
+        <div class="pillar">
+          <h4>Themed</h4>
+          <p style="font-size:14px;color:var(--mui-text-secondary);margin:0">createTheme() drives palette, typography, shape, breakpoints, and component overrides.</p>
+        </div>
+        <div class="pillar">
+          <h4>Accessible</h4>
+          <p style="font-size:14px;color:var(--mui-text-secondary);margin:0">WAI-ARIA practices baked into every primitive — keyboard, focus, and roles handled.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="color" data-fidelity="documented">
+      <h2>
+        <span>Color</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://mui.com/material-ui/customization/color/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p>MUI palette is built around primary / secondary / error / warning / info / success roles, each with main, dark, light, and contrastText. Default theme uses blue 700 as primary main.</p>
+
+      <h3>Primary scale (blue)</h3>
+      <div class="color-grid">
+        <div class="color-cell" style="background:#E3F2FD;color:#0D47A1">50</div>
+        <div class="color-cell" style="background:#BBDEFB;color:#0D47A1">100</div>
+        <div class="color-cell" style="background:#90CAF9;color:#0D47A1">200</div>
+        <div class="color-cell" style="background:#64B5F6;color:white">300</div>
+        <div class="color-cell" style="background:#42A5F5;color:white">400</div>
+        <div class="color-cell" style="background:#2196F3;color:white">500</div>
+        <div class="color-cell" style="background:#1E88E5;color:white">600</div>
+        <div class="color-cell" style="background:#1976D2;color:white">700</div>
+        <div class="color-cell" style="background:#1565C0;color:white">800</div>
+        <div class="color-cell" style="background:#0D47A1;color:white">900</div>
+      </div>
+
+      <h3>Secondary scale (purple)</h3>
+      <div class="color-grid">
+        <div class="color-cell" style="background:#F3E5F5;color:#4A148C">50</div>
+        <div class="color-cell" style="background:#E1BEE7;color:#4A148C">100</div>
+        <div class="color-cell" style="background:#CE93D8;color:#4A148C">200</div>
+        <div class="color-cell" style="background:#BA68C8;color:white">300</div>
+        <div class="color-cell" style="background:#AB47BC;color:white">400</div>
+        <div class="color-cell" style="background:#9C27B0;color:white">500</div>
+        <div class="color-cell" style="background:#8E24AA;color:white">600</div>
+        <div class="color-cell" style="background:#7B1FA2;color:white">700</div>
+        <div class="color-cell" style="background:#6A1B9A;color:white">800</div>
+        <div class="color-cell" style="background:#4A148C;color:white">900</div>
+      </div>
+
+      <h3>Grey scale</h3>
+      <div class="color-grid">
+        <div class="color-cell" style="background:var(--mui-grey-50);color:#212121;border:1px solid var(--mui-divider)">50</div>
+        <div class="color-cell" style="background:var(--mui-grey-100);color:#212121">100</div>
+        <div class="color-cell" style="background:var(--mui-grey-200);color:#212121">200</div>
+        <div class="color-cell" style="background:var(--mui-grey-300);color:#212121">300</div>
+        <div class="color-cell" style="background:var(--mui-grey-400);color:#212121">400</div>
+        <div class="color-cell" style="background:var(--mui-grey-500);color:white">500</div>
+        <div class="color-cell" style="background:var(--mui-grey-600);color:white">600</div>
+        <div class="color-cell" style="background:var(--mui-grey-700);color:white">700</div>
+        <div class="color-cell" style="background:var(--mui-grey-800);color:white">800</div>
+        <div class="color-cell" style="background:var(--mui-grey-900);color:white">900</div>
+      </div>
+
+      <h3>Semantic roles</h3>
+      <div class="semantic-grid">
+        <div class="sem-card" style="background:var(--mui-error-main)">
+          <span class="label">Error</span><span class="hex">#D32F2F</span>
+        </div>
+        <div class="sem-card" style="background:var(--mui-warning-main)">
+          <span class="label">Warning</span><span class="hex">#ED6C02</span>
+        </div>
+        <div class="sem-card" style="background:var(--mui-info-main)">
+          <span class="label">Info</span><span class="hex">#0288D1</span>
+        </div>
+        <div class="sem-card" style="background:var(--mui-success-main)">
+          <span class="label">Success</span><span class="hex">#2E7D32</span>
+        </div>
+      </div>
+
+      <h3>Token roles (Light)</h3>
+      <div class="role-grid">
+        <div class="role-chip" style="background:var(--mui-primary-main);color:white">primary.main <code>#1976D2</code></div>
+        <div class="role-chip" style="background:var(--mui-primary-dark);color:white">primary.dark <code>#1565C0</code></div>
+        <div class="role-chip" style="background:var(--mui-primary-light);color:white">primary.light <code>#42A5F5</code></div>
+        <div class="role-chip" style="background:var(--mui-secondary-main);color:white">secondary.main <code>#9C27B0</code></div>
+        <div class="role-chip" style="background:var(--mui-secondary-dark);color:white">secondary.dark <code>#7B1FA2</code></div>
+        <div class="role-chip" style="background:var(--mui-secondary-light);color:white">secondary.light <code>#BA68C8</code></div>
+        <div class="role-chip" style="background:var(--mui-bg-paper);color:var(--mui-text-primary);border:1px solid var(--mui-divider)">background.paper <code>#FFFFFF</code></div>
+        <div class="role-chip" style="background:var(--mui-grey-100);color:var(--mui-text-primary)">grey.100 <code>#F5F5F5</code></div>
+      </div>
+    </section>
+
+    <section id="typography" data-fidelity="documented">
+      <h2>
+        <span>Typography</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://mui.com/material-ui/customization/typography/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p>Roboto is the default. Variants: h1-h6, subtitle1/2, body1/2, button, caption, overline. Default font weights: 300 (light), 400 (regular), 500 (medium), 700 (bold).</p>
+
+      <div class="type-row"><div class="label">h1 · 96/1.167 · 300</div><div class="h1-style">Material UI</div></div>
+      <div class="type-row"><div class="label">h2 · 60/1.2 · 300</div><div class="h2-style">Compose with React</div></div>
+      <div class="type-row"><div class="label">h3 · 48/1.167 · 400</div><div class="h3-style">createTheme()</div></div>
+      <div class="type-row"><div class="label">h4 · 34/1.235 · 400</div><div class="h4-style">sx prop · emotion · styled</div></div>
+      <div class="type-row"><div class="label">h5 · 24/1.334 · 400</div><div class="h5-style">Theme overrides per component</div></div>
+      <div class="type-row"><div class="label">h6 · 20/1.6 · 500</div><div class="h6-style">Section heading</div></div>
+      <div class="type-row"><div class="label">subtitle1 · 16/1.75 · 400</div><div class="subtitle1">Subtitle one — paired with h6 in card headers and list primaries.</div></div>
+      <div class="type-row"><div class="label">subtitle2 · 14/1.57 · 500</div><div class="subtitle2">Subtitle two — denser secondary headline weight.</div></div>
+      <div class="type-row"><div class="label">body1 · 16/1.5 · 400</div><div class="body1">MUI's default body voice. Use body1 for paragraph copy in pages and dialogs; pair with h6 / subtitle1 for clear hierarchy.</div></div>
+      <div class="type-row"><div class="label">body2 · 14/1.43 · 400</div><div class="body2">body2 is reserved for dense areas — table cells, list secondary text, and helper context.</div></div>
+      <div class="type-row"><div class="label">button · 14/1.75 · 500</div><div class="button-text">Button label</div></div>
+      <div class="type-row"><div class="label">caption · 12/1.66 · 400</div><div class="caption">Caption — image labels, helper text, and metadata.</div></div>
+      <div class="type-row"><div class="label">overline · 12/2.66 · 400</div><div class="overline">Overline label</div></div>
+      <div class="type-row"><div class="label">Mono · Roboto Mono</div><div class="mono-sample">theme.palette.primary.main = '#1976D2';</div></div>
+    </section>
+
+    <section id="iconography" data-fidelity="documented">
+      <h2>
+        <span>Iconography</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://mui.com/material-ui/material-icons/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p>MUI ships @mui/icons-material — 2,100+ Material Icons in five styles (Filled, Outlined, Rounded, Two Tone, Sharp). Sample below: filled 24px variants approximated as inline SVG.</p>
+      <div class="icon-grid">
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg><span>home</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg><span>search</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><span>person</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg><span>send</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM14 17H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg><span>article</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg><span>schedule</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.488.488 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94 0 .31.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg><span>settings</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M9.4 10.5l4.77-8.26C13.47 2.09 12.75 2 12 2c-2.4 0-4.6.85-6.32 2.25l3.66 6.35.06-.1zM21.54 9c-.92-2.92-3.15-5.26-6-6.34L11.88 9h9.66zm.26 1h-7.49l.29.5 4.76 8.25C21 16.97 22 14.61 22 12c0-.69-.07-1.35-.2-2zM8.54 12l-3.9-6.75C3.01 7.03 2 9.39 2 12c0 .69.07 1.35.2 2h7.49l-1.15-2zm-6.08 3c.92 2.92 3.15 5.26 6 6.34L12.12 15H2.46zm11.27 0l-3.9 6.76c.7.15 1.42.24 2.17.24 2.4 0 4.6-.85 6.32-2.25l-3.66-6.35-.93 1.6z"/></svg><span>public</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg><span>check</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg><span>close</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6z"/></svg><span>add</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg><span>chat</span></div>
+      </div>
+    </section>
+
+    <section id="buttons" data-fidelity="documented">
+      <h2>
+        <span>Buttons</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://mui.com/material-ui/react-button/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p>Three Button variants: contained (default emphasis), outlined, and text. Plus IconButton and Floating Action Button (Fab).</p>
+
+      <h3>Variants</h3>
+      <div class="button-row">
+        <button class="mui-btn mui-btn--contained">Contained</button>
+        <button class="mui-btn mui-btn--outlined">Outlined</button>
+        <button class="mui-btn mui-btn--text">Text</button>
+        <button class="mui-btn mui-btn--secondary">Secondary</button>
+        <button class="mui-btn mui-btn--icon" aria-label="favorite">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+        </button>
+        <button class="mui-btn mui-btn--fab" aria-label="add">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6z"/></svg>
+        </button>
+      </div>
+
+      <h3>Sizes</h3>
+      <div class="button-row">
+        <button class="mui-btn mui-btn--contained mui-btn--sm">Small</button>
+        <button class="mui-btn mui-btn--contained">Medium</button>
+        <button class="mui-btn mui-btn--contained mui-btn--lg">Large</button>
+      </div>
+
+      <h3>States</h3>
+      <div class="button-row">
+        <button class="mui-btn mui-btn--contained">Enabled</button>
+        <button class="mui-btn mui-btn--contained" style="background:var(--mui-primary-dark);box-shadow:var(--mui-elev-4)">Hover</button>
+        <button class="mui-btn mui-btn--contained" style="outline:2px solid var(--mui-primary-main);outline-offset:2px">Focus</button>
+        <button class="mui-btn mui-btn--contained" disabled>Disabled</button>
+      </div>
+    </section>
+
+    <section id="form" data-fidelity="documented">
+      <h2>
+        <span>Form</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://mui.com/material-ui/react-text-field/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p>TextField has three variants: outlined (default), filled, and standard. Each ships floating label, helper text, and error state out of the box.</p>
+
+      <h3>Text fields</h3>
+      <div class="form-grid">
+        <div class="mui-field mui-field--outlined">
+          <input class="mui-input" type="text" id="m1" value="MUI">
+          <label class="mui-label" for="m1">Project name</label>
+          <span class="mui-helper">Outlined · default variant</span>
+        </div>
+        <div class="mui-field mui-field--filled">
+          <input class="mui-input" type="email" id="m2" placeholder=" ">
+          <label class="mui-label" for="m2">Email address</label>
+          <span class="mui-helper">Filled variant</span>
+        </div>
+        <div class="mui-field mui-field--standard">
+          <label class="mui-label" for="m3">Username</label>
+          <input class="mui-input" type="text" id="m3" value="motohirokoma">
+          <span class="mui-helper">Standard variant</span>
+        </div>
+        <div class="mui-field mui-field--outlined">
+          <textarea class="mui-input" id="m4" placeholder=" ">Multiline body content for the multiline TextField...</textarea>
+          <label class="mui-label" for="m4">Description</label>
+        </div>
+        <div class="mui-field mui-field--outlined">
+          <select class="mui-input" id="m5">
+            <option>Roboto</option>
+            <option>Inter</option>
+            <option>Roboto Mono</option>
+          </select>
+          <label class="mui-label" for="m5">Font</label>
+        </div>
+        <div class="mui-field mui-field--outlined">
+          <input class="mui-input" type="text" id="m6" value="invalid@" style="border-color:var(--mui-error-main)">
+          <label class="mui-label" for="m6" style="color:var(--mui-error-main)">Email</label>
+          <span class="mui-helper mui-error-text">Enter a valid email address</span>
+        </div>
+      </div>
+
+      <h3>Selection controls</h3>
+      <div class="button-row">
+        <label class="mui-checkbox"><input type="checkbox" checked>Enable beta</label>
+        <label class="mui-checkbox"><input type="checkbox">Marketing emails</label>
+        <label class="mui-radio"><input type="radio" name="r1" checked>Light</label>
+        <label class="mui-radio"><input type="radio" name="r1">Dark</label>
+        <label class="mui-switch"><input type="checkbox" checked><span class="track"></span><span class="thumb"></span></label>
+        <label class="mui-switch"><input type="checkbox"><span class="track"></span><span class="thumb"></span></label>
+      </div>
+
+      <h3>Slider &amp; file</h3>
+      <div style="max-width:400px;display:flex;flex-direction:column;gap:16px">
+        <input type="range" class="mui-slider" min="0" max="100" value="60">
+        <input type="file" class="mui-input" style="padding:12px;border:1px solid rgba(0,0,0,0.23);border-radius:var(--mui-radius)">
+      </div>
+    </section>
+
+    <section id="surfaces" data-fidelity="documented">
+      <h2>
+        <span>Surfaces</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://mui.com/material-ui/react-card/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p>Card, Paper, and Dialog are MUI's primary surfaces. Paper has 24 elevation levels (0-24); Card defaults to elevation 1 and supports outlined variant.</p>
+
+      <div class="surface-grid">
+        <div class="mui-card">
+          <div class="media"></div>
+          <h4>Card · default</h4>
+          <p>Elevation 1 — sits on the page with subtle shadow.</p>
+        </div>
+        <div class="mui-card mui-card--elevated">
+          <div class="media"></div>
+          <h4>Card · raised</h4>
+          <p>Elevation 4 — used in interactive carousel or featured content.</p>
+        </div>
+        <div class="mui-card mui-card--outlined">
+          <div class="media"></div>
+          <h4>Card · outlined</h4>
+          <p>No shadow — divider border. Use at high information density.</p>
+        </div>
+        <div class="mui-stat">
+          <div class="num">2,847</div>
+          <div class="lbl">Active sessions</div>
+        </div>
+      </div>
+
+      <h3>Dialog</h3>
+      <div class="mui-modal">
+        <h4 style="margin-top:0">Reset preferences?</h4>
+        <p style="font-size:14px;color:var(--mui-text-secondary)">Theme, palette, and typography overrides will revert to MUI defaults. This action cannot be undone.</p>
+        <div class="button-row" style="justify-content:flex-end;margin:0">
+          <button class="mui-btn mui-btn--text">Cancel</button>
+          <button class="mui-btn mui-btn--contained">Reset</button>
+        </div>
+      </div>
+
+      <h3>Menu &amp; drawer</h3>
+      <div style="display:flex;gap:24px;flex-wrap:wrap">
+        <div class="mui-menu">
+          <div class="item">Edit</div>
+          <div class="item">Duplicate</div>
+          <div class="item">Archive</div>
+          <div class="item" style="color:var(--mui-error-main)">Delete</div>
+        </div>
+        <div class="mui-sidebar">
+          <a href="#" class="active">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+            Dashboard
+          </a>
+          <a href="#">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5z"/></svg>
+            Search
+          </a>
+          <a href="#">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+            Account
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section id="feedback" data-fidelity="documented">
+      <h2>
+        <span>Feedback</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://mui.com/material-ui/react-alert/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+
+      <h3>Alerts</h3>
+      <div class="mui-alert mui-alert--info">
+        <strong>Info ·</strong> MUI's createTheme() drives palette, typography, breakpoints, and component overrides.
+      </div>
+      <div class="mui-alert mui-alert--success">
+        <strong>Success ·</strong> Theme provider mounted, components hydrated.
+      </div>
+      <div class="mui-alert mui-alert--warn">
+        <strong>Warning ·</strong> Custom secondary.main fails contrast against contrastText.
+      </div>
+      <div class="mui-alert mui-alert--error">
+        <strong>Error ·</strong> Cannot resolve palette.tertiary on default theme.
+      </div>
+
+      <h3>Snackbar (Toast)</h3>
+      <div class="mui-snackbar">
+        Theme reverted to default.
+        <button>Undo</button>
+      </div>
+
+      <h3>Banner</h3>
+      <div class="mui-banner" style="margin-top:12px">
+        <span><strong>Beta Notice</strong> — DataGrid Premium features are enabled.</span>
+        <button class="mui-btn mui-btn--text" style="padding:6px 12px">Dismiss</button>
+      </div>
+
+      <h3>Chips &amp; badges</h3>
+      <div class="mui-chip-row">
+        <span class="mui-chip">Default</span>
+        <span class="mui-chip mui-chip--filled">Filled</span>
+        <span class="mui-chip mui-chip--primary">Primary</span>
+        <span class="mui-chip mui-chip--secondary">Secondary</span>
+        <span class="mui-chip mui-chip--success">Success</span>
+        <span class="mui-chip mui-chip--warn">Warning</span>
+        <span class="mui-chip mui-chip--error">Error</span>
+        <span class="mui-badge">3</span>
+        <span class="mui-badge" style="background:var(--mui-primary-main)">12</span>
+      </div>
+
+      <h3>Progress &amp; loading</h3>
+      <div style="display:flex;flex-direction:column;gap:12px;max-width:480px">
+        <div class="mui-progress"></div>
+        <div class="mui-skeleton" style="width:80%"></div>
+        <div class="mui-skeleton" style="width:60%"></div>
+        <div class="mui-spinner"></div>
+      </div>
+    </section>
+
+    <section id="navigation" data-fidelity="documented">
+      <h2>
+        <span>Navigation</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://mui.com/material-ui/react-tabs/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+
+      <h3>Tabs</h3>
+      <div class="mui-tabs">
+        <div class="mui-tab active">Overview</div>
+        <div class="mui-tab">Tokens</div>
+        <div class="mui-tab">Components</div>
+        <div class="mui-tab">Customization</div>
+      </div>
+
+      <h3>Breadcrumb</h3>
+      <div class="mui-breadcrumb">
+        <a href="#">Home</a><span>›</span>
+        <a href="#">Components</a><span>›</span>
+        <span>Button</span>
+      </div>
+
+      <h3>Pagination</h3>
+      <div class="mui-pagination">
+        <button>‹</button>
+        <button class="active">1</button>
+        <button>2</button>
+        <button>3</button>
+        <button>4</button>
+        <button>5</button>
+        <button>›</button>
+      </div>
+
+      <h3>Stepper</h3>
+      <div class="mui-stepper">
+        <div class="step"><span class="num complete">✓</span> Theme</div>
+        <span class="line"></span>
+        <div class="step"><span class="num active">2</span> Type</div>
+        <span class="line"></span>
+        <div class="step"><span class="num">3</span> Shape</div>
+        <span class="line"></span>
+        <div class="step"><span class="num">4</span> Review</div>
+      </div>
+
+      <h3>App bar</h3>
+      <div class="mui-topbar">
+        <button class="mui-btn mui-btn--icon" aria-label="menu"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></button>
+        <strong style="flex:1;font-size:20px;font-weight:500">MUI</strong>
+        <button class="mui-btn mui-btn--icon" aria-label="search"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5z"/></svg></button>
+        <div class="mui-avatar">MK</div>
+      </div>
+    </section>
+
+    <section id="data" data-fidelity="documented">
+      <h2>
+        <span>Data</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://mui.com/material-ui/react-table/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+
+      <h3>Table</h3>
+      <table class="mui-table">
+        <thead>
+          <tr><th>Token</th><th>Value</th><th>Role</th><th>Light contrast</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>palette.primary.main</code></td><td>#1976D2</td><td>primary</td><td>WCAG AA</td></tr>
+          <tr><td><code>palette.secondary.main</code></td><td>#9C27B0</td><td>secondary</td><td>WCAG AA</td></tr>
+          <tr><td><code>palette.error.main</code></td><td>#D32F2F</td><td>semantic</td><td>WCAG AA</td></tr>
+          <tr><td><code>palette.background.paper</code></td><td>#FFFFFF</td><td>surface</td><td>—</td></tr>
+        </tbody>
+      </table>
+
+      <h3>List</h3>
+      <ul class="mui-list">
+        <li><div class="mui-avatar">A</div><div><strong>Avery Tan</strong><div style="font-size:13px;color:var(--mui-text-secondary)">Updated theme · 2m ago</div></div></li>
+        <li><div class="mui-avatar" style="background:var(--mui-secondary-main)">B</div><div><strong>Brett Yu</strong><div style="font-size:13px;color:var(--mui-text-secondary)">Imported tokens · 14m ago</div></div></li>
+        <li><div class="mui-avatar" style="background:var(--mui-success-main)">C</div><div><strong>Cleo Park</strong><div style="font-size:13px;color:var(--mui-text-secondary)">Created palette · 1h ago</div></div></li>
+      </ul>
+
+      <h3>Key – value</h3>
+      <dl class="mui-kv">
+        <dt>Theme mode</dt><dd>Light · default</dd>
+        <dt>Primary main</dt><dd>#1976D2</dd>
+        <dt>Spacing base</dt><dd>8px</dd>
+        <dt>Generated</dt><dd>2026-05-05</dd>
+      </dl>
+
+      <h3>Empty state</h3>
+      <div class="mui-empty">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM14 17H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+        <h4 style="margin:8px 0 4px">No themes yet</h4>
+        <p style="font-size:14px;margin:0">Create one with createTheme() or import a palette JSON.</p>
+      </div>
+    </section>
+
+    <section id="layout" data-fidelity="documented">
+      <h2>
+        <span>Layout</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://mui.com/material-ui/react-grid/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p>MUI uses an 8px spacing base via theme.spacing(). Grid v2 is a 12-column flexbox grid. Breakpoints: xs 0, sm 600, md 900, lg 1200, xl 1536.</p>
+
+      <h3>12-column grid</h3>
+      <div class="grid-demo">
+        <div style="grid-column:span 12">12</div>
+        <div style="grid-column:span 6">6</div>
+        <div style="grid-column:span 6">6</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+      </div>
+
+      <h3>Spacing scale (8px base)</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div class="swatch" style="width:8px;height:32px"></div><span class="lbl">1 · 8</span></div>
+        <div class="scale-item"><div class="swatch" style="width:16px;height:32px"></div><span class="lbl">2 · 16</span></div>
+        <div class="scale-item"><div class="swatch" style="width:24px;height:32px"></div><span class="lbl">3 · 24</span></div>
+        <div class="scale-item"><div class="swatch" style="width:32px;height:32px"></div><span class="lbl">4 · 32</span></div>
+        <div class="scale-item"><div class="swatch" style="width:40px;height:32px"></div><span class="lbl">5 · 40</span></div>
+        <div class="scale-item"><div class="swatch" style="width:48px;height:32px"></div><span class="lbl">6 · 48</span></div>
+        <div class="scale-item"><div class="swatch" style="width:56px;height:32px"></div><span class="lbl">7 · 56</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:32px"></div><span class="lbl">8 · 64</span></div>
+      </div>
+
+      <h3>Shape scale</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:0;background:var(--mui-primary-light)"></div><span class="lbl">none 0</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:2px;background:var(--mui-primary-light)"></div><span class="lbl">sm 2</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:4px;background:var(--mui-primary-light)"></div><span class="lbl">default 4</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:8px;background:var(--mui-primary-light)"></div><span class="lbl">lg 8</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:16px;background:var(--mui-primary-light)"></div><span class="lbl">xl 16</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:50%;background:var(--mui-primary-light)"></div><span class="lbl">circle</span></div>
+      </div>
+
+      <h3>Elevation (24 levels — sample)</h3>
+      <div>
+        <div class="shadow-demo" style="box-shadow:none">0</div>
+        <div class="shadow-demo" style="box-shadow:var(--mui-elev-1)">1</div>
+        <div class="shadow-demo" style="box-shadow:var(--mui-elev-2)">2</div>
+        <div class="shadow-demo" style="box-shadow:var(--mui-elev-4)">4</div>
+        <div class="shadow-demo" style="box-shadow:var(--mui-elev-6)">6</div>
+        <div class="shadow-demo" style="box-shadow:var(--mui-elev-8)">8</div>
+        <div class="shadow-demo" style="box-shadow:var(--mui-elev-12)">12</div>
+        <div class="shadow-demo" style="box-shadow:var(--mui-elev-16)">16</div>
+        <div class="shadow-demo" style="box-shadow:var(--mui-elev-24)">24</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="ds-footer">
+    <h3>Sources</h3>
+    <ul>
+      <li><a href="https://mui.com" target="_blank" rel="noopener">https://mui.com</a></li>
+      <li><a href="https://mui.com/material-ui/customization/color/" target="_blank" rel="noopener">https://mui.com/material-ui/customization/color/</a></li>
+      <li><a href="https://mui.com/material-ui/customization/typography/" target="_blank" rel="noopener">https://mui.com/material-ui/customization/typography/</a></li>
+      <li><a href="https://mui.com/material-ui/material-icons/" target="_blank" rel="noopener">https://mui.com/material-ui/material-icons/</a></li>
+      <li><a href="https://mui.com/material-ui/react-button/" target="_blank" rel="noopener">https://mui.com/material-ui/react-button/</a></li>
+      <li><a href="https://mui.com/material-ui/react-text-field/" target="_blank" rel="noopener">https://mui.com/material-ui/react-text-field/</a></li>
+      <li><a href="https://mui.com/material-ui/react-card/" target="_blank" rel="noopener">https://mui.com/material-ui/react-card/</a></li>
+      <li><a href="https://mui.com/material-ui/react-alert/" target="_blank" rel="noopener">https://mui.com/material-ui/react-alert/</a></li>
+      <li><a href="https://mui.com/material-ui/react-tabs/" target="_blank" rel="noopener">https://mui.com/material-ui/react-tabs/</a></li>
+      <li><a href="https://mui.com/material-ui/react-table/" target="_blank" rel="noopener">https://mui.com/material-ui/react-table/</a></li>
+      <li><a href="https://mui.com/material-ui/react-grid/" target="_blank" rel="noopener">https://mui.com/material-ui/react-grid/</a></li>
+    </ul>
+    <p class="license-note">This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with MUI. Material UI (MUI) and related trademarks belong to MUI. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</p>
+    <p class="meta-note">Reproduction date: 2026-05-05 · sourceStatus: homepage-only · fidelity: approximated</p>
+  </footer>
+</body>
+</html>

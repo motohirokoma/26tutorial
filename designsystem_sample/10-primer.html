@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Primer — Design System Reference</title>
+  <script id="ds-meta" type="application/json">
+{"id":"10-primer","fileSlug":"10-primer","schemaVersion":"1"}
+  </script>
+  <style>
+    :root {
+      /* Accent (GitHub blue) */
+      --pr-accent-fg: #0969DA;
+      --pr-accent-emphasis: #0969DA;
+      --pr-accent-fg-bright: #218BFF;
+      --pr-accent-muted: rgba(84,174,255,0.4);
+      --pr-accent-subtle: #DDF4FF;
+
+      /* Foreground */
+      --pr-fg-default: #1F2328;
+      --pr-fg-muted: #656D76;
+      --pr-fg-subtle: #6E7781;
+      --pr-fg-on-emphasis: #FFFFFF;
+
+      /* Canvas (background) */
+      --pr-canvas-default: #FFFFFF;
+      --pr-canvas-overlay: #FFFFFF;
+      --pr-canvas-inset: #EAEEF2;
+      --pr-canvas-subtle: #F6F8FA;
+
+      /* Border */
+      --pr-border-default: #D0D7DE;
+      --pr-border-muted: #D8DEE4;
+      --pr-border-subtle: rgba(31,35,40,0.15);
+
+      /* Neutral */
+      --pr-neutral-emphasis-plus: #24292F;
+      --pr-neutral-emphasis: #6E7781;
+      --pr-neutral-muted: rgba(175,184,193,0.2);
+      --pr-neutral-subtle: rgba(234,238,242,0.5);
+
+      /* Semantic */
+      --pr-success-fg: #1A7F37;
+      --pr-success-emphasis: #1F883D;
+      --pr-success-muted: rgba(74,194,107,0.4);
+      --pr-success-subtle: #DAFBE1;
+      --pr-attention-fg: #9A6700;
+      --pr-attention-emphasis: #9A6700;
+      --pr-attention-muted: rgba(212,167,44,0.4);
+      --pr-attention-subtle: #FFF8C5;
+      --pr-danger-fg: #CF222E;
+      --pr-danger-emphasis: #CF222E;
+      --pr-danger-muted: rgba(255,129,130,0.4);
+      --pr-danger-subtle: #FFEBE9;
+      --pr-done-fg: #8250DF;
+      --pr-done-emphasis: #8250DF;
+      --pr-done-subtle: #FBEFFF;
+
+      /* Type — GitHub system stack */
+      --pr-font: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+      --pr-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+
+      /* Shape — Primer uses 6px primary */
+      --pr-radius-1: 3px;
+      --pr-radius-2: 6px;
+      --pr-radius-3: 8px;
+      --pr-radius-4: 12px;
+      --pr-radius-pill: 999px;
+
+      /* Spacing — 8px primary */
+      --pr-space-1: 4px;
+      --pr-space-2: 8px;
+      --pr-space-3: 12px;
+      --pr-space-4: 16px;
+      --pr-space-5: 24px;
+      --pr-space-6: 32px;
+      --pr-space-7: 40px;
+      --pr-space-8: 48px;
+
+      /* Elevation */
+      --pr-shadow-small: 0 1px 0 rgba(31,35,40,0.04);
+      --pr-shadow-medium: 0 3px 6px rgba(140,149,159,0.15);
+      --pr-shadow-large: 0 8px 24px rgba(140,149,159,0.2);
+      --pr-shadow-extra-large: 0 12px 28px rgba(140,149,159,0.3);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--pr-font);
+      background: var(--pr-canvas-subtle);
+      color: var(--pr-fg-default);
+      line-height: 1.5;
+      font-size: 14px;
+      -webkit-font-smoothing: antialiased;
+    }
+    code, kbd, pre { font-family: var(--pr-mono); }
+
+    /* Header */
+    .ds-header {
+      background: var(--pr-neutral-emphasis-plus);
+      color: var(--pr-fg-on-emphasis);
+      padding: var(--pr-space-7) var(--pr-space-5) var(--pr-space-5);
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--pr-space-2);
+      color: var(--pr-fg-on-emphasis);
+      text-decoration: none;
+      padding: 5px 12px;
+      border-radius: var(--pr-radius-2);
+      font-size: 14px;
+      font-weight: 500;
+      background: rgba(255,255,255,0.1);
+      transition: background 0.15s;
+    }
+    .back-link:hover { background: rgba(255,255,255,0.2); }
+
+    .ds-header h1 {
+      font-size: 40px;
+      line-height: 1.2;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin: var(--pr-space-4) 0 var(--pr-space-3);
+    }
+    .ds-header .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--pr-space-2);
+      align-items: center;
+      margin-bottom: var(--pr-space-3);
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0 7px;
+      height: 22px;
+      border-radius: var(--pr-radius-pill);
+      font-size: 12px;
+      font-weight: 500;
+      background: rgba(255,255,255,0.15);
+      color: var(--pr-fg-on-emphasis);
+    }
+    .badge.kind-ds { background: var(--pr-accent-subtle); color: var(--pr-accent-fg); }
+    .badge.fidelity-documented { background: var(--pr-success-subtle); color: var(--pr-success-fg); }
+    .badge.fidelity-approximated { background: var(--pr-attention-subtle); color: var(--pr-attention-fg); }
+    .badge.fidelity-inspired { background: var(--pr-done-subtle); color: var(--pr-done-fg); }
+    .badge.source-verified { background: var(--pr-accent-subtle); color: var(--pr-accent-fg); }
+
+    .ds-header a[href*="primer.style"] {
+      color: var(--pr-fg-on-emphasis);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 3px 12px;
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: var(--pr-radius-2);
+      font-size: 12px;
+    }
+    .ds-header a[href*="primer.style"]:hover { background: rgba(255,255,255,0.1); }
+
+    .tagline {
+      font-size: 16px;
+      line-height: 1.5;
+      max-width: 720px;
+      margin: var(--pr-space-4) 0 0;
+      opacity: 0.85;
+    }
+
+    /* TOC */
+    .toc {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: var(--pr-canvas-default);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--pr-border-default);
+    }
+    .toc ul {
+      list-style: none;
+      margin: 0;
+      padding: var(--pr-space-3) var(--pr-space-5);
+      display: flex;
+      gap: 4px;
+      overflow-x: auto;
+    }
+    .toc a {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: var(--pr-radius-2);
+      color: var(--pr-fg-muted);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      white-space: nowrap;
+      transition: all 0.15s;
+    }
+    .toc a:hover { background: var(--pr-canvas-subtle); color: var(--pr-accent-fg); }
+
+    /* Main */
+    main {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: var(--pr-space-5);
+    }
+    section {
+      background: var(--pr-canvas-default);
+      border: 1px solid var(--pr-border-default);
+      border-radius: var(--pr-radius-2);
+      padding: var(--pr-space-5);
+      margin-bottom: var(--pr-space-4);
+    }
+    section h2 {
+      display: flex;
+      align-items: center;
+      gap: var(--pr-space-3);
+      flex-wrap: wrap;
+      font-size: 24px;
+      line-height: 1.25;
+      font-weight: 600;
+      margin: 0 0 var(--pr-space-4);
+      color: var(--pr-fg-default);
+      padding-bottom: var(--pr-space-3);
+      border-bottom: 1px solid var(--pr-border-muted);
+    }
+    .source-link {
+      font-size: 13px;
+      color: var(--pr-accent-fg);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .source-link:hover { text-decoration: underline; }
+
+    h3 {
+      font-size: 16px;
+      line-height: 1.3;
+      font-weight: 600;
+      margin: var(--pr-space-5) 0 var(--pr-space-3);
+      color: var(--pr-fg-default);
+    }
+    h4 {
+      font-size: 14px;
+      line-height: 1.4;
+      font-weight: 600;
+      margin: var(--pr-space-4) 0 var(--pr-space-2);
+      color: var(--pr-fg-default);
+    }
+    p { margin: 0 0 var(--pr-space-3); color: var(--pr-fg-default); }
+
+    /* Brand */
+    #brand .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--pr-space-3);
+      padding: var(--pr-space-3) var(--pr-space-5);
+      background: var(--pr-neutral-emphasis-plus);
+      border-radius: var(--pr-radius-2);
+      color: white;
+      font-size: 22px;
+      font-weight: 600;
+    }
+    #brand .brand-mark svg { width: 28px; height: 28px; fill: white; }
+    #brand .pillars {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--pr-space-4);
+      margin-top: var(--pr-space-4);
+    }
+    #brand .pillar {
+      padding: var(--pr-space-4);
+      background: var(--pr-canvas-subtle);
+      border: 1px solid var(--pr-border-muted);
+      border-radius: var(--pr-radius-2);
+    }
+    #brand .pillar h4 { margin-top: 0; color: var(--pr-accent-fg); }
+
+    /* Color */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(11, 1fr);
+      gap: 2px;
+      margin-bottom: var(--pr-space-4);
+    }
+    .color-cell {
+      aspect-ratio: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 5px;
+      font-size: 10px;
+      font-family: var(--pr-mono);
+    }
+    .color-cell:first-child { border-radius: var(--pr-radius-2) 0 0 var(--pr-radius-2); }
+    .color-cell:last-child { border-radius: 0 var(--pr-radius-2) var(--pr-radius-2) 0; }
+    .semantic-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
+      gap: var(--pr-space-3);
+    }
+    .sem-card {
+      padding: var(--pr-space-3);
+      border-radius: var(--pr-radius-2);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .sem-card .label { font-size: 13px; font-weight: 600; }
+    .sem-card .hex { font-family: var(--pr-mono); font-size: 11px; opacity: 0.85; }
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--pr-space-2);
+      margin-bottom: var(--pr-space-4);
+    }
+    .role-chip {
+      padding: var(--pr-space-3) var(--pr-space-4);
+      border-radius: var(--pr-radius-2);
+      font-size: 13px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 500;
+    }
+    .role-chip code { font-size: 11px; opacity: 0.85; }
+
+    /* Typography */
+    .type-row {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: var(--pr-space-4);
+      padding: var(--pr-space-3) 0;
+      border-bottom: 1px solid var(--pr-border-muted);
+      align-items: baseline;
+    }
+    .type-row:last-child { border-bottom: 0; }
+    .type-row .label {
+      font-family: var(--pr-mono);
+      font-size: 12px;
+      color: var(--pr-fg-muted);
+    }
+    .h00 { font-size: 48px; line-height: 1.25; font-weight: 300; }
+    .h0 { font-size: 40px; line-height: 1.25; font-weight: 600; }
+    .h1 { font-size: 32px; line-height: 1.25; font-weight: 600; }
+    .h2 { font-size: 24px; line-height: 1.25; font-weight: 600; }
+    .h3 { font-size: 20px; line-height: 1.25; font-weight: 600; }
+    .h4 { font-size: 16px; line-height: 1.25; font-weight: 600; }
+    .h5 { font-size: 14px; line-height: 1.25; font-weight: 600; }
+    .h6 { font-size: 12px; line-height: 1.25; font-weight: 600; }
+    .body-default { font-size: 14px; line-height: 1.5; }
+    .body-large { font-size: 16px; line-height: 1.5; }
+    .body-small { font-size: 12px; line-height: 1.5; color: var(--pr-fg-muted); }
+    .mono-sample { font-family: var(--pr-mono); font-size: 13px; color: var(--pr-fg-muted); background: var(--pr-canvas-subtle); padding: 2px 6px; border-radius: var(--pr-radius-1); display: inline-block; }
+
+    /* Iconography */
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(72px,1fr));
+      gap: var(--pr-space-3);
+    }
+    .icon-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: var(--pr-space-3);
+      background: var(--pr-canvas-subtle);
+      border: 1px solid var(--pr-border-muted);
+      border-radius: var(--pr-radius-2);
+    }
+    .icon-cell svg { width: 16px; height: 16px; fill: var(--pr-fg-default); }
+    .icon-cell span { font-size: 11px; color: var(--pr-fg-muted); font-family: var(--pr-mono); }
+
+    /* Buttons */
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--pr-space-2);
+      align-items: center;
+      margin-bottom: var(--pr-space-3);
+    }
+    .pr-btn {
+      font-family: var(--pr-font);
+      font-size: 14px;
+      font-weight: 500;
+      padding: 5px 16px;
+      border-radius: var(--pr-radius-2);
+      border: 1px solid var(--pr-border-default);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      height: 32px;
+      transition: background 0.1s, border-color 0.1s;
+      box-shadow: var(--pr-shadow-small);
+    }
+    .pr-btn--default { background: var(--pr-canvas-subtle); color: var(--pr-fg-default); }
+    .pr-btn--default:hover { background: #F3F4F6; border-color: var(--pr-fg-muted); }
+    .pr-btn--primary { background: var(--pr-success-emphasis); color: var(--pr-fg-on-emphasis); border-color: rgba(31,35,40,0.15); }
+    .pr-btn--primary:hover { background: #1A7F37; }
+    .pr-btn--primary:disabled { background: var(--pr-success-muted); cursor: not-allowed; }
+    .pr-btn--invisible { background: transparent; border-color: transparent; color: var(--pr-accent-fg); box-shadow: none; }
+    .pr-btn--invisible:hover { background: var(--pr-canvas-subtle); }
+    .pr-btn--danger { background: var(--pr-canvas-subtle); color: var(--pr-danger-fg); }
+    .pr-btn--danger:hover { background: var(--pr-danger-emphasis); color: white; border-color: rgba(31,35,40,0.15); }
+    .pr-btn--outline { background: var(--pr-canvas-subtle); color: var(--pr-accent-fg); }
+    .pr-btn--outline:hover { background: var(--pr-accent-fg); color: white; border-color: rgba(31,35,40,0.15); }
+    .pr-btn--icon { width: 32px; padding: 0; justify-content: center; }
+    .pr-btn--sm { height: 28px; padding: 3px 12px; font-size: 12px; }
+    .pr-btn--lg { height: 40px; padding: 8px 20px; font-size: 14px; }
+    .pr-btn:focus-visible { outline: 2px solid var(--pr-accent-fg); outline-offset: -2px; }
+
+    /* Form */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+      gap: var(--pr-space-4);
+    }
+    .pr-field { display: flex; flex-direction: column; gap: 4px; }
+    .pr-field label { font-size: 14px; font-weight: 600; color: var(--pr-fg-default); }
+    .pr-input {
+      background: var(--pr-canvas-default);
+      border: 1px solid var(--pr-border-default);
+      border-radius: var(--pr-radius-2);
+      padding: 5px 12px;
+      font-family: var(--pr-font);
+      font-size: 14px;
+      color: var(--pr-fg-default);
+      outline: none;
+      width: 100%;
+      height: 32px;
+      box-shadow: inset 0 1px 0 rgba(208,215,222,0.2);
+      transition: border-color 0.1s, box-shadow 0.1s;
+    }
+    .pr-input:focus { border-color: var(--pr-accent-fg); box-shadow: 0 0 0 3px rgba(9,105,218,0.3); }
+    .pr-input--error { border-color: var(--pr-danger-fg); }
+    .pr-input--error:focus { box-shadow: 0 0 0 3px rgba(207,34,46,0.3); }
+    .pr-helper { font-size: 12px; color: var(--pr-fg-muted); }
+    .pr-helper.error { color: var(--pr-danger-fg); }
+    textarea.pr-input { min-height: 80px; height: auto; resize: vertical; padding: 8px 12px; }
+    select.pr-input {
+      appearance: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='%23656D76'><path d='M4.42 6.49l3.58 3.58 3.58-3.58a.75.75 0 0 1 1.06 1.06l-4.11 4.11a.75.75 0 0 1-1.06 0L3.36 7.55a.75.75 0 0 1 1.06-1.06z'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 8px center;
+      padding-right: 32px;
+    }
+    .pr-checkbox, .pr-radio {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .pr-checkbox input, .pr-radio input { width: 16px; height: 16px; accent-color: var(--pr-accent-fg); }
+    .pr-switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+    .pr-switch input { opacity: 0; width: 0; height: 0; }
+    .pr-switch .slider {
+      position: absolute; cursor: pointer; inset: 0;
+      background: var(--pr-canvas-subtle);
+      border: 1px solid var(--pr-border-default);
+      border-radius: var(--pr-radius-pill);
+      transition: 0.15s;
+    }
+    .pr-switch .slider::before {
+      content: ''; position: absolute;
+      width: 16px; height: 16px;
+      left: 3px; top: 3px;
+      background: var(--pr-fg-muted);
+      border-radius: 50%;
+      transition: 0.15s;
+    }
+    .pr-switch input:checked + .slider { background: var(--pr-success-emphasis); border-color: var(--pr-success-emphasis); }
+    .pr-switch input:checked + .slider::before { background: white; transform: translateX(20px); }
+    .pr-slider { width: 100%; accent-color: var(--pr-accent-fg); }
+
+    /* Surfaces — Box / Dialog */
+    .surface-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
+      gap: var(--pr-space-4);
+    }
+    .pr-box {
+      background: var(--pr-canvas-default);
+      border: 1px solid var(--pr-border-default);
+      border-radius: var(--pr-radius-2);
+      padding: var(--pr-space-4);
+    }
+    .pr-box .media {
+      height: 100px;
+      background: linear-gradient(135deg, var(--pr-accent-subtle), var(--pr-done-subtle));
+      border-radius: var(--pr-radius-1);
+      margin-bottom: var(--pr-space-3);
+    }
+    .pr-box h4 { margin: 0 0 4px; font-size: 14px; font-weight: 600; }
+    .pr-box p { font-size: 12px; color: var(--pr-fg-muted); margin: 0; }
+
+    .pr-stat {
+      padding: var(--pr-space-4);
+      background: var(--pr-accent-subtle);
+      border: 1px solid var(--pr-accent-muted);
+      border-radius: var(--pr-radius-2);
+      color: var(--pr-accent-fg);
+    }
+    .pr-stat .num { font-size: 28px; font-weight: 600; line-height: 1; }
+    .pr-stat .lbl { font-size: 12px; opacity: 0.85; margin-top: 4px; font-weight: 500; }
+
+    .pr-dialog {
+      background: var(--pr-canvas-overlay);
+      padding: var(--pr-space-4);
+      border-radius: var(--pr-radius-3);
+      box-shadow: var(--pr-shadow-large);
+      max-width: 440px;
+      border: 1px solid var(--pr-border-default);
+    }
+
+    /* Feedback — Flash */
+    .pr-flash {
+      display: flex;
+      gap: var(--pr-space-3);
+      padding: var(--pr-space-3) var(--pr-space-4);
+      border-radius: var(--pr-radius-2);
+      margin-bottom: var(--pr-space-2);
+      font-size: 14px;
+      align-items: flex-start;
+      border: 1px solid;
+    }
+    .pr-flash--default { background: var(--pr-accent-subtle); color: var(--pr-accent-fg); border-color: var(--pr-accent-muted); }
+    .pr-flash--success { background: var(--pr-success-subtle); color: var(--pr-success-fg); border-color: var(--pr-success-muted); }
+    .pr-flash--warn { background: var(--pr-attention-subtle); color: var(--pr-attention-fg); border-color: var(--pr-attention-muted); }
+    .pr-flash--danger { background: var(--pr-danger-subtle); color: var(--pr-danger-fg); border-color: var(--pr-danger-muted); }
+
+    .pr-toast {
+      background: var(--pr-neutral-emphasis-plus);
+      color: white;
+      padding: 10px 14px;
+      border-radius: var(--pr-radius-2);
+      box-shadow: var(--pr-shadow-medium);
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 13px;
+    }
+    .pr-toast button {
+      background: transparent;
+      color: var(--pr-accent-fg-bright);
+      border: 0;
+      font-weight: 500;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .pr-banner {
+      display: flex;
+      gap: var(--pr-space-3);
+      padding: 10px var(--pr-space-4);
+      background: var(--pr-canvas-subtle);
+      border: 1px solid var(--pr-border-muted);
+      border-radius: var(--pr-radius-2);
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .pr-label-row { display: flex; flex-wrap: wrap; gap: 6px; }
+    .pr-label {
+      display: inline-flex;
+      align-items: center;
+      padding: 0 7px;
+      height: 22px;
+      border-radius: var(--pr-radius-pill);
+      background: var(--pr-canvas-subtle);
+      color: var(--pr-fg-default);
+      font-size: 12px;
+      font-weight: 500;
+      border: 1px solid var(--pr-border-default);
+    }
+    .pr-label--accent { background: var(--pr-accent-subtle); color: var(--pr-accent-fg); border-color: var(--pr-accent-muted); }
+    .pr-label--success { background: var(--pr-success-subtle); color: var(--pr-success-fg); border-color: var(--pr-success-muted); }
+    .pr-label--attention { background: var(--pr-attention-subtle); color: var(--pr-attention-fg); border-color: var(--pr-attention-muted); }
+    .pr-label--danger { background: var(--pr-danger-subtle); color: var(--pr-danger-fg); border-color: var(--pr-danger-muted); }
+    .pr-label--done { background: var(--pr-done-subtle); color: var(--pr-done-fg); border-color: rgba(130,80,223,0.4); }
+
+    .pr-counter {
+      background: var(--pr-neutral-muted);
+      color: var(--pr-fg-default);
+      border-radius: var(--pr-radius-pill);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 0 6px;
+      min-width: 20px;
+      height: 20px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .pr-progress {
+      width: 100%; height: 8px;
+      background: var(--pr-neutral-muted);
+      border-radius: var(--pr-radius-pill);
+      overflow: hidden;
+    }
+    .pr-progress::after {
+      content: ''; display: block;
+      height: 100%; width: 65%;
+      background: var(--pr-success-emphasis);
+      border-radius: var(--pr-radius-pill);
+    }
+    .pr-skeleton {
+      height: 14px;
+      background: linear-gradient(90deg, var(--pr-canvas-subtle), var(--pr-canvas-inset), var(--pr-canvas-subtle));
+      background-size: 200% 100%;
+      border-radius: var(--pr-radius-1);
+      animation: shimmer 1.5s infinite;
+    }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+    .pr-spinner {
+      width: 24px; height: 24px;
+      border: 2px solid var(--pr-canvas-inset);
+      border-top-color: var(--pr-accent-fg);
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Navigation — UnderlineNav */
+    .pr-tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--pr-border-muted);
+      margin-bottom: var(--pr-space-3);
+    }
+    .pr-tab {
+      padding: 8px 16px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--pr-fg-muted);
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      margin-bottom: -1px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .pr-tab:hover { color: var(--pr-fg-default); border-bottom-color: var(--pr-border-default); }
+    .pr-tab.active { color: var(--pr-fg-default); font-weight: 600; border-bottom-color: var(--pr-attention-emphasis); }
+
+    .pr-breadcrumb { display: flex; gap: 6px; align-items: center; font-size: 14px; color: var(--pr-fg-muted); }
+    .pr-breadcrumb a { color: var(--pr-accent-fg); text-decoration: none; }
+    .pr-breadcrumb a:hover { text-decoration: underline; }
+
+    .pr-pagination { display: flex; gap: 4px; align-items: center; }
+    .pr-pagination button {
+      min-width: 32px; height: 32px;
+      border-radius: var(--pr-radius-2);
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--pr-accent-fg);
+      cursor: pointer;
+      font-family: var(--pr-font);
+      font-size: 13px;
+      padding: 0 10px;
+    }
+    .pr-pagination button.active { background: var(--pr-accent-fg); color: white; }
+    .pr-pagination button:hover:not(.active) { background: var(--pr-canvas-subtle); border-color: var(--pr-border-default); }
+
+    .pr-stepper { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+    .pr-stepper .step { display: inline-flex; align-items: center; gap: 8px; }
+    .pr-stepper .num {
+      width: 22px; height: 22px; border-radius: 50%;
+      background: var(--pr-canvas-subtle); color: var(--pr-fg-muted);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 600;
+      border: 1px solid var(--pr-border-default);
+    }
+    .pr-stepper .num.active { background: var(--pr-success-emphasis); color: white; border-color: var(--pr-success-emphasis); }
+    .pr-stepper .line { flex: 1; height: 1px; background: var(--pr-border-default); }
+
+    .pr-sidebar {
+      background: var(--pr-canvas-default);
+      border: 1px solid var(--pr-border-default);
+      border-radius: var(--pr-radius-2);
+      padding: 4px;
+      width: 240px;
+    }
+    .pr-sidebar a {
+      display: flex; align-items: center; gap: 10px;
+      padding: 6px 10px;
+      border-radius: var(--pr-radius-2);
+      color: var(--pr-fg-default);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .pr-sidebar a.active { background: var(--pr-canvas-subtle); font-weight: 600; }
+    .pr-sidebar a:hover:not(.active) { background: var(--pr-neutral-muted); }
+
+    .pr-topbar {
+      display: flex; align-items: center; gap: 16px;
+      padding: 8px 16px;
+      background: var(--pr-neutral-emphasis-plus);
+      color: white;
+      border-radius: var(--pr-radius-2);
+    }
+    .pr-topbar a { color: white; text-decoration: none; opacity: 0.85; font-size: 14px; }
+    .pr-topbar a:hover { opacity: 1; }
+
+    .pr-menu {
+      background: var(--pr-canvas-default);
+      border-radius: var(--pr-radius-2);
+      box-shadow: var(--pr-shadow-large);
+      padding: 4px 0;
+      width: 220px;
+      border: 1px solid var(--pr-border-default);
+    }
+    .pr-menu .item { padding: 6px 14px; font-size: 14px; cursor: pointer; }
+    .pr-menu .item:hover { background: var(--pr-canvas-subtle); }
+
+    /* Data — DataTable */
+    table.pr-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    table.pr-table th, table.pr-table td {
+      text-align: left;
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--pr-border-muted);
+    }
+    table.pr-table th {
+      font-weight: 600;
+      color: var(--pr-fg-muted);
+      font-size: 12px;
+      background: var(--pr-canvas-subtle);
+    }
+    table.pr-table tr:hover { background: var(--pr-canvas-subtle); }
+    table.pr-table code { background: var(--pr-canvas-subtle); padding: 1px 5px; border-radius: var(--pr-radius-1); font-size: 12px; }
+
+    .pr-list { list-style: none; padding: 0; margin: 0; }
+    .pr-list li {
+      padding: 10px 12px;
+      display: flex; gap: 12px; align-items: center;
+      border-bottom: 1px solid var(--pr-border-muted);
+    }
+    .pr-list li:last-child { border-bottom: 0; }
+
+    .pr-kv { display: grid; grid-template-columns: 140px 1fr; gap: 8px; font-size: 14px; }
+    .pr-kv dt { color: var(--pr-fg-muted); font-weight: 500; }
+
+    .pr-avatar {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: var(--pr-accent-fg);
+      color: white;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-weight: 600;
+      font-size: 12px;
+    }
+
+    .pr-empty {
+      text-align: center;
+      padding: var(--pr-space-7) var(--pr-space-4);
+      color: var(--pr-fg-muted);
+    }
+    .pr-empty svg { width: 40px; height: 40px; opacity: 0.4; }
+
+    /* Layout */
+    .grid-demo {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 8px;
+      background: var(--pr-canvas-subtle);
+      padding: 12px;
+      border: 1px solid var(--pr-border-muted);
+      border-radius: var(--pr-radius-2);
+    }
+    .grid-demo > div {
+      background: var(--pr-accent-fg);
+      color: white;
+      padding: 8px;
+      border-radius: var(--pr-radius-1);
+      font-size: 12px;
+      font-weight: 600;
+      text-align: center;
+      font-family: var(--pr-mono);
+    }
+    .scale-row {
+      display: flex;
+      gap: var(--pr-space-3);
+      flex-wrap: wrap;
+      align-items: flex-end;
+      margin-bottom: var(--pr-space-4);
+    }
+    .scale-item { display: flex; flex-direction: column; gap: 6px; align-items: center; }
+    .scale-item .swatch { background: var(--pr-accent-fg); }
+    .scale-item .lbl { font-size: 11px; font-family: var(--pr-mono); color: var(--pr-fg-muted); }
+    .shadow-demo {
+      width: 80px; height: 80px;
+      background: var(--pr-canvas-default);
+      border-radius: var(--pr-radius-2);
+      display: inline-flex; align-items: center; justify-content: center;
+      margin-right: 16px; margin-bottom: 16px;
+      font-size: 11px; font-family: var(--pr-mono); color: var(--pr-fg-muted);
+    }
+
+    /* Footer */
+    .ds-footer {
+      background: var(--pr-canvas-inset);
+      padding: var(--pr-space-5);
+      margin-top: var(--pr-space-7);
+      color: var(--pr-fg-default);
+    }
+    .ds-footer h3 { margin-top: 0; }
+    .ds-footer ul { padding-left: 20px; }
+    .ds-footer li { margin-bottom: 4px; word-break: break-all; font-size: 13px; }
+    .ds-footer a { color: var(--pr-accent-fg); text-decoration: none; }
+    .license-note { font-size: 13px; color: var(--pr-fg-muted); margin-top: var(--pr-space-4); }
+    .meta-note { font-size: 12px; color: var(--pr-fg-subtle); font-family: var(--pr-mono); margin-top: var(--pr-space-2); }
+
+    @media (max-width: 720px) {
+      .ds-header h1 { font-size: 28px; }
+      main { padding: var(--pr-space-4); }
+      section { padding: var(--pr-space-4); }
+      .type-row { grid-template-columns: 1fr; }
+      .color-grid { grid-template-columns: repeat(6, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <header class="ds-header">
+    <a href="index.html" class="back-link">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M7.78 12.53a.75.75 0 0 1-1.06 0L2.47 8.28a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 1.06L4.81 7h7.44a.75.75 0 0 1 0 1.5H4.81l2.97 2.97a.75.75 0 0 1 0 1.06z"/></svg>
+      Catalog
+    </a>
+    <h1>Primer</h1>
+    <div class="meta">
+      <span class="badge kind-ds">design-system</span>
+      <span class="badge fidelity-documented">documented</span>
+      <span class="badge source-verified">source: verified</span>
+      <a href="https://primer.style" target="_blank" rel="noopener">Official ↗</a>
+    </div>
+    <p class="tagline">GitHub's design system featuring a developer-tuned blue accent and tight monospace integration.</p>
+  </header>
+
+  <nav class="toc" aria-label="Table of contents">
+    <ul>
+      <li><a href="#brand">Brand</a></li>
+      <li><a href="#color">Color</a></li>
+      <li><a href="#typography">Typography</a></li>
+      <li><a href="#iconography">Iconography</a></li>
+      <li><a href="#buttons">Buttons</a></li>
+      <li><a href="#form">Form</a></li>
+      <li><a href="#surfaces">Surfaces</a></li>
+      <li><a href="#feedback">Feedback</a></li>
+      <li><a href="#navigation">Navigation</a></li>
+      <li><a href="#data">Data</a></li>
+      <li><a href="#layout">Layout</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="brand" data-fidelity="documented">
+      <h2><span>Brand</span><span class="badge fidelity-documented">documented</span></h2>
+      <div class="brand-mark">
+        <svg viewBox="0 0 16 16">
+          <path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8z"/>
+        </svg>
+        Primer
+      </div>
+      <p style="margin-top: 16px; max-width: 720px; font-size: 14px; color: var(--pr-fg-muted);">
+        Primer is GitHub's design system, powering github.com and GitHub products. It centers on developer-tuned blue (#0969DA), the GitHub system font stack, and tight monospace integration for code-first interfaces.
+      </p>
+      <div class="pillars">
+        <div class="pillar"><h4>Developer-first</h4><p style="font-size:13px;color:var(--pr-fg-muted);margin:0">Code, diffs, and terminals are first-class — typography and density reflect that.</p></div>
+        <div class="pillar"><h4>Open source</h4><p style="font-size:13px;color:var(--pr-fg-muted);margin:0">All Primer packages and Octicons ship under MIT for community contribution.</p></div>
+        <div class="pillar"><h4>Accessible</h4><p style="font-size:13px;color:var(--pr-fg-muted);margin:0">WCAG-grounded color and focus states, keyboard support across every component.</p></div>
+      </div>
+    </section>
+
+    <section id="color" data-fidelity="documented">
+      <h2><span>Color</span><span class="badge fidelity-documented">documented</span><a href="https://primer.style/foundations/color/overview/" target="_blank" rel="noopener" class="source-link">Official ↗</a></h2>
+      <p style="color:var(--pr-fg-muted)">Primer uses functional tokens (fg/canvas/border + accent/success/attention/danger/done) rather than raw color names.</p>
+
+      <h3>Accent (blue) scale</h3>
+      <div class="color-grid">
+        <div class="color-cell" style="background:#DDF4FF;color:#0969DA">0</div>
+        <div class="color-cell" style="background:#B6E3FF;color:#0969DA">1</div>
+        <div class="color-cell" style="background:#80CCFF;color:#0969DA">2</div>
+        <div class="color-cell" style="background:#54AEFF;color:white">3</div>
+        <div class="color-cell" style="background:#218BFF;color:white">4</div>
+        <div class="color-cell" style="background:var(--pr-accent-fg);color:white">5</div>
+        <div class="color-cell" style="background:#0550AE;color:white">6</div>
+        <div class="color-cell" style="background:#033D8B;color:white">7</div>
+        <div class="color-cell" style="background:#0A3069;color:white">8</div>
+        <div class="color-cell" style="background:#002155;color:white">9</div>
+        <div class="color-cell" style="background:#001033;color:white">10</div>
+      </div>
+
+      <h3>Neutral / fg / canvas</h3>
+      <div class="color-grid">
+        <div class="color-cell" style="background:#FFFFFF;color:var(--pr-fg-default);border:1px solid var(--pr-border-default)">white</div>
+        <div class="color-cell" style="background:var(--pr-canvas-subtle);color:var(--pr-fg-default)">subtle</div>
+        <div class="color-cell" style="background:var(--pr-canvas-inset);color:var(--pr-fg-default)">inset</div>
+        <div class="color-cell" style="background:var(--pr-border-default);color:var(--pr-fg-default)">border</div>
+        <div class="color-cell" style="background:#AFB8C1;color:var(--pr-fg-default)">muted</div>
+        <div class="color-cell" style="background:#8C959F;color:white">subtle</div>
+        <div class="color-cell" style="background:var(--pr-fg-subtle);color:white">fg-subtle</div>
+        <div class="color-cell" style="background:var(--pr-fg-muted);color:white">fg-muted</div>
+        <div class="color-cell" style="background:#424A53;color:white">800</div>
+        <div class="color-cell" style="background:var(--pr-neutral-emphasis-plus);color:white">emphasis</div>
+        <div class="color-cell" style="background:#0D1117;color:white">canvas-dark</div>
+      </div>
+
+      <h3>Semantic</h3>
+      <div class="semantic-grid">
+        <div class="sem-card" style="background:var(--pr-success-subtle);color:var(--pr-success-fg)"><span class="label">Success</span><span class="hex">#1A7F37</span></div>
+        <div class="sem-card" style="background:var(--pr-attention-subtle);color:var(--pr-attention-fg)"><span class="label">Attention</span><span class="hex">#9A6700</span></div>
+        <div class="sem-card" style="background:var(--pr-danger-subtle);color:var(--pr-danger-fg)"><span class="label">Danger</span><span class="hex">#CF222E</span></div>
+        <div class="sem-card" style="background:var(--pr-done-subtle);color:var(--pr-done-fg)"><span class="label">Done</span><span class="hex">#8250DF</span></div>
+        <div class="sem-card" style="background:var(--pr-accent-subtle);color:var(--pr-accent-fg)"><span class="label">Accent</span><span class="hex">#0969DA</span></div>
+      </div>
+
+      <h3>Color roles</h3>
+      <div class="role-grid">
+        <div class="role-chip" style="background:var(--pr-accent-fg);color:white">accent.fg <code>#0969DA</code></div>
+        <div class="role-chip" style="background:var(--pr-fg-default);color:white">fg.default <code>#1F2328</code></div>
+        <div class="role-chip" style="background:var(--pr-fg-muted);color:white">fg.muted <code>#656D76</code></div>
+        <div class="role-chip" style="background:var(--pr-canvas-subtle);color:var(--pr-fg-default);border:1px solid var(--pr-border-default)">canvas.subtle <code>#F6F8FA</code></div>
+        <div class="role-chip" style="background:var(--pr-canvas-inset);color:var(--pr-fg-default)">canvas.inset <code>#EAEEF2</code></div>
+        <div class="role-chip" style="background:var(--pr-canvas-default);color:var(--pr-fg-default);border:1px solid var(--pr-border-default)">canvas.default <code>#FFFFFF</code></div>
+      </div>
+    </section>
+
+    <section id="typography" data-fidelity="documented">
+      <h2><span>Typography</span><span class="badge fidelity-documented">documented</span><a href="https://primer.style/foundations/typography/overview/" target="_blank" rel="noopener" class="source-link">Official ↗</a></h2>
+      <p style="color:var(--pr-fg-muted)">GitHub system font stack — no web font dependency. h00 → h6 plus body sizes. Mono is critical for code.</p>
+
+      <div class="type-row"><div class="label">h00 · 48/60</div><div class="h00">Plan, build, ship.</div></div>
+      <div class="type-row"><div class="label">h0 · 40/50</div><div class="h0">A complete devops platform</div></div>
+      <div class="type-row"><div class="label">h1 · 32/40</div><div class="h1">Repository overview</div></div>
+      <div class="type-row"><div class="label">h2 · 24/30</div><div class="h2">README contributions</div></div>
+      <div class="type-row"><div class="label">h3 · 20/25</div><div class="h3">Pull request reviews</div></div>
+      <div class="type-row"><div class="label">h4 · 16/20</div><div class="h4">Commit summary</div></div>
+      <div class="type-row"><div class="label">h5 · 14/18</div><div class="h5">File path label</div></div>
+      <div class="type-row"><div class="label">h6 · 12/15</div><div class="h6">Eyebrow / metadata</div></div>
+      <div class="type-row"><div class="label">Body large · 16/24</div><div class="body-large">Primer powers github.com with a developer-tuned blue accent, system stack typography, and tight monospace integration for code, diffs, and terminals.</div></div>
+      <div class="type-row"><div class="label">Body default · 14/21</div><div class="body-default">Default body size for paragraph copy and form fields. Compact 14px line height suits dense developer interfaces.</div></div>
+      <div class="type-row"><div class="label">Body small · 12/18</div><div class="body-small">Body small is reserved for captions, helper text, and metadata.</div></div>
+      <div class="type-row"><div class="label">Mono</div><div><code class="mono-sample">color.accent.fg = #0969DA</code></div></div>
+    </section>
+
+    <section id="iconography" data-fidelity="documented">
+      <h2><span>Iconography</span><span class="badge fidelity-documented">documented</span><a href="https://primer.style/foundations/icons" target="_blank" rel="noopener" class="source-link">Official ↗</a></h2>
+      <p style="color:var(--pr-fg-muted)">Octicons (MIT) — GitHub's icon set. 16px and 24px sizes, filled by default. Below: representative 16px set.</p>
+      <div class="icon-grid">
+        <div class="icon-cell"><svg viewBox="0 0 16 16"><path d="M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2z"/></svg><span>home</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 16 16"><path d="M10.68 11.74a6 6 0 0 1-7.922-8.982 6 6 0 0 1 8.982 7.922l3.04 3.04a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215zM11.5 7a4.499 4.499 0 1 0-8.997 0A4.499 4.499 0 0 0 11.5 7z"/></svg><span>search</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 16 16"><path d="M10.561 8.073a6.005 6.005 0 0 1 3.432 5.142.75.75 0 1 1-1.498.07 4.5 4.5 0 0 0-8.99 0 .75.75 0 0 1-1.498-.07 6.004 6.004 0 0 1 3.431-5.142 3.999 3.999 0 1 1 5.123 0zM10.5 5a2.5 2.5 0 1 0-5 0 2.5 2.5 0 0 0 5 0z"/></svg><span>person</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 16 16"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8z"/></svg><span>book</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 16 16"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0V1.5h-8a1 1 0 0 0-.966.741l1.595.512a.75.75 0 0 1 .421.951l-1.5 4.498a.75.75 0 0 1-1.42-.474l1.27-3.812-1.59-.51a2.5 2.5 0 0 1 .49-1.49z"/></svg><span>repo</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 16 16"><path d="M5 5.372v.878c0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75v-.878a2.25 2.25 0 1 1 1.5 0v.878a2.25 2.25 0 0 1-2.25 2.25h-1.5v2.128a2.251 2.251 0 1 1-1.5 0V8.5h-1.5A2.25 2.25 0 0 1 3.5 6.25v-.878a2.25 2.25 0 1 1 1.5 0zM5 3.25a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0zm6.75.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5zm-3 8.75a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0z"/></svg><span>git-branch</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 16 16"><path d="M11.93 8.5a4.002 4.002 0 0 1-7.86 0H.75a.75.75 0 0 1 0-1.5h3.32a4.002 4.002 0 0 1 7.86 0h3.32a.75.75 0 0 1 0 1.5zM8 10a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/></svg><span>git-commit</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 16 16"><path d="M1.5 8a6.5 6.5 0 1 1 13 0 6.5 6.5 0 0 1-13 0zM8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm.5 4.75a.75.75 0 0 0-1.5 0v3.5a.75.75 0 0 0 .471.696l2.5 1a.75.75 0 0 0 .557-1.392L8.5 7.742z"/></svg><span>clock</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 16 16"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v12.5A1.75 1.75 0 0 1 14.25 16H1.75A1.75 1.75 0 0 1 0 14.25zm9.22 3.72a.75.75 0 0 0 0 1.06L10.69 8 9.22 9.47a.749.749 0 0 0 .326 1.275.749.749 0 0 0 .734-.215l2-2a.75.75 0 0 0 0-1.06l-2-2a.75.75 0 0 0-1.06 0z"/></svg><span>terminal</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 16 16"><path d="M7.75 2a.75.75 0 0 1 .75.75V7h4.25a.75.75 0 0 1 0 1.5H8.5v4.25a.75.75 0 0 1-1.5 0V8.5H2.75a.75.75 0 0 1 0-1.5H7V2.75A.75.75 0 0 1 7.75 2z"/></svg><span>plus</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 16 16"><path d="M3.72 3.72a.75.75 0 0 1 1.06 0L8 6.94l3.22-3.22a.749.749 0 0 1 1.275.326.749.749 0 0 1-.215.734L9.06 8l3.22 3.22a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L8 9.06l-3.22 3.22a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042L6.94 8 3.72 4.78a.75.75 0 0 1 0-1.06z"/></svg><span>x</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 16 16"><path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0z"/></svg><span>check</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 16 16"><path d="M1 2.75C1 1.784 1.784 1 2.75 1h10.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0 1 13.25 15H2.75A1.75 1.75 0 0 1 1 13.25zM7.25 8a.75.75 0 0 1 0-1.5h1.5a.75.75 0 0 1 0 1.5z"/></svg><span>issue</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 16 16"><path d="M1.75 2.5a.25.25 0 0 0-.25.25v10.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V2.75a.25.25 0 0 0-.25-.25zm-1.75.25C0 1.784.784 1 1.75 1h12.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0 1 14.25 15H1.75A1.75 1.75 0 0 1 0 13.25z"/><path d="M5 7.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0z"/></svg><span>card</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 16 16"><path d="M8 16a2 2 0 0 0 1.985-1.75c.017-.137-.097-.25-.235-.25h-3.5c-.138 0-.252.113-.235.25A2 2 0 0 0 8 16zM3 5a5 5 0 0 1 10 0v2.947c0 .05.012.098.035.142l1.272 2.428A1.067 1.067 0 0 1 13.36 12H2.64a1.067 1.067 0 0 1-.945-1.483l1.272-2.428a.319.319 0 0 0 .035-.142z"/></svg><span>bell</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 16 16"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zm0 9a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm-.75-5.25v3.5a.75.75 0 0 0 1.5 0v-3.5a.75.75 0 0 0-1.5 0z"/></svg><span>info</span></div>
+      </div>
+    </section>
+
+    <section id="buttons" data-fidelity="documented">
+      <h2><span>Buttons</span><span class="badge fidelity-documented">documented</span><a href="https://primer.style/components/button" target="_blank" rel="noopener" class="source-link">Official ↗</a></h2>
+      <p style="color:var(--pr-fg-muted)">Primer buttons: default, primary (success-green), invisible, danger, outline. Compact 32px height, 6px radius — the GitHub button.</p>
+
+      <h3>Variants</h3>
+      <div class="button-row">
+        <button class="pr-btn pr-btn--default">Default</button>
+        <button class="pr-btn pr-btn--primary">Commit changes</button>
+        <button class="pr-btn pr-btn--invisible">Cancel</button>
+        <button class="pr-btn pr-btn--danger">Delete repository</button>
+        <button class="pr-btn pr-btn--outline">Watch</button>
+        <button class="pr-btn pr-btn--default pr-btn--icon" aria-label="more">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM1.5 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm13 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/></svg>
+        </button>
+      </div>
+
+      <h3>Sizes</h3>
+      <div class="button-row">
+        <button class="pr-btn pr-btn--default pr-btn--sm">Small</button>
+        <button class="pr-btn pr-btn--default">Medium</button>
+        <button class="pr-btn pr-btn--default pr-btn--lg">Large</button>
+      </div>
+
+      <h3>States</h3>
+      <div class="button-row">
+        <button class="pr-btn pr-btn--primary">Enabled</button>
+        <button class="pr-btn pr-btn--primary" style="background:#1A7F37">Hover</button>
+        <button class="pr-btn pr-btn--primary" style="outline:2px solid var(--pr-accent-fg);outline-offset:-2px">Focus</button>
+        <button class="pr-btn pr-btn--primary" disabled>Disabled</button>
+      </div>
+    </section>
+
+    <section id="form" data-fidelity="documented">
+      <h2><span>Form</span><span class="badge fidelity-documented">documented</span><a href="https://primer.style/components/text-input" target="_blank" rel="noopener" class="source-link">Official ↗</a></h2>
+      <p style="color:var(--pr-fg-muted)">TextInput, Select, Checkbox, Radio, ToggleSwitch. 32px input height with 6px radius and a 3px focus ring.</p>
+
+      <h3>Text inputs</h3>
+      <div class="form-grid">
+        <div class="pr-field">
+          <label for="r1">Repository name</label>
+          <input class="pr-input" id="r1" type="text" value="primer-css">
+          <span class="pr-helper">Great repository names are short and memorable.</span>
+        </div>
+        <div class="pr-field">
+          <label for="r2">Email</label>
+          <input class="pr-input" id="r2" type="email" placeholder="you@github.com">
+        </div>
+        <div class="pr-field">
+          <label for="r3">Description</label>
+          <textarea class="pr-input" id="r3">A modern, accessible, themeable design system...</textarea>
+        </div>
+        <div class="pr-field">
+          <label for="r4">Visibility</label>
+          <select class="pr-input" id="r4">
+            <option>Public</option>
+            <option>Private</option>
+            <option>Internal</option>
+          </select>
+        </div>
+        <div class="pr-field">
+          <label for="r5">Email</label>
+          <input class="pr-input pr-input--error" id="r5" value="invalid@" type="email">
+          <span class="pr-helper error">Enter a valid email address</span>
+        </div>
+        <div class="pr-field">
+          <label for="r6">Search code</label>
+          <input class="pr-input" id="r6" type="search" placeholder="Search by file path or content...">
+        </div>
+      </div>
+
+      <h3>Selection</h3>
+      <div class="button-row">
+        <label class="pr-checkbox"><input type="checkbox" checked>Add a README</label>
+        <label class="pr-checkbox"><input type="checkbox">Add .gitignore</label>
+        <label class="pr-radio"><input type="radio" name="r1" checked>Public</label>
+        <label class="pr-radio"><input type="radio" name="r1">Private</label>
+        <label class="pr-switch"><input type="checkbox" checked><span class="slider"></span></label>
+        <label class="pr-switch"><input type="checkbox"><span class="slider"></span></label>
+      </div>
+
+      <h3>Slider & file</h3>
+      <div style="max-width:400px;display:flex;flex-direction:column;gap:12px">
+        <input type="range" class="pr-slider" min="0" max="100" value="60">
+        <input type="file" class="pr-input" style="padding:5px">
+      </div>
+    </section>
+
+    <section id="surfaces" data-fidelity="documented">
+      <h2><span>Surfaces</span><span class="badge fidelity-documented">documented</span><a href="https://primer.style/components/dialog" target="_blank" rel="noopener" class="source-link">Official ↗</a></h2>
+      <p style="color:var(--pr-fg-muted)">Box, Dialog, Overlay, ActionMenu. Boxes use 1px borders rather than shadows for low-elevation grouping.</p>
+
+      <div class="surface-grid">
+        <div class="pr-box">
+          <div class="media"></div>
+          <h4>primer/react</h4>
+          <p>React component library · 4.2k stars</p>
+        </div>
+        <div class="pr-box">
+          <div class="media" style="background:linear-gradient(135deg,var(--pr-success-subtle),var(--pr-attention-subtle))"></div>
+          <h4>primer/octicons</h4>
+          <p>SVG icon library · 6.1k stars</p>
+        </div>
+        <div class="pr-box">
+          <div class="media" style="background:linear-gradient(135deg,var(--pr-done-subtle),var(--pr-accent-subtle))"></div>
+          <h4>primer/css</h4>
+          <p>CSS framework · 12.8k stars</p>
+        </div>
+        <div class="pr-stat"><div class="num">1,284</div><div class="lbl">Open issues across Primer repos</div></div>
+      </div>
+
+      <h3>Dialog</h3>
+      <div class="pr-dialog">
+        <h4 style="margin-top:0;font-size:16px">Delete branch?</h4>
+        <p style="font-size:14px;color:var(--pr-fg-muted)">Are you sure you want to delete the branch <code class="mono-sample">feat/new-tokens</code>? This action cannot be undone.</p>
+        <div class="button-row" style="justify-content:flex-end;margin:0">
+          <button class="pr-btn pr-btn--default">Cancel</button>
+          <button class="pr-btn pr-btn--danger">Delete branch</button>
+        </div>
+      </div>
+
+      <h3>ActionMenu & sidebar</h3>
+      <div style="display:flex;gap:24px;flex-wrap:wrap">
+        <div class="pr-menu">
+          <div class="item">Edit file</div>
+          <div class="item">View blame</div>
+          <div class="item">Copy permalink</div>
+          <div class="item" style="color:var(--pr-danger-fg)">Delete file</div>
+        </div>
+        <div class="pr-sidebar">
+          <a href="#" class="active">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0V1.5h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8z"/></svg>
+            Code
+          </a>
+          <a href="#">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm0-9.5a8 8 0 1 1 0 16A8 8 0 0 1 8 0z"/></svg>
+            Issues
+          </a>
+          <a href="#">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M5 5.372v.878c0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75v-.878a2.25 2.25 0 1 1 1.5 0v.878a2.25 2.25 0 0 1-2.25 2.25h-1.5v2.128a2.251 2.251 0 1 1-1.5 0V8.5h-1.5A2.25 2.25 0 0 1 3.5 6.25v-.878a2.25 2.25 0 1 1 1.5 0z"/></svg>
+            Pull requests
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section id="feedback" data-fidelity="documented">
+      <h2><span>Feedback</span><span class="badge fidelity-documented">documented</span><a href="https://primer.style/components/flash" target="_blank" rel="noopener" class="source-link">Official ↗</a></h2>
+
+      <h3>Flash</h3>
+      <div class="pr-flash pr-flash--default"><strong>Heads up ·</strong> Your account is now using the new Primer-React 36 release.</div>
+      <div class="pr-flash pr-flash--success"><strong>Pushed ·</strong> Successfully pushed 3 commits to main.</div>
+      <div class="pr-flash pr-flash--warn"><strong>Heads up ·</strong> 2 workflow files contain deprecated actions.</div>
+      <div class="pr-flash pr-flash--danger"><strong>Build failed ·</strong> 4 jobs failed in the latest workflow run.</div>
+
+      <h3>Toast</h3>
+      <div class="pr-toast">Branch <code style="background:rgba(255,255,255,0.1);padding:1px 4px;border-radius:3px">feat/new-tokens</code> created. <button>Open</button></div>
+
+      <h3>Banner</h3>
+      <div class="pr-banner" style="margin-top:12px">
+        <span><strong>GitHub Actions ·</strong> minutes used: 1,840 of 3,000 (this billing cycle).</span>
+        <button class="pr-btn pr-btn--invisible pr-btn--sm">View usage</button>
+      </div>
+
+      <h3>Labels & counters</h3>
+      <div class="pr-label-row">
+        <span class="pr-label">default</span>
+        <span class="pr-label pr-label--accent">documentation</span>
+        <span class="pr-label pr-label--success">good first issue</span>
+        <span class="pr-label pr-label--attention">help wanted</span>
+        <span class="pr-label pr-label--danger">bug</span>
+        <span class="pr-label pr-label--done">duplicate</span>
+        <span class="pr-counter">3</span>
+        <span class="pr-counter" style="background:var(--pr-accent-subtle);color:var(--pr-accent-fg)">142</span>
+      </div>
+
+      <h3>Progress & loading</h3>
+      <div style="display:flex;flex-direction:column;gap:12px;max-width:480px">
+        <div class="pr-progress"></div>
+        <div class="pr-skeleton" style="width:80%"></div>
+        <div class="pr-skeleton" style="width:60%"></div>
+        <div class="pr-spinner"></div>
+      </div>
+    </section>
+
+    <section id="navigation" data-fidelity="documented">
+      <h2><span>Navigation</span><span class="badge fidelity-documented">documented</span><a href="https://primer.style/components/underline-nav" target="_blank" rel="noopener" class="source-link">Official ↗</a></h2>
+
+      <h3>UnderlineNav</h3>
+      <div class="pr-tabs">
+        <div class="pr-tab active">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0V1.5h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8z"/></svg>
+          Code
+          <span class="pr-counter">142</span>
+        </div>
+        <div class="pr-tab">Issues<span class="pr-counter">23</span></div>
+        <div class="pr-tab">Pull requests<span class="pr-counter">8</span></div>
+        <div class="pr-tab">Actions</div>
+        <div class="pr-tab">Projects</div>
+        <div class="pr-tab">Wiki</div>
+      </div>
+
+      <h3>Breadcrumb</h3>
+      <div class="pr-breadcrumb">
+        <a href="#">primer</a><span>/</span>
+        <a href="#">primer</a><span>/</span>
+        <a href="#">src</a><span>/</span>
+        <span style="color:var(--pr-fg-default);font-weight:500">tokens.ts</span>
+      </div>
+
+      <h3>Pagination</h3>
+      <div class="pr-pagination">
+        <button>‹ Previous</button>
+        <button class="active">1</button>
+        <button>2</button>
+        <button>3</button>
+        <button>…</button>
+        <button>12</button>
+        <button>Next ›</button>
+      </div>
+
+      <h3>Stepper</h3>
+      <div class="pr-stepper">
+        <div class="step"><span class="num active">1</span> Repository</div>
+        <span class="line"></span>
+        <div class="step"><span class="num active">2</span> Settings</div>
+        <span class="line"></span>
+        <div class="step"><span class="num">3</span> Review</div>
+        <span class="line"></span>
+        <div class="step"><span class="num">4</span> Create</div>
+      </div>
+
+      <h3>Top bar</h3>
+      <div class="pr-topbar">
+        <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8z"/></svg>
+        <a href="#">Pull requests</a>
+        <a href="#">Issues</a>
+        <a href="#">Codespaces</a>
+        <a href="#">Marketplace</a>
+        <span style="flex:1"></span>
+        <button class="pr-btn pr-btn--icon" style="background:transparent;color:white;border-color:rgba(255,255,255,0.2)" aria-label="search"><svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M10.68 11.74a6 6 0 0 1-7.922-8.982 6 6 0 0 1 8.982 7.922l3.04 3.04a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215zM11.5 7a4.499 4.499 0 1 0-8.997 0A4.499 4.499 0 0 0 11.5 7z"/></svg></button>
+        <div class="pr-avatar">MK</div>
+      </div>
+    </section>
+
+    <section id="data" data-fidelity="documented">
+      <h2><span>Data</span><span class="badge fidelity-documented">documented</span><a href="https://primer.style/components/data-table" target="_blank" rel="noopener" class="source-link">Official ↗</a></h2>
+
+      <h3>DataTable</h3>
+      <table class="pr-table">
+        <thead>
+          <tr><th>File</th><th>Status</th><th>Lines</th><th>Last modified</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>src/tokens.ts</code></td><td><span class="pr-label pr-label--success">passing</span></td><td>+142 -38</td><td>2 hours ago</td></tr>
+          <tr><td><code>src/Button.tsx</code></td><td><span class="pr-label pr-label--success">passing</span></td><td>+23 -12</td><td>5 hours ago</td></tr>
+          <tr><td><code>src/Dialog.tsx</code></td><td><span class="pr-label pr-label--attention">pending</span></td><td>+88 -0</td><td>1 day ago</td></tr>
+          <tr><td><code>src/index.ts</code></td><td><span class="pr-label pr-label--danger">failing</span></td><td>+4 -0</td><td>3 days ago</td></tr>
+        </tbody>
+      </table>
+
+      <h3>List</h3>
+      <ul class="pr-list">
+        <li><div class="pr-avatar">A</div><div><strong>Avery Tan</strong><div style="font-size:13px;color:var(--pr-fg-muted)">Pushed to <code class="mono-sample">main</code> · 2m ago</div></div></li>
+        <li><div class="pr-avatar" style="background:var(--pr-success-emphasis)">B</div><div><strong>Brett Yu</strong><div style="font-size:13px;color:var(--pr-fg-muted)">Merged PR #142 · 14m ago</div></div></li>
+        <li><div class="pr-avatar" style="background:var(--pr-done-emphasis)">C</div><div><strong>Cleo Park</strong><div style="font-size:13px;color:var(--pr-fg-muted)">Opened issue #318 · 1h ago</div></div></li>
+      </ul>
+
+      <h3>Key – value</h3>
+      <dl class="pr-kv">
+        <dt>Repository</dt><dd><code class="mono-sample">primer/react</code></dd>
+        <dt>Default branch</dt><dd><code class="mono-sample">main</code></dd>
+        <dt>Issues</dt><dd>23 open · 1,420 closed</dd>
+        <dt>Generated</dt><dd>2026-05-05</dd>
+      </dl>
+
+      <h3>Empty state</h3>
+      <div class="pr-empty">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        <h4 style="margin:8px 0 4px">No commits yet</h4>
+        <p style="font-size:14px;margin:0">Push a commit to <code class="mono-sample">main</code> to get started.</p>
+      </div>
+    </section>
+
+    <section id="layout" data-fidelity="documented">
+      <h2><span>Layout</span><span class="badge fidelity-documented">documented</span><a href="https://primer.style/foundations/layout" target="_blank" rel="noopener" class="source-link">Official ↗</a></h2>
+      <p style="color:var(--pr-fg-muted)">Primer uses a 12-column grid with 16px gutter and 8px spacing primary. Compact, dense layouts for developer interfaces.</p>
+
+      <h3>12-column grid</h3>
+      <div class="grid-demo">
+        <div style="grid-column:span 12">12</div>
+        <div style="grid-column:span 6">6</div>
+        <div style="grid-column:span 6">6</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+      </div>
+
+      <h3>Spacing scale (8px primary)</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div class="swatch" style="width:4px;height:32px"></div><span class="lbl">4</span></div>
+        <div class="scale-item"><div class="swatch" style="width:8px;height:32px"></div><span class="lbl">8</span></div>
+        <div class="scale-item"><div class="swatch" style="width:12px;height:32px"></div><span class="lbl">12</span></div>
+        <div class="scale-item"><div class="swatch" style="width:16px;height:32px"></div><span class="lbl">16</span></div>
+        <div class="scale-item"><div class="swatch" style="width:24px;height:32px"></div><span class="lbl">24</span></div>
+        <div class="scale-item"><div class="swatch" style="width:32px;height:32px"></div><span class="lbl">32</span></div>
+        <div class="scale-item"><div class="swatch" style="width:40px;height:32px"></div><span class="lbl">40</span></div>
+        <div class="scale-item"><div class="swatch" style="width:48px;height:32px"></div><span class="lbl">48</span></div>
+      </div>
+
+      <h3>Radius scale</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:0;background:var(--pr-accent-subtle)"></div><span class="lbl">0</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:3px;background:var(--pr-accent-subtle)"></div><span class="lbl">3</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:6px;background:var(--pr-accent-subtle)"></div><span class="lbl">6</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:8px;background:var(--pr-accent-subtle)"></div><span class="lbl">8</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:12px;background:var(--pr-accent-subtle)"></div><span class="lbl">12</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:50%;background:var(--pr-accent-subtle)"></div><span class="lbl">pill</span></div>
+      </div>
+
+      <h3>Shadow scale</h3>
+      <div>
+        <div class="shadow-demo" style="box-shadow:none;border:1px solid var(--pr-border-default)">0</div>
+        <div class="shadow-demo" style="box-shadow:var(--pr-shadow-small)">small</div>
+        <div class="shadow-demo" style="box-shadow:var(--pr-shadow-medium)">medium</div>
+        <div class="shadow-demo" style="box-shadow:var(--pr-shadow-large)">large</div>
+        <div class="shadow-demo" style="box-shadow:var(--pr-shadow-extra-large)">xl</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="ds-footer">
+    <h3>Sources</h3>
+    <ul>
+      <li><a href="https://primer.style" target="_blank" rel="noopener">https://primer.style</a></li>
+      <li><a href="https://primer.style/foundations/color/overview/" target="_blank" rel="noopener">https://primer.style/foundations/color/overview/</a></li>
+      <li><a href="https://primer.style/foundations/typography/overview/" target="_blank" rel="noopener">https://primer.style/foundations/typography/overview/</a></li>
+      <li><a href="https://primer.style/foundations/icons" target="_blank" rel="noopener">https://primer.style/foundations/icons</a></li>
+      <li><a href="https://primer.style/components/button" target="_blank" rel="noopener">https://primer.style/components/button</a></li>
+      <li><a href="https://primer.style/components/text-input" target="_blank" rel="noopener">https://primer.style/components/text-input</a></li>
+      <li><a href="https://primer.style/components/dialog" target="_blank" rel="noopener">https://primer.style/components/dialog</a></li>
+      <li><a href="https://primer.style/components/flash" target="_blank" rel="noopener">https://primer.style/components/flash</a></li>
+      <li><a href="https://primer.style/components/underline-nav" target="_blank" rel="noopener">https://primer.style/components/underline-nav</a></li>
+      <li><a href="https://primer.style/components/data-table" target="_blank" rel="noopener">https://primer.style/components/data-table</a></li>
+      <li><a href="https://primer.style/foundations/layout" target="_blank" rel="noopener">https://primer.style/foundations/layout</a></li>
+    </ul>
+    <p class="license-note">This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with GitHub. Primer and related trademarks belong to GitHub. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</p>
+    <p class="meta-note">Reproduction date: 2026-05-05 · sourceStatus: verified · fidelity: documented</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,1415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lightning Design System — Design System Reference</title>
+  <script id="ds-meta" type="application/json">
+{"id":"06-lightning","fileSlug":"06-lightning","schemaVersion":"1"}
+  </script>
+  <style>
+    :root {
+      /* SLDS Brand */
+      --slds-brand: #1B96FF;
+      --slds-brand-active: #0176D3;
+      --slds-brand-active-hover: #014486;
+      --slds-cloud-blue-dark: #032D60;
+      --slds-cloud-blue-darker: #001639;
+
+      /* Neutral (SLDS naming: 0 lightest → 11 darkest) */
+      --slds-n-0: #FFFFFF;
+      --slds-n-1: #F3F3F3;
+      --slds-n-2: #ECEBEA;
+      --slds-n-3: #DDDBDA;
+      --slds-n-4: #C9C7C5;
+      --slds-n-5: #C9C9C9;
+      --slds-n-6: #939393;
+      --slds-n-7: #5C5C5C;
+      --slds-n-8: #444444;
+      --slds-n-9: #2E2E2E;
+      --slds-n-10: #1C1C1C;
+      --slds-n-11: #181818;
+
+      /* Status */
+      --slds-success: #2E844A;
+      --slds-success-bg: #CDEFC4;
+      --slds-warning: #FE9339;
+      --slds-warning-bg: #FEF1EE;
+      --slds-error: #EA001E;
+      --slds-error-bg: #FEDED8;
+      --slds-info: #0176D3;
+      --slds-info-bg: #CFE9FE;
+
+      /* Type */
+      --font-primary: 'Salesforce Sans', 'Salesforce Sans Web', -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', system-ui, sans-serif;
+      --font-mono: 'Salesforce Mono', 'Source Code Pro', Consolas, monospace;
+
+      /* Shape (SLDS uses tight 4px corners) */
+      --slds-radius-0: 0;
+      --slds-radius-sm: 2px;
+      --slds-radius-md: 4px;
+      --slds-radius-lg: 8px;
+      --slds-radius-xl: 12px;
+      --slds-radius-circle: 999px;
+
+      /* Spacing (4px base) */
+      --slds-space-xxxs: 2px;
+      --slds-space-xxs: 4px;
+      --slds-space-xs: 8px;
+      --slds-space-s: 12px;
+      --slds-space-m: 16px;
+      --slds-space-l: 24px;
+      --slds-space-xl: 32px;
+      --slds-space-xxl: 48px;
+
+      /* Shadow */
+      --slds-shadow-1: 0 1px 3px rgba(0,0,0,0.16);
+      --slds-shadow-2: 0 2px 4px rgba(0,0,0,0.16);
+      --slds-shadow-3: 0 4px 12px rgba(0,0,0,0.16);
+      --slds-shadow-4: 0 8px 16px rgba(0,0,0,0.20);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--font-primary);
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--slds-n-11);
+      background: var(--slds-n-1);
+      -webkit-font-smoothing: antialiased;
+    }
+    code, kbd, pre { font-family: var(--font-mono); }
+
+    /* Header */
+    .ds-header {
+      background: linear-gradient(135deg, var(--slds-cloud-blue-darker), var(--slds-cloud-blue-dark));
+      color: white;
+      padding: var(--slds-space-xl) var(--slds-space-l) var(--slds-space-l);
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: white;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      opacity: 0.9;
+    }
+    .back-link:hover { opacity: 1; text-decoration: underline; }
+
+    .ds-header h1 {
+      font-size: 38px;
+      line-height: 1.18;
+      font-weight: 300;
+      margin: var(--slds-space-m) 0 var(--slds-space-s);
+      letter-spacing: -0.005em;
+    }
+    .ds-header .meta {
+      display: flex;
+      gap: var(--slds-space-xs);
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: var(--slds-space-s);
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 10px;
+      border-radius: var(--slds-radius-md);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      background: rgba(255,255,255,0.16);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.24);
+    }
+    .badge.kind-ds { background: var(--slds-brand); color: white; border-color: transparent; }
+    .badge.fidelity-documented { background: var(--slds-success-bg); color: #194E2A; border-color: transparent; }
+    .badge.fidelity-approximated { background: var(--slds-warning-bg); color: #7E3A00; border-color: transparent; }
+    .badge.fidelity-inspired { background: #F0E6F8; color: #5B2A82; border-color: transparent; }
+    .badge.source-verified { background: var(--slds-info-bg); color: var(--slds-cloud-blue-dark); border-color: transparent; }
+
+    .ds-header a[href*="lightningdesignsystem.com"] {
+      color: white;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 10px;
+      background: rgba(255,255,255,0.16);
+      border-radius: var(--slds-radius-md);
+    }
+    .tagline {
+      font-size: 16px;
+      line-height: 1.5;
+      max-width: 720px;
+      color: rgba(255,255,255,0.86);
+      margin: var(--slds-space-m) 0 0;
+      font-weight: 300;
+    }
+
+    /* TOC */
+    .toc {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: white;
+      border-bottom: 1px solid var(--slds-n-3);
+      box-shadow: var(--slds-shadow-1);
+    }
+    .toc ul {
+      list-style: none;
+      margin: 0;
+      padding: var(--slds-space-s) var(--slds-space-l);
+      display: flex;
+      gap: var(--slds-space-xxs);
+      overflow-x: auto;
+    }
+    .toc a {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: var(--slds-radius-md);
+      color: var(--slds-brand-active);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .toc a:hover { background: var(--slds-info-bg); }
+
+    /* Main */
+    main {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: var(--slds-space-l);
+    }
+    section {
+      background: var(--slds-n-0);
+      border-radius: var(--slds-radius-md);
+      padding: var(--slds-space-l);
+      margin-bottom: var(--slds-space-l);
+      box-shadow: var(--slds-shadow-1);
+      border: 1px solid var(--slds-n-3);
+    }
+    section h2 {
+      display: flex;
+      align-items: center;
+      gap: var(--slds-space-s);
+      flex-wrap: wrap;
+      font-size: 24px;
+      line-height: 1.18;
+      font-weight: 700;
+      margin: 0 0 var(--slds-space-m);
+      color: var(--slds-cloud-blue-dark);
+    }
+    h3 {
+      font-size: 16px;
+      line-height: 1.3;
+      font-weight: 700;
+      margin: var(--slds-space-l) 0 var(--slds-space-s);
+      color: var(--slds-n-11);
+    }
+    h4 {
+      font-size: 13px;
+      font-weight: 700;
+      margin: var(--slds-space-m) 0 var(--slds-space-xs);
+      color: var(--slds-n-8);
+    }
+    p { margin: 0 0 var(--slds-space-s); color: var(--slds-n-9); }
+    .source-link {
+      font-size: 12px;
+      color: var(--slds-brand-active);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .source-link:hover { text-decoration: underline; }
+
+    /* Brand */
+    #brand .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--slds-space-s);
+      padding: var(--slds-space-m) var(--slds-space-l);
+      background: linear-gradient(135deg, var(--slds-brand), var(--slds-brand-active));
+      border-radius: var(--slds-radius-md);
+      color: white;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.005em;
+    }
+    #brand .brand-mark svg { width: 36px; height: 36px; }
+    #brand .pillars {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--slds-space-s);
+      margin-top: var(--slds-space-l);
+    }
+    #brand .pillar {
+      padding: var(--slds-space-m);
+      background: var(--slds-n-1);
+      border-radius: var(--slds-radius-md);
+      border-left: 3px solid var(--slds-brand);
+    }
+    #brand .pillar h4 { margin-top: 0; color: var(--slds-brand-active); }
+
+    /* Color */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 0;
+      margin-bottom: var(--slds-space-m);
+      border: 1px solid var(--slds-n-3);
+      border-radius: var(--slds-radius-md);
+      overflow: hidden;
+    }
+    .color-cell {
+      aspect-ratio: 1.2;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 6px;
+      font-size: 10px;
+      font-family: var(--font-mono);
+    }
+
+    .semantic-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px,1fr));
+      gap: var(--slds-space-s);
+    }
+    .sem-card {
+      padding: var(--slds-space-m);
+      border-radius: var(--slds-radius-md);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      border-left: 3px solid;
+    }
+    .sem-card .label { font-size: 13px; font-weight: 700; }
+    .sem-card .hex { font-family: var(--font-mono); font-size: 11px; opacity: 0.85; }
+
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--slds-space-xs);
+    }
+    .role-chip {
+      padding: var(--slds-space-s) var(--slds-space-m);
+      border-radius: var(--slds-radius-md);
+      font-size: 13px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+    }
+    .role-chip code { font-family: var(--font-mono); font-size: 11px; opacity: 0.9; }
+
+    /* Typography */
+    .type-row {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: var(--slds-space-m);
+      padding: var(--slds-space-s) 0;
+      border-bottom: 1px solid var(--slds-n-3);
+      align-items: baseline;
+    }
+    .type-row:last-child { border-bottom: 0; }
+    .type-row .label { font-family: var(--font-mono); font-size: 11px; color: var(--slds-n-7); }
+    .t-h1 { font-size: 28px; line-height: 1.2; font-weight: 300; }
+    .t-h2 { font-size: 20px; line-height: 1.2; font-weight: 700; }
+    .t-h3 { font-size: 18px; line-height: 1.25; font-weight: 700; }
+    .t-h4 { font-size: 16px; line-height: 1.25; font-weight: 700; }
+    .t-h5 { font-size: 14px; line-height: 1.25; font-weight: 700; }
+    .t-h6 { font-size: 12px; line-height: 1.25; font-weight: 700; text-transform: uppercase; letter-spacing: 0.0625em; }
+    .t-body { font-size: 13px; line-height: 1.5; font-weight: 400; }
+    .t-body-sm { font-size: 12px; line-height: 1.42; font-weight: 400; }
+    .t-caption { font-size: 11px; line-height: 1.42; font-weight: 400; color: var(--slds-n-7); }
+    .t-mono { font-family: var(--font-mono); font-size: 13px; }
+
+    /* Iconography */
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(80px,1fr));
+      gap: var(--slds-space-xs);
+    }
+    .icon-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: var(--slds-space-s);
+      background: var(--slds-n-1);
+      border-radius: var(--slds-radius-md);
+    }
+    .icon-cell .iconbox {
+      width: 32px; height: 32px;
+      background: var(--slds-brand);
+      border-radius: var(--slds-radius-md);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .icon-cell .iconbox svg { width: 18px; height: 18px; color: white; }
+    .icon-cell span { font-size: 11px; color: var(--slds-n-8); font-weight: 500; }
+
+    /* Buttons */
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--slds-space-xs);
+      align-items: center;
+      margin-bottom: var(--slds-space-s);
+    }
+    .slds-btn {
+      font-family: var(--font-primary);
+      font-size: 13px;
+      font-weight: 700;
+      padding: 0 16px;
+      border-radius: var(--slds-radius-md);
+      border: 1px solid var(--slds-n-3);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      height: 32px;
+      letter-spacing: 0;
+      transition: background 0.1s, border 0.1s;
+    }
+    .slds-btn--brand { background: var(--slds-brand-active); color: white; border-color: var(--slds-brand-active); }
+    .slds-btn--brand:hover { background: var(--slds-brand-active-hover); border-color: var(--slds-brand-active-hover); }
+    .slds-btn--brand:active { background: #003365; border-color: #003365; }
+    .slds-btn--brand:disabled { background: var(--slds-n-3); border-color: var(--slds-n-3); color: var(--slds-n-6); cursor: not-allowed; }
+    .slds-btn--neutral { background: white; color: var(--slds-brand-active); border-color: var(--slds-n-3); }
+    .slds-btn--neutral:hover { background: var(--slds-n-1); }
+    .slds-btn--outline-brand { background: white; color: var(--slds-brand-active); border-color: var(--slds-brand-active); }
+    .slds-btn--outline-brand:hover { background: var(--slds-info-bg); }
+    .slds-btn--destructive { background: var(--slds-error); color: white; border-color: var(--slds-error); }
+    .slds-btn--destructive:hover { background: #BA0017; border-color: #BA0017; }
+    .slds-btn--text { background: transparent; color: var(--slds-brand-active); border-color: transparent; padding: 0 8px; }
+    .slds-btn--text:hover { text-decoration: underline; }
+    .slds-btn--success { background: var(--slds-success); color: white; border-color: var(--slds-success); }
+    .slds-btn--success:hover { background: #266B3D; border-color: #266B3D; }
+    .slds-btn--sm { font-size: 12px; padding: 0 12px; height: 24px; }
+    .slds-btn--lg { font-size: 14px; padding: 0 20px; height: 40px; }
+    .slds-btn:focus-visible { outline: 2px solid var(--slds-brand-active); outline-offset: 2px; }
+
+    /* Form */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: var(--slds-space-m);
+    }
+    .slds-field { display: flex; flex-direction: column; gap: 4px; }
+    .slds-field label { font-size: 12px; font-weight: 400; color: var(--slds-n-9); }
+    .slds-field label .req { color: var(--slds-error); }
+    .slds-input {
+      background: var(--slds-n-0);
+      border: 1px solid var(--slds-n-4);
+      border-radius: var(--slds-radius-md);
+      padding: 0 12px;
+      font-family: var(--font-primary);
+      font-size: 13px;
+      color: var(--slds-n-11);
+      outline: none;
+      width: 100%;
+      height: 32px;
+      box-shadow: 0 0 0 0 transparent inset;
+      transition: border 0.1s, box-shadow 0.1s;
+    }
+    .slds-input:hover { border-color: var(--slds-n-7); }
+    .slds-input:focus { border-color: var(--slds-brand-active); box-shadow: 0 0 3px var(--slds-brand-active); }
+    .slds-input.error { border-color: var(--slds-error); }
+    .slds-input.error:focus { box-shadow: 0 0 3px var(--slds-error); }
+    .slds-input::placeholder { color: var(--slds-n-6); }
+    .slds-helper { font-size: 12px; color: var(--slds-n-7); }
+    .slds-helper.error { color: var(--slds-error); }
+    textarea.slds-input { resize: vertical; min-height: 76px; padding: 8px 12px; height: auto; }
+    select.slds-input {
+      appearance: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none' stroke='%235C5C5C' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='3 4.5 6 7.5 9 4.5'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 32px;
+    }
+    .slds-checkbox, .slds-radio {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .slds-checkbox input, .slds-radio input { accent-color: var(--slds-brand-active); width: 16px; height: 16px; }
+
+    .slds-switch { position: relative; display: inline-block; width: 40px; height: 24px; }
+    .slds-switch input { opacity: 0; width: 0; height: 0; }
+    .slds-switch .slider {
+      position: absolute; cursor: pointer; inset: 0;
+      background: var(--slds-n-5);
+      border-radius: 999px;
+      transition: 0.15s;
+    }
+    .slds-switch .slider::before {
+      content: '';
+      position: absolute;
+      width: 18px; height: 18px;
+      left: 3px; top: 3px;
+      background: white;
+      border-radius: 50%;
+      transition: 0.15s;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+    .slds-switch input:checked + .slider { background: var(--slds-success); }
+    .slds-switch input:checked + .slider::before { transform: translateX(16px); }
+
+    .slds-slider { width: 100%; accent-color: var(--slds-brand-active); }
+    .slds-search { position: relative; }
+    .slds-search .slds-input { padding-left: 32px; }
+    .slds-search svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--slds-n-7); }
+
+    /* Surfaces */
+    .surface-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: var(--slds-space-m);
+    }
+    .slds-card {
+      background: white;
+      border: 1px solid var(--slds-n-3);
+      border-radius: var(--slds-radius-md);
+      box-shadow: var(--slds-shadow-1);
+      overflow: hidden;
+    }
+    .slds-card-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--slds-n-3);
+    }
+    .slds-card-header .icon {
+      width: 24px; height: 24px;
+      background: #FFB75D;
+      border-radius: var(--slds-radius-sm);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+    }
+    .slds-card-header h4 { margin: 0; font-size: 14px; font-weight: 700; color: var(--slds-cloud-blue-dark); }
+    .slds-card-body { padding: 12px 16px; font-size: 13px; color: var(--slds-n-9); }
+
+    .slds-stat {
+      padding: var(--slds-space-m);
+      background: var(--slds-info-bg);
+      border-radius: var(--slds-radius-md);
+      border-left: 3px solid var(--slds-brand);
+    }
+    .slds-stat .num { font-size: 28px; font-weight: 700; line-height: 1; color: var(--slds-cloud-blue-dark); }
+    .slds-stat .lbl { font-size: 12px; color: var(--slds-n-7); margin-top: 4px; font-weight: 600; }
+
+    .slds-modal {
+      background: white;
+      padding: 0;
+      border-radius: var(--slds-radius-md);
+      box-shadow: var(--slds-shadow-4);
+      max-width: 480px;
+      overflow: hidden;
+      border-top: 4px solid var(--slds-brand);
+    }
+    .slds-modal-head {
+      padding: 20px 24px 16px;
+      border-bottom: 1px solid var(--slds-n-3);
+    }
+    .slds-modal-head h4 { font-size: 18px; font-weight: 700; margin: 0; color: var(--slds-cloud-blue-dark); }
+    .slds-modal-body { padding: 16px 24px; }
+    .slds-modal-foot {
+      padding: 16px 24px;
+      background: var(--slds-n-1);
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .slds-popover {
+      background: white;
+      border: 1px solid var(--slds-n-3);
+      border-radius: var(--slds-radius-md);
+      padding: 12px 16px;
+      box-shadow: var(--slds-shadow-3);
+      width: 280px;
+      font-size: 13px;
+    }
+
+    /* Feedback */
+    .slds-alert {
+      display: flex;
+      gap: var(--slds-space-s);
+      padding: var(--slds-space-s) var(--slds-space-m);
+      border-radius: var(--slds-radius-md);
+      margin-bottom: var(--slds-space-xs);
+      align-items: center;
+      font-size: 13px;
+      color: white;
+      font-weight: 500;
+    }
+    .slds-alert--info { background: var(--slds-info); }
+    .slds-alert--success { background: var(--slds-success); }
+    .slds-alert--warn { background: var(--slds-warning); color: var(--slds-n-11); }
+    .slds-alert--error { background: var(--slds-error); }
+
+    .slds-toast {
+      background: var(--slds-success);
+      color: white;
+      padding: 12px 16px;
+      border-radius: var(--slds-radius-md);
+      box-shadow: var(--slds-shadow-3);
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .slds-banner {
+      display: flex;
+      gap: var(--slds-space-s);
+      padding: var(--slds-space-s) var(--slds-space-m);
+      background: var(--slds-info-bg);
+      border-left: 3px solid var(--slds-brand);
+      border-radius: var(--slds-radius-md);
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .badge-row { display: flex; flex-wrap: wrap; gap: var(--slds-space-xs); }
+    .slds-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 1px 10px;
+      border-radius: var(--slds-radius-circle);
+      font-size: 12px;
+      font-weight: 600;
+      background: var(--slds-n-1);
+      color: var(--slds-n-9);
+      border: 1px solid var(--slds-n-3);
+    }
+    .slds-pill--brand { background: var(--slds-brand-active); color: white; border-color: transparent; }
+    .slds-pill--success { background: var(--slds-success); color: white; border-color: transparent; }
+    .slds-pill--warning { background: var(--slds-warning); color: white; border-color: transparent; }
+    .slds-pill--error { background: var(--slds-error); color: white; border-color: transparent; }
+    .slds-pill--info { background: var(--slds-info-bg); color: var(--slds-cloud-blue-dark); border-color: transparent; }
+
+    .slds-num-badge { background: var(--slds-error); color: white; border-radius: 999px; font-size: 10px; font-weight: 700; padding: 2px 6px; min-width: 16px; text-align: center; }
+
+    .slds-progress {
+      width: 100%; height: 6px;
+      background: var(--slds-n-3);
+      border-radius: var(--slds-radius-circle);
+      overflow: hidden;
+    }
+    .slds-progress::after {
+      content: ''; display: block;
+      height: 100%; width: 60%;
+      background: var(--slds-brand-active);
+    }
+
+    .slds-skeleton {
+      height: 12px;
+      background: linear-gradient(90deg, var(--slds-n-2), var(--slds-n-1), var(--slds-n-2));
+      background-size: 200% 100%;
+      border-radius: var(--slds-radius-sm);
+      animation: shimmer 1.5s infinite;
+    }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+    .slds-spinner {
+      width: 28px; height: 28px;
+      border: 3px solid var(--slds-n-3);
+      border-top-color: var(--slds-brand-active);
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Navigation */
+    .slds-tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 2px solid var(--slds-n-3);
+      margin-bottom: var(--slds-space-s);
+    }
+    .slds-tab {
+      padding: var(--slds-space-s) var(--slds-space-m);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--slds-n-9);
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      margin-bottom: -2px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .slds-tab.active { color: var(--slds-brand-active); border-bottom-color: var(--slds-brand-active); }
+    .slds-tab:hover { color: var(--slds-brand-active); }
+
+    .slds-breadcrumb { display: flex; gap: 6px; align-items: center; font-size: 13px; color: var(--slds-n-7); }
+    .slds-breadcrumb a { color: var(--slds-brand-active); text-decoration: none; }
+    .slds-breadcrumb a:hover { text-decoration: underline; }
+    .slds-breadcrumb svg { width: 12px; height: 12px; opacity: 0.55; }
+
+    .slds-pagination { display: flex; gap: 0; align-items: center; }
+    .slds-pagination button {
+      width: 32px; height: 32px;
+      border: 1px solid var(--slds-n-3);
+      background: white;
+      color: var(--slds-brand-active);
+      cursor: pointer;
+      font-family: var(--font-primary);
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .slds-pagination button:first-child { border-radius: var(--slds-radius-md) 0 0 var(--slds-radius-md); }
+    .slds-pagination button:last-child { border-radius: 0 var(--slds-radius-md) var(--slds-radius-md) 0; }
+    .slds-pagination button + button { margin-left: -1px; }
+    .slds-pagination button.active { background: var(--slds-brand-active); color: white; border-color: var(--slds-brand-active); }
+    .slds-pagination button:hover:not(.active) { background: var(--slds-n-1); }
+
+    .slds-stepper { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+    .slds-stepper .num {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: white; border: 2px solid var(--slds-n-3); color: var(--slds-n-7);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700;
+    }
+    .slds-stepper .num.active { background: var(--slds-brand-active); border-color: var(--slds-brand-active); color: white; }
+    .slds-stepper .num.done { background: var(--slds-success); border-color: var(--slds-success); color: white; }
+    .slds-stepper .line { flex: 1; height: 2px; background: var(--slds-n-3); }
+
+    .slds-sidebar {
+      background: white;
+      border: 1px solid var(--slds-n-3);
+      border-radius: var(--slds-radius-md);
+      padding: 4px;
+      width: 240px;
+    }
+    .slds-sidebar a {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 12px;
+      border-radius: var(--slds-radius-md);
+      color: var(--slds-n-9);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      border-left: 3px solid transparent;
+      padding-left: 9px;
+    }
+    .slds-sidebar a:hover { background: var(--slds-n-1); }
+    .slds-sidebar a.active { background: var(--slds-info-bg); color: var(--slds-brand-active); border-left-color: var(--slds-brand-active); font-weight: 700; }
+
+    .slds-topbar {
+      display: flex; align-items: center; gap: 16px;
+      padding: 8px 16px;
+      background: var(--slds-cloud-blue-darker);
+      color: white;
+      border-radius: var(--slds-radius-md);
+    }
+    .slds-topbar .title { font-size: 14px; font-weight: 700; }
+    .slds-topbar a { color: rgba(255,255,255,0.86); text-decoration: none; font-size: 13px; }
+    .slds-topbar a:hover { color: white; }
+
+    .slds-menu {
+      background: white;
+      border: 1px solid var(--slds-n-3);
+      border-radius: var(--slds-radius-md);
+      box-shadow: var(--slds-shadow-3);
+      padding: 4px 0;
+      width: 220px;
+    }
+    .slds-menu .item {
+      padding: 6px 14px;
+      font-size: 13px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+    }
+    .slds-menu .item:hover { background: var(--slds-info-bg); color: var(--slds-brand-active); }
+    .slds-menu .divider { height: 1px; background: var(--slds-n-3); margin: 4px 0; }
+
+    /* Data */
+    table.slds-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    table.slds-table th, table.slds-table td {
+      text-align: left;
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--slds-n-3);
+    }
+    table.slds-table th { font-weight: 700; color: var(--slds-n-9); background: var(--slds-n-1); font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; border-right: 1px solid var(--slds-n-3); }
+    table.slds-table th:last-child { border-right: 0; }
+    table.slds-table tbody tr:hover { background: var(--slds-n-1); }
+    table.slds-table td { font-size: 13px; }
+
+    .slds-list { list-style: none; padding: 0; margin: 0; border: 1px solid var(--slds-n-3); border-radius: var(--slds-radius-md); overflow: hidden; }
+    .slds-list li {
+      padding: 12px 16px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      border-bottom: 1px solid var(--slds-n-3);
+      font-size: 13px;
+      background: white;
+    }
+    .slds-list li:last-child { border-bottom: 0; }
+
+    .slds-kv { display: grid; grid-template-columns: 140px 1fr; gap: 10px; font-size: 13px; }
+    .slds-kv dt { color: var(--slds-n-7); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; }
+
+    .slds-avatar {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: var(--slds-brand-active);
+      color: white;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    .slds-empty {
+      text-align: center;
+      padding: var(--slds-space-xl) var(--slds-space-m);
+      color: var(--slds-n-7);
+    }
+    .slds-empty svg { width: 48px; height: 48px; opacity: 0.3; }
+
+    /* Layout */
+    .grid-demo {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 8px;
+      background: var(--slds-n-1);
+      padding: 8px;
+      border-radius: var(--slds-radius-md);
+      border: 1px solid var(--slds-n-3);
+    }
+    .grid-demo > div {
+      background: var(--slds-info-bg);
+      color: var(--slds-cloud-blue-dark);
+      padding: 8px;
+      border-radius: var(--slds-radius-sm);
+      font-size: 11px;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .scale-row { display: flex; gap: var(--slds-space-s); flex-wrap: wrap; align-items: flex-end; margin-bottom: var(--slds-space-m); }
+    .scale-item { display: flex; flex-direction: column; gap: 4px; align-items: center; }
+    .scale-item .swatch { background: var(--slds-brand-active); border-radius: var(--slds-radius-sm); }
+    .scale-item .lbl { font-size: 11px; font-family: var(--font-mono); color: var(--slds-n-7); }
+
+    .shadow-demo {
+      width: 80px; height: 80px;
+      background: white;
+      border-radius: var(--slds-radius-md);
+      display: inline-flex; align-items: center; justify-content: center;
+      margin-right: 12px; margin-bottom: 12px;
+      font-size: 11px; font-family: var(--font-mono);
+      color: var(--slds-n-7);
+      border: 1px solid var(--slds-n-3);
+    }
+
+    /* Footer */
+    .ds-footer {
+      background: var(--slds-cloud-blue-darker);
+      padding: var(--slds-space-l);
+      margin-top: var(--slds-space-xl);
+      color: rgba(255,255,255,0.86);
+    }
+    .ds-footer h3 { margin-top: 0; color: white; }
+    .ds-footer ul { padding-left: 20px; }
+    .ds-footer li { margin-bottom: 4px; word-break: break-all; font-size: 12px; }
+    .ds-footer a { color: var(--slds-brand); text-decoration: none; }
+    .ds-footer a:hover { text-decoration: underline; }
+    .license-note { font-size: 12px; color: rgba(255,255,255,0.7); margin-top: var(--slds-space-m); max-width: 720px; }
+    .meta-note { font-size: 11px; color: rgba(255,255,255,0.55); font-family: var(--font-mono); margin-top: var(--slds-space-xs); }
+
+    @media (max-width: 720px) {
+      .ds-header h1 { font-size: 28px; }
+      main { padding: var(--slds-space-m); }
+      section { padding: var(--slds-space-m); }
+      .type-row { grid-template-columns: 1fr; }
+      .color-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <header class="ds-header">
+    <a href="index.html" class="back-link">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Catalog
+    </a>
+    <h1>Lightning Design System</h1>
+    <div class="meta">
+      <span class="badge kind-ds">design-system</span>
+      <span class="badge fidelity-documented">documented</span>
+      <span class="badge source-verified">source: verified</span>
+      <a href="https://lightningdesignsystem.com" target="_blank" rel="noopener">Official ↗</a>
+    </div>
+    <p class="tagline">Salesforce's open enterprise design system for CRM-grade interfaces with a Cloud-blue palette and dense data UIs.</p>
+  </header>
+
+  <nav class="toc" aria-label="Table of contents">
+    <ul>
+      <li><a href="#brand">Brand</a></li>
+      <li><a href="#color">Color</a></li>
+      <li><a href="#typography">Typography</a></li>
+      <li><a href="#iconography">Iconography</a></li>
+      <li><a href="#buttons">Buttons</a></li>
+      <li><a href="#form">Form</a></li>
+      <li><a href="#surfaces">Surfaces</a></li>
+      <li><a href="#feedback">Feedback</a></li>
+      <li><a href="#navigation">Navigation</a></li>
+      <li><a href="#data">Data</a></li>
+      <li><a href="#layout">Layout</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="brand" data-fidelity="documented">
+      <h2><span>Brand</span><span class="badge fidelity-documented">documented</span></h2>
+      <div class="brand-mark">
+        <svg viewBox="0 0 36 36" fill="none">
+          <path d="M28 17a6 6 0 00-11-3.5A8 8 0 005 17a6 6 0 002 11.6A4.5 4.5 0 0011 32a5 5 0 008.6-1.5A6 6 0 0028 26a5 5 0 000-9z" fill="white" opacity="0.95"/>
+        </svg>
+        SLDS
+      </div>
+      <p style="margin-top: 24px; max-width: 720px; color: var(--slds-n-9);">
+        The Lightning Design System (SLDS) is Salesforce's open-source design language powering the Salesforce Platform — Lightning Experience, Mobile App, and Experience Cloud. Built for dense, data-heavy CRM workflows, SLDS leans on a Cloud-blue palette, Salesforce Sans, and conservative 4px corners.
+      </p>
+      <div class="pillars">
+        <div class="pillar">
+          <h4>Clarity</h4>
+          <p style="font-size:12px;color:var(--slds-n-7);margin:0">Eliminate ambiguity. Crisp affordances and consistent visual hierarchy.</p>
+        </div>
+        <div class="pillar">
+          <h4>Efficiency</h4>
+          <p style="font-size:12px;color:var(--slds-n-7);margin:0">Streamline and optimize workflows. Density without losing legibility.</p>
+        </div>
+        <div class="pillar">
+          <h4>Consistency</h4>
+          <p style="font-size:12px;color:var(--slds-n-7);margin:0">Create reusable patterns. One Salesforce, one experience.</p>
+        </div>
+        <div class="pillar">
+          <h4>Beauty</h4>
+          <p style="font-size:12px;color:var(--slds-n-7);margin:0">Demonstrate respect for the user's time and attention through quality.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="color" data-fidelity="documented">
+      <h2>
+        <span>Color</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://lightningdesignsystem.com/design-tokens/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--slds-n-7)">Cloud Blue is the SLDS brand. Brand active (#0176D3) is the default action color. Neutral 0–11 spans light to dark. Semantic tokens carry success/warning/error/info intent.</p>
+
+      <h3>Brand</h3>
+      <div class="color-grid">
+        <div class="color-cell" style="background:#001639;color:white">Cloud Darker<br>#001639</div>
+        <div class="color-cell" style="background:#032D60;color:white">Cloud Dark<br>#032D60</div>
+        <div class="color-cell" style="background:#014486;color:white">Active Hover<br>#014486</div>
+        <div class="color-cell" style="background:var(--slds-brand-active);color:white">Brand Active<br>#0176D3</div>
+        <div class="color-cell" style="background:var(--slds-brand);color:white">Brand<br>#1B96FF</div>
+        <div class="color-cell" style="background:#57C8FF;color:#001639">Brand Light<br>#57C8FF</div>
+        <div class="color-cell" style="background:#AACBFF;color:#001639">Brand Lighter<br>#AACBFF</div>
+        <div class="color-cell" style="background:#CFE9FE;color:#001639">Brand Lightest<br>#CFE9FE</div>
+      </div>
+
+      <h3>Neutral 0 – 11</h3>
+      <div class="color-grid">
+        <div class="color-cell" style="background:var(--slds-n-0);color:#181818;outline:1px solid var(--slds-n-3);outline-offset:-1px">0<br>FFFFFF</div>
+        <div class="color-cell" style="background:var(--slds-n-1);color:#181818">1<br>F3F3F3</div>
+        <div class="color-cell" style="background:var(--slds-n-2);color:#181818">2<br>ECEBEA</div>
+        <div class="color-cell" style="background:var(--slds-n-3);color:#181818">3<br>DDDBDA</div>
+        <div class="color-cell" style="background:var(--slds-n-5);color:#181818">5<br>C9C9C9</div>
+        <div class="color-cell" style="background:var(--slds-n-7);color:white">7<br>5C5C5C</div>
+        <div class="color-cell" style="background:var(--slds-n-9);color:white">9<br>2E2E2E</div>
+        <div class="color-cell" style="background:var(--slds-n-11);color:white">11<br>181818</div>
+      </div>
+
+      <h3>Semantic / Status</h3>
+      <div class="semantic-grid">
+        <div class="sem-card" style="background:var(--slds-success-bg);border-color:var(--slds-success);color:#194E2A"><span class="label">Success</span><span class="hex">#2E844A</span></div>
+        <div class="sem-card" style="background:var(--slds-warning-bg);border-color:var(--slds-warning);color:#7E3A00"><span class="label">Warning</span><span class="hex">#FE9339</span></div>
+        <div class="sem-card" style="background:var(--slds-error-bg);border-color:var(--slds-error);color:#8E001E"><span class="label">Error</span><span class="hex">#EA001E</span></div>
+        <div class="sem-card" style="background:var(--slds-info-bg);border-color:var(--slds-info);color:var(--slds-cloud-blue-dark)"><span class="label">Info</span><span class="hex">#0176D3</span></div>
+      </div>
+
+      <h3>Color roles</h3>
+      <div class="role-grid">
+        <div class="role-chip" style="background:var(--slds-brand-active);color:white">Brand Active <code>#0176D3</code></div>
+        <div class="role-chip" style="background:var(--slds-brand);color:white">Brand <code>#1B96FF</code></div>
+        <div class="role-chip" style="background:var(--slds-n-1);color:var(--slds-n-11);border:1px solid var(--slds-n-3)">Bg Default <code>#F3F3F3</code></div>
+        <div class="role-chip" style="background:white;color:var(--slds-n-11);border:1px solid var(--slds-n-3)">Bg Alt <code>#FFFFFF</code></div>
+        <div class="role-chip" style="background:var(--slds-cloud-blue-dark);color:white">Header BG <code>#032D60</code></div>
+        <div class="role-chip" style="background:var(--slds-n-7);color:white">Text Weak <code>#5C5C5C</code></div>
+      </div>
+    </section>
+
+    <section id="typography" data-fidelity="documented">
+      <h2>
+        <span>Typography</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://lightningdesignsystem.com/guidelines/typography/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--slds-n-7)">Salesforce Sans is the proprietary primary typeface. Reference uses Inter as a fallback within a system stack. SLDS leans on weight 300/400/700 with conservative line-heights tuned for dense data.</p>
+
+      <div class="type-row"><div class="label">Heading 1 · 28/34 · light</div><div class="t-h1">Lightning Experience</div></div>
+      <div class="type-row"><div class="label">Heading 2 · 20/24 · bold</div><div class="t-h2">Build trusted CRM</div></div>
+      <div class="type-row"><div class="label">Heading 3 · 18/22 · bold</div><div class="t-h3">Section heading</div></div>
+      <div class="type-row"><div class="label">Heading 4 · 16/20 · bold</div><div class="t-h4">Module heading</div></div>
+      <div class="type-row"><div class="label">Heading 5 · 14/17 · bold</div><div class="t-h5">List heading</div></div>
+      <div class="type-row"><div class="label">Heading 6 · 12/15 · bold uppercase</div><div class="t-h6">Section label</div></div>
+      <div class="type-row"><div class="label">Body · 13/20 · regular</div><div class="t-body">Body 13px is the default density across Lightning Experience, balanced for record pages and dashboards.</div></div>
+      <div class="type-row"><div class="label">Body Small · 12/17 · regular</div><div class="t-body-sm">Body small for dense data layouts and meta descriptions.</div></div>
+      <div class="type-row"><div class="label">Caption · 11/16 · regular</div><div class="t-caption">Caption — supplementary metadata such as timestamps and attribution.</div></div>
+      <div class="type-row"><div class="label">Mono</div><div class="t-mono">// const accent = "#0176D3";</div></div>
+    </section>
+
+    <section id="iconography" data-fidelity="approximated">
+      <h2>
+        <span>Iconography</span>
+        <span class="badge fidelity-approximated">approximated</span>
+        <a href="https://lightningdesignsystem.com/icons/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--slds-n-7)">SLDS icons ship in Action / Custom / Doctype / Standard / Utility families. Standard icons appear on tinted square tiles. Reference uses generic line glyphs at the same density.</p>
+      <div class="icon-grid">
+        <div class="icon-cell"><div class="iconbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"/><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/></svg></div><span>Account</span></div>
+        <div class="icon-cell"><div class="iconbox" style="background:#FFB75D"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/></svg></div><span>Case</span></div>
+        <div class="icon-cell"><div class="iconbox" style="background:#5867E8"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><span>Task</span></div>
+        <div class="icon-cell"><div class="iconbox" style="background:#04844B"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div><span>Chatter</span></div>
+        <div class="icon-cell"><div class="iconbox" style="background:#FE5C4C"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><span>Lead</span></div>
+        <div class="icon-cell"><div class="iconbox" style="background:#7F8DE1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg></div><span>Product</span></div>
+        <div class="icon-cell"><div class="iconbox" style="background:#1B96FF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><span>Activity</span></div>
+        <div class="icon-cell"><div class="iconbox" style="background:#9D53F2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div><span>Insight</span></div>
+        <div class="icon-cell"><div class="iconbox" style="background:#FE7765"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg></div><span>Home</span></div>
+        <div class="icon-cell"><div class="iconbox" style="background:var(--slds-n-7)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09a1.65 1.65 0 00-1-1.51 1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 110-4h.09a1.65 1.65 0 001.51-1 1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06a1.65 1.65 0 001.82.33h.01a1.65 1.65 0 001-1.51V3a2 2 0 114 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82v.01a1.65 1.65 0 001.51 1H21a2 2 0 110 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></div><span>Settings</span></div>
+        <div class="icon-cell"><div class="iconbox" style="background:#FCC003"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/></svg></div><span>Notification</span></div>
+        <div class="icon-cell"><div class="iconbox" style="background:#5867E8"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div><span>Search</span></div>
+        <div class="icon-cell"><div class="iconbox" style="background:#04844B"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div><span>Approve</span></div>
+        <div class="icon-cell"><div class="iconbox" style="background:#EA001E"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div><span>Reject</span></div>
+        <div class="icon-cell"><div class="iconbox" style="background:#0176D3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><span>Info</span></div>
+        <div class="icon-cell"><div class="iconbox" style="background:#FE9339"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/></svg></div><span>Warning</span></div>
+        <div class="icon-cell"><div class="iconbox" style="background:var(--slds-cloud-blue-dark)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 19 21 12 17 5 21 12 2"/></svg></div><span>Trail</span></div>
+        <div class="icon-cell"><div class="iconbox" style="background:#9D53F2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l2-2 4 4 8-8 4 4"/></svg></div><span>Forecast</span></div>
+      </div>
+    </section>
+
+    <section id="buttons" data-fidelity="documented">
+      <h2>
+        <span>Buttons</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://lightningdesignsystem.com/components/buttons/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--slds-n-7)">SLDS button system: Brand (primary), Neutral (secondary), Outline Brand, Destructive, Success, Text. Heights: 24 (small), 32 (default), 40 (large). 4px radius.</p>
+
+      <h3>Variants</h3>
+      <div class="button-row">
+        <button class="slds-btn slds-btn--brand">Save</button>
+        <button class="slds-btn slds-btn--neutral">Cancel</button>
+        <button class="slds-btn slds-btn--outline-brand">Outline</button>
+        <button class="slds-btn slds-btn--destructive">Delete</button>
+        <button class="slds-btn slds-btn--success">Mark Complete</button>
+        <button class="slds-btn slds-btn--text">View Details</button>
+      </div>
+
+      <h3>Sizes</h3>
+      <div class="button-row">
+        <button class="slds-btn slds-btn--brand slds-btn--sm">Small</button>
+        <button class="slds-btn slds-btn--brand">Medium</button>
+        <button class="slds-btn slds-btn--brand slds-btn--lg">Large</button>
+      </div>
+
+      <h3>States</h3>
+      <div class="button-row">
+        <button class="slds-btn slds-btn--brand">Default</button>
+        <button class="slds-btn slds-btn--brand" style="background:var(--slds-brand-active-hover);border-color:var(--slds-brand-active-hover)">Hover</button>
+        <button class="slds-btn slds-btn--brand" style="background:#003365;border-color:#003365">Active</button>
+        <button class="slds-btn slds-btn--brand" disabled>Disabled</button>
+        <button class="slds-btn slds-btn--brand"><span class="slds-spinner" style="width:14px;height:14px;border-width:2px;border-color:rgba(255,255,255,0.3);border-top-color:white"></span> Loading</button>
+      </div>
+    </section>
+
+    <section id="form" data-fidelity="documented">
+      <h2>
+        <span>Form</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://lightningdesignsystem.com/components/input/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--slds-n-7)">Input fields use 1px gray-4 border at rest with 32px height. Focus state shows brand-active border + 3px shadow ring.</p>
+
+      <div class="form-grid">
+        <div class="slds-field">
+          <label>Account Name <span class="req">*</span></label>
+          <input class="slds-input" type="text" placeholder="Acme Corp.">
+          <span class="slds-helper">As displayed on the account record.</span>
+        </div>
+        <div class="slds-field">
+          <label>Email</label>
+          <input class="slds-input error" type="email" value="missing-at.example">
+          <span class="slds-helper error">Enter a valid email address.</span>
+        </div>
+        <div class="slds-field">
+          <label>Industry</label>
+          <select class="slds-input">
+            <option>Technology</option>
+            <option>Financial Services</option>
+            <option>Healthcare</option>
+            <option>Retail</option>
+          </select>
+        </div>
+        <div class="slds-field">
+          <label>Description</label>
+          <textarea class="slds-input" placeholder="Add account details..."></textarea>
+        </div>
+        <div class="slds-field slds-search">
+          <label>Search records</label>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="top:auto;bottom:9px"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input class="slds-input" type="search" placeholder="Search Salesforce">
+        </div>
+        <div class="slds-field">
+          <label>Attach file</label>
+          <input class="slds-input" type="file" style="padding:5px 12px">
+        </div>
+      </div>
+
+      <h3>Selection</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:var(--slds-space-l);align-items:center">
+        <label class="slds-checkbox"><input type="checkbox" checked> Send email alerts</label>
+        <label class="slds-checkbox"><input type="checkbox"> Subscribe to feed</label>
+        <label class="slds-radio"><input type="radio" name="r" checked> Public</label>
+        <label class="slds-radio"><input type="radio" name="r"> Private</label>
+        <label class="slds-switch"><input type="checkbox" checked><span class="slider"></span></label>
+        <label class="slds-switch"><input type="checkbox"><span class="slider"></span></label>
+      </div>
+
+      <h3>Slider</h3>
+      <input class="slds-slider" type="range" min="0" max="100" value="35">
+    </section>
+
+    <section id="surfaces" data-fidelity="documented">
+      <h2>
+        <span>Surfaces</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://lightningdesignsystem.com/components/cards/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--slds-n-7)">SLDS Cards have a header with icon + title, optional actions, and a body. Modal dialogs feature a brand-blue top accent bar.</p>
+
+      <h3>Cards</h3>
+      <div class="surface-grid">
+        <div class="slds-card">
+          <div class="slds-card-header">
+            <div class="icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"/><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/></svg></div>
+            <h4>Acme Corp.</h4>
+            <span style="margin-left:auto"><button class="slds-btn slds-btn--neutral slds-btn--sm">Edit</button></span>
+          </div>
+          <div class="slds-card-body">
+            Annual Revenue: $12.4M · Industry: Technology · Owner: Sarah K.
+          </div>
+        </div>
+        <div class="slds-card">
+          <div class="slds-card-header">
+            <div class="icon" style="background:#04844B"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <h4>Recent Tasks</h4>
+          </div>
+          <div class="slds-card-body">
+            3 open · 12 completed this week.
+          </div>
+        </div>
+        <div class="slds-stat"><div class="num">1,284</div><div class="lbl">New leads · MTD</div></div>
+        <div class="slds-stat" style="background:var(--slds-success-bg);border-left-color:var(--slds-success)"><div class="num" style="color:#194E2A">+12.8%</div><div class="lbl">Pipeline growth</div></div>
+      </div>
+
+      <h3>Modal</h3>
+      <div class="slds-modal">
+        <div class="slds-modal-head">
+          <h4>Convert Lead</h4>
+        </div>
+        <div class="slds-modal-body">
+          <p>Convert "Acme Corp." into an Account, Contact, and Opportunity. Choose how to handle existing records.</p>
+        </div>
+        <div class="slds-modal-foot">
+          <button class="slds-btn slds-btn--neutral">Cancel</button>
+          <button class="slds-btn slds-btn--brand">Convert</button>
+        </div>
+      </div>
+
+      <h3>Popover</h3>
+      <div class="slds-popover">
+        <strong style="display:block;font-size:13px;margin-bottom:6px;color:var(--slds-cloud-blue-dark)">Pro tip</strong>
+        <span style="color:var(--slds-n-7)">Pin frequently used objects to the navigation bar for one-click access.</span>
+      </div>
+
+      <h3>Drawer (Docked Utility)</h3>
+      <div style="background:white;border:1px solid var(--slds-n-3);border-radius:var(--slds-radius-md) var(--slds-radius-md) 0 0;max-width:420px;box-shadow:var(--slds-shadow-3)">
+        <div style="padding:10px 16px;background:var(--slds-cloud-blue-dark);color:white;border-radius:var(--slds-radius-md) var(--slds-radius-md) 0 0;font-weight:700;font-size:13px;display:flex;justify-content:space-between;align-items:center">Activity History <span>—</span></div>
+        <div style="padding:14px 16px">
+          <p style="margin:0;font-size:13px;color:var(--slds-n-7)">Recent calls, emails, and meetings with this contact.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="feedback" data-fidelity="documented">
+      <h2>
+        <span>Feedback</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://lightningdesignsystem.com/components/alert/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--slds-n-7)">Alerts and Toasts are tinted by intent and persist briefly across the app shell. Page-level Banners use a softer tint with brand left border.</p>
+
+      <h3>Alerts</h3>
+      <div class="slds-alert slds-alert--info">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        <span><strong>Salesforce maintenance is scheduled for Saturday at 2 AM PT.</strong></span>
+      </div>
+      <div class="slds-alert slds-alert--success">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="20 6 9 17 4 12"/></svg>
+        <span><strong>Record saved successfully.</strong></span>
+      </div>
+      <div class="slds-alert slds-alert--warn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/></svg>
+        <span><strong>Storage usage is at 82%. Archive old records to free space.</strong></span>
+      </div>
+      <div class="slds-alert slds-alert--error">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+        <span><strong>Apex error: triggers exceeded SOQL governor limits.</strong></span>
+      </div>
+
+      <h3>Toast</h3>
+      <div class="slds-toast">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        Account "Acme Corp." has been created.
+      </div>
+
+      <h3>Banner</h3>
+      <div class="slds-banner">
+        <span><strong>Try Einstein Insights.</strong> Surface predictive recommendations from your pipeline.</span>
+        <button class="slds-btn slds-btn--text">Explore</button>
+      </div>
+
+      <h3>Pills / Badges</h3>
+      <div class="badge-row">
+        <span class="slds-pill">Default</span>
+        <span class="slds-pill slds-pill--brand">Brand</span>
+        <span class="slds-pill slds-pill--success">Active</span>
+        <span class="slds-pill slds-pill--warning">At Risk</span>
+        <span class="slds-pill slds-pill--error">Closed Lost</span>
+        <span class="slds-pill slds-pill--info">Informational</span>
+        <span class="slds-num-badge">3</span>
+        <span class="slds-num-badge">99+</span>
+      </div>
+
+      <h3>Progress / Skeleton / Spinner</h3>
+      <div style="display:flex;flex-direction:column;gap:var(--slds-space-s);max-width:480px">
+        <div class="slds-progress"></div>
+        <div class="slds-skeleton" style="width:80%"></div>
+        <div class="slds-skeleton" style="width:60%"></div>
+        <div class="slds-skeleton" style="width:90%"></div>
+        <div class="slds-spinner"></div>
+      </div>
+    </section>
+
+    <section id="navigation" data-fidelity="documented">
+      <h2>
+        <span>Navigation</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://lightningdesignsystem.com/components/tabs/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+
+      <h3>Tabs</h3>
+      <div class="slds-tabs">
+        <div class="slds-tab active">Details</div>
+        <div class="slds-tab">Activity</div>
+        <div class="slds-tab">Chatter</div>
+        <div class="slds-tab">Files</div>
+      </div>
+
+      <h3>Breadcrumb</h3>
+      <div class="slds-breadcrumb">
+        <a href="#">Sales</a>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        <a href="#">Accounts</a>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        <span>Acme Corp.</span>
+      </div>
+
+      <h3>Pagination</h3>
+      <div class="slds-pagination">
+        <button>‹</button>
+        <button class="active">1</button>
+        <button>2</button>
+        <button>3</button>
+        <button>4</button>
+        <button>5</button>
+        <button>›</button>
+      </div>
+
+      <h3>Stepper / Path</h3>
+      <div class="slds-stepper">
+        <div class="num done">✓</div><span>Qualify</span>
+        <div class="line"></div>
+        <div class="num done">✓</div><span>Discovery</span>
+        <div class="line"></div>
+        <div class="num active">3</div><span>Proposal</span>
+        <div class="line"></div>
+        <div class="num">4</div><span>Negotiate</span>
+        <div class="line"></div>
+        <div class="num">5</div><span>Closed Won</span>
+      </div>
+
+      <h3>Sidebar (Vertical Nav)</h3>
+      <div class="slds-sidebar">
+        <a href="#" class="active">📊 Dashboards</a>
+        <a href="#">📁 Reports</a>
+        <a href="#">👥 Accounts</a>
+        <a href="#">💼 Opportunities</a>
+        <a href="#">📞 Calls</a>
+        <a href="#">⚙ Setup</a>
+      </div>
+
+      <h3>Top Bar (Global Header)</h3>
+      <div class="slds-topbar">
+        <strong style="font-size:14px">Sales</strong>
+        <a href="#">Home</a>
+        <a href="#">Accounts</a>
+        <a href="#">Opportunities</a>
+        <a href="#">Reports</a>
+        <span style="margin-left:auto;font-size:12px;opacity:0.86">acme.salesforce.com</span>
+      </div>
+
+      <h3>Menu</h3>
+      <div class="slds-menu">
+        <div class="item">New Task <span style="font-family:var(--font-mono);color:var(--slds-n-7)">⌘N</span></div>
+        <div class="item">Edit Record <span style="font-family:var(--font-mono);color:var(--slds-n-7)">⌘E</span></div>
+        <div class="item">Share…</div>
+        <div class="divider"></div>
+        <div class="item">Convert</div>
+        <div class="item" style="color:var(--slds-error)">Delete Record</div>
+      </div>
+    </section>
+
+    <section id="data" data-fidelity="documented">
+      <h2>
+        <span>Data</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://lightningdesignsystem.com/components/data-tables/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--slds-n-7)">Data tables are SLDS' workhorse — sortable headers (uppercase, neutral-1 background), 32px row height by default, and inline action cells.</p>
+
+      <h3>Data Table</h3>
+      <table class="slds-table">
+        <thead><tr><th>Account</th><th>Stage</th><th>Amount</th><th>Owner</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>Acme Corp.</td><td>Proposal</td><td>$120,000</td><td>Sarah K.</td><td><span class="slds-pill slds-pill--success">Active</span></td></tr>
+          <tr><td>Globex</td><td>Negotiate</td><td>$85,500</td><td>Tomás L.</td><td><span class="slds-pill slds-pill--warning">At Risk</span></td></tr>
+          <tr><td>Initech</td><td>Discovery</td><td>$22,000</td><td>Aki M.</td><td><span class="slds-pill slds-pill--info">New</span></td></tr>
+          <tr><td>Hooli</td><td>Closed Won</td><td>$420,000</td><td>Eitan O.</td><td><span class="slds-pill slds-pill--brand">Won</span></td></tr>
+        </tbody>
+      </table>
+
+      <h3>List</h3>
+      <ul class="slds-list">
+        <li><span class="slds-avatar">SK</span><div><strong>Sarah Khan</strong><div style="font-size:12px;color:var(--slds-n-7)">Senior AE · Sales</div></div><span style="margin-left:auto;color:var(--slds-n-7);font-size:11px">2 min ago</span></li>
+        <li><span class="slds-avatar" style="background:#FFB75D">TL</span><div><strong>Tomás Leite</strong><div style="font-size:12px;color:var(--slds-n-7)">SDR · West</div></div><span style="margin-left:auto;color:var(--slds-n-7);font-size:11px">1 hr ago</span></li>
+        <li><span class="slds-avatar" style="background:#04844B">AM</span><div><strong>Aki Morimoto</strong><div style="font-size:12px;color:var(--slds-n-7)">CSM · APAC</div></div><span style="margin-left:auto;color:var(--slds-n-7);font-size:11px">Yesterday</span></li>
+      </ul>
+
+      <h3>Key-Value (Detail Panel)</h3>
+      <dl class="slds-kv">
+        <dt>Account Name</dt><dd>Acme Corp.</dd>
+        <dt>Annual Revenue</dt><dd>$12,400,000</dd>
+        <dt>Industry</dt><dd>Technology</dd>
+        <dt>Phone</dt><dd>(415) 555-0142</dd>
+        <dt>Owner</dt><dd>Sarah Khan</dd>
+      </dl>
+
+      <h3>Empty state</h3>
+      <div class="slds-empty">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+        <p style="margin-top:8px"><strong>No records found</strong></p>
+        <p style="font-size:12px">Adjust your list view filters or create a new record.</p>
+      </div>
+    </section>
+
+    <section id="layout" data-fidelity="documented">
+      <h2>
+        <span>Layout</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://lightningdesignsystem.com/utilities/grid/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--slds-n-7)">SLDS uses a fluid 12-column grid with 16px gutters and a 4px base spacing unit. Density toggles (Comfy / Compact) adjust vertical rhythm.</p>
+
+      <h3>12-column grid</h3>
+      <div class="grid-demo">
+        <div style="grid-column:span 12">12</div>
+        <div style="grid-column:span 6">6</div><div style="grid-column:span 6">6</div>
+        <div style="grid-column:span 4">4</div><div style="grid-column:span 4">4</div><div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 3">3</div><div style="grid-column:span 3">3</div><div style="grid-column:span 3">3</div><div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 2">2</div><div style="grid-column:span 2">2</div><div style="grid-column:span 2">2</div><div style="grid-column:span 2">2</div><div style="grid-column:span 2">2</div><div style="grid-column:span 2">2</div>
+      </div>
+
+      <h3>Spacing scale</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div class="swatch" style="width:2px;height:32px"></div><span class="lbl">xxxs · 2</span></div>
+        <div class="scale-item"><div class="swatch" style="width:4px;height:32px"></div><span class="lbl">xxs · 4</span></div>
+        <div class="scale-item"><div class="swatch" style="width:8px;height:32px"></div><span class="lbl">xs · 8</span></div>
+        <div class="scale-item"><div class="swatch" style="width:12px;height:32px"></div><span class="lbl">s · 12</span></div>
+        <div class="scale-item"><div class="swatch" style="width:16px;height:32px"></div><span class="lbl">m · 16</span></div>
+        <div class="scale-item"><div class="swatch" style="width:24px;height:32px"></div><span class="lbl">l · 24</span></div>
+        <div class="scale-item"><div class="swatch" style="width:32px;height:32px"></div><span class="lbl">xl · 32</span></div>
+        <div class="scale-item"><div class="swatch" style="width:48px;height:32px"></div><span class="lbl">xxl · 48</span></div>
+      </div>
+
+      <h3>Radius scale</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div class="swatch" style="width:48px;height:48px;border-radius:0"></div><span class="lbl">0 · 0</span></div>
+        <div class="scale-item"><div class="swatch" style="width:48px;height:48px;border-radius:2px"></div><span class="lbl">sm · 2</span></div>
+        <div class="scale-item"><div class="swatch" style="width:48px;height:48px;border-radius:4px"></div><span class="lbl">md · 4</span></div>
+        <div class="scale-item"><div class="swatch" style="width:48px;height:48px;border-radius:8px"></div><span class="lbl">lg · 8</span></div>
+        <div class="scale-item"><div class="swatch" style="width:48px;height:48px;border-radius:12px"></div><span class="lbl">xl · 12</span></div>
+        <div class="scale-item"><div class="swatch" style="width:48px;height:48px;border-radius:999px"></div><span class="lbl">circle</span></div>
+      </div>
+
+      <h3>Shadow tokens</h3>
+      <div>
+        <div class="shadow-demo" style="box-shadow:var(--slds-shadow-1)">1</div>
+        <div class="shadow-demo" style="box-shadow:var(--slds-shadow-2)">2</div>
+        <div class="shadow-demo" style="box-shadow:var(--slds-shadow-3)">3</div>
+        <div class="shadow-demo" style="box-shadow:var(--slds-shadow-4)">4</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="ds-footer">
+    <h3>Sources</h3>
+    <ul>
+      <li><a href="https://lightningdesignsystem.com" target="_blank" rel="noopener">https://lightningdesignsystem.com</a></li>
+      <li><a href="https://lightningdesignsystem.com/design-tokens/" target="_blank" rel="noopener">https://lightningdesignsystem.com/design-tokens/</a></li>
+      <li><a href="https://lightningdesignsystem.com/guidelines/typography/" target="_blank" rel="noopener">https://lightningdesignsystem.com/guidelines/typography/</a></li>
+      <li><a href="https://lightningdesignsystem.com/icons/" target="_blank" rel="noopener">https://lightningdesignsystem.com/icons/</a></li>
+      <li><a href="https://lightningdesignsystem.com/components/buttons/" target="_blank" rel="noopener">https://lightningdesignsystem.com/components/buttons/</a></li>
+      <li><a href="https://lightningdesignsystem.com/components/input/" target="_blank" rel="noopener">https://lightningdesignsystem.com/components/input/</a></li>
+      <li><a href="https://lightningdesignsystem.com/components/cards/" target="_blank" rel="noopener">https://lightningdesignsystem.com/components/cards/</a></li>
+      <li><a href="https://lightningdesignsystem.com/components/alert/" target="_blank" rel="noopener">https://lightningdesignsystem.com/components/alert/</a></li>
+      <li><a href="https://lightningdesignsystem.com/components/tabs/" target="_blank" rel="noopener">https://lightningdesignsystem.com/components/tabs/</a></li>
+      <li><a href="https://lightningdesignsystem.com/components/data-tables/" target="_blank" rel="noopener">https://lightningdesignsystem.com/components/data-tables/</a></li>
+      <li><a href="https://lightningdesignsystem.com/utilities/grid/" target="_blank" rel="noopener">https://lightningdesignsystem.com/utilities/grid/</a></li>
+    </ul>
+    <p class="license-note">This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Salesforce. Lightning Design System and related trademarks belong to Salesforce. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</p>
+    <p class="meta-note">Reproduction date: 2026-05-05 ・ sourceStatus: verified ・ fidelity: documented</p>
+  </footer>
+</body>
+</html>

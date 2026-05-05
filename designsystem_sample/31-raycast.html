@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Raycast — Design System Reference</title>
+  <script id="ds-meta" type="application/json">
+{"id":"31-raycast","fileSlug":"31-raycast","schemaVersion":"1"}
+  </script>
+  <style>
+    :root {
+      /* Raycast palette — pitch-black + fiery red */
+      --rc-red: #FF6363;
+      --rc-red-hover: #FF8585;
+      --rc-bg: #181818;
+      --rc-bg-elevated: #1F1F1F;
+      --rc-panel: #2A2A2A;
+      --rc-panel-hi: #333333;
+      --rc-selected: #3A3A3A;
+      --rc-border: #303030;
+      --rc-border-strong: #444444;
+
+      --rc-text: #FFFFFF;
+      --rc-text-secondary: #888888;
+      --rc-text-tertiary: #666666;
+
+      --rc-cyan: #5EFCFF;
+      --rc-green: #40D78F;
+      --rc-blue: #2DA8FF;
+      --rc-yellow: #FFCC4D;
+      --rc-purple: #B673FF;
+      --rc-orange: #FF8C42;
+
+      --rc-success: #40D78F;
+      --rc-warning: #FFCC4D;
+      --rc-error: #FF5757;
+      --rc-info: #2DA8FF;
+
+      --rc-font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', Inter, system-ui, sans-serif;
+      --rc-mono: ui-monospace, 'SF Mono', Menlo, monospace;
+
+      --rc-r-xs: 4px;
+      --rc-r-sm: 6px;
+      --rc-r-md: 8px;
+      --rc-r-lg: 10px;
+      --rc-r-xl: 14px;
+      --rc-r-full: 9999px;
+
+      --rc-s-1: 4px;
+      --rc-s-2: 8px;
+      --rc-s-3: 12px;
+      --rc-s-4: 16px;
+      --rc-s-5: 24px;
+      --rc-s-6: 32px;
+      --rc-s-7: 48px;
+      --rc-s-8: 64px;
+
+      --rc-shadow-sm: 0 1px 2px rgba(0,0,0,0.4);
+      --rc-shadow-md: 0 4px 12px rgba(0,0,0,0.5), 0 1px 0 rgba(255,255,255,0.04) inset;
+      --rc-shadow-lg: 0 16px 40px rgba(0,0,0,0.6), 0 1px 0 rgba(255,255,255,0.05) inset;
+      --rc-glow-red: 0 0 0 1px rgba(255,99,99,0.4), 0 8px 24px rgba(255,99,99,0.25);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: var(--rc-font);
+      font-size: 14px;
+      background: var(--rc-bg);
+      color: var(--rc-text);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    code, kbd, pre { font-family: var(--rc-mono); }
+
+    .ds-header {
+      background:
+        radial-gradient(ellipse at top right, rgba(255,99,99,0.18), transparent 50%),
+        radial-gradient(ellipse at bottom left, rgba(94,252,255,0.06), transparent 60%),
+        var(--rc-bg);
+      padding: var(--rc-s-7) var(--rc-s-6) var(--rc-s-6);
+      border-bottom: 1px solid var(--rc-border);
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--rc-s-2);
+      color: var(--rc-text-secondary);
+      text-decoration: none;
+      padding: 6px 12px;
+      border-radius: var(--rc-r-md);
+      font-size: 13px;
+      font-weight: 500;
+      border: 1px solid var(--rc-border);
+      background: var(--rc-panel);
+      transition: all .15s;
+    }
+    .back-link:hover { background: var(--rc-panel-hi); color: var(--rc-text); border-color: var(--rc-border-strong); }
+
+    .ds-header h1 {
+      font-size: 56px;
+      line-height: 1.05;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin: var(--rc-s-4) 0 var(--rc-s-3);
+      background: linear-gradient(180deg, #FFFFFF, #BBBBBB);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .ds-header .meta { display: flex; flex-wrap: wrap; gap: var(--rc-s-2); align-items: center; margin-bottom: var(--rc-s-3); }
+
+    .badge {
+      display: inline-flex; align-items: center;
+      padding: 3px 10px;
+      border-radius: var(--rc-r-full);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      border: 1px solid var(--rc-border-strong);
+      background: var(--rc-panel);
+      color: var(--rc-text-secondary);
+    }
+    .badge.kind-ds { background: rgba(255,99,99,0.15); color: var(--rc-red); border-color: rgba(255,99,99,0.4); }
+    .badge.fidelity-documented { background: rgba(64,215,143,0.15); color: var(--rc-green); border-color: rgba(64,215,143,0.4); }
+    .badge.fidelity-approximated { background: rgba(255,204,77,0.15); color: var(--rc-yellow); border-color: rgba(255,204,77,0.4); }
+    .badge.fidelity-inspired { background: rgba(182,115,255,0.15); color: var(--rc-purple); border-color: rgba(182,115,255,0.4); }
+    .badge.source-verified { background: rgba(45,168,255,0.12); color: var(--rc-blue); border-color: rgba(45,168,255,0.4); }
+
+    .ds-header a[href*="raycast.com"] {
+      color: var(--rc-red);
+      text-decoration: none;
+      font-weight: 600;
+      padding: 4px 12px;
+      border: 1px solid rgba(255,99,99,0.4);
+      border-radius: var(--rc-r-md);
+      font-size: 12px;
+      background: rgba(255,99,99,0.08);
+    }
+    .ds-header a[href*="raycast.com"]:hover { background: rgba(255,99,99,0.18); }
+
+    .tagline {
+      font-size: 19px;
+      line-height: 1.5;
+      max-width: 720px;
+      margin: var(--rc-s-4) 0 0;
+      color: var(--rc-text-secondary);
+    }
+
+    /* TOC */
+    .toc {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(24,24,24,0.85);
+      border-bottom: 1px solid var(--rc-border);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .toc ul {
+      list-style: none; margin: 0;
+      padding: var(--rc-s-3) var(--rc-s-6);
+      display: flex; gap: var(--rc-s-2);
+      overflow-x: auto;
+    }
+    .toc a {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: var(--rc-r-md);
+      color: var(--rc-text-secondary);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      white-space: nowrap;
+      border: 1px solid var(--rc-border);
+      background: var(--rc-panel);
+      transition: all .12s;
+    }
+    .toc a:hover { color: var(--rc-text); border-color: var(--rc-red); background: rgba(255,99,99,0.08); }
+
+    main { max-width: 1280px; margin: 0 auto; padding: var(--rc-s-6); }
+
+    section {
+      background: var(--rc-bg-elevated);
+      border: 1px solid var(--rc-border);
+      border-radius: var(--rc-r-xl);
+      padding: var(--rc-s-6);
+      margin-bottom: var(--rc-s-6);
+      box-shadow: var(--rc-shadow-md);
+    }
+
+    section h2 {
+      display: flex; align-items: center;
+      gap: var(--rc-s-3); flex-wrap: wrap;
+      font-size: 28px; line-height: 1.2;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin: 0 0 var(--rc-s-5);
+      color: var(--rc-text);
+    }
+    .source-link { font-size: 12px; color: var(--rc-red); text-decoration: none; font-weight: 600; }
+    .source-link:hover { text-decoration: underline; }
+
+    h3 { font-size: 18px; font-weight: 600; margin: var(--rc-s-5) 0 var(--rc-s-3); color: var(--rc-text); letter-spacing: -0.01em; }
+    h4 { font-size: 14px; font-weight: 600; margin: var(--rc-s-4) 0 var(--rc-s-2); color: var(--rc-text-secondary); text-transform: uppercase; letter-spacing: 0.5px; }
+    p { margin: 0 0 var(--rc-s-3); color: var(--rc-text-secondary); }
+
+    /* Brand */
+    #brand .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--rc-s-3);
+      padding: var(--rc-s-3) var(--rc-s-5);
+      background: linear-gradient(135deg, #2A2A2A, #181818);
+      border: 1px solid var(--rc-border-strong);
+      border-radius: var(--rc-r-lg);
+      color: white;
+      font-size: 24px;
+      font-weight: 700;
+      box-shadow: var(--rc-shadow-md);
+    }
+    #brand .brand-mark .glyph {
+      width: 36px; height: 36px;
+      border-radius: var(--rc-r-md);
+      background: linear-gradient(135deg, var(--rc-red), #B43A3A);
+      display: inline-flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 0 1px rgba(255,99,99,0.5), 0 8px 20px rgba(255,99,99,0.35);
+    }
+
+    #brand .pillars {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--rc-s-4);
+      margin-top: var(--rc-s-5);
+    }
+    #brand .pillar {
+      padding: var(--rc-s-4);
+      background: var(--rc-panel);
+      border: 1px solid var(--rc-border);
+      border-radius: var(--rc-r-lg);
+    }
+    #brand .pillar h4 { margin-top: 0; color: var(--rc-red); }
+    #brand .pillar p { font-size: 13px; margin: 0; color: var(--rc-text-secondary); }
+
+    /* Color */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 4px;
+      margin-bottom: var(--rc-s-4);
+    }
+    .color-cell {
+      aspect-ratio: 1;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 6px;
+      font-size: 10px;
+      font-family: var(--rc-mono);
+      border-radius: var(--rc-r-sm);
+      border: 1px solid var(--rc-border);
+    }
+    .semantic-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
+      gap: var(--rc-s-3);
+    }
+    .sem-card {
+      padding: var(--rc-s-4);
+      border-radius: var(--rc-r-md);
+      display: flex; flex-direction: column; gap: 4px;
+      border: 1px solid var(--rc-border);
+    }
+    .sem-card .label { font-size: 13px; font-weight: 600; }
+    .sem-card .hex { font-family: var(--rc-mono); font-size: 11px; opacity: .85; }
+
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--rc-s-2);
+      margin-bottom: var(--rc-s-4);
+    }
+    .role-chip {
+      padding: var(--rc-s-3) var(--rc-s-4);
+      border-radius: var(--rc-r-md);
+      font-size: 13px;
+      display: flex; justify-content: space-between; align-items: center;
+      border: 1px solid var(--rc-border);
+    }
+    .role-chip code { font-size: 11px; opacity: .8; }
+
+    /* Typography */
+    .type-row {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: var(--rc-s-4);
+      padding: var(--rc-s-3) 0;
+      border-bottom: 1px solid var(--rc-border);
+      align-items: baseline;
+    }
+    .type-row:last-child { border-bottom: 0; }
+    .type-row .label { font-family: var(--rc-mono); font-size: 11px; color: var(--rc-text-tertiary); }
+    .display-l { font-size: 56px; line-height: 1.05; font-weight: 700; letter-spacing: -0.02em; }
+    .display-m { font-size: 42px; line-height: 1.1; font-weight: 700; letter-spacing: -0.02em; }
+    .display-s { font-size: 32px; line-height: 1.15; font-weight: 600; letter-spacing: -0.01em; }
+    .headline-l { font-size: 24px; line-height: 1.2; font-weight: 600; letter-spacing: -0.01em; }
+    .headline-m { font-size: 20px; line-height: 1.25; font-weight: 600; }
+    .title-l { font-size: 17px; line-height: 1.3; font-weight: 600; }
+    .title-m { font-size: 14px; line-height: 1.4; font-weight: 600; }
+    .body-l { font-size: 15px; line-height: 1.55; }
+    .body-m { font-size: 13px; line-height: 1.55; }
+    .body-s { font-size: 12px; line-height: 1.5; color: var(--rc-text-secondary); }
+    .label { font-size: 12px; line-height: 1.4; font-weight: 600; }
+    .mono-sample { font-family: var(--rc-mono); font-size: 13px; color: var(--rc-cyan); background: var(--rc-panel); padding: 4px 8px; border-radius: var(--rc-r-sm); display: inline-block; }
+
+    /* Iconography */
+    .icon-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(80px,1fr));
+      gap: var(--rc-s-3);
+    }
+    .icon-cell {
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      padding: var(--rc-s-3);
+      background: var(--rc-panel);
+      border: 1px solid var(--rc-border);
+      border-radius: var(--rc-r-md);
+    }
+    .icon-cell svg { width: 22px; height: 22px; stroke: var(--rc-text); }
+    .icon-cell span { font-size: 11px; color: var(--rc-text-secondary); }
+
+    /* Buttons */
+    .button-row {
+      display: flex; flex-wrap: wrap; gap: var(--rc-s-3);
+      align-items: center; margin-bottom: var(--rc-s-3);
+    }
+    .rc-btn {
+      font-family: var(--rc-font);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: var(--rc-r-md);
+      border: 1px solid var(--rc-border-strong);
+      cursor: pointer;
+      display: inline-flex; align-items: center; gap: 6px;
+      height: 36px;
+      background: var(--rc-panel);
+      color: var(--rc-text);
+      transition: all .12s;
+    }
+    .rc-btn--primary {
+      background: var(--rc-red); color: white; border-color: transparent;
+      box-shadow: 0 0 0 1px rgba(255,99,99,0.5), 0 4px 14px rgba(255,99,99,0.25);
+    }
+    .rc-btn--primary:hover { background: var(--rc-red-hover); }
+    .rc-btn--secondary { background: var(--rc-panel); color: var(--rc-text); }
+    .rc-btn--secondary:hover { background: var(--rc-panel-hi); border-color: var(--rc-border-strong); }
+    .rc-btn--ghost { background: transparent; border-color: transparent; color: var(--rc-text-secondary); }
+    .rc-btn--ghost:hover { background: var(--rc-panel); color: var(--rc-text); }
+    .rc-btn--outline { background: transparent; color: var(--rc-text); }
+    .rc-btn--outline:hover { background: var(--rc-panel); }
+    .rc-btn--icon { width: 36px; height: 36px; padding: 0; justify-content: center; }
+    .rc-btn--sm { height: 28px; padding: 4px 10px; font-size: 12px; }
+    .rc-btn--lg { height: 44px; padding: 12px 22px; font-size: 14px; }
+    .rc-btn:focus-visible { outline: 2px solid var(--rc-red); outline-offset: 2px; }
+    .rc-btn:disabled { opacity: .4; cursor: not-allowed; }
+    .rc-kbd {
+      font-family: var(--rc-mono);
+      font-size: 11px;
+      padding: 2px 6px;
+      border-radius: var(--rc-r-xs);
+      background: rgba(255,255,255,0.08);
+      border: 1px solid var(--rc-border-strong);
+      color: var(--rc-text-secondary);
+      margin-left: 6px;
+    }
+
+    /* Form */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+      gap: var(--rc-s-4);
+    }
+    .rc-field { display: flex; flex-direction: column; gap: 6px; }
+    .rc-field label { font-size: 12px; color: var(--rc-text-secondary); font-weight: 500; }
+    .rc-input, .rc-textarea, .rc-select {
+      background: var(--rc-panel);
+      border: 1px solid var(--rc-border-strong);
+      border-radius: var(--rc-r-md);
+      padding: 8px 12px;
+      font-family: var(--rc-font);
+      font-size: 13px;
+      color: var(--rc-text);
+      outline: none;
+      width: 100%;
+      transition: border-color .12s, box-shadow .12s;
+    }
+    .rc-input::placeholder, .rc-textarea::placeholder { color: var(--rc-text-tertiary); }
+    .rc-input:focus, .rc-textarea:focus, .rc-select:focus {
+      border-color: var(--rc-red);
+      box-shadow: 0 0 0 3px rgba(255,99,99,0.18);
+    }
+    .rc-textarea { min-height: 80px; resize: vertical; }
+    .rc-helper { font-size: 11px; color: var(--rc-text-tertiary); }
+    .rc-error-text { color: var(--rc-error); }
+
+    .rc-checkbox, .rc-radio {
+      display: inline-flex; align-items: center; gap: 8px;
+      cursor: pointer; font-size: 13px;
+    }
+    .rc-checkbox input, .rc-radio input { width: 16px; height: 16px; accent-color: var(--rc-red); }
+
+    .rc-switch { position: relative; width: 36px; height: 20px; display: inline-block; }
+    .rc-switch input { opacity: 0; width: 0; height: 0; }
+    .rc-switch .slider {
+      position: absolute; cursor: pointer; inset: 0;
+      background: var(--rc-panel-hi); border-radius: var(--rc-r-full);
+      border: 1px solid var(--rc-border-strong); transition: .2s;
+    }
+    .rc-switch .slider::before {
+      content: ''; position: absolute;
+      width: 14px; height: 14px;
+      left: 2px; top: 2px;
+      background: var(--rc-text); border-radius: 50%; transition: .2s;
+    }
+    .rc-switch input:checked + .slider { background: var(--rc-red); border-color: var(--rc-red); }
+    .rc-switch input:checked + .slider::before { transform: translateX(16px); background: white; }
+
+    /* Surfaces */
+    .surface-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
+      gap: var(--rc-s-4);
+    }
+    .rc-card {
+      background: var(--rc-panel);
+      border: 1px solid var(--rc-border);
+      border-radius: var(--rc-r-lg);
+      padding: var(--rc-s-4);
+    }
+    .rc-card--elevated { box-shadow: var(--rc-shadow-md); background: var(--rc-bg-elevated); }
+    .rc-card--accent { border-color: rgba(255,99,99,0.4); background: linear-gradient(180deg, rgba(255,99,99,0.07), transparent); }
+    .rc-card .media {
+      height: 100px;
+      background: linear-gradient(135deg, #2A2A2A 0%, #1F1F1F 100%);
+      border: 1px solid var(--rc-border);
+      border-radius: var(--rc-r-md);
+      margin-bottom: var(--rc-s-3);
+      position: relative;
+      overflow: hidden;
+    }
+    .rc-card .media::after {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(circle at 30% 30%, rgba(255,99,99,0.18), transparent 60%);
+    }
+    .rc-card h4 { margin: 0 0 4px; color: var(--rc-text); text-transform: none; letter-spacing: 0; font-size: 15px; }
+    .rc-card p { font-size: 13px; margin: 0; }
+
+    .rc-stat {
+      padding: var(--rc-s-4);
+      background: linear-gradient(135deg, rgba(255,99,99,0.18), rgba(255,99,99,0.06));
+      border: 1px solid rgba(255,99,99,0.4);
+      border-radius: var(--rc-r-lg);
+      color: var(--rc-text);
+    }
+    .rc-stat .num { font-size: 28px; font-weight: 700; line-height: 1; letter-spacing: -0.02em; }
+    .rc-stat .lbl { font-size: 12px; color: var(--rc-text-secondary); margin-top: 4px; }
+
+    .rc-modal {
+      background: var(--rc-bg-elevated);
+      border: 1px solid var(--rc-border-strong);
+      padding: var(--rc-s-5);
+      border-radius: var(--rc-r-xl);
+      box-shadow: var(--rc-shadow-lg);
+      max-width: 380px;
+    }
+
+    /* Command palette mock */
+    .rc-palette {
+      background: var(--rc-bg-elevated);
+      border: 1px solid var(--rc-border-strong);
+      border-radius: var(--rc-r-xl);
+      box-shadow: var(--rc-shadow-lg);
+      max-width: 520px;
+      overflow: hidden;
+    }
+    .rc-palette .search {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--rc-border);
+      display: flex; gap: 10px; align-items: center;
+      font-size: 15px;
+    }
+    .rc-palette .search svg { width: 18px; height: 18px; stroke: var(--rc-text-secondary); }
+    .rc-palette .search input {
+      flex: 1; background: transparent; border: 0; outline: none;
+      color: var(--rc-text); font-size: 15px; font-family: var(--rc-font);
+    }
+    .rc-palette ul { list-style: none; margin: 0; padding: 6px; }
+    .rc-palette li {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 10px;
+      border-radius: var(--rc-r-sm);
+      font-size: 13px;
+    }
+    .rc-palette li.active { background: var(--rc-selected); }
+    .rc-palette li .glyph {
+      width: 22px; height: 22px;
+      border-radius: var(--rc-r-xs);
+      display: inline-flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .rc-palette li .meta { margin-left: auto; color: var(--rc-text-tertiary); font-size: 11px; }
+    .rc-palette .footer {
+      padding: 8px 12px;
+      border-top: 1px solid var(--rc-border);
+      display: flex; justify-content: space-between;
+      font-size: 11px; color: var(--rc-text-tertiary);
+    }
+
+    /* Feedback */
+    .rc-alert {
+      display: flex; gap: var(--rc-s-3);
+      padding: 10px 14px;
+      border-radius: var(--rc-r-md);
+      margin-bottom: var(--rc-s-2);
+      font-size: 13px;
+      align-items: flex-start;
+      border: 1px solid var(--rc-border);
+    }
+    .rc-alert--info { background: rgba(45,168,255,0.1); color: var(--rc-blue); border-color: rgba(45,168,255,0.3); }
+    .rc-alert--success { background: rgba(64,215,143,0.1); color: var(--rc-green); border-color: rgba(64,215,143,0.3); }
+    .rc-alert--warn { background: rgba(255,204,77,0.1); color: var(--rc-yellow); border-color: rgba(255,204,77,0.3); }
+    .rc-alert--error { background: rgba(255,87,87,0.1); color: var(--rc-error); border-color: rgba(255,87,87,0.3); }
+
+    .rc-toast {
+      background: var(--rc-bg-elevated);
+      border: 1px solid var(--rc-border-strong);
+      color: var(--rc-text);
+      padding: 12px 16px;
+      border-radius: var(--rc-r-md);
+      box-shadow: var(--rc-shadow-md);
+      display: inline-flex; align-items: center; gap: 12px;
+      font-size: 13px;
+    }
+    .rc-toast button { background: transparent; color: var(--rc-red); border: 0; font-weight: 600; cursor: pointer; }
+
+    .rc-chip-row { display: flex; flex-wrap: wrap; gap: 6px; }
+    .rc-chip {
+      display: inline-flex; align-items: center;
+      padding: 4px 10px;
+      border-radius: var(--rc-r-sm);
+      border: 1px solid var(--rc-border-strong);
+      background: var(--rc-panel);
+      font-size: 12px;
+      color: var(--rc-text);
+    }
+    .rc-chip--red { background: rgba(255,99,99,0.15); color: var(--rc-red); border-color: rgba(255,99,99,0.4); }
+    .rc-chip--green { background: rgba(64,215,143,0.15); color: var(--rc-green); border-color: rgba(64,215,143,0.4); }
+    .rc-chip--blue { background: rgba(45,168,255,0.15); color: var(--rc-blue); border-color: rgba(45,168,255,0.4); }
+    .rc-chip--cyan { background: rgba(94,252,255,0.12); color: var(--rc-cyan); border-color: rgba(94,252,255,0.4); }
+
+    .rc-badge { background: var(--rc-red); color: white; border-radius: var(--rc-r-full); font-size: 10px; padding: 2px 6px; font-weight: 600; }
+
+    .rc-progress {
+      width: 100%; height: 4px;
+      background: var(--rc-panel-hi);
+      border-radius: var(--rc-r-full);
+      overflow: hidden;
+    }
+    .rc-progress::after {
+      content: ''; display: block;
+      height: 100%; width: 64%;
+      background: linear-gradient(90deg, var(--rc-red), var(--rc-red-hover));
+    }
+
+    .rc-skeleton {
+      height: 12px;
+      background: linear-gradient(90deg, var(--rc-panel), var(--rc-panel-hi), var(--rc-panel));
+      background-size: 200% 100%;
+      border-radius: var(--rc-r-xs);
+      animation: shimmer 1.5s infinite;
+    }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+    .rc-spinner {
+      width: 24px; height: 24px;
+      border: 2px solid var(--rc-panel-hi);
+      border-top-color: var(--rc-red);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Navigation */
+    .rc-tabs {
+      display: flex; gap: 4px;
+      border-bottom: 1px solid var(--rc-border);
+      margin-bottom: var(--rc-s-3);
+    }
+    .rc-tab {
+      padding: 8px 12px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--rc-text-secondary);
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      margin-bottom: -1px;
+    }
+    .rc-tab.active { color: var(--rc-text); border-bottom-color: var(--rc-red); }
+
+    .rc-breadcrumb { display: flex; gap: 6px; align-items: center; font-size: 13px; color: var(--rc-text-secondary); }
+    .rc-breadcrumb a { color: var(--rc-red); text-decoration: none; }
+
+    .rc-pagination { display: flex; gap: 4px; align-items: center; }
+    .rc-pagination button {
+      width: 32px; height: 32px;
+      border-radius: var(--rc-r-md);
+      border: 1px solid var(--rc-border);
+      background: var(--rc-panel);
+      color: var(--rc-text);
+      cursor: pointer;
+      font-family: var(--rc-font);
+      font-size: 13px;
+    }
+    .rc-pagination button.active { background: var(--rc-red); color: white; border-color: var(--rc-red); }
+    .rc-pagination button:hover:not(.active) { background: var(--rc-panel-hi); }
+
+    .rc-stepper { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+    .rc-stepper .step { display: inline-flex; align-items: center; gap: 6px; }
+    .rc-stepper .num {
+      width: 22px; height: 22px; border-radius: 50%;
+      background: var(--rc-panel-hi); color: var(--rc-text-secondary);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 600;
+      border: 1px solid var(--rc-border);
+    }
+    .rc-stepper .num.active { background: var(--rc-red); color: white; border-color: var(--rc-red); }
+    .rc-stepper .line { flex: 1; height: 1px; background: var(--rc-border); }
+
+    .rc-sidebar {
+      background: var(--rc-panel);
+      border: 1px solid var(--rc-border);
+      border-radius: var(--rc-r-lg);
+      padding: 8px;
+      width: 240px;
+    }
+    .rc-sidebar a {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 10px;
+      border-radius: var(--rc-r-sm);
+      color: var(--rc-text-secondary);
+      text-decoration: none;
+      font-size: 13px;
+    }
+    .rc-sidebar a.active { background: var(--rc-selected); color: var(--rc-text); }
+    .rc-sidebar a:hover:not(.active) { background: var(--rc-panel-hi); color: var(--rc-text); }
+
+    .rc-topbar {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 14px;
+      background: var(--rc-panel);
+      border: 1px solid var(--rc-border);
+      border-radius: var(--rc-r-md);
+    }
+
+    .rc-menu {
+      background: var(--rc-bg-elevated);
+      border: 1px solid var(--rc-border-strong);
+      border-radius: var(--rc-r-md);
+      box-shadow: var(--rc-shadow-md);
+      padding: 6px;
+      width: 200px;
+    }
+    .rc-menu .item {
+      padding: 6px 10px;
+      font-size: 13px;
+      cursor: pointer;
+      border-radius: var(--rc-r-sm);
+      display: flex;
+      justify-content: space-between;
+      color: var(--rc-text-secondary);
+    }
+    .rc-menu .item:hover { background: var(--rc-panel-hi); color: var(--rc-text); }
+
+    /* Data */
+    table.rc-table {
+      width: 100%; border-collapse: collapse; font-size: 13px;
+    }
+    table.rc-table th, table.rc-table td {
+      text-align: left;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--rc-border);
+    }
+    table.rc-table th { font-weight: 600; color: var(--rc-text-secondary); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+    table.rc-table tr:hover { background: var(--rc-panel); }
+
+    .rc-list { list-style: none; padding: 0; margin: 0; }
+    .rc-list li {
+      padding: 10px 12px;
+      display: flex; gap: 12px; align-items: center;
+      border-bottom: 1px solid var(--rc-border);
+    }
+    .rc-list li:last-child { border-bottom: 0; }
+
+    .rc-kv { display: grid; grid-template-columns: 140px 1fr; gap: 8px; font-size: 13px; }
+    .rc-kv dt { color: var(--rc-text-secondary); font-weight: 500; }
+
+    .rc-avatar {
+      width: 32px; height: 32px;
+      border-radius: var(--rc-r-md);
+      background: linear-gradient(135deg, var(--rc-red), #B43A3A);
+      color: white;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-weight: 600; font-size: 13px;
+    }
+
+    .rc-empty {
+      text-align: center;
+      padding: var(--rc-s-7) var(--rc-s-4);
+      color: var(--rc-text-secondary);
+    }
+    .rc-empty svg { width: 40px; height: 40px; opacity: .4; }
+
+    /* Layout */
+    .grid-demo {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 8px;
+      background: var(--rc-panel);
+      padding: 12px;
+      border-radius: var(--rc-r-md);
+      border: 1px solid var(--rc-border);
+    }
+    .grid-demo > div {
+      background: rgba(255,99,99,0.18);
+      color: var(--rc-red);
+      padding: 8px;
+      border-radius: var(--rc-r-sm);
+      font-size: 11px;
+      font-weight: 600;
+      text-align: center;
+      border: 1px solid rgba(255,99,99,0.3);
+    }
+
+    .scale-row {
+      display: flex; gap: var(--rc-s-3); flex-wrap: wrap;
+      align-items: flex-end; margin-bottom: var(--rc-s-4);
+    }
+    .scale-item { display: flex; flex-direction: column; gap: 6px; align-items: center; }
+    .scale-item .swatch { background: var(--rc-red); border-radius: var(--rc-r-xs); }
+    .scale-item .lbl { font-size: 11px; font-family: var(--rc-mono); color: var(--rc-text-tertiary); }
+
+    .shadow-demo {
+      width: 80px; height: 80px;
+      background: var(--rc-bg-elevated);
+      border: 1px solid var(--rc-border);
+      border-radius: var(--rc-r-md);
+      display: inline-flex; align-items: center; justify-content: center;
+      margin-right: 16px; margin-bottom: 16px;
+      font-size: 11px; font-family: var(--rc-mono); color: var(--rc-text-secondary);
+    }
+
+    /* Footer */
+    .ds-footer {
+      background: var(--rc-bg-elevated);
+      border-top: 1px solid var(--rc-border);
+      padding: var(--rc-s-6);
+      margin-top: var(--rc-s-7);
+      color: var(--rc-text);
+    }
+    .ds-footer h3 { margin-top: 0; }
+    .ds-footer ul { padding-left: 20px; }
+    .ds-footer li { margin-bottom: 4px; word-break: break-all; font-size: 12px; color: var(--rc-text-secondary); }
+    .ds-footer a { color: var(--rc-red); text-decoration: none; }
+    .license-note { font-size: 12px; color: var(--rc-text-tertiary); margin-top: var(--rc-s-4); }
+    .meta-note { font-size: 11px; color: var(--rc-text-tertiary); font-family: var(--rc-mono); margin-top: var(--rc-s-2); }
+
+    @media (max-width: 720px) {
+      .ds-header h1 { font-size: 36px; }
+      main { padding: var(--rc-s-4); }
+      section { padding: var(--rc-s-4); }
+      .type-row { grid-template-columns: 1fr; }
+      .color-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <header class="ds-header">
+    <a href="index.html" class="back-link">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Catalog
+    </a>
+    <h1>Raycast</h1>
+    <div class="meta">
+      <span class="badge kind-ds">product-aesthetic</span>
+      <span class="badge fidelity-inspired">inspired</span>
+      <span class="badge source-verified">source: homepage-only</span>
+      <a href="https://www.raycast.com" target="_blank" rel="noopener">Official</a>
+    </div>
+    <p class="tagline">Raycast's beloved command palette aesthetic — pitch-black surfaces with fiery red accent and crisp typography.</p>
+  </header>
+
+  <nav class="toc" aria-label="Table of contents">
+    <ul>
+      <li><a href="#brand">Brand</a></li>
+      <li><a href="#color">Color</a></li>
+      <li><a href="#typography">Typography</a></li>
+      <li><a href="#iconography">Iconography</a></li>
+      <li><a href="#buttons">Buttons</a></li>
+      <li><a href="#form">Form</a></li>
+      <li><a href="#surfaces">Surfaces</a></li>
+      <li><a href="#navigation">Navigation</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="brand" data-fidelity="inspired">
+      <h2>
+        <span>Brand</span>
+        <span class="badge fidelity-inspired">inspired</span>
+      </h2>
+      <div class="brand-mark">
+        <span class="glyph">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="4" y="4" width="16" height="16" rx="2"/>
+            <path d="M4 12 L12 12 L12 20"/>
+          </svg>
+        </span>
+        Raycast
+      </div>
+      <p style="margin-top:24px;max-width:720px;font-size:15px;color:var(--rc-text-secondary)">
+        Raycast is a productivity-focused command palette for macOS. Its aesthetic favors pitch-black surfaces, a single fiery red accent, and crisp system typography. Speed-first interactions, keyboard primacy, and high-density data are core principles.
+      </p>
+      <div class="pillars">
+        <div class="pillar">
+          <h4>Fast</h4>
+          <p>Keyboard-first navigation, instant fuzzy search, no chrome. Every interaction is one keystroke away.</p>
+        </div>
+        <div class="pillar">
+          <h4>Focused</h4>
+          <p>Minimal palette: black surfaces, white text, one accent. Visual noise is the enemy of flow.</p>
+        </div>
+        <div class="pillar">
+          <h4>Extensible</h4>
+          <p>An open extension API encourages tooling that fits the same compact, dark, command-driven mental model.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="color" data-fidelity="inspired">
+      <h2>
+        <span>Color</span>
+        <span class="badge fidelity-inspired">inspired</span>
+        <a href="https://www.raycast.com" target="_blank" rel="noopener" class="source-link">Official</a>
+      </h2>
+      <p>Raycast palettes drive almost everything from a single fiery red against pitch-black surfaces. Accent colors (cyan, green, blue, yellow, purple) appear sparingly to tag categories.</p>
+
+      <h3>Surfaces</h3>
+      <div class="color-grid">
+        <div class="color-cell" style="background:#000000;color:white;border-color:#222">#000</div>
+        <div class="color-cell" style="background:#181818;color:white">#181818</div>
+        <div class="color-cell" style="background:#1F1F1F;color:white">#1F1F1F</div>
+        <div class="color-cell" style="background:#2A2A2A;color:white">#2A2A2A</div>
+        <div class="color-cell" style="background:#333333;color:white">#333</div>
+        <div class="color-cell" style="background:#3A3A3A;color:white">#3A3A3A</div>
+        <div class="color-cell" style="background:#444444;color:white">#444</div>
+        <div class="color-cell" style="background:#666;color:white">#666</div>
+      </div>
+
+      <h3>Accent — Raycast Red</h3>
+      <div class="color-grid">
+        <div class="color-cell" style="background:#FF6363;color:#fff">#FF6363</div>
+        <div class="color-cell" style="background:#FF8585;color:#181818">#FF8585</div>
+        <div class="color-cell" style="background:#FF4444;color:#fff">#FF4444</div>
+        <div class="color-cell" style="background:#B43A3A;color:#fff">#B43A3A</div>
+        <div class="color-cell" style="background:rgba(255,99,99,0.18);color:#FF6363">tint</div>
+      </div>
+
+      <h3>Category accents</h3>
+      <div class="semantic-grid">
+        <div class="sem-card" style="background:rgba(94,252,255,0.1);color:var(--rc-cyan);border-color:rgba(94,252,255,0.3)">
+          <span class="label">Cyan</span><span class="hex">#5EFCFF</span>
+        </div>
+        <div class="sem-card" style="background:rgba(64,215,143,0.1);color:var(--rc-green);border-color:rgba(64,215,143,0.3)">
+          <span class="label">Green</span><span class="hex">#40D78F</span>
+        </div>
+        <div class="sem-card" style="background:rgba(45,168,255,0.1);color:var(--rc-blue);border-color:rgba(45,168,255,0.3)">
+          <span class="label">Blue</span><span class="hex">#2DA8FF</span>
+        </div>
+        <div class="sem-card" style="background:rgba(255,204,77,0.1);color:var(--rc-yellow);border-color:rgba(255,204,77,0.3)">
+          <span class="label">Yellow</span><span class="hex">#FFCC4D</span>
+        </div>
+        <div class="sem-card" style="background:rgba(182,115,255,0.1);color:var(--rc-purple);border-color:rgba(182,115,255,0.3)">
+          <span class="label">Purple</span><span class="hex">#B673FF</span>
+        </div>
+        <div class="sem-card" style="background:rgba(255,140,66,0.1);color:var(--rc-orange);border-color:rgba(255,140,66,0.3)">
+          <span class="label">Orange</span><span class="hex">#FF8C42</span>
+        </div>
+      </div>
+
+      <h3>Text on dark</h3>
+      <div class="role-grid">
+        <div class="role-chip" style="background:var(--rc-bg-elevated);color:#fff">Primary <code>#FFFFFF</code></div>
+        <div class="role-chip" style="background:var(--rc-bg-elevated);color:#888">Secondary <code>#888888</code></div>
+        <div class="role-chip" style="background:var(--rc-bg-elevated);color:#666">Tertiary <code>#666666</code></div>
+        <div class="role-chip" style="background:var(--rc-red);color:white;border-color:transparent">Accent <code>#FF6363</code></div>
+      </div>
+    </section>
+
+    <section id="typography" data-fidelity="inspired">
+      <h2>
+        <span>Typography</span>
+        <span class="badge fidelity-inspired">inspired</span>
+        <a href="https://www.raycast.com" target="_blank" rel="noopener" class="source-link">Official</a>
+      </h2>
+      <p>Raycast uses Apple's San Francisco system stack on macOS — falling back to Inter on the web. Crisp, dense, optimized for data display.</p>
+
+      <div class="type-row"><div class="label">Display L · 56/1.05 · 700</div><div class="display-l">Search smarter</div></div>
+      <div class="type-row"><div class="label">Display M · 42/1.1 · 700</div><div class="display-m">Open the launcher</div></div>
+      <div class="type-row"><div class="label">Display S · 32/1.15 · 600</div><div class="display-s">Command palette</div></div>
+      <div class="type-row"><div class="label">Headline L · 24/1.2 · 600</div><div class="headline-l">Run any extension</div></div>
+      <div class="type-row"><div class="label">Headline M · 20/1.25 · 600</div><div class="headline-m">Customize hotkeys</div></div>
+      <div class="type-row"><div class="label">Title L · 17/1.3 · 600</div><div class="title-l">Section title</div></div>
+      <div class="type-row"><div class="label">Title M · 14/1.4 · 600</div><div class="title-m">Item title</div></div>
+      <div class="type-row"><div class="label">Body L · 15/1.55</div><div class="body-l">Raycast collapses the launcher, search, calculator, snippets, clipboard manager, and window manager into one surface.</div></div>
+      <div class="type-row"><div class="label">Body M · 13/1.55</div><div class="body-m">Body M is the workhorse for paragraph copy in palette items, descriptions, and inline help.</div></div>
+      <div class="type-row"><div class="label">Body S · 12/1.5</div><div class="body-s">Body S handles meta, captions, and footer text.</div></div>
+      <div class="type-row"><div class="label">Label · 12/1.4 · 600</div><div class="label">Section label</div></div>
+      <div class="type-row"><div class="label">Mono · SF Mono</div><div class="mono-sample">--rc-red: #FF6363;</div></div>
+    </section>
+
+    <section id="iconography" data-fidelity="inspired">
+      <h2>
+        <span>Iconography</span>
+        <span class="badge fidelity-inspired">inspired</span>
+        <a href="https://www.raycast.com" target="_blank" rel="noopener" class="source-link">Official</a>
+      </h2>
+      <p>Raycast's icon language: 1.5px stroke, 22 - 24px box, rounded line caps, minimal interior detail. Lucide-style stroke icons approximate the feel.</p>
+      <div class="icon-grid">
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><span>search</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="6" width="16" height="12" rx="2"/><path d="M8 10h8M8 14h5"/></svg><span>command</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12L12 3l9 9"/><path d="M5 10v10h14V10"/></svg><span>home</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>clock</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.5-2.5l2-1.5-2-3.5-2.5 1A7 7 0 0 0 13 4l-.5-2.5h-4L8 4a7 7 0 0 0-3 1.5l-2.5-1-2 3.5 2 1.5A7 7 0 0 0 5 12c0 .9.2 1.7.5 2.5l-2 1.5 2 3.5 2.5-1c.9.7 2 1.2 3 1.5l.5 2.5h4l.5-2.5c1-.3 2.1-.8 3-1.5l2.5 1 2-3.5-2-1.5c.3-.8.5-1.6.5-2.5z"/></svg><span>settings</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6v6H9z"/></svg><span>app</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3 7h7l-5.5 4 2 7L12 16l-6.5 4 2-7L2 9h7z"/></svg><span>star</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span>check</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg><span>arrow</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg><span>add</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8z"/></svg><span>chat</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg><span>file</span></div>
+      </div>
+    </section>
+
+    <section id="buttons" data-fidelity="inspired">
+      <h2>
+        <span>Buttons</span>
+        <span class="badge fidelity-inspired">inspired</span>
+        <a href="https://www.raycast.com" target="_blank" rel="noopener" class="source-link">Official</a>
+      </h2>
+      <p>Compact 36px height by default. Primary action gets the red glow; secondary is a quiet panel. Keyboard shortcuts displayed inline as kbd chips.</p>
+
+      <h3>Variants</h3>
+      <div class="button-row">
+        <button class="rc-btn rc-btn--primary">Run command <span class="rc-kbd" style="background:rgba(255,255,255,0.18);border-color:transparent;color:white">⏎</span></button>
+        <button class="rc-btn rc-btn--secondary">Cancel</button>
+        <button class="rc-btn rc-btn--outline">Outline</button>
+        <button class="rc-btn rc-btn--ghost">Ghost</button>
+        <button class="rc-btn rc-btn--icon" aria-label="settings">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.5-2.5l2-1.5-2-3.5-2.5 1A7 7 0 0 0 13 4l-.5-2.5h-4L8 4a7 7 0 0 0-3 1.5l-2.5-1-2 3.5 2 1.5A7 7 0 0 0 5 12c0 .9.2 1.7.5 2.5l-2 1.5 2 3.5 2.5-1c.9.7 2 1.2 3 1.5l.5 2.5h4l.5-2.5c1-.3 2.1-.8 3-1.5l2.5 1 2-3.5-2-1.5c.3-.8.5-1.6.5-2.5z"/></svg>
+        </button>
+      </div>
+
+      <h3>Sizes</h3>
+      <div class="button-row">
+        <button class="rc-btn rc-btn--primary rc-btn--sm">Small</button>
+        <button class="rc-btn rc-btn--primary">Default</button>
+        <button class="rc-btn rc-btn--primary rc-btn--lg">Large</button>
+      </div>
+
+      <h3>States</h3>
+      <div class="button-row">
+        <button class="rc-btn rc-btn--primary">Enabled</button>
+        <button class="rc-btn rc-btn--primary" style="background:var(--rc-red-hover)">Hover</button>
+        <button class="rc-btn rc-btn--primary" style="outline:2px solid var(--rc-red);outline-offset:2px">Focus</button>
+        <button class="rc-btn rc-btn--primary" disabled>Disabled</button>
+      </div>
+    </section>
+
+    <section id="form" data-fidelity="inspired">
+      <h2>
+        <span>Form</span>
+        <span class="badge fidelity-inspired">inspired</span>
+        <a href="https://www.raycast.com" target="_blank" rel="noopener" class="source-link">Official</a>
+      </h2>
+      <p>Inputs are panel-toned with a subtle border. Focus state lights up the red accent ring. Compact 32 - 36px heights.</p>
+
+      <h3>Text fields</h3>
+      <div class="form-grid">
+        <div class="rc-field">
+          <label for="rc-f1">Project</label>
+          <input class="rc-input" id="rc-f1" type="text" value="Raycast">
+          <span class="rc-helper">Default text input</span>
+        </div>
+        <div class="rc-field">
+          <label for="rc-f2">Email</label>
+          <input class="rc-input" id="rc-f2" type="email" placeholder="you@example.com">
+          <span class="rc-helper">Email format</span>
+        </div>
+        <div class="rc-field">
+          <label for="rc-f3">Description</label>
+          <textarea class="rc-textarea" id="rc-f3" placeholder="Multiline body...">Search smarter, work faster.</textarea>
+        </div>
+        <div class="rc-field">
+          <label for="rc-f4">Theme</label>
+          <select class="rc-select" id="rc-f4">
+            <option>System</option><option>Dark</option><option>Light</option>
+          </select>
+        </div>
+        <div class="rc-field">
+          <label for="rc-f5">Email</label>
+          <input class="rc-input" id="rc-f5" value="invalid@" style="border-color:var(--rc-error);box-shadow:0 0 0 3px rgba(255,87,87,0.18)">
+          <span class="rc-helper rc-error-text">Enter a valid email address</span>
+        </div>
+        <div class="rc-field">
+          <label for="rc-f6">Search</label>
+          <input class="rc-input" id="rc-f6" type="search" placeholder="Type a command...">
+        </div>
+      </div>
+
+      <h3>Selection controls</h3>
+      <div class="button-row">
+        <label class="rc-checkbox"><input type="checkbox" checked>Enable hotkeys</label>
+        <label class="rc-checkbox"><input type="checkbox">Show in menu bar</label>
+        <label class="rc-radio"><input type="radio" name="rc-r" checked>System</label>
+        <label class="rc-radio"><input type="radio" name="rc-r">Dark</label>
+        <label class="rc-switch"><input type="checkbox" checked><span class="slider"></span></label>
+        <label class="rc-switch"><input type="checkbox"><span class="slider"></span></label>
+      </div>
+    </section>
+
+    <section id="surfaces" data-fidelity="inspired">
+      <h2>
+        <span>Surfaces</span>
+        <span class="badge fidelity-inspired">inspired</span>
+        <a href="https://www.raycast.com" target="_blank" rel="noopener" class="source-link">Official</a>
+      </h2>
+      <p>Cards, modals, and the signature command palette — all share dark elevation and subtle 1px borders.</p>
+
+      <div class="surface-grid">
+        <div class="rc-card">
+          <div class="media"></div>
+          <h4>Default</h4>
+          <p>Default cards rest on a panel surface for low-emphasis grouping.</p>
+        </div>
+        <div class="rc-card rc-card--elevated">
+          <div class="media"></div>
+          <h4>Elevated</h4>
+          <p>Elevated cards step up with darker fill, shadow, and subtle inner highlight.</p>
+        </div>
+        <div class="rc-card rc-card--accent">
+          <div class="media"></div>
+          <h4>Accent</h4>
+          <p>Accent cards use red-tinted gradient to mark featured items.</p>
+        </div>
+        <div class="rc-stat">
+          <div class="num">2,847</div>
+          <div class="lbl">Commands run today</div>
+        </div>
+      </div>
+
+      <h3>Command palette</h3>
+      <div class="rc-palette">
+        <div class="search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          <input value="open" placeholder="Type a command...">
+          <span class="rc-kbd">⌘</span><span class="rc-kbd">K</span>
+        </div>
+        <ul>
+          <li class="active">
+            <span class="glyph" style="background:rgba(255,99,99,0.2);color:var(--rc-red)">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/></svg>
+            </span>
+            Open Application
+            <span class="meta">Application</span>
+          </li>
+          <li>
+            <span class="glyph" style="background:rgba(45,168,255,0.2);color:var(--rc-blue)">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+            </span>
+            Open File...
+            <span class="meta">File Search</span>
+          </li>
+          <li>
+            <span class="glyph" style="background:rgba(64,215,143,0.2);color:var(--rc-green)">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12L12 3l9 9"/></svg>
+            </span>
+            Open in Browser
+            <span class="meta">Web</span>
+          </li>
+          <li>
+            <span class="glyph" style="background:rgba(255,204,77,0.2);color:var(--rc-yellow)">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg>
+            </span>
+            Open Recent...
+            <span class="meta">History</span>
+          </li>
+        </ul>
+        <div class="footer">
+          <span>4 results</span>
+          <span><span class="rc-kbd">↵</span> Run</span>
+        </div>
+      </div>
+
+      <h3>Modal</h3>
+      <div class="rc-modal">
+        <h4 style="margin-top:0;color:var(--rc-text);text-transform:none;letter-spacing:0;font-size:16px">Reset preferences?</h4>
+        <p style="font-size:13px">This reverts hotkeys and theme to defaults. Saved scripts are kept.</p>
+        <div class="button-row" style="justify-content:flex-end;margin:0">
+          <button class="rc-btn rc-btn--ghost">Cancel</button>
+          <button class="rc-btn rc-btn--primary">Reset</button>
+        </div>
+      </div>
+
+      <h3>Alerts &amp; toast</h3>
+      <div class="rc-alert rc-alert--info"><strong>Info</strong> — Hyper key now available in shortcuts.</div>
+      <div class="rc-alert rc-alert--success"><strong>Success</strong> — Extension installed.</div>
+      <div class="rc-alert rc-alert--warn"><strong>Warning</strong> — This shortcut is already bound.</div>
+      <div class="rc-alert rc-alert--error"><strong>Error</strong> — Failed to fetch from API.</div>
+
+      <div class="rc-toast" style="margin-top:12px">
+        Snippet copied <span class="rc-kbd">⌘</span><span class="rc-kbd">Z</span>
+        <button>Undo</button>
+      </div>
+
+      <h3>Chips &amp; badges</h3>
+      <div class="rc-chip-row">
+        <span class="rc-chip">Filter</span>
+        <span class="rc-chip rc-chip--red">Red</span>
+        <span class="rc-chip rc-chip--green">Active</span>
+        <span class="rc-chip rc-chip--blue">Beta</span>
+        <span class="rc-chip rc-chip--cyan">New</span>
+        <span class="rc-badge">3</span>
+      </div>
+
+      <h3>Progress &amp; loading</h3>
+      <div style="display:flex;flex-direction:column;gap:12px;max-width:480px">
+        <div class="rc-progress"></div>
+        <div class="rc-skeleton" style="width:80%"></div>
+        <div class="rc-skeleton" style="width:60%"></div>
+        <div class="rc-spinner"></div>
+      </div>
+    </section>
+
+    <section id="navigation" data-fidelity="inspired">
+      <h2>
+        <span>Navigation</span>
+        <span class="badge fidelity-inspired">inspired</span>
+        <a href="https://www.raycast.com" target="_blank" rel="noopener" class="source-link">Official</a>
+      </h2>
+
+      <h3>Tabs</h3>
+      <div class="rc-tabs">
+        <div class="rc-tab active">Commands</div>
+        <div class="rc-tab">Extensions</div>
+        <div class="rc-tab">Snippets</div>
+        <div class="rc-tab">Quicklinks</div>
+      </div>
+
+      <h3>Breadcrumb</h3>
+      <div class="rc-breadcrumb">
+        <a href="#">Home</a><span>›</span>
+        <a href="#">Settings</a><span>›</span>
+        <span style="color:var(--rc-text)">Hotkeys</span>
+      </div>
+
+      <h3>Pagination</h3>
+      <div class="rc-pagination">
+        <button>‹</button>
+        <button class="active">1</button>
+        <button>2</button>
+        <button>3</button>
+        <button>›</button>
+      </div>
+
+      <h3>Stepper</h3>
+      <div class="rc-stepper">
+        <div class="step"><span class="num active">1</span> Account</div>
+        <span class="line"></span>
+        <div class="step"><span class="num active">2</span> Hotkeys</div>
+        <span class="line"></span>
+        <div class="step"><span class="num">3</span> Sync</div>
+        <span class="line"></span>
+        <div class="step"><span class="num">4</span> Done</div>
+      </div>
+
+      <h3>Top bar &amp; sidebar</h3>
+      <div class="rc-topbar">
+        <button class="rc-btn rc-btn--icon" style="background:transparent;border-color:transparent"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+        <strong style="flex:1;font-size:14px">Raycast</strong>
+        <button class="rc-btn rc-btn--icon" style="background:transparent;border-color:transparent"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></button>
+        <div class="rc-avatar">MK</div>
+      </div>
+
+      <div style="display:flex;gap:24px;flex-wrap:wrap;margin-top:16px">
+        <div class="rc-sidebar">
+          <a href="#" class="active">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            Search
+          </a>
+          <a href="#">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="16" height="16" rx="2"/></svg>
+            Extensions
+          </a>
+          <a href="#">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/></svg>
+            Settings
+          </a>
+        </div>
+        <div class="rc-menu">
+          <div class="item">Edit <span class="rc-kbd">⌘E</span></div>
+          <div class="item">Duplicate <span class="rc-kbd">⌘D</span></div>
+          <div class="item">Archive</div>
+          <div class="item" style="color:var(--rc-error)">Delete <span class="rc-kbd">⌫</span></div>
+        </div>
+      </div>
+
+      <h3>Table</h3>
+      <table class="rc-table">
+        <thead>
+          <tr><th>Command</th><th>Hotkey</th><th>Source</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>open.app</code></td><td><span class="rc-kbd">⌘ Space</span></td><td>System</td><td><span class="rc-chip rc-chip--green">Active</span></td></tr>
+          <tr><td><code>search.web</code></td><td><span class="rc-kbd">⌘ ⇧ W</span></td><td>Extension</td><td><span class="rc-chip rc-chip--green">Active</span></td></tr>
+          <tr><td><code>clipboard</code></td><td><span class="rc-kbd">⌘ ⇧ V</span></td><td>System</td><td><span class="rc-chip">Idle</span></td></tr>
+        </tbody>
+      </table>
+
+      <h3>List</h3>
+      <ul class="rc-list">
+        <li><div class="rc-avatar">A</div><div><strong>Avery Tan</strong><div style="font-size:12px;color:var(--rc-text-secondary)">Installed extension · 2m ago</div></div></li>
+        <li><div class="rc-avatar" style="background:linear-gradient(135deg,var(--rc-blue),#1A6FB8)">B</div><div><strong>Brett Yu</strong><div style="font-size:12px;color:var(--rc-text-secondary)">Created snippet · 14m ago</div></div></li>
+        <li><div class="rc-avatar" style="background:linear-gradient(135deg,var(--rc-green),#1F7C4D)">C</div><div><strong>Cleo Park</strong><div style="font-size:12px;color:var(--rc-text-secondary)">Bound hotkey · 1h ago</div></div></li>
+      </ul>
+
+      <h3>Empty state</h3>
+      <div class="rc-empty">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <h4 style="margin:8px 0 4px;color:var(--rc-text);text-transform:none;letter-spacing:0">No matches</h4>
+        <p style="font-size:13px;margin:0">Try a different query, or browse extensions.</p>
+      </div>
+
+      <h3>Layout grid</h3>
+      <div class="grid-demo">
+        <div style="grid-column:span 12">12</div>
+        <div style="grid-column:span 6">6</div>
+        <div style="grid-column:span 6">6</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 4">4</div>
+      </div>
+
+      <h3>Spacing scale (4px)</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div class="swatch" style="width:4px;height:32px"></div><span class="lbl">4</span></div>
+        <div class="scale-item"><div class="swatch" style="width:8px;height:32px"></div><span class="lbl">8</span></div>
+        <div class="scale-item"><div class="swatch" style="width:12px;height:32px"></div><span class="lbl">12</span></div>
+        <div class="scale-item"><div class="swatch" style="width:16px;height:32px"></div><span class="lbl">16</span></div>
+        <div class="scale-item"><div class="swatch" style="width:24px;height:32px"></div><span class="lbl">24</span></div>
+        <div class="scale-item"><div class="swatch" style="width:32px;height:32px"></div><span class="lbl">32</span></div>
+        <div class="scale-item"><div class="swatch" style="width:48px;height:32px"></div><span class="lbl">48</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:32px"></div><span class="lbl">64</span></div>
+      </div>
+
+      <h3>Shape scale</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div style="width:56px;height:56px;border-radius:0;background:var(--rc-red)"></div><span class="lbl">0</span></div>
+        <div class="scale-item"><div style="width:56px;height:56px;border-radius:4px;background:var(--rc-red)"></div><span class="lbl">xs 4</span></div>
+        <div class="scale-item"><div style="width:56px;height:56px;border-radius:6px;background:var(--rc-red)"></div><span class="lbl">sm 6</span></div>
+        <div class="scale-item"><div style="width:56px;height:56px;border-radius:8px;background:var(--rc-red)"></div><span class="lbl">md 8</span></div>
+        <div class="scale-item"><div style="width:56px;height:56px;border-radius:10px;background:var(--rc-red)"></div><span class="lbl">lg 10</span></div>
+        <div class="scale-item"><div style="width:56px;height:56px;border-radius:14px;background:var(--rc-red)"></div><span class="lbl">xl 14</span></div>
+        <div class="scale-item"><div style="width:56px;height:56px;border-radius:50%;background:var(--rc-red)"></div><span class="lbl">full</span></div>
+      </div>
+
+      <h3>Elevation</h3>
+      <div>
+        <div class="shadow-demo">flat</div>
+        <div class="shadow-demo" style="box-shadow:var(--rc-shadow-sm)">sm</div>
+        <div class="shadow-demo" style="box-shadow:var(--rc-shadow-md)">md</div>
+        <div class="shadow-demo" style="box-shadow:var(--rc-shadow-lg)">lg</div>
+        <div class="shadow-demo" style="box-shadow:var(--rc-glow-red)">glow</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="ds-footer">
+    <h3>Sources</h3>
+    <ul>
+      <li><a href="https://www.raycast.com" target="_blank" rel="noopener">https://www.raycast.com</a></li>
+      <li><a href="https://www.raycast.com/manual" target="_blank" rel="noopener">https://www.raycast.com/manual</a></li>
+      <li><a href="https://developers.raycast.com" target="_blank" rel="noopener">https://developers.raycast.com</a></li>
+    </ul>
+    <p class="license-note">This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Raycast. Raycast and related trademarks belong to Raycast. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</p>
+    <p class="meta-note">Reproduction date: 2026-05-05 · sourceStatus: homepage-only · fidelity: inspired</p>
+  </footer>
+</body>
+</html>

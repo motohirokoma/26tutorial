@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mantine — Design System Reference</title>
+  <script id="ds-meta" type="application/json">
+{"id":"17-mantine","fileSlug":"17-mantine","schemaVersion":"1"}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Mantine blue (default primary) */
+      --mt-blue-0: #E7F5FF;
+      --mt-blue-1: #D0EBFF;
+      --mt-blue-2: #A5D8FF;
+      --mt-blue-3: #74C0FC;
+      --mt-blue-4: #4DABF7;
+      --mt-blue-5: #339AF0;
+      --mt-blue-6: #228BE6;
+      --mt-blue-7: #1C7ED6;
+      --mt-blue-8: #1971C2;
+      --mt-blue-9: #1864AB;
+
+      /* Mantine gray */
+      --mt-gray-0: #F8F9FA;
+      --mt-gray-1: #F1F3F5;
+      --mt-gray-2: #E9ECEF;
+      --mt-gray-3: #DEE2E6;
+      --mt-gray-4: #CED4DA;
+      --mt-gray-5: #ADB5BD;
+      --mt-gray-6: #868E96;
+      --mt-gray-7: #495057;
+      --mt-gray-8: #343A40;
+      --mt-gray-9: #212529;
+
+      /* Mantine dark (mainly for reference) */
+      --mt-dark-0: #C9C9C9;
+      --mt-dark-4: #4F5762;
+      --mt-dark-5: #373A40;
+      --mt-dark-6: #5C5F66;
+      --mt-dark-7: #25262B;
+      --mt-dark-9: #101113;
+
+      /* Semantic accents */
+      --mt-red-6: #FA5252;
+      --mt-red-7: #E03131;
+      --mt-pink-6: #E64980;
+      --mt-grape-6: #BE4BDB;
+      --mt-violet-6: #7950F2;
+      --mt-indigo-6: #4C6EF5;
+      --mt-cyan-6: #15AABF;
+      --mt-teal-6: #12B886;
+      --mt-green-6: #40C057;
+      --mt-lime-6: #82C91E;
+      --mt-yellow-6: #FAB005;
+      --mt-orange-6: #FD7E14;
+
+      /* Surface / text (light scheme) */
+      --mt-bg: #FFFFFF;
+      --mt-bg-canvas: var(--mt-gray-0);
+      --mt-text: var(--mt-gray-9);
+      --mt-text-dimmed: var(--mt-gray-7);
+      --mt-text-muted: var(--mt-gray-6);
+      --mt-border: var(--mt-gray-3);
+
+      /* Type — Greycliff CF unavailable on Google Fonts; Inter is the documented fallback */
+      --mt-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --mt-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+
+      /* Mantine radius */
+      --mt-radius-xs: 2px;
+      --mt-radius-sm: 4px;  /* Mantine default sm */
+      --mt-radius-md: 8px;
+      --mt-radius-lg: 16px;
+      --mt-radius-xl: 32px;
+
+      /* Spacing */
+      --mt-sp-xs: 10px;
+      --mt-sp-sm: 12px;
+      --mt-sp-md: 16px;
+      --mt-sp-lg: 20px;
+      --mt-sp-xl: 32px;
+
+      /* Shadow */
+      --mt-sh-xs: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.1);
+      --mt-sh-sm: 0 1px 3px rgba(0,0,0,0.05), rgba(0,0,0,0.05) 0 10px 15px -5px, rgba(0,0,0,0.04) 0 7px 7px -5px;
+      --mt-sh-md: 0 1px 3px rgba(0,0,0,0.05), rgba(0,0,0,0.05) 0 20px 25px -5px, rgba(0,0,0,0.04) 0 10px 10px -5px;
+      --mt-sh-lg: 0 1px 3px rgba(0,0,0,0.05), rgba(0,0,0,0.05) 0 28px 23px -7px, rgba(0,0,0,0.04) 0 12px 12px -7px;
+      --mt-sh-xl: 0 1px 3px rgba(0,0,0,0.05), rgba(0,0,0,0.05) 0 36px 28px -7px, rgba(0,0,0,0.04) 0 17px 17px -7px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: var(--mt-font);
+      background: var(--mt-bg-canvas);
+      color: var(--mt-text);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    code, kbd, pre { font-family: var(--mt-mono); }
+
+    /* Header */
+    .ds-header {
+      background: var(--mt-bg);
+      color: var(--mt-text);
+      padding: var(--mt-sp-xl) var(--mt-sp-xl) var(--mt-sp-lg);
+      border-bottom: 1px solid var(--mt-border);
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--mt-sp-xs);
+      color: var(--mt-blue-7);
+      text-decoration: none;
+      padding: 6px 12px;
+      border-radius: var(--mt-radius-sm);
+      font-size: 14px;
+      font-weight: 500;
+      transition: background 0.15s;
+    }
+    .back-link:hover { background: var(--mt-blue-0); }
+
+    .ds-header h1 {
+      font-size: 44px;
+      line-height: 1.1;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin: var(--mt-sp-md) 0 var(--mt-sp-sm);
+    }
+
+    .ds-header .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--mt-sp-xs);
+      align-items: center;
+      margin-bottom: var(--mt-sp-sm);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 10px;
+      border-radius: var(--mt-radius-xl);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      background: var(--mt-gray-1);
+      color: var(--mt-gray-8);
+    }
+    .badge.kind-cl { background: var(--mt-blue-6); color: white; }
+    .badge.fidelity-documented { background: var(--mt-green-6); color: white; }
+    .badge.fidelity-approximated { background: var(--mt-orange-6); color: white; }
+    .badge.fidelity-inspired { background: var(--mt-violet-6); color: white; }
+    .badge.source-verified { background: var(--mt-cyan-6); color: white; }
+
+    .ds-header a[href*="mantine.dev"] {
+      color: var(--mt-blue-7);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 4px 12px;
+      border: 1px solid var(--mt-border);
+      border-radius: var(--mt-radius-sm);
+      font-size: 13px;
+      background: var(--mt-bg);
+    }
+    .ds-header a[href*="mantine.dev"]:hover { background: var(--mt-gray-0); }
+
+    .tagline {
+      font-size: 18px;
+      line-height: 1.55;
+      max-width: 720px;
+      margin: var(--mt-sp-md) 0 0;
+      color: var(--mt-text-dimmed);
+    }
+
+    /* TOC */
+    .toc {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255,255,255,0.85);
+      border-bottom: 1px solid var(--mt-border);
+      backdrop-filter: blur(8px);
+    }
+    .toc ul {
+      list-style: none;
+      margin: 0 auto;
+      padding: var(--mt-sp-sm) var(--mt-sp-xl);
+      display: flex;
+      gap: 4px;
+      overflow-x: auto;
+      max-width: 1280px;
+    }
+    .toc a {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: var(--mt-radius-sm);
+      color: var(--mt-text-dimmed);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      white-space: nowrap;
+      transition: all 0.15s;
+    }
+    .toc a:hover { background: var(--mt-blue-0); color: var(--mt-blue-7); }
+
+    /* Main */
+    main {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: var(--mt-sp-xl);
+    }
+
+    section {
+      background: var(--mt-bg);
+      border-radius: var(--mt-radius-md);
+      padding: var(--mt-sp-xl);
+      margin-bottom: var(--mt-sp-lg);
+      border: 1px solid var(--mt-border);
+    }
+
+    section h2 {
+      display: flex;
+      align-items: center;
+      gap: var(--mt-sp-sm);
+      flex-wrap: wrap;
+      font-size: 30px;
+      line-height: 1.3;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin: 0 0 var(--mt-sp-lg);
+    }
+
+    .source-link {
+      font-size: 13px;
+      color: var(--mt-blue-7);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .source-link:hover { text-decoration: underline; }
+
+    h3 {
+      font-size: 18px;
+      line-height: 1.4;
+      font-weight: 600;
+      margin: var(--mt-sp-lg) 0 var(--mt-sp-sm);
+    }
+
+    h4 {
+      font-size: 15px;
+      line-height: 1.5;
+      font-weight: 600;
+      margin: var(--mt-sp-md) 0 var(--mt-sp-xs);
+    }
+
+    p { margin: 0 0 var(--mt-sp-sm); }
+    section > p { color: var(--mt-text-dimmed); }
+
+    /* Brand */
+    #brand .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--mt-sp-sm);
+      padding: var(--mt-sp-sm) var(--mt-sp-lg);
+      background: var(--mt-blue-6);
+      border-radius: var(--mt-radius-md);
+      color: white;
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+    #brand .brand-mark svg { width: 36px; height: 36px; }
+    #brand .pillars {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--mt-sp-md);
+      margin-top: var(--mt-sp-lg);
+    }
+    #brand .pillar {
+      padding: var(--mt-sp-md);
+      background: var(--mt-blue-0);
+      border-radius: var(--mt-radius-md);
+      border: 1px solid var(--mt-blue-1);
+    }
+    #brand .pillar h4 { margin-top: 0; color: var(--mt-blue-8); }
+
+    /* Color */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 4px;
+      margin-bottom: var(--mt-sp-sm);
+    }
+    .color-cell {
+      aspect-ratio: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 6px;
+      font-size: 10px;
+      font-family: var(--mt-mono);
+      border-radius: var(--mt-radius-sm);
+    }
+
+    .semantic-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px,1fr));
+      gap: var(--mt-sp-sm);
+    }
+    .sem-card {
+      padding: var(--mt-sp-md);
+      border-radius: var(--mt-radius-md);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      color: white;
+    }
+    .sem-card .label { font-size: 14px; font-weight: 600; }
+    .sem-card .hex { font-family: var(--mt-mono); font-size: 12px; opacity: 0.85; }
+
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--mt-sp-xs);
+      margin-bottom: var(--mt-sp-md);
+    }
+    .role-chip {
+      padding: var(--mt-sp-sm) var(--mt-sp-md);
+      border-radius: var(--mt-radius-sm);
+      font-size: 13px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 500;
+    }
+    .role-chip code { font-size: 11px; opacity: 0.85; }
+
+    /* Typography */
+    .type-row {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: var(--mt-sp-md);
+      padding: var(--mt-sp-sm) 0;
+      border-bottom: 1px solid var(--mt-border);
+      align-items: baseline;
+    }
+    .type-row:last-child { border-bottom: 0; }
+    .type-row .label {
+      font-family: var(--mt-mono);
+      font-size: 12px;
+      color: var(--mt-text-muted);
+    }
+    .h1-style { font-size: 34px; line-height: 1.3; font-weight: 700; letter-spacing: -0.01em; }
+    .h2-style { font-size: 26px; line-height: 1.35; font-weight: 700; }
+    .h3-style { font-size: 22px; line-height: 1.4; font-weight: 700; }
+    .h4-style { font-size: 18px; line-height: 1.45; font-weight: 600; }
+    .h5-style { font-size: 16px; line-height: 1.5; font-weight: 600; }
+    .h6-style { font-size: 14px; line-height: 1.5; font-weight: 600; }
+    .text-xl { font-size: 20px; line-height: 1.55; }
+    .text-lg { font-size: 18px; line-height: 1.55; }
+    .text-md { font-size: 16px; line-height: 1.55; }
+    .text-sm { font-size: 14px; line-height: 1.55; }
+    .text-xs { font-size: 12px; line-height: 1.5; }
+    .mono-sample { font-family: var(--mt-mono); font-size: 14px; color: var(--mt-text-dimmed); }
+
+    /* Iconography */
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(80px,1fr));
+      gap: var(--mt-sp-sm);
+    }
+    .icon-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: var(--mt-sp-sm);
+      background: var(--mt-gray-0);
+      border-radius: var(--mt-radius-sm);
+      transition: background 0.15s;
+    }
+    .icon-cell:hover { background: var(--mt-blue-0); }
+    .icon-cell svg { width: 24px; height: 24px; stroke: var(--mt-text-dimmed); }
+    .icon-cell span { font-size: 11px; color: var(--mt-text-dimmed); }
+
+    /* Buttons */
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--mt-sp-xs);
+      align-items: center;
+      margin-bottom: var(--mt-sp-sm);
+    }
+
+    .mt-btn {
+      font-family: var(--mt-font);
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0;
+      padding: 0 18px;
+      border-radius: var(--mt-radius-sm);
+      border: 0;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      height: 36px;
+      transition: all 0.1s;
+    }
+    .mt-btn--filled { background: var(--mt-blue-6); color: white; }
+    .mt-btn--filled:hover { background: var(--mt-blue-7); }
+    .mt-btn--filled:disabled { background: var(--mt-gray-2); color: var(--mt-gray-5); cursor: not-allowed; }
+    .mt-btn--light { background: var(--mt-blue-0); color: var(--mt-blue-7); }
+    .mt-btn--light:hover { background: var(--mt-blue-1); }
+    .mt-btn--outline { background: transparent; color: var(--mt-blue-7); border: 1px solid var(--mt-blue-6); }
+    .mt-btn--outline:hover { background: var(--mt-blue-0); }
+    .mt-btn--default { background: var(--mt-bg); color: var(--mt-text); border: 1px solid var(--mt-border); }
+    .mt-btn--default:hover { background: var(--mt-gray-0); }
+    .mt-btn--subtle { background: transparent; color: var(--mt-blue-7); }
+    .mt-btn--subtle:hover { background: var(--mt-blue-0); }
+    .mt-btn--gradient { background: linear-gradient(45deg, var(--mt-blue-6), var(--mt-cyan-6)); color: white; }
+    .mt-btn--gradient:hover { filter: brightness(0.95); }
+    .mt-btn--icon { width: 36px; height: 36px; padding: 0; justify-content: center; background: transparent; color: var(--mt-text-dimmed); border-radius: var(--mt-radius-sm); }
+    .mt-btn--icon:hover { background: var(--mt-gray-1); }
+    .mt-btn--xs { height: 26px; font-size: 12px; padding: 0 12px; }
+    .mt-btn--sm { height: 32px; font-size: 13px; padding: 0 16px; }
+    .mt-btn--lg { height: 44px; font-size: 16px; padding: 0 24px; }
+    .mt-btn--xl { height: 52px; font-size: 18px; padding: 0 28px; }
+    .mt-btn:focus-visible { outline: 2px solid var(--mt-blue-6); outline-offset: 2px; }
+
+    /* Form */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+      gap: var(--mt-sp-md);
+    }
+    .mt-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .mt-field-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--mt-text);
+    }
+    .mt-input {
+      background: var(--mt-bg);
+      border: 1px solid var(--mt-border);
+      border-radius: var(--mt-radius-sm);
+      padding: 0 12px;
+      height: 36px;
+      font-family: var(--mt-font);
+      font-size: 14px;
+      color: var(--mt-text);
+      outline: none;
+      width: 100%;
+      transition: border-color 0.1s;
+    }
+    .mt-input:hover { border-color: var(--mt-gray-4); }
+    .mt-input:focus { border-color: var(--mt-blue-6); }
+    .mt-input--filled { background: var(--mt-gray-1); border-color: transparent; }
+    .mt-input--filled:focus { background: var(--mt-bg); border-color: var(--mt-blue-6); }
+    .mt-input--unstyled { background: transparent; border: 0; padding: 0; }
+    .mt-input--error { border-color: var(--mt-red-6); }
+    .mt-input--error:focus { border-color: var(--mt-red-6); box-shadow: 0 0 0 2px rgba(250,82,82,0.2); }
+    .mt-helper { font-size: 12px; color: var(--mt-text-muted); }
+    .mt-error-text { font-size: 12px; color: var(--mt-red-7); }
+
+    .mt-textarea { min-height: 80px; padding: 8px 12px; resize: vertical; height: auto; line-height: 1.55; }
+    select.mt-input { appearance: none; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23868E96' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>"); background-repeat: no-repeat; background-position: right 8px center; padding-right: 32px; }
+
+    .mt-checkbox, .mt-radio {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .mt-checkbox input, .mt-radio input { width: 16px; height: 16px; accent-color: var(--mt-blue-6); }
+    .mt-switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+    .mt-switch input { opacity: 0; width: 0; height: 0; }
+    .mt-switch .slider {
+      position: absolute; cursor: pointer; inset: 0;
+      background: var(--mt-gray-3);
+      border-radius: var(--mt-radius-xl);
+      transition: 0.15s;
+    }
+    .mt-switch .slider::before {
+      content: ''; position: absolute;
+      width: 16px; height: 16px;
+      left: 4px; top: 4px;
+      background: white;
+      border-radius: 50%;
+      transition: 0.15s;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    }
+    .mt-switch input:checked + .slider { background: var(--mt-blue-6); }
+    .mt-switch input:checked + .slider::before { transform: translateX(20px); }
+
+    .mt-slider { width: 100%; accent-color: var(--mt-blue-6); }
+
+    /* Surfaces */
+    .surface-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
+      gap: var(--mt-sp-md);
+    }
+    .mt-card {
+      background: var(--mt-bg);
+      border-radius: var(--mt-radius-md);
+      padding: var(--mt-sp-md);
+      border: 1px solid var(--mt-border);
+    }
+    .mt-card--shadow { box-shadow: var(--mt-sh-sm); border: 0; }
+    .mt-card--no-radius { border-radius: 0; }
+    .mt-card .media { height: 120px; background: var(--mt-blue-1); border-radius: var(--mt-radius-sm); margin: calc(-1 * var(--mt-sp-md)) calc(-1 * var(--mt-sp-md)) var(--mt-sp-sm); }
+    .mt-card h4 { margin: 0 0 4px; }
+    .mt-card p { font-size: 14px; color: var(--mt-text-dimmed); margin: 0; }
+
+    .mt-stat { padding: var(--mt-sp-md); background: var(--mt-blue-6); border-radius: var(--mt-radius-md); color: white; }
+    .mt-stat .num { font-size: 28px; font-weight: 700; line-height: 1.2; letter-spacing: -0.01em; }
+    .mt-stat .lbl { font-size: 12px; opacity: 0.9; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.04em; }
+
+    .mt-modal {
+      background: var(--mt-bg);
+      padding: var(--mt-sp-lg);
+      border-radius: var(--mt-radius-md);
+      box-shadow: var(--mt-sh-lg);
+      max-width: 440px;
+    }
+
+    /* Feedback */
+    .mt-alert {
+      display: flex;
+      gap: var(--mt-sp-sm);
+      padding: var(--mt-sp-sm) var(--mt-sp-md);
+      border-radius: var(--mt-radius-sm);
+      margin-bottom: var(--mt-sp-xs);
+      font-size: 14px;
+      align-items: flex-start;
+      border-left: 3px solid;
+    }
+    .mt-alert--info { background: var(--mt-blue-0); color: var(--mt-blue-9); border-left-color: var(--mt-blue-6); }
+    .mt-alert--success { background: #EBFBEE; color: #2B8A3E; border-left-color: var(--mt-green-6); }
+    .mt-alert--warning { background: #FFF9DB; color: #976A00; border-left-color: var(--mt-yellow-6); }
+    .mt-alert--error { background: #FFF5F5; color: #C92A2A; border-left-color: var(--mt-red-6); }
+
+    .mt-toast {
+      background: var(--mt-bg);
+      color: var(--mt-text);
+      padding: var(--mt-sp-sm) var(--mt-sp-md);
+      border-radius: var(--mt-radius-md);
+      box-shadow: var(--mt-sh-md);
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 14px;
+      border-left: 4px solid var(--mt-green-6);
+    }
+    .mt-toast button { background: transparent; color: var(--mt-blue-7); border: 0; font-weight: 600; cursor: pointer; }
+
+    .mt-banner {
+      display: flex;
+      gap: var(--mt-sp-sm);
+      padding: var(--mt-sp-sm) var(--mt-sp-md);
+      background: var(--mt-blue-0);
+      border-radius: var(--mt-radius-md);
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .mt-badge-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .mt-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0 8px;
+      height: 20px;
+      border-radius: var(--mt-radius-xl);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      background: var(--mt-blue-6);
+      color: white;
+    }
+    .mt-badge--light { background: var(--mt-blue-0); color: var(--mt-blue-8); }
+    .mt-badge--outline { background: transparent; color: var(--mt-blue-7); border: 1px solid var(--mt-blue-6); }
+    .mt-badge--green { background: var(--mt-green-6); color: white; }
+    .mt-badge--yellow { background: var(--mt-yellow-6); color: var(--mt-gray-9); }
+    .mt-badge--red { background: var(--mt-red-6); color: white; }
+    .mt-badge--violet { background: var(--mt-violet-6); color: white; }
+    .mt-badge--dot { background: transparent; color: var(--mt-text); border: 1px solid var(--mt-border); padding: 0 8px 0 6px; }
+    .mt-badge--dot::before { content: ''; width: 8px; height: 8px; background: var(--mt-blue-6); border-radius: 50%; margin-right: 6px; display: inline-block; }
+
+    .mt-progress {
+      width: 100%;
+      height: 4px;
+      background: var(--mt-gray-2);
+      border-radius: var(--mt-radius-xl);
+      overflow: hidden;
+    }
+    .mt-progress::after {
+      content: '';
+      display: block;
+      height: 100%;
+      width: 60%;
+      background: var(--mt-blue-6);
+    }
+
+    .mt-skeleton {
+      height: 14px;
+      background: linear-gradient(90deg, var(--mt-gray-1), var(--mt-gray-2), var(--mt-gray-1));
+      background-size: 200% 100%;
+      border-radius: var(--mt-radius-sm);
+      animation: shimmer 1.5s infinite;
+    }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+    .mt-spinner {
+      width: 32px; height: 32px;
+      border: 3px solid var(--mt-gray-2);
+      border-top-color: var(--mt-blue-6);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Navigation */
+    .mt-tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 2px solid var(--mt-border);
+      margin-bottom: var(--mt-sp-sm);
+    }
+    .mt-tab {
+      padding: var(--mt-sp-sm) var(--mt-sp-md);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--mt-text-dimmed);
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+      cursor: pointer;
+    }
+    .mt-tab.active { color: var(--mt-blue-7); border-bottom-color: var(--mt-blue-6); }
+
+    .mt-pills { display: flex; gap: 4px; padding: 4px; background: var(--mt-gray-1); border-radius: var(--mt-radius-md); }
+    .mt-pill { padding: 6px 14px; font-size: 13px; font-weight: 500; color: var(--mt-text-dimmed); border-radius: var(--mt-radius-sm); cursor: pointer; }
+    .mt-pill.active { background: var(--mt-bg); color: var(--mt-text); box-shadow: var(--mt-sh-xs); }
+
+    .mt-breadcrumb { display: flex; gap: 8px; align-items: center; font-size: 14px; color: var(--mt-text-dimmed); }
+    .mt-breadcrumb a { color: var(--mt-blue-7); text-decoration: none; }
+    .mt-breadcrumb a:hover { text-decoration: underline; }
+
+    .mt-pagination { display: flex; gap: 4px; align-items: center; }
+    .mt-pagination button {
+      width: 32px; height: 32px;
+      border-radius: var(--mt-radius-sm);
+      border: 1px solid var(--mt-border);
+      background: var(--mt-bg);
+      color: var(--mt-text);
+      cursor: pointer;
+      font-family: var(--mt-font);
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .mt-pagination button.active { background: var(--mt-blue-6); color: white; border-color: var(--mt-blue-6); }
+    .mt-pagination button:hover:not(.active) { background: var(--mt-gray-0); }
+
+    .mt-stepper { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+    .mt-stepper .step { display: inline-flex; align-items: center; gap: 8px; }
+    .mt-stepper .num {
+      width: 30px; height: 30px; border-radius: 50%;
+      background: var(--mt-bg); color: var(--mt-text-dimmed);
+      border: 2px solid var(--mt-border);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 600;
+    }
+    .mt-stepper .num.active { background: var(--mt-blue-6); color: white; border-color: var(--mt-blue-6); }
+    .mt-stepper .num.complete { background: var(--mt-blue-6); color: white; border-color: var(--mt-blue-6); }
+    .mt-stepper .line { flex: 1; height: 2px; background: var(--mt-border); }
+    .mt-stepper .line.done { background: var(--mt-blue-6); }
+
+    .mt-sidebar {
+      background: var(--mt-bg);
+      border-radius: var(--mt-radius-md);
+      padding: var(--mt-sp-xs);
+      width: 240px;
+      border: 1px solid var(--mt-border);
+    }
+    .mt-sidebar a {
+      display: flex; align-items: center; gap: 12px;
+      padding: 8px 12px;
+      border-radius: var(--mt-radius-sm);
+      color: var(--mt-text);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .mt-sidebar a:hover { background: var(--mt-gray-0); }
+    .mt-sidebar a.active { background: var(--mt-blue-0); color: var(--mt-blue-7); }
+
+    .mt-topbar {
+      display: flex; align-items: center; gap: 16px;
+      padding: 8px 16px;
+      background: var(--mt-bg);
+      border-radius: var(--mt-radius-md);
+      border: 1px solid var(--mt-border);
+      box-shadow: var(--mt-sh-xs);
+    }
+
+    .mt-menu {
+      background: var(--mt-bg);
+      border-radius: var(--mt-radius-md);
+      box-shadow: var(--mt-sh-md);
+      padding: 4px;
+      width: 200px;
+      border: 1px solid var(--mt-border);
+    }
+    .mt-menu .item { padding: 8px 12px; font-size: 14px; cursor: pointer; border-radius: var(--mt-radius-sm); }
+    .mt-menu .item:hover { background: var(--mt-gray-0); }
+
+    /* Data */
+    table.mt-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    table.mt-table th, table.mt-table td {
+      text-align: left;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--mt-border);
+    }
+    table.mt-table th { font-weight: 600; color: var(--mt-text); border-bottom: 1px solid var(--mt-gray-3); }
+    table.mt-table tbody tr:hover { background: var(--mt-gray-0); }
+
+    .mt-list { list-style: none; padding: 0; margin: 0; }
+    .mt-list li {
+      padding: 12px 0;
+      display: flex; gap: 12px; align-items: center;
+      border-bottom: 1px solid var(--mt-border);
+    }
+    .mt-list li:last-child { border-bottom: 0; }
+
+    .mt-kv { display: grid; grid-template-columns: 140px 1fr; gap: 12px; font-size: 14px; }
+    .mt-kv dt { color: var(--mt-text-dimmed); font-weight: 500; }
+
+    .mt-avatar {
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      background: var(--mt-blue-6);
+      color: white;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .mt-empty {
+      text-align: center;
+      padding: var(--mt-sp-xl) var(--mt-sp-md);
+      color: var(--mt-text-muted);
+    }
+    .mt-empty svg { width: 48px; height: 48px; opacity: 0.4; }
+
+    /* Layout */
+    .grid-demo {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 12px;
+      background: var(--mt-gray-0);
+      padding: 16px;
+      border-radius: var(--mt-radius-md);
+    }
+    .grid-demo > div {
+      background: var(--mt-blue-1);
+      color: var(--mt-blue-9);
+      padding: 10px;
+      border-radius: var(--mt-radius-sm);
+      font-size: 12px;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .scale-row {
+      display: flex;
+      gap: var(--mt-sp-sm);
+      flex-wrap: wrap;
+      align-items: flex-end;
+      margin-bottom: var(--mt-sp-md);
+    }
+    .scale-item {
+      display: flex; flex-direction: column; gap: 6px;
+      align-items: center;
+    }
+    .scale-item .swatch {
+      background: var(--mt-blue-6);
+    }
+    .scale-item .lbl { font-size: 11px; font-family: var(--mt-mono); color: var(--mt-text-muted); }
+
+    .shadow-demo {
+      width: 80px; height: 80px;
+      background: var(--mt-bg);
+      border-radius: var(--mt-radius-md);
+      display: inline-flex; align-items: center; justify-content: center;
+      margin-right: 16px; margin-bottom: 16px;
+      font-size: 11px; font-family: var(--mt-mono); color: var(--mt-text-dimmed);
+    }
+
+    /* Footer */
+    .ds-footer {
+      background: var(--mt-dark-9);
+      color: var(--mt-gray-2);
+      padding: var(--mt-sp-xl);
+      margin-top: var(--mt-sp-xl);
+    }
+    .ds-footer h3 { margin-top: 0; color: white; }
+    .ds-footer ul { padding-left: 20px; }
+    .ds-footer li { margin-bottom: 4px; word-break: break-all; font-size: 13px; }
+    .ds-footer a { color: var(--mt-blue-3); text-decoration: none; }
+    .ds-footer a:hover { text-decoration: underline; }
+    .license-note { font-size: 13px; color: var(--mt-gray-5); margin-top: var(--mt-sp-md); }
+    .meta-note { font-size: 12px; color: var(--mt-gray-6); font-family: var(--mt-mono); margin-top: var(--mt-sp-xs); }
+
+    @media (max-width: 720px) {
+      .ds-header h1 { font-size: 30px; }
+      main { padding: var(--mt-sp-md); }
+      section { padding: var(--mt-sp-md); }
+      .type-row { grid-template-columns: 1fr; }
+      .color-grid { grid-template-columns: repeat(5, 1fr); }
+      .h1-style { font-size: 26px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="ds-header">
+    <a href="index.html" class="back-link">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Catalog
+    </a>
+    <h1>Mantine</h1>
+    <div class="meta">
+      <span class="badge kind-cl">component-library</span>
+      <span class="badge fidelity-documented">documented</span>
+      <span class="badge source-verified">source: verified</span>
+      <a href="https://mantine.dev" target="_blank" rel="noopener">Official ↗</a>
+    </div>
+    <p class="tagline">Full-featured React component library with extensive hooks, dark mode support, and bright blue brand color.</p>
+  </header>
+
+  <nav class="toc" aria-label="Table of contents">
+    <ul>
+      <li><a href="#brand">Brand</a></li>
+      <li><a href="#color">Color</a></li>
+      <li><a href="#typography">Typography</a></li>
+      <li><a href="#iconography">Iconography</a></li>
+      <li><a href="#buttons">Buttons</a></li>
+      <li><a href="#form">Form</a></li>
+      <li><a href="#surfaces">Surfaces</a></li>
+      <li><a href="#feedback">Feedback</a></li>
+      <li><a href="#navigation">Navigation</a></li>
+      <li><a href="#data">Data</a></li>
+      <li><a href="#layout">Layout</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="brand" data-fidelity="documented">
+      <h2>
+        <span>Brand</span>
+        <span class="badge fidelity-documented">documented</span>
+      </h2>
+      <div class="brand-mark">
+        <svg viewBox="0 0 36 36" fill="none">
+          <circle cx="18" cy="18" r="16" stroke="white" stroke-width="2.5"/>
+          <path d="M18 8 L26 26 L18 22 L10 26 Z" fill="white"/>
+        </svg>
+        Mantine
+      </div>
+      <p style="margin-top: 24px; max-width: 720px; font-size: 16px;">
+        Mantine is a React component library covering 100+ components and 50+ hooks. Built around CSS variables and a `theme` object that mirrors the SCSS-style 0-9 color shade scale used by Open Color, with bright blue as the default primary.
+      </p>
+      <div class="pillars">
+        <div class="pillar">
+          <h4>Comprehensive</h4>
+          <p style="font-size:14px;color:var(--mt-text-dimmed);margin:0">100+ components, 50+ hooks. Form / Dates / Notifications / Modals as separate packages.</p>
+        </div>
+        <div class="pillar">
+          <h4>Themeable</h4>
+          <p style="font-size:14px;color:var(--mt-text-dimmed);margin:0">CSS variables expose every color shade, radius, font, and shadow at runtime.</p>
+        </div>
+        <div class="pillar">
+          <h4>Dark-ready</h4>
+          <p style="font-size:14px;color:var(--mt-text-dimmed);margin:0">Built-in light / dark color schemes via &lt;MantineProvider&gt; and useColorScheme.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="color" data-fidelity="documented">
+      <h2>
+        <span>Color</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://mantine.dev/theming/colors/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p>Mantine adopts the Open Color palette: 10 shades per hue (0-9, where 0 is lightest, 9 is darkest). Default `primaryColor` is blue, default `primaryShade` is 6 in light mode and 8 in dark mode.</p>
+
+      <h3>Blue scale (primary)</h3>
+      <div class="color-grid">
+        <div class="color-cell" style="background:var(--mt-blue-0);color:var(--mt-blue-9)">0</div>
+        <div class="color-cell" style="background:var(--mt-blue-1);color:var(--mt-blue-9)">1</div>
+        <div class="color-cell" style="background:var(--mt-blue-2);color:var(--mt-blue-9)">2</div>
+        <div class="color-cell" style="background:var(--mt-blue-3);color:var(--mt-blue-9)">3</div>
+        <div class="color-cell" style="background:var(--mt-blue-4);color:white">4</div>
+        <div class="color-cell" style="background:var(--mt-blue-5);color:white">5</div>
+        <div class="color-cell" style="background:var(--mt-blue-6);color:white">6</div>
+        <div class="color-cell" style="background:var(--mt-blue-7);color:white">7</div>
+        <div class="color-cell" style="background:var(--mt-blue-8);color:white">8</div>
+        <div class="color-cell" style="background:var(--mt-blue-9);color:white">9</div>
+      </div>
+
+      <h3>Gray scale</h3>
+      <div class="color-grid">
+        <div class="color-cell" style="background:var(--mt-gray-0);color:var(--mt-gray-9)">0</div>
+        <div class="color-cell" style="background:var(--mt-gray-1);color:var(--mt-gray-9)">1</div>
+        <div class="color-cell" style="background:var(--mt-gray-2);color:var(--mt-gray-9)">2</div>
+        <div class="color-cell" style="background:var(--mt-gray-3);color:var(--mt-gray-9)">3</div>
+        <div class="color-cell" style="background:var(--mt-gray-4);color:var(--mt-gray-9)">4</div>
+        <div class="color-cell" style="background:var(--mt-gray-5);color:white">5</div>
+        <div class="color-cell" style="background:var(--mt-gray-6);color:white">6</div>
+        <div class="color-cell" style="background:var(--mt-gray-7);color:white">7</div>
+        <div class="color-cell" style="background:var(--mt-gray-8);color:white">8</div>
+        <div class="color-cell" style="background:var(--mt-gray-9);color:white">9</div>
+      </div>
+
+      <h3>Semantic accents (shade 6)</h3>
+      <div class="semantic-grid">
+        <div class="sem-card" style="background:var(--mt-red-6)"><span class="label">red</span><span class="hex">#FA5252</span></div>
+        <div class="sem-card" style="background:var(--mt-pink-6)"><span class="label">pink</span><span class="hex">#E64980</span></div>
+        <div class="sem-card" style="background:var(--mt-grape-6)"><span class="label">grape</span><span class="hex">#BE4BDB</span></div>
+        <div class="sem-card" style="background:var(--mt-violet-6)"><span class="label">violet</span><span class="hex">#7950F2</span></div>
+        <div class="sem-card" style="background:var(--mt-indigo-6)"><span class="label">indigo</span><span class="hex">#4C6EF5</span></div>
+        <div class="sem-card" style="background:var(--mt-cyan-6)"><span class="label">cyan</span><span class="hex">#15AABF</span></div>
+        <div class="sem-card" style="background:var(--mt-teal-6)"><span class="label">teal</span><span class="hex">#12B886</span></div>
+        <div class="sem-card" style="background:var(--mt-green-6)"><span class="label">green</span><span class="hex">#40C057</span></div>
+        <div class="sem-card" style="background:var(--mt-yellow-6);color:var(--mt-gray-9)"><span class="label">yellow</span><span class="hex">#FAB005</span></div>
+        <div class="sem-card" style="background:var(--mt-orange-6)"><span class="label">orange</span><span class="hex">#FD7E14</span></div>
+      </div>
+
+      <h3>Token roles (Light)</h3>
+      <div class="role-grid">
+        <div class="role-chip" style="background:var(--mt-blue-6);color:white">primary <code>blue.6</code></div>
+        <div class="role-chip" style="background:var(--mt-blue-7);color:white">primary-hover <code>blue.7</code></div>
+        <div class="role-chip" style="background:var(--mt-blue-0);color:var(--mt-blue-8)">primary-light <code>blue.0</code></div>
+        <div class="role-chip" style="background:var(--mt-bg);color:var(--mt-text);border:1px solid var(--mt-border)">surface <code>white</code></div>
+        <div class="role-chip" style="background:var(--mt-gray-0);color:var(--mt-text);border:1px solid var(--mt-border)">canvas <code>gray.0</code></div>
+        <div class="role-chip" style="background:var(--mt-gray-9);color:white">text-strong <code>gray.9</code></div>
+        <div class="role-chip" style="background:var(--mt-gray-7);color:white">text-dimmed <code>gray.7</code></div>
+        <div class="role-chip" style="background:var(--mt-gray-3);color:var(--mt-gray-9)">border <code>gray.3</code></div>
+      </div>
+    </section>
+
+    <section id="typography" data-fidelity="documented">
+      <h2>
+        <span>Typography</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://mantine.dev/core/typography-styles-provider/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p>Default font is Greycliff CF; Inter is documented as the recommended fallback. Title sizes h1-h6 are exposed via theme.headings, body text uses the same family at 14-16px in the default theme.</p>
+
+      <div class="type-row"><div class="label">Title h1 · 34/1.3 · 700</div><div class="h1-style">Mantine</div></div>
+      <div class="type-row"><div class="label">Title h2 · 26/1.35 · 700</div><div class="h2-style">100+ components</div></div>
+      <div class="type-row"><div class="label">Title h3 · 22/1.4 · 700</div><div class="h3-style">CSS variables theme</div></div>
+      <div class="type-row"><div class="label">Title h4 · 18/1.45 · 600</div><div class="h4-style">Light &amp; dark color schemes</div></div>
+      <div class="type-row"><div class="label">Title h5 · 16/1.5 · 600</div><div class="h5-style">Section heading</div></div>
+      <div class="type-row"><div class="label">Title h6 · 14/1.5 · 600</div><div class="h6-style">List heading</div></div>
+      <div class="type-row"><div class="label">Text xl · 20/1.55</div><div class="text-xl">Lead paragraph for emphasis above body content.</div></div>
+      <div class="type-row"><div class="label">Text lg · 18/1.55</div><div class="text-lg">Body large — for marketing-style hero blocks and intro paragraphs.</div></div>
+      <div class="type-row"><div class="label">Text md · 16/1.55</div><div class="text-md">Default body text — Mantine uses 16px md as the standard reading size for paragraphs and rich text.</div></div>
+      <div class="type-row"><div class="label">Text sm · 14/1.55</div><div class="text-sm">Small body text — used in dense areas, descriptions, and form helper text.</div></div>
+      <div class="type-row"><div class="label">Text xs · 12/1.5</div><div class="text-xs">Extra-small text — captions and inline metadata.</div></div>
+      <div class="type-row"><div class="label">Mono · JetBrains Mono</div><div class="mono-sample">theme.colors.blue[6] = '#228BE6';</div></div>
+    </section>
+
+    <section id="iconography" data-fidelity="documented">
+      <h2>
+        <span>Iconography</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://tabler.io/icons" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p>Mantine docs recommend Tabler Icons (MIT) — 4,000+ 24px stroke-1.5 icons designed to pair with Mantine's bright palette. Below: Lucide-based approximations with stroke-1.5 weight matching Tabler's style.</p>
+      <div class="icon-grid">
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12L12 3l9 9"/><path d="M5 10v10h14V10"/></svg><span>home</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><span>search</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg><span>user</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4l9 16 2.5-7L21 11z"/></svg><span>send</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg><span>article</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>clock</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.5-2.5l2-1.5-2-3.5-2.5 1A7 7 0 0 0 13 4l-.5-2.5h-4L8 4a7 7 0 0 0-3 1.5l-2.5-1-2 3.5 2 1.5A7 7 0 0 0 5 12c0 .9.2 1.7.5 2.5l-2 1.5 2 3.5 2.5-1c.9.7 2 1.2 3 1.5l.5 2.5h4l.5-2.5c1-.3 2.1-.8 3-1.5l2.5 1 2-3.5-2-1.5c.3-.8.5-1.6.5-2.5z"/></svg><span>settings</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 0 20a15.3 15.3 0 0 1 0-20z"/></svg><span>globe</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>check</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg><span>close</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg><span>plus</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a4 4 0 0 1-4 4H7l-4 4V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/></svg><span>chat</span></div>
+      </div>
+    </section>
+
+    <section id="buttons" data-fidelity="documented">
+      <h2>
+        <span>Buttons</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://mantine.dev/core/button/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p>Mantine Button has eight variants: filled (default), light, outline, default, subtle, transparent, white, and gradient. Sizes xs / sm / md / lg / xl.</p>
+
+      <h3>Variants</h3>
+      <div class="button-row">
+        <button class="mt-btn mt-btn--filled">Filled</button>
+        <button class="mt-btn mt-btn--light">Light</button>
+        <button class="mt-btn mt-btn--outline">Outline</button>
+        <button class="mt-btn mt-btn--default">Default</button>
+        <button class="mt-btn mt-btn--subtle">Subtle</button>
+        <button class="mt-btn mt-btn--gradient">Gradient</button>
+        <button class="mt-btn mt-btn--icon" aria-label="favorite">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l8.8 8.8 8.8-8.8a5.5 5.5 0 0 0 0-7.8z"/></svg>
+        </button>
+      </div>
+
+      <h3>Sizes</h3>
+      <div class="button-row">
+        <button class="mt-btn mt-btn--filled mt-btn--xs">Xs</button>
+        <button class="mt-btn mt-btn--filled mt-btn--sm">Sm</button>
+        <button class="mt-btn mt-btn--filled">Md</button>
+        <button class="mt-btn mt-btn--filled mt-btn--lg">Lg</button>
+        <button class="mt-btn mt-btn--filled mt-btn--xl">Xl</button>
+      </div>
+
+      <h3>States</h3>
+      <div class="button-row">
+        <button class="mt-btn mt-btn--filled">Enabled</button>
+        <button class="mt-btn mt-btn--filled" style="background:var(--mt-blue-7)">Hover</button>
+        <button class="mt-btn mt-btn--filled" style="outline:2px solid var(--mt-blue-6);outline-offset:2px">Focus</button>
+        <button class="mt-btn mt-btn--filled" disabled>Disabled</button>
+      </div>
+    </section>
+
+    <section id="form" data-fidelity="documented">
+      <h2>
+        <span>Form</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://mantine.dev/core/text-input/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p>TextInput has three variants: default (outline), filled, and unstyled. Mantine Form package provides validation hooks; every input respects required, error, and description props.</p>
+
+      <h3>Text inputs</h3>
+      <div class="form-grid">
+        <div class="mt-field">
+          <label class="mt-field-label" for="mt1">Project name</label>
+          <input class="mt-input" type="text" id="mt1" value="Mantine">
+          <span class="mt-helper">Default · outline variant</span>
+        </div>
+        <div class="mt-field">
+          <label class="mt-field-label" for="mt2">Email</label>
+          <input class="mt-input mt-input--filled" type="email" id="mt2" placeholder="you@mantine.dev">
+          <span class="mt-helper">Filled variant</span>
+        </div>
+        <div class="mt-field">
+          <label class="mt-field-label" for="mt3">Username</label>
+          <input class="mt-input" type="text" id="mt3" value="motohirokoma">
+          <span class="mt-helper">Description sits above input</span>
+        </div>
+        <div class="mt-field">
+          <label class="mt-field-label" for="mt4">Description</label>
+          <textarea class="mt-input mt-textarea" id="mt4">Multiline body content for Textarea component...</textarea>
+        </div>
+        <div class="mt-field">
+          <label class="mt-field-label" for="mt5">Color scheme</label>
+          <select class="mt-input" id="mt5">
+            <option>Light</option>
+            <option>Dark</option>
+            <option>Auto</option>
+          </select>
+        </div>
+        <div class="mt-field">
+          <label class="mt-field-label" for="mt6" style="color:var(--mt-red-7)">Email</label>
+          <input class="mt-input mt-input--error" type="text" id="mt6" value="invalid@">
+          <span class="mt-error-text">Email is invalid</span>
+        </div>
+      </div>
+
+      <h3>Selection controls</h3>
+      <div class="button-row">
+        <label class="mt-checkbox"><input type="checkbox" checked>Accept terms</label>
+        <label class="mt-checkbox"><input type="checkbox">Marketing</label>
+        <label class="mt-radio"><input type="radio" name="mr" checked>Light</label>
+        <label class="mt-radio"><input type="radio" name="mr">Dark</label>
+        <label class="mt-switch"><input type="checkbox" checked><span class="slider"></span></label>
+        <label class="mt-switch"><input type="checkbox"><span class="slider"></span></label>
+      </div>
+
+      <h3>Slider &amp; file</h3>
+      <div style="max-width:400px;display:flex;flex-direction:column;gap:12px">
+        <input type="range" class="mt-slider" min="0" max="100" value="60">
+        <input type="file" class="mt-input" style="padding:6px 12px;height:auto">
+      </div>
+    </section>
+
+    <section id="surfaces" data-fidelity="documented">
+      <h2>
+        <span>Surfaces</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://mantine.dev/core/card/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p>Card composes Card.Section for media, with shadow / radius / withBorder props. Paper is a thinner alternative without sectioning.</p>
+
+      <div class="surface-grid">
+        <div class="mt-card">
+          <div class="media"></div>
+          <h4>Card · withBorder</h4>
+          <p>Default: 1px gray border, no shadow. The most common Mantine card variant.</p>
+        </div>
+        <div class="mt-card mt-card--shadow">
+          <div class="media"></div>
+          <h4>Card · shadow="sm"</h4>
+          <p>Soft elevated shadow — used in dashboards and feature highlights.</p>
+        </div>
+        <div class="mt-card mt-card--no-radius">
+          <div class="media" style="border-radius:0"></div>
+          <h4>Card · radius=0</h4>
+          <p>Sharp corners — use in sidebar or full-bleed dashboards.</p>
+        </div>
+        <div class="mt-stat">
+          <div class="num">2,847</div>
+          <div class="lbl">Active sessions</div>
+        </div>
+      </div>
+
+      <h3>Modal</h3>
+      <div class="mt-modal">
+        <h4 style="margin-top:0">Reset preferences?</h4>
+        <p style="font-size:14px;color:var(--mt-text-dimmed)">This reverts MantineProvider tokens, color scheme, and component defaults to library defaults. Cannot be undone.</p>
+        <div class="button-row" style="justify-content:flex-end;margin:0">
+          <button class="mt-btn mt-btn--default">Cancel</button>
+          <button class="mt-btn mt-btn--filled">Reset</button>
+        </div>
+      </div>
+
+      <h3>Menu &amp; drawer</h3>
+      <div style="display:flex;gap:24px;flex-wrap:wrap">
+        <div class="mt-menu">
+          <div class="item">Edit</div>
+          <div class="item">Duplicate</div>
+          <div class="item">Archive</div>
+          <div class="item" style="color:var(--mt-red-7)">Delete</div>
+        </div>
+        <div class="mt-sidebar">
+          <a href="#" class="active">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12L12 3l9 9"/><path d="M5 10v10h14V10"/></svg>
+            Dashboard
+          </a>
+          <a href="#">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            Search
+          </a>
+          <a href="#">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.5-2.5l2-1.5-2-3.5-2.5 1A7 7 0 0 0 13 4l-.5-2.5h-4L8 4a7 7 0 0 0-3 1.5l-2.5-1-2 3.5 2 1.5A7 7 0 0 0 5 12c0 .9.2 1.7.5 2.5l-2 1.5 2 3.5 2.5-1c.9.7 2 1.2 3 1.5l.5 2.5h4l.5-2.5c1-.3 2.1-.8 3-1.5l2.5 1 2-3.5-2-1.5c.3-.8.5-1.6.5-2.5z"/></svg>
+            Settings
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section id="feedback" data-fidelity="documented">
+      <h2>
+        <span>Feedback</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://mantine.dev/core/alert/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+
+      <h3>Alerts</h3>
+      <div class="mt-alert mt-alert--info">
+        <strong>Info ·</strong> Mantine theme exposes 200+ CSS variables at runtime.
+      </div>
+      <div class="mt-alert mt-alert--success">
+        <strong>Success ·</strong> Provider mounted, color scheme synced.
+      </div>
+      <div class="mt-alert mt-alert--warning">
+        <strong>Warning ·</strong> Custom primaryColor must exist in theme.colors.
+      </div>
+      <div class="mt-alert mt-alert--error">
+        <strong>Error ·</strong> Token resolution failed for primaryShade.
+      </div>
+
+      <h3>Notification</h3>
+      <div class="mt-toast">
+        Theme reverted to default.
+        <button>Undo</button>
+      </div>
+
+      <h3>Banner</h3>
+      <div class="mt-banner" style="margin-top:12px">
+        <span><strong>Mantine 7</strong> — CSS modules replace Emotion for full SSR support.</span>
+        <button class="mt-btn mt-btn--subtle mt-btn--sm">Dismiss</button>
+      </div>
+
+      <h3>Badges</h3>
+      <div class="mt-badge-row">
+        <span class="mt-badge">Filled</span>
+        <span class="mt-badge mt-badge--light">Light</span>
+        <span class="mt-badge mt-badge--outline">Outline</span>
+        <span class="mt-badge mt-badge--green">Green</span>
+        <span class="mt-badge mt-badge--yellow">Yellow</span>
+        <span class="mt-badge mt-badge--red">Red</span>
+        <span class="mt-badge mt-badge--violet">Violet</span>
+        <span class="mt-badge mt-badge--dot">Dot</span>
+      </div>
+
+      <h3>Progress &amp; loading</h3>
+      <div style="display:flex;flex-direction:column;gap:12px;max-width:480px">
+        <div class="mt-progress"></div>
+        <div class="mt-skeleton" style="width:80%"></div>
+        <div class="mt-skeleton" style="width:60%"></div>
+        <div class="mt-spinner"></div>
+      </div>
+    </section>
+
+    <section id="navigation" data-fidelity="documented">
+      <h2>
+        <span>Navigation</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://mantine.dev/core/tabs/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+
+      <h3>Tabs</h3>
+      <div class="mt-tabs">
+        <div class="mt-tab active">Overview</div>
+        <div class="mt-tab">Theming</div>
+        <div class="mt-tab">Components</div>
+        <div class="mt-tab">Hooks</div>
+      </div>
+
+      <h3>Pills (segmented)</h3>
+      <div class="mt-pills">
+        <div class="mt-pill active">Light</div>
+        <div class="mt-pill">Dark</div>
+        <div class="mt-pill">Auto</div>
+      </div>
+
+      <h3>Breadcrumb</h3>
+      <div class="mt-breadcrumb">
+        <a href="#">Home</a><span>/</span>
+        <a href="#">Components</a><span>/</span>
+        <span>Button</span>
+      </div>
+
+      <h3>Pagination</h3>
+      <div class="mt-pagination">
+        <button>‹</button>
+        <button class="active">1</button>
+        <button>2</button>
+        <button>3</button>
+        <button>4</button>
+        <button>5</button>
+        <button>›</button>
+      </div>
+
+      <h3>Stepper</h3>
+      <div class="mt-stepper">
+        <div class="step"><span class="num complete">✓</span> Theme</div>
+        <span class="line done"></span>
+        <div class="step"><span class="num active">2</span> Type</div>
+        <span class="line"></span>
+        <div class="step"><span class="num">3</span> Shape</div>
+        <span class="line"></span>
+        <div class="step"><span class="num">4</span> Review</div>
+      </div>
+
+      <h3>App shell header</h3>
+      <div class="mt-topbar">
+        <button class="mt-btn mt-btn--icon" aria-label="menu"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+        <strong style="flex:1;font-size:18px;font-weight:700;letter-spacing:-0.01em">Mantine</strong>
+        <button class="mt-btn mt-btn--icon" aria-label="search"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></button>
+        <div class="mt-avatar">MK</div>
+      </div>
+    </section>
+
+    <section id="data" data-fidelity="documented">
+      <h2>
+        <span>Data</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://mantine.dev/core/table/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+
+      <h3>Table</h3>
+      <table class="mt-table">
+        <thead>
+          <tr><th>Token</th><th>Value</th><th>Role</th><th>Shade</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>colors.blue.6</code></td><td>#228BE6</td><td>primary</td><td>6</td></tr>
+          <tr><td><code>colors.gray.0</code></td><td>#F8F9FA</td><td>canvas</td><td>0</td></tr>
+          <tr><td><code>colors.gray.7</code></td><td>#495057</td><td>text-dimmed</td><td>7</td></tr>
+          <tr><td><code>radius.sm</code></td><td>4px</td><td>shape</td><td>—</td></tr>
+        </tbody>
+      </table>
+
+      <h3>List</h3>
+      <ul class="mt-list">
+        <li><div class="mt-avatar">A</div><div><strong>Avery Tan</strong><div style="font-size:13px;color:var(--mt-text-dimmed)">Updated theme · 2m ago</div></div></li>
+        <li><div class="mt-avatar" style="background:var(--mt-violet-6)">B</div><div><strong>Brett Yu</strong><div style="font-size:13px;color:var(--mt-text-dimmed)">Imported tokens · 14m ago</div></div></li>
+        <li><div class="mt-avatar" style="background:var(--mt-teal-6)">C</div><div><strong>Cleo Park</strong><div style="font-size:13px;color:var(--mt-text-dimmed)">Created palette · 1h ago</div></div></li>
+      </ul>
+
+      <h3>Key – value</h3>
+      <dl class="mt-kv">
+        <dt>Color scheme</dt><dd>Light · default</dd>
+        <dt>Primary</dt><dd>blue.6</dd>
+        <dt>Default radius</dt><dd>sm · 4px</dd>
+        <dt>Generated</dt><dd>2026-05-05</dd>
+      </dl>
+
+      <h3>Empty state</h3>
+      <div class="mt-empty">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><circle cx="9" cy="10" r="0.5" fill="currentColor"/><circle cx="15" cy="10" r="0.5" fill="currentColor"/></svg>
+        <h4 style="margin:8px 0 4px">No themes yet</h4>
+        <p style="font-size:14px;margin:0">Create one with createTheme() or import a palette JSON.</p>
+      </div>
+    </section>
+
+    <section id="layout" data-fidelity="documented">
+      <h2>
+        <span>Layout</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://mantine.dev/core/grid/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p>Grid is a 12-column flexbox grid; SimpleGrid handles equal-width columns with breakpoint shrink. Theme size tokens xs / sm / md / lg / xl drive spacing, radius, and font-size simultaneously.</p>
+
+      <h3>12-column grid</h3>
+      <div class="grid-demo">
+        <div style="grid-column:span 12">12</div>
+        <div style="grid-column:span 6">6</div>
+        <div style="grid-column:span 6">6</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+      </div>
+
+      <h3>Spacing scale</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div class="swatch" style="width:10px;height:32px"></div><span class="lbl">xs · 10</span></div>
+        <div class="scale-item"><div class="swatch" style="width:12px;height:32px"></div><span class="lbl">sm · 12</span></div>
+        <div class="scale-item"><div class="swatch" style="width:16px;height:32px"></div><span class="lbl">md · 16</span></div>
+        <div class="scale-item"><div class="swatch" style="width:20px;height:32px"></div><span class="lbl">lg · 20</span></div>
+        <div class="scale-item"><div class="swatch" style="width:32px;height:32px"></div><span class="lbl">xl · 32</span></div>
+      </div>
+
+      <h3>Radius scale</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:2px;background:var(--mt-blue-2)"></div><span class="lbl">xs · 2</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:4px;background:var(--mt-blue-2)"></div><span class="lbl">sm · 4</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:8px;background:var(--mt-blue-2)"></div><span class="lbl">md · 8</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:16px;background:var(--mt-blue-2)"></div><span class="lbl">lg · 16</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:32px;background:var(--mt-blue-2)"></div><span class="lbl">xl · 32</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:50%;background:var(--mt-blue-2)"></div><span class="lbl">full</span></div>
+      </div>
+
+      <h3>Shadow scale</h3>
+      <div>
+        <div class="shadow-demo" style="box-shadow:var(--mt-sh-xs)">xs</div>
+        <div class="shadow-demo" style="box-shadow:var(--mt-sh-sm)">sm</div>
+        <div class="shadow-demo" style="box-shadow:var(--mt-sh-md)">md</div>
+        <div class="shadow-demo" style="box-shadow:var(--mt-sh-lg)">lg</div>
+        <div class="shadow-demo" style="box-shadow:var(--mt-sh-xl)">xl</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="ds-footer">
+    <h3>Sources</h3>
+    <ul>
+      <li><a href="https://mantine.dev" target="_blank" rel="noopener">https://mantine.dev</a></li>
+      <li><a href="https://mantine.dev/theming/colors/" target="_blank" rel="noopener">https://mantine.dev/theming/colors/</a></li>
+      <li><a href="https://mantine.dev/core/typography-styles-provider/" target="_blank" rel="noopener">https://mantine.dev/core/typography-styles-provider/</a></li>
+      <li><a href="https://tabler.io/icons" target="_blank" rel="noopener">https://tabler.io/icons</a></li>
+      <li><a href="https://mantine.dev/core/button/" target="_blank" rel="noopener">https://mantine.dev/core/button/</a></li>
+      <li><a href="https://mantine.dev/core/text-input/" target="_blank" rel="noopener">https://mantine.dev/core/text-input/</a></li>
+      <li><a href="https://mantine.dev/core/card/" target="_blank" rel="noopener">https://mantine.dev/core/card/</a></li>
+      <li><a href="https://mantine.dev/core/alert/" target="_blank" rel="noopener">https://mantine.dev/core/alert/</a></li>
+      <li><a href="https://mantine.dev/core/tabs/" target="_blank" rel="noopener">https://mantine.dev/core/tabs/</a></li>
+      <li><a href="https://mantine.dev/core/table/" target="_blank" rel="noopener">https://mantine.dev/core/table/</a></li>
+      <li><a href="https://mantine.dev/core/grid/" target="_blank" rel="noopener">https://mantine.dev/core/grid/</a></li>
+    </ul>
+    <p class="license-note">This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Mantine Team. Mantine and related trademarks belong to Mantine Team. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</p>
+    <p class="meta-note">Reproduction date: 2026-05-05 · sourceStatus: verified · fidelity: documented</p>
+  </footer>
+</body>
+</html>

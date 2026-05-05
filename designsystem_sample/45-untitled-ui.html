@@ -1,0 +1,1313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Untitled UI — Design System Reference</title>
+  <script id="ds-meta" type="application/json">
+{"id":"45-untitled-ui","fileSlug":"45-untitled-ui","schemaVersion":"1"}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Untitled UI Purple scale */
+      --u-purple-25: #FCFAFF;
+      --u-purple-50: #F9F5FF;
+      --u-purple-100: #F4EBFF;
+      --u-purple-200: #E9D7FE;
+      --u-purple-300: #D6BBFB;
+      --u-purple-400: #B692F6;
+      --u-purple-500: #9E77ED;
+      --u-purple-600: #7F56D9;   /* primary */
+      --u-purple-700: #6941C6;
+      --u-purple-800: #53389E;
+      --u-purple-900: #42307D;
+
+      /* Gray scale (Untitled UI standard) */
+      --u-gray-25: #FCFCFD;
+      --u-gray-50: #F9FAFB;
+      --u-gray-100: #F2F4F7;
+      --u-gray-200: #EAECF0;
+      --u-gray-300: #D0D5DD;
+      --u-gray-400: #98A2B3;
+      --u-gray-500: #667085;
+      --u-gray-600: #475467;
+      --u-gray-700: #344054;
+      --u-gray-800: #1D2939;
+      --u-gray-900: #101828;
+
+      /* Semantic */
+      --u-success-25: #F6FEF9;
+      --u-success-50: #ECFDF3;
+      --u-success-100: #D1FADF;
+      --u-success-500: #12B76A;
+      --u-success-600: #039855;
+      --u-success-700: #027A48;
+
+      --u-warning-25: #FFFCF5;
+      --u-warning-50: #FFFAEB;
+      --u-warning-100: #FEF0C7;
+      --u-warning-500: #F79009;
+      --u-warning-600: #DC6803;
+      --u-warning-700: #B54708;
+
+      --u-error-25: #FFFBFA;
+      --u-error-50: #FEF3F2;
+      --u-error-100: #FEE4E2;
+      --u-error-500: #F04438;
+      --u-error-600: #D92D20;
+      --u-error-700: #B42318;
+
+      --u-blue-50: #EFF8FF;
+      --u-blue-500: #2E90FA;
+      --u-blue-600: #1570EF;
+      --u-blue-700: #175CD3;
+
+      /* Surfaces */
+      --u-bg: #FFFFFF;
+      --u-bg-alt: var(--u-gray-50);
+      --u-text: var(--u-gray-900);
+      --u-text-muted: var(--u-gray-600);
+      --u-text-subtle: var(--u-gray-500);
+      --u-text-placeholder: var(--u-gray-400);
+      --u-border: var(--u-gray-200);
+      --u-border-strong: var(--u-gray-300);
+
+      /* Type */
+      --u-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      --u-mono: ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+
+      /* Radius */
+      --u-r-xs: 4px;
+      --u-r-sm: 6px;
+      --u-r-md: 8px;
+      --u-r-lg: 10px;
+      --u-r-xl: 12px;
+      --u-r-2xl: 16px;
+      --u-r-3xl: 20px;
+      --u-r-pill: 999px;
+
+      /* Spacing — Untitled UI 4px base */
+      --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px;
+      --s-5: 20px; --s-6: 24px; --s-7: 32px; --s-8: 40px; --s-9: 48px; --s-10: 64px;
+
+      /* Shadows */
+      --u-shadow-xs: 0 1px 2px rgba(16,24,40,0.05);
+      --u-shadow-sm: 0 1px 3px rgba(16,24,40,0.10), 0 1px 2px rgba(16,24,40,0.06);
+      --u-shadow-md: 0 4px 8px -2px rgba(16,24,40,0.10), 0 2px 4px -2px rgba(16,24,40,0.06);
+      --u-shadow-lg: 0 12px 16px -4px rgba(16,24,40,0.08), 0 4px 6px -2px rgba(16,24,40,0.03);
+      --u-shadow-xl: 0 20px 24px -4px rgba(16,24,40,0.08), 0 8px 8px -4px rgba(16,24,40,0.03);
+      --u-ring-primary: 0 0 0 4px rgba(127,86,217,0.18);
+      --u-ring-error: 0 0 0 4px rgba(240,68,56,0.18);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--u-font);
+      background: var(--u-bg-alt);
+      color: var(--u-text);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      letter-spacing: -0.005em;
+    }
+    code, kbd, pre { font-family: var(--u-mono); }
+
+    /* Header */
+    .ds-header {
+      background: linear-gradient(135deg, var(--u-purple-50) 0%, #FFFFFF 50%, var(--u-purple-50) 100%);
+      padding: var(--s-10) var(--s-7) var(--s-7);
+      border-bottom: 1px solid var(--u-border);
+      position: relative;
+      overflow: hidden;
+    }
+    .ds-header::before {
+      content: ''; position: absolute;
+      top: -200px; right: -200px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(127,86,217,0.15), transparent 60%);
+      pointer-events: none;
+    }
+    .ds-header > * { position: relative; }
+    .back-link {
+      display: inline-flex; align-items: center; gap: var(--s-2);
+      color: var(--u-purple-700); text-decoration: none;
+      padding: 6px 12px;
+      border-radius: var(--u-r-md);
+      font-size: 14px; font-weight: 600;
+      background: var(--u-bg);
+      border: 1px solid var(--u-border);
+      box-shadow: var(--u-shadow-xs);
+      transition: background 0.15s;
+    }
+    .back-link:hover { background: var(--u-gray-50); }
+    .ds-header h1 {
+      font-size: 60px; line-height: 72px;
+      font-weight: 700; letter-spacing: -0.02em;
+      margin: var(--s-4) 0 var(--s-3);
+      color: var(--u-text);
+    }
+    .ds-header .meta { display: flex; flex-wrap: wrap; gap: var(--s-2); align-items: center; margin-bottom: var(--s-3); }
+    .badge {
+      display: inline-flex; align-items: center;
+      padding: 4px 10px; border-radius: var(--u-r-pill);
+      font-size: 12px; font-weight: 500;
+      border: 1px solid var(--u-border);
+      background: var(--u-bg); color: var(--u-text-muted);
+    }
+    .badge.kind-uk { background: var(--u-purple-50); color: var(--u-purple-700); border-color: var(--u-purple-200); }
+    .badge.fidelity-documented { background: var(--u-success-50); color: var(--u-success-700); border-color: #ABEFC6; }
+    .badge.fidelity-approximated { background: var(--u-warning-50); color: var(--u-warning-700); border-color: #FEDF89; }
+    .badge.fidelity-inspired { background: var(--u-purple-50); color: var(--u-purple-700); border-color: var(--u-purple-200); }
+    .badge.source-verified { background: var(--u-blue-50); color: var(--u-blue-700); border-color: #B2DDFF; }
+    .ds-header a.official {
+      color: var(--u-purple-700); text-decoration: none;
+      padding: 4px 12px;
+      border-radius: var(--u-r-md);
+      font-size: 13px; font-weight: 600;
+      background: var(--u-bg);
+      border: 1px solid var(--u-border);
+      box-shadow: var(--u-shadow-xs);
+    }
+    .ds-header a.official:hover { background: var(--u-purple-50); }
+    .tagline {
+      font-size: 20px; line-height: 30px;
+      max-width: 768px; margin: var(--s-4) 0 0;
+      color: var(--u-text-muted);
+    }
+
+    /* TOC */
+    .toc {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--u-border);
+    }
+    .toc ul { list-style: none; margin: 0; padding: var(--s-3) var(--s-7); display: flex; gap: var(--s-2); overflow-x: auto; max-width: 100%; }
+    .toc a {
+      display: inline-block; padding: 6px 12px;
+      border-radius: var(--u-r-md);
+      color: var(--u-text-muted); text-decoration: none;
+      font-size: 14px; font-weight: 500;
+      white-space: nowrap;
+      transition: all 0.15s;
+    }
+    .toc a:hover { background: var(--u-gray-100); color: var(--u-text); }
+
+    /* Main */
+    main { max-width: 1280px; margin: 0 auto; padding: var(--s-7); }
+
+    section {
+      background: var(--u-bg);
+      border-radius: var(--u-r-2xl);
+      padding: var(--s-7);
+      margin-bottom: var(--s-6);
+      box-shadow: var(--u-shadow-xs);
+      border: 1px solid var(--u-border);
+    }
+    section h2 {
+      display: flex; align-items: center; gap: var(--s-3); flex-wrap: wrap;
+      font-size: 30px; line-height: 38px; font-weight: 600;
+      letter-spacing: -0.02em;
+      margin: 0 0 var(--s-6);
+      color: var(--u-text);
+    }
+    .source-link { font-size: 13px; color: var(--u-purple-700); text-decoration: none; font-weight: 600; }
+    .source-link:hover { text-decoration: underline; }
+    h3 { font-size: 20px; line-height: 30px; font-weight: 600; margin: var(--s-6) 0 var(--s-3); color: var(--u-text); letter-spacing: -0.01em; }
+    h4 { font-size: 14px; line-height: 20px; font-weight: 600; margin: var(--s-4) 0 var(--s-2); color: var(--u-text-muted); }
+    p { margin: 0 0 var(--s-3); }
+
+    /* Brand */
+    #brand .brand-mark {
+      display: inline-flex; align-items: center; gap: var(--s-3);
+      padding: var(--s-3) var(--s-5);
+      background: var(--u-purple-600);
+      border-radius: var(--u-r-md);
+      color: #FFFFFF;
+      font-size: 24px; font-weight: 600; letter-spacing: -0.01em;
+      box-shadow: var(--u-shadow-md);
+    }
+    #brand .brand-mark .glyph {
+      width: 32px; height: 32px;
+      display: inline-flex; align-items: center; justify-content: center;
+      background: rgba(255,255,255,0.2);
+      border-radius: var(--u-r-sm);
+      font-weight: 700;
+    }
+    #brand .pillars {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--s-4); margin-top: var(--s-6);
+    }
+    #brand .pillar {
+      padding: var(--s-5);
+      background: var(--u-gray-50);
+      border-radius: var(--u-r-xl);
+      border: 1px solid var(--u-border);
+    }
+    #brand .pillar .icon-wrap {
+      width: 36px; height: 36px; border-radius: var(--u-r-md);
+      background: var(--u-purple-100); color: var(--u-purple-700);
+      display: inline-flex; align-items: center; justify-content: center;
+      margin-bottom: 10px;
+    }
+    #brand .pillar h4 { margin-top: 0; color: var(--u-text); font-size: 16px; }
+
+    /* Color */
+    .color-grid-11 { display: grid; grid-template-columns: repeat(11, 1fr); gap: 4px; margin-bottom: var(--s-4); border-radius: var(--u-r-md); overflow: hidden; }
+    .color-cell-mini {
+      aspect-ratio: 1;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 6px; font-size: 10px; font-family: var(--u-mono);
+    }
+    .color-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); gap: var(--s-3); margin-bottom: var(--s-4); }
+    .color-cell {
+      display: flex; flex-direction: column; gap: 4px;
+      padding: var(--s-3); border-radius: var(--u-r-md);
+      font-family: var(--u-mono); font-size: 12px;
+      min-height: 96px; justify-content: flex-end;
+      box-shadow: var(--u-shadow-xs);
+    }
+    .color-cell .name { font-family: var(--u-font); font-weight: 600; font-size: 13px; }
+    .semantic-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: var(--s-3); }
+    .sem-card {
+      padding: var(--s-4); border-radius: var(--u-r-md);
+      display: flex; flex-direction: column; gap: 4px;
+      border: 1px solid; box-shadow: var(--u-shadow-xs);
+    }
+    .sem-card .label { font-size: 14px; font-weight: 600; }
+    .sem-card .hex { font-family: var(--u-mono); font-size: 12px; opacity: 0.85; }
+    .role-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: var(--s-2); margin-bottom: var(--s-4); }
+    .role-chip {
+      padding: var(--s-3) var(--s-4); border-radius: var(--u-r-md);
+      font-size: 13px; display: flex; justify-content: space-between; align-items: center;
+      font-weight: 500;
+    }
+    .role-chip code { font-size: 11px; opacity: 0.85; }
+
+    /* Typography */
+    .type-row {
+      display: grid; grid-template-columns: 200px 1fr; gap: var(--s-4);
+      padding: var(--s-3) 0;
+      border-bottom: 1px solid var(--u-border);
+      align-items: baseline;
+    }
+    .type-row:last-child { border-bottom: 0; }
+    .type-row .label { font-family: var(--u-mono); font-size: 12px; color: var(--u-text-muted); }
+    .display-2xl { font-size: 72px; line-height: 90px; font-weight: 600; letter-spacing: -0.02em; }
+    .display-xl { font-size: 60px; line-height: 72px; font-weight: 600; letter-spacing: -0.02em; }
+    .display-lg { font-size: 48px; line-height: 60px; font-weight: 600; letter-spacing: -0.02em; }
+    .display-md { font-size: 36px; line-height: 44px; font-weight: 600; letter-spacing: -0.02em; }
+    .display-sm { font-size: 30px; line-height: 38px; font-weight: 600; }
+    .display-xs { font-size: 24px; line-height: 32px; font-weight: 600; }
+    .text-xl { font-size: 20px; line-height: 30px; }
+    .text-lg { font-size: 18px; line-height: 28px; }
+    .text-md { font-size: 16px; line-height: 24px; }
+    .text-sm { font-size: 14px; line-height: 20px; color: var(--u-text-muted); }
+    .text-xs { font-size: 12px; line-height: 18px; color: var(--u-text-subtle); }
+    .mono-sample { font-family: var(--u-mono); font-size: 14px; color: var(--u-text-muted); }
+
+    /* Iconography */
+    .icon-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(90px,1fr));
+      gap: var(--s-3);
+    }
+    .icon-cell {
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      padding: var(--s-4);
+      background: var(--u-gray-50);
+      border-radius: var(--u-r-md);
+      border: 1px solid var(--u-border);
+    }
+    .icon-cell svg { width: 22px; height: 22px; stroke: var(--u-text); }
+    .icon-cell span { font-size: 11px; color: var(--u-text-muted); }
+
+    /* Buttons */
+    .button-row { display: flex; flex-wrap: wrap; gap: var(--s-3); align-items: center; margin-bottom: var(--s-3); }
+    .u-btn {
+      font-family: var(--u-font); font-size: 14px; font-weight: 600;
+      padding: 10px 16px; border-radius: var(--u-r-md);
+      border: 1px solid transparent; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 8px;
+      min-height: 40px;
+      transition: background 0.15s, box-shadow 0.15s, border-color 0.15s;
+      box-shadow: var(--u-shadow-xs);
+      letter-spacing: -0.005em;
+    }
+    .u-btn--primary { background: var(--u-purple-600); color: #FFFFFF; border-color: var(--u-purple-600); }
+    .u-btn--primary:hover { background: var(--u-purple-700); border-color: var(--u-purple-700); }
+    .u-btn--secondary { background: var(--u-bg); color: var(--u-purple-700); border-color: var(--u-purple-300); }
+    .u-btn--secondary:hover { background: var(--u-purple-50); }
+    .u-btn--secondary-gray { background: var(--u-bg); color: var(--u-gray-700); border-color: var(--u-border-strong); }
+    .u-btn--secondary-gray:hover { background: var(--u-gray-50); }
+    .u-btn--tertiary { background: transparent; color: var(--u-purple-700); border-color: transparent; box-shadow: none; }
+    .u-btn--tertiary:hover { background: var(--u-purple-50); }
+    .u-btn--tertiary-gray { background: transparent; color: var(--u-gray-600); border-color: transparent; box-shadow: none; }
+    .u-btn--tertiary-gray:hover { background: var(--u-gray-50); color: var(--u-gray-700); }
+    .u-btn--destructive { background: var(--u-error-600); color: #FFFFFF; border-color: var(--u-error-600); }
+    .u-btn--destructive:hover { background: var(--u-error-700); border-color: var(--u-error-700); }
+    .u-btn--link { background: transparent; color: var(--u-purple-700); border: 0; padding: 8px 4px; min-height: auto; box-shadow: none; }
+    .u-btn--link:hover { color: var(--u-purple-800); }
+    .u-btn:focus-visible { outline: 0; box-shadow: var(--u-ring-primary); }
+    .u-btn:disabled { background: var(--u-gray-100); color: var(--u-gray-400); border-color: var(--u-gray-200); cursor: not-allowed; box-shadow: none; }
+    .u-btn--sm { font-size: 13px; padding: 8px 12px; min-height: 36px; }
+    .u-btn--lg { font-size: 16px; padding: 12px 20px; min-height: 48px; }
+    .u-btn--xl { font-size: 16px; padding: 14px 24px; min-height: 52px; }
+    .u-btn--2xl { font-size: 18px; padding: 16px 28px; min-height: 60px; }
+
+    /* Form */
+    .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: var(--s-4); }
+    .u-field { display: flex; flex-direction: column; gap: 6px; }
+    .u-field label { font-size: 14px; font-weight: 500; color: var(--u-gray-700); }
+    .u-field .hint { font-size: 14px; color: var(--u-text-muted); margin: -2px 0 4px; }
+    .u-input, .u-select, .u-textarea {
+      font-family: var(--u-font); font-size: 16px;
+      padding: 10px 14px;
+      border: 1px solid var(--u-border-strong);
+      border-radius: var(--u-r-md);
+      background: var(--u-bg);
+      color: var(--u-text); width: 100%;
+      box-shadow: var(--u-shadow-xs);
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .u-input::placeholder, .u-textarea::placeholder { color: var(--u-text-placeholder); }
+    .u-input:focus, .u-select:focus, .u-textarea:focus {
+      outline: 0; border-color: var(--u-purple-300); box-shadow: var(--u-ring-primary);
+    }
+    .u-textarea { min-height: 96px; resize: vertical; }
+    .u-select {
+      appearance: none; padding-right: 36px;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23475467' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+      background-repeat: no-repeat; background-position: right 12px center;
+    }
+    .u-error-msg { color: var(--u-error-600); font-size: 14px; }
+    .u-field--error .u-input { border-color: var(--u-error-300, #FDA29B); }
+    .u-field--error .u-input:focus { box-shadow: var(--u-ring-error); }
+    .u-checkbox, .u-radio { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-size: 14px; padding: 4px 0; color: var(--u-gray-700); }
+    .u-checkbox input, .u-radio input { width: 16px; height: 16px; accent-color: var(--u-purple-600); }
+    .u-toggle { position: relative; display: inline-block; width: 36px; height: 20px; }
+    .u-toggle input { opacity: 0; width: 0; height: 0; }
+    .u-toggle .slider {
+      position: absolute; cursor: pointer; inset: 0;
+      background: var(--u-gray-200);
+      border-radius: var(--u-r-pill); transition: 0.2s;
+    }
+    .u-toggle .slider::before {
+      content: ''; position: absolute;
+      width: 16px; height: 16px;
+      left: 2px; top: 2px;
+      background: #FFFFFF; border-radius: 50%; transition: 0.2s;
+      box-shadow: var(--u-shadow-sm);
+    }
+    .u-toggle input:checked + .slider { background: var(--u-purple-600); }
+    .u-toggle input:checked + .slider::before { transform: translateX(16px); }
+    .u-input-group {
+      display: flex; align-items: stretch;
+      border: 1px solid var(--u-border-strong); border-radius: var(--u-r-md);
+      background: var(--u-bg); box-shadow: var(--u-shadow-xs);
+    }
+    .u-input-group .prefix { padding: 10px 14px; background: var(--u-gray-50); border-right: 1px solid var(--u-border); border-radius: var(--u-r-md) 0 0 var(--u-r-md); font-size: 14px; color: var(--u-text-muted); }
+    .u-input-group .u-input { border: 0; box-shadow: none; }
+    .u-input-group .u-input:focus { box-shadow: none; }
+
+    /* Surfaces */
+    .surface-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: var(--s-4); }
+    .u-card {
+      background: var(--u-bg); border-radius: var(--u-r-xl);
+      padding: var(--s-5);
+      border: 1px solid var(--u-border);
+      box-shadow: var(--u-shadow-xs);
+    }
+    .u-card--elevated { box-shadow: var(--u-shadow-md); }
+    .u-card--feature { background: var(--u-purple-50); border-color: var(--u-purple-200); }
+    .u-card .media { height: 120px; background: linear-gradient(135deg, var(--u-purple-200), var(--u-purple-500)); border-radius: var(--u-r-md); margin-bottom: var(--s-3); }
+    .u-card h4 { margin: 0 0 4px; font-size: 16px; color: var(--u-text); }
+    .u-card p { font-size: 14px; color: var(--u-text-muted); margin: 0 0 var(--s-3); }
+    .u-card .meta-row { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--u-text-muted); }
+    .u-card .meta-row .avatar {
+      width: 28px; height: 28px; border-radius: 50%; background: var(--u-purple-100); color: var(--u-purple-700);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 600;
+    }
+
+    .u-stat {
+      padding: var(--s-5); background: var(--u-bg); color: var(--u-text);
+      border: 1px solid var(--u-border); border-radius: var(--u-r-xl);
+      box-shadow: var(--u-shadow-xs);
+    }
+    .u-stat .lbl-top { font-size: 14px; color: var(--u-text-muted); font-weight: 500; }
+    .u-stat .num { font-size: 36px; font-weight: 600; line-height: 1.1; letter-spacing: -0.02em; margin-top: 8px; }
+    .u-stat .delta { display: inline-flex; align-items: center; gap: 4px; font-size: 14px; color: var(--u-success-700); margin-top: 8px; font-weight: 500; }
+    .u-stat .delta.down { color: var(--u-error-700); }
+
+    .u-modal {
+      background: var(--u-bg); padding: var(--s-6);
+      border-radius: var(--u-r-xl);
+      box-shadow: var(--u-shadow-xl);
+      max-width: 400px;
+      border: 1px solid var(--u-border);
+    }
+    .u-modal h3 { margin-top: 0; }
+    .u-modal .icon-circle {
+      width: 48px; height: 48px; border-radius: 50%;
+      background: var(--u-purple-100); color: var(--u-purple-700);
+      display: inline-flex; align-items: center; justify-content: center;
+      margin-bottom: var(--s-4);
+      box-shadow: 0 0 0 8px var(--u-purple-50);
+    }
+
+    /* Feedback */
+    .u-alert {
+      display: flex; gap: var(--s-3); padding: var(--s-4);
+      border-radius: var(--u-r-md); margin-bottom: var(--s-3);
+      font-size: 14px; align-items: flex-start;
+      border: 1px solid;
+    }
+    .u-alert--info { background: var(--u-blue-50); color: var(--u-blue-700); border-color: #B2DDFF; }
+    .u-alert--success { background: var(--u-success-50); color: var(--u-success-700); border-color: #ABEFC6; }
+    .u-alert--warn { background: var(--u-warning-50); color: var(--u-warning-700); border-color: #FEDF89; }
+    .u-alert--error { background: var(--u-error-50); color: var(--u-error-700); border-color: #FDA29B; }
+    .u-alert h4 { margin: 0 0 4px; font-size: 14px; font-weight: 600; color: inherit; }
+    .u-alert .icon-pill {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: rgba(255,255,255,0.7);
+      display: inline-flex; align-items: center; justify-content: center;
+      flex-shrink: 0; font-weight: 700;
+    }
+
+    .u-toast {
+      background: var(--u-bg); color: var(--u-text);
+      padding: var(--s-4); border-radius: var(--u-r-md);
+      max-width: 400px; display: flex; gap: 12px; align-items: flex-start;
+      box-shadow: var(--u-shadow-lg);
+      border: 1px solid var(--u-border);
+    }
+    .u-progress { background: var(--u-gray-200); height: 8px; border-radius: var(--u-r-pill); overflow: hidden; }
+    .u-progress .bar { background: var(--u-purple-600); height: 100%; border-radius: var(--u-r-pill); }
+    .u-spinner {
+      width: 24px; height: 24px;
+      border: 2px solid var(--u-gray-200); border-top-color: var(--u-purple-600);
+      border-radius: 50%; animation: spin 0.9s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .u-tooltip {
+      background: var(--u-gray-900); color: #FFFFFF;
+      padding: 8px 12px; border-radius: var(--u-r-md);
+      font-size: 12px; display: inline-block;
+      box-shadow: var(--u-shadow-md);
+    }
+
+    /* Navigation */
+    .u-breadcrumbs { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 14px; color: var(--u-text-muted); }
+    .u-breadcrumbs a { color: var(--u-text-muted); text-decoration: none; padding: 4px 8px; border-radius: var(--u-r-sm); }
+    .u-breadcrumbs a:hover { background: var(--u-gray-100); color: var(--u-text); }
+    .u-breadcrumbs .sep { color: var(--u-gray-300); }
+    .u-breadcrumbs .current { color: var(--u-purple-700); font-weight: 600; padding: 4px 8px; border-radius: var(--u-r-sm); background: var(--u-purple-50); }
+
+    .u-tabs { display: flex; gap: 0; border-bottom: 1px solid var(--u-border); margin-bottom: var(--s-4); flex-wrap: wrap; }
+    .u-tabs button {
+      padding: 10px 14px; background: transparent; border: 0;
+      font-family: var(--u-font); font-size: 14px; font-weight: 600; cursor: pointer;
+      color: var(--u-text-muted);
+      border-bottom: 2px solid transparent; margin-bottom: -1px;
+    }
+    .u-tabs button.active { color: var(--u-purple-700); border-bottom-color: var(--u-purple-700); }
+
+    .u-tabs--button { display: inline-flex; gap: 4px; padding: 4px; background: var(--u-gray-100); border-radius: var(--u-r-md); border-bottom: 0; }
+    .u-tabs--button button {
+      padding: 6px 12px; border-radius: var(--u-r-sm);
+      border-bottom: 0; margin-bottom: 0;
+    }
+    .u-tabs--button button.active { background: var(--u-bg); color: var(--u-text); box-shadow: var(--u-shadow-xs); border-bottom: 0; }
+
+    .u-pagination { display: inline-flex; gap: 4px; }
+    .u-pagination button {
+      width: 40px; height: 40px; border: 1px solid var(--u-border);
+      background: var(--u-bg);
+      cursor: pointer; font-weight: 500; font-family: var(--u-font); font-size: 14px;
+      color: var(--u-text-muted); border-radius: var(--u-r-md);
+    }
+    .u-pagination button.active { background: var(--u-purple-50); color: var(--u-purple-700); border-color: var(--u-purple-200); }
+    .u-pagination button:hover:not(.active) { background: var(--u-gray-50); }
+
+    .u-stepper { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; flex-wrap: wrap; }
+    .u-stepper .step { display: inline-flex; align-items: flex-start; gap: 12px; flex: 1; min-width: 140px; }
+    .u-stepper .num {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--u-bg); color: var(--u-text-muted);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 600; border: 1.5px solid var(--u-border-strong);
+      flex-shrink: 0;
+    }
+    .u-stepper .num.active { background: var(--u-purple-50); color: var(--u-purple-700); border-color: var(--u-purple-600); }
+    .u-stepper .num.done { background: var(--u-purple-600); color: #FFFFFF; border-color: var(--u-purple-600); }
+    .u-stepper .label-block { display: flex; flex-direction: column; gap: 2px; padding-top: 4px; }
+    .u-stepper .label-block .ttl { font-weight: 600; color: var(--u-text); font-size: 14px; }
+    .u-stepper .label-block .desc { font-size: 13px; color: var(--u-text-muted); }
+
+    .u-sidebar {
+      background: var(--u-bg); border-radius: var(--u-r-xl);
+      padding: var(--s-3); width: 260px;
+      border: 1px solid var(--u-border);
+      box-shadow: var(--u-shadow-xs);
+    }
+    .u-sidebar a {
+      display: flex; align-items: center; gap: 12px;
+      padding: 8px 12px; border-radius: var(--u-r-sm);
+      color: var(--u-gray-700); text-decoration: none;
+      font-size: 14px; font-weight: 500;
+    }
+    .u-sidebar a.active { background: var(--u-gray-50); color: var(--u-text); font-weight: 600; }
+    .u-sidebar a:hover:not(.active) { background: var(--u-gray-50); }
+
+    /* Data */
+    table.u-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    table.u-table th, table.u-table td {
+      text-align: left; padding: 12px 16px;
+      border-bottom: 1px solid var(--u-border);
+    }
+    table.u-table thead { background: var(--u-gray-50); }
+    table.u-table th { font-weight: 500; color: var(--u-text-muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+    table.u-table tr:hover { background: var(--u-gray-25); }
+    .u-table-status {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 2px 10px; border-radius: var(--u-r-pill);
+      font-size: 12px; font-weight: 500; border: 1px solid;
+    }
+    .u-table-status.success { background: var(--u-success-50); color: var(--u-success-700); border-color: #ABEFC6; }
+    .u-table-status.warning { background: var(--u-warning-50); color: var(--u-warning-700); border-color: #FEDF89; }
+    .u-table-status.error { background: var(--u-error-50); color: var(--u-error-700); border-color: #FDA29B; }
+
+    .u-list { list-style: none; padding: 0; margin: 0; }
+    .u-list li {
+      padding: 12px 14px; display: flex; gap: 12px; align-items: center;
+      border-bottom: 1px solid var(--u-border);
+    }
+    .u-list li:last-child { border-bottom: 0; }
+    .u-kv { display: grid; grid-template-columns: 180px 1fr; gap: 12px; font-size: 14px; }
+    .u-kv dt { color: var(--u-text-muted); font-weight: 500; }
+    .u-avatar {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--u-purple-100); color: var(--u-purple-700);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-weight: 600;
+    }
+    .u-avatar-stack { display: inline-flex; }
+    .u-avatar-stack .u-avatar { border: 2px solid var(--u-bg); }
+    .u-avatar-stack .u-avatar + .u-avatar { margin-left: -10px; }
+    .u-empty { text-align: center; padding: var(--s-9) var(--s-4); color: var(--u-text-muted); }
+    .u-empty .icon-pill {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: var(--u-purple-50); color: var(--u-purple-700);
+      display: inline-flex; align-items: center; justify-content: center;
+      margin-bottom: 12px;
+      box-shadow: 0 0 0 8px var(--u-purple-25);
+    }
+
+    /* Layout */
+    .grid-demo {
+      display: grid; grid-template-columns: repeat(12, 1fr); gap: 12px;
+      background: var(--u-gray-50); padding: 16px; border-radius: var(--u-r-md);
+    }
+    .grid-demo > div {
+      background: var(--u-purple-100); color: var(--u-purple-800);
+      padding: 12px; border-radius: var(--u-r-sm);
+      font-size: 12px; font-weight: 600; text-align: center;
+    }
+    .scale-row { display: flex; gap: var(--s-3); flex-wrap: wrap; align-items: flex-end; margin-bottom: var(--s-4); }
+    .scale-item { display: flex; flex-direction: column; gap: 6px; align-items: center; }
+    .scale-item .swatch { background: var(--u-purple-600); border-radius: var(--u-r-sm); }
+    .scale-item .lbl { font-size: 11px; font-family: var(--u-mono); color: var(--u-text-muted); }
+    .shadow-demo {
+      width: 96px; height: 96px; background: var(--u-bg);
+      border-radius: var(--u-r-md);
+      display: inline-flex; align-items: center; justify-content: center;
+      margin-right: 16px; margin-bottom: 16px;
+      font-size: 11px; font-family: var(--u-mono); color: var(--u-text-muted);
+      border: 1px solid var(--u-border);
+    }
+
+    /* Footer */
+    .ds-footer {
+      background: var(--u-gray-900); color: #D0D5DD;
+      padding: var(--s-7); margin-top: var(--s-9);
+    }
+    .ds-footer h3 { margin-top: 0; color: #FFFFFF; }
+    .ds-footer ul { padding-left: 20px; }
+    .ds-footer li { margin-bottom: 4px; word-break: break-all; font-size: 13px; }
+    .ds-footer a { color: #B692F6; text-decoration: none; }
+    .ds-footer a:hover { text-decoration: underline; }
+    .license-note { font-size: 13px; color: #98A2B3; margin-top: var(--s-4); max-width: 920px; }
+    .meta-note { font-size: 12px; color: #667085; font-family: var(--u-mono); margin-top: var(--s-2); }
+
+    @media (max-width: 720px) {
+      .ds-header h1 { font-size: 36px; line-height: 44px; }
+      .display-2xl { font-size: 48px; line-height: 60px; }
+      .display-xl { font-size: 40px; line-height: 50px; }
+      main { padding: var(--s-4); }
+      section { padding: var(--s-5); }
+      .type-row { grid-template-columns: 1fr; }
+      .u-kv { grid-template-columns: 1fr; }
+      .color-grid-11 { grid-template-columns: repeat(6, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <header class="ds-header">
+    <a href="index.html" class="back-link">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Catalog
+    </a>
+    <h1>Untitled UI</h1>
+    <div class="meta">
+      <span class="badge kind-uk">ui-kit</span>
+      <span class="badge fidelity-documented">documented</span>
+      <span class="badge source-verified">source: verified</span>
+      <a href="https://www.untitledui.com" target="_blank" rel="noopener" class="official">Official ↗</a>
+    </div>
+    <p class="tagline">The most popular commercial Figma UI kit. Refined purple accents, generous spacing, and the SaaS-grade polish that has become the de-facto modern admin look.</p>
+  </header>
+
+  <nav class="toc" aria-label="Table of contents">
+    <ul>
+      <li><a href="#brand">Brand</a></li>
+      <li><a href="#color">Color</a></li>
+      <li><a href="#typography">Typography</a></li>
+      <li><a href="#iconography">Iconography</a></li>
+      <li><a href="#buttons">Buttons</a></li>
+      <li><a href="#form">Form</a></li>
+      <li><a href="#surfaces">Surfaces</a></li>
+      <li><a href="#feedback">Feedback</a></li>
+      <li><a href="#navigation">Navigation</a></li>
+      <li><a href="#data">Data</a></li>
+      <li><a href="#layout">Layout</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="brand" data-fidelity="documented">
+      <h2>
+        <span>Brand</span>
+        <span class="badge fidelity-documented">documented</span>
+      </h2>
+      <div class="brand-mark">
+        <span class="glyph">U</span>
+        Untitled UI
+      </div>
+      <p style="margin-top: 24px; max-width: 768px; font-size: 18px; color: var(--u-text-muted);">
+        Untitled UI codifies a visual language used by thousands of SaaS products: a calibrated grey scale, an unmistakable purple primary, and a 4-pixel base spacing rhythm. The kit favours generous breathing room over information density and ships every component as a fully-tokenised Figma library.
+      </p>
+      <div class="pillars">
+        <div class="pillar">
+          <div class="icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+          <h4>Time-saving</h4>
+          <p style="font-size:14px;color:var(--u-text-muted);margin:0">Hundreds of pre-built components, patterns, and pages ready to drop into a Figma file.</p>
+        </div>
+        <div class="pillar">
+          <div class="icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div>
+          <h4>Tokenised</h4>
+          <p style="font-size:14px;color:var(--u-text-muted);margin:0">Every colour, type style, and shadow is a Figma variable / token, mappable to Tailwind or CSS.</p>
+        </div>
+        <div class="pillar">
+          <div class="icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+          <h4>Production-ready</h4>
+          <p style="font-size:14px;color:var(--u-text-muted);margin:0">All components include responsive variants, focus rings, hover, disabled, and dark themes.</p>
+        </div>
+        <div class="pillar">
+          <div class="icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18v18H3zM3 9h18M3 15h18M9 3v18M15 3v18"/></svg></div>
+          <h4>Composable</h4>
+          <p style="font-size:14px;color:var(--u-text-muted);margin:0">Atomic primitives compose into pages; teams keep design + dev in lockstep.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="color" data-fidelity="documented">
+      <h2>
+        <span>Color</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://www.untitledui.com/blog/free-color-palette-generator" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--u-text-muted)">Untitled UI ships an 11-step purple primary scale and a balanced 11-step gray. Numeric tokens (50–900) map directly to Tailwind config and CSS custom properties.</p>
+
+      <h3>Purple (Primary)</h3>
+      <div class="color-grid-11">
+        <div class="color-cell-mini" style="background:var(--u-purple-25);color:var(--u-purple-900)">25</div>
+        <div class="color-cell-mini" style="background:var(--u-purple-50);color:var(--u-purple-900)">50</div>
+        <div class="color-cell-mini" style="background:var(--u-purple-100);color:var(--u-purple-900)">100</div>
+        <div class="color-cell-mini" style="background:var(--u-purple-200);color:var(--u-purple-900)">200</div>
+        <div class="color-cell-mini" style="background:var(--u-purple-300);color:var(--u-purple-900)">300</div>
+        <div class="color-cell-mini" style="background:var(--u-purple-400);color:#FFFFFF">400</div>
+        <div class="color-cell-mini" style="background:var(--u-purple-500);color:#FFFFFF">500</div>
+        <div class="color-cell-mini" style="background:var(--u-purple-600);color:#FFFFFF">600</div>
+        <div class="color-cell-mini" style="background:var(--u-purple-700);color:#FFFFFF">700</div>
+        <div class="color-cell-mini" style="background:var(--u-purple-800);color:#FFFFFF">800</div>
+        <div class="color-cell-mini" style="background:var(--u-purple-900);color:#FFFFFF">900</div>
+      </div>
+
+      <h3>Gray (Neutral)</h3>
+      <div class="color-grid-11">
+        <div class="color-cell-mini" style="background:var(--u-gray-25);color:var(--u-gray-900)">25</div>
+        <div class="color-cell-mini" style="background:var(--u-gray-50);color:var(--u-gray-900)">50</div>
+        <div class="color-cell-mini" style="background:var(--u-gray-100);color:var(--u-gray-900)">100</div>
+        <div class="color-cell-mini" style="background:var(--u-gray-200);color:var(--u-gray-900)">200</div>
+        <div class="color-cell-mini" style="background:var(--u-gray-300);color:var(--u-gray-900)">300</div>
+        <div class="color-cell-mini" style="background:var(--u-gray-400);color:#FFFFFF">400</div>
+        <div class="color-cell-mini" style="background:var(--u-gray-500);color:#FFFFFF">500</div>
+        <div class="color-cell-mini" style="background:var(--u-gray-600);color:#FFFFFF">600</div>
+        <div class="color-cell-mini" style="background:var(--u-gray-700);color:#FFFFFF">700</div>
+        <div class="color-cell-mini" style="background:var(--u-gray-800);color:#FFFFFF">800</div>
+        <div class="color-cell-mini" style="background:var(--u-gray-900);color:#FFFFFF">900</div>
+      </div>
+
+      <h3>Featured tokens</h3>
+      <div class="color-grid">
+        <div class="color-cell" style="background:var(--u-purple-600);color:#FFFFFF"><span class="name">Primary</span><span>#7F56D9</span></div>
+        <div class="color-cell" style="background:var(--u-purple-700);color:#FFFFFF"><span class="name">Primary Hover</span><span>#6941C6</span></div>
+        <div class="color-cell" style="background:var(--u-purple-50);color:var(--u-purple-900)"><span class="name">Primary Subtle</span><span>#F9F5FF</span></div>
+        <div class="color-cell" style="background:var(--u-gray-900);color:#FFFFFF"><span class="name">Text Primary</span><span>#101828</span></div>
+        <div class="color-cell" style="background:var(--u-gray-600);color:#FFFFFF"><span class="name">Text Secondary</span><span>#475467</span></div>
+        <div class="color-cell" style="background:var(--u-gray-200);color:var(--u-gray-900)"><span class="name">Border</span><span>#EAECF0</span></div>
+      </div>
+
+      <h3>Semantic roles</h3>
+      <div class="semantic-grid">
+        <div class="sem-card" style="background:var(--u-success-50);color:var(--u-success-700);border-color:#ABEFC6">
+          <span class="label">Success</span><span class="hex">#039855</span>
+        </div>
+        <div class="sem-card" style="background:var(--u-warning-50);color:var(--u-warning-700);border-color:#FEDF89">
+          <span class="label">Warning</span><span class="hex">#DC6803</span>
+        </div>
+        <div class="sem-card" style="background:var(--u-error-50);color:var(--u-error-700);border-color:#FDA29B">
+          <span class="label">Error</span><span class="hex">#D92D20</span>
+        </div>
+        <div class="sem-card" style="background:var(--u-blue-50);color:var(--u-blue-700);border-color:#B2DDFF">
+          <span class="label">Info</span><span class="hex">#1570EF</span>
+        </div>
+      </div>
+
+      <h3>Color roles</h3>
+      <div class="role-grid">
+        <div class="role-chip" style="background:var(--u-purple-600);color:#FFFFFF">Primary <code>#7F56D9</code></div>
+        <div class="role-chip" style="background:var(--u-purple-50);color:var(--u-purple-700);border:1px solid var(--u-purple-200)">Subtle <code>#F9F5FF</code></div>
+        <div class="role-chip" style="background:var(--u-bg);color:var(--u-text);border:1px solid var(--u-border)">Surface <code>#FFFFFF</code></div>
+        <div class="role-chip" style="background:var(--u-gray-50);color:var(--u-text);border:1px solid var(--u-border)">Background <code>#F9FAFB</code></div>
+        <div class="role-chip" style="background:var(--u-gray-900);color:#FFFFFF">Text <code>#101828</code></div>
+        <div class="role-chip" style="background:var(--u-gray-600);color:#FFFFFF">Secondary <code>#475467</code></div>
+      </div>
+    </section>
+
+    <section id="typography" data-fidelity="documented">
+      <h2>
+        <span>Typography</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://www.untitledui.com/blog/typography-design" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--u-text-muted)">Inter is the default typeface. The display scale runs from 2xl (72/90) down to xs (24/32), with text sizes from xl down to xs. Headings sit at 600; body text at 400/500.</p>
+
+      <div class="type-row"><div class="label">Display 2xl · 72/90</div><div class="display-2xl">Untitled UI</div></div>
+      <div class="type-row"><div class="label">Display xl · 60/72</div><div class="display-xl">Build SaaS faster.</div></div>
+      <div class="type-row"><div class="label">Display lg · 48/60</div><div class="display-lg">Refined and ready</div></div>
+      <div class="type-row"><div class="label">Display md · 36/44</div><div class="display-md">Tokens, components, pages</div></div>
+      <div class="type-row"><div class="label">Display sm · 30/38</div><div class="display-sm">Pages that feel inevitable</div></div>
+      <div class="type-row"><div class="label">Display xs · 24/32</div><div class="display-xs">A complete design system</div></div>
+      <div class="type-row"><div class="label">Text xl · 20/30</div><div class="text-xl">Used by 30,000+ teams to ship faster.</div></div>
+      <div class="type-row"><div class="label">Text lg · 18/28</div><div class="text-lg">Each component ships with light, dark, and high-density variants.</div></div>
+      <div class="type-row"><div class="label">Text md · 16/24</div><div class="text-md">A pragmatic, opinionated kit for product teams that need to move fast without sacrificing polish.</div></div>
+      <div class="type-row"><div class="label">Text sm · 14/20</div><div class="text-sm">Tooltips, captions, and supporting copy use the small size.</div></div>
+      <div class="type-row"><div class="label">Text xs · 12/18</div><div class="text-xs">UI metadata, badges, and dense table cells.</div></div>
+      <div class="type-row"><div class="label">Mono</div><div class="mono-sample">--color-purple-600: #7F56D9;</div></div>
+    </section>
+
+    <section id="iconography" data-fidelity="documented">
+      <h2>
+        <span>Iconography</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://www.untitledui.com/icons" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--u-text-muted)">Untitled UI Icons is a free 1,100+ icon set with 2px stroke, rounded joins, and a 24px optical grid. Icons pair with text labels and use currentColor by default.</p>
+
+      <div class="icon-grid">
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l2-2 7 7L22 7l-2-2-8 8z"/></svg><span>check</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><span>search</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg><span>plus</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h18M3 6h18M3 18h18"/></svg><span>menu</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg><span>info</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-9"/></svg><span>done</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span>home</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>settings</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>user</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></svg><span>verified</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>chat</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v9M5 14h14M9 18h6"/></svg><span>card</span></div>
+      </div>
+    </section>
+
+    <section id="buttons" data-fidelity="documented">
+      <h2>
+        <span>Buttons</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://www.untitledui.com/components/buttons" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--u-text-muted)">Untitled UI codifies five hierarchies (primary, secondary, secondary gray, tertiary, link / destructive) across six sizes (sm, md, lg, xl, 2xl). Focus rings use a 4px purple halo for primary actions.</p>
+
+      <h3>Hierarchy</h3>
+      <div class="button-row">
+        <button class="u-btn u-btn--primary">Primary</button>
+        <button class="u-btn u-btn--secondary">Secondary</button>
+        <button class="u-btn u-btn--secondary-gray">Secondary gray</button>
+        <button class="u-btn u-btn--tertiary">Tertiary</button>
+        <button class="u-btn u-btn--tertiary-gray">Tertiary gray</button>
+        <button class="u-btn u-btn--destructive">Destructive</button>
+        <button class="u-btn u-btn--link">Link</button>
+      </div>
+
+      <h3>Sizes</h3>
+      <div class="button-row">
+        <button class="u-btn u-btn--primary u-btn--sm">Small</button>
+        <button class="u-btn u-btn--primary">Default (md)</button>
+        <button class="u-btn u-btn--primary u-btn--lg">Large</button>
+        <button class="u-btn u-btn--primary u-btn--xl">XL</button>
+        <button class="u-btn u-btn--primary u-btn--2xl">2XL</button>
+      </div>
+
+      <h3>States</h3>
+      <div class="button-row">
+        <button class="u-btn u-btn--primary">Default</button>
+        <button class="u-btn u-btn--primary" style="background:var(--u-purple-700);border-color:var(--u-purple-700)">Hover</button>
+        <button class="u-btn u-btn--primary" style="box-shadow:var(--u-ring-primary)">Focus</button>
+        <button class="u-btn u-btn--primary" disabled>Disabled</button>
+      </div>
+
+      <h3>With icon</h3>
+      <div class="button-row">
+        <button class="u-btn u-btn--primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+          New project
+        </button>
+        <button class="u-btn u-btn--secondary-gray">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+          Export
+        </button>
+        <button class="u-btn u-btn--primary">
+          Continue
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </section>
+
+    <section id="form" data-fidelity="documented">
+      <h2>
+        <span>Form</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://www.untitledui.com/components/inputs" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--u-text-muted)">Inputs ship at 40px height with a soft xs shadow, gray-300 border, and 4px purple focus halo. Labels sit above the field; hint and error sit below.</p>
+
+      <h3>Inputs</h3>
+      <div class="form-grid">
+        <div class="u-field">
+          <label for="u-email">Email</label>
+          <input class="u-input" id="u-email" type="email" placeholder="you@untitledui.com">
+          <span class="hint">We'll never share your email with anyone.</span>
+        </div>
+        <div class="u-field">
+          <label for="u-name">Name</label>
+          <input class="u-input" id="u-name" type="text" value="Olivia Rhye">
+        </div>
+        <div class="u-field u-field--error">
+          <label for="u-pass">Password</label>
+          <input class="u-input" id="u-pass" type="password" value="****">
+          <span class="u-error-msg">Must be at least 8 characters.</span>
+        </div>
+        <div class="u-field">
+          <label for="u-role">Role</label>
+          <select class="u-select" id="u-role">
+            <option>Designer</option><option>Developer</option><option>Product Manager</option><option>Founder</option>
+          </select>
+        </div>
+        <div class="u-field" style="grid-column: 1 / -1">
+          <label for="u-bio">Bio</label>
+          <textarea class="u-textarea" id="u-bio" placeholder="A few sentences about yourself."></textarea>
+        </div>
+        <div class="u-field">
+          <label>URL</label>
+          <div class="u-input-group">
+            <span class="prefix">https://</span>
+            <input class="u-input" type="text" value="acme.untitledui.com">
+          </div>
+        </div>
+      </div>
+
+      <h3>Choice controls</h3>
+      <div style="display:flex; gap:24px; align-items:center; flex-wrap:wrap; padding:8px 0">
+        <label class="u-checkbox"><input type="checkbox" checked> I agree to the Terms</label>
+        <label class="u-checkbox"><input type="checkbox"> Subscribe to newsletter</label>
+        <label class="u-radio"><input type="radio" name="plan" checked> Starter</label>
+        <label class="u-radio"><input type="radio" name="plan"> Team</label>
+        <label class="u-radio"><input type="radio" name="plan"> Enterprise</label>
+      </div>
+
+      <h3>Toggle</h3>
+      <div style="display:flex; gap:18px; align-items:center; flex-wrap:wrap; padding:8px 0">
+        <label style="display:inline-flex; align-items:center; gap:10px; font-size:14px; color:var(--u-gray-700)"><span class="u-toggle"><input type="checkbox" checked><span class="slider"></span></span> Email notifications</label>
+        <label style="display:inline-flex; align-items:center; gap:10px; font-size:14px; color:var(--u-gray-700)"><span class="u-toggle"><input type="checkbox"><span class="slider"></span></span> SMS alerts</label>
+      </div>
+    </section>
+
+    <section id="surfaces" data-fidelity="documented">
+      <h2>
+        <span>Surfaces</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://www.untitledui.com/components/cards" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--u-text-muted)">Cards favour a 1px gray-200 border with optional xs/md shadow over heavy elevation. Modals add a featured icon circle with a colour-tinted halo.</p>
+
+      <h3>Cards</h3>
+      <div class="surface-grid">
+        <div class="u-card">
+          <div class="media"></div>
+          <h4>Pricing plans</h4>
+          <p>Choose a plan that scales with your team's needs.</p>
+          <div class="meta-row">
+            <span class="avatar">OR</span>
+            <div>
+              <div style="font-weight:600;color:var(--u-text);font-size:14px">Olivia Rhye</div>
+              <div>Updated 2 hours ago</div>
+            </div>
+          </div>
+        </div>
+        <div class="u-card u-card--elevated">
+          <h4>Workspace usage</h4>
+          <p>Track seats, storage, and integrations from a single dashboard.</p>
+          <div style="display:flex;gap:8px;margin-top:8px">
+            <span class="u-table-status success">Active</span>
+            <span class="u-table-status warning">23/30 seats</span>
+          </div>
+        </div>
+        <div class="u-card u-card--feature">
+          <h4 style="color:var(--u-purple-800)">Upgrade to Team</h4>
+          <p style="color:var(--u-purple-700)">Unlock SSO, audit logs, and unlimited workspaces.</p>
+          <button class="u-btn u-btn--primary u-btn--sm">Upgrade now</button>
+        </div>
+      </div>
+
+      <h3>Statistics</h3>
+      <div class="surface-grid">
+        <div class="u-stat"><div class="lbl-top">Monthly active users</div><div class="num">14,892</div><div class="delta">↑ 12.5% this month</div></div>
+        <div class="u-stat"><div class="lbl-top">Conversion rate</div><div class="num">3.42%</div><div class="delta down">↓ 0.4% this week</div></div>
+        <div class="u-stat"><div class="lbl-top">Avg. session</div><div class="num">5m 24s</div><div class="delta">↑ 8.1% this month</div></div>
+      </div>
+
+      <h3>Modal dialog</h3>
+      <div class="u-modal">
+        <div class="icon-circle"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l2-2 7 7L22 7l-2-2-8 8z"/></svg></div>
+        <h3 style="margin-top:0">Plan upgraded</h3>
+        <p style="color:var(--u-text-muted)">Your workspace is now on the Team plan. Invite teammates and add SSO from the workspace settings.</p>
+        <div class="button-row" style="margin-bottom:0; margin-top: 24px">
+          <button class="u-btn u-btn--secondary-gray" style="flex:1; justify-content:center">Dismiss</button>
+          <button class="u-btn u-btn--primary" style="flex:1; justify-content:center">Invite team</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="feedback" data-fidelity="documented">
+      <h2>
+        <span>Feedback</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://www.untitledui.com/components/alerts" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--u-text-muted)">Alerts use 50-tinted backgrounds with 700 text on a coloured 1px border for WCAG-compliant contrast. Toasts ride the same shadow language as cards.</p>
+
+      <h3>Alerts</h3>
+      <div class="u-alert u-alert--info">
+        <span class="icon-pill">i</span>
+        <div><h4>Heads up</h4>You're on the trial plan. 14 days remaining.</div>
+      </div>
+      <div class="u-alert u-alert--success">
+        <span class="icon-pill">✓</span>
+        <div><h4>Saved</h4>Your changes have been saved successfully.</div>
+      </div>
+      <div class="u-alert u-alert--warn">
+        <span class="icon-pill">!</span>
+        <div><h4>Action required</h4>Your billing details will expire in 7 days.</div>
+      </div>
+      <div class="u-alert u-alert--error">
+        <span class="icon-pill">⨯</span>
+        <div><h4>Something went wrong</h4>We couldn't save your changes. Please try again.</div>
+      </div>
+
+      <h3>Toast / notification</h3>
+      <div class="u-toast">
+        <span class="u-avatar" style="width:36px;height:36px;font-size:13px">OR</span>
+        <div style="flex:1">
+          <div style="font-weight:600">Olivia mentioned you</div>
+          <p style="margin:4px 0 0;color:var(--u-text-muted);font-size:13px">"Loving this new design — let's ship it tomorrow."</p>
+        </div>
+        <button class="u-btn u-btn--tertiary-gray u-btn--sm" style="padding:4px 8px;min-height:auto">✕</button>
+      </div>
+
+      <h3>Progress &amp; loading</h3>
+      <div class="u-progress" style="margin-bottom:8px"><div class="bar" style="width:72%"></div></div>
+      <p class="text-sm">72% — 14 of 20 tasks complete.</p>
+      <div style="display:inline-flex;align-items:center;gap:12px;margin-top:8px;font-size:14px;color:var(--u-text-muted)">
+        <div class="u-spinner"></div>
+        Saving changes...
+      </div>
+
+      <h3>Tooltip</h3>
+      <div style="margin-top:8px">
+        <span class="u-tooltip">Saves automatically</span>
+      </div>
+    </section>
+
+    <section id="navigation" data-fidelity="documented">
+      <h2>
+        <span>Navigation</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://www.untitledui.com/components/tabs" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--u-text-muted)">Untitled UI ships three navigation patterns: underline tabs, pill tabs, and sidebar. Steppers and pagination use the same purple-tinted active state.</p>
+
+      <h3>Breadcrumbs</h3>
+      <nav class="u-breadcrumbs" aria-label="Breadcrumb">
+        <a href="#">Dashboard</a>
+        <span class="sep">/</span>
+        <a href="#">Settings</a>
+        <span class="sep">/</span>
+        <a href="#">Team</a>
+        <span class="sep">/</span>
+        <span class="current">Members</span>
+      </nav>
+
+      <h3>Tabs (underline)</h3>
+      <div class="u-tabs">
+        <button class="active">Overview</button>
+        <button>Members <span style="color:var(--u-text-subtle);margin-left:4px">23</span></button>
+        <button>Billing</button>
+        <button>Integrations</button>
+        <button>Settings</button>
+      </div>
+
+      <h3>Tabs (button group)</h3>
+      <div class="u-tabs u-tabs--button">
+        <button class="active">12 months</button>
+        <button>30 days</button>
+        <button>7 days</button>
+        <button>24 hours</button>
+      </div>
+
+      <h3>Pagination</h3>
+      <div class="u-pagination">
+        <button>‹ Previous</button>
+        <button>1</button>
+        <button class="active">2</button>
+        <button>3</button>
+        <button>4</button>
+        <button>...</button>
+        <button>10</button>
+        <button>Next ›</button>
+      </div>
+
+      <h3>Stepper</h3>
+      <div class="u-stepper">
+        <div class="step">
+          <span class="num done">1</span>
+          <div class="label-block"><span class="ttl">Your details</span><span class="desc">Name and email</span></div>
+        </div>
+        <div class="step">
+          <span class="num done">2</span>
+          <div class="label-block"><span class="ttl">Workspace</span><span class="desc">Pick a name</span></div>
+        </div>
+        <div class="step">
+          <span class="num active">3</span>
+          <div class="label-block"><span class="ttl">Invite team</span><span class="desc">In progress</span></div>
+        </div>
+        <div class="step">
+          <span class="num">4</span>
+          <div class="label-block"><span class="ttl">Theme</span><span class="desc">Pick a theme</span></div>
+        </div>
+        <div class="step">
+          <span class="num">5</span>
+          <div class="label-block"><span class="ttl">Done</span><span class="desc">All set</span></div>
+        </div>
+      </div>
+
+      <h3>Sidebar</h3>
+      <aside class="u-sidebar">
+        <a href="#" class="active">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+          Home
+        </a>
+        <a href="#">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/></svg>
+          Dashboard
+        </a>
+        <a href="#">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+          Team
+          <span style="margin-left:auto; background:var(--u-purple-50); color:var(--u-purple-700); font-size:11px; padding:2px 8px; border-radius:var(--u-r-pill); font-weight:500">23</span>
+        </a>
+        <a href="#">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33"/></svg>
+          Settings
+        </a>
+      </aside>
+    </section>
+
+    <section id="data" data-fidelity="documented">
+      <h2>
+        <span>Data</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://www.untitledui.com/components/tables" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--u-text-muted)">Tables use a tinted gray-50 header, uppercase 12px column labels, and pill status badges. Avatar stacks compress assignee lists into a tight footprint.</p>
+
+      <h3>Data table</h3>
+      <table class="u-table">
+        <thead>
+          <tr><th>Member</th><th>Role</th><th>Status</th><th>Last active</th><th></th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div style="display:flex;align-items:center;gap:10px"><span class="u-avatar" style="width:32px;height:32px;font-size:12px">OR</span><div><div style="font-weight:600">Olivia Rhye</div><div class="text-xs">olivia@untitledui.com</div></div></div></td>
+            <td>Owner</td>
+            <td><span class="u-table-status success">● Active</span></td>
+            <td>2 minutes ago</td>
+            <td><a href="#" style="color:var(--u-purple-700);font-weight:600;text-decoration:none">Edit</a></td>
+          </tr>
+          <tr>
+            <td><div style="display:flex;align-items:center;gap:10px"><span class="u-avatar" style="width:32px;height:32px;font-size:12px">PM</span><div><div style="font-weight:600">Phoenix Mendez</div><div class="text-xs">phoenix@untitledui.com</div></div></div></td>
+            <td>Admin</td>
+            <td><span class="u-table-status success">● Active</span></td>
+            <td>3 hours ago</td>
+            <td><a href="#" style="color:var(--u-purple-700);font-weight:600;text-decoration:none">Edit</a></td>
+          </tr>
+          <tr>
+            <td><div style="display:flex;align-items:center;gap:10px"><span class="u-avatar" style="width:32px;height:32px;font-size:12px">LF</span><div><div style="font-weight:600">Lana Fitch</div><div class="text-xs">lana@untitledui.com</div></div></div></td>
+            <td>Member</td>
+            <td><span class="u-table-status warning">● Pending</span></td>
+            <td>—</td>
+            <td><a href="#" style="color:var(--u-purple-700);font-weight:600;text-decoration:none">Edit</a></td>
+          </tr>
+          <tr>
+            <td><div style="display:flex;align-items:center;gap:10px"><span class="u-avatar" style="width:32px;height:32px;font-size:12px">DK</span><div><div style="font-weight:600">Demi Kowalski</div><div class="text-xs">demi@untitledui.com</div></div></div></td>
+            <td>Member</td>
+            <td><span class="u-table-status error">● Suspended</span></td>
+            <td>5 days ago</td>
+            <td><a href="#" style="color:var(--u-purple-700);font-weight:600;text-decoration:none">Edit</a></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Avatar stack</h3>
+      <div class="u-avatar-stack" style="margin: 8px 0">
+        <span class="u-avatar">OR</span>
+        <span class="u-avatar" style="background:var(--u-success-100);color:var(--u-success-700)">PM</span>
+        <span class="u-avatar" style="background:var(--u-warning-100);color:var(--u-warning-700)">LF</span>
+        <span class="u-avatar" style="background:var(--u-error-100);color:var(--u-error-700)">DK</span>
+        <span class="u-avatar" style="background:var(--u-gray-100);color:var(--u-gray-700)">+12</span>
+      </div>
+
+      <h3>Key / value</h3>
+      <dl class="u-kv">
+        <dt>Workspace name</dt><dd>Untitled Acme</dd>
+        <dt>Plan</dt><dd>Team — $49 / month</dd>
+        <dt>Seats</dt><dd>23 of 30 used</dd>
+        <dt>Created</dt><dd>March 14, 2024</dd>
+        <dt>Owner</dt><dd>Olivia Rhye</dd>
+      </dl>
+
+      <h3>Empty state</h3>
+      <div class="u-empty">
+        <span class="icon-pill">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        </span>
+        <p style="margin:0;font-weight:600;color:var(--u-text)">No members found</p>
+        <p style="font-size:14px;margin-top:4px">Invite teammates to start collaborating.</p>
+        <button class="u-btn u-btn--primary u-btn--sm" style="margin-top:16px">Invite team</button>
+      </div>
+    </section>
+
+    <section id="layout" data-fidelity="approximated">
+      <h2>
+        <span>Layout</span>
+        <span class="badge fidelity-approximated">approximated</span>
+        <a href="https://www.untitledui.com" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--u-text-muted)">Untitled UI follows a 12-column responsive grid with a 4px base spacing scale. Container widths cap at 1280px on large screens.</p>
+
+      <h3>12-column grid</h3>
+      <div class="grid-demo">
+        <div style="grid-column: span 12">12</div>
+        <div style="grid-column: span 6">6</div>
+        <div style="grid-column: span 6">6</div>
+        <div style="grid-column: span 4">4</div>
+        <div style="grid-column: span 4">4</div>
+        <div style="grid-column: span 4">4</div>
+        <div style="grid-column: span 3">3</div>
+        <div style="grid-column: span 3">3</div>
+        <div style="grid-column: span 3">3</div>
+        <div style="grid-column: span 3">3</div>
+      </div>
+
+      <h3>Spacing scale (4px base)</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div class="swatch" style="width:4px;height:4px"></div><div class="lbl">4 (1)</div></div>
+        <div class="scale-item"><div class="swatch" style="width:8px;height:8px"></div><div class="lbl">8 (2)</div></div>
+        <div class="scale-item"><div class="swatch" style="width:12px;height:12px"></div><div class="lbl">12 (3)</div></div>
+        <div class="scale-item"><div class="swatch" style="width:16px;height:16px"></div><div class="lbl">16 (4)</div></div>
+        <div class="scale-item"><div class="swatch" style="width:20px;height:20px"></div><div class="lbl">20 (5)</div></div>
+        <div class="scale-item"><div class="swatch" style="width:24px;height:24px"></div><div class="lbl">24 (6)</div></div>
+        <div class="scale-item"><div class="swatch" style="width:32px;height:32px"></div><div class="lbl">32 (7)</div></div>
+        <div class="scale-item"><div class="swatch" style="width:40px;height:40px"></div><div class="lbl">40 (8)</div></div>
+        <div class="scale-item"><div class="swatch" style="width:48px;height:48px"></div><div class="lbl">48 (9)</div></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px"></div><div class="lbl">64 (10)</div></div>
+      </div>
+
+      <h3>Radius</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:0"></div><div class="lbl">0</div></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:4px"></div><div class="lbl">xs · 4</div></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:6px"></div><div class="lbl">sm · 6</div></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:8px"></div><div class="lbl">md · 8</div></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:10px"></div><div class="lbl">lg · 10</div></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:12px"></div><div class="lbl">xl · 12</div></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:16px"></div><div class="lbl">2xl · 16</div></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:999px"></div><div class="lbl">pill</div></div>
+      </div>
+
+      <h3>Shadow / elevation</h3>
+      <div>
+        <span class="shadow-demo" style="box-shadow:none">none</span>
+        <span class="shadow-demo" style="box-shadow:var(--u-shadow-xs)">xs</span>
+        <span class="shadow-demo" style="box-shadow:var(--u-shadow-sm)">sm</span>
+        <span class="shadow-demo" style="box-shadow:var(--u-shadow-md)">md</span>
+        <span class="shadow-demo" style="box-shadow:var(--u-shadow-lg)">lg</span>
+        <span class="shadow-demo" style="box-shadow:var(--u-shadow-xl)">xl</span>
+      </div>
+    </section>
+  </main>
+
+  <footer class="ds-footer">
+    <h3>Sources</h3>
+    <ul>
+      <li><a href="https://www.untitledui.com" target="_blank" rel="noopener">https://www.untitledui.com</a></li>
+      <li><a href="https://www.untitledui.com/blog/free-color-palette-generator" target="_blank" rel="noopener">https://www.untitledui.com/blog/free-color-palette-generator</a></li>
+      <li><a href="https://www.untitledui.com/blog/typography-design" target="_blank" rel="noopener">https://www.untitledui.com/blog/typography-design</a></li>
+      <li><a href="https://www.untitledui.com/icons" target="_blank" rel="noopener">https://www.untitledui.com/icons</a></li>
+      <li><a href="https://www.untitledui.com/components/buttons" target="_blank" rel="noopener">https://www.untitledui.com/components/buttons</a></li>
+      <li><a href="https://www.untitledui.com/components/inputs" target="_blank" rel="noopener">https://www.untitledui.com/components/inputs</a></li>
+      <li><a href="https://www.untitledui.com/components/cards" target="_blank" rel="noopener">https://www.untitledui.com/components/cards</a></li>
+      <li><a href="https://www.untitledui.com/components/alerts" target="_blank" rel="noopener">https://www.untitledui.com/components/alerts</a></li>
+      <li><a href="https://www.untitledui.com/components/tabs" target="_blank" rel="noopener">https://www.untitledui.com/components/tabs</a></li>
+      <li><a href="https://www.untitledui.com/components/tables" target="_blank" rel="noopener">https://www.untitledui.com/components/tables</a></li>
+    </ul>
+    <p class="license-note">This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Untitled UI. Untitled UI and related trademarks belong to Untitled UI. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</p>
+    <p class="meta-note">Reproduction date: 2026-05-05 · sourceStatus: verified · fidelity: documented</p>
+  </footer>
+</body>
+</html>

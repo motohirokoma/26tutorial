@@ -1,0 +1,1483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Garden (Zendesk) — Design System Reference</title>
+  <script id="ds-meta" type="application/json">
+{"id":"37-garden-zendesk","fileSlug":"37-garden-zendesk","schemaVersion":"1"}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Garden — Kale (deep teal — primary brand) */
+      --gd-kale-100: #E0F0F2;
+      --gd-kale-200: #B6D9DD;
+      --gd-kale-300: #6FB9C2;
+      --gd-kale-400: #2C8A95;
+      --gd-kale-500: #175D69;
+      --gd-kale-600: #04444C;
+      --gd-kale-700: #03363D;
+      --gd-kale-800: #022A2F;
+
+      /* Cactus (green) */
+      --gd-cactus-100: #DBEDE5;
+      --gd-cactus-300: #6FBC9C;
+      --gd-cactus-500: #228F67;
+      --gd-cactus-700: #186E4F;
+
+      /* Crimson (red) */
+      --gd-crimson-100: #F5D5D8;
+      --gd-crimson-500: #CC3340;
+      --gd-crimson-700: #8C232C;
+
+      /* Lemon (warning yellow/orange) */
+      --gd-lemon-100: #FBE6CC;
+      --gd-lemon-500: #ED8F1C;
+      --gd-lemon-700: #AD5F0A;
+
+      /* Royal (info blue) */
+      --gd-royal-100: #D8E5F1;
+      --gd-royal-500: #1F73B7;
+      --gd-royal-700: #144A75;
+
+      /* Grey ramp (Garden grey scale) */
+      --gd-grey-100: #F8F9F9;
+      --gd-grey-200: #ECEEEF;
+      --gd-grey-300: #D8DCDE;
+      --gd-grey-400: #C2C8CC;
+      --gd-grey-500: #87929D;
+      --gd-grey-600: #68737D;
+      --gd-grey-700: #49545C;
+      --gd-grey-800: #2F3941;
+      --gd-grey-900: #1F2933;
+
+      /* Surface */
+      --gd-surface: #FFFFFF;
+      --gd-surface-soft: #F8F9F9;
+      --gd-body-bg: #FFFFFF;
+
+      /* Text */
+      --gd-text-1: #2F3941;
+      --gd-text-2: #49545C;
+      --gd-text-3: #68737D;
+      --gd-text-link: var(--gd-royal-500);
+
+      /* Type */
+      --gd-font: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      --gd-mono: ui-monospace, "SF Mono", "Cascadia Mono", "Roboto Mono", monospace;
+
+      /* Shape — Garden uses 4-8px corners */
+      --gd-radius-0: 0;
+      --gd-radius-s: 4px;
+      --gd-radius: 6px;
+      --gd-radius-l: 8px;
+      --gd-radius-pill: 999px;
+
+      /* Spacing — 4dp */
+      --gd-s-2: 4px;
+      --gd-s-3: 8px;
+      --gd-s-4: 12px;
+      --gd-s-5: 16px;
+      --gd-s-6: 24px;
+      --gd-s-7: 32px;
+      --gd-s-8: 48px;
+      --gd-s-9: 64px;
+
+      /* Elevation */
+      --gd-elev-1: 0 1px 3px rgba(3,54,61,0.08), 0 1px 2px rgba(3,54,61,0.06);
+      --gd-elev-2: 0 4px 8px rgba(3,54,61,0.10), 0 2px 4px rgba(3,54,61,0.06);
+      --gd-elev-3: 0 8px 24px rgba(3,54,61,0.12), 0 4px 8px rgba(3,54,61,0.08);
+      --gd-elev-4: 0 16px 48px rgba(3,54,61,0.16), 0 8px 16px rgba(3,54,61,0.10);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--gd-font);
+      background: var(--gd-body-bg);
+      color: var(--gd-text-1);
+      line-height: 1.5;
+      font-size: 14px;
+      -webkit-font-smoothing: antialiased;
+    }
+    code, kbd, pre { font-family: var(--gd-mono); font-size: 13px; }
+
+    /* Header */
+    .ds-header {
+      background: var(--gd-kale-700);
+      color: white;
+      padding: var(--gd-s-8) var(--gd-s-7) var(--gd-s-7);
+      position: relative;
+      overflow: hidden;
+    }
+    .ds-header::after {
+      content: ''; position: absolute;
+      right: -120px; top: -120px; width: 360px; height: 360px;
+      background: radial-gradient(circle, var(--gd-kale-500) 0%, transparent 70%);
+      opacity: 0.4;
+    }
+    .ds-header > * { position: relative; z-index: 1; }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--gd-s-3);
+      color: var(--gd-kale-100);
+      text-decoration: none;
+      padding: 6px 12px;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: var(--gd-radius);
+      font-size: 13px;
+      font-weight: 500;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .back-link:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.4); }
+
+    .ds-header h1 {
+      font-size: 44px;
+      line-height: 52px;
+      font-weight: 700;
+      margin: var(--gd-s-5) 0 var(--gd-s-4);
+      letter-spacing: -0.5px;
+    }
+    .ds-header .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--gd-s-3);
+      align-items: center;
+      margin-bottom: var(--gd-s-4);
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 10px;
+      border-radius: var(--gd-radius-pill);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.08);
+      color: white;
+    }
+    .badge.kind-ds { background: var(--gd-kale-400); color: white; border-color: transparent; }
+    .badge.fidelity-documented { background: var(--gd-cactus-100); color: var(--gd-cactus-700); border-color: transparent; }
+    .badge.fidelity-approximated { background: var(--gd-lemon-100); color: var(--gd-lemon-700); border-color: transparent; }
+    .badge.fidelity-inspired { background: #ECDCFB; color: #4A1F7F; border-color: transparent; }
+    .badge.source-verified { background: var(--gd-cactus-100); color: var(--gd-cactus-700); border-color: transparent; }
+    .ds-header a[href*="garden.zendesk"] {
+      color: white;
+      text-decoration: none;
+      padding: 4px 12px;
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: var(--gd-radius);
+      font-size: 12px;
+      background: rgba(255,255,255,0.08);
+    }
+    .ds-header a[href*="garden.zendesk"]:hover { background: rgba(255,255,255,0.16); }
+    .tagline {
+      font-size: 18px;
+      line-height: 28px;
+      max-width: 720px;
+      margin: var(--gd-s-5) 0 0;
+      color: var(--gd-kale-100);
+      font-weight: 400;
+    }
+
+    /* TOC */
+    .toc {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: var(--gd-surface);
+      border-bottom: 1px solid var(--gd-grey-200);
+    }
+    .toc ul {
+      list-style: none;
+      margin: 0;
+      padding: var(--gd-s-3) var(--gd-s-7);
+      display: flex;
+      gap: 4px;
+      overflow-x: auto;
+      max-width: 100%;
+    }
+    .toc a {
+      display: inline-block;
+      padding: 8px 14px;
+      color: var(--gd-text-2);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      white-space: nowrap;
+      border-radius: var(--gd-radius);
+      transition: all 0.15s;
+    }
+    .toc a:hover { background: var(--gd-kale-100); color: var(--gd-kale-700); }
+
+    main {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: var(--gd-s-7);
+    }
+
+    section {
+      background: var(--gd-surface);
+      border: 1px solid var(--gd-grey-200);
+      border-radius: var(--gd-radius-l);
+      padding: var(--gd-s-7);
+      margin-bottom: var(--gd-s-6);
+    }
+    section h2 {
+      display: flex;
+      align-items: center;
+      gap: var(--gd-s-4);
+      flex-wrap: wrap;
+      font-size: 24px;
+      line-height: 32px;
+      font-weight: 600;
+      margin: 0 0 var(--gd-s-5);
+      color: var(--gd-kale-700);
+      letter-spacing: -0.2px;
+    }
+    .source-link {
+      font-size: 12px;
+      color: var(--gd-royal-500);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .source-link:hover { text-decoration: underline; }
+    h3 {
+      font-size: 16px;
+      line-height: 24px;
+      font-weight: 600;
+      margin: var(--gd-s-6) 0 var(--gd-s-4);
+      color: var(--gd-text-1);
+    }
+    h4 {
+      font-size: 13px;
+      line-height: 20px;
+      font-weight: 600;
+      margin: var(--gd-s-4) 0 var(--gd-s-3);
+      color: var(--gd-text-2);
+    }
+    p { margin: 0 0 var(--gd-s-4); }
+
+    /* Brand */
+    #brand .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--gd-s-4);
+      padding: var(--gd-s-5) var(--gd-s-6);
+      background: var(--gd-kale-700);
+      border-radius: var(--gd-radius-l);
+      color: white;
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: -0.3px;
+    }
+    #brand .brand-mark svg { width: 36px; height: 36px; }
+    #brand .pillars {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--gd-s-5);
+      margin-top: var(--gd-s-6);
+    }
+    #brand .pillar {
+      padding: var(--gd-s-5);
+      background: var(--gd-kale-100);
+      border-radius: var(--gd-radius-l);
+    }
+    #brand .pillar h4 { margin-top: 0; color: var(--gd-kale-700); font-weight: 600; }
+
+    /* Color */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 2px;
+      margin-bottom: var(--gd-s-5);
+    }
+    .color-cell {
+      aspect-ratio: 1.2;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 8px;
+      font-size: 10px;
+      font-family: var(--gd-mono);
+      border-radius: 0;
+    }
+    .color-cell:first-child { border-radius: var(--gd-radius) 0 0 var(--gd-radius); }
+    .color-cell:last-child { border-radius: 0 var(--gd-radius) var(--gd-radius) 0; }
+    .color-cell .hex { opacity: 0.85; font-size: 9px; }
+
+    .semantic-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
+      gap: var(--gd-s-4);
+    }
+    .sem-card {
+      padding: var(--gd-s-5);
+      border-radius: var(--gd-radius-l);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .sem-card .label { font-size: 13px; font-weight: 600; }
+    .sem-card .hex { font-family: var(--gd-mono); font-size: 11px; opacity: 0.9; }
+
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--gd-s-3);
+      margin-bottom: var(--gd-s-4);
+    }
+    .role-chip {
+      padding: var(--gd-s-4) var(--gd-s-5);
+      border-radius: var(--gd-radius);
+      font-size: 13px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .role-chip code { font-size: 11px; opacity: 0.85; }
+
+    /* Typography */
+    .type-row {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: var(--gd-s-5);
+      padding: var(--gd-s-4) 0;
+      border-bottom: 1px solid var(--gd-grey-200);
+      align-items: baseline;
+    }
+    .type-row:last-child { border-bottom: 0; }
+    .type-row .label {
+      font-family: var(--gd-mono);
+      font-size: 11px;
+      color: var(--gd-text-3);
+    }
+    .display-l { font-size: 56px; line-height: 64px; font-weight: 700; letter-spacing: -1px; }
+    .display-m { font-size: 40px; line-height: 48px; font-weight: 700; letter-spacing: -0.6px; }
+    .display-s { font-size: 32px; line-height: 40px; font-weight: 700; letter-spacing: -0.4px; }
+    .heading-l { font-size: 28px; line-height: 36px; font-weight: 600; }
+    .heading-m { font-size: 22px; line-height: 30px; font-weight: 600; }
+    .heading-s { font-size: 18px; line-height: 26px; font-weight: 600; }
+    .body-xl { font-size: 18px; line-height: 28px; }
+    .body-l { font-size: 16px; line-height: 24px; }
+    .body-m { font-size: 14px; line-height: 20px; }
+    .body-s { font-size: 12px; line-height: 18px; }
+    .label-l { font-size: 14px; line-height: 20px; font-weight: 600; }
+    .label-m { font-size: 12px; line-height: 16px; font-weight: 600; }
+    .mono-sample { font-family: var(--gd-mono); font-size: 13px; color: var(--gd-text-2); }
+
+    /* Iconography */
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(80px,1fr));
+      gap: var(--gd-s-4);
+    }
+    .icon-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: var(--gd-s-4);
+      background: var(--gd-grey-100);
+      border-radius: var(--gd-radius);
+      transition: background 0.15s, color 0.15s;
+    }
+    .icon-cell:hover { background: var(--gd-kale-100); }
+    .icon-cell:hover svg { stroke: var(--gd-kale-600); }
+    .icon-cell svg { width: 22px; height: 22px; stroke: var(--gd-text-2); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+    .icon-cell span { font-size: 11px; color: var(--gd-text-3); }
+
+    /* Buttons */
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--gd-s-4);
+      align-items: center;
+      margin-bottom: var(--gd-s-4);
+    }
+    .gd-btn {
+      font-family: var(--gd-font);
+      font-size: 14px;
+      font-weight: 500;
+      padding: 8px 18px;
+      border-radius: var(--gd-radius);
+      border: 1px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      height: 40px;
+      transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
+      letter-spacing: 0;
+    }
+    .gd-btn--primary { background: var(--gd-kale-700); color: white; }
+    .gd-btn--primary:hover { background: var(--gd-kale-600); }
+    .gd-btn--primary:focus-visible { outline: 3px solid var(--gd-kale-200); outline-offset: 1px; }
+    .gd-btn--primary:disabled { background: var(--gd-grey-300); color: white; cursor: not-allowed; }
+
+    .gd-btn--secondary { background: white; color: var(--gd-kale-700); border-color: var(--gd-kale-700); }
+    .gd-btn--secondary:hover { background: var(--gd-kale-100); }
+
+    .gd-btn--basic { background: white; color: var(--gd-text-1); border-color: var(--gd-grey-300); }
+    .gd-btn--basic:hover { background: var(--gd-grey-100); border-color: var(--gd-grey-400); }
+
+    .gd-btn--ghost { background: transparent; color: var(--gd-kale-700); border-color: transparent; }
+    .gd-btn--ghost:hover { background: var(--gd-kale-100); }
+
+    .gd-btn--danger { background: var(--gd-crimson-500); color: white; }
+    .gd-btn--danger:hover { background: var(--gd-crimson-700); }
+
+    .gd-btn--success { background: var(--gd-cactus-500); color: white; }
+    .gd-btn--success:hover { background: var(--gd-cactus-700); }
+
+    .gd-btn--icon { width: 40px; height: 40px; padding: 0; justify-content: center; background: transparent; color: var(--gd-text-2); }
+    .gd-btn--icon:hover { background: var(--gd-grey-100); color: var(--gd-kale-700); }
+
+    .gd-btn--sm { height: 32px; padding: 4px 14px; font-size: 13px; }
+    .gd-btn--lg { height: 48px; padding: 12px 24px; font-size: 15px; }
+
+    /* Form */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+      gap: var(--gd-s-5);
+    }
+    .gd-field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .gd-field .gd-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--gd-text-1);
+    }
+    .gd-required { color: var(--gd-crimson-500); margin-left: 2px; }
+    .gd-input {
+      font-family: var(--gd-font);
+      font-size: 14px;
+      padding: 8px 12px;
+      border: 1px solid var(--gd-grey-300);
+      border-radius: var(--gd-radius);
+      background: white;
+      color: var(--gd-text-1);
+      height: 40px;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      width: 100%;
+    }
+    .gd-input:hover { border-color: var(--gd-grey-500); }
+    .gd-input:focus { border-color: var(--gd-kale-500); box-shadow: 0 0 0 3px var(--gd-kale-100); }
+    .gd-input:disabled { background: var(--gd-grey-100); color: var(--gd-text-3); cursor: not-allowed; }
+    .gd-input--error { border-color: var(--gd-crimson-500); }
+    .gd-input--error:focus { border-color: var(--gd-crimson-500); box-shadow: 0 0 0 3px var(--gd-crimson-100); }
+    .gd-input--success { border-color: var(--gd-cactus-500); }
+
+    textarea.gd-input { min-height: 80px; resize: vertical; height: auto; }
+    select.gd-input { appearance: none; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%2349545C' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>"); background-repeat: no-repeat; background-position: right 8px center; padding-right: 32px; }
+
+    .gd-helper { font-size: 12px; color: var(--gd-text-3); }
+    .gd-error-msg { font-size: 12px; color: var(--gd-crimson-500); display: inline-flex; align-items: center; gap: 4px; }
+
+    .gd-checkbox, .gd-radio {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .gd-checkbox input, .gd-radio input {
+      width: 18px; height: 18px;
+      accent-color: var(--gd-kale-700);
+    }
+
+    .gd-toggle {
+      position: relative; display: inline-block; width: 44px; height: 24px;
+    }
+    .gd-toggle input { opacity: 0; width: 0; height: 0; }
+    .gd-toggle .slider {
+      position: absolute; cursor: pointer; inset: 0;
+      background: var(--gd-grey-400);
+      border-radius: 999px;
+      transition: 0.15s;
+    }
+    .gd-toggle .slider::before {
+      content: ''; position: absolute;
+      width: 18px; height: 18px;
+      left: 3px; top: 3px;
+      background: white;
+      border-radius: 50%;
+      transition: 0.15s;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    }
+    .gd-toggle input:checked + .slider { background: var(--gd-kale-700); }
+    .gd-toggle input:checked + .slider::before { transform: translateX(20px); }
+
+    .gd-slider { width: 100%; accent-color: var(--gd-kale-700); }
+
+    /* Surfaces (Tiles in Garden) */
+    .surface-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
+      gap: var(--gd-s-5);
+    }
+    .gd-tile {
+      background: white;
+      border: 1px solid var(--gd-grey-200);
+      border-radius: var(--gd-radius-l);
+      padding: var(--gd-s-5);
+      transition: box-shadow 0.15s, border-color 0.15s;
+    }
+    .gd-tile:hover { box-shadow: var(--gd-elev-2); }
+    .gd-tile--selected { border-color: var(--gd-kale-500); background: var(--gd-kale-100); }
+    .gd-tile--accent { border-left: 4px solid var(--gd-cactus-500); }
+    .gd-tile .media { height: 120px; background: linear-gradient(135deg, var(--gd-kale-300), var(--gd-kale-600)); border-radius: var(--gd-radius); margin-bottom: var(--gd-s-4); }
+    .gd-tile h4 { margin: 0 0 4px; color: var(--gd-text-1); font-size: 16px; font-weight: 600; }
+    .gd-tile p { font-size: 13px; color: var(--gd-text-2); margin: 0; }
+
+    .gd-stat { padding: var(--gd-s-5); background: linear-gradient(135deg, var(--gd-kale-700), var(--gd-kale-500)); border-radius: var(--gd-radius-l); color: white; }
+    .gd-stat .num { font-size: 32px; font-weight: 700; line-height: 1; }
+    .gd-stat .lbl { font-size: 12px; opacity: 0.9; margin-top: 6px; }
+
+    .gd-modal {
+      background: white;
+      padding: var(--gd-s-6);
+      border-radius: var(--gd-radius-l);
+      box-shadow: var(--gd-elev-4);
+      max-width: 480px;
+    }
+
+    .gd-popup {
+      background: white;
+      border: 1px solid var(--gd-grey-200);
+      border-radius: var(--gd-radius);
+      box-shadow: var(--gd-elev-2);
+      padding: 6px 0;
+      width: 200px;
+    }
+    .gd-popup .item { padding: 8px 16px; font-size: 13px; cursor: pointer; }
+    .gd-popup .item:hover { background: var(--gd-grey-100); color: var(--gd-kale-700); }
+
+    /* Feedback (Notifications) */
+    .gd-notif {
+      display: flex;
+      gap: var(--gd-s-4);
+      padding: var(--gd-s-4) var(--gd-s-5);
+      border-left: 4px solid;
+      border-radius: var(--gd-radius);
+      margin-bottom: var(--gd-s-3);
+      font-size: 13px;
+      align-items: flex-start;
+      background: white;
+      box-shadow: var(--gd-elev-1);
+    }
+    .gd-notif--info { border-color: var(--gd-royal-500); }
+    .gd-notif--info strong { color: var(--gd-royal-700); }
+    .gd-notif--success { border-color: var(--gd-cactus-500); }
+    .gd-notif--success strong { color: var(--gd-cactus-700); }
+    .gd-notif--warn { border-color: var(--gd-lemon-500); }
+    .gd-notif--warn strong { color: var(--gd-lemon-700); }
+    .gd-notif--error { border-color: var(--gd-crimson-500); }
+    .gd-notif--error strong { color: var(--gd-crimson-700); }
+
+    .gd-toast {
+      background: var(--gd-grey-800);
+      color: white;
+      padding: 12px 16px;
+      border-radius: var(--gd-radius);
+      box-shadow: var(--gd-elev-3);
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 13px;
+    }
+    .gd-toast button { background: transparent; color: var(--gd-kale-300); border: 0; font-weight: 600; cursor: pointer; }
+
+    .gd-tag-row { display: flex; flex-wrap: wrap; gap: 6px; }
+    .gd-tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 10px;
+      border-radius: var(--gd-radius-pill);
+      background: var(--gd-grey-200);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--gd-text-1);
+    }
+    .gd-tag--kale { background: var(--gd-kale-100); color: var(--gd-kale-700); }
+    .gd-tag--cactus { background: var(--gd-cactus-100); color: var(--gd-cactus-700); }
+    .gd-tag--crimson { background: var(--gd-crimson-100); color: var(--gd-crimson-700); }
+    .gd-tag--lemon { background: var(--gd-lemon-100); color: var(--gd-lemon-700); }
+    .gd-tag--royal { background: var(--gd-royal-100); color: var(--gd-royal-700); }
+    .gd-tag--solid { background: var(--gd-kale-700); color: white; }
+
+    .gd-status {
+      display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--gd-text-2);
+    }
+    .gd-status .dot { width: 8px; height: 8px; border-radius: 50%; }
+
+    .gd-progress {
+      width: 100%; height: 8px;
+      background: var(--gd-grey-200);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .gd-progress::after {
+      content: ''; display: block;
+      height: 100%; width: 70%;
+      background: var(--gd-kale-500);
+    }
+    .gd-skeleton {
+      height: 14px;
+      background: linear-gradient(90deg, var(--gd-grey-200), var(--gd-grey-100), var(--gd-grey-200));
+      background-size: 200% 100%;
+      border-radius: var(--gd-radius);
+      animation: gd-shimmer 1.4s infinite;
+    }
+    @keyframes gd-shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+    .gd-spinner {
+      width: 28px; height: 28px;
+      border: 3px solid var(--gd-grey-200);
+      border-top-color: var(--gd-kale-700);
+      border-radius: 50%;
+      animation: gd-spin 0.9s linear infinite;
+    }
+    @keyframes gd-spin { to { transform: rotate(360deg); } }
+
+    /* Navigation */
+    .gd-tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--gd-grey-200);
+      margin-bottom: var(--gd-s-4);
+    }
+    .gd-tab {
+      padding: var(--gd-s-4) var(--gd-s-5);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--gd-text-2);
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      margin-bottom: -1px;
+    }
+    .gd-tab:hover { color: var(--gd-kale-700); }
+    .gd-tab.active { color: var(--gd-kale-700); border-bottom-color: var(--gd-kale-700); font-weight: 600; }
+
+    .gd-breadcrumb { display: flex; gap: 6px; align-items: center; font-size: 13px; color: var(--gd-text-2); }
+    .gd-breadcrumb a { color: var(--gd-royal-500); text-decoration: none; }
+    .gd-breadcrumb a:hover { text-decoration: underline; }
+
+    .gd-pagination { display: flex; gap: 4px; align-items: center; }
+    .gd-pagination button {
+      min-width: 36px; height: 36px;
+      border-radius: var(--gd-radius);
+      border: 1px solid var(--gd-grey-200);
+      background: white;
+      color: var(--gd-text-1);
+      cursor: pointer;
+      font-family: var(--gd-font);
+      font-size: 13px;
+      padding: 0 10px;
+    }
+    .gd-pagination button.active { background: var(--gd-kale-700); color: white; border-color: var(--gd-kale-700); }
+    .gd-pagination button:hover:not(.active) { background: var(--gd-kale-100); border-color: var(--gd-kale-300); color: var(--gd-kale-700); }
+
+    .gd-stepper { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+    .gd-stepper .step { display: inline-flex; align-items: center; gap: 8px; }
+    .gd-stepper .num {
+      width: 26px; height: 26px; border-radius: 50%;
+      background: var(--gd-grey-200); color: var(--gd-text-2);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 600;
+    }
+    .gd-stepper .num.active { background: var(--gd-kale-700); color: white; }
+    .gd-stepper .num.done { background: var(--gd-cactus-500); color: white; }
+    .gd-stepper .line { flex: 1; height: 2px; background: var(--gd-grey-300); min-width: 24px; }
+
+    .gd-sidebar {
+      background: var(--gd-kale-700);
+      border-radius: var(--gd-radius-l);
+      padding: 12px 8px;
+      width: 240px;
+    }
+    .gd-sidebar a {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 14px;
+      border-radius: var(--gd-radius);
+      color: var(--gd-kale-200);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .gd-sidebar a.active { background: var(--gd-kale-500); color: white; }
+    .gd-sidebar a:hover:not(.active) { background: rgba(255,255,255,0.06); color: white; }
+
+    .gd-topbar {
+      display: flex; align-items: center; gap: 16px;
+      padding: 10px 16px;
+      background: var(--gd-kale-700);
+      color: white;
+      border-radius: var(--gd-radius);
+    }
+    .gd-topbar .brand-mini { font-weight: 700; color: white; display: inline-flex; align-items: center; gap: 8px; font-size: 16px; }
+
+    .gd-menu {
+      background: white;
+      border: 1px solid var(--gd-grey-200);
+      border-radius: var(--gd-radius);
+      box-shadow: var(--gd-elev-2);
+      padding: 6px 0;
+      width: 200px;
+    }
+    .gd-menu .item { padding: 8px 16px; font-size: 13px; cursor: pointer; }
+    .gd-menu .item:hover { background: var(--gd-grey-100); }
+
+    /* Data */
+    table.gd-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      background: white;
+      border-radius: var(--gd-radius);
+      overflow: hidden;
+      border: 1px solid var(--gd-grey-200);
+    }
+    table.gd-table th {
+      background: var(--gd-grey-100);
+      text-align: left;
+      padding: 10px 14px;
+      font-weight: 600;
+      color: var(--gd-text-2);
+      border-bottom: 1px solid var(--gd-grey-200);
+      font-size: 12px;
+    }
+    table.gd-table td {
+      text-align: left;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--gd-grey-200);
+      color: var(--gd-text-1);
+    }
+    table.gd-table tr:last-child td { border-bottom: 0; }
+    table.gd-table tr:hover td { background: var(--gd-kale-100); }
+
+    .gd-list { list-style: none; padding: 0; margin: 0; border: 1px solid var(--gd-grey-200); border-radius: var(--gd-radius); overflow: hidden; }
+    .gd-list li {
+      padding: 12px 16px;
+      display: flex; gap: 12px; align-items: center;
+      border-bottom: 1px solid var(--gd-grey-200);
+      background: white;
+    }
+    .gd-list li:last-child { border-bottom: 0; }
+    .gd-list li:hover { background: var(--gd-grey-100); }
+
+    .gd-kv { display: grid; grid-template-columns: 160px 1fr; gap: 8px 12px; font-size: 13px; }
+    .gd-kv dt { color: var(--gd-text-2); font-weight: 600; }
+    .gd-kv dd { margin: 0; color: var(--gd-text-1); }
+
+    .gd-avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--gd-kale-500);
+      color: white;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    .gd-empty {
+      text-align: center;
+      padding: var(--gd-s-8) var(--gd-s-5);
+      color: var(--gd-text-3);
+    }
+    .gd-empty svg { width: 56px; height: 56px; opacity: 0.4; margin-bottom: 8px; stroke: var(--gd-text-3); fill: none; stroke-width: 1.5; }
+    .gd-empty h4 { color: var(--gd-text-2); font-size: 16px; }
+
+    /* Layout */
+    .grid-demo {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 8px;
+      background: var(--gd-grey-100);
+      padding: 12px;
+      border-radius: var(--gd-radius);
+    }
+    .grid-demo > div {
+      background: var(--gd-kale-200);
+      color: var(--gd-kale-700);
+      padding: 10px;
+      border-radius: var(--gd-radius-s);
+      font-size: 12px;
+      font-family: var(--gd-mono);
+      text-align: center;
+      font-weight: 500;
+    }
+
+    .scale-row {
+      display: flex;
+      gap: var(--gd-s-4);
+      flex-wrap: wrap;
+      align-items: flex-end;
+      margin-bottom: var(--gd-s-5);
+    }
+    .scale-item {
+      display: flex; flex-direction: column; gap: 6px;
+      align-items: center;
+    }
+    .scale-item .swatch { background: var(--gd-kale-500); }
+    .scale-item .lbl { font-size: 11px; font-family: var(--gd-mono); color: var(--gd-text-3); }
+
+    .shadow-demo {
+      width: 80px; height: 80px;
+      background: white;
+      border-radius: var(--gd-radius);
+      display: inline-flex; align-items: center; justify-content: center;
+      margin: 8px 16px 16px 8px;
+      font-size: 11px; font-family: var(--gd-mono); color: var(--gd-text-3);
+    }
+
+    /* Footer */
+    .ds-footer {
+      background: var(--gd-kale-800);
+      padding: var(--gd-s-7);
+      margin-top: var(--gd-s-8);
+      color: var(--gd-kale-200);
+    }
+    .ds-footer h3 { margin-top: 0; color: white; font-weight: 600; }
+    .ds-footer ul { padding-left: 20px; }
+    .ds-footer li { margin-bottom: 4px; word-break: break-all; font-size: 12px; }
+    .ds-footer a { color: var(--gd-kale-300); text-decoration: none; }
+    .ds-footer a:hover { text-decoration: underline; color: white; }
+    .license-note { font-size: 12px; color: var(--gd-kale-200); margin-top: var(--gd-s-5); opacity: 0.85; }
+    .meta-note { font-size: 11px; color: var(--gd-kale-300); font-family: var(--gd-mono); margin-top: var(--gd-s-3); }
+
+    @media (max-width: 720px) {
+      .ds-header h1 { font-size: 32px; line-height: 40px; }
+      main { padding: var(--gd-s-5); }
+      section { padding: var(--gd-s-5); }
+      .type-row { grid-template-columns: 1fr; }
+      .color-grid { grid-template-columns: repeat(4, 1fr); }
+      .gd-kv { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="ds-header">
+    <a href="index.html" class="back-link">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Catalog
+    </a>
+    <h1>Garden</h1>
+    <div class="meta">
+      <span class="badge kind-ds">design-system</span>
+      <span class="badge fidelity-documented">documented</span>
+      <span class="badge source-verified">source: verified</span>
+      <a href="https://garden.zendesk.com" target="_blank" rel="noopener">Official ↗</a>
+    </div>
+    <p class="tagline">Zendesk's customer-experience design system. Deep Kale teal anchors the brand, with warm support-product accents in Cactus, Lemon, and Crimson tuned for ticketing, chat, and help-center workflows.</p>
+  </header>
+
+  <nav class="toc" aria-label="Table of contents">
+    <ul>
+      <li><a href="#brand">Brand</a></li>
+      <li><a href="#color">Color</a></li>
+      <li><a href="#typography">Typography</a></li>
+      <li><a href="#iconography">Iconography</a></li>
+      <li><a href="#buttons">Buttons</a></li>
+      <li><a href="#form">Form</a></li>
+      <li><a href="#surfaces">Surfaces</a></li>
+      <li><a href="#feedback">Feedback</a></li>
+      <li><a href="#navigation">Navigation</a></li>
+      <li><a href="#data">Data</a></li>
+      <li><a href="#layout">Layout</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="brand" data-fidelity="documented">
+      <h2>
+        <span>Brand</span>
+        <span class="badge fidelity-documented">documented</span>
+      </h2>
+      <div class="brand-mark">
+        <svg viewBox="0 0 36 36" fill="none">
+          <path d="M6 6 L18 24 L30 6 Z" fill="white" opacity="0.95"/>
+          <circle cx="18" cy="28" r="3" fill="white" opacity="0.7"/>
+        </svg>
+        Garden
+      </div>
+      <p style="margin-top: 24px; max-width: 720px; font-size: 15px; color: var(--gd-text-2);">
+        Garden is Zendesk's design system for customer-experience products. Deep Kale teal carries support-product gravitas; Cactus, Lemon, Crimson, and Royal accents add warmth and clarity for ticketing, agent workspaces, and help-center surfaces.
+      </p>
+      <div class="pillars">
+        <div class="pillar">
+          <h4>Human</h4>
+          <p style="font-size:13px;color:var(--gd-text-2);margin:0">Warm tones and rounded corners keep support workflows feeling friendly under pressure.</p>
+        </div>
+        <div class="pillar">
+          <h4>Confident</h4>
+          <p style="font-size:13px;color:var(--gd-text-2);margin:0">Deep Kale anchors the system as a trusted, calm constant for agents.</p>
+        </div>
+        <div class="pillar">
+          <h4>Adaptive</h4>
+          <p style="font-size:13px;color:var(--gd-text-2);margin:0">Tokens scale across light, dark, and high-contrast for 24-hour support teams.</p>
+        </div>
+        <div class="pillar">
+          <h4>Open</h4>
+          <p style="font-size:13px;color:var(--gd-text-2);margin:0">Apache 2.0 React + tokens; published openly so partners can integrate without friction.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="color" data-fidelity="documented">
+      <h2>
+        <span>Color</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://garden.zendesk.com/design/color" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--gd-text-2)">Garden organizes color into product hues (Kale, Cactus, Crimson, Lemon, Royal) plus a neutral Grey ramp. Kale-700 is the brand anchor; 500/600 carry interactive states.</p>
+
+      <h3>Kale (brand)</h3>
+      <div class="color-grid">
+        <div class="color-cell" style="background:var(--gd-kale-100);color:var(--gd-kale-800)">100<span class="hex">#E0F0F2</span></div>
+        <div class="color-cell" style="background:var(--gd-kale-200);color:var(--gd-kale-800)">200<span class="hex">#B6D9DD</span></div>
+        <div class="color-cell" style="background:var(--gd-kale-300);color:var(--gd-kale-800)">300<span class="hex">#6FB9C2</span></div>
+        <div class="color-cell" style="background:var(--gd-kale-400);color:white">400<span class="hex">#2C8A95</span></div>
+        <div class="color-cell" style="background:var(--gd-kale-500);color:white">500<span class="hex">#175D69</span></div>
+        <div class="color-cell" style="background:var(--gd-kale-600);color:white">600<span class="hex">#04444C</span></div>
+        <div class="color-cell" style="background:var(--gd-kale-700);color:white">700<span class="hex">#03363D</span></div>
+        <div class="color-cell" style="background:var(--gd-kale-800);color:white">800<span class="hex">#022A2F</span></div>
+      </div>
+
+      <h3>Grey ramp</h3>
+      <div class="color-grid">
+        <div class="color-cell" style="background:white;color:var(--gd-text-1);border:1px solid var(--gd-grey-200)">0<span class="hex">#FFFFFF</span></div>
+        <div class="color-cell" style="background:var(--gd-grey-100);color:var(--gd-text-1)">100<span class="hex">#F8F9F9</span></div>
+        <div class="color-cell" style="background:var(--gd-grey-200);color:var(--gd-text-1)">200<span class="hex">#ECEEEF</span></div>
+        <div class="color-cell" style="background:var(--gd-grey-300);color:var(--gd-text-1)">300<span class="hex">#D8DCDE</span></div>
+        <div class="color-cell" style="background:var(--gd-grey-400);color:var(--gd-text-1)">400<span class="hex">#C2C8CC</span></div>
+        <div class="color-cell" style="background:var(--gd-grey-500);color:white">500<span class="hex">#87929D</span></div>
+        <div class="color-cell" style="background:var(--gd-grey-700);color:white">700<span class="hex">#49545C</span></div>
+        <div class="color-cell" style="background:var(--gd-grey-800);color:white">800<span class="hex">#2F3941</span></div>
+      </div>
+
+      <h3>Product hues</h3>
+      <div class="semantic-grid">
+        <div class="sem-card" style="background:var(--gd-cactus-100);color:var(--gd-cactus-700)">
+          <span class="label">Cactus (Success)</span><span class="hex">#228F67</span>
+        </div>
+        <div class="sem-card" style="background:var(--gd-crimson-100);color:var(--gd-crimson-700)">
+          <span class="label">Crimson (Error)</span><span class="hex">#CC3340</span>
+        </div>
+        <div class="sem-card" style="background:var(--gd-lemon-100);color:var(--gd-lemon-700)">
+          <span class="label">Lemon (Warning)</span><span class="hex">#ED8F1C</span>
+        </div>
+        <div class="sem-card" style="background:var(--gd-royal-100);color:var(--gd-royal-700)">
+          <span class="label">Royal (Info)</span><span class="hex">#1F73B7</span>
+        </div>
+      </div>
+
+      <h3>Color roles</h3>
+      <div class="role-grid">
+        <div class="role-chip" style="background:var(--gd-kale-700);color:white">Primary <code>#03363D</code></div>
+        <div class="role-chip" style="background:var(--gd-kale-500);color:white">Brand-500 <code>#175D69</code></div>
+        <div class="role-chip" style="background:var(--gd-kale-100);color:var(--gd-kale-700)">Container <code>#E0F0F2</code></div>
+        <div class="role-chip" style="background:var(--gd-surface);color:var(--gd-text-1);border:1px solid var(--gd-grey-200)">Surface <code>#FFFFFF</code></div>
+        <div class="role-chip" style="background:var(--gd-grey-100);color:var(--gd-text-1);border:1px solid var(--gd-grey-200)">Surface Soft <code>#F8F9F9</code></div>
+        <div class="role-chip" style="background:var(--gd-text-1);color:white">Text Primary <code>#2F3941</code></div>
+        <div class="role-chip" style="background:var(--gd-text-2);color:white">Text Secondary <code>#49545C</code></div>
+        <div class="role-chip" style="background:var(--gd-grey-300);color:var(--gd-text-1)">Border <code>#D8DCDE</code></div>
+      </div>
+    </section>
+
+    <section id="typography" data-fidelity="documented">
+      <h2>
+        <span>Typography</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://garden.zendesk.com/design/typography" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--gd-text-2)">Garden uses Inter as its product typeface. The scale is Display / Heading / Body / Label, plus a mono variant for tokens and code.</p>
+
+      <div class="type-row"><div class="label">Display L · 56/64 · 700</div><div class="display-l">Customer experience</div></div>
+      <div class="type-row"><div class="label">Display M · 40/48 · 700</div><div class="display-m">Help, support, and sales</div></div>
+      <div class="type-row"><div class="label">Display S · 32/40 · 700</div><div class="display-s">Crafted for agents</div></div>
+      <div class="type-row"><div class="label">Heading L · 28/36 · 600</div><div class="heading-l">Tickets at scale</div></div>
+      <div class="type-row"><div class="label">Heading M · 22/30 · 600</div><div class="heading-m">Confident and warm</div></div>
+      <div class="type-row"><div class="label">Heading S · 18/26 · 600</div><div class="heading-s">Section heading</div></div>
+      <div class="type-row"><div class="label">Body XL · 18/28</div><div class="body-xl">Body XL is reserved for marketing surfaces and onboarding intros where we want extra air.</div></div>
+      <div class="type-row"><div class="label">Body L · 16/24</div><div class="body-l">Body L is the default for product copy. It pairs with Heading S and reads comfortably across long ticket threads.</div></div>
+      <div class="type-row"><div class="label">Body M · 14/20</div><div class="body-m">Body M is the default for dense agent UIs: macros, conversation panes, and queue listings.</div></div>
+      <div class="type-row"><div class="label">Body S · 12/18</div><div class="body-s">Body S powers timestamps, helper text, and table cells.</div></div>
+      <div class="type-row"><div class="label">Label L · 14/20 · 600</div><div class="label-l">Field label</div></div>
+      <div class="type-row"><div class="label">Label M · 12/16 · 600</div><div class="label-m">UPPERCASE TAG</div></div>
+      <div class="type-row"><div class="label">Mono · system stack</div><div class="mono-sample">--zd-color-kale-700: #03363D;</div></div>
+    </section>
+
+    <section id="iconography" data-fidelity="documented">
+      <h2>
+        <span>Iconography</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://garden.zendesk.com/components/icon" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--gd-text-2)">Garden ships Stroke and Fill icon sets at 12 / 16 / 24px, all under Apache 2.0. Below: 22px stroke icons that approximate the support-product set used for tickets, chat, and macros.</p>
+      <div class="icon-grid">
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M3 12L12 3l9 9"/><path d="M5 10v10h14V10"/></svg><span>home</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><span>search</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg><span>user</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M21 15a4 4 0 0 1-4 4H7l-4 4V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/></svg><span>chat</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="14" rx="2"/><path d="M3 10h18"/><path d="M8 4v4M16 4v4"/></svg><span>ticket</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M3 7l9 6 9-6"/><rect x="3" y="5" width="18" height="14" rx="2"/></svg><span>email</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>phone</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span>bell</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>clock</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M21 11.5a8 8 0 1 1-2.7-6"/><path d="M21 4v7h-7"/></svg><span>refresh</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.5-2.5l2-1.5-2-3.5-2.5 1A7 7 0 0 0 13 4l-.5-2.5h-4L8 4a7 7 0 0 0-3 1.5l-2.5-1-2 3.5 2 1.5A7 7 0 0 0 5 12c0 .9.2 1.7.5 2.5l-2 1.5 2 3.5 2.5-1c.9.7 2 1.2 3 1.5l.5 2.5h4l.5-2.5c1-.3 2.1-.8 3-1.5l2.5 1 2-3.5-2-1.5c.3-.8.5-1.6.5-2.5z"/></svg><span>settings</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg><span>check</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg><span>close</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg><span>add</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg><span>menu</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M21 11.5a4 4 0 0 1-4 4H8l-5 4 1-4H4a3 3 0 0 1-3-3v-7a3 3 0 0 1 3-3h13a4 4 0 0 1 4 4z"/></svg><span>message</span></div>
+      </div>
+    </section>
+
+    <section id="buttons" data-fidelity="documented">
+      <h2>
+        <span>Buttons</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://garden.zendesk.com/components/button" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--gd-text-2)">Garden defines Primary (Kale-700), Secondary (outlined Kale), Basic (neutral), Ghost (text-only), Danger (Crimson), and Success (Cactus) buttons. Heights: 32 / 40 (default) / 48.</p>
+
+      <h3>Variants</h3>
+      <div class="button-row">
+        <button class="gd-btn gd-btn--primary">Primary</button>
+        <button class="gd-btn gd-btn--secondary">Secondary</button>
+        <button class="gd-btn gd-btn--basic">Basic</button>
+        <button class="gd-btn gd-btn--ghost">Ghost</button>
+        <button class="gd-btn gd-btn--success">Resolve</button>
+        <button class="gd-btn gd-btn--danger">Delete</button>
+        <button class="gd-btn gd-btn--icon" aria-label="more">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="5" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="19" cy="12" r="1.5" fill="currentColor"/></svg>
+        </button>
+      </div>
+
+      <h3>Sizes</h3>
+      <div class="button-row">
+        <button class="gd-btn gd-btn--primary gd-btn--sm">Small</button>
+        <button class="gd-btn gd-btn--primary">Default</button>
+        <button class="gd-btn gd-btn--primary gd-btn--lg">Large</button>
+      </div>
+
+      <h3>States</h3>
+      <div class="button-row">
+        <button class="gd-btn gd-btn--primary">Enabled</button>
+        <button class="gd-btn gd-btn--primary" style="background:var(--gd-kale-600)">Hover</button>
+        <button class="gd-btn gd-btn--primary" style="outline:3px solid var(--gd-kale-200);outline-offset:1px">Focus</button>
+        <button class="gd-btn gd-btn--primary" disabled>Disabled</button>
+        <button class="gd-btn gd-btn--primary"><span class="gd-spinner" style="width:14px;height:14px;border-width:2px;border-color:rgba(255,255,255,0.4);border-top-color:white"></span>Loading</button>
+      </div>
+    </section>
+
+    <section id="form" data-fidelity="documented">
+      <h2>
+        <span>Form</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://garden.zendesk.com/components/text-field" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--gd-text-2)">Inputs are 40px tall with 6px corners. Focus uses a Kale-100 ring; error states use Crimson; success uses Cactus.</p>
+
+      <h3>Text fields</h3>
+      <div class="form-grid">
+        <div class="gd-field">
+          <label class="gd-label" for="gf1">Subject<span class="gd-required">*</span></label>
+          <input class="gd-input" id="gf1" type="text" value="Refund for order #41892">
+          <span class="gd-helper">Visible to the requester.</span>
+        </div>
+        <div class="gd-field">
+          <label class="gd-label" for="gf2">Requester email</label>
+          <input class="gd-input gd-input--success" id="gf2" type="email" value="customer@example.com">
+          <span class="gd-helper" style="color:var(--gd-cactus-700)">Verified Zendesk user.</span>
+        </div>
+        <div class="gd-field">
+          <label class="gd-label" for="gf3">Internal note</label>
+          <textarea class="gd-input" id="gf3" placeholder="Add an internal note..."></textarea>
+          <span class="gd-helper">Visible only to teammates.</span>
+        </div>
+        <div class="gd-field">
+          <label class="gd-label" for="gf4">Priority</label>
+          <select class="gd-input" id="gf4">
+            <option>Low</option>
+            <option>Normal</option>
+            <option selected>High</option>
+            <option>Urgent</option>
+          </select>
+        </div>
+        <div class="gd-field">
+          <label class="gd-label" for="gf5">SLA target</label>
+          <input class="gd-input gd-input--error" id="gf5" type="text" value="abc">
+          <span class="gd-error-msg">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+            Enter SLA in hours (number).
+          </span>
+        </div>
+        <div class="gd-field">
+          <label class="gd-label" for="gf6">Read-only</label>
+          <input class="gd-input" id="gf6" type="text" value="Closed by automation" disabled>
+        </div>
+      </div>
+
+      <h3>Selection controls</h3>
+      <div class="button-row">
+        <label class="gd-checkbox"><input type="checkbox" checked>Notify requester</label>
+        <label class="gd-checkbox"><input type="checkbox">CC team</label>
+        <label class="gd-radio"><input type="radio" name="r1" checked>Public reply</label>
+        <label class="gd-radio"><input type="radio" name="r1">Internal note</label>
+        <label class="gd-toggle"><input type="checkbox" checked><span class="slider"></span></label>
+        <label class="gd-toggle"><input type="checkbox"><span class="slider"></span></label>
+      </div>
+
+      <h3>Slider &amp; file</h3>
+      <div style="max-width:400px;display:flex;flex-direction:column;gap:12px">
+        <input type="range" class="gd-slider" min="0" max="100" value="55">
+        <input type="file" class="gd-input" style="padding:8px">
+      </div>
+    </section>
+
+    <section id="surfaces" data-fidelity="documented">
+      <h2>
+        <span>Surfaces</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://garden.zendesk.com/components/tile" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--gd-text-2)">Garden surfaces (Tiles in their nomenclature) use 8px corners, 1px borders, and lift on hover. Selected tiles take on Kale-100 background with Kale-500 border.</p>
+
+      <div class="surface-grid">
+        <div class="gd-tile">
+          <div class="media"></div>
+          <h4>Default tile</h4>
+          <p>Standard tile with 1px border. Lifts on hover for affordance.</p>
+        </div>
+        <div class="gd-tile gd-tile--selected">
+          <div class="media" style="background:linear-gradient(135deg,var(--gd-kale-300),var(--gd-kale-500))"></div>
+          <h4>Selected tile</h4>
+          <p>Kale border + tinted background communicate active selection.</p>
+        </div>
+        <div class="gd-tile gd-tile--accent">
+          <div class="media" style="background:linear-gradient(135deg,var(--gd-cactus-300),var(--gd-cactus-500))"></div>
+          <h4>Accent tile</h4>
+          <p>Cactus accent stripe marks resolved or success-leaning content.</p>
+        </div>
+        <div class="gd-stat">
+          <div class="num">94%</div>
+          <div class="lbl">First-reply CSAT</div>
+        </div>
+      </div>
+
+      <h3>Modal</h3>
+      <div class="gd-modal">
+        <h4 style="margin-top:0;font-size:18px;color:var(--gd-text-1)">Close ticket #41892?</h4>
+        <p style="font-size:13px;color:var(--gd-text-2)">The customer will be notified that their ticket has been resolved. They can reopen it from the email link within 7 days.</p>
+        <div class="button-row" style="justify-content:flex-end;margin:0">
+          <button class="gd-btn gd-btn--basic">Cancel</button>
+          <button class="gd-btn gd-btn--primary">Close ticket</button>
+        </div>
+      </div>
+
+      <h3>Popup &amp; sidebar</h3>
+      <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start">
+        <div class="gd-popup">
+          <div class="item">Reply</div>
+          <div class="item">Add internal note</div>
+          <div class="item">Apply macro</div>
+          <div class="item">Assign to me</div>
+          <div class="item" style="color:var(--gd-crimson-500)">Mark as spam</div>
+        </div>
+        <div class="gd-sidebar">
+          <a href="#" class="active">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg>
+            Tickets
+          </a>
+          <a href="#">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a4 4 0 0 1-4 4H7l-4 4V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/></svg>
+            Chat
+          </a>
+          <a href="#">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg>
+            Customers
+          </a>
+          <a href="#">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/></svg>
+            Reports
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section id="feedback" data-fidelity="documented">
+      <h2>
+        <span>Feedback</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://garden.zendesk.com/components/notification" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+
+      <h3>Notifications</h3>
+      <div class="gd-notif gd-notif--info">
+        <strong>Tip ·</strong> Apply a macro by typing &quot;/&quot; in the reply box.
+      </div>
+      <div class="gd-notif gd-notif--success">
+        <strong>Resolved ·</strong> Ticket #41892 closed. Customer notified.
+      </div>
+      <div class="gd-notif gd-notif--warn">
+        <strong>SLA at risk ·</strong> First reply due in 12 minutes.
+      </div>
+      <div class="gd-notif gd-notif--error">
+        <strong>Sync failed ·</strong> Salesforce contact could not be linked.
+      </div>
+
+      <h3>Toast</h3>
+      <div class="gd-toast">
+        Macro applied to 14 tickets.
+        <button>Undo</button>
+      </div>
+
+      <h3>Tags &amp; status</h3>
+      <div class="gd-tag-row">
+        <span class="gd-tag">Default</span>
+        <span class="gd-tag gd-tag--kale">VIP customer</span>
+        <span class="gd-tag gd-tag--solid">High priority</span>
+        <span class="gd-tag gd-tag--cactus">Resolved</span>
+        <span class="gd-tag gd-tag--lemon">Pending</span>
+        <span class="gd-tag gd-tag--crimson">Escalated</span>
+        <span class="gd-tag gd-tag--royal">Following</span>
+      </div>
+      <div style="margin-top:16px;display:flex;gap:24px;flex-wrap:wrap">
+        <span class="gd-status"><span class="dot" style="background:var(--gd-cactus-500)"></span>Online</span>
+        <span class="gd-status"><span class="dot" style="background:var(--gd-lemon-500)"></span>Away</span>
+        <span class="gd-status"><span class="dot" style="background:var(--gd-crimson-500)"></span>Busy</span>
+        <span class="gd-status"><span class="dot" style="background:var(--gd-grey-400)"></span>Offline</span>
+      </div>
+
+      <h3>Progress &amp; loading</h3>
+      <div style="display:flex;flex-direction:column;gap:12px;max-width:480px">
+        <div class="gd-progress"></div>
+        <div class="gd-skeleton" style="width:80%"></div>
+        <div class="gd-skeleton" style="width:60%"></div>
+        <div class="gd-skeleton" style="width:40%"></div>
+        <div class="gd-spinner"></div>
+      </div>
+    </section>
+
+    <section id="navigation" data-fidelity="documented">
+      <h2>
+        <span>Navigation</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://garden.zendesk.com/components/tabs" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+
+      <h3>Tabs</h3>
+      <div class="gd-tabs">
+        <div class="gd-tab active">Conversation</div>
+        <div class="gd-tab">Internal</div>
+        <div class="gd-tab">Customer</div>
+        <div class="gd-tab">Activity</div>
+      </div>
+
+      <h3>Breadcrumb</h3>
+      <div class="gd-breadcrumb">
+        <a href="#">Tickets</a><span>/</span>
+        <a href="#">Open</a><span>/</span>
+        <span>#41892 — Refund request</span>
+      </div>
+
+      <h3>Pagination</h3>
+      <div class="gd-pagination">
+        <button>‹ Prev</button>
+        <button class="active">1</button>
+        <button>2</button>
+        <button>3</button>
+        <button>…</button>
+        <button>12</button>
+        <button>Next ›</button>
+      </div>
+
+      <h3>Stepper</h3>
+      <div class="gd-stepper">
+        <div class="step"><span class="num done">✓</span> Triage</div>
+        <span class="line"></span>
+        <div class="step"><span class="num done">✓</span> Diagnose</div>
+        <span class="line"></span>
+        <div class="step"><span class="num active">3</span> Resolve</div>
+        <span class="line"></span>
+        <div class="step"><span class="num">4</span> Confirm</div>
+      </div>
+
+      <h3>Top bar</h3>
+      <div class="gd-topbar">
+        <button class="gd-btn gd-btn--icon" style="color:white"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+        <span class="brand-mini">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="white" stroke="none"><path d="M2 6 L12 18 L22 6 Z" opacity="0.95"/></svg>
+          Zendesk
+        </span>
+        <input class="gd-input" placeholder="Search tickets, customers, macros..." style="flex:1;max-width:400px">
+        <button class="gd-btn gd-btn--icon" style="color:white"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/></svg></button>
+        <div class="gd-avatar">MK</div>
+      </div>
+    </section>
+
+    <section id="data" data-fidelity="documented">
+      <h2>
+        <span>Data</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://garden.zendesk.com/components/table" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+
+      <h3>Table</h3>
+      <table class="gd-table">
+        <thead>
+          <tr><th>Ticket</th><th>Subject</th><th>Requester</th><th>Priority</th><th>Status</th><th>Updated</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>#41892</code></td>
+            <td>Refund for order #98114</td>
+            <td>Avery Tan</td>
+            <td><span class="gd-tag gd-tag--crimson">Urgent</span></td>
+            <td><span class="gd-tag gd-tag--lemon">Pending</span></td>
+            <td>2m ago</td>
+          </tr>
+          <tr>
+            <td><code>#41891</code></td>
+            <td>Cannot reset password</td>
+            <td>Brett Yu</td>
+            <td><span class="gd-tag gd-tag--solid">High</span></td>
+            <td><span class="gd-tag gd-tag--cactus">Solved</span></td>
+            <td>14m ago</td>
+          </tr>
+          <tr>
+            <td><code>#41890</code></td>
+            <td>Feature request: SAML</td>
+            <td>Cleo Park</td>
+            <td><span class="gd-tag">Normal</span></td>
+            <td><span class="gd-tag gd-tag--royal">Open</span></td>
+            <td>1h ago</td>
+          </tr>
+          <tr>
+            <td><code>#41889</code></td>
+            <td>Billing question</td>
+            <td>Dakota Kim</td>
+            <td><span class="gd-tag">Low</span></td>
+            <td><span class="gd-tag gd-tag--cactus">Solved</span></td>
+            <td>3h ago</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>List</h3>
+      <ul class="gd-list">
+        <li><div class="gd-avatar">A</div><div><strong>Avery Tan</strong><div style="font-size:12px;color:var(--gd-text-3)">Replied to ticket #41892 · 2m ago</div></div></li>
+        <li><div class="gd-avatar" style="background:var(--gd-cactus-500)">B</div><div><strong>Brett Yu</strong><div style="font-size:12px;color:var(--gd-text-3)">Resolved ticket #41891 · 14m ago</div></div></li>
+        <li><div class="gd-avatar" style="background:var(--gd-lemon-500)">C</div><div><strong>Cleo Park</strong><div style="font-size:12px;color:var(--gd-text-3)">Submitted ticket #41890 · 1h ago</div></div></li>
+      </ul>
+
+      <h3>Key – value</h3>
+      <dl class="gd-kv">
+        <dt>Ticket ID</dt><dd>#41892</dd>
+        <dt>Channel</dt><dd>Email</dd>
+        <dt>Group</dt><dd>Billing & Refunds</dd>
+        <dt>Assignee</dt><dd>Cleo Park</dd>
+        <dt>Tags</dt><dd>refund, vip, sla-warning</dd>
+        <dt>Created</dt><dd>2026-05-04 09:12 UTC</dd>
+      </dl>
+
+      <h3>Empty state</h3>
+      <div class="gd-empty">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a4 4 0 0 1-4 4H8l-5 4 1-4H4a3 3 0 0 1-3-3v-7a3 3 0 0 1 3-3h13a4 4 0 0 1 4 4z"/></svg>
+        <h4>No new conversations</h4>
+        <p style="font-size:13px;margin:0">When a customer reaches out, their conversation will appear here.</p>
+      </div>
+    </section>
+
+    <section id="layout" data-fidelity="documented">
+      <h2>
+        <span>Layout</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://garden.zendesk.com/components/grid" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--gd-text-2)">Garden uses a 4dp spacing scale and a 12-column responsive grid. Breakpoints: xs (≤576), sm (577-767), md (768-991), lg (992-1199), xl (1200+).</p>
+
+      <h3>12-column grid</h3>
+      <div class="grid-demo">
+        <div style="grid-column:span 12">12</div>
+        <div style="grid-column:span 8">8</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 6">6</div>
+        <div style="grid-column:span 6">6</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+      </div>
+
+      <h3>Spacing scale (4dp)</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div class="swatch" style="width:4px;height:32px"></div><span class="lbl">2 (4)</span></div>
+        <div class="scale-item"><div class="swatch" style="width:8px;height:32px"></div><span class="lbl">3 (8)</span></div>
+        <div class="scale-item"><div class="swatch" style="width:12px;height:32px"></div><span class="lbl">4 (12)</span></div>
+        <div class="scale-item"><div class="swatch" style="width:16px;height:32px"></div><span class="lbl">5 (16)</span></div>
+        <div class="scale-item"><div class="swatch" style="width:24px;height:32px"></div><span class="lbl">6 (24)</span></div>
+        <div class="scale-item"><div class="swatch" style="width:32px;height:32px"></div><span class="lbl">7 (32)</span></div>
+        <div class="scale-item"><div class="swatch" style="width:48px;height:32px"></div><span class="lbl">8 (48)</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:32px"></div><span class="lbl">9 (64)</span></div>
+      </div>
+
+      <h3>Shape scale</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:0;background:var(--gd-kale-200)"></div><span class="lbl">none 0</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:4px;background:var(--gd-kale-200)"></div><span class="lbl">sm 4</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:6px;background:var(--gd-kale-200)"></div><span class="lbl">md 6</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:8px;background:var(--gd-kale-200)"></div><span class="lbl">lg 8</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:12px;background:var(--gd-kale-200)"></div><span class="lbl">xl 12</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:50%;background:var(--gd-kale-200)"></div><span class="lbl">circle</span></div>
+      </div>
+
+      <h3>Elevation (4 levels)</h3>
+      <div>
+        <div class="shadow-demo" style="box-shadow:none;border:1px solid var(--gd-grey-200)">flat</div>
+        <div class="shadow-demo" style="box-shadow:var(--gd-elev-1)">elev-1</div>
+        <div class="shadow-demo" style="box-shadow:var(--gd-elev-2)">elev-2</div>
+        <div class="shadow-demo" style="box-shadow:var(--gd-elev-3)">elev-3</div>
+        <div class="shadow-demo" style="box-shadow:var(--gd-elev-4)">elev-4</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="ds-footer">
+    <h3>Sources</h3>
+    <ul>
+      <li><a href="https://garden.zendesk.com" target="_blank" rel="noopener">https://garden.zendesk.com</a></li>
+      <li><a href="https://garden.zendesk.com/design/color" target="_blank" rel="noopener">https://garden.zendesk.com/design/color</a></li>
+      <li><a href="https://garden.zendesk.com/design/typography" target="_blank" rel="noopener">https://garden.zendesk.com/design/typography</a></li>
+      <li><a href="https://garden.zendesk.com/components/icon" target="_blank" rel="noopener">https://garden.zendesk.com/components/icon</a></li>
+      <li><a href="https://garden.zendesk.com/components/button" target="_blank" rel="noopener">https://garden.zendesk.com/components/button</a></li>
+      <li><a href="https://garden.zendesk.com/components/text-field" target="_blank" rel="noopener">https://garden.zendesk.com/components/text-field</a></li>
+      <li><a href="https://garden.zendesk.com/components/tile" target="_blank" rel="noopener">https://garden.zendesk.com/components/tile</a></li>
+      <li><a href="https://garden.zendesk.com/components/notification" target="_blank" rel="noopener">https://garden.zendesk.com/components/notification</a></li>
+      <li><a href="https://garden.zendesk.com/components/tabs" target="_blank" rel="noopener">https://garden.zendesk.com/components/tabs</a></li>
+      <li><a href="https://garden.zendesk.com/components/table" target="_blank" rel="noopener">https://garden.zendesk.com/components/table</a></li>
+      <li><a href="https://garden.zendesk.com/components/grid" target="_blank" rel="noopener">https://garden.zendesk.com/components/grid</a></li>
+    </ul>
+    <p class="license-note">This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Zendesk. Garden and related trademarks belong to Zendesk. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</p>
+    <p class="meta-note">Reproduction date: 2026-05-05 · sourceStatus: verified · fidelity: documented</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,1423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Material Design 3 — Design System Reference</title>
+  <script id="ds-meta" type="application/json">
+{"id":"01-material-design-3","fileSlug":"01-material-design-3","schemaVersion":"1"}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,300..900&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* M3 Baseline Light Tokens */
+      --md-primary: #6750A4;
+      --md-on-primary: #FFFFFF;
+      --md-primary-container: #EADDFF;
+      --md-on-primary-container: #21005D;
+      --md-secondary: #625B71;
+      --md-on-secondary: #FFFFFF;
+      --md-secondary-container: #E8DEF8;
+      --md-on-secondary-container: #1D192B;
+      --md-tertiary: #7D5260;
+      --md-on-tertiary: #FFFFFF;
+      --md-tertiary-container: #FFD8E4;
+      --md-on-tertiary-container: #31111D;
+      --md-error: #B3261E;
+      --md-on-error: #FFFFFF;
+      --md-error-container: #F9DEDC;
+      --md-on-error-container: #410E0B;
+      --md-background: #FFFBFE;
+      --md-on-background: #1C1B1F;
+      --md-surface: #FEF7FF;
+      --md-on-surface: #1D1B20;
+      --md-surface-variant: #E7E0EC;
+      --md-on-surface-variant: #49454F;
+      --md-outline: #79747E;
+      --md-outline-variant: #CAC4D0;
+      --md-surface-container-lowest: #FFFFFF;
+      --md-surface-container-low: #F7F2FA;
+      --md-surface-container: #F3EDF7;
+      --md-surface-container-high: #ECE6F0;
+      --md-surface-container-highest: #E6E0E9;
+
+      /* Tonal palette samples */
+      --md-p10: #21005D;
+      --md-p20: #381E72;
+      --md-p30: #4F378B;
+      --md-p40: #6750A4;
+      --md-p50: #7F67BE;
+      --md-p60: #9A82DB;
+      --md-p70: #B69DF8;
+      --md-p80: #D0BCFF;
+      --md-p90: #EADDFF;
+      --md-p95: #F6EDFF;
+      --md-p99: #FFFBFE;
+
+      /* Neutral palette */
+      --md-n10: #1C1B1F;
+      --md-n20: #313033;
+      --md-n30: #484649;
+      --md-n40: #605D62;
+      --md-n50: #787579;
+      --md-n60: #939094;
+      --md-n70: #AEAAAE;
+      --md-n80: #C9C5CA;
+      --md-n90: #E6E1E5;
+      --md-n95: #F4EFF4;
+      --md-n99: #FFFBFE;
+
+      /* Semantic */
+      --md-success: #146B3A;
+      --md-warning: #E0A100;
+      --md-info: #0061A4;
+
+      /* Type */
+      --md-font: 'Roboto Flex', system-ui, -apple-system, sans-serif;
+      --md-mono: 'Roboto Mono', ui-monospace, monospace;
+
+      /* Shape (M3 Shape scale) */
+      --md-shape-none: 0px;
+      --md-shape-xs: 4px;
+      --md-shape-sm: 8px;
+      --md-shape-md: 12px;
+      --md-shape-lg: 16px;
+      --md-shape-xl: 28px;
+      --md-shape-full: 999px;
+
+      /* Spacing — M3 uses 4dp grid */
+      --md-space-1: 4px;
+      --md-space-2: 8px;
+      --md-space-3: 12px;
+      --md-space-4: 16px;
+      --md-space-5: 24px;
+      --md-space-6: 32px;
+      --md-space-7: 48px;
+      --md-space-8: 64px;
+
+      /* Elevation (tonal overlay + shadow) */
+      --md-elev-1: 0 1px 2px rgba(0,0,0,0.30), 0 1px 3px 1px rgba(0,0,0,0.15);
+      --md-elev-2: 0 1px 2px rgba(0,0,0,0.30), 0 2px 6px 2px rgba(0,0,0,0.15);
+      --md-elev-3: 0 1px 3px rgba(0,0,0,0.30), 0 4px 8px 3px rgba(0,0,0,0.15);
+      --md-elev-4: 0 2px 3px rgba(0,0,0,0.30), 0 6px 10px 4px rgba(0,0,0,0.15);
+      --md-elev-5: 0 4px 4px rgba(0,0,0,0.30), 0 8px 12px 6px rgba(0,0,0,0.15);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: var(--md-font);
+      font-variation-settings: "wght" 400, "opsz" 14;
+      background: var(--md-surface-container-low);
+      color: var(--md-on-surface);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    code, kbd, pre { font-family: var(--md-mono); }
+
+    /* Header */
+    .ds-header {
+      background: var(--md-primary-container);
+      color: var(--md-on-primary-container);
+      padding: var(--md-space-7) var(--md-space-6) var(--md-space-6);
+      border-bottom: 1px solid var(--md-outline-variant);
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--md-space-2);
+      color: var(--md-on-primary-container);
+      text-decoration: none;
+      padding: 6px 12px;
+      border-radius: var(--md-shape-full);
+      font-size: 14px;
+      font-variation-settings: "wght" 500;
+      transition: background 0.2s;
+    }
+    .back-link:hover { background: rgba(103,80,164,0.08); }
+
+    .ds-header h1 {
+      font-size: 57px;
+      line-height: 64px;
+      font-variation-settings: "wght" 400;
+      letter-spacing: -0.25px;
+      margin: var(--md-space-4) 0 var(--md-space-3);
+    }
+
+    .ds-header .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--md-space-2);
+      align-items: center;
+      margin-bottom: var(--md-space-3);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 12px;
+      border-radius: var(--md-shape-full);
+      font-size: 12px;
+      font-variation-settings: "wght" 500;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      border: 1px solid var(--md-outline);
+      background: rgba(255,255,255,0.5);
+      color: var(--md-on-surface-variant);
+    }
+    .badge.kind-ds { background: var(--md-primary); color: var(--md-on-primary); border-color: transparent; }
+    .badge.fidelity-documented { background: #DCEDC8; color: #1B5E20; border-color: transparent; }
+    .badge.fidelity-approximated { background: #FFF3E0; color: #E65100; border-color: transparent; }
+    .badge.fidelity-inspired { background: #F3E5F5; color: #4A148C; border-color: transparent; }
+    .badge.source-verified { background: #E1F5FE; color: #01579B; border-color: transparent; }
+
+    .ds-header a[href*="m3.material.io"] {
+      color: var(--md-primary);
+      text-decoration: none;
+      font-variation-settings: "wght" 500;
+      padding: 4px 12px;
+      border: 1px solid var(--md-outline);
+      border-radius: var(--md-shape-full);
+      font-size: 13px;
+      background: var(--md-surface);
+    }
+    .ds-header a[href*="m3.material.io"]:hover { background: var(--md-surface-container); }
+
+    .tagline {
+      font-size: 22px;
+      line-height: 28px;
+      max-width: 720px;
+      margin: var(--md-space-4) 0 0;
+      color: var(--md-on-primary-container);
+      opacity: 0.9;
+    }
+
+    /* TOC */
+    .toc {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: var(--md-surface-container-low);
+      border-bottom: 1px solid var(--md-outline-variant);
+      backdrop-filter: blur(8px);
+    }
+    .toc ul {
+      list-style: none;
+      margin: 0;
+      padding: var(--md-space-3) var(--md-space-6);
+      display: flex;
+      gap: var(--md-space-2);
+      overflow-x: auto;
+      max-width: 100%;
+    }
+    .toc a {
+      display: inline-block;
+      padding: 8px 16px;
+      border-radius: var(--md-shape-full);
+      color: var(--md-on-surface-variant);
+      text-decoration: none;
+      font-size: 14px;
+      font-variation-settings: "wght" 500;
+      white-space: nowrap;
+      border: 1px solid var(--md-outline-variant);
+      transition: all 0.2s;
+    }
+    .toc a:hover { background: var(--md-secondary-container); color: var(--md-on-secondary-container); border-color: transparent; }
+
+    /* Main */
+    main {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: var(--md-space-6);
+    }
+
+    section {
+      background: var(--md-surface);
+      border-radius: var(--md-shape-xl);
+      padding: var(--md-space-6);
+      margin-bottom: var(--md-space-6);
+      box-shadow: var(--md-elev-1);
+    }
+
+    section h2 {
+      display: flex;
+      align-items: center;
+      gap: var(--md-space-3);
+      flex-wrap: wrap;
+      font-size: 32px;
+      line-height: 40px;
+      font-variation-settings: "wght" 400;
+      margin: 0 0 var(--md-space-5);
+      color: var(--md-on-surface);
+    }
+
+    .source-link {
+      font-size: 13px;
+      color: var(--md-primary);
+      text-decoration: none;
+      font-variation-settings: "wght" 500;
+    }
+    .source-link:hover { text-decoration: underline; }
+
+    h3 {
+      font-size: 22px;
+      line-height: 28px;
+      font-variation-settings: "wght" 500;
+      margin: var(--md-space-5) 0 var(--md-space-3);
+      color: var(--md-on-surface);
+    }
+
+    h4 {
+      font-size: 16px;
+      line-height: 24px;
+      font-variation-settings: "wght" 500;
+      letter-spacing: 0.15px;
+      margin: var(--md-space-4) 0 var(--md-space-2);
+      color: var(--md-on-surface-variant);
+    }
+
+    p { margin: 0 0 var(--md-space-3); }
+
+    /* Brand */
+    #brand .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--md-space-3);
+      padding: var(--md-space-3) var(--md-space-5);
+      background: linear-gradient(135deg, var(--md-primary), var(--md-tertiary));
+      border-radius: var(--md-shape-xl);
+      color: white;
+      font-size: 28px;
+      font-variation-settings: "wght" 500;
+    }
+    #brand .brand-mark svg {
+      width: 36px; height: 36px;
+    }
+    #brand .pillars {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--md-space-4);
+      margin-top: var(--md-space-5);
+    }
+    #brand .pillar {
+      padding: var(--md-space-4);
+      background: var(--md-surface-container);
+      border-radius: var(--md-shape-lg);
+    }
+    #brand .pillar h4 {
+      margin-top: 0;
+      color: var(--md-primary);
+    }
+
+    /* Color */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(11, 1fr);
+      gap: 2px;
+      margin-bottom: var(--md-space-4);
+    }
+    .color-cell {
+      aspect-ratio: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 6px;
+      font-size: 10px;
+      font-family: var(--md-mono);
+      border-radius: 0;
+    }
+    .color-cell:first-child { border-radius: var(--md-shape-md) 0 0 var(--md-shape-md); }
+    .color-cell:last-child { border-radius: 0 var(--md-shape-md) var(--md-shape-md) 0; }
+
+    .semantic-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
+      gap: var(--md-space-3);
+    }
+    .sem-card {
+      padding: var(--md-space-4);
+      border-radius: var(--md-shape-md);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .sem-card .label { font-size: 14px; font-variation-settings: "wght" 500; }
+    .sem-card .hex { font-family: var(--md-mono); font-size: 12px; opacity: 0.85; }
+
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--md-space-2);
+      margin-bottom: var(--md-space-4);
+    }
+    .role-chip {
+      padding: var(--md-space-3) var(--md-space-4);
+      border-radius: var(--md-shape-md);
+      font-size: 13px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .role-chip code { font-size: 11px; opacity: 0.8; }
+
+    /* Typography */
+    .type-row {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: var(--md-space-4);
+      padding: var(--md-space-3) 0;
+      border-bottom: 1px solid var(--md-outline-variant);
+      align-items: baseline;
+    }
+    .type-row:last-child { border-bottom: 0; }
+    .type-row .label {
+      font-family: var(--md-mono);
+      font-size: 12px;
+      color: var(--md-on-surface-variant);
+    }
+    .display-l { font-size: 57px; line-height: 64px; font-variation-settings: "wght" 400; letter-spacing: -0.25px; }
+    .display-m { font-size: 45px; line-height: 52px; font-variation-settings: "wght" 400; }
+    .display-s { font-size: 36px; line-height: 44px; font-variation-settings: "wght" 400; }
+    .headline-l { font-size: 32px; line-height: 40px; font-variation-settings: "wght" 400; }
+    .headline-m { font-size: 28px; line-height: 36px; font-variation-settings: "wght" 400; }
+    .headline-s { font-size: 24px; line-height: 32px; font-variation-settings: "wght" 400; }
+    .title-l { font-size: 22px; line-height: 28px; font-variation-settings: "wght" 500; }
+    .title-m { font-size: 16px; line-height: 24px; font-variation-settings: "wght" 500; letter-spacing: 0.15px; }
+    .title-s { font-size: 14px; line-height: 20px; font-variation-settings: "wght" 500; letter-spacing: 0.1px; }
+    .body-l { font-size: 16px; line-height: 24px; }
+    .body-m { font-size: 14px; line-height: 20px; }
+    .body-s { font-size: 12px; line-height: 16px; }
+    .label-l { font-size: 14px; line-height: 20px; font-variation-settings: "wght" 500; letter-spacing: 0.1px; }
+    .label-m { font-size: 12px; line-height: 16px; font-variation-settings: "wght" 500; letter-spacing: 0.5px; }
+    .label-s { font-size: 11px; line-height: 16px; font-variation-settings: "wght" 500; letter-spacing: 0.5px; }
+    .mono-sample { font-family: var(--md-mono); font-size: 14px; color: var(--md-on-surface-variant); }
+
+    /* Iconography */
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(80px,1fr));
+      gap: var(--md-space-3);
+    }
+    .icon-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: var(--md-space-3);
+      background: var(--md-surface-container);
+      border-radius: var(--md-shape-md);
+    }
+    .icon-cell svg { width: 24px; height: 24px; stroke: var(--md-on-surface); }
+    .icon-cell span { font-size: 11px; color: var(--md-on-surface-variant); }
+
+    /* Buttons */
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--md-space-3);
+      align-items: center;
+      margin-bottom: var(--md-space-3);
+    }
+
+    .md-btn {
+      font-family: var(--md-font);
+      font-size: 14px;
+      font-variation-settings: "wght" 500;
+      letter-spacing: 0.1px;
+      padding: 10px 24px;
+      border-radius: var(--md-shape-full);
+      border: 0;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      height: 40px;
+      transition: box-shadow 0.2s, background 0.2s;
+    }
+    .md-btn--filled { background: var(--md-primary); color: var(--md-on-primary); }
+    .md-btn--filled:hover { background: #785AB6; box-shadow: var(--md-elev-1); }
+    .md-btn--filled:disabled { background: rgba(29,27,32,0.12); color: rgba(29,27,32,0.38); cursor: not-allowed; box-shadow: none; }
+    .md-btn--tonal { background: var(--md-secondary-container); color: var(--md-on-secondary-container); }
+    .md-btn--tonal:hover { background: #DCD0EE; box-shadow: var(--md-elev-1); }
+    .md-btn--elevated { background: var(--md-surface-container-low); color: var(--md-primary); box-shadow: var(--md-elev-1); }
+    .md-btn--elevated:hover { box-shadow: var(--md-elev-2); }
+    .md-btn--outlined { background: transparent; color: var(--md-primary); border: 1px solid var(--md-outline); }
+    .md-btn--outlined:hover { background: rgba(103,80,164,0.08); }
+    .md-btn--text { background: transparent; color: var(--md-primary); padding: 10px 12px; }
+    .md-btn--text:hover { background: rgba(103,80,164,0.08); }
+    .md-btn--icon { width: 40px; height: 40px; padding: 0; justify-content: center; background: transparent; color: var(--md-on-surface-variant); }
+    .md-btn--icon:hover { background: var(--md-surface-container-high); }
+    .md-btn--sm { height: 32px; padding: 6px 16px; font-size: 13px; }
+    .md-btn--lg { height: 56px; padding: 16px 32px; font-size: 16px; }
+    .md-btn:focus-visible { outline: 2px solid var(--md-primary); outline-offset: 2px; }
+
+    /* Form */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+      gap: var(--md-space-4);
+    }
+    .md-field {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .md-field--filled .md-input {
+      background: var(--md-surface-container-highest);
+      border: 0;
+      border-bottom: 1px solid var(--md-on-surface-variant);
+      border-radius: var(--md-shape-xs) var(--md-shape-xs) 0 0;
+      padding: 24px 16px 8px;
+      font-family: var(--md-font);
+      font-size: 16px;
+      color: var(--md-on-surface);
+      outline: none;
+      width: 100%;
+    }
+    .md-field--filled .md-label {
+      position: absolute;
+      top: 8px;
+      left: 16px;
+      font-size: 12px;
+      color: var(--md-on-surface-variant);
+    }
+    .md-field--filled .md-input:focus { border-bottom: 2px solid var(--md-primary); }
+    .md-field--filled .md-input:focus + .md-label { color: var(--md-primary); }
+    .md-field--outlined .md-input {
+      background: transparent;
+      border: 1px solid var(--md-outline);
+      border-radius: var(--md-shape-xs);
+      padding: 16px;
+      font-family: var(--md-font);
+      font-size: 16px;
+      color: var(--md-on-surface);
+      outline: none;
+      width: 100%;
+    }
+    .md-field--outlined .md-input:focus { border: 2px solid var(--md-primary); padding: 15px; }
+    .md-field--outlined .md-label {
+      position: absolute;
+      top: -7px;
+      left: 12px;
+      font-size: 12px;
+      color: var(--md-on-surface-variant);
+      background: var(--md-surface);
+      padding: 0 4px;
+    }
+    .md-helper { font-size: 12px; color: var(--md-on-surface-variant); padding-left: 16px; }
+    .md-error { color: var(--md-error); }
+
+    .md-field textarea.md-input { min-height: 80px; resize: vertical; }
+    .md-field select.md-input { appearance: none; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2349454F' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 40px; }
+
+    .md-checkbox, .md-radio {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .md-checkbox input, .md-radio input { width: 18px; height: 18px; accent-color: var(--md-primary); }
+    .md-switch { position: relative; display: inline-block; width: 52px; height: 32px; }
+    .md-switch input { opacity: 0; width: 0; height: 0; }
+    .md-switch .slider {
+      position: absolute; cursor: pointer; inset: 0;
+      background: var(--md-surface-container-highest);
+      border: 2px solid var(--md-outline);
+      border-radius: var(--md-shape-full);
+      transition: 0.2s;
+    }
+    .md-switch .slider::before {
+      content: ''; position: absolute;
+      width: 16px; height: 16px;
+      left: 6px; top: 6px;
+      background: var(--md-outline);
+      border-radius: 50%;
+      transition: 0.2s;
+    }
+    .md-switch input:checked + .slider { background: var(--md-primary); border-color: var(--md-primary); }
+    .md-switch input:checked + .slider::before { background: var(--md-on-primary); transform: translateX(20px); width: 24px; height: 24px; left: 2px; top: 2px; }
+
+    .md-slider { width: 100%; accent-color: var(--md-primary); }
+
+    /* Surfaces */
+    .surface-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
+      gap: var(--md-space-4);
+    }
+    .md-card {
+      background: var(--md-surface-container-low);
+      border-radius: var(--md-shape-md);
+      padding: var(--md-space-4);
+      box-shadow: var(--md-elev-1);
+    }
+    .md-card--elevated { box-shadow: var(--md-elev-2); background: var(--md-surface-container-low); }
+    .md-card--outlined { box-shadow: none; border: 1px solid var(--md-outline-variant); background: var(--md-surface); }
+    .md-card .media { height: 120px; background: linear-gradient(135deg, var(--md-tertiary-container), var(--md-primary-container)); border-radius: var(--md-shape-md); margin-bottom: var(--md-space-3); }
+    .md-card h4 { margin: 0 0 4px; color: var(--md-on-surface); }
+    .md-card p { font-size: 14px; color: var(--md-on-surface-variant); margin: 0; }
+
+    .md-stat { padding: var(--md-space-4); background: var(--md-primary-container); border-radius: var(--md-shape-lg); color: var(--md-on-primary-container); }
+    .md-stat .num { font-size: 32px; font-variation-settings: "wght" 400; line-height: 1; }
+    .md-stat .lbl { font-size: 12px; opacity: 0.8; margin-top: 4px; }
+
+    .md-modal {
+      background: var(--md-surface-container-high);
+      padding: var(--md-space-5);
+      border-radius: var(--md-shape-xl);
+      box-shadow: var(--md-elev-3);
+      max-width: 360px;
+    }
+
+    /* Feedback */
+    .md-alert {
+      display: flex;
+      gap: var(--md-space-3);
+      padding: var(--md-space-3) var(--md-space-4);
+      border-radius: var(--md-shape-md);
+      margin-bottom: var(--md-space-2);
+      font-size: 14px;
+      align-items: flex-start;
+    }
+    .md-alert--info { background: #E1F5FE; color: #01579B; }
+    .md-alert--success { background: #DCEDC8; color: #1B5E20; }
+    .md-alert--warn { background: #FFF3E0; color: #E65100; }
+    .md-alert--error { background: var(--md-error-container); color: var(--md-on-error-container); }
+
+    .md-snackbar {
+      background: #322F35;
+      color: #F4EFF4;
+      padding: 14px 16px;
+      border-radius: var(--md-shape-xs);
+      box-shadow: var(--md-elev-3);
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 14px;
+    }
+    .md-snackbar button { background: transparent; color: var(--md-p80); border: 0; font-variation-settings: "wght" 500; cursor: pointer; }
+
+    .md-banner {
+      display: flex;
+      gap: var(--md-space-3);
+      padding: var(--md-space-3) var(--md-space-4);
+      background: var(--md-surface-container);
+      border-radius: var(--md-shape-md);
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .md-chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .md-chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 12px;
+      border-radius: var(--md-shape-sm);
+      border: 1px solid var(--md-outline);
+      background: var(--md-surface);
+      font-size: 13px;
+      font-variation-settings: "wght" 500;
+    }
+    .md-chip--filled { background: var(--md-secondary-container); color: var(--md-on-secondary-container); border-color: transparent; }
+    .md-chip--primary { background: var(--md-primary); color: var(--md-on-primary); border-color: transparent; }
+    .md-chip--error { background: var(--md-error-container); color: var(--md-on-error-container); border-color: transparent; }
+    .md-chip--warn { background: #FFF3E0; color: #E65100; border-color: transparent; }
+    .md-chip--success { background: #DCEDC8; color: #1B5E20; border-color: transparent; }
+
+    .md-badge { background: var(--md-error); color: var(--md-on-error); border-radius: var(--md-shape-full); font-size: 11px; padding: 2px 6px; min-width: 16px; display: inline-flex; justify-content: center; }
+
+    .md-progress {
+      width: 100%; height: 4px;
+      background: var(--md-surface-container-highest);
+      border-radius: var(--md-shape-full);
+      overflow: hidden;
+    }
+    .md-progress::after {
+      content: ''; display: block;
+      height: 100%; width: 60%;
+      background: var(--md-primary);
+    }
+
+    .md-skeleton {
+      height: 14px;
+      background: linear-gradient(90deg, var(--md-surface-container-high), var(--md-surface-container), var(--md-surface-container-high));
+      background-size: 200% 100%;
+      border-radius: var(--md-shape-xs);
+      animation: shimmer 1.5s infinite;
+    }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+    .md-spinner {
+      width: 32px; height: 32px;
+      border: 3px solid var(--md-surface-container-highest);
+      border-top-color: var(--md-primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Navigation */
+    .md-tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--md-outline-variant);
+      margin-bottom: var(--md-space-3);
+    }
+    .md-tab {
+      padding: var(--md-space-3) var(--md-space-4);
+      font-size: 14px;
+      font-variation-settings: "wght" 500;
+      color: var(--md-on-surface-variant);
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+    }
+    .md-tab.active { color: var(--md-primary); border-bottom-color: var(--md-primary); }
+
+    .md-breadcrumb { display: flex; gap: 8px; align-items: center; font-size: 14px; color: var(--md-on-surface-variant); }
+    .md-breadcrumb a { color: var(--md-primary); text-decoration: none; }
+
+    .md-pagination { display: flex; gap: 4px; align-items: center; }
+    .md-pagination button {
+      width: 36px; height: 36px;
+      border-radius: var(--md-shape-full);
+      border: 0;
+      background: transparent;
+      color: var(--md-on-surface);
+      cursor: pointer;
+      font-family: var(--md-font);
+      font-size: 14px;
+    }
+    .md-pagination button.active { background: var(--md-primary); color: var(--md-on-primary); }
+    .md-pagination button:hover:not(.active) { background: var(--md-surface-container-high); }
+
+    .md-stepper { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+    .md-stepper .step { display: inline-flex; align-items: center; gap: 8px; }
+    .md-stepper .num {
+      width: 24px; height: 24px; border-radius: 50%;
+      background: var(--md-surface-container-high); color: var(--md-on-surface-variant);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 12px; font-variation-settings: "wght" 500;
+    }
+    .md-stepper .num.active { background: var(--md-primary); color: var(--md-on-primary); }
+    .md-stepper .line { flex: 1; height: 1px; background: var(--md-outline-variant); }
+
+    .md-sidebar {
+      background: var(--md-surface-container-low);
+      border-radius: var(--md-shape-lg);
+      padding: 12px;
+      width: 240px;
+    }
+    .md-sidebar a {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 16px;
+      border-radius: var(--md-shape-full);
+      color: var(--md-on-surface-variant);
+      text-decoration: none;
+      font-size: 14px;
+      font-variation-settings: "wght" 500;
+    }
+    .md-sidebar a.active { background: var(--md-secondary-container); color: var(--md-on-secondary-container); }
+
+    .md-topbar {
+      display: flex; align-items: center; gap: 16px;
+      padding: 12px 16px;
+      background: var(--md-surface);
+      border-radius: var(--md-shape-md);
+      box-shadow: var(--md-elev-1);
+    }
+
+    .md-menu {
+      background: var(--md-surface-container);
+      border-radius: var(--md-shape-xs);
+      box-shadow: var(--md-elev-2);
+      padding: 8px 0;
+      width: 200px;
+    }
+    .md-menu .item { padding: 10px 16px; font-size: 14px; cursor: pointer; }
+    .md-menu .item:hover { background: var(--md-surface-container-high); }
+
+    /* Data */
+    table.md-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    table.md-table th, table.md-table td {
+      text-align: left;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--md-outline-variant);
+    }
+    table.md-table th { font-variation-settings: "wght" 500; color: var(--md-on-surface-variant); }
+    table.md-table tr:hover { background: var(--md-surface-container-low); }
+
+    .md-list { list-style: none; padding: 0; margin: 0; }
+    .md-list li {
+      padding: 12px 16px;
+      display: flex; gap: 12px; align-items: center;
+      border-bottom: 1px solid var(--md-outline-variant);
+    }
+    .md-list li:last-child { border-bottom: 0; }
+
+    .md-kv { display: grid; grid-template-columns: 140px 1fr; gap: 12px; font-size: 14px; }
+    .md-kv dt { color: var(--md-on-surface-variant); font-variation-settings: "wght" 500; }
+
+    .md-avatar {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: var(--md-tertiary-container);
+      color: var(--md-on-tertiary-container);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-variation-settings: "wght" 500;
+    }
+
+    .md-empty {
+      text-align: center;
+      padding: var(--md-space-7) var(--md-space-4);
+      color: var(--md-on-surface-variant);
+    }
+    .md-empty svg { width: 48px; height: 48px; opacity: 0.4; }
+
+    /* Layout */
+    .grid-demo {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 16px;
+      background: var(--md-surface-container);
+      padding: 16px;
+      border-radius: var(--md-shape-md);
+    }
+    .grid-demo > div {
+      background: var(--md-primary-container);
+      color: var(--md-on-primary-container);
+      padding: 12px;
+      border-radius: var(--md-shape-xs);
+      font-size: 12px;
+      font-variation-settings: "wght" 500;
+      text-align: center;
+    }
+
+    .scale-row {
+      display: flex;
+      gap: var(--md-space-3);
+      flex-wrap: wrap;
+      align-items: flex-end;
+      margin-bottom: var(--md-space-4);
+    }
+    .scale-item {
+      display: flex; flex-direction: column; gap: 6px;
+      align-items: center;
+    }
+    .scale-item .swatch {
+      background: var(--md-primary);
+    }
+    .scale-item .lbl { font-size: 11px; font-family: var(--md-mono); color: var(--md-on-surface-variant); }
+
+    .shadow-demo {
+      width: 80px; height: 80px;
+      background: var(--md-surface);
+      border-radius: var(--md-shape-md);
+      display: inline-flex; align-items: center; justify-content: center;
+      margin-right: 16px; margin-bottom: 16px;
+      font-size: 11px; font-family: var(--md-mono); color: var(--md-on-surface-variant);
+    }
+
+    /* Footer */
+    .ds-footer {
+      background: var(--md-surface-container);
+      padding: var(--md-space-6);
+      margin-top: var(--md-space-7);
+      color: var(--md-on-surface);
+    }
+    .ds-footer h3 { margin-top: 0; }
+    .ds-footer ul { padding-left: 20px; }
+    .ds-footer li { margin-bottom: 4px; word-break: break-all; font-size: 13px; }
+    .ds-footer a { color: var(--md-primary); text-decoration: none; }
+    .license-note { font-size: 13px; color: var(--md-on-surface-variant); margin-top: var(--md-space-4); }
+    .meta-note { font-size: 12px; color: var(--md-on-surface-variant); font-family: var(--md-mono); margin-top: var(--md-space-2); }
+
+    @media (max-width: 720px) {
+      .ds-header h1 { font-size: 36px; line-height: 44px; }
+      main { padding: var(--md-space-4); }
+      section { padding: var(--md-space-4); }
+      .type-row { grid-template-columns: 1fr; }
+      .color-grid { grid-template-columns: repeat(6, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <header class="ds-header">
+    <a href="index.html" class="back-link">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Catalog
+    </a>
+    <h1>Material Design 3</h1>
+    <div class="meta">
+      <span class="badge kind-ds">design-system</span>
+      <span class="badge fidelity-approximated">approximated</span>
+      <span class="badge source-verified">source: verified</span>
+      <a href="https://m3.material.io" target="_blank" rel="noopener">Official ↗</a>
+    </div>
+    <p class="tagline">Expressive design system with dynamic color, motion-first interactions, and Material You personalization.</p>
+  </header>
+
+  <nav class="toc" aria-label="Table of contents">
+    <ul>
+      <li><a href="#brand">Brand</a></li>
+      <li><a href="#color">Color</a></li>
+      <li><a href="#typography">Typography</a></li>
+      <li><a href="#iconography">Iconography</a></li>
+      <li><a href="#buttons">Buttons</a></li>
+      <li><a href="#form">Form</a></li>
+      <li><a href="#surfaces">Surfaces</a></li>
+      <li><a href="#feedback">Feedback</a></li>
+      <li><a href="#navigation">Navigation</a></li>
+      <li><a href="#data">Data</a></li>
+      <li><a href="#layout">Layout</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="brand" data-fidelity="documented">
+      <h2>
+        <span>Brand</span>
+        <span class="badge fidelity-documented">documented</span>
+      </h2>
+      <div class="brand-mark">
+        <svg viewBox="0 0 36 36" fill="none">
+          <circle cx="18" cy="18" r="16" stroke="white" stroke-width="2.5"/>
+          <path d="M9 26 L18 10 L27 26 Z" fill="white" opacity="0.95"/>
+        </svg>
+        Material 3
+      </div>
+      <p style="margin-top: 24px; max-width: 720px; font-size: 16px; color: var(--md-on-surface-variant);">
+        Material Design 3 (Material You) emphasizes personalization through dynamic color, expressive shape, and adaptive layouts. Tokens are derived from a seed color via HCT, allowing whole-app theming from a single source.
+      </p>
+      <div class="pillars">
+        <div class="pillar">
+          <h4>Personal</h4>
+          <p style="font-size:14px;color:var(--md-on-surface-variant);margin:0">Dynamic color adapts to wallpaper, brand seed, or user choice.</p>
+        </div>
+        <div class="pillar">
+          <h4>Adaptive</h4>
+          <p style="font-size:14px;color:var(--md-on-surface-variant);margin:0">Layouts respond fluidly across phone, foldable, tablet, and desktop.</p>
+        </div>
+        <div class="pillar">
+          <h4>Expressive</h4>
+          <p style="font-size:14px;color:var(--md-on-surface-variant);margin:0">Variable type, motion, and shape carry meaning, not just polish.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="color" data-fidelity="documented">
+      <h2>
+        <span>Color</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://m3.material.io/styles/color/system/overview" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--md-on-surface-variant)">M3 Baseline tonal palette (key tone 40 = Primary). The 11-step scale spans 0 - 100 with intermediate stops at 10/20/30/40/50/60/70/80/90/95/99.</p>
+
+      <h3>Primary tonal palette</h3>
+      <div class="color-grid">
+        <div class="color-cell" style="background:#000000;color:white">0</div>
+        <div class="color-cell" style="background:var(--md-p10);color:white">10</div>
+        <div class="color-cell" style="background:var(--md-p20);color:white">20</div>
+        <div class="color-cell" style="background:var(--md-p30);color:white">30</div>
+        <div class="color-cell" style="background:var(--md-p40);color:white">40</div>
+        <div class="color-cell" style="background:var(--md-p50);color:white">50</div>
+        <div class="color-cell" style="background:var(--md-p60);color:white">60</div>
+        <div class="color-cell" style="background:var(--md-p70);color:#21005D">70</div>
+        <div class="color-cell" style="background:var(--md-p80);color:#21005D">80</div>
+        <div class="color-cell" style="background:var(--md-p90);color:#21005D">90</div>
+        <div class="color-cell" style="background:var(--md-p99);color:#21005D">99</div>
+      </div>
+
+      <h3>Neutral tonal palette</h3>
+      <div class="color-grid">
+        <div class="color-cell" style="background:#000;color:white">0</div>
+        <div class="color-cell" style="background:var(--md-n10);color:white">10</div>
+        <div class="color-cell" style="background:var(--md-n20);color:white">20</div>
+        <div class="color-cell" style="background:var(--md-n30);color:white">30</div>
+        <div class="color-cell" style="background:var(--md-n40);color:white">40</div>
+        <div class="color-cell" style="background:var(--md-n50);color:white">50</div>
+        <div class="color-cell" style="background:var(--md-n60);color:white">60</div>
+        <div class="color-cell" style="background:var(--md-n70);color:#1C1B1F">70</div>
+        <div class="color-cell" style="background:var(--md-n80);color:#1C1B1F">80</div>
+        <div class="color-cell" style="background:var(--md-n90);color:#1C1B1F">90</div>
+        <div class="color-cell" style="background:var(--md-n99);color:#1C1B1F;border:1px solid var(--md-outline-variant)">99</div>
+      </div>
+
+      <h3>Semantic roles</h3>
+      <div class="semantic-grid">
+        <div class="sem-card" style="background:var(--md-error-container);color:var(--md-on-error-container)">
+          <span class="label">Error</span><span class="hex">#B3261E</span>
+        </div>
+        <div class="sem-card" style="background:#DCEDC8;color:#1B5E20">
+          <span class="label">Success</span><span class="hex">#146B3A</span>
+        </div>
+        <div class="sem-card" style="background:#FFF3E0;color:#E65100">
+          <span class="label">Warning</span><span class="hex">#E0A100</span>
+        </div>
+        <div class="sem-card" style="background:#E1F5FE;color:#01579B">
+          <span class="label">Info</span><span class="hex">#0061A4</span>
+        </div>
+      </div>
+
+      <h3>Color roles (Light)</h3>
+      <div class="role-grid">
+        <div class="role-chip" style="background:var(--md-primary);color:var(--md-on-primary)">Primary <code>#6750A4</code></div>
+        <div class="role-chip" style="background:var(--md-primary-container);color:var(--md-on-primary-container)">Primary Container <code>#EADDFF</code></div>
+        <div class="role-chip" style="background:var(--md-secondary);color:var(--md-on-secondary)">Secondary <code>#625B71</code></div>
+        <div class="role-chip" style="background:var(--md-secondary-container);color:var(--md-on-secondary-container)">Secondary Container <code>#E8DEF8</code></div>
+        <div class="role-chip" style="background:var(--md-tertiary);color:var(--md-on-tertiary)">Tertiary <code>#7D5260</code></div>
+        <div class="role-chip" style="background:var(--md-tertiary-container);color:var(--md-on-tertiary-container)">Tertiary Container <code>#FFD8E4</code></div>
+        <div class="role-chip" style="background:var(--md-surface);color:var(--md-on-surface);border:1px solid var(--md-outline-variant)">Surface <code>#FEF7FF</code></div>
+        <div class="role-chip" style="background:var(--md-surface-variant);color:var(--md-on-surface-variant)">Surface Variant <code>#E7E0EC</code></div>
+      </div>
+    </section>
+
+    <section id="typography" data-fidelity="documented">
+      <h2>
+        <span>Typography</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://m3.material.io/styles/typography/overview" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--md-on-surface-variant)">Roboto Flex (variable). Type scale: Display / Headline / Title / Body / Label, each in L/M/S.</p>
+
+      <div class="type-row"><div class="label">Display L · 57/64</div><div class="display-l">Material You</div></div>
+      <div class="type-row"><div class="label">Display M · 45/52</div><div class="display-m">Adapt &amp; express</div></div>
+      <div class="type-row"><div class="label">Display S · 36/44</div><div class="display-s">Personal &amp; dynamic</div></div>
+      <div class="type-row"><div class="label">Headline L · 32/40</div><div class="headline-l">Tonal palette by HCT</div></div>
+      <div class="type-row"><div class="label">Headline M · 28/36</div><div class="headline-m">Variable axes carry meaning</div></div>
+      <div class="type-row"><div class="label">Headline S · 24/32</div><div class="headline-s">Shape, color, motion</div></div>
+      <div class="type-row"><div class="label">Title L · 22/28 · 500</div><div class="title-l">Component title</div></div>
+      <div class="type-row"><div class="label">Title M · 16/24 · 500</div><div class="title-m">Section title</div></div>
+      <div class="type-row"><div class="label">Title S · 14/20 · 500</div><div class="title-s">List heading</div></div>
+      <div class="type-row"><div class="label">Body L · 16/24</div><div class="body-l">Material 3 introduces dynamic color, derived from a seed via HCT (Hue, Chroma, Tone) and applied across roles like Primary, Secondary, Tertiary, and Surface.</div></div>
+      <div class="type-row"><div class="label">Body M · 14/20</div><div class="body-m">Body M is the default for paragraph copy in compact contexts. It pairs with Title M to form a readable rhythm.</div></div>
+      <div class="type-row"><div class="label">Body S · 12/16</div><div class="body-s">Body S is reserved for captions, helper text, and dense data displays.</div></div>
+      <div class="type-row"><div class="label">Label L · 14/20 · 500</div><div class="label-l">Filled button label</div></div>
+      <div class="type-row"><div class="label">Label M · 12/16 · 500</div><div class="label-m">Tab</div></div>
+      <div class="type-row"><div class="label">Label S · 11/16 · 500</div><div class="label-s">Tooltip</div></div>
+      <div class="type-row"><div class="label">Mono · Roboto Mono</div><div class="mono-sample">--md-sys-color-primary: #6750A4;</div></div>
+    </section>
+
+    <section id="iconography" data-fidelity="approximated">
+      <h2>
+        <span>Iconography</span>
+        <span class="badge fidelity-approximated">approximated</span>
+        <a href="https://m3.material.io/styles/icons/overview" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--md-on-surface-variant)">Material Symbols are variable across weight, fill, grade, and optical size. Below: Lucide-based 24px stroke icons that approximate the outlined Material weight.</p>
+      <div class="icon-grid">
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12L12 3l9 9"/><path d="M5 10v10h14V10"/></svg><span>home</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><span>search</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg><span>account</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4l9 16 2.5-7L21 11z"/></svg><span>send</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h12v16H6z"/><path d="M9 8h6M9 12h6M9 16h4"/></svg><span>article</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>schedule</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.5-2.5l2-1.5-2-3.5-2.5 1A7 7 0 0 0 13 4l-.5-2.5h-4L8 4a7 7 0 0 0-3 1.5l-2.5-1-2 3.5 2 1.5A7 7 0 0 0 5 12c0 .9.2 1.7.5 2.5l-2 1.5 2 3.5 2.5-1c.9.7 2 1.2 3 1.5l.5 2.5h4l.5-2.5c1-.3 2.1-.8 3-1.5l2.5 1 2-3.5-2-1.5c.3-.8.5-1.6.5-2.5z"/></svg><span>settings</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8c0-1-1-2-2-2h-2l-2-2H9L7 6H5c-1 0-2 1-2 2v8c0 1 1 2 2 2h14c1 0 2-1 2-2z"/><circle cx="12" cy="12" r="3.5"/></svg><span>camera</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>check</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg><span>close</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg><span>add</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a4 4 0 0 1-4 4H7l-4 4V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/></svg><span>chat</span></div>
+      </div>
+    </section>
+
+    <section id="buttons" data-fidelity="documented">
+      <h2>
+        <span>Buttons</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://m3.material.io/components/buttons/overview" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--md-on-surface-variant)">M3 defines six button styles in increasing emphasis: Text, Outlined, Elevated, Tonal, Filled, plus Icon. Pill shape (50% radius) by default.</p>
+
+      <h3>Variants</h3>
+      <div class="button-row">
+        <button class="md-btn md-btn--filled">Filled</button>
+        <button class="md-btn md-btn--tonal">Tonal</button>
+        <button class="md-btn md-btn--elevated">Elevated</button>
+        <button class="md-btn md-btn--outlined">Outlined</button>
+        <button class="md-btn md-btn--text">Text</button>
+        <button class="md-btn md-btn--icon" aria-label="favorite">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l8.8 8.8 8.8-8.8a5.5 5.5 0 0 0 0-7.8z"/></svg>
+        </button>
+      </div>
+
+      <h3>Sizes</h3>
+      <div class="button-row">
+        <button class="md-btn md-btn--filled md-btn--sm">Small</button>
+        <button class="md-btn md-btn--filled">Default</button>
+        <button class="md-btn md-btn--filled md-btn--lg">Large</button>
+      </div>
+
+      <h3>States</h3>
+      <div class="button-row">
+        <button class="md-btn md-btn--filled">Enabled</button>
+        <button class="md-btn md-btn--filled" style="background:#785AB6;box-shadow:var(--md-elev-1)">Hover</button>
+        <button class="md-btn md-btn--filled" style="outline:2px solid var(--md-primary);outline-offset:2px">Focus</button>
+        <button class="md-btn md-btn--filled" disabled>Disabled</button>
+      </div>
+    </section>
+
+    <section id="form" data-fidelity="documented">
+      <h2>
+        <span>Form</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://m3.material.io/components/text-fields/overview" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--md-on-surface-variant)">Two text-field flavors: Filled (default) and Outlined. Both include floating label, supporting text, and error state.</p>
+
+      <h3>Text fields</h3>
+      <div class="form-grid">
+        <div class="md-field md-field--filled">
+          <input class="md-input" type="text" id="f1" value="Material You">
+          <label class="md-label" for="f1">Project name</label>
+          <span class="md-helper">Filled · default</span>
+        </div>
+        <div class="md-field md-field--outlined">
+          <input class="md-input" type="email" id="f2" placeholder=" ">
+          <label class="md-label" for="f2">Email</label>
+          <span class="md-helper">Outlined variant</span>
+        </div>
+        <div class="md-field md-field--filled">
+          <textarea class="md-input" id="f3" placeholder=" ">Multiline body content...</textarea>
+          <label class="md-label" for="f3">Description</label>
+        </div>
+        <div class="md-field md-field--outlined">
+          <select class="md-input" id="f4">
+            <option>Roboto Flex</option>
+            <option>Roboto Serif</option>
+            <option>Roboto Mono</option>
+          </select>
+          <label class="md-label" for="f4">Font</label>
+        </div>
+        <div class="md-field md-field--outlined">
+          <input class="md-input" type="text" id="f5" value="invalid@" style="border-color:var(--md-error)">
+          <label class="md-label" for="f5" style="color:var(--md-error)">Email</label>
+          <span class="md-helper md-error">Enter a valid email address</span>
+        </div>
+        <div class="md-field md-field--filled">
+          <input class="md-input" type="search" id="f6" placeholder="Search...">
+          <label class="md-label" for="f6">Search</label>
+        </div>
+      </div>
+
+      <h3>Selection controls</h3>
+      <div class="button-row">
+        <label class="md-checkbox"><input type="checkbox" checked>Subscribe</label>
+        <label class="md-checkbox"><input type="checkbox">Marketing emails</label>
+        <label class="md-radio"><input type="radio" name="r1" checked>Light</label>
+        <label class="md-radio"><input type="radio" name="r1">Dark</label>
+        <label class="md-switch"><input type="checkbox" checked><span class="slider"></span></label>
+        <label class="md-switch"><input type="checkbox"><span class="slider"></span></label>
+      </div>
+
+      <h3>Slider &amp; file</h3>
+      <div style="max-width:400px;display:flex;flex-direction:column;gap:12px">
+        <input type="range" class="md-slider" min="0" max="100" value="60">
+        <input type="file" class="md-input md-field--outlined" style="padding:12px">
+      </div>
+    </section>
+
+    <section id="surfaces" data-fidelity="documented">
+      <h2>
+        <span>Surfaces</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://m3.material.io/components/cards/overview" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--md-on-surface-variant)">Three card variants — Filled, Elevated, Outlined — plus tonal containers, modals, and popovers.</p>
+
+      <div class="surface-grid">
+        <div class="md-card">
+          <div class="media"></div>
+          <h4>Filled card</h4>
+          <p>Filled cards rest on a tonal surface for low-emphasis groupings.</p>
+        </div>
+        <div class="md-card md-card--elevated">
+          <div class="media"></div>
+          <h4>Elevated card</h4>
+          <p>Elevated cards use shadow + tonal overlay to step up emphasis.</p>
+        </div>
+        <div class="md-card md-card--outlined">
+          <div class="media"></div>
+          <h4>Outlined card</h4>
+          <p>Outlined cards delineate without elevation — useful at high information density.</p>
+        </div>
+        <div class="md-stat">
+          <div class="num">2,847</div>
+          <div class="lbl">Active sessions</div>
+        </div>
+      </div>
+
+      <h3>Modal</h3>
+      <div class="md-modal">
+        <h4 style="margin-top:0">Reset preferences?</h4>
+        <p style="font-size:14px;color:var(--md-on-surface-variant)">This will revert color, type, and shape tokens to baseline. Your saved themes are not affected.</p>
+        <div class="button-row" style="justify-content:flex-end;margin:0">
+          <button class="md-btn md-btn--text">Cancel</button>
+          <button class="md-btn md-btn--filled">Reset</button>
+        </div>
+      </div>
+
+      <h3>Popover &amp; drawer</h3>
+      <div style="display:flex;gap:24px;flex-wrap:wrap">
+        <div class="md-menu" style="box-shadow:var(--md-elev-2)">
+          <div class="item">Edit</div>
+          <div class="item">Duplicate</div>
+          <div class="item">Archive</div>
+          <div class="item" style="color:var(--md-error)">Delete</div>
+        </div>
+        <div class="md-sidebar">
+          <a href="#" class="active">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12L12 3l9 9"/><path d="M5 10v10h14V10"/></svg>
+            Home
+          </a>
+          <a href="#">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            Explore
+          </a>
+          <a href="#">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.5-2.5l2-1.5-2-3.5-2.5 1A7 7 0 0 0 13 4l-.5-2.5h-4L8 4a7 7 0 0 0-3 1.5l-2.5-1-2 3.5 2 1.5A7 7 0 0 0 5 12c0 .9.2 1.7.5 2.5l-2 1.5 2 3.5 2.5-1c.9.7 2 1.2 3 1.5l.5 2.5h4l.5-2.5c1-.3 2.1-.8 3-1.5l2.5 1 2-3.5-2-1.5c.3-.8.5-1.6.5-2.5z"/></svg>
+            Settings
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section id="feedback" data-fidelity="documented">
+      <h2>
+        <span>Feedback</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://m3.material.io/components/snackbar/overview" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+
+      <h3>Alerts</h3>
+      <div class="md-alert md-alert--info">
+        <strong>Info ·</strong> Material 3 derives full palettes from one seed color.
+      </div>
+      <div class="md-alert md-alert--success">
+        <strong>Success ·</strong> Theme synced across phone, tablet, and desktop.
+      </div>
+      <div class="md-alert md-alert--warn">
+        <strong>Warning ·</strong> Custom seed may not meet WCAG AA contrast at all tones.
+      </div>
+      <div class="md-alert md-alert--error">
+        <strong>Error ·</strong> Token resolution failed for surface-container-highest.
+      </div>
+
+      <h3>Snackbar (Toast)</h3>
+      <div class="md-snackbar">
+        Theme reverted to baseline.
+        <button>Undo</button>
+      </div>
+
+      <h3>Banner</h3>
+      <div class="md-banner" style="margin-top:12px">
+        <span><strong>Material You preview</strong> — wallpaper-based dynamic color is enabled.</span>
+        <button class="md-btn md-btn--text" style="padding:6px 12px;height:auto">Dismiss</button>
+      </div>
+
+      <h3>Chips &amp; badges</h3>
+      <div class="md-chip-row">
+        <span class="md-chip">Filter</span>
+        <span class="md-chip md-chip--filled">Selected</span>
+        <span class="md-chip md-chip--primary">Primary</span>
+        <span class="md-chip md-chip--success">Success</span>
+        <span class="md-chip md-chip--warn">Warn</span>
+        <span class="md-chip md-chip--error">Error</span>
+        <span class="md-badge">3</span>
+        <span class="md-badge" style="background:var(--md-primary);color:var(--md-on-primary)">12</span>
+      </div>
+
+      <h3>Progress &amp; loading</h3>
+      <div style="display:flex;flex-direction:column;gap:12px;max-width:480px">
+        <div class="md-progress"></div>
+        <div class="md-skeleton" style="width:80%"></div>
+        <div class="md-skeleton" style="width:60%"></div>
+        <div class="md-spinner"></div>
+      </div>
+    </section>
+
+    <section id="navigation" data-fidelity="documented">
+      <h2>
+        <span>Navigation</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://m3.material.io/components/tabs/overview" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+
+      <h3>Tabs</h3>
+      <div class="md-tabs">
+        <div class="md-tab active">Overview</div>
+        <div class="md-tab">Tokens</div>
+        <div class="md-tab">Components</div>
+        <div class="md-tab">Foundations</div>
+      </div>
+
+      <h3>Breadcrumb</h3>
+      <div class="md-breadcrumb">
+        <a href="#">Home</a><span>/</span>
+        <a href="#">Styles</a><span>/</span>
+        <span>Color</span>
+      </div>
+
+      <h3>Pagination</h3>
+      <div class="md-pagination">
+        <button>‹</button>
+        <button class="active">1</button>
+        <button>2</button>
+        <button>3</button>
+        <button>4</button>
+        <button>›</button>
+      </div>
+
+      <h3>Stepper</h3>
+      <div class="md-stepper">
+        <div class="step"><span class="num active">1</span> Theme</div>
+        <span class="line"></span>
+        <div class="step"><span class="num active">2</span> Type</div>
+        <span class="line"></span>
+        <div class="step"><span class="num">3</span> Shape</div>
+        <span class="line"></span>
+        <div class="step"><span class="num">4</span> Review</div>
+      </div>
+
+      <h3>Top bar</h3>
+      <div class="md-topbar">
+        <button class="md-btn md-btn--icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+        <strong style="flex:1">Material 3</strong>
+        <button class="md-btn md-btn--icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></button>
+        <div class="md-avatar">MK</div>
+      </div>
+    </section>
+
+    <section id="data" data-fidelity="approximated">
+      <h2>
+        <span>Data</span>
+        <span class="badge fidelity-approximated">approximated</span>
+        <a href="https://m3.material.io/components/lists/overview" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+
+      <h3>Table</h3>
+      <table class="md-table">
+        <thead>
+          <tr><th>Token</th><th>Value</th><th>Role</th><th>Tone</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>md.sys.color.primary</code></td><td>#6750A4</td><td>Primary</td><td>40</td></tr>
+          <tr><td><code>md.sys.color.on-primary</code></td><td>#FFFFFF</td><td>On primary</td><td>100</td></tr>
+          <tr><td><code>md.sys.color.primary-container</code></td><td>#EADDFF</td><td>Container</td><td>90</td></tr>
+          <tr><td><code>md.sys.color.surface</code></td><td>#FEF7FF</td><td>Surface</td><td>98</td></tr>
+        </tbody>
+      </table>
+
+      <h3>List</h3>
+      <ul class="md-list">
+        <li><div class="md-avatar">A</div><div><strong>Avery Tan</strong><div style="font-size:13px;color:var(--md-on-surface-variant)">Updated theme · 2m ago</div></div></li>
+        <li><div class="md-avatar" style="background:var(--md-secondary-container);color:var(--md-on-secondary-container)">B</div><div><strong>Brett Yu</strong><div style="font-size:13px;color:var(--md-on-surface-variant)">Imported tokens · 14m ago</div></div></li>
+        <li><div class="md-avatar" style="background:var(--md-primary-container);color:var(--md-on-primary-container)">C</div><div><strong>Cleo Park</strong><div style="font-size:13px;color:var(--md-on-surface-variant)">Created palette · 1h ago</div></div></li>
+      </ul>
+
+      <h3>Key – value</h3>
+      <dl class="md-kv">
+        <dt>Seed color</dt><dd>#6750A4</dd>
+        <dt>Theme</dt><dd>Light · Material You</dd>
+        <dt>Contrast</dt><dd>Standard</dd>
+        <dt>Generated</dt><dd>2026-05-05</dd>
+      </dl>
+
+      <h3>Empty state</h3>
+      <div class="md-empty">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><circle cx="9" cy="10" r="0.5" fill="currentColor"/><circle cx="15" cy="10" r="0.5" fill="currentColor"/></svg>
+        <h4 style="margin:8px 0 4px">No themes yet</h4>
+        <p style="font-size:14px;margin:0">Create one from a seed color or upload a palette.</p>
+      </div>
+    </section>
+
+    <section id="layout" data-fidelity="documented">
+      <h2>
+        <span>Layout</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://m3.material.io/foundations/layout/applying-layout" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--md-on-surface-variant)">M3 uses a 4dp grid. Window-size classes: Compact (&lt;600), Medium (600-839), Expanded (840-1199), Large (1200-1599), Extra-large (1600+).</p>
+
+      <h3>12-column grid</h3>
+      <div class="grid-demo">
+        <div style="grid-column:span 12">12</div>
+        <div style="grid-column:span 6">6</div>
+        <div style="grid-column:span 6">6</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+      </div>
+
+      <h3>Spacing scale (4dp)</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div class="swatch" style="width:4px;height:32px"></div><span class="lbl">4</span></div>
+        <div class="scale-item"><div class="swatch" style="width:8px;height:32px"></div><span class="lbl">8</span></div>
+        <div class="scale-item"><div class="swatch" style="width:12px;height:32px"></div><span class="lbl">12</span></div>
+        <div class="scale-item"><div class="swatch" style="width:16px;height:32px"></div><span class="lbl">16</span></div>
+        <div class="scale-item"><div class="swatch" style="width:24px;height:32px"></div><span class="lbl">24</span></div>
+        <div class="scale-item"><div class="swatch" style="width:32px;height:32px"></div><span class="lbl">32</span></div>
+        <div class="scale-item"><div class="swatch" style="width:48px;height:32px"></div><span class="lbl">48</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:32px"></div><span class="lbl">64</span></div>
+      </div>
+
+      <h3>Shape scale</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:0;background:var(--md-primary-container)"></div><span class="lbl">none 0</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:4px;background:var(--md-primary-container)"></div><span class="lbl">xs 4</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:8px;background:var(--md-primary-container)"></div><span class="lbl">sm 8</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:12px;background:var(--md-primary-container)"></div><span class="lbl">md 12</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:16px;background:var(--md-primary-container)"></div><span class="lbl">lg 16</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:28px;background:var(--md-primary-container)"></div><span class="lbl">xl 28</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:50%;background:var(--md-primary-container)"></div><span class="lbl">full</span></div>
+      </div>
+
+      <h3>Elevation (5 levels)</h3>
+      <div>
+        <div class="shadow-demo" style="box-shadow:none">0</div>
+        <div class="shadow-demo" style="box-shadow:var(--md-elev-1)">1</div>
+        <div class="shadow-demo" style="box-shadow:var(--md-elev-2)">2</div>
+        <div class="shadow-demo" style="box-shadow:var(--md-elev-3)">3</div>
+        <div class="shadow-demo" style="box-shadow:var(--md-elev-4)">4</div>
+        <div class="shadow-demo" style="box-shadow:var(--md-elev-5)">5</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="ds-footer">
+    <h3>Sources</h3>
+    <ul>
+      <li><a href="https://m3.material.io" target="_blank" rel="noopener">https://m3.material.io</a></li>
+      <li><a href="https://m3.material.io/styles/color/system/overview" target="_blank" rel="noopener">https://m3.material.io/styles/color/system/overview</a></li>
+      <li><a href="https://m3.material.io/styles/typography/overview" target="_blank" rel="noopener">https://m3.material.io/styles/typography/overview</a></li>
+      <li><a href="https://m3.material.io/styles/icons/overview" target="_blank" rel="noopener">https://m3.material.io/styles/icons/overview</a></li>
+      <li><a href="https://m3.material.io/components/buttons/overview" target="_blank" rel="noopener">https://m3.material.io/components/buttons/overview</a></li>
+      <li><a href="https://m3.material.io/components/text-fields/overview" target="_blank" rel="noopener">https://m3.material.io/components/text-fields/overview</a></li>
+      <li><a href="https://m3.material.io/components/cards/overview" target="_blank" rel="noopener">https://m3.material.io/components/cards/overview</a></li>
+      <li><a href="https://m3.material.io/components/snackbar/overview" target="_blank" rel="noopener">https://m3.material.io/components/snackbar/overview</a></li>
+      <li><a href="https://m3.material.io/components/tabs/overview" target="_blank" rel="noopener">https://m3.material.io/components/tabs/overview</a></li>
+      <li><a href="https://m3.material.io/components/lists/overview" target="_blank" rel="noopener">https://m3.material.io/components/lists/overview</a></li>
+      <li><a href="https://m3.material.io/foundations/layout/applying-layout" target="_blank" rel="noopener">https://m3.material.io/foundations/layout/applying-layout</a></li>
+    </ul>
+    <p class="license-note">This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Google. Material Design 3 and related trademarks belong to Google. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</p>
+    <p class="meta-note">Reproduction date: 2026-05-05 · sourceStatus: verified · fidelity: approximated</p>
+  </footer>
+</body>
+</html>

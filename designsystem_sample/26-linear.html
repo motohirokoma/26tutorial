@@ -1,0 +1,1584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Linear — Design System Reference</title>
+  <script id="ds-meta" type="application/json">
+{"id":"26-linear","fileSlug":"26-linear","schemaVersion":"1"}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Linear Brand */
+      --ln-purple: #5E6AD2;
+      --ln-purple-hover: #7A82E0;
+      --ln-purple-soft: rgba(94,106,210,0.18);
+
+      /* Surfaces (dark base) */
+      --ln-bg: #08090A;
+      --ln-panel: #1B1C20;
+      --ln-sub-panel: #26272B;
+      --ln-elev: #2C2D31;
+      --ln-overlay: rgba(255,255,255,0.04);
+      --ln-divider: rgba(255,255,255,0.07);
+      --ln-border: rgba(255,255,255,0.12);
+
+      /* Text */
+      --ln-text: #F7F8F8;
+      --ln-text-secondary: #B4BCD0;
+      --ln-text-tertiary: #8A8F98;
+      --ln-text-muted: #62666D;
+
+      /* Accents */
+      --ln-blue: #5E6AD2;
+      --ln-pink: #EB5757;
+      --ln-green: #4CB782;
+      --ln-yellow: #F2C94C;
+      --ln-orange: #F2994A;
+      --ln-cyan: #56B6C2;
+
+      /* Type */
+      --ln-font: 'Inter', 'Inter Variable', -apple-system, system-ui, sans-serif;
+      --ln-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+      /* Radii */
+      --ln-r-2: 2px;
+      --ln-r-4: 4px;
+      --ln-r-6: 6px;
+      --ln-r-8: 8px;
+      --ln-r-10: 10px;
+      --ln-r-12: 12px;
+      --ln-r-full: 999px;
+
+      /* Spacing */
+      --ln-1: 4px;
+      --ln-2: 8px;
+      --ln-3: 12px;
+      --ln-4: 16px;
+      --ln-5: 20px;
+      --ln-6: 24px;
+      --ln-7: 32px;
+      --ln-8: 48px;
+      --ln-9: 64px;
+
+      /* Shadow */
+      --ln-shadow-1: 0 1px 2px rgba(0,0,0,0.5);
+      --ln-shadow-2: 0 4px 16px rgba(0,0,0,0.45);
+      --ln-shadow-3: 0 12px 40px rgba(0,0,0,0.55);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: var(--ln-font);
+      background: var(--ln-bg);
+      color: var(--ln-text);
+      line-height: 1.5;
+      font-size: 14px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      letter-spacing: -0.01em;
+    }
+
+    code, kbd, pre { font-family: var(--ln-mono); font-size: 12.5px; }
+
+    a { color: var(--ln-purple); text-decoration: none; }
+    a:hover { color: var(--ln-purple-hover); }
+
+    /* Header */
+    .ds-header {
+      background: linear-gradient(180deg, #0F1014 0%, var(--ln-bg) 100%);
+      padding: var(--ln-7) var(--ln-7) var(--ln-6);
+      border-bottom: 1px solid var(--ln-divider);
+      position: relative;
+      overflow: hidden;
+    }
+    .ds-header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(600px 300px at 8% -5%, rgba(94,106,210,0.18), transparent 60%),
+        radial-gradient(500px 250px at 92% -8%, rgba(94,106,210,0.10), transparent 60%);
+      pointer-events: none;
+    }
+    .ds-header > * { position: relative; }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--ln-2);
+      color: var(--ln-text-secondary);
+      text-decoration: none;
+      padding: 6px 10px;
+      border-radius: var(--ln-r-6);
+      font-size: 13px;
+      font-weight: 500;
+      border: 1px solid var(--ln-border);
+      background: var(--ln-overlay);
+      transition: background 0.15s, color 0.15s;
+    }
+    .back-link:hover { background: var(--ln-sub-panel); color: var(--ln-text); }
+
+    .ds-header h1 {
+      font-size: 44px;
+      line-height: 1.05;
+      font-weight: 600;
+      letter-spacing: -0.025em;
+      margin: var(--ln-5) 0 var(--ln-3);
+      color: var(--ln-text);
+    }
+
+    .ds-header .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--ln-2);
+      align-items: center;
+      margin-bottom: var(--ln-3);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 9px;
+      border-radius: var(--ln-r-full);
+      font-size: 11.5px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      border: 1px solid var(--ln-border);
+      background: var(--ln-overlay);
+      color: var(--ln-text-secondary);
+    }
+    .badge.kind-pa { background: var(--ln-purple); color: #fff; border-color: transparent; }
+    .badge.fidelity-documented { background: rgba(76,183,130,0.15); color: #6EE3A1; border-color: transparent; }
+    .badge.fidelity-approximated { background: rgba(242,153,74,0.15); color: #FFB76C; border-color: transparent; }
+    .badge.fidelity-inspired { background: rgba(94,106,210,0.20); color: #B5BCFF; border-color: transparent; }
+    .badge.source-homepage { background: rgba(180,188,208,0.10); color: var(--ln-text-secondary); border-color: transparent; }
+
+    .official-link {
+      color: var(--ln-text);
+      font-weight: 500;
+      padding: 4px 10px;
+      border: 1px solid var(--ln-border);
+      border-radius: var(--ln-r-6);
+      font-size: 12.5px;
+      background: var(--ln-overlay);
+    }
+    .official-link:hover { background: var(--ln-sub-panel); color: var(--ln-text); }
+
+    .tagline {
+      font-size: 17px;
+      line-height: 1.55;
+      max-width: 720px;
+      margin: var(--ln-4) 0 0;
+      color: var(--ln-text-secondary);
+    }
+
+    /* TOC */
+    .toc {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(8,9,10,0.85);
+      border-bottom: 1px solid var(--ln-divider);
+      backdrop-filter: blur(12px) saturate(180%);
+    }
+    .toc ul {
+      list-style: none;
+      margin: 0;
+      padding: 10px var(--ln-7);
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      max-width: 100%;
+    }
+    .toc a {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: var(--ln-r-6);
+      color: var(--ln-text-secondary);
+      text-decoration: none;
+      font-size: 12.5px;
+      font-weight: 500;
+      white-space: nowrap;
+      transition: all 0.15s;
+    }
+    .toc a:hover { background: var(--ln-sub-panel); color: var(--ln-text); }
+
+    /* Main */
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: var(--ln-6) var(--ln-7);
+    }
+
+    section {
+      background: var(--ln-panel);
+      border: 1px solid var(--ln-divider);
+      border-radius: var(--ln-r-12);
+      padding: var(--ln-6);
+      margin-bottom: var(--ln-5);
+    }
+
+    section h2 {
+      display: flex;
+      align-items: center;
+      gap: var(--ln-3);
+      flex-wrap: wrap;
+      font-size: 22px;
+      line-height: 1.2;
+      font-weight: 600;
+      letter-spacing: -0.015em;
+      margin: 0 0 var(--ln-5);
+      color: var(--ln-text);
+    }
+
+    .source-link {
+      font-size: 12.5px;
+      color: var(--ln-text-tertiary);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .source-link:hover { color: var(--ln-purple-hover); text-decoration: underline; }
+
+    h3 {
+      font-size: 15px;
+      line-height: 1.3;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin: var(--ln-6) 0 var(--ln-3);
+      color: var(--ln-text);
+    }
+
+    h4 {
+      font-size: 13px;
+      line-height: 1.3;
+      font-weight: 600;
+      margin: var(--ln-4) 0 var(--ln-2);
+      color: var(--ln-text);
+    }
+
+    p { margin: 0 0 var(--ln-3); color: var(--ln-text-secondary); }
+    p.body-muted { color: var(--ln-text-tertiary); font-size: 13px; }
+
+    /* Brand */
+    #brand .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--ln-3);
+      padding: 14px 22px;
+      background: var(--ln-sub-panel);
+      border: 1px solid var(--ln-border);
+      border-radius: var(--ln-r-10);
+      color: var(--ln-text);
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+    #brand .brand-mark .logo {
+      width: 28px; height: 28px;
+      background: linear-gradient(135deg, var(--ln-purple) 0%, #8492FF 100%);
+      border-radius: var(--ln-r-6);
+      display: inline-flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.06) inset;
+    }
+    #brand .pillars {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--ln-3);
+      margin-top: var(--ln-5);
+    }
+    #brand .pillar {
+      padding: var(--ln-4);
+      background: var(--ln-sub-panel);
+      border: 1px solid var(--ln-divider);
+      border-radius: var(--ln-r-8);
+    }
+    #brand .pillar h4 { color: var(--ln-purple); margin-top: 0; }
+    #brand .pillar p { font-size: 13px; margin: 0; color: var(--ln-text-secondary); }
+
+    /* Color */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(11, 1fr);
+      gap: 2px;
+      margin-bottom: var(--ln-3);
+    }
+    .color-cell {
+      aspect-ratio: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 6px;
+      font-size: 10px;
+      font-family: var(--ln-mono);
+    }
+    .color-cell:first-child { border-radius: var(--ln-r-6) 0 0 var(--ln-r-6); }
+    .color-cell:last-child { border-radius: 0 var(--ln-r-6) var(--ln-r-6) 0; }
+
+    .semantic-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
+      gap: var(--ln-2);
+    }
+    .sem-card {
+      padding: var(--ln-4);
+      border-radius: var(--ln-r-8);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      border: 1px solid var(--ln-divider);
+    }
+    .sem-card .label { font-size: 13px; font-weight: 600; }
+    .sem-card .hex { font-family: var(--ln-mono); font-size: 11.5px; opacity: 0.7; }
+
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--ln-2);
+      margin-bottom: var(--ln-3);
+    }
+    .role-chip {
+      padding: 10px var(--ln-3);
+      border-radius: var(--ln-r-6);
+      font-size: 12.5px;
+      font-weight: 500;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid var(--ln-divider);
+    }
+    .role-chip code { font-size: 11px; opacity: 0.75; font-family: var(--ln-mono); }
+
+    .swatch-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px,1fr));
+      gap: var(--ln-2);
+    }
+    .swatch-card {
+      border-radius: var(--ln-r-8);
+      border: 1px solid var(--ln-divider);
+      overflow: hidden;
+      background: var(--ln-sub-panel);
+    }
+    .swatch-card .fill { height: 64px; }
+    .swatch-card .info { padding: 10px 12px; }
+    .swatch-card .info .name { font-size: 12px; font-weight: 500; }
+    .swatch-card .info .hex { font-size: 11px; font-family: var(--ln-mono); color: var(--ln-text-tertiary); margin-top: 2px; }
+
+    /* Typography */
+    .type-row {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: var(--ln-4);
+      padding: var(--ln-3) 0;
+      border-bottom: 1px solid var(--ln-divider);
+      align-items: baseline;
+    }
+    .type-row:last-child { border-bottom: 0; }
+    .type-row .label {
+      font-family: var(--ln-mono);
+      font-size: 11.5px;
+      color: var(--ln-text-tertiary);
+    }
+    .display-l { font-size: 56px; line-height: 1.05; font-weight: 600; letter-spacing: -0.025em; }
+    .display-m { font-size: 44px; line-height: 1.05; font-weight: 600; letter-spacing: -0.025em; }
+    .display-s { font-size: 32px; line-height: 1.1; font-weight: 600; letter-spacing: -0.02em; }
+    .heading-l { font-size: 24px; line-height: 1.2; font-weight: 600; letter-spacing: -0.015em; }
+    .heading-m { font-size: 20px; line-height: 1.25; font-weight: 600; letter-spacing: -0.015em; }
+    .heading-s { font-size: 17px; line-height: 1.3; font-weight: 600; letter-spacing: -0.01em; }
+    .title-l { font-size: 15px; line-height: 1.4; font-weight: 600; }
+    .title-m { font-size: 14px; line-height: 1.4; font-weight: 500; }
+    .title-s { font-size: 13px; line-height: 1.4; font-weight: 500; }
+    .body-l { font-size: 15px; line-height: 1.55; font-weight: 400; color: var(--ln-text-secondary); }
+    .body-m { font-size: 14px; line-height: 1.55; font-weight: 400; color: var(--ln-text-secondary); }
+    .body-s { font-size: 12.5px; line-height: 1.5; font-weight: 400; color: var(--ln-text-tertiary); }
+    .label-l { font-size: 12px; line-height: 1.4; font-weight: 500; letter-spacing: 0.02em; }
+    .label-m { font-size: 11px; line-height: 1.4; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ln-text-tertiary); }
+    .mono-sample { font-family: var(--ln-mono); font-size: 13px; color: var(--ln-text-secondary); }
+
+    /* Iconography */
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(80px,1fr));
+      gap: 6px;
+    }
+    .icon-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: var(--ln-3);
+      background: var(--ln-sub-panel);
+      border: 1px solid var(--ln-divider);
+      border-radius: var(--ln-r-6);
+      transition: background 0.15s;
+    }
+    .icon-cell:hover { background: var(--ln-elev); }
+    .icon-cell svg { width: 18px; height: 18px; stroke: var(--ln-text-secondary); }
+    .icon-cell span { font-size: 10.5px; color: var(--ln-text-tertiary); font-family: var(--ln-mono); }
+
+    /* Buttons */
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--ln-2);
+      align-items: center;
+      margin-bottom: var(--ln-3);
+    }
+
+    .ln-btn {
+      font-family: var(--ln-font);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: -0.005em;
+      padding: 0 12px;
+      border-radius: var(--ln-r-6);
+      border: 1px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      height: 28px;
+      transition: background 0.12s, color 0.12s, border-color 0.12s, box-shadow 0.12s;
+    }
+    .ln-btn--primary {
+      background: var(--ln-purple);
+      color: #fff;
+      box-shadow: inset 0 -1px 0 rgba(0,0,0,0.18), 0 1px 0 rgba(255,255,255,0.04) inset;
+    }
+    .ln-btn--primary:hover { background: var(--ln-purple-hover); }
+    .ln-btn--secondary {
+      background: var(--ln-sub-panel);
+      color: var(--ln-text);
+      border-color: var(--ln-border);
+    }
+    .ln-btn--secondary:hover { background: var(--ln-elev); border-color: rgba(255,255,255,0.2); }
+    .ln-btn--ghost {
+      background: transparent;
+      color: var(--ln-text-secondary);
+    }
+    .ln-btn--ghost:hover { background: var(--ln-sub-panel); color: var(--ln-text); }
+    .ln-btn--danger {
+      background: transparent;
+      color: var(--ln-pink);
+      border-color: rgba(235,87,87,0.25);
+    }
+    .ln-btn--danger:hover { background: rgba(235,87,87,0.10); }
+    .ln-btn--icon { width: 28px; height: 28px; padding: 0; justify-content: center; }
+    .ln-btn--sm { height: 24px; font-size: 12px; padding: 0 10px; }
+    .ln-btn--lg { height: 32px; font-size: 13px; padding: 0 16px; }
+    .ln-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .ln-btn:focus-visible { outline: 2px solid var(--ln-purple); outline-offset: 1px; }
+    .kbd {
+      display: inline-flex;
+      align-items: center;
+      padding: 1px 5px;
+      border-radius: 4px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid var(--ln-border);
+      font-family: var(--ln-mono);
+      font-size: 10.5px;
+      color: var(--ln-text-tertiary);
+      margin-left: 4px;
+    }
+
+    /* Form */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+      gap: var(--ln-4);
+    }
+    .ln-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .ln-field label {
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--ln-text-secondary);
+    }
+    .ln-input, .ln-textarea, .ln-select {
+      background: var(--ln-sub-panel);
+      border: 1px solid var(--ln-border);
+      border-radius: var(--ln-r-6);
+      padding: 7px 10px;
+      font-family: var(--ln-font);
+      font-size: 13px;
+      color: var(--ln-text);
+      outline: none;
+      width: 100%;
+      transition: border-color 0.12s, box-shadow 0.12s;
+    }
+    .ln-input::placeholder { color: var(--ln-text-tertiary); }
+    .ln-input:focus, .ln-textarea:focus, .ln-select:focus {
+      border-color: var(--ln-purple);
+      box-shadow: 0 0 0 3px rgba(94,106,210,0.20);
+    }
+    .ln-input--error {
+      border-color: var(--ln-pink);
+    }
+    .ln-input--error:focus {
+      box-shadow: 0 0 0 3px rgba(235,87,87,0.18);
+    }
+    .ln-textarea { min-height: 80px; resize: vertical; }
+    .ln-select {
+      appearance: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%238A8F98' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      padding-right: 32px;
+    }
+    .ln-helper { font-size: 11.5px; color: var(--ln-text-tertiary); }
+    .ln-helper.error { color: var(--ln-pink); }
+
+    .ln-checkbox, .ln-radio {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      cursor: pointer;
+      font-size: 13px;
+      color: var(--ln-text-secondary);
+    }
+    .ln-checkbox input, .ln-radio input { width: 14px; height: 14px; accent-color: var(--ln-purple); }
+
+    .ln-switch { position: relative; display: inline-block; width: 32px; height: 18px; }
+    .ln-switch input { opacity: 0; width: 0; height: 0; }
+    .ln-switch .slider {
+      position: absolute; cursor: pointer; inset: 0;
+      background: var(--ln-elev);
+      border: 1px solid var(--ln-border);
+      border-radius: var(--ln-r-full);
+      transition: 0.15s;
+    }
+    .ln-switch .slider::before {
+      content: ''; position: absolute;
+      width: 12px; height: 12px;
+      left: 2px; top: 2px;
+      background: var(--ln-text-secondary);
+      border-radius: 50%;
+      transition: 0.15s;
+    }
+    .ln-switch input:checked + .slider { background: var(--ln-purple); border-color: var(--ln-purple); }
+    .ln-switch input:checked + .slider::before { background: #fff; transform: translateX(14px); }
+
+    /* Surfaces */
+    .surface-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
+      gap: var(--ln-3);
+    }
+    .ln-card {
+      background: var(--ln-sub-panel);
+      border: 1px solid var(--ln-divider);
+      border-radius: var(--ln-r-10);
+      padding: var(--ln-4);
+      transition: border-color 0.15s, transform 0.15s;
+    }
+    .ln-card:hover { border-color: var(--ln-border); }
+    .ln-card h4 { margin: 0 0 4px; }
+    .ln-card p { font-size: 12.5px; margin: 0; color: var(--ln-text-tertiary); }
+
+    .ln-card--interactive { cursor: pointer; }
+    .ln-card--interactive:hover { transform: translateY(-1px); }
+    .ln-card--accent {
+      background: linear-gradient(135deg, rgba(94,106,210,0.18) 0%, rgba(94,106,210,0.05) 100%);
+      border-color: rgba(94,106,210,0.30);
+    }
+
+    .ln-stat {
+      padding: var(--ln-4);
+      background: var(--ln-sub-panel);
+      border: 1px solid var(--ln-divider);
+      border-radius: var(--ln-r-10);
+    }
+    .ln-stat .num { font-size: 28px; font-weight: 600; line-height: 1; letter-spacing: -0.02em; }
+    .ln-stat .lbl { font-size: 11.5px; color: var(--ln-text-tertiary); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .ln-stat .delta { font-size: 12px; color: var(--ln-green); margin-top: 6px; }
+
+    .ln-modal {
+      background: var(--ln-elev);
+      border: 1px solid var(--ln-border);
+      padding: var(--ln-5);
+      border-radius: var(--ln-r-12);
+      box-shadow: var(--ln-shadow-3);
+      max-width: 380px;
+    }
+    .ln-modal h4 { font-size: 15px; margin-top: 0; }
+    .ln-modal p { font-size: 13px; }
+
+    /* Feedback */
+    .ln-alert {
+      display: flex;
+      gap: var(--ln-3);
+      padding: 10px var(--ln-4);
+      border-radius: var(--ln-r-8);
+      margin-bottom: var(--ln-2);
+      font-size: 13px;
+      align-items: flex-start;
+      border: 1px solid transparent;
+    }
+    .ln-alert--info { background: rgba(94,106,210,0.10); color: #B5BCFF; border-color: rgba(94,106,210,0.30); }
+    .ln-alert--success { background: rgba(76,183,130,0.10); color: #6EE3A1; border-color: rgba(76,183,130,0.30); }
+    .ln-alert--warn { background: rgba(242,201,76,0.10); color: #F9D871; border-color: rgba(242,201,76,0.30); }
+    .ln-alert--error { background: rgba(235,87,87,0.10); color: #FF8C8C; border-color: rgba(235,87,87,0.30); }
+
+    .ln-toast {
+      background: var(--ln-elev);
+      color: var(--ln-text);
+      padding: 10px 14px;
+      border-radius: var(--ln-r-8);
+      box-shadow: var(--ln-shadow-2);
+      border: 1px solid var(--ln-border);
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 12.5px;
+    }
+    .ln-toast button { background: transparent; color: var(--ln-purple); border: 0; font-weight: 500; cursor: pointer; font-size: 12.5px; }
+
+    .ln-banner {
+      display: flex;
+      gap: var(--ln-3);
+      padding: 10px var(--ln-4);
+      background: var(--ln-sub-panel);
+      border: 1px solid var(--ln-border);
+      border-radius: var(--ln-r-8);
+      align-items: center;
+      justify-content: space-between;
+      font-size: 13px;
+    }
+
+    .ln-chip-row { display: flex; flex-wrap: wrap; gap: 6px; }
+    .ln-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 9px;
+      border-radius: var(--ln-r-full);
+      border: 1px solid var(--ln-border);
+      background: var(--ln-sub-panel);
+      font-size: 11.5px;
+      font-weight: 500;
+      color: var(--ln-text-secondary);
+    }
+    .ln-chip .dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; opacity: 0.85; }
+    .ln-chip--todo { color: #B4BCD0; }
+    .ln-chip--progress { color: #F2C94C; }
+    .ln-chip--review { color: var(--ln-purple); border-color: rgba(94,106,210,0.4); background: rgba(94,106,210,0.10); }
+    .ln-chip--done { color: var(--ln-green); border-color: rgba(76,183,130,0.4); background: rgba(76,183,130,0.10); }
+    .ln-chip--cancelled { color: var(--ln-text-tertiary); }
+    .ln-chip--urgent { color: var(--ln-pink); border-color: rgba(235,87,87,0.4); background: rgba(235,87,87,0.08); }
+
+    .ln-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 18px;
+      height: 18px;
+      padding: 0 5px;
+      background: var(--ln-purple);
+      color: #fff;
+      border-radius: var(--ln-r-full);
+      font-size: 10.5px;
+      font-weight: 500;
+    }
+
+    .ln-progress {
+      width: 100%; height: 4px;
+      background: var(--ln-elev);
+      border-radius: var(--ln-r-full);
+      overflow: hidden;
+    }
+    .ln-progress::after {
+      content: ''; display: block;
+      height: 100%; width: 64%;
+      background: linear-gradient(90deg, var(--ln-purple), var(--ln-purple-hover));
+    }
+
+    .ln-skeleton {
+      height: 12px;
+      background: linear-gradient(90deg, var(--ln-sub-panel), var(--ln-elev), var(--ln-sub-panel));
+      background-size: 200% 100%;
+      border-radius: var(--ln-r-4);
+      animation: shimmer 1.6s infinite;
+    }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+    .ln-spinner {
+      width: 20px; height: 20px;
+      border: 2px solid var(--ln-elev);
+      border-top-color: var(--ln-purple);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Navigation */
+    .ln-tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--ln-divider);
+      margin-bottom: var(--ln-3);
+    }
+    .ln-tab {
+      padding: 10px var(--ln-3);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--ln-text-tertiary);
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      margin-bottom: -1px;
+    }
+    .ln-tab.active { color: var(--ln-text); border-bottom-color: var(--ln-purple); }
+    .ln-tab:hover:not(.active) { color: var(--ln-text-secondary); }
+
+    .ln-breadcrumb { display: flex; gap: 6px; align-items: center; font-size: 12.5px; color: var(--ln-text-tertiary); }
+    .ln-breadcrumb a { color: var(--ln-text-secondary); }
+    .ln-breadcrumb a:hover { color: var(--ln-text); }
+    .ln-breadcrumb svg { width: 12px; height: 12px; opacity: 0.5; }
+
+    .ln-pagination { display: flex; gap: 4px; align-items: center; }
+    .ln-pagination button {
+      min-width: 28px; height: 28px;
+      border-radius: var(--ln-r-6);
+      border: 1px solid var(--ln-border);
+      background: var(--ln-sub-panel);
+      color: var(--ln-text-secondary);
+      cursor: pointer;
+      font-family: var(--ln-font);
+      font-size: 12.5px;
+      padding: 0 8px;
+    }
+    .ln-pagination button.active { background: var(--ln-purple); color: #fff; border-color: transparent; }
+    .ln-pagination button:hover:not(.active) { background: var(--ln-elev); color: var(--ln-text); }
+
+    .ln-stepper { display: flex; align-items: center; gap: 6px; font-size: 12.5px; }
+    .ln-stepper .step { display: inline-flex; align-items: center; gap: 7px; color: var(--ln-text-tertiary); }
+    .ln-stepper .step.active { color: var(--ln-text); }
+    .ln-stepper .num {
+      width: 20px; height: 20px; border-radius: 50%;
+      background: var(--ln-elev); color: var(--ln-text-tertiary);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 600;
+      border: 1px solid var(--ln-border);
+    }
+    .ln-stepper .num.active { background: var(--ln-purple); color: #fff; border-color: transparent; }
+    .ln-stepper .num.done { background: var(--ln-green); color: #fff; border-color: transparent; }
+    .ln-stepper .line { flex: 1; height: 1px; background: var(--ln-divider); }
+
+    .ln-sidebar {
+      background: var(--ln-bg);
+      border: 1px solid var(--ln-divider);
+      border-radius: var(--ln-r-10);
+      padding: 10px;
+      width: 240px;
+    }
+    .ln-sidebar .group-label {
+      font-size: 11px; text-transform: uppercase;
+      letter-spacing: 0.05em; color: var(--ln-text-tertiary);
+      padding: 6px 8px;
+    }
+    .ln-sidebar a {
+      display: flex; align-items: center; gap: 8px;
+      padding: 6px 8px;
+      border-radius: var(--ln-r-6);
+      color: var(--ln-text-secondary);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .ln-sidebar a:hover { background: var(--ln-sub-panel); color: var(--ln-text); }
+    .ln-sidebar a.active { background: var(--ln-sub-panel); color: var(--ln-text); }
+    .ln-sidebar a svg { width: 14px; height: 14px; opacity: 0.85; }
+    .ln-sidebar a .count { margin-left: auto; font-size: 11px; color: var(--ln-text-tertiary); font-family: var(--ln-mono); }
+
+    .ln-topbar {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px var(--ln-4);
+      background: var(--ln-sub-panel);
+      border: 1px solid var(--ln-divider);
+      border-radius: var(--ln-r-8);
+    }
+
+    .ln-cmd {
+      background: var(--ln-elev);
+      border: 1px solid var(--ln-border);
+      border-radius: var(--ln-r-10);
+      padding: 12px;
+      width: 360px;
+      box-shadow: var(--ln-shadow-3);
+    }
+    .ln-cmd .cmd-input {
+      display: flex; align-items: center; gap: 8px;
+      padding: 6px 8px;
+      background: var(--ln-sub-panel);
+      border-radius: var(--ln-r-6);
+      border: 1px solid var(--ln-border);
+    }
+    .ln-cmd .cmd-input input {
+      flex: 1; background: transparent; border: 0; outline: none;
+      color: var(--ln-text); font-size: 13px;
+    }
+    .ln-cmd .cmd-list { margin-top: 8px; }
+    .ln-cmd .cmd-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 6px 8px;
+      border-radius: var(--ln-r-4);
+      font-size: 13px;
+      color: var(--ln-text-secondary);
+      cursor: pointer;
+    }
+    .ln-cmd .cmd-item:hover, .ln-cmd .cmd-item.selected { background: var(--ln-sub-panel); color: var(--ln-text); }
+    .ln-cmd .cmd-item svg { width: 14px; height: 14px; }
+
+    .ln-menu {
+      background: var(--ln-elev);
+      border: 1px solid var(--ln-border);
+      border-radius: var(--ln-r-8);
+      box-shadow: var(--ln-shadow-2);
+      padding: 4px;
+      width: 200px;
+    }
+    .ln-menu .item {
+      padding: 6px 10px; font-size: 13px; cursor: pointer;
+      border-radius: var(--ln-r-4);
+      display: flex; align-items: center; justify-content: space-between;
+      color: var(--ln-text-secondary);
+    }
+    .ln-menu .item:hover { background: var(--ln-sub-panel); color: var(--ln-text); }
+    .ln-menu .divider { height: 1px; background: var(--ln-divider); margin: 4px 0; }
+
+    /* Data */
+    table.ln-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    table.ln-table th, table.ln-table td {
+      text-align: left;
+      padding: 9px 12px;
+      border-bottom: 1px solid var(--ln-divider);
+    }
+    table.ln-table th {
+      font-weight: 500;
+      color: var(--ln-text-tertiary);
+      font-size: 11.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    table.ln-table tr:hover td { background: var(--ln-sub-panel); }
+    table.ln-table td .id { font-family: var(--ln-mono); color: var(--ln-text-tertiary); font-size: 11.5px; }
+
+    .ln-list { list-style: none; padding: 0; margin: 0; }
+    .ln-list li {
+      padding: 9px 12px;
+      display: flex; gap: 10px; align-items: center;
+      border-bottom: 1px solid var(--ln-divider);
+    }
+    .ln-list li:last-child { border-bottom: 0; }
+
+    .ln-kv { display: grid; grid-template-columns: 140px 1fr; gap: 10px; font-size: 13px; }
+    .ln-kv dt { color: var(--ln-text-tertiary); font-weight: 500; }
+    .ln-kv dd { margin: 0; color: var(--ln-text); }
+
+    .ln-avatar {
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #5E6AD2, #8492FF);
+      color: #fff;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 600;
+      flex-shrink: 0;
+    }
+    .ln-avatar--green { background: linear-gradient(135deg, #4CB782, #6EE3A1); }
+    .ln-avatar--orange { background: linear-gradient(135deg, #F2994A, #FFB76C); }
+    .ln-avatar--pink { background: linear-gradient(135deg, #EB5757, #FF8C8C); }
+
+    .ln-empty {
+      text-align: center;
+      padding: var(--ln-7) var(--ln-4);
+      color: var(--ln-text-tertiary);
+    }
+    .ln-empty svg { width: 36px; height: 36px; opacity: 0.4; margin-bottom: 8px; }
+    .ln-empty h4 { color: var(--ln-text-secondary); margin: 0 0 4px; }
+
+    .ln-issue-row {
+      display: grid;
+      grid-template-columns: 80px 100px 1fr auto auto auto auto;
+      gap: 12px;
+      align-items: center;
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--ln-divider);
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .ln-issue-row:hover { background: var(--ln-sub-panel); }
+    .ln-issue-row .id { font-family: var(--ln-mono); font-size: 11.5px; color: var(--ln-text-tertiary); }
+    .ln-issue-row .title { color: var(--ln-text); font-weight: 500; }
+
+    /* Footer */
+    .ds-footer {
+      background: var(--ln-panel);
+      border-top: 1px solid var(--ln-divider);
+      padding: var(--ln-7) var(--ln-7) var(--ln-6);
+      margin-top: var(--ln-7);
+      color: var(--ln-text-secondary);
+    }
+    .ds-footer h3 { margin-top: 0; color: var(--ln-text); }
+    .ds-footer ul { padding-left: 20px; }
+    .ds-footer li { margin-bottom: 4px; word-break: break-all; font-size: 12.5px; }
+    .ds-footer a { color: var(--ln-purple); }
+    .license-note { font-size: 12.5px; color: var(--ln-text-tertiary); margin-top: var(--ln-4); }
+    .meta-note { font-size: 11.5px; color: var(--ln-text-muted); font-family: var(--ln-mono); margin-top: var(--ln-2); }
+
+    @media (max-width: 720px) {
+      .ds-header h1 { font-size: 32px; }
+      main { padding: var(--ln-4); }
+      section { padding: var(--ln-4); }
+      .type-row { grid-template-columns: 1fr; }
+      .color-grid { grid-template-columns: repeat(6, 1fr); }
+      .ln-issue-row { grid-template-columns: 1fr; gap: 4px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="ds-header">
+    <a href="index.html" class="back-link">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Catalog
+    </a>
+    <h1>Linear</h1>
+    <div class="meta">
+      <span class="badge kind-pa">product-aesthetic</span>
+      <span class="badge fidelity-inspired">inspired</span>
+      <span class="badge source-homepage">source: homepage-only</span>
+      <a href="https://linear.app" target="_blank" rel="noopener" class="official-link">Official ↗</a>
+    </div>
+    <p class="tagline">The reference for issue trackers — refined dark UI, signature purple accent, and a developer-grade information density.</p>
+  </header>
+
+  <nav class="toc" aria-label="Table of contents">
+    <ul>
+      <li><a href="#brand">Brand</a></li>
+      <li><a href="#color">Color</a></li>
+      <li><a href="#typography">Typography</a></li>
+      <li><a href="#iconography">Iconography</a></li>
+      <li><a href="#buttons">Buttons</a></li>
+      <li><a href="#form">Form</a></li>
+      <li><a href="#surfaces">Surfaces</a></li>
+      <li><a href="#feedback">Feedback</a></li>
+      <li><a href="#navigation">Navigation</a></li>
+      <li><a href="#data">Data</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="brand" data-fidelity="inspired">
+      <h2>
+        <span>Brand</span>
+        <span class="badge fidelity-inspired">inspired</span>
+      </h2>
+      <div class="brand-mark">
+        <span class="logo">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M1 8a7 7 0 1 1 7 7L1 8z" fill="white"/>
+          </svg>
+        </span>
+        Linear
+      </div>
+      <p style="margin-top:18px;max-width:680px;font-size:14px;color:var(--ln-text-secondary)">
+        Linear's product surface is the de-facto reference for modern issue trackers. Signature elements: refined dark surfaces, purple accent (#5E6AD2), command-bar fluency, and unusually high information density without feeling crowded.
+      </p>
+      <div class="pillars">
+        <div class="pillar">
+          <h4>Speed</h4>
+          <p>Keyboard-first. Every screen is reachable in under 200ms — instant navigation is part of the brand.</p>
+        </div>
+        <div class="pillar">
+          <h4>Density</h4>
+          <p>Compact rows, tight tracking. Linear's UI assumes power users with high screen literacy.</p>
+        </div>
+        <div class="pillar">
+          <h4>Calm</h4>
+          <p>Restrained palette. Purple appears only on focus, primary actions, and critical accents.</p>
+        </div>
+        <div class="pillar">
+          <h4>Crafted</h4>
+          <p>Hairline borders, subtle gradients, micro-shadows. Detail-obsessive without ornament.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="color" data-fidelity="inspired">
+      <h2>
+        <span>Color</span>
+        <span class="badge fidelity-inspired">inspired</span>
+        <a href="https://linear.app" target="_blank" rel="noopener" class="source-link">Reference ↗</a>
+      </h2>
+      <p>Linear's surface stack starts at near-black <code>#08090A</code> and steps up through panel, sub-panel, and elevation tiers. The brand purple <code>#5E6AD2</code> is reserved for primary actions, focus rings, and the signature gradient on the marketing site.</p>
+
+      <h3>Surface stack</h3>
+      <div class="swatch-row">
+        <div class="swatch-card"><div class="fill" style="background:#08090A"></div><div class="info"><div class="name">Background</div><div class="hex">#08090A</div></div></div>
+        <div class="swatch-card"><div class="fill" style="background:#1B1C20"></div><div class="info"><div class="name">Panel</div><div class="hex">#1B1C20</div></div></div>
+        <div class="swatch-card"><div class="fill" style="background:#26272B"></div><div class="info"><div class="name">Sub-panel</div><div class="hex">#26272B</div></div></div>
+        <div class="swatch-card"><div class="fill" style="background:#2C2D31"></div><div class="info"><div class="name">Elevation</div><div class="hex">#2C2D31</div></div></div>
+        <div class="swatch-card"><div class="fill" style="background:#3D3E43"></div><div class="info"><div class="name">Hover</div><div class="hex">#3D3E43</div></div></div>
+      </div>
+
+      <h3>Brand purple ramp</h3>
+      <div class="color-grid">
+        <div class="color-cell" style="background:#1A1E3F;color:#B5BCFF">50</div>
+        <div class="color-cell" style="background:#272D5C;color:#B5BCFF">100</div>
+        <div class="color-cell" style="background:#363D7A;color:#fff">200</div>
+        <div class="color-cell" style="background:#454D98;color:#fff">300</div>
+        <div class="color-cell" style="background:#5E6AD2;color:#fff">400</div>
+        <div class="color-cell" style="background:#6B77DC;color:#fff">500</div>
+        <div class="color-cell" style="background:#7A82E0;color:#fff">600</div>
+        <div class="color-cell" style="background:#8B92E8;color:#0a0b0d">700</div>
+        <div class="color-cell" style="background:#A1A8EE;color:#0a0b0d">800</div>
+        <div class="color-cell" style="background:#C3C9F5;color:#0a0b0d">900</div>
+        <div class="color-cell" style="background:#E5E8FB;color:#0a0b0d">950</div>
+      </div>
+
+      <h3>Text on dark</h3>
+      <div class="role-grid">
+        <div class="role-chip" style="background:var(--ln-panel);color:#F7F8F8">Primary <code>#F7F8F8</code></div>
+        <div class="role-chip" style="background:var(--ln-panel);color:#B4BCD0">Secondary <code>#B4BCD0</code></div>
+        <div class="role-chip" style="background:var(--ln-panel);color:#8A8F98">Tertiary <code>#8A8F98</code></div>
+        <div class="role-chip" style="background:var(--ln-panel);color:#62666D">Muted <code>#62666D</code></div>
+      </div>
+
+      <h3>Workflow accents</h3>
+      <div class="semantic-grid">
+        <div class="sem-card" style="background:rgba(76,183,130,0.10);color:#6EE3A1">
+          <span class="label">Done / Success</span><span class="hex">#4CB782</span>
+        </div>
+        <div class="sem-card" style="background:rgba(94,106,210,0.15);color:#B5BCFF">
+          <span class="label">In Review / Info</span><span class="hex">#5E6AD2</span>
+        </div>
+        <div class="sem-card" style="background:rgba(242,201,76,0.12);color:#F9D871">
+          <span class="label">In Progress / Warn</span><span class="hex">#F2C94C</span>
+        </div>
+        <div class="sem-card" style="background:rgba(235,87,87,0.10);color:#FF8C8C">
+          <span class="label">Urgent / Error</span><span class="hex">#EB5757</span>
+        </div>
+        <div class="sem-card" style="background:rgba(242,153,74,0.10);color:#FFB76C">
+          <span class="label">Triage / Caution</span><span class="hex">#F2994A</span>
+        </div>
+        <div class="sem-card" style="background:rgba(86,182,194,0.10);color:#7DCDD8">
+          <span class="label">Cyan / Tag</span><span class="hex">#56B6C2</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="typography" data-fidelity="inspired">
+      <h2>
+        <span>Typography</span>
+        <span class="badge fidelity-inspired">inspired</span>
+        <a href="https://linear.app/brand" target="_blank" rel="noopener" class="source-link">Reference ↗</a>
+      </h2>
+      <p>Inter Variable across the entire product. Tight tracking (-0.01em on body, -0.025em on display), 14px body default, generous use of font-weight 500 for labels and titles.</p>
+
+      <div class="type-row"><div class="label">Display L · 56px / 600</div><div class="display-l">Plan, build, ship.</div></div>
+      <div class="type-row"><div class="label">Display M · 44px / 600</div><div class="display-m">Issue tracking that moves.</div></div>
+      <div class="type-row"><div class="label">Display S · 32px / 600</div><div class="display-s">Built for high-performance teams</div></div>
+      <div class="type-row"><div class="label">Heading L · 24px / 600</div><div class="heading-l">Workflows that get out of your way</div></div>
+      <div class="type-row"><div class="label">Heading M · 20px / 600</div><div class="heading-m">Cycles, projects, initiatives</div></div>
+      <div class="type-row"><div class="label">Heading S · 17px / 600</div><div class="heading-s">Section heading</div></div>
+      <div class="type-row"><div class="label">Title L · 15px / 600</div><div class="title-l">Issue title</div></div>
+      <div class="type-row"><div class="label">Title M · 14px / 500</div><div class="title-m">List heading</div></div>
+      <div class="type-row"><div class="label">Title S · 13px / 500</div><div class="title-s">Caption title</div></div>
+      <div class="type-row"><div class="label">Body L · 15px</div><div class="body-l">Linear treats issue tracking as a craft. The product is intentionally restrained, with thoughtful defaults and almost no configuration. Surface noise is minimized.</div></div>
+      <div class="type-row"><div class="label">Body M · 14px</div><div class="body-m">Body M is the default for descriptions, comments, and inline help. Inter at 14/22 stays comfortable on dark surfaces.</div></div>
+      <div class="type-row"><div class="label">Body S · 12.5px</div><div class="body-s">Body S handles metadata: timestamps, mentions, secondary annotations.</div></div>
+      <div class="type-row"><div class="label">Label L · 12px / 500</div><div class="label-l">Filter button</div></div>
+      <div class="type-row"><div class="label">Label M · 11px / UPPER</div><div class="label-m">Group label</div></div>
+      <div class="type-row"><div class="label">Mono · JetBrains Mono</div><div class="mono-sample">--ln-purple: #5E6AD2;</div></div>
+    </section>
+
+    <section id="iconography" data-fidelity="inspired">
+      <h2>
+        <span>Iconography</span>
+        <span class="badge fidelity-inspired">inspired</span>
+        <a href="https://linear.app" target="_blank" rel="noopener" class="source-link">Reference ↗</a>
+      </h2>
+      <p>Linear's icon set is custom 16-18px stroke icons at 1px weight. Below: Lucide-derived icons styled to match Linear's stroke-shape language.</p>
+      <div class="icon-grid">
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/></svg><span>done</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v6l3 2"/></svg><span>progress</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/></svg><span>todo</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9v9z"/><circle cx="12" cy="12" r="9"/></svg><span>review</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><span>search</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12L12 3l9 9"/><path d="M5 10v10h14V10"/></svg><span>home</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M3 9h18"/></svg><span>board</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h18v4H3zM3 11h18v4H3zM3 19h18v2H3z"/></svg><span>list</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 4v16M3 4v16M9 4v16M15 4v16"/></svg><span>columns</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M7 12h10M10 18h4"/></svg><span>filter</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5v14"/></svg><span>add</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg><span>close</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg><span>user</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.5-2.5l2-1.5-2-3.5-2.5 1A7 7 0 0 0 13 4l-.5-2.5h-4L8 4a7 7 0 0 0-3 1.5l-2.5-1-2 3.5 2 1.5A7 7 0 0 0 5 12c0 .9.2 1.7.5 2.5l-2 1.5 2 3.5 2.5-1c.9.7 2 1.2 3 1.5l.5 2.5h4l.5-2.5c1-.3 2.1-.8 3-1.5l2.5 1 2-3.5-2-1.5c.3-.8.5-1.6.5-2.5z"/></svg><span>settings</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.5V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><span>check</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a4 4 0 0 1-4 4H7l-4 4V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/></svg><span>chat</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><circle cx="6" cy="12" r="2"/><circle cx="18" cy="12" r="2"/></svg><span>more</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span>chevron</span></div>
+      </div>
+    </section>
+
+    <section id="buttons" data-fidelity="inspired">
+      <h2>
+        <span>Buttons</span>
+        <span class="badge fidelity-inspired">inspired</span>
+        <a href="https://linear.app" target="_blank" rel="noopener" class="source-link">Reference ↗</a>
+      </h2>
+      <p>Compact 28px height by default. Inset highlight on primary, hairline border on secondary. Keyboard shortcuts always visible inline.</p>
+
+      <h3>Variants</h3>
+      <div class="button-row">
+        <button class="ln-btn ln-btn--primary">New issue<span class="kbd" style="background:rgba(0,0,0,0.18);color:rgba(255,255,255,0.85);border-color:rgba(255,255,255,0.15)">C</span></button>
+        <button class="ln-btn ln-btn--secondary">Filter</button>
+        <button class="ln-btn ln-btn--ghost">Cancel</button>
+        <button class="ln-btn ln-btn--danger">Delete</button>
+        <button class="ln-btn ln-btn--secondary ln-btn--icon" aria-label="more">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="1.5"/><circle cx="6" cy="12" r="1.5"/><circle cx="18" cy="12" r="1.5"/></svg>
+        </button>
+      </div>
+
+      <h3>Sizes</h3>
+      <div class="button-row">
+        <button class="ln-btn ln-btn--primary ln-btn--sm">Small</button>
+        <button class="ln-btn ln-btn--primary">Default</button>
+        <button class="ln-btn ln-btn--primary ln-btn--lg">Large</button>
+      </div>
+
+      <h3>States</h3>
+      <div class="button-row">
+        <button class="ln-btn ln-btn--primary">Default</button>
+        <button class="ln-btn ln-btn--primary" style="background:var(--ln-purple-hover)">Hover</button>
+        <button class="ln-btn ln-btn--primary" style="outline:2px solid var(--ln-purple);outline-offset:1px">Focus</button>
+        <button class="ln-btn ln-btn--primary" disabled>Disabled</button>
+        <button class="ln-btn ln-btn--secondary"><span class="ln-spinner" style="width:12px;height:12px;border-width:1.5px;margin-right:4px"></span>Loading</button>
+      </div>
+
+      <h3>With keyboard hints</h3>
+      <div class="button-row">
+        <button class="ln-btn ln-btn--secondary">Search<span class="kbd">⌘K</span></button>
+        <button class="ln-btn ln-btn--secondary">Save<span class="kbd">⌘S</span></button>
+        <button class="ln-btn ln-btn--secondary">Assign<span class="kbd">A</span></button>
+        <button class="ln-btn ln-btn--secondary">Close<span class="kbd">Esc</span></button>
+      </div>
+    </section>
+
+    <section id="form" data-fidelity="inspired">
+      <h2>
+        <span>Form</span>
+        <span class="badge fidelity-inspired">inspired</span>
+        <a href="https://linear.app" target="_blank" rel="noopener" class="source-link">Reference ↗</a>
+      </h2>
+      <p>Inputs are 28-30px tall with hairline borders. Focus ring is a 3px purple haze. Labels float above the input rather than inside.</p>
+
+      <h3>Inputs</h3>
+      <div class="form-grid">
+        <div class="ln-field">
+          <label for="t1">Issue title</label>
+          <input class="ln-input" id="t1" type="text" value="Fix scrollbar overflow on settings page">
+          <span class="ln-helper">Descriptive titles help triage faster.</span>
+        </div>
+        <div class="ln-field">
+          <label for="t2">Email</label>
+          <input class="ln-input" id="t2" type="email" placeholder="you@company.com">
+          <span class="ln-helper">Workspace invite goes here.</span>
+        </div>
+        <div class="ln-field">
+          <label for="t3">Description</label>
+          <textarea class="ln-textarea" id="t3" placeholder="Add a description...">Repro: open settings → scroll. Scrollbar visible behind sidebar at 1280px width.</textarea>
+        </div>
+        <div class="ln-field">
+          <label for="t4">Priority</label>
+          <select class="ln-select" id="t4">
+            <option>No priority</option>
+            <option>Urgent</option>
+            <option>High</option>
+            <option selected>Medium</option>
+            <option>Low</option>
+          </select>
+        </div>
+        <div class="ln-field">
+          <label for="t5">Estimate</label>
+          <input class="ln-input ln-input--error" id="t5" value="not-a-number">
+          <span class="ln-helper error">Must be a number (Fibonacci scale).</span>
+        </div>
+        <div class="ln-field">
+          <label for="t6">Search</label>
+          <input class="ln-input" id="t6" type="search" placeholder="Find issues, projects, members...">
+        </div>
+      </div>
+
+      <h3>Selection controls</h3>
+      <div class="button-row">
+        <label class="ln-checkbox"><input type="checkbox" checked>Subscribe to changes</label>
+        <label class="ln-checkbox"><input type="checkbox">Auto-close on merge</label>
+        <label class="ln-radio"><input type="radio" name="r1" checked>Public</label>
+        <label class="ln-radio"><input type="radio" name="r1">Private</label>
+        <label class="ln-switch"><input type="checkbox" checked><span class="slider"></span></label>
+        <label class="ln-switch"><input type="checkbox"><span class="slider"></span></label>
+      </div>
+    </section>
+
+    <section id="surfaces" data-fidelity="inspired">
+      <h2>
+        <span>Surfaces</span>
+        <span class="badge fidelity-inspired">inspired</span>
+        <a href="https://linear.app" target="_blank" rel="noopener" class="source-link">Reference ↗</a>
+      </h2>
+      <p>Linear uses three surface tiers — panel, sub-panel, elevation — separated by hairline borders rather than heavy shadows. Modals and command bar use the only meaningful drop shadow.</p>
+
+      <h3>Cards</h3>
+      <div class="surface-grid">
+        <div class="ln-card">
+          <h4>Default card</h4>
+          <p>Sub-panel surface with hairline border. Use for grouping inside panels.</p>
+        </div>
+        <div class="ln-card ln-card--interactive">
+          <h4>Interactive card</h4>
+          <p>Lifts 1px on hover. Border lightens to indicate affordance.</p>
+        </div>
+        <div class="ln-card ln-card--accent">
+          <h4>Accent card</h4>
+          <p>Soft purple wash. Reserved for promoted CTAs and onboarding nudges.</p>
+        </div>
+        <div class="ln-stat">
+          <div class="num">2,847</div>
+          <div class="lbl">Open issues</div>
+          <div class="delta">+12 this cycle</div>
+        </div>
+      </div>
+
+      <h3>Modal</h3>
+      <div class="ln-modal">
+        <h4>Delete this issue?</h4>
+        <p>This will remove DES-128 from the cycle and unlink any sub-issues. This action can't be undone.</p>
+        <div class="button-row" style="justify-content:flex-end;margin:0;margin-top:16px">
+          <button class="ln-btn ln-btn--ghost">Cancel<span class="kbd">Esc</span></button>
+          <button class="ln-btn ln-btn--primary" style="background:var(--ln-pink)">Delete issue</button>
+        </div>
+      </div>
+
+      <h3>Command palette</h3>
+      <div class="ln-cmd">
+        <div class="cmd-input">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.6"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          <input placeholder="Type a command or search..." value="">
+          <span class="kbd">⌘K</span>
+        </div>
+        <div class="cmd-list">
+          <div class="cmd-item selected">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5v14"/></svg>
+            New issue<span style="margin-left:auto" class="kbd">C</span>
+          </div>
+          <div class="cmd-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/></svg>
+            Change status<span style="margin-left:auto" class="kbd">S</span>
+          </div>
+          <div class="cmd-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg>
+            Assign to<span style="margin-left:auto" class="kbd">A</span>
+          </div>
+          <div class="cmd-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 6h18M7 12h10M10 18h4"/></svg>
+            Filter by label
+          </div>
+        </div>
+      </div>
+
+      <h3>Popover &amp; menu</h3>
+      <div style="display:flex;gap:24px;flex-wrap:wrap">
+        <div class="ln-menu">
+          <div class="item">Edit<span class="kbd">E</span></div>
+          <div class="item">Duplicate<span class="kbd">⌘D</span></div>
+          <div class="item">Move to project</div>
+          <div class="divider"></div>
+          <div class="item" style="color:var(--ln-pink)">Delete<span class="kbd">⌫</span></div>
+        </div>
+        <div class="ln-sidebar">
+          <div class="group-label">Workspace</div>
+          <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12L12 3l9 9M5 10v10h14V10"/></svg>Inbox<span class="count">3</span></a>
+          <a href="#" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/></svg>My issues<span class="count">17</span></a>
+          <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 6h18v12H3z"/></svg>Cycles</a>
+          <div class="group-label" style="margin-top:8px">Teams</div>
+          <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="9" cy="7" r="3"/><circle cx="17" cy="7" r="3"/></svg>Design<span class="count">42</span></a>
+          <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/></svg>Engineering<span class="count">128</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section id="feedback" data-fidelity="inspired">
+      <h2>
+        <span>Feedback</span>
+        <span class="badge fidelity-inspired">inspired</span>
+        <a href="https://linear.app" target="_blank" rel="noopener" class="source-link">Reference ↗</a>
+      </h2>
+
+      <h3>Alerts</h3>
+      <div class="ln-alert ln-alert--info">
+        <strong>Heads up ·</strong> Cycle 27 starts Monday. Issues without estimates are auto-promoted to triage.
+      </div>
+      <div class="ln-alert ln-alert--success">
+        <strong>Saved ·</strong> 3 issues moved to Cycle 27. Sub-issues followed automatically.
+      </div>
+      <div class="ln-alert ln-alert--warn">
+        <strong>Heads up ·</strong> You have 4 issues without an assignee in this cycle.
+      </div>
+      <div class="ln-alert ln-alert--error">
+        <strong>Sync error ·</strong> GitHub integration failed. Issue DES-128 is out of sync.
+      </div>
+
+      <h3>Toast</h3>
+      <div class="ln-toast">
+        Issue DES-128 archived.
+        <button>Undo</button>
+      </div>
+
+      <h3>Banner</h3>
+      <div class="ln-banner" style="margin-top:12px">
+        <span><strong>Workspace settings</strong> have been updated. Some changes may require a page refresh.</span>
+        <button class="ln-btn ln-btn--ghost ln-btn--sm">Dismiss</button>
+      </div>
+
+      <h3>Status chips</h3>
+      <div class="ln-chip-row">
+        <span class="ln-chip ln-chip--todo"><span class="dot"></span>Todo</span>
+        <span class="ln-chip ln-chip--progress"><span class="dot"></span>In progress</span>
+        <span class="ln-chip ln-chip--review"><span class="dot"></span>In review</span>
+        <span class="ln-chip ln-chip--done"><span class="dot"></span>Done</span>
+        <span class="ln-chip ln-chip--cancelled"><span class="dot"></span>Cancelled</span>
+        <span class="ln-chip ln-chip--urgent"><span class="dot"></span>Urgent</span>
+      </div>
+
+      <h3>Labels &amp; badges</h3>
+      <div class="ln-chip-row" style="margin-top:8px">
+        <span class="ln-chip">design</span>
+        <span class="ln-chip">frontend</span>
+        <span class="ln-chip">api</span>
+        <span class="ln-chip">bug</span>
+        <span class="ln-chip">improvement</span>
+        <span class="ln-badge">12</span>
+        <span class="ln-badge" style="background:var(--ln-pink)">New</span>
+      </div>
+
+      <h3>Progress &amp; loading</h3>
+      <div style="display:flex;flex-direction:column;gap:10px;max-width:420px">
+        <div class="ln-progress"></div>
+        <div class="ln-skeleton" style="width:80%"></div>
+        <div class="ln-skeleton" style="width:60%"></div>
+        <div class="ln-skeleton" style="width:45%"></div>
+        <div class="ln-spinner"></div>
+      </div>
+    </section>
+
+    <section id="navigation" data-fidelity="inspired">
+      <h2>
+        <span>Navigation</span>
+        <span class="badge fidelity-inspired">inspired</span>
+        <a href="https://linear.app" target="_blank" rel="noopener" class="source-link">Reference ↗</a>
+      </h2>
+
+      <h3>Tabs</h3>
+      <div class="ln-tabs">
+        <div class="ln-tab active">Active</div>
+        <div class="ln-tab">Backlog</div>
+        <div class="ln-tab">Triage</div>
+        <div class="ln-tab">Cycles</div>
+        <div class="ln-tab">Projects</div>
+      </div>
+
+      <h3>Breadcrumb</h3>
+      <div class="ln-breadcrumb">
+        <a href="#">Workspace</a>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        <a href="#">Design</a>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        <a href="#">Cycle 27</a>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        <span>DES-128</span>
+      </div>
+
+      <h3>Pagination</h3>
+      <div class="ln-pagination">
+        <button>‹</button>
+        <button class="active">1</button>
+        <button>2</button>
+        <button>3</button>
+        <button>…</button>
+        <button>12</button>
+        <button>›</button>
+      </div>
+
+      <h3>Stepper</h3>
+      <div class="ln-stepper">
+        <div class="step active"><span class="num done">✓</span> Triage</div>
+        <span class="line"></span>
+        <div class="step active"><span class="num active">2</span> Estimate</div>
+        <span class="line"></span>
+        <div class="step"><span class="num">3</span> Assign</div>
+        <span class="line"></span>
+        <div class="step"><span class="num">4</span> Schedule</div>
+      </div>
+
+      <h3>Top bar</h3>
+      <div class="ln-topbar">
+        <button class="ln-btn ln-btn--ghost ln-btn--icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+        <strong style="flex:1;font-size:13px;font-weight:600">DES-128 · Fix scrollbar overflow on settings page</strong>
+        <span class="ln-chip ln-chip--progress"><span class="dot"></span>In progress</span>
+        <span class="ln-chip">design</span>
+        <button class="ln-btn ln-btn--ghost ln-btn--icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="1.5"/><circle cx="6" cy="12" r="1.5"/><circle cx="18" cy="12" r="1.5"/></svg></button>
+        <div class="ln-avatar">MK</div>
+      </div>
+    </section>
+
+    <section id="data" data-fidelity="inspired">
+      <h2>
+        <span>Data</span>
+        <span class="badge fidelity-inspired">inspired</span>
+        <a href="https://linear.app" target="_blank" rel="noopener" class="source-link">Reference ↗</a>
+      </h2>
+
+      <h3>Issue list</h3>
+      <div style="border:1px solid var(--ln-divider);border-radius:var(--ln-r-8);overflow:hidden;background:var(--ln-sub-panel)">
+        <div class="ln-issue-row" style="background:var(--ln-elev);border-bottom:1px solid var(--ln-divider)">
+          <span style="font-size:11px;text-transform:uppercase;color:var(--ln-text-tertiary);letter-spacing:0.04em">Status</span>
+          <span style="font-size:11px;text-transform:uppercase;color:var(--ln-text-tertiary);letter-spacing:0.04em">ID</span>
+          <span style="font-size:11px;text-transform:uppercase;color:var(--ln-text-tertiary);letter-spacing:0.04em">Title</span>
+          <span style="font-size:11px;text-transform:uppercase;color:var(--ln-text-tertiary);letter-spacing:0.04em">Priority</span>
+          <span style="font-size:11px;text-transform:uppercase;color:var(--ln-text-tertiary);letter-spacing:0.04em">Labels</span>
+          <span style="font-size:11px;text-transform:uppercase;color:var(--ln-text-tertiary);letter-spacing:0.04em">Date</span>
+          <span style="font-size:11px;text-transform:uppercase;color:var(--ln-text-tertiary);letter-spacing:0.04em">Assignee</span>
+        </div>
+        <div class="ln-issue-row">
+          <span class="ln-chip ln-chip--progress"><span class="dot"></span>Progress</span>
+          <span class="id">DES-128</span>
+          <span class="title">Fix scrollbar overflow on settings page</span>
+          <span class="ln-chip ln-chip--urgent"><span class="dot"></span>High</span>
+          <span class="ln-chip">bug</span>
+          <span class="id">May 5</span>
+          <div class="ln-avatar">MK</div>
+        </div>
+        <div class="ln-issue-row">
+          <span class="ln-chip ln-chip--review"><span class="dot"></span>Review</span>
+          <span class="id">ENG-412</span>
+          <span class="title">Refactor inbox subscription handler</span>
+          <span class="ln-chip ln-chip--progress"><span class="dot"></span>Med</span>
+          <span class="ln-chip">api</span>
+          <span class="id">May 4</span>
+          <div class="ln-avatar ln-avatar--green">AT</div>
+        </div>
+        <div class="ln-issue-row">
+          <span class="ln-chip ln-chip--todo"><span class="dot"></span>Todo</span>
+          <span class="id">DES-129</span>
+          <span class="title">Add empty state for archived workspaces</span>
+          <span class="ln-chip"><span class="dot"></span>Low</span>
+          <span class="ln-chip">design</span>
+          <span class="id">May 6</span>
+          <div class="ln-avatar ln-avatar--orange">BY</div>
+        </div>
+        <div class="ln-issue-row">
+          <span class="ln-chip ln-chip--done"><span class="dot"></span>Done</span>
+          <span class="id">ENG-411</span>
+          <span class="title">Migrate audit logs to new schema</span>
+          <span class="ln-chip ln-chip--progress"><span class="dot"></span>Med</span>
+          <span class="ln-chip">backend</span>
+          <span class="id">May 1</span>
+          <div class="ln-avatar ln-avatar--pink">CP</div>
+        </div>
+        <div class="ln-issue-row">
+          <span class="ln-chip ln-chip--cancelled"><span class="dot"></span>Cancelled</span>
+          <span class="id">DES-127</span>
+          <span class="title">Theme picker for community workspaces</span>
+          <span class="ln-chip"><span class="dot"></span>Low</span>
+          <span class="ln-chip">design</span>
+          <span class="id">Apr 28</span>
+          <div class="ln-avatar">MK</div>
+        </div>
+      </div>
+
+      <h3>Token table</h3>
+      <table class="ln-table">
+        <thead>
+          <tr><th>Token</th><th>Value</th><th>Role</th><th>Hex</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>--ln-purple</code></td><td>Brand purple</td><td>Primary action</td><td>#5E6AD2</td></tr>
+          <tr><td><code>--ln-bg</code></td><td>Near-black</td><td>App background</td><td>#08090A</td></tr>
+          <tr><td><code>--ln-panel</code></td><td>Charcoal</td><td>Section panel</td><td>#1B1C20</td></tr>
+          <tr><td><code>--ln-sub-panel</code></td><td>Sub-panel</td><td>Cards / inputs</td><td>#26272B</td></tr>
+          <tr><td><code>--ln-text</code></td><td>Off-white</td><td>Primary text</td><td>#F7F8F8</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Members list</h3>
+      <ul class="ln-list">
+        <li>
+          <div class="ln-avatar">MK</div>
+          <div style="flex:1">
+            <strong style="font-size:13px">Motohiro Koma</strong>
+            <div style="font-size:11.5px;color:var(--ln-text-tertiary)">Closed DES-127 · 2m ago</div>
+          </div>
+          <span class="ln-chip ln-chip--done"><span class="dot"></span>Online</span>
+        </li>
+        <li>
+          <div class="ln-avatar ln-avatar--green">AT</div>
+          <div style="flex:1">
+            <strong style="font-size:13px">Avery Tan</strong>
+            <div style="font-size:11.5px;color:var(--ln-text-tertiary)">Imported milestones · 14m ago</div>
+          </div>
+          <span class="ln-chip"><span class="dot" style="background:var(--ln-text-tertiary)"></span>Away</span>
+        </li>
+        <li>
+          <div class="ln-avatar ln-avatar--orange">BY</div>
+          <div style="flex:1">
+            <strong style="font-size:13px">Brett Yu</strong>
+            <div style="font-size:11.5px;color:var(--ln-text-tertiary)">Started cycle 27 · 1h ago</div>
+          </div>
+          <span class="ln-chip"><span class="dot" style="background:var(--ln-text-tertiary)"></span>Offline</span>
+        </li>
+      </ul>
+
+      <h3>Key – value</h3>
+      <dl class="ln-kv">
+        <dt>Workspace</dt><dd>Linear Reference</dd>
+        <dt>Plan</dt><dd>Standard · 12 seats</dd>
+        <dt>Cycle</dt><dd>27 of 52 (May 5 → May 19)</dd>
+        <dt>Created</dt><dd>2026-05-05</dd>
+      </dl>
+
+      <h3>Empty state</h3>
+      <div class="ln-empty">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25"><circle cx="12" cy="12" r="9"/><path d="M9 9h.01M15 9h.01M9 15c1 1 2 1.5 3 1.5s2-.5 3-1.5"/></svg>
+        <h4>No issues match this filter</h4>
+        <p style="font-size:13px;margin:0">Try clearing some filters or creating a new issue.</p>
+        <button class="ln-btn ln-btn--primary" style="margin-top:14px">New issue<span class="kbd" style="background:rgba(0,0,0,0.18);color:rgba(255,255,255,0.85);border-color:rgba(255,255,255,0.15)">C</span></button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="ds-footer">
+    <h3>Sources</h3>
+    <ul>
+      <li><a href="https://linear.app" target="_blank" rel="noopener">https://linear.app</a></li>
+      <li><a href="https://linear.app/brand" target="_blank" rel="noopener">https://linear.app/brand</a></li>
+      <li><a href="https://linear.app/method" target="_blank" rel="noopener">https://linear.app/method</a></li>
+    </ul>
+    <p class="license-note">This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Linear. Linear and related trademarks belong to Linear. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</p>
+    <p class="meta-note">Reproduction date: 2026-05-05 · sourceStatus: homepage-only · fidelity: inspired</p>
+  </footer>
+</body>
+</html>

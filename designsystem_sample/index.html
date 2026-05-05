@@ -1,0 +1,1768 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Design Systems Reference Catalog — 47 systems</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f4f4f5; --surface:#ffffff; --surface-2:#fafafa;
+  --text:#18181b; --text-2:#52525b; --text-3:#a1a1aa;
+  --border:#e4e4e7; --border-2:#d4d4d8;
+  --shadow:0 1px 3px rgba(0,0,0,0.06); --shadow-2:0 4px 12px rgba(0,0,0,0.08);
+  --accent:#18181b;
+  --r-sm:6px; --r-md:10px; --r-lg:14px; --r-xl:20px;
+  --s-1:4px; --s-2:8px; --s-3:12px; --s-4:16px; --s-5:20px; --s-6:24px; --s-7:32px; --s-8:48px;
+  --font-sans:'Inter','Noto Sans JP',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --font-mono:'JetBrains Mono',ui-monospace,'SF Mono',monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:var(--font-sans);font-size:14px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none}
+
+/* Topbar */
+.topbar{
+  position:sticky;top:0;z-index:30;height:56px;
+  background:rgba(255,255,255,0.92);backdrop-filter:saturate(150%) blur(8px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:var(--s-5);
+  padding:0 var(--s-7);
+}
+.topbar .logo{font-weight:700;font-size:15px;letter-spacing:-0.01em}
+.topbar .logo .dot{display:inline-block;width:8px;height:8px;background:var(--text);border-radius:50%;margin-right:8px;vertical-align:middle}
+.topbar .search{
+  flex:1;max-width:420px;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r-md);padding:0 var(--s-3);height:36px;
+  font:inherit;color:var(--text);
+}
+.topbar .search:focus{outline:none;border-color:var(--text-2);box-shadow:0 0 0 3px rgba(24,24,27,0.06)}
+.topbar .meta{margin-left:auto;color:var(--text-3);font-size:12px;font-variant-numeric:tabular-nums}
+
+/* Hero */
+.hero{padding:var(--s-8) var(--s-7) var(--s-6);max-width:1280px;margin:0 auto}
+.hero h1{font-size:34px;font-weight:700;letter-spacing:-0.02em;margin:0 0 var(--s-3)}
+.hero .lead{color:var(--text-2);max-width:720px;margin:0 0 var(--s-5);font-size:15px}
+.hero .stats{display:flex;flex-wrap:wrap;gap:var(--s-5);font-size:13px;color:var(--text-2)}
+.hero .stats .stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:var(--s-2) var(--s-4);box-shadow:var(--shadow)}
+.hero .stats .stat strong{color:var(--text);font-weight:600;margin-right:6px;font-variant-numeric:tabular-nums}
+
+/* Filter bar */
+.filter-bar{
+  position:sticky;top:56px;z-index:20;
+  background:rgba(244,244,245,0.92);backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--border);
+  padding:var(--s-3) var(--s-7);
+  display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-3);
+}
+.filter-group{display:flex;align-items:center;gap:var(--s-2)}
+.filter-group .label{color:var(--text-3);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.04em}
+.chip{
+  padding:5px 10px;font-size:12px;font-weight:500;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:999px;cursor:pointer;color:var(--text-2);
+  transition:all 0.12s ease;
+}
+.chip:hover{border-color:var(--border-2);color:var(--text)}
+.chip.active{background:var(--text);color:var(--surface);border-color:var(--text)}
+
+/* Container */
+main{max-width:1280px;margin:0 auto;padding:var(--s-6) var(--s-7) var(--s-8)}
+
+/* Category section */
+.cat-section{margin-bottom:var(--s-8)}
+.cat-section.hidden{display:none}
+.cat-h{
+  display:flex;align-items:baseline;gap:var(--s-3);
+  font-size:13px;font-weight:600;color:var(--text-2);
+  text-transform:uppercase;letter-spacing:0.05em;
+  padding-bottom:var(--s-3);border-bottom:1px solid var(--border);
+  margin:0 0 var(--s-5);
+}
+.cat-h .cat-label{color:var(--text)}
+.cat-h .cat-count{color:var(--text-3);font-variant-numeric:tabular-nums}
+
+/* Card grid */
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--s-5)}
+@media(max-width:1279px){.grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:959px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:639px){.grid{grid-template-columns:1fr}}
+
+/* Card */
+.card{
+  display:flex;flex-direction:column;
+  background:var(--surface);
+  border:1px solid var(--border);border-radius:var(--r-lg);
+  overflow:hidden;box-shadow:var(--shadow);
+  transition:transform 0.18s ease,box-shadow 0.18s ease,border-color 0.18s ease;
+}
+.card.hidden{display:none}
+.card:hover{transform:translateY(-2px);box-shadow:var(--shadow-2);border-color:var(--border-2)}
+.card-accent{height:8px;width:100%}
+.card-body{padding:var(--s-4);display:flex;flex-direction:column;gap:var(--s-2);flex:1}
+.card-swatches{display:flex;gap:4px;margin-bottom:var(--s-1)}
+.swatch{display:inline-block;width:22px;height:22px;border-radius:4px;border:1px solid rgba(0,0,0,0.06)}
+.card-title-row{display:flex;align-items:center;gap:var(--s-2)}
+.card-title{margin:0;font-size:15px;font-weight:600;letter-spacing:-0.01em;flex:1}
+.card-num{
+  font-family:var(--font-mono);font-size:10px;color:var(--text-3);
+  background:var(--surface-2);border:1px solid var(--border);border-radius:4px;padding:2px 6px;
+  font-variant-numeric:tabular-nums;
+}
+.card-vendor{font-size:12px;color:var(--text-3)}
+.card-badges{display:flex;flex-wrap:wrap;gap:4px;margin:2px 0}
+.badge{font-size:10px;padding:2px 6px;border-radius:4px;font-weight:500;letter-spacing:0.02em;text-transform:uppercase}
+.badge.kind{background:#f4f4f5;color:#52525b;border:1px solid #e4e4e7}
+.badge.kind.kind-design-system{background:#dbeafe;color:#1e40af;border-color:#bfdbfe}
+.badge.kind.kind-component-library{background:#f0e7ff;color:#5b21b6;border-color:#e0ccff}
+.badge.kind.kind-brand-guidelines{background:#fce7f3;color:#9d174d;border-color:#fbcfe8}
+.badge.kind.kind-product-aesthetic{background:#fef3c7;color:#854d0e;border-color:#fde68a}
+.badge.kind.kind-ui-kit{background:#d1fae5;color:#065f46;border-color:#a7f3d0}
+.badge.fid{background:#f4f4f5;color:#52525b;border:1px solid #e4e4e7}
+.badge.fid.fid-documented{background:#dcfce7;color:#15803d;border-color:#bbf7d0}
+.badge.fid.fid-approximated{background:#fef3c7;color:#92400e;border-color:#fde68a}
+.badge.fid.fid-inspired{background:#ede9fe;color:#5b21b6;border-color:#ddd6fe}
+.badge.src{background:#f4f4f5;color:#52525b;border:1px solid #e4e4e7;text-transform:none;font-size:9px}
+.badge.src.src-verified{background:#f0fdf4;color:#166534;border-color:#bbf7d0}
+.badge.src.src-homepage-only{background:#fefce8;color:#854d0e;border-color:#fde68a}
+.badge.src.src-legacy{background:#fff7ed;color:#9a3412;border-color:#fed7aa}
+.badge.src.src-unverified{background:#fef2f2;color:#991b1b;border-color:#fecaca}
+.card-desc{
+  margin:0;font-size:13px;color:var(--text-2);line-height:1.5;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+  flex:1;
+}
+.card-foot{display:flex;align-items:center;justify-content:space-between;margin-top:var(--s-2)}
+.card-tags{display:flex;gap:4px;flex-wrap:wrap}
+.tag{font-size:10px;color:var(--text-3);background:var(--surface-2);border:1px solid var(--border);padding:1px 6px;border-radius:3px}
+.card-arrow{color:var(--text-3);font-size:14px;transition:transform 0.18s ease,color 0.18s ease}
+.card:hover .card-arrow{transform:translateX(4px);color:var(--text)}
+
+/* Empty */
+.empty{
+  text-align:center;padding:var(--s-8) var(--s-5);color:var(--text-3);
+  background:var(--surface);border:1px dashed var(--border-2);border-radius:var(--r-lg);
+}
+.empty.hidden{display:none}
+
+/* Footer */
+footer.site-footer{
+  border-top:1px solid var(--border);
+  padding:var(--s-7) var(--s-7) var(--s-8);
+  color:var(--text-2);font-size:12px;
+  max-width:1280px;margin:0 auto;
+}
+footer.site-footer h3{font-size:13px;font-weight:600;color:var(--text);margin:0 0 var(--s-3)}
+footer.site-footer p{margin:0 0 var(--s-2);max-width:760px;line-height:1.7}
+footer.site-footer details{margin-top:var(--s-4);background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:var(--s-3) var(--s-4)}
+footer.site-footer details summary{cursor:pointer;font-weight:500;color:var(--text)}
+footer.site-footer details ul{margin:var(--s-3) 0 0;padding-left:var(--s-5);font-size:11px;line-height:1.6}
+footer.site-footer details a{color:var(--text-2);text-decoration:underline}
+footer.site-footer .sig{margin-top:var(--s-5);color:var(--text-3);font-size:11px}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="logo"><span class="dot"></span>DS Catalog</div>
+  <input type="search" class="search" id="searchInput" placeholder="Search by name, vendor, tag…" aria-label="Search">
+  <div class="meta">47 systems · 7 categories · 2026-05</div>
+</header>
+
+<section class="hero">
+  <h1>Design Systems Reference Catalog</h1>
+  <p class="lead">世界の著名なデザインシステム・コンポーネントライブラリ・ブランドガイドラインを 47 件、各 DS のデフォルトトーンに寄せて再現したカタログです。Internal visual reference 用途。</p>
+  <div class="stats">
+    <span class="stat"><strong>47</strong>systems</span>
+    <span class="stat"><strong>26</strong>DS</span><span class="stat"><strong>5</strong>BG</span><span class="stat"><strong>11</strong>CL</span><span class="stat"><strong>4</strong>PA</span><span class="stat"><strong>1</strong>UK</span>
+    <span class="stat"><strong>24</strong>documented</span>
+    <span class="stat"><strong>30</strong>verified</span>
+  </div>
+</section>
+
+<div class="filter-bar">
+  <div class="filter-group" data-filter="category">
+    <span class="label">Category</span>
+    <button class="chip active" data-value="">All</button>
+    <button class="chip" data-value="big-tech">Big Tech / Platform</button><button class="chip" data-value="oss">OSS / Framework</button><button class="chip" data-value="asia">Asia</button><button class="chip" data-value="saas">B2B SaaS</button><button class="chip" data-value="personality">Personality</button><button class="chip" data-value="public">Government / Public</button><button class="chip" data-value="browser-other">Browser / Other</button>
+  </div>
+  <div class="filter-group" data-filter="kind">
+    <span class="label">Kind</span>
+    <button class="chip active" data-value="">All</button>
+    <button class="chip" data-value="design-system">DS</button><button class="chip" data-value="component-library">CL</button><button class="chip" data-value="brand-guidelines">BG</button><button class="chip" data-value="product-aesthetic">PA</button><button class="chip" data-value="ui-kit">UK</button>
+  </div>
+  <div class="filter-group" data-filter="fidelity">
+    <span class="label">Fidelity</span>
+    <button class="chip active" data-value="">All</button>
+    <button class="chip" data-value="documented">documented</button>
+    <button class="chip" data-value="approximated">approximated</button>
+    <button class="chip" data-value="inspired">inspired</button>
+  </div>
+  <div class="filter-group" data-filter="source-status">
+    <span class="label">Source</span>
+    <button class="chip active" data-value="">All</button>
+    <button class="chip" data-value="verified">verified</button>
+    <button class="chip" data-value="homepage-only">homepage-only</button>
+    <button class="chip" data-value="legacy">legacy</button>
+    <button class="chip" data-value="unverified">unverified</button>
+  </div>
+</div>
+
+<main>
+
+    <section class="cat-section" data-category="big-tech">
+      <h2 class="cat-h">
+        <span class="cat-label">Big Tech / Platform</span>
+        <span class="cat-count">10</span>
+      </h2>
+      <div class="grid">
+        
+    <a class="card"
+       href="01-material-design-3.html"
+       data-name="material design 3"
+       data-vendor="google"
+       data-kind="design-system"
+       data-category="big-tech"
+       data-fidelity="approximated"
+       data-source-status="verified"
+       data-tags="light dark web mobile material you">
+      <div class="card-accent" style="background:#6750A4"></div>
+      <div class="card-body">
+        <div class="card-swatches"><span class="swatch" style="background:#6750A4" title="#6750A4"></span><span class="swatch" style="background:#625B71" title="#625B71"></span><span class="swatch" style="background:#7D5260" title="#7D5260"></span><span class="swatch" style="background:#FFFBFE" title="#FFFBFE"></span><span class="swatch" style="background:#1D1B20" title="#1D1B20"></span></div>
+        <div class="card-title-row">
+          <h3 class="card-title">Material Design 3</h3>
+          <span class="card-num">01</span>
+        </div>
+        <div class="card-vendor">Google</div>
+        <div class="card-badges">
+          <span class="badge kind kind-design-system">DS</span>
+          <span class="badge fid fid-approximated">approximated</span>
+          <span class="badge src src-verified">verified</span>
+        </div>
+        <p class="card-desc">Expressive design system with dynamic color, motion-first interactions, and Material You personalization.</p>
+        <div class="card-foot">
+          <div class="card-tags"><span class="tag">Light</span><span class="tag">Dark</span><span class="tag">Web</span></div>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+    </a>
+    <a class="card"
+       href="02-apple-human-interface.html"
+       data-name="apple human interface guidelines"
+       data-vendor="apple"
+       data-kind="brand-guidelines"
+       data-category="big-tech"
+       data-fidelity="approximated"
+       data-source-status="verified"
+       data-tags="light dark ios macos visionos">
+      <div class="card-accent" style="background:#007AFF"></div>
+      <div class="card-body">
+        <div class="card-swatches"><span class="swatch" style="background:#007AFF" title="#007AFF"></span><span class="swatch" style="background:#34C759" title="#34C759"></span><span class="swatch" style="background:#FF3B30" title="#FF3B30"></span><span class="swatch" style="background:#F2F2F7" title="#F2F2F7"></span><span class="swatch" style="background:#1C1C1E" title="#1C1C1E"></span></div>
+        <div class="card-title-row">
+          <h3 class="card-title">Apple Human Interface Guidelines</h3>
+          <span class="card-num">02</span>
+        </div>
+        <div class="card-vendor">Apple</div>
+        <div class="card-badges">
+          <span class="badge kind kind-brand-guidelines">BG</span>
+          <span class="badge fid fid-approximated">approximated</span>
+          <span class="badge src src-verified">verified</span>
+        </div>
+        <p class="card-desc">Apple&#39;s platform-spanning design principles emphasizing clarity, deference, and depth across iOS/macOS/visionOS.</p>
+        <div class="card-foot">
+          <div class="card-tags"><span class="tag">Light</span><span class="tag">Dark</span><span class="tag">iOS</span></div>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+    </a>
+    <a class="card"
+       href="03-fluent-2.html"
+       data-name="fluent 2"
+       data-vendor="microsoft"
+       data-kind="design-system"
+       data-category="big-tech"
+       data-fidelity="documented"
+       data-source-status="verified"
+       data-tags="light dark windows web office">
+      <div class="card-accent" style="background:#0F6CBD"></div>
+      <div class="card-body">
+        <div class="card-swatches"><span class="swatch" style="background:#0F6CBD" title="#0F6CBD"></span><span class="swatch" style="background:#2899F5" title="#2899F5"></span><span class="swatch" style="background:#FAFAFA" title="#FAFAFA"></span><span class="swatch" style="background:#242424" title="#242424"></span><span class="swatch" style="background:#5B5FC7" title="#5B5FC7"></span></div>
+        <div class="card-title-row">
+          <h3 class="card-title">Fluent 2</h3>
+          <span class="card-num">03</span>
+        </div>
+        <div class="card-vendor">Microsoft</div>
+        <div class="card-badges">
+          <span class="badge kind kind-design-system">DS</span>
+          <span class="badge fid fid-documented">documented</span>
+          <span class="badge src src-verified">verified</span>
+        </div>
+        <p class="card-desc">Microsoft&#39;s cross-platform design language emphasizing depth, motion, and unified experiences across Windows and the web.</p>
+        <div class="card-foot">
+          <div class="card-tags"><span class="tag">Light</span><span class="tag">Dark</span><span class="tag">Windows</span></div>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+    </a>
+    <a class="card"
+       href="04-carbon.html"
+       data-name="carbon"
+       data-vendor="ibm"
+       data-kind="design-system"
+       data-category="big-tech"
+       data-fidelity="documented"
+       data-source-status="verified"
+       data-tags="light dark enterprise web 16px-grid">
+      <div class="card-accent" style="background:#0F62FE"></div>
+      <div class="card-body">
+        <div class="card-swatches"><span class="swatch" style="background:#0F62FE" title="#0F62FE"></span><span class="swatch" style="background:#161616" title="#161616"></span><span class="swatch" style="background:#393939" title="#393939"></span><span class="swatch" style="background:#F4F4F4" title="#F4F4F4"></span><span class="swatch" style="background:#DA1E28" title="#DA1E28"></span></div>
+        <div class="card-title-row">
+          <h3 class="card-title">Carbon</h3>
+          <span class="card-num">04</span>
+        </div>
+        <div class="card-vendor">IBM</div>
+        <div class="card-badges">
+          <span class="badge kind kind-design-system">DS</span>
+          <span class="badge fid fid-documented">documented</span>
+          <span class="badge src src-verified">verified</span>
+        </div>
+        <p class="card-desc">IBM&#39;s open-source enterprise design system built on the IBM Design Language with rigorous tokens and 16px grid.</p>
+        <div class="card-foot">
+          <div class="card-tags"><span class="tag">Light</span><span class="tag">Dark</span><span class="tag">Enterprise</span></div>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+    </a>
+    <a class="card"
+       href="05-spectrum-2.html"
+       data-name="spectrum 2"
+       data-vendor="adobe"
+       data-kind="design-system"
+       data-category="big-tech"
+       data-fidelity="approximated"
+       data-source-status="verified"
+       data-tags="light dark creative web adaptive">
+      <div class="card-accent" style="background:#2680EB"></div>
+      <div class="card-body">
+        <div class="card-swatches"><span class="swatch" style="background:#2680EB" title="#2680EB"></span><span class="swatch" style="background:#1473E6" title="#1473E6"></span><span class="swatch" style="background:#4B4B4B" title="#4B4B4B"></span><span class="swatch" style="background:#EAEAEA" title="#EAEAEA"></span><span class="swatch" style="background:#1B1B1B" title="#1B1B1B"></span></div>
+        <div class="card-title-row">
+          <h3 class="card-title">Spectrum 2</h3>
+          <span class="card-num">05</span>
+        </div>
+        <div class="card-vendor">Adobe</div>
+        <div class="card-badges">
+          <span class="badge kind kind-design-system">DS</span>
+          <span class="badge fid fid-approximated">approximated</span>
+          <span class="badge src src-verified">verified</span>
+        </div>
+        <p class="card-desc">Adobe&#39;s design system unifying Creative Cloud and Document Cloud experiences with rich tokens and adaptive themes.</p>
+        <div class="card-foot">
+          <div class="card-tags"><span class="tag">Light</span><span class="tag">Dark</span><span class="tag">Creative</span></div>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+    </a>
+    <a class="card"
+       href="06-lightning.html"
+       data-name="lightning design system"
+       data-vendor="salesforce"
+       data-kind="design-system"
+       data-category="big-tech"
+       data-fidelity="documented"
+       data-source-status="verified"
+       data-tags="light enterprise web crm">
+      <div class="card-accent" style="background:#1B96FF"></div>
+      <div class="card-body">
+        <div class="card-swatches"><span class="swatch" style="background:#1B96FF" title="#1B96FF"></span><span class="swatch" style="background:#0176D3" title="#0176D3"></span><span class="swatch" style="background:#032D60" title="#032D60"></span><span class="swatch" style="background:#F3F3F3" title="#F3F3F3"></span><span class="swatch" style="background:#181818" title="#181818"></span></div>
+        <div class="card-title-row">
+          <h3 class="card-title">Lightning Design System</h3>
+          <span class="card-num">06</span>
+        </div>
+        <div class="card-vendor">Salesforce</div>
+        <div class="card-badges">
+          <span class="badge kind kind-design-system">DS</span>
+          <span class="badge fid fid-documented">documented</span>
+          <span class="badge src src-verified">verified</span>
+        </div>
+        <p class="card-desc">Salesforce&#39;s open enterprise design system for CRM-grade interfaces with a Cloud-blue palette and dense data UIs.</p>
+        <div class="card-foot">
+          <div class="card-tags"><span class="tag">Light</span><span class="tag">Enterprise</span><span class="tag">Web</span></div>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+    </a>
+    <a class="card"
+       href="07-gestalt.html"
+       data-name="gestalt"
+       data-vendor="pinterest"
+       data-kind="design-system"
+       data-category="big-tech"
+       data-fidelity="documented"
+       data-source-status="verified"
+       data-tags="light dark web mobile">
+      <div class="card-accent" style="background:#E60023"></div>
+      <div class="card-body">
+        <div class="card-swatches"><span class="swatch" style="background:#E60023" title="#E60023"></span><span class="swatch" style="background:#111111" title="#111111"></span><span class="swatch" style="background:#FFFFFF" title="#FFFFFF"></span><span class="swatch" style="background:#767676" title="#767676"></span><span class="swatch" style="background:#F5F5F5" title="#F5F5F5"></span></div>
+        <div class="card-title-row">
+          <h3 class="card-title">Gestalt</h3>
+          <span class="card-num">07</span>
+        </div>
+        <div class="card-vendor">Pinterest</div>
+        <div class="card-badges">
+          <span class="badge kind kind-design-system">DS</span>
+          <span class="badge fid fid-documented">documented</span>
+          <span class="badge src src-verified">verified</span>
+        </div>
+        <p class="card-desc">Pinterest&#39;s accessible design system with high-contrast Pinterest Red and bold image-forward layouts.</p>
+        <div class="card-foot">
+          <div class="card-tags"><span class="tag">Light</span><span class="tag">Dark</span><span class="tag">Web</span></div>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+    </a>
+    <a class="card"
+       href="08-atlassian-design.html"
+       data-name="atlassian design system"
+       data-vendor="atlassian"
+       data-kind="design-system"
+       data-category="big-tech"
+       data-fidelity="approximated"
+       data-source-status="verified"
+       data-tags="light dark enterprise web">
+      <div class="card-accent" style="background:#0052CC"></div>
+      <div class="card-body">
+        <div class="card-swatches"><span class="swatch" style="background:#0052CC" title="#0052CC"></span><span class="swatch" style="background:#0747A6" title="#0747A6"></span><span class="swatch" style="background:#DEEBFF" title="#DEEBFF"></span><span class="swatch" style="background:#172B4D" title="#172B4D"></span><span class="swatch" style="background:#B3D4FF" title="#B3D4FF"></span></div>
+        <div class="card-title-row">
+          <h3 class="card-title">Atlassian Design System</h3>
+          <span class="card-num">08</span>
+        </div>
+        <div class="card-vendor">Atlassian</div>
+        <div class="card-badges">
+          <span class="badge kind kind-design-system">DS</span>
+          <span class="badge fid fid-approximated">approximated</span>
+          <span class="badge src src-verified">verified</span>
+        </div>
+        <p class="card-desc">Atlassian&#39;s design system powering Jira, Confluence, and Trello with N-token neutrals and a strong B-blue brand color.</p>
+        <div class="card-foot">
+          <div class="card-tags"><span class="tag">Light</span><span class="tag">Dark</span><span class="tag">Enterprise</span></div>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+    </a>
+    <a class="card"
+       href="09-polaris.html"
+       data-name="polaris"
+       data-vendor="shopify"
+       data-kind="design-system"
+       data-category="big-tech"
+       data-fidelity="approximated"
+       data-source-status="legacy"
+       data-tags="light dark e-commerce web merchant">
+      <div class="card-accent" style="background:#008060"></div>
+      <div class="card-body">
+        <div class="card-swatches"><span class="swatch" style="background:#008060" title="#008060"></span><span class="swatch" style="background:#004C3F" title="#004C3F"></span><span class="swatch" style="background:#303030" title="#303030"></span><span class="swatch" style="background:#F6F6F7" title="#F6F6F7"></span><span class="swatch" style="background:#FFFFFF" title="#FFFFFF"></span></div>
+        <div class="card-title-row">
+          <h3 class="card-title">Polaris</h3>
+          <span class="card-num">09</span>
+        </div>
+        <div class="card-vendor">Shopify</div>
+        <div class="card-badges">
+          <span class="badge kind kind-design-system">DS</span>
+          <span class="badge fid fid-approximated">approximated</span>
+          <span class="badge src src-legacy">legacy</span>
+        </div>
+        <p class="card-desc">Shopify&#39;s e-commerce design system with the signature Shopify Green and merchant-first interaction patterns.</p>
+        <div class="card-foot">
+          <div class="card-tags"><span class="tag">Light</span><span class="tag">Dark</span><span class="tag">E-commerce</span></div>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+    </a>
+    <a class="card"
+       href="10-primer.html"
+       data-name="primer"
+       data-vendor="github"
+       data-kind="design-system"
+       data-category="big-tech"
+       data-fidelity="documented"
+       data-source-status="verified"
+       data-tags="light dark developer web">
+      <div class="card-accent" style="background:#0969DA"></div>
+      <div class="card-body">
+        <div class="card-swatches"><span class="swatch" style="background:#0969DA" title="#0969DA"></span><span class="swatch" style="background:#1F2328" title="#1F2328"></span><span class="swatch" style="background:#F6F8FA" title="#F6F8FA"></span><span class="swatch" style="background:#218BFF" title="#218BFF"></span><span class="swatch" style="background:#FFFFFF" title="#FFFFFF"></span></div>
+        <div class="card-title-row">
+          <h3 class="card-title">Primer</h3>
+          <span class="card-num">10</span>
+        </div>
+        <div class="card-vendor">GitHub</div>
+        <div class="card-badges">
+          <span class="badge kind kind-design-system">DS</span>
+          <span class="badge fid fid-documented">documented</span>
+          <span class="badge src src-verified">verified</span>
+        </div>
+        <p class="card-desc">GitHub&#39;s design system featuring a developer-tuned blue accent and tight monospace integration.</p>
+        <div class="card-foot">
+          <div class="card-tags"><span class="tag">Light</span><span class="tag">Dark</span><span class="tag">Developer</span></div>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+    </a>
+      </div>
+    </section>
+
+    <section class="cat-section" data-category="oss">
+      <h2 class="cat-h">
+        <span class="cat-label">OSS / Framework</span>
+        <span class="cat-count">10</span>
+      </h2>
+      <div class="grid">
+        
+    <a class="card"
+       href="11-bootstrap-5.html"
+       data-name="bootstrap 5"
+       data-vendor="bootstrap team"
+       data-kind="component-library"
+       data-category="oss"
+       data-fidelity="documented"
+       data-source-status="verified"
+       data-tags="light dark oss web utility">
+      <div class="card-accent" style="background:#0D6EFD"></div>
+      <div class="card-body">
+        <div class="card-swatches"><span class="swatch" style="background:#0D6EFD" title="#0D6EFD"></span><span class="swatch" style="background:#6C757D" title="#6C757D"></span><span class="swatch" style="background:#198754" title="#198754"></span><span class="swatch" style="background:#DC3545" title="#DC3545"></span><span class="swatch" style="background:#212529" title="#212529"></span></div>
+        <div class="card-title-row">
+          <h3 class="card-title">Bootstrap 5</h3>
+          <span class="card-num">11</span>
+        </div>
+        <div class="card-vendor">Bootstrap Team</div>
+        <div class="card-badges">
+          <span class="badge kind kind-component-library">CL</span>
+          <span class="badge fid fid-documented">documented</span>
+          <span class="badge src src-verified">verified</span>
+        </div>
+        <p class="card-desc">The world&#39;s most popular CSS framework with rapid prototyping utilities and a familiar component set.</p>
+        <div class="card-foot">
+          <div class="card-tags"><span class="tag">Light</span><span class="tag">Dark</span><span class="tag">OSS</span></div>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+    </a>
+    <a class="card"
+       href="12-tailwind-css.html"
+       data-name="tailwind css"
+       data-vendor="tailwind labs"
+       data-kind="component-library"
+       data-category="oss"
+       data-fidelity="documented"
+       data-source-status="verified"
+       data-tags="light dark oss web utility-first">
+      <div class="card-accent" style="background:#06B6D4"></div>
+      <div class="card-body">
+        <div class="card-swatches"><span class="swatch" style="background:#06B6D4" title="#06B6D4"></span><span class="swatch" style="background:#3B82F6" title="#3B82F6"></span><span class="swatch" style="background:#10B981" title="#10B981"></span><span class="swatch" style="background:#F8FAFC" title="#F8FAFC"></span><span class="swatch" style="background:#0F172A" title="#0F172A"></span></div>
+        <div class="card-title-row">
+          <h3 class="card-title">Tailwind CSS</h3>
+          <span class="card-num">12</span>
+        </div>
+        <div class="card-vendor">Tailwind Labs</div>
+        <div class="card-badges">
+          <span class="badge kind kind-component-library">CL</span>
+          <span class="badge fid fid-documented">documented</span>
+          <span class="badge src src-verified">verified</span>
+        </div>
+        <p class="card-desc">A utility-first CSS framework with a meticulously crafted neutral palette and color scale system.</p>
+        <div class="card-foot">
+          <div class="card-tags"><span class="tag">Light</span><span class="tag">Dark</span><span class="tag">OSS</span></div>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+    </a>
+    <a class="card"
+       href="13-shadcn-ui.html"
+       data-name="shadcn/ui"
+       data-vendor="shadcn"
+       data-kind="component-library"
+       data-category="oss"
+       data-fidelity="documented"
+       data-source-status="verified"
+       data-tags="light dark oss web minimalist">
+      <div class="card-accent" style="background:#18181B"></div>
+      <div class="card-body">
+        <div class="card-swatches"><span class="swatch" style="background:#18181B" title="#18181B"></span><span class="swatch" style="background:#FAFAFA" title="#FAFAFA"></span><span class="swatch" style="background:#F4F4F5" title="#F4F4F5"></span><span class="swatch" style="background:#71717A" title="#71717A"></span><span class="swatch" style="background:#09090B" title="#09090B"></span></div>
+        <div class="card-title-row">
+          <h3 class="card-title">shadcn/ui</h3>
+          <span class="card-num">13</span>
+        </div>
+        <div class="card-vendor">shadcn</div>
+        <div class="card-badges">
+          <span class="badge kind kind-component-library">CL</span>
+          <span class="badge fid fid-documented">documented</span>
+          <span class="badge src src-verified">verified</span>
+        </div>
+        <p class="card-desc">A copy-paste component collection built on Radix and Tailwind, defining the modern minimalist aesthetic.</p>
+        <div class="card-foot">
+          <div class="card-tags"><span class="tag">Light</span><span class="tag">Dark</span><span class="tag">OSS</span></div>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+    </a>
+    <a class="card"
+       href="14-radix-themes.html"
+       data-name="radix themes"
+       data-vendor="workos"
+       data-kind="component-library"
+       data-category="oss"
+       data-fidelity="approximated"
+       data-source-status="homepage-only"
+       data-tags="light dark oss web accessible">
+      <div class="card-accent" style="background:#3E63DD"></div>
+      <div class="card-body">
+        <div class="card-swatches"><span class="swatch" style="background:#3E63DD" title="#3E63DD"></span><span class="swatch" style="background:#1F2D5C" title="#1F2D5C"></span><span class="swatch" style="background:#FCFCFC" title="#FCFCFC"></span><span class="swatch" style="background:#1B1B1B" title="#1B1B1B"></span><span class="swatch" style="background:#6E56CF" title="#6E56CF"></span></div>
+        <div class="card-title-row">
+          <h3 class="card-title">Radix Themes</h3>
+          <span class="card-num">14</span>
+        </div>
+        <div class="card-vendor">WorkOS</div>
+        <div class="card-badges">
+          <span class="badge kind kind-component-library">CL</span>
+          <span class="badge fid fid-approximated">approximated</span>
+          <span class="badge src src-homepage-only">homepage-only</span>
+        </div>
+        <p class="card-desc">A pre-styled component library built on Radix Primitives with a 12-step radix color scale.</p>
+        <div class="card-foot">
+          <div class="card-tags"><span class="tag">Light</span><span class="tag">Dark</span><span class="tag">OSS</span></div>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+    </a>
+    <a class="card"
+       href="15-material-ui.html"
+       data-name="material ui (mui)"
+       data-vendor="mui"
+       data-kind="component-library"
+       data-category="oss"
+       data-fidelity="approximated"
+       data-source-status="homepage-only"
+       data-tags="light dark oss react material">
+      <div class="card-accent" style="background:#1976D2"></div>
+      <div class="card-body">
+        <div class="card-swatches"><span class="swatch" style="background:#1976D2" title="#1976D2"></span><span class="swatch" style="background:#DC004E" title="#DC004E"></span><span class="swatch" style="background:#FAFAFA" title="#FAFAFA"></span><span class="swatch" style="background:#212121" title="#212121"></span><span class="swatch" style="background:#9C27B0" title="#9C27B0"></span></div>
+        <div class="card-title-row">
+          <h3 class="card-title">Material UI (MUI)</h3>
+          <span class="card-num">15</span>
+        </div>
+        <div class="card-vendor">MUI</div>
+        <div class="card-badges">
+          <span class="badge kind kind-component-library">CL</span>
+          <span class="badge fid fid-approximated">approximated</span>
+          <span class="badge src src-homepage-only">homepage-only</span>
+        </div>
+        <p class="card-desc">React component library implementing Material Design with extensive theming and emotional density.</p>
+        <div class="card-foot">
+          <div class="card-tags"><span class="tag">Light</span><span class="tag">Dark</span><span class="tag">OSS</span></div>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+    </a>
+    <a class="card"
+       href="16-chakra-ui.html"
+       data-name="chakra ui"
+       data-vendor="chakra team"
+       data-kind="component-library"
+       data-category="oss"
+       data-fidelity="documented"
+       data-source-status="verified"
+       data-tags="light dark oss react accessible">
+      <div class="card-accent" style="background:#319795"></div>
+      <div class="card-body">
+        <div class="card-swatches"><span class="swatch" style="background:#319795" title="#319795"></span><span class="swatch" style="background:#2C7A7B" title="#2C7A7B"></span><span class="swatch" style="background:#E2E8F0" title="#E2E8F0"></span><span class="swatch" style="background:#1A202C" title="#1A202C"></span><span class="swatch" style="background:#38A169" title="#38A169"></span></div>
+        <div class="card-title-row">
+          <h3 class="card-title">Chakra UI</h3>
+          <span class="card-num">16</span>
+        </div>
+        <div class="card-vendor">Chakra Team</div>
+        <div class="card-badges">
+          <span class="badge kind kind-component-library">CL</span>
+          <span class="badge fid fid-documented">documented</span>
+          <span class="badge src src-verified">verified</span>
+        </div>
+        <p class="card-desc">Modular React components with friendly teal accents and an accessibility-first design philosophy.</p>
+        <div class="card-foot">
+          <div class="card-tags"><span class="tag">Light</span><span class="tag">Dark</span><span class="tag">OSS</span></div>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+    </a>
+    <a class="card"
+       href="17-mantine.html"
+       data-name="mantine"
+       data-vendor="mantine team"
+       data-kind="component-library"
+       data-category="oss"
+       data-fidelity="documented"
+       data-source-status="verified"
+       data-tags="light dark oss react">
+      <div class="card-accent" style="background:#228BE6"></div>
+      <div class="card-body">
+        <div class="card-swatches"><span class="swatch" style="background:#228BE6" title="#228BE6"></span><span class="swatch" style="background:#1971C2" title="#1971C2"></span><span class="swatch" style="background:#E7F5FF" title="#E7F5FF"></span><span class="swatch" style="background:#25262B" title="#25262B"></span><span class="swatch" style="background:#C9C9C9" title="#C9C9C9"></span></div>
+        <div class="card-title-row">
+          <h3 class="card-title">Mantine</h3>
+          <span class="card-num">17</span>
+        </div>
+        <div class="card-vendor">Mantine Team</div>
+        <div class="card-badges">
+          <span class="badge kind kind-component-library">CL</span>
+          <span class="badge fid fid-documented">documented</span>
+          <span class="badge src src-verified">verified</span>
+        </div>
+        <p class="card-desc">Full-featured React component library with extensive hooks, dark mode support, and bright blue brand color.</p>
+        <div class="card-foot">
+          <div class="card-tags"><span class="tag">Light</span><span class="tag">Dark</span><span class="tag">OSS</span></div>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+    </a>
+    <a class="card"
+       href="18-bulma.html"
+       data-name="bulma"
+       data-vendor="jeremy thomas"
+       data-kind="component-library"
+       data-category="oss"
+       data-fidelity="documented"
+       data-source-status="verified"
+       data-tags="light oss web css-only">
+      <div class="card-accent" style="background:#00D1B2"></div>
+      <div class="card-body">
+        <div class="card-swatches"><span class="swatch" style="background:#00D1B2" title="#00D1B2"></span><span class="swatch" style="background:#3273DC" title="#3273DC"></span><span class="swatch" style="background:#23D160" title="#23D160"></span><span class="swatch" style="background:#FFDD57" title="#FFDD57"></span><span class="swatch" style="background:#FF3860" title="#FF3860"></span></div>
+        <div class="card-title-row">
+          <h3 class="card-title">Bulma</h3>
+          <span class="card-num">18</span>
+        </div>
+        <div class="card-vendor">Jeremy Thomas</div>
+        <div class="card-badges">
+          <span class="badge kind kind-component-library">CL</span>
+          <span class="badge fid fid-documented">documented</span>
+          <span class="badge src src-verified">verified</span>
+        </div>
+        <p class="card-desc">A Flexbox-based CSS framework with a vibrant rainbow palette and zero JavaScript dependency.</p>
+        <div class="card-foot">
+          <div class="card-tags"><span class="tag">Light</span><span class="tag">OSS</span><span class="tag">Web</span></div>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+    </a>
+    <a class="card"
+       href="19-vuetify.html"
+       data-name="vuetify"
+       data-vendor="vuetify team"
+       data-kind="component-library"
+       data-category="oss"
+       data-fidelity="documented"
+       data-source-status="verified"
+       data-tags="light dark oss vue material">
+      <div class="card-accent" style="background:#1976D2"></div>
+      <div class="card-body">
+        <div class="card-swatches"><span class="swatch" style="background:#1976D2" title="#1976D2"></span><span class="swatch" style="background:#424242" title="#424242"></span><span class="swatch" style="background:#82B1FF" title="#82B1FF"></span><span class="swatch" style="background:#4CAF50" title="#4CAF50"></span><span class="swatch" style="background:#FB8C00" title="#FB8C00"></span></div>
+        <div class="card-title-row">
+          <h3 class="card-title">Vuetify</h3>
+          <span class="card-num">19</span>
+        </div>
+        <div class="card-vendor">Vuetify Team</div>
+        <div class="card-badges">
+          <span class="badge kind kind-component-library">CL</span>
+          <span class="badge fid fid-documented">documented</span>
+          <span class="badge src src-verified">verified</span>
+        </div>
+        <p class="card-desc">Vue 3 component framework built on Material Design with extensive theming and prop-driven customization.</p>
+        <div class="card-foot">
+          <div class="card-tags"><span class="tag">Light</span><span class="tag">Dark</span><span class="tag">OSS</span></div>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+    </a>
+    <a class="card"
+       href="20-heroui.html"
+       data-name="heroui"
+       data-vendor="heroui team"
+       data-kind="component-library"
+       data-category="oss"
+       data-fidelity="inspired"
+       data-source-status="homepage-only"
+       data-tags="light dark oss react modern">
+      <div class="card-accent" style="background:#006FEE"></div>
+      <div class="card-body">
+        <div class="card-swatches"><span class="swatch" style="background:#006FEE" title="#006FEE"></span><span class="swatch" style="background:#7828C8" title="#7828C8"></span><span class="swatch" style="background:#17C964" title="#17C964"></span><span class="swatch" style="background:#F31260" title="#F31260"></span><span class="swatch" style="background:#18181B" title="#18181B"></span></div>
+        <div class="card-title-row">
+          <h3 class="card-title">HeroUI</h3>
+          <span class="card-num">20</span>
+        </div>
+        <div class="card-vendor">HeroUI Team</div>
+        <div class="card-badges">
+          <span class="badge kind kind-component-library">CL</span>
+          <span class="badge fid fid-inspired">inspired</span>
+          <span class="badge src src-homepage-only">homepage-only</span>
+        </div>
+        <p class="card-desc">A beautiful React component library with vibrant, modern aesthetics, formerly known as NextUI.</p>
+        <div class="card-foot">
+          <div class="card-tags"><span class="tag">Light</span><span class="tag">Dark</span><span class="tag">OSS</span></div>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+    </a>
+      </div>
+    </section>
+
+    <section class="cat-section" data-category="asia">
+      <h2 class="cat-h">
+        <span class="cat-label">Asia</span>
+        <span class="cat-count">5</span>
+      </h2>
+      <div class="grid">
+        
+    <a class="card"
+       href="21-ant-design.html"
+       data-name="ant design"
+       data-vendor="alibaba (ant group)"
+       data-kind="design-system"
+       data-category="asia"
+       data-fidelity="documented"
+       data-source-status="verified"
+       data-tags="light dark enterprise web asia">
+      <div class="card-accent" style="background:#1677FF"></div>
+      <div class="card-body">
+        <div class="card-swatches"><span class="swatch" style="background:#1677FF" title="#1677FF"></span><span class="swatch" style="background:#52C41A" title="#52C41A"></span><span class="swatch" style="background:#FAAD14" title="#FAAD14"></span><span class="swatch" style="background:#FF4D4F" title="#FF4D4F"></span><span class="swatch" style="background:#001529" title="#001529"></span></div>
+        <div class="card-title-row">
+          <h3 class="card-title">Ant Design</h3>
+          <span class="card-num">21</span>
+        </div>
+        <div class="card-vendor">Alibaba (Ant Group)</div>
+        <div class="card-badges">
+          <span class="badge kind kind-design-system">DS</span>
+          <span class="badge fid fid-documented">documented</span>
+          <span class="badge src src-verified">verified</span>
+        </div>
+        <p class="card-desc">Alibaba&#39;s enterprise-class design language for B-end products, with rich tokens and dense data UI.</p>
+        <div class="card-foot">
+          <div class="card-tags"><span class="tag">Light</span><span class="tag">Dark</span><span class="tag">Enterprise</span></div>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+    </a>
+    <a class="card"
+       href="22-tdesign.html"
+       data-name="tdesign"
+       data-vendor="tencent"
+       data-kind="design-system"
+       data-category="asia"
+       data-fidelity="documented"
+       data-source-status="verified"
+       data-tags="light dark enterprise web asia">
+      <div class="card-accent" style="background:#0052D9"></div>
+      <div class="card-body">
+        <div class="card-swatches"><span class="swatch" style="background:#0052D9" title="#0052D9"></span><span class="swatch" style="background:#002879" title="#002879"></span><span class="swatch" style="background:#2BA471" title="#2BA471"></span><span class="swatch" style="background:#E37318" title="#E37318"></span><span class="swatch" style="background:#D54941" title="#D54941"></span></div>
+        <div class="card-title-row">
+          <h3 class="card-title">TDesign</h3>
+          <span class="card-num">22</span>
+        </div>
+        <div class="card-vendor">Tencent</div>
+        <div class="card-badges">
+          <span class="badge kind kind-design-system">DS</span>
+          <span class="badge fid fid-documented">documented</span>
+          <span class="badge src src-verified">verified</span>
+        </div>
+        <p class="card-desc">Tencent&#39;s enterprise design system with refined data-dense UIs and a B-blue primary tuned for Chinese web.</p>
+        <div class="card-foot">
+          <div class="card-tags"><span class="tag">Light</span><span class="tag">Dark</span><span class="tag">Enterprise</span></div>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+    </a>
+    <a class="card"
+       href="23-element-plus.html"
+       data-name="element plus"
+       data-vendor="element plus team"
+       data-kind="component-library"
+       data-category="asia"
+       data-fidelity="documented"
+       data-source-status="verified"
+       data-tags="light dark oss vue asia">
+      <div class="card-accent" style="background:#409EFF"></div>
+      <div class="card-body">
+        <div class="card-swatches"><span class="swatch" style="background:#409EFF" title="#409EFF"></span><span class="swatch" style="background:#67C23A" title="#67C23A"></span><span class="swatch" style="background:#E6A23C" title="#E6A23C"></span><span class="swatch" style="background:#F56C6C" title="#F56C6C"></span><span class="swatch" style="background:#303133" title="#303133"></span></div>
+        <div class="card-title-row">
+          <h3 class="card-title">Element Plus</h3>
+          <span class="card-num">23</span>
+        </div>
+        <div class="card-vendor">Element Plus Team</div>
+        <div class="card-badges">
+          <span class="badge kind kind-component-library">CL</span>
+          <span class="badge fid fid-documented">documented</span>
+          <span class="badge src src-verified">verified</span>
+        </div>
+        <p class="card-desc">Vue 3 component library with the classic Element-style sky blue and balanced enterprise tokens.</p>
+        <div class="card-foot">
+          <div class="card-tags"><span class="tag">Light</span><span class="tag">Dark</span><span class="tag">OSS</span></div>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+    </a>
+    <a class="card"
+       href="24-arco-design.html"
+       data-name="arco design"
+       data-vendor="bytedance"
+       data-kind="design-system"
+       data-category="asia"
+       data-fidelity="documented"
+       data-source-status="verified"
+       data-tags="light dark enterprise web asia">
+      <div class="card-accent" style="background:#165DFF"></div>
+      <div class="card-body">
+        <div class="card-swatches"><span class="swatch" style="background:#165DFF" title="#165DFF"></span><span class="swatch" style="background:#00B42A" title="#00B42A"></span><span class="swatch" style="background:#FFB400" title="#FFB400"></span><span class="swatch" style="background:#F53F3F" title="#F53F3F"></span><span class="swatch" style="background:#1D2129" title="#1D2129"></span></div>
+        <div class="card-title-row">
+          <h3 class="card-title">Arco Design</h3>
+          <span class="card-num">24</span>
+        </div>
+        <div class="card-vendor">ByteDance</div>
+        <div class="card-badges">
+          <span class="badge kind kind-design-system">DS</span>
+          <span class="badge fid fid-documented">documented</span>
+          <span class="badge src src-verified">verified</span>
+        </div>
+        <p class="card-desc">ByteDance&#39;s enterprise design system with structured tokens and a clean blue-driven aesthetic.</p>
+        <div class="card-foot">
+          <div class="card-tags"><span class="tag">Light</span><span class="tag">Dark</span><span class="tag">Enterprise</span></div>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+    </a>
+    <a class="card"
+       href="25-line-design.html"
+       data-name="line design system"
+       data-vendor="line"
+       data-kind="design-system"
+       data-category="asia"
+       data-fidelity="approximated"
+       data-source-status="verified"
+       data-tags="light dark mobile messaging japan">
+      <div class="card-accent" style="background:#06C755"></div>
+      <div class="card-body">
+        <div class="card-swatches"><span class="swatch" style="background:#06C755" title="#06C755"></span><span class="swatch" style="background:#FFFFFF" title="#FFFFFF"></span><span class="swatch" style="background:#1E1E1E" title="#1E1E1E"></span><span class="swatch" style="background:#C1C1C1" title="#C1C1C1"></span><span class="swatch" style="background:#00B900" title="#00B900"></span></div>
+        <div class="card-title-row">
+          <h3 class="card-title">LINE Design System</h3>
+          <span class="card-num">25</span>
+        </div>
+        <div class="card-vendor">LINE</div>
+        <div class="card-badges">
+          <span class="badge kind kind-design-system">DS</span>
+          <span class="badge fid fid-approximated">approximated</span>
+          <span class="badge src src-verified">verified</span>
+        </div>
+        <p class="card-desc">LINE&#39;s messaging-first design system with the iconic LINE Green and rounded, friendly forms for JP/ASEAN markets.</p>
+        <div class="card-foot">
+          <div class="card-tags"><span class="tag">Light</span><span class="tag">Dark</span><span class="tag">Mobile</span></div>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+    </a>
+      </div>
+    </section>
+
+    <section class="cat-section" data-category="saas">
+      <h2 class="cat-h">
+        <span class="cat-label">B2B SaaS</span>
+        <span class="cat-count">8</span>
+      </h2>
+      <div class="grid">
+        
+    <a class="card"
+       href="26-linear.html"
+       data-name="linear"
+       data-vendor="linear"
+       data-kind="product-aesthetic"
+       data-category="saas"
+       data-fidelity="inspired"
+       data-source-status="homepage-only"
+       data-tags="dark light saas productivity">
+      <div class="card-accent" style="background:#5E6AD2"></div>
+      <div class="card-body">
+        <div class="card-swatches"><span class="swatch" style="background:#5E6AD2" title="#5E6AD2"></span><span class="swatch" style="background:#08090A" title="#08090A"></span><span class="swatch" style="background:#1B1C20" title="#1B1C20"></span><span class="swatch" style="background:#B4BCD0" title="#B4BCD0"></span><span class="swatch" style="background:#F7F8F8" title="#F7F8F8"></span></div>
+        <div class="card-title-row">
+          <h3 class="card-title">Linear</h3>
+          <span class="card-num">26</span>
+        </div>
+        <div class="card-vendor">Linear</div>
+        <div class="card-badges">
+          <span class="badge kind kind-product-aesthetic">PA</span>
+          <span class="badge fid fid-inspired">inspired</span>
+          <span class="badge src src-homepage-only">homepage-only</span>
+        </div>
+        <p class="card-desc">The reference for issue trackers — refined dark UI, signature purple accent, and a developer-grade information density.</p>
+        <div class="card-foot">
+          <div class="card-tags"><span class="tag">Dark</span><span class="tag">Light</span><span class="tag">SaaS</span></div>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+    </a>
+    <a class="card"
+       href="27-stripe.html"
+       data-name="stripe"
+       data-vendor="stripe"
+       data-kind="design-system"
+       data-category="saas"
+       data-fidelity="approximated"
+       data-source-status="verified"
+       data-tags="light dark fintech saas">
+      <div class="card-accent" style="background:#635BFF"></div>
+      <div class="card-body">
+        <div class="card-swatches"><span class="swatch" style="background:#635BFF" title="#635BFF"></span><span class="swatch" style="background:#00D4FF" title="#00D4FF"></span><span class="swatch" style="background:#0A2540" title="#0A2540"></span><span class="swatch" style="background:#F6F9FC" title="#F6F9FC"></span><span class="swatch" style="background:#1A1F36" title="#1A1F36"></span></div>
+        <div class="card-title-row">
+          <h3 class="card-title">Stripe</h3>
+          <span class="card-num">27</span>
+        </div>
+        <div class="card-vendor">Stripe</div>
+        <div class="card-badges">
+          <span class="badge kind kind-design-system">DS</span>
+          <span class="badge fid fid-approximated">approximated</span>
+          <span class="badge src src-verified">verified</span>
+        </div>
+        <p class="card-desc">The fintech aesthetic standard — purple accent, glossy gradients, and Söhne-driven editorial typography.</p>
+        <div class="card-foot">
+          <div class="card-tags"><span class="tag">Light</span><span class="tag">Dark</span><span class="tag">Fintech</span></div>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+    </a>
+    <a class="card"
+       href="28-notion.html"
+       data-name="notion"
+       data-vendor="notion labs"
+       data-kind="brand-guidelines"
+       data-category="saas"
+       data-fidelity="inspired"
+       data-source-status="homepage-only"
+       data-tags="light dark saas productivity editorial">
+      <div class="card-accent" style="background:#FFFFFF"></div>
+      <div class="card-body">
+        <div class="card-swatches"><span class="swatch" style="background:#FFFFFF" title="#FFFFFF"></span><span class="swatch" style="background:#2F3437" title="#2F3437"></span><span class="swatch" style="background:#6B6B6B" title="#6B6B6B"></span><span class="swatch" style="background:#E03E3E" title="#E03E3E"></span><span class="swatch" style="background:#FAFAF8" title="#FAFAF8"></span></div>
+        <div class="card-title-row">
+          <h3 class="card-title">Notion</h3>
+          <span class="card-num">28</span>
+        </div>
+        <div class="card-vendor">Notion Labs</div>
+        <div class="card-badges">
+          <span class="badge kind kind-brand-guidelines">BG</span>
+          <span class="badge fid fid-inspired">inspired</span>
+          <span class="badge src src-homepage-only">homepage-only</span>
+        </div>
+        <p class="card-desc">Notion&#39;s calm, paper-like editor aesthetic — warm whites, ample whitespace, and editorial serif accents.</p>
+        <div class="card-foot">
+          <div class="card-tags"><span class="tag">Light</span><span class="tag">Dark</span><span class="tag">SaaS</span></div>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+    </a>
+    <a class="card"
+       href="29-geist-vercel.html"
+       data-name="geist (vercel)"
+       data-vendor="vercel"
+       data-kind="design-system"
+       data-category="saas"
+       data-fidelity="documented"
+       data-source-status="verified"
+       data-tags="light dark developer saas minimalist">
+      <div class="card-accent" style="background:#000000"></div>
+      <div class="card-body">
+        <div class="card-swatches"><span class="swatch" style="background:#000000" title="#000000"></span><span class="swatch" style="background:#FFFFFF" title="#FFFFFF"></span><span class="swatch" style="background:#888888" title="#888888"></span><span class="swatch" style="background:#0070F3" title="#0070F3"></span><span class="swatch" style="background:#FF0080" title="#FF0080"></span></div>
+        <div class="card-title-row">
+          <h3 class="card-title">Geist (Vercel)</h3>
+          <span class="card-num">29</span>
+        </div>
+        <div class="card-vendor">Vercel</div>
+        <div class="card-badges">
+          <span class="badge kind kind-design-system">DS</span>
+          <span class="badge fid fid-documented">documented</span>
+          <span class="badge src src-verified">verified</span>
+        </div>
+        <p class="card-desc">Vercel&#39;s monochrome-first design system with razor-sharp typography and high-contrast minimal interfaces.</p>
+        <div class="card-foot">
+          <div class="card-tags"><span class="tag">Light</span><span class="tag">Dark</span><span class="tag">Developer</span></div>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+    </a>
+    <a class="card"
+       href="30-cal-com.html"
+       data-name="cal.com"
+       data-vendor="cal.com"
+       data-kind="product-aesthetic"
+       data-category="saas"
+       data-fidelity="inspired"
+       data-source-status="homepage-only"
+       data-tags="light dark oss saas scheduling">
+      <div class="card-accent" style="background:#111827"></div>
+      <div class="card-body">
+        <div class="card-swatches"><span class="swatch" style="background:#111827" title="#111827"></span><span class="swatch" style="background:#F9FAFB" title="#F9FAFB"></span><span class="swatch" style="background:#292929" title="#292929"></span><span class="swatch" style="background:#6366F1" title="#6366F1"></span><span class="swatch" style="background:#FFFFFF" title="#FFFFFF"></span></div>
+        <div class="card-title-row">
+          <h3 class="card-title">Cal.com</h3>
+          <span class="card-num">30</span>
+        </div>
+        <div class="card-vendor">Cal.com</div>
+        <div class="card-badges">
+          <span class="badge kind kind-product-aesthetic">PA</span>
+          <span class="badge fid fid-inspired">inspired</span>
+          <span class="badge src src-homepage-only">homepage-only</span>
+        </div>
+        <p class="card-desc">Open-source scheduling platform with a striking display font and clean monochrome scheduling UI.</p>
+        <div class="card-foot">
+          <div class="card-tags"><span class="tag">Light</span><span class="tag">Dark</span><span class="tag">OSS</span></div>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+    </a>
+    <a class="card"
+       href="31-raycast.html"
+       data-name="raycast"
+       data-vendor="raycast"
+       data-kind="product-aesthetic"
+       data-category="saas"
+       data-fidelity="inspired"
+       data-source-status="homepage-only"
+       data-tags="dark macos productivity launcher">
+      <div class="card-accent" style="background:#FF6363"></div>
+      <div class="card-body">
+        <div class="card-swatches"><span class="swatch" style="background:#FF6363" title="#FF6363"></span><span class="swatch" style="background:#181818" title="#181818"></span><span class="swatch" style="background:#2A2A2A" title="#2A2A2A"></span><span class="swatch" style="background:#FFFFFF" title="#FFFFFF"></span><span class="swatch" style="background:#888888" title="#888888"></span></div>
+        <div class="card-title-row">
+          <h3 class="card-title">Raycast</h3>
+          <span class="card-num">31</span>
+        </div>
+        <div class="card-vendor">Raycast</div>
+        <div class="card-badges">
+          <span class="badge kind kind-product-aesthetic">PA</span>
+          <span class="badge fid fid-inspired">inspired</span>
+          <span class="badge src src-homepage-only">homepage-only</span>
+        </div>
+        <p class="card-desc">Raycast&#39;s beloved command palette aesthetic — pitch-black surfaces with fiery red accent and crisp typography.</p>
+        <div class="card-foot">
+          <div class="card-tags"><span class="tag">Dark</span><span class="tag">macOS</span><span class="tag">Productivity</span></div>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+    </a>
+    <a class="card"
+       href="32-mailchimp-pattern.html"
+       data-name="mailchimp pattern library"
+       data-vendor="mailchimp (intuit)"
+       data-kind="design-system"
+       data-category="saas"
+       data-fidelity="approximated"
+       data-source-status="unverified"
+       data-tags="light marketing saas quirky">
+      <div class="card-accent" style="background:#FFE01B"></div>
+      <div class="card-body">
+        <div class="card-swatches"><span class="swatch" style="background:#FFE01B" title="#FFE01B"></span><span class="swatch" style="background:#007C89" title="#007C89"></span><span class="swatch" style="background:#241C15" title="#241C15"></span><span class="swatch" style="background:#FFFFFF" title="#FFFFFF"></span><span class="swatch" style="background:#DCBA21" title="#DCBA21"></span></div>
+        <div class="card-title-row">
+          <h3 class="card-title">Mailchimp Pattern Library</h3>
+          <span class="card-num">32</span>
+        </div>
+        <div class="card-vendor">Mailchimp (Intuit)</div>
+        <div class="card-badges">
+          <span class="badge kind kind-design-system">DS</span>
+          <span class="badge fid fid-approximated">approximated</span>
+          <span class="badge src src-unverified">unverified</span>
+        </div>
+        <p class="card-desc">Mailchimp&#39;s quirky, bold-yellow pattern library — Cavendish yellow, Peppercorn dark, and Cooper-style display typography.</p>
+        <div class="card-foot">
+          <div class="card-tags"><span class="tag">Light</span><span class="tag">Marketing</span><span class="tag">SaaS</span></div>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+    </a>
+    <a class="card"
+       href="33-slack-design.html"
+       data-name="slack design"
+       data-vendor="slack (salesforce)"
+       data-kind="brand-guidelines"
+       data-category="saas"
+       data-fidelity="inspired"
+       data-source-status="homepage-only"
+       data-tags="light dark enterprise messaging">
+      <div class="card-accent" style="background:#4A154B"></div>
+      <div class="card-body">
+        <div class="card-swatches"><span class="swatch" style="background:#4A154B" title="#4A154B"></span><span class="swatch" style="background:#ECB22E" title="#ECB22E"></span><span class="swatch" style="background:#36C5F0" title="#36C5F0"></span><span class="swatch" style="background:#2EB67D" title="#2EB67D"></span><span class="swatch" style="background:#E01E5A" title="#E01E5A"></span></div>
+        <div class="card-title-row">
+          <h3 class="card-title">Slack Design</h3>
+          <span class="card-num">33</span>
+        </div>
+        <div class="card-vendor">Slack (Salesforce)</div>
+        <div class="card-badges">
+          <span class="badge kind kind-brand-guidelines">BG</span>
+          <span class="badge fid fid-inspired">inspired</span>
+          <span class="badge src src-homepage-only">homepage-only</span>
+        </div>
+        <p class="card-desc">Slack&#39;s iconic 4-color palette — aubergine, yellow, sky-blue, mint — anchoring a friendly enterprise messaging aesthetic.</p>
+        <div class="card-foot">
+          <div class="card-tags"><span class="tag">Light</span><span class="tag">Dark</span><span class="tag">Enterprise</span></div>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+    </a>
+      </div>
+    </section>
+
+    <section class="cat-section" data-category="personality">
+      <h2 class="cat-h">
+        <span class="cat-label">Personality</span>
+        <span class="cat-count">6</span>
+      </h2>
+      <div class="grid">
+        
+    <a class="card"
+       href="34-backpack.html"
+       data-name="backpack"
+       data-vendor="skyscanner"
+       data-kind="design-system"
+       data-category="personality"
+       data-fidelity="approximated"
+       data-source-status="legacy"
+       data-tags="light dark travel web mobile">
+      <div class="card-accent" style="background:#0770E3"></div>
+      <div class="card-body">
+        <div class="card-swatches"><span class="swatch" style="background:#0770E3" title="#0770E3"></span><span class="swatch" style="background:#002C9D" title="#002C9D"></span><span class="swatch" style="background:#FFFFFF" title="#FFFFFF"></span><span class="swatch" style="background:#111236" title="#111236"></span><span class="swatch" style="background:#6E7BA0" title="#6E7BA0"></span></div>
+        <div class="card-title-row">
+          <h3 class="card-title">Backpack</h3>
+          <span class="card-num">34</span>
+        </div>
+        <div class="card-vendor">Skyscanner</div>
+        <div class="card-badges">
+          <span class="badge kind kind-design-system">DS</span>
+          <span class="badge fid fid-approximated">approximated</span>
+          <span class="badge src src-legacy">legacy</span>
+        </div>
+        <p class="card-desc">Skyscanner&#39;s travel-tech design system with refined Skyscanner blue and balanced multi-language support.</p>
+        <div class="card-foot">
+          <div class="card-tags"><span class="tag">Light</span><span class="tag">Dark</span><span class="tag">Travel</span></div>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+    </a>
+    <a class="card"
+       href="35-audi-ui.html"
+       data-name="audi ui"
+       data-vendor="audi"
+       data-kind="brand-guidelines"
+       data-category="personality"
+       data-fidelity="inspired"
+       data-source-status="unverified"
+       data-tags="light dark automotive premium">
+      <div class="card-accent" style="background:#BB0A30"></div>
+      <div class="card-body">
+        <div class="card-swatches"><span class="swatch" style="background:#BB0A30" title="#BB0A30"></span><span class="swatch" style="background:#000000" title="#000000"></span><span class="swatch" style="background:#FFFFFF" title="#FFFFFF"></span><span class="swatch" style="background:#4C4C4C" title="#4C4C4C"></span><span class="swatch" style="background:#F2F2F2" title="#F2F2F2"></span></div>
+        <div class="card-title-row">
+          <h3 class="card-title">Audi UI</h3>
+          <span class="card-num">35</span>
+        </div>
+        <div class="card-vendor">Audi</div>
+        <div class="card-badges">
+          <span class="badge kind kind-brand-guidelines">BG</span>
+          <span class="badge fid fid-inspired">inspired</span>
+          <span class="badge src src-unverified">unverified</span>
+        </div>
+        <p class="card-desc">Audi&#39;s premium automotive UI aesthetic — pure black surfaces, precise red accent, and condensed typography.</p>
+        <div class="card-foot">
+          <div class="card-tags"><span class="tag">Light</span><span class="tag">Dark</span><span class="tag">Automotive</span></div>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+    </a>
+    <a class="card"
+       href="36-workday-canvas.html"
+       data-name="workday canvas"
+       data-vendor="workday"
+       data-kind="design-system"
+       data-category="personality"
+       data-fidelity="approximated"
+       data-source-status="unverified"
+       data-tags="light enterprise web hr">
+      <div class="card-accent" style="background:#0875E1"></div>
+      <div class="card-body">
+        <div class="card-swatches"><span class="swatch" style="background:#0875E1" title="#0875E1"></span><span class="swatch" style="background:#1F4880" title="#1F4880"></span><span class="swatch" style="background:#FAFBFC" title="#FAFBFC"></span><span class="swatch" style="background:#2A2D32" title="#2A2D32"></span><span class="swatch" style="background:#58595B" title="#58595B"></span></div>
+        <div class="card-title-row">
+          <h3 class="card-title">Workday Canvas</h3>
+          <span class="card-num">36</span>
+        </div>
+        <div class="card-vendor">Workday</div>
+        <div class="card-badges">
+          <span class="badge kind kind-design-system">DS</span>
+          <span class="badge fid fid-approximated">approximated</span>
+          <span class="badge src src-unverified">unverified</span>
+        </div>
+        <p class="card-desc">Workday&#39;s enterprise HR/Finance design system with calm blue tokens and dense table-driven UIs.</p>
+        <div class="card-foot">
+          <div class="card-tags"><span class="tag">Light</span><span class="tag">Enterprise</span><span class="tag">Web</span></div>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+    </a>
+    <a class="card"
+       href="37-garden-zendesk.html"
+       data-name="garden"
+       data-vendor="zendesk"
+       data-kind="design-system"
+       data-category="personality"
+       data-fidelity="documented"
+       data-source-status="verified"
+       data-tags="light dark cx web support">
+      <div class="card-accent" style="background:#03363D"></div>
+      <div class="card-body">
+        <div class="card-swatches"><span class="swatch" style="background:#03363D" title="#03363D"></span><span class="swatch" style="background:#228F67" title="#228F67"></span><span class="swatch" style="background:#FFFFFF" title="#FFFFFF"></span><span class="swatch" style="background:#FED7AA" title="#FED7AA"></span><span class="swatch" style="background:#1F73B7" title="#1F73B7"></span></div>
+        <div class="card-title-row">
+          <h3 class="card-title">Garden</h3>
+          <span class="card-num">37</span>
+        </div>
+        <div class="card-vendor">Zendesk</div>
+        <div class="card-badges">
+          <span class="badge kind kind-design-system">DS</span>
+          <span class="badge fid fid-documented">documented</span>
+          <span class="badge src src-verified">verified</span>
+        </div>
+        <p class="card-desc">Zendesk&#39;s customer-experience design system with the deep Kale teal and warm support-product accents.</p>
+        <div class="card-foot">
+          <div class="card-tags"><span class="tag">Light</span><span class="tag">Dark</span><span class="tag">CX</span></div>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+    </a>
+    <a class="card"
+       href="38-lexicon-liferay.html"
+       data-name="lexicon"
+       data-vendor="liferay"
+       data-kind="design-system"
+       data-category="personality"
+       data-fidelity="approximated"
+       data-source-status="legacy"
+       data-tags="light dark enterprise cms">
+      <div class="card-accent" style="background:#0B5FFF"></div>
+      <div class="card-body">
+        <div class="card-swatches"><span class="swatch" style="background:#0B5FFF" title="#0B5FFF"></span><span class="swatch" style="background:#002BAB" title="#002BAB"></span><span class="swatch" style="background:#FFFFFF" title="#FFFFFF"></span><span class="swatch" style="background:#272833" title="#272833"></span><span class="swatch" style="background:#6B6C7E" title="#6B6C7E"></span></div>
+        <div class="card-title-row">
+          <h3 class="card-title">Lexicon</h3>
+          <span class="card-num">38</span>
+        </div>
+        <div class="card-vendor">Liferay</div>
+        <div class="card-badges">
+          <span class="badge kind kind-design-system">DS</span>
+          <span class="badge fid fid-approximated">approximated</span>
+          <span class="badge src src-legacy">legacy</span>
+        </div>
+        <p class="card-desc">Liferay&#39;s enterprise CMS design system with strong Liferay blue and structured page-builder UIs.</p>
+        <div class="card-foot">
+          <div class="card-tags"><span class="tag">Light</span><span class="tag">Dark</span><span class="tag">Enterprise</span></div>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+    </a>
+    <a class="card"
+       href="39-base-web-uber.html"
+       data-name="base web"
+       data-vendor="uber"
+       data-kind="design-system"
+       data-category="personality"
+       data-fidelity="approximated"
+       data-source-status="homepage-only"
+       data-tags="light dark mobility web">
+      <div class="card-accent" style="background:#276EF1"></div>
+      <div class="card-body">
+        <div class="card-swatches"><span class="swatch" style="background:#276EF1" title="#276EF1"></span><span class="swatch" style="background:#142328" title="#142328"></span><span class="swatch" style="background:#2C3F50" title="#2C3F50"></span><span class="swatch" style="background:#00A05B" title="#00A05B"></span><span class="swatch" style="background:#FFFFFF" title="#FFFFFF"></span></div>
+        <div class="card-title-row">
+          <h3 class="card-title">Base Web</h3>
+          <span class="card-num">39</span>
+        </div>
+        <div class="card-vendor">Uber</div>
+        <div class="card-badges">
+          <span class="badge kind kind-design-system">DS</span>
+          <span class="badge fid fid-approximated">approximated</span>
+          <span class="badge src src-homepage-only">homepage-only</span>
+        </div>
+        <p class="card-desc">Uber&#39;s cross-platform design system with confident blue accent and dense ride-hailing data UIs.</p>
+        <div class="card-foot">
+          <div class="card-tags"><span class="tag">Light</span><span class="tag">Dark</span><span class="tag">Mobility</span></div>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+    </a>
+      </div>
+    </section>
+
+    <section class="cat-section" data-category="public">
+      <h2 class="cat-h">
+        <span class="cat-label">Government / Public</span>
+        <span class="cat-count">4</span>
+      </h2>
+      <div class="grid">
+        
+    <a class="card"
+       href="40-uswds.html"
+       data-name="u.s. web design system"
+       data-vendor="u.s. general services administration"
+       data-kind="design-system"
+       data-category="public"
+       data-fidelity="documented"
+       data-source-status="verified"
+       data-tags="light government accessibility web">
+      <div class="card-accent" style="background:#005EA2"></div>
+      <div class="card-body">
+        <div class="card-swatches"><span class="swatch" style="background:#005EA2" title="#005EA2"></span><span class="swatch" style="background:#1A4480" title="#1A4480"></span><span class="swatch" style="background:#00BDE3" title="#00BDE3"></span><span class="swatch" style="background:#1B1B1B" title="#1B1B1B"></span><span class="swatch" style="background:#FFFFFF" title="#FFFFFF"></span></div>
+        <div class="card-title-row">
+          <h3 class="card-title">U.S. Web Design System</h3>
+          <span class="card-num">40</span>
+        </div>
+        <div class="card-vendor">U.S. General Services Administration</div>
+        <div class="card-badges">
+          <span class="badge kind kind-design-system">DS</span>
+          <span class="badge fid fid-documented">documented</span>
+          <span class="badge src src-verified">verified</span>
+        </div>
+        <p class="card-desc">The U.S. Web Design System for federal government sites — accessible, fast, and trust-conveying.</p>
+        <div class="card-foot">
+          <div class="card-tags"><span class="tag">Light</span><span class="tag">Government</span><span class="tag">Accessibility</span></div>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+    </a>
+    <a class="card"
+       href="41-gov-uk.html"
+       data-name="gov.uk design system"
+       data-vendor="uk government digital service"
+       data-kind="design-system"
+       data-category="public"
+       data-fidelity="documented"
+       data-source-status="verified"
+       data-tags="light government accessibility plain">
+      <div class="card-accent" style="background:#1D70B8"></div>
+      <div class="card-body">
+        <div class="card-swatches"><span class="swatch" style="background:#1D70B8" title="#1D70B8"></span><span class="swatch" style="background:#00703C" title="#00703C"></span><span class="swatch" style="background:#B1B4B6" title="#B1B4B6"></span><span class="swatch" style="background:#0B0C0C" title="#0B0C0C"></span><span class="swatch" style="background:#FFFFFF" title="#FFFFFF"></span></div>
+        <div class="card-title-row">
+          <h3 class="card-title">GOV.UK Design System</h3>
+          <span class="card-num">41</span>
+        </div>
+        <div class="card-vendor">UK Government Digital Service</div>
+        <div class="card-badges">
+          <span class="badge kind kind-design-system">DS</span>
+          <span class="badge fid fid-documented">documented</span>
+          <span class="badge src src-verified">verified</span>
+        </div>
+        <p class="card-desc">The UK government&#39;s text-first design system — high contrast, GDS Transport-style sans, and rigorous accessibility.</p>
+        <div class="card-foot">
+          <div class="card-tags"><span class="tag">Light</span><span class="tag">Government</span><span class="tag">Accessibility</span></div>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+    </a>
+    <a class="card"
+       href="42-digital-go-jp.html"
+       data-name="デジタル庁デザインシステム"
+       data-vendor="digital agency japan"
+       data-kind="design-system"
+       data-category="public"
+       data-fidelity="documented"
+       data-source-status="verified"
+       data-tags="light government japan accessibility">
+      <div class="card-accent" style="background:#0017C1"></div>
+      <div class="card-body">
+        <div class="card-swatches"><span class="swatch" style="background:#0017C1" title="#0017C1"></span><span class="swatch" style="background:#FFFFFF" title="#FFFFFF"></span><span class="swatch" style="background:#1A1A1C" title="#1A1A1C"></span><span class="swatch" style="background:#007AC2" title="#007AC2"></span><span class="swatch" style="background:#F5F5F5" title="#F5F5F5"></span></div>
+        <div class="card-title-row">
+          <h3 class="card-title">デジタル庁デザインシステム</h3>
+          <span class="card-num">42</span>
+        </div>
+        <div class="card-vendor">Digital Agency Japan</div>
+        <div class="card-badges">
+          <span class="badge kind kind-design-system">DS</span>
+          <span class="badge fid fid-documented">documented</span>
+          <span class="badge src src-verified">verified</span>
+        </div>
+        <p class="card-desc">日本デジタル庁の公的サービス向けデザインシステム。深い『デジタル庁ブルー』とNoto Sans JP基調。8×10pxグリッド。</p>
+        <div class="card-foot">
+          <div class="card-tags"><span class="tag">Light</span><span class="tag">Government</span><span class="tag">Japan</span></div>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+    </a>
+    <a class="card"
+       href="43-canada-ca.html"
+       data-name="canada.ca design system"
+       data-vendor="government of canada"
+       data-kind="design-system"
+       data-category="public"
+       data-fidelity="documented"
+       data-source-status="verified"
+       data-tags="light government accessibility bilingual">
+      <div class="card-accent" style="background:#284162"></div>
+      <div class="card-body">
+        <div class="card-swatches"><span class="swatch" style="background:#284162" title="#284162"></span><span class="swatch" style="background:#335075" title="#335075"></span><span class="swatch" style="background:#F1F2F3" title="#F1F2F3"></span><span class="swatch" style="background:#FFFFFF" title="#FFFFFF"></span><span class="swatch" style="background:#26374A" title="#26374A"></span></div>
+        <div class="card-title-row">
+          <h3 class="card-title">Canada.ca Design System</h3>
+          <span class="card-num">43</span>
+        </div>
+        <div class="card-vendor">Government of Canada</div>
+        <div class="card-badges">
+          <span class="badge kind kind-design-system">DS</span>
+          <span class="badge fid fid-documented">documented</span>
+          <span class="badge src src-verified">verified</span>
+        </div>
+        <p class="card-desc">Canada&#39;s bilingual government design system with the Federal Identity Program blue and high-contrast accessibility.</p>
+        <div class="card-foot">
+          <div class="card-tags"><span class="tag">Light</span><span class="tag">Government</span><span class="tag">Accessibility</span></div>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+    </a>
+      </div>
+    </section>
+
+    <section class="cat-section" data-category="browser-other">
+      <h2 class="cat-h">
+        <span class="cat-label">Browser / Other</span>
+        <span class="cat-count">4</span>
+      </h2>
+      <div class="grid">
+        
+    <a class="card"
+       href="44-arc-browser.html"
+       data-name="arc browser"
+       data-vendor="the browser company"
+       data-kind="product-aesthetic"
+       data-category="browser-other"
+       data-fidelity="inspired"
+       data-source-status="homepage-only"
+       data-tags="light dark browser gradient">
+      <div class="card-accent" style="background:#F09433"></div>
+      <div class="card-body">
+        <div class="card-swatches"><span class="swatch" style="background:#F09433" title="#F09433"></span><span class="swatch" style="background:#E6683C" title="#E6683C"></span><span class="swatch" style="background:#DC2743" title="#DC2743"></span><span class="swatch" style="background:#BC1888" title="#BC1888"></span><span class="swatch" style="background:#1B1B1B" title="#1B1B1B"></span></div>
+        <div class="card-title-row">
+          <h3 class="card-title">Arc Browser</h3>
+          <span class="card-num">44</span>
+        </div>
+        <div class="card-vendor">The Browser Company</div>
+        <div class="card-badges">
+          <span class="badge kind kind-product-aesthetic">PA</span>
+          <span class="badge fid fid-inspired">inspired</span>
+          <span class="badge src src-homepage-only">homepage-only</span>
+        </div>
+        <p class="card-desc">Arc Browser&#39;s joyful, rainbow-gradient identity layered over a glassy, sidebar-first browser chrome.</p>
+        <div class="card-foot">
+          <div class="card-tags"><span class="tag">Light</span><span class="tag">Dark</span><span class="tag">Browser</span></div>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+    </a>
+    <a class="card"
+       href="45-untitled-ui.html"
+       data-name="untitled ui"
+       data-vendor="untitled ui"
+       data-kind="ui-kit"
+       data-category="browser-other"
+       data-fidelity="documented"
+       data-source-status="verified"
+       data-tags="light dark ui kit saas figma">
+      <div class="card-accent" style="background:#7F56D9"></div>
+      <div class="card-body">
+        <div class="card-swatches"><span class="swatch" style="background:#7F56D9" title="#7F56D9"></span><span class="swatch" style="background:#6941C6" title="#6941C6"></span><span class="swatch" style="background:#F9F5FF" title="#F9F5FF"></span><span class="swatch" style="background:#101828" title="#101828"></span><span class="swatch" style="background:#475467" title="#475467"></span></div>
+        <div class="card-title-row">
+          <h3 class="card-title">Untitled UI</h3>
+          <span class="card-num">45</span>
+        </div>
+        <div class="card-vendor">Untitled UI</div>
+        <div class="card-badges">
+          <span class="badge kind kind-ui-kit">UK</span>
+          <span class="badge fid fid-documented">documented</span>
+          <span class="badge src src-verified">verified</span>
+        </div>
+        <p class="card-desc">The most popular commercial Figma UI kit — refined purple accents, generous spacing, and SaaS-grade polish.</p>
+        <div class="card-foot">
+          <div class="card-tags"><span class="tag">Light</span><span class="tag">Dark</span><span class="tag">UI Kit</span></div>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+    </a>
+    <a class="card"
+       href="46-duolingo.html"
+       data-name="duolingo design"
+       data-vendor="duolingo"
+       data-kind="brand-guidelines"
+       data-category="browser-other"
+       data-fidelity="inspired"
+       data-source-status="homepage-only"
+       data-tags="light dark education mobile playful">
+      <div class="card-accent" style="background:#58CC02"></div>
+      <div class="card-body">
+        <div class="card-swatches"><span class="swatch" style="background:#58CC02" title="#58CC02"></span><span class="swatch" style="background:#1CB0F6" title="#1CB0F6"></span><span class="swatch" style="background:#FFC800" title="#FFC800"></span><span class="swatch" style="background:#FF4B4B" title="#FF4B4B"></span><span class="swatch" style="background:#4B4B4B" title="#4B4B4B"></span></div>
+        <div class="card-title-row">
+          <h3 class="card-title">Duolingo Design</h3>
+          <span class="card-num">46</span>
+        </div>
+        <div class="card-vendor">Duolingo</div>
+        <div class="card-badges">
+          <span class="badge kind kind-brand-guidelines">BG</span>
+          <span class="badge fid fid-inspired">inspired</span>
+          <span class="badge src src-homepage-only">homepage-only</span>
+        </div>
+        <p class="card-desc">Duolingo&#39;s famously joyful brand — chunky owl-green primary, friendly Feather typography, and gamified UI patterns.</p>
+        <div class="card-foot">
+          <div class="card-tags"><span class="tag">Light</span><span class="tag">Dark</span><span class="tag">Education</span></div>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+    </a>
+    <a class="card"
+       href="47-patternfly.html"
+       data-name="patternfly"
+       data-vendor="red hat"
+       data-kind="design-system"
+       data-category="browser-other"
+       data-fidelity="documented"
+       data-source-status="verified"
+       data-tags="light dark enterprise cloud oss">
+      <div class="card-accent" style="background:#0066CC"></div>
+      <div class="card-body">
+        <div class="card-swatches"><span class="swatch" style="background:#0066CC" title="#0066CC"></span><span class="swatch" style="background:#06C" title="#06C"></span><span class="swatch" style="background:#4F5255" title="#4F5255"></span><span class="swatch" style="background:#151515" title="#151515"></span><span class="swatch" style="background:#F0F0F0" title="#F0F0F0"></span></div>
+        <div class="card-title-row">
+          <h3 class="card-title">PatternFly</h3>
+          <span class="card-num">47</span>
+        </div>
+        <div class="card-vendor">Red Hat</div>
+        <div class="card-badges">
+          <span class="badge kind kind-design-system">DS</span>
+          <span class="badge fid fid-documented">documented</span>
+          <span class="badge src src-verified">verified</span>
+        </div>
+        <p class="card-desc">Red Hat&#39;s open-source enterprise design system for cloud, container, and OpenShift consoles.</p>
+        <div class="card-foot">
+          <div class="card-tags"><span class="tag">Light</span><span class="tag">Dark</span><span class="tag">Enterprise</span></div>
+          <span class="card-arrow">→</span>
+        </div>
+      </div>
+    </a>
+      </div>
+    </section>
+<div class="empty hidden" id="emptyState">該当する DS がありません。フィルタや検索を変更してください。</div>
+</main>
+
+<footer class="site-footer">
+  <h3>About this catalog</h3>
+  <p>本サイトは Motohiro Koma が個人プロジェクトとして制作した、世界の著名なデザインシステム/コンポーネントライブラリ/ブランドガイドラインの参照カタログです。各ページは公式の公開ドキュメントを参考にした近似再現で、原著作者・提供元との関係はありません。各 DS の名称・商標・トークン・原則は提供元に帰属します。各ページの <code>fidelity</code> バッジ (documented / approximated / inspired) と <code>sourceStatus</code> バッジで再現精度をご判断ください。</p>
+  <p>商標権者・著作権者から削除のご要望があれば速やかに対応します。お問い合わせは <a href="https://github.com/motohirokoma/26tutorial/issues" target="_blank" rel="noopener">GitHub Issues</a> へ。</p>
+  <p>Reproduction date: 2026-05-05 ・ Total: 47 systems</p>
+  <details>
+    <summary>License notes (47 entries)</summary>
+    <ul>
+      <li><strong>Material Design 3</strong> — This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Google. Material Design 3 and related trademarks belong to Google. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</li>
+      <li><strong>Apple Human Interface Guidelines</strong> — This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Apple. Apple Human Interface Guidelines and related trademarks belong to Apple. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</li>
+      <li><strong>Fluent 2</strong> — This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Microsoft. Fluent 2 and related trademarks belong to Microsoft. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</li>
+      <li><strong>Carbon</strong> — This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with IBM. Carbon and related trademarks belong to IBM. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</li>
+      <li><strong>Spectrum 2</strong> — This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Adobe. Spectrum 2 and related trademarks belong to Adobe. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</li>
+      <li><strong>Lightning Design System</strong> — This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Salesforce. Lightning Design System and related trademarks belong to Salesforce. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</li>
+      <li><strong>Gestalt</strong> — This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Pinterest. Gestalt and related trademarks belong to Pinterest. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</li>
+      <li><strong>Atlassian Design System</strong> — This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Atlassian. Atlassian Design System and related trademarks belong to Atlassian. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</li>
+      <li><strong>Polaris</strong> — This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Shopify. Polaris and related trademarks belong to Shopify. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</li>
+      <li><strong>Primer</strong> — This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with GitHub. Primer and related trademarks belong to GitHub. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</li>
+      <li><strong>Bootstrap 5</strong> — This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Bootstrap Team. Bootstrap 5 and related trademarks belong to Bootstrap Team. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</li>
+      <li><strong>Tailwind CSS</strong> — This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Tailwind Labs. Tailwind CSS and related trademarks belong to Tailwind Labs. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</li>
+      <li><strong>shadcn/ui</strong> — This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with shadcn. shadcn/ui and related trademarks belong to shadcn. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</li>
+      <li><strong>Radix Themes</strong> — This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with WorkOS. Radix Themes and related trademarks belong to WorkOS. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</li>
+      <li><strong>Material UI (MUI)</strong> — This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with MUI. Material UI (MUI) and related trademarks belong to MUI. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</li>
+      <li><strong>Chakra UI</strong> — This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Chakra Team. Chakra UI and related trademarks belong to Chakra Team. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</li>
+      <li><strong>Mantine</strong> — This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Mantine Team. Mantine and related trademarks belong to Mantine Team. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</li>
+      <li><strong>Bulma</strong> — This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Jeremy Thomas. Bulma and related trademarks belong to Jeremy Thomas. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</li>
+      <li><strong>Vuetify</strong> — This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Vuetify Team. Vuetify and related trademarks belong to Vuetify Team. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</li>
+      <li><strong>HeroUI</strong> — This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with HeroUI Team. HeroUI and related trademarks belong to HeroUI Team. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</li>
+      <li><strong>Ant Design</strong> — This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Alibaba (Ant Group). Ant Design and related trademarks belong to Alibaba (Ant Group). Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</li>
+      <li><strong>TDesign</strong> — This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Tencent. TDesign and related trademarks belong to Tencent. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</li>
+      <li><strong>Element Plus</strong> — This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Element Plus Team. Element Plus and related trademarks belong to Element Plus Team. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</li>
+      <li><strong>Arco Design</strong> — This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with ByteDance. Arco Design and related trademarks belong to ByteDance. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</li>
+      <li><strong>LINE Design System</strong> — This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with LINE. LINE Design System and related trademarks belong to LINE. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</li>
+      <li><strong>Linear</strong> — This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Linear. Linear and related trademarks belong to Linear. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</li>
+      <li><strong>Stripe</strong> — This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Stripe. Stripe and related trademarks belong to Stripe. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</li>
+      <li><strong>Notion</strong> — This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Notion Labs. Notion and related trademarks belong to Notion Labs. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</li>
+      <li><strong>Geist (Vercel)</strong> — This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Vercel. Geist (Vercel) and related trademarks belong to Vercel. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</li>
+      <li><strong>Cal.com</strong> — This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Cal.com. Cal.com and related trademarks belong to Cal.com. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</li>
+      <li><strong>Raycast</strong> — This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Raycast. Raycast and related trademarks belong to Raycast. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</li>
+      <li><strong>Mailchimp Pattern Library</strong> — This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Mailchimp (Intuit). Mailchimp Pattern Library and related trademarks belong to Mailchimp (Intuit). Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</li>
+      <li><strong>Slack Design</strong> — This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Slack (Salesforce). Slack Design and related trademarks belong to Slack (Salesforce). Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</li>
+      <li><strong>Backpack</strong> — This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Skyscanner. Backpack and related trademarks belong to Skyscanner. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</li>
+      <li><strong>Audi UI</strong> — This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Audi. Audi UI and related trademarks belong to Audi. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</li>
+      <li><strong>Workday Canvas</strong> — This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Workday. Workday Canvas and related trademarks belong to Workday. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</li>
+      <li><strong>Garden</strong> — This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Zendesk. Garden and related trademarks belong to Zendesk. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</li>
+      <li><strong>Lexicon</strong> — This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Liferay. Lexicon and related trademarks belong to Liferay. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</li>
+      <li><strong>Base Web</strong> — This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Uber. Base Web and related trademarks belong to Uber. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</li>
+      <li><strong>U.S. Web Design System</strong> — This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with U.S. General Services Administration. U.S. Web Design System and related trademarks belong to U.S. General Services Administration. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</li>
+      <li><strong>GOV.UK Design System</strong> — This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with UK Government Digital Service. GOV.UK Design System and related trademarks belong to UK Government Digital Service. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</li>
+      <li><strong>デジタル庁デザインシステム</strong> — This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Digital Agency Japan. デジタル庁デザインシステム and related trademarks belong to Digital Agency Japan. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</li>
+      <li><strong>Canada.ca Design System</strong> — This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Government of Canada. Canada.ca Design System and related trademarks belong to Government of Canada. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</li>
+      <li><strong>Arc Browser</strong> — This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with The Browser Company. Arc Browser and related trademarks belong to The Browser Company. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</li>
+      <li><strong>Untitled UI</strong> — This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Untitled UI. Untitled UI and related trademarks belong to Untitled UI. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</li>
+      <li><strong>Duolingo Design</strong> — This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Duolingo. Duolingo Design and related trademarks belong to Duolingo. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</li>
+      <li><strong>PatternFly</strong> — This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Red Hat. PatternFly and related trademarks belong to Red Hat. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</li>
+    </ul>
+  </details>
+  <p class="sig">Built with Claude. systems.json (single source of truth) → build-index.js → index.html.</p>
+</footer>
+
+<script>
+const cards = Array.from(document.querySelectorAll('.card'));
+const sections = Array.from(document.querySelectorAll('.cat-section'));
+const search = document.getElementById('searchInput');
+const empty = document.getElementById('emptyState');
+const filterState = { category: '', kind: '', fidelity: '', 'source-status': '', q: '' };
+
+document.querySelectorAll('.filter-group').forEach(group => {
+  const filter = group.dataset.filter;
+  group.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      group.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      filterState[filter] = chip.dataset.value;
+      apply();
+    });
+  });
+});
+
+search.addEventListener('input', () => {
+  filterState.q = search.value.trim().toLowerCase();
+  apply();
+});
+
+function apply(){
+  let visibleCount = 0;
+  cards.forEach(card => {
+    const ds = card.dataset;
+    const okCat = !filterState.category || ds.category === filterState.category;
+    const okKind = !filterState.kind || ds.kind === filterState.kind;
+    const okFid = !filterState.fidelity || ds.fidelity === filterState.fidelity;
+    const okSrc = !filterState['source-status'] || ds.sourceStatus === filterState['source-status'];
+    const q = filterState.q;
+    const okQ = !q || (
+      ds.name.includes(q) || ds.vendor.includes(q) || ds.tags.includes(q)
+    );
+    const visible = okCat && okKind && okFid && okSrc && okQ;
+    card.classList.toggle('hidden', !visible);
+    if (visible) visibleCount++;
+  });
+  sections.forEach(sec => {
+    const visibleInSec = sec.querySelectorAll('.card:not(.hidden)').length;
+    sec.classList.toggle('hidden', visibleInSec === 0);
+  });
+  empty.classList.toggle('hidden', visibleCount > 0);
+}
+
+apply();
+</script>
+
+</body>
+</html>

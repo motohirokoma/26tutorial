@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Base Web — Design System Reference</title>
+  <script id="ds-meta" type="application/json">
+{"id":"39-base-web-uber","fileSlug":"39-base-web-uber","schemaVersion":"1"}
+  </script>
+  <style>
+    :root {
+      /* Base Web (Uber) — Light tokens */
+      --bw-blue-50: #EFF3FE;
+      --bw-blue-100: #D8E4FB;
+      --bw-blue-200: #B6CCFA;
+      --bw-blue-300: #8AB0F8;
+      --bw-blue-400: #276EF1; /* signature brand blue */
+      --bw-blue-500: #1F70F2;
+      --bw-blue-600: #0E4FC0;
+      --bw-blue-700: #133D87;
+
+      /* Mono (Uber neutrals) */
+      --bw-mono-100: #FFFFFF;
+      --bw-mono-200: #F6F6F6;
+      --bw-mono-300: #EEEEEE;
+      --bw-mono-400: #E2E2E2;
+      --bw-mono-500: #CBCBCB;
+      --bw-mono-600: #AFAFAF;
+      --bw-mono-700: #757575;
+      --bw-mono-800: #545454;
+      --bw-mono-900: #1F1F1F;
+      --bw-mono-1000: #000000;
+
+      /* Accent + Semantic */
+      --bw-green: #00A05B;
+      --bw-green-fade: #E6F5EE;
+      --bw-red: #E11900;
+      --bw-red-fade: #FBEAE9;
+      --bw-yellow: #FFC043;
+      --bw-yellow-fade: #FFF6E0;
+      --bw-purple: #9551A4;
+
+      /* Mobility data accents (Uber map shades) */
+      --bw-teal: #04727B;
+      --bw-violet: #5C2C82;
+
+      --bw-bg: var(--bw-mono-100);
+      --bw-surface: var(--bw-mono-100);
+      --bw-surface-alt: var(--bw-mono-200);
+      --bw-border: var(--bw-mono-300);
+      --bw-border-strong: var(--bw-mono-500);
+      --bw-text: var(--bw-mono-900);
+      --bw-text-muted: var(--bw-mono-800);
+      --bw-text-subtle: var(--bw-mono-700);
+      --bw-link: var(--bw-blue-500);
+
+      /* Type — Uber Move proprietary; system-stack fallback */
+      --bw-font: 'Uber Move', 'Uber Move Text', Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+      --bw-font-display: 'Uber Move', 'Uber Move Display', Inter, system-ui, sans-serif;
+      --bw-mono: ui-monospace, 'JetBrains Mono', SFMono-Regular, Menlo, Consolas, monospace;
+
+      /* Shape — Uber: conservative 4-8px rounding */
+      --bw-r-0: 0px;
+      --bw-r-1: 2px;
+      --bw-r-2: 4px;
+      --bw-r-3: 8px;
+      --bw-r-4: 12px;
+      --bw-r-pill: 999px;
+
+      /* Spacing — 4px base */
+      --bw-s-1: 4px;
+      --bw-s-2: 8px;
+      --bw-s-3: 12px;
+      --bw-s-4: 16px;
+      --bw-s-5: 20px;
+      --bw-s-6: 24px;
+      --bw-s-7: 32px;
+      --bw-s-8: 48px;
+      --bw-s-9: 64px;
+
+      /* Elevation */
+      --bw-shadow-1: 0 1px 2px rgba(0,0,0,0.06), 0 0 1px rgba(0,0,0,0.08);
+      --bw-shadow-2: 0 4px 8px rgba(0,0,0,0.08), 0 0 1px rgba(0,0,0,0.08);
+      --bw-shadow-3: 0 12px 24px rgba(0,0,0,0.1), 0 0 1px rgba(0,0,0,0.08);
+      --bw-shadow-4: 0 24px 48px rgba(0,0,0,0.14), 0 0 1px rgba(0,0,0,0.08);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--bw-font);
+      background: var(--bw-mono-200);
+      color: var(--bw-text);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      font-feature-settings: "ss01", "ss02";
+    }
+    code, kbd, pre { font-family: var(--bw-mono); }
+    a { color: var(--bw-link); }
+
+    /* Header */
+    .ds-header {
+      background: var(--bw-mono-1000);
+      color: var(--bw-mono-100);
+      padding: var(--bw-s-8) var(--bw-s-7) var(--bw-s-7);
+      border-bottom: 1px solid var(--bw-mono-900);
+      position: relative;
+      overflow: hidden;
+    }
+    .ds-header::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(circle at 85% 30%, rgba(39,110,241,0.18), transparent 60%);
+      pointer-events: none;
+    }
+    .ds-header > * { position: relative; }
+
+    .back-link {
+      display: inline-flex; align-items: center; gap: var(--bw-s-2);
+      color: var(--bw-mono-400);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 6px 10px;
+      border: 1px solid var(--bw-mono-800);
+      border-radius: var(--bw-r-pill);
+      transition: background 0.15s, color 0.15s;
+    }
+    .back-link:hover { background: var(--bw-mono-900); color: var(--bw-mono-100); }
+
+    .ds-header h1 {
+      font-family: var(--bw-font-display);
+      font-size: 56px; line-height: 60px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin: var(--bw-s-5) 0 var(--bw-s-3);
+    }
+
+    .ds-header .meta {
+      display: flex; flex-wrap: wrap; gap: var(--bw-s-2); align-items: center;
+      margin-bottom: var(--bw-s-3);
+    }
+
+    .badge {
+      display: inline-flex; align-items: center;
+      padding: 4px 10px;
+      border-radius: var(--bw-r-2);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      border: 1px solid var(--bw-mono-700);
+      background: rgba(255,255,255,0.04);
+      color: var(--bw-mono-400);
+    }
+    .badge.kind-ds { background: var(--bw-blue-400); color: var(--bw-mono-100); border-color: transparent; }
+    .badge.fidelity-documented { background: var(--bw-green-fade); color: #00683B; border-color: transparent; }
+    .badge.fidelity-approximated { background: var(--bw-yellow-fade); color: #8C5A00; border-color: transparent; }
+    .badge.fidelity-inspired { background: #F6E8FA; color: #6E2A82; border-color: transparent; }
+    .badge.source-homepage-only { background: rgba(39,110,241,0.18); color: var(--bw-blue-200); border-color: transparent; }
+
+    .ds-header a.official {
+      color: var(--bw-mono-100);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 4px 12px;
+      border: 1px solid var(--bw-mono-700);
+      border-radius: var(--bw-r-pill);
+      font-size: 12px;
+      background: var(--bw-mono-900);
+    }
+    .ds-header a.official:hover { background: var(--bw-mono-800); }
+
+    .tagline {
+      font-size: 18px;
+      line-height: 26px;
+      max-width: 720px;
+      margin: var(--bw-s-4) 0 0;
+      color: var(--bw-mono-400);
+    }
+
+    /* TOC */
+    .toc {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(255,255,255,0.92);
+      border-bottom: 1px solid var(--bw-border);
+      backdrop-filter: blur(10px);
+    }
+    .toc ul {
+      list-style: none; margin: 0;
+      padding: var(--bw-s-3) var(--bw-s-7);
+      display: flex; gap: var(--bw-s-2); overflow-x: auto;
+    }
+    .toc a {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: var(--bw-r-pill);
+      color: var(--bw-text-muted);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      white-space: nowrap;
+      border: 1px solid var(--bw-border);
+      background: var(--bw-surface);
+      transition: all 0.15s;
+    }
+    .toc a:hover { background: var(--bw-mono-900); color: var(--bw-mono-100); border-color: var(--bw-mono-900); }
+
+    /* Main */
+    main { max-width: 1280px; margin: 0 auto; padding: var(--bw-s-7); }
+
+    section {
+      background: var(--bw-surface);
+      border-radius: var(--bw-r-3);
+      padding: var(--bw-s-7);
+      margin-bottom: var(--bw-s-6);
+      border: 1px solid var(--bw-border);
+    }
+    section h2 {
+      display: flex; align-items: center; gap: var(--bw-s-3); flex-wrap: wrap;
+      font-family: var(--bw-font-display);
+      font-size: 32px; line-height: 38px; font-weight: 700;
+      letter-spacing: -0.01em;
+      margin: 0 0 var(--bw-s-5);
+      color: var(--bw-text);
+    }
+    .source-link {
+      font-size: 13px;
+      color: var(--bw-blue-500);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .source-link:hover { text-decoration: underline; }
+
+    h3 {
+      font-size: 18px; line-height: 24px;
+      font-weight: 600;
+      margin: var(--bw-s-6) 0 var(--bw-s-3);
+      color: var(--bw-text);
+    }
+    h4 { font-size: 14px; font-weight: 600; margin: var(--bw-s-4) 0 var(--bw-s-2); color: var(--bw-text-muted); text-transform: none; }
+    p { margin: 0 0 var(--bw-s-3); }
+
+    /* Brand */
+    #brand .brand-mark {
+      display: inline-flex; align-items: center; gap: var(--bw-s-3);
+      padding: var(--bw-s-3) var(--bw-s-5);
+      background: var(--bw-mono-1000);
+      border-radius: var(--bw-r-3);
+      color: var(--bw-mono-100);
+      font-family: var(--bw-font-display);
+      font-size: 26px; font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+    #brand .brand-mark .dot {
+      width: 14px; height: 14px;
+      background: var(--bw-blue-400);
+      border-radius: 50%;
+    }
+    #brand .pillars {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px,1fr));
+      gap: var(--bw-s-4);
+      margin-top: var(--bw-s-5);
+    }
+    #brand .pillar {
+      padding: var(--bw-s-5);
+      background: var(--bw-mono-200);
+      border-radius: var(--bw-r-3);
+      border-left: 4px solid var(--bw-blue-400);
+    }
+    #brand .pillar h4 {
+      margin-top: 0; color: var(--bw-blue-500); font-weight: 600;
+      letter-spacing: 0; text-transform: none;
+    }
+
+    /* Color */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 2px;
+      margin-bottom: var(--bw-s-4);
+    }
+    .color-cell {
+      aspect-ratio: 1;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 8px;
+      font-size: 10px; font-family: var(--bw-mono);
+      border-radius: 0;
+    }
+    .color-cell:first-child { border-radius: var(--bw-r-2) 0 0 var(--bw-r-2); }
+    .color-cell:last-child { border-radius: 0 var(--bw-r-2) var(--bw-r-2) 0; }
+
+    .semantic-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
+      gap: var(--bw-s-3);
+    }
+    .sem-card {
+      padding: var(--bw-s-4);
+      border-radius: var(--bw-r-3);
+      display: flex; flex-direction: column; gap: 4px;
+      border: 1px solid var(--bw-border);
+    }
+    .sem-card .label { font-size: 14px; font-weight: 600; }
+    .sem-card .hex { font-family: var(--bw-mono); font-size: 12px; opacity: 0.85; }
+
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--bw-s-2);
+      margin-bottom: var(--bw-s-4);
+    }
+    .role-chip {
+      padding: var(--bw-s-3) var(--bw-s-4);
+      border-radius: var(--bw-r-3);
+      font-size: 13px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .role-chip code { font-size: 11px; opacity: 0.85; font-family: var(--bw-mono); }
+
+    /* Typography */
+    .type-row {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: var(--bw-s-4);
+      padding: var(--bw-s-3) 0;
+      border-bottom: 1px solid var(--bw-border);
+      align-items: baseline;
+    }
+    .type-row:last-child { border-bottom: 0; }
+    .type-row .label {
+      font-family: var(--bw-mono);
+      font-size: 12px;
+      color: var(--bw-text-subtle);
+    }
+    .display-1 { font-family: var(--bw-font-display); font-size: 56px; line-height: 60px; font-weight: 700; letter-spacing: -0.02em; }
+    .display-2 { font-family: var(--bw-font-display); font-size: 44px; line-height: 48px; font-weight: 700; letter-spacing: -0.02em; }
+    .display-3 { font-family: var(--bw-font-display); font-size: 32px; line-height: 36px; font-weight: 700; letter-spacing: -0.01em; }
+    .heading-xl { font-size: 28px; line-height: 32px; font-weight: 600; }
+    .heading-lg { font-size: 22px; line-height: 28px; font-weight: 600; }
+    .heading-md { font-size: 18px; line-height: 24px; font-weight: 600; }
+    .heading-sm { font-size: 16px; line-height: 20px; font-weight: 600; }
+    .heading-xs { font-size: 14px; line-height: 18px; font-weight: 600; }
+    .label-lg { font-size: 16px; line-height: 20px; font-weight: 500; }
+    .label-md { font-size: 14px; line-height: 18px; font-weight: 500; }
+    .label-sm { font-size: 12px; line-height: 16px; font-weight: 500; }
+    .body-lg { font-size: 16px; line-height: 24px; }
+    .body-md { font-size: 14px; line-height: 20px; }
+    .body-sm { font-size: 12px; line-height: 16px; }
+    .mono-sample { font-family: var(--bw-mono); font-size: 13px; color: var(--bw-text-muted); }
+
+    /* Buttons */
+    .button-row {
+      display: flex; flex-wrap: wrap; gap: var(--bw-s-3); align-items: center;
+      margin-bottom: var(--bw-s-3);
+    }
+    .bw-btn {
+      font-family: var(--bw-font);
+      font-size: 14px;
+      font-weight: 500;
+      padding: 10px 16px;
+      border-radius: var(--bw-r-2);
+      border: 0;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      height: 40px;
+      transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+    }
+    .bw-btn--primary { background: var(--bw-mono-1000); color: var(--bw-mono-100); }
+    .bw-btn--primary:hover { background: var(--bw-mono-800); }
+    .bw-btn--secondary { background: var(--bw-mono-200); color: var(--bw-text); }
+    .bw-btn--secondary:hover { background: var(--bw-mono-300); }
+    .bw-btn--tertiary { background: transparent; color: var(--bw-text); }
+    .bw-btn--tertiary:hover { background: var(--bw-mono-200); }
+    .bw-btn--minimal { background: transparent; color: var(--bw-blue-500); padding: 10px 8px; }
+    .bw-btn--minimal:hover { background: var(--bw-blue-50); }
+    .bw-btn--accent { background: var(--bw-blue-400); color: var(--bw-mono-100); }
+    .bw-btn--accent:hover { background: var(--bw-blue-600); }
+    .bw-btn--danger { background: var(--bw-red); color: var(--bw-mono-100); }
+    .bw-btn--danger:hover { background: #B61400; }
+    .bw-btn:disabled { background: var(--bw-mono-300); color: var(--bw-mono-600); cursor: not-allowed; }
+    .bw-btn--mini { height: 28px; padding: 4px 10px; font-size: 12px; }
+    .bw-btn--compact { height: 36px; padding: 8px 12px; font-size: 13px; }
+    .bw-btn--default { height: 40px; }
+    .bw-btn--large { height: 48px; padding: 12px 20px; font-size: 16px; }
+    .bw-btn--icon { width: 40px; padding: 0; justify-content: center; }
+    .bw-btn:focus-visible { outline: 2px solid var(--bw-blue-400); outline-offset: 2px; }
+
+    /* Form */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+      gap: var(--bw-s-4);
+    }
+    .bw-field { display: flex; flex-direction: column; gap: 6px; }
+    .bw-field label.field-label { font-size: 13px; font-weight: 500; color: var(--bw-text-muted); }
+    .bw-input, .bw-textarea, .bw-select {
+      background: var(--bw-mono-200);
+      border: 2px solid var(--bw-mono-200);
+      border-radius: var(--bw-r-2);
+      padding: 12px 14px;
+      font-family: var(--bw-font);
+      font-size: 14px;
+      color: var(--bw-text);
+      width: 100%;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .bw-input:hover, .bw-textarea:hover, .bw-select:hover { background: var(--bw-mono-300); border-color: var(--bw-mono-300); }
+    .bw-input:focus, .bw-textarea:focus, .bw-select:focus {
+      outline: none;
+      background: var(--bw-mono-100);
+      border-color: var(--bw-mono-1000);
+    }
+    .bw-input.error { border-color: var(--bw-red); background: var(--bw-red-fade); }
+    .bw-textarea { min-height: 88px; resize: vertical; }
+    .bw-select {
+      appearance: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23545454' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 40px;
+    }
+    .bw-helper { font-size: 12px; color: var(--bw-text-subtle); }
+    .bw-error-text { font-size: 12px; color: var(--bw-red); }
+
+    .bw-checkbox, .bw-radio {
+      display: inline-flex; align-items: center; gap: 8px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .bw-checkbox input, .bw-radio input {
+      width: 18px; height: 18px;
+      accent-color: var(--bw-blue-400);
+    }
+    .bw-switch { position: relative; display: inline-block; width: 40px; height: 22px; }
+    .bw-switch input { opacity: 0; width: 0; height: 0; }
+    .bw-switch .slider {
+      position: absolute; cursor: pointer; inset: 0;
+      background: var(--bw-mono-500);
+      border-radius: var(--bw-r-pill);
+      transition: 0.2s;
+    }
+    .bw-switch .slider::before {
+      content: ''; position: absolute;
+      width: 18px; height: 18px;
+      left: 2px; top: 2px;
+      background: var(--bw-mono-100);
+      border-radius: 50%;
+      box-shadow: var(--bw-shadow-1);
+      transition: 0.2s;
+    }
+    .bw-switch input:checked + .slider { background: var(--bw-mono-1000); }
+    .bw-switch input:checked + .slider::before { transform: translateX(18px); }
+
+    .bw-slider { width: 100%; accent-color: var(--bw-mono-1000); }
+
+    /* Surfaces */
+    .surface-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
+      gap: var(--bw-s-4);
+    }
+    .bw-card {
+      background: var(--bw-surface);
+      border-radius: var(--bw-r-3);
+      padding: var(--bw-s-5);
+      border: 1px solid var(--bw-border);
+    }
+    .bw-card--shadow { border: 0; box-shadow: var(--bw-shadow-2); }
+    .bw-card--mono { background: var(--bw-mono-1000); color: var(--bw-mono-100); border: 0; }
+    .bw-card .media {
+      height: 120px;
+      background: linear-gradient(135deg, var(--bw-blue-400), var(--bw-mono-1000));
+      border-radius: var(--bw-r-2);
+      margin-bottom: var(--bw-s-3);
+    }
+    .bw-card h4 { margin: 0 0 4px; color: var(--bw-text); font-size: 16px; font-weight: 600; }
+    .bw-card p { font-size: 14px; color: var(--bw-text-muted); margin: 0; }
+
+    .bw-stat {
+      padding: var(--bw-s-5);
+      background: var(--bw-mono-1000);
+      color: var(--bw-mono-100);
+      border-radius: var(--bw-r-3);
+    }
+    .bw-stat .num { font-family: var(--bw-font-display); font-size: 36px; font-weight: 700; line-height: 1; letter-spacing: -0.02em; }
+    .bw-stat .lbl { font-size: 12px; color: var(--bw-mono-500); margin-top: 6px; }
+
+    .bw-modal {
+      background: var(--bw-surface);
+      padding: var(--bw-s-5);
+      border-radius: var(--bw-r-3);
+      box-shadow: var(--bw-shadow-3);
+      max-width: 380px;
+      border: 1px solid var(--bw-border);
+    }
+    .bw-modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; }
+
+    .bw-popover {
+      background: var(--bw-mono-1000);
+      color: var(--bw-mono-100);
+      padding: 12px 14px;
+      border-radius: var(--bw-r-2);
+      font-size: 13px;
+      box-shadow: var(--bw-shadow-2);
+      max-width: 240px;
+    }
+
+    /* Feedback */
+    .bw-notification {
+      display: flex;
+      gap: var(--bw-s-3);
+      padding: var(--bw-s-3) var(--bw-s-4);
+      border-radius: var(--bw-r-2);
+      margin-bottom: var(--bw-s-2);
+      font-size: 14px;
+      align-items: flex-start;
+    }
+    .bw-notification--info { background: var(--bw-blue-50); color: #133D87; border-left: 4px solid var(--bw-blue-400); }
+    .bw-notification--positive { background: var(--bw-green-fade); color: #00683B; border-left: 4px solid var(--bw-green); }
+    .bw-notification--warning { background: var(--bw-yellow-fade); color: #8C5A00; border-left: 4px solid var(--bw-yellow); }
+    .bw-notification--negative { background: var(--bw-red-fade); color: #8E1100; border-left: 4px solid var(--bw-red); }
+
+    .bw-toast {
+      background: var(--bw-mono-1000);
+      color: var(--bw-mono-100);
+      padding: 14px 16px;
+      border-radius: var(--bw-r-2);
+      box-shadow: var(--bw-shadow-3);
+      display: inline-flex; align-items: center; gap: 16px;
+      font-size: 14px;
+    }
+    .bw-toast button { background: transparent; color: var(--bw-blue-200); border: 0; font-weight: 500; cursor: pointer; }
+
+    .bw-banner {
+      display: flex; gap: var(--bw-s-3);
+      padding: var(--bw-s-3) var(--bw-s-4);
+      background: var(--bw-mono-200);
+      border-radius: var(--bw-r-2);
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid var(--bw-border);
+    }
+
+    .bw-tag-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .bw-tag {
+      display: inline-flex; align-items: center;
+      padding: 4px 10px;
+      border-radius: var(--bw-r-2);
+      background: var(--bw-mono-200);
+      color: var(--bw-text);
+      font-size: 12px; font-weight: 500;
+      border: 1px solid transparent;
+    }
+    .bw-tag--accent { background: var(--bw-blue-50); color: var(--bw-blue-600); }
+    .bw-tag--positive { background: var(--bw-green-fade); color: #00683B; }
+    .bw-tag--negative { background: var(--bw-red-fade); color: #8E1100; }
+    .bw-tag--warning { background: var(--bw-yellow-fade); color: #8C5A00; }
+    .bw-tag--solid { background: var(--bw-mono-1000); color: var(--bw-mono-100); }
+
+    .bw-badge {
+      background: var(--bw-blue-400); color: var(--bw-mono-100);
+      border-radius: var(--bw-r-pill);
+      font-size: 11px;
+      padding: 2px 8px;
+      font-weight: 600;
+    }
+
+    .bw-progress {
+      width: 100%; height: 4px;
+      background: var(--bw-mono-300);
+      border-radius: var(--bw-r-pill);
+      overflow: hidden;
+    }
+    .bw-progress::after { content: ''; display: block; height: 100%; width: 65%; background: var(--bw-mono-1000); }
+
+    .bw-skeleton {
+      height: 14px;
+      background: linear-gradient(90deg, var(--bw-mono-300), var(--bw-mono-200), var(--bw-mono-300));
+      background-size: 200% 100%;
+      border-radius: var(--bw-r-1);
+      animation: bw-shimmer 1.4s infinite;
+    }
+    @keyframes bw-shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+    .bw-spinner {
+      width: 28px; height: 28px;
+      border: 3px solid var(--bw-mono-300);
+      border-top-color: var(--bw-blue-400);
+      border-radius: 50%;
+      animation: bw-spin 0.9s linear infinite;
+    }
+    @keyframes bw-spin { to { transform: rotate(360deg); } }
+
+    /* Navigation */
+    .bw-tabs {
+      display: flex; gap: 0;
+      border-bottom: 2px solid var(--bw-border);
+      margin-bottom: var(--bw-s-3);
+    }
+    .bw-tab {
+      padding: var(--bw-s-3) var(--bw-s-4);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--bw-text-muted);
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      margin-bottom: -2px;
+    }
+    .bw-tab.active { color: var(--bw-text); border-bottom-color: var(--bw-mono-1000); font-weight: 600; }
+
+    .bw-breadcrumb { display: flex; gap: 8px; align-items: center; font-size: 13px; color: var(--bw-text-muted); }
+    .bw-breadcrumb a { color: var(--bw-text); text-decoration: none; }
+    .bw-breadcrumb a:hover { color: var(--bw-blue-500); }
+
+    .bw-pagination { display: flex; gap: 4px; align-items: center; }
+    .bw-pagination button {
+      min-width: 36px; height: 36px;
+      border-radius: var(--bw-r-2);
+      border: 1px solid var(--bw-border);
+      background: var(--bw-surface);
+      color: var(--bw-text);
+      cursor: pointer;
+      font-family: var(--bw-font);
+      font-size: 13px;
+      padding: 0 10px;
+    }
+    .bw-pagination button.active { background: var(--bw-mono-1000); color: var(--bw-mono-100); border-color: var(--bw-mono-1000); }
+    .bw-pagination button:hover:not(.active) { background: var(--bw-mono-200); }
+
+    .bw-stepper { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+    .bw-stepper .step { display: inline-flex; align-items: center; gap: 8px; }
+    .bw-stepper .num {
+      width: 24px; height: 24px; border-radius: 50%;
+      background: var(--bw-mono-300); color: var(--bw-text-muted);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 600;
+    }
+    .bw-stepper .num.active { background: var(--bw-mono-1000); color: var(--bw-mono-100); }
+    .bw-stepper .line { flex: 1; height: 1px; background: var(--bw-border); }
+
+    .bw-sidebar {
+      background: var(--bw-mono-200);
+      border-radius: var(--bw-r-3);
+      padding: 12px;
+      width: 240px;
+    }
+    .bw-sidebar a {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 14px;
+      border-radius: var(--bw-r-2);
+      color: var(--bw-text-muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .bw-sidebar a.active { background: var(--bw-mono-1000); color: var(--bw-mono-100); }
+    .bw-sidebar a:hover:not(.active) { background: var(--bw-mono-300); }
+
+    .bw-topbar {
+      display: flex; align-items: center; gap: 16px;
+      padding: 12px 16px;
+      background: var(--bw-mono-1000);
+      color: var(--bw-mono-100);
+      border-radius: var(--bw-r-3);
+    }
+    .bw-topbar .brand-text {
+      font-family: var(--bw-font-display);
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .bw-menu {
+      background: var(--bw-surface);
+      border-radius: var(--bw-r-2);
+      box-shadow: var(--bw-shadow-2);
+      padding: 6px 0;
+      width: 220px;
+      border: 1px solid var(--bw-border);
+    }
+    .bw-menu .item { padding: 10px 14px; font-size: 14px; cursor: pointer; }
+    .bw-menu .item:hover { background: var(--bw-mono-200); }
+    .bw-menu .divider { height: 1px; background: var(--bw-border); margin: 4px 0; }
+
+    /* Data */
+    table.bw-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      background: var(--bw-surface);
+    }
+    table.bw-table th, table.bw-table td {
+      text-align: left;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--bw-border);
+    }
+    table.bw-table th {
+      font-weight: 600; color: var(--bw-text-muted);
+      background: var(--bw-mono-200);
+      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: 0.04em;
+    }
+    table.bw-table tr:hover td { background: var(--bw-mono-200); }
+
+    .bw-list { list-style: none; padding: 0; margin: 0; }
+    .bw-list li {
+      padding: 12px 16px;
+      display: flex; gap: 12px; align-items: center;
+      border-bottom: 1px solid var(--bw-border);
+    }
+    .bw-list li:last-child { border-bottom: 0; }
+
+    .bw-kv { display: grid; grid-template-columns: 140px 1fr; gap: 12px; font-size: 14px; }
+    .bw-kv dt { color: var(--bw-text-muted); font-weight: 500; }
+
+    .bw-avatar {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: var(--bw-blue-400);
+      color: var(--bw-mono-100);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-weight: 600;
+    }
+
+    .bw-empty {
+      text-align: center;
+      padding: var(--bw-s-8) var(--bw-s-4);
+      color: var(--bw-text-muted);
+      background: var(--bw-mono-200);
+      border-radius: var(--bw-r-3);
+    }
+    .bw-empty svg { width: 48px; height: 48px; opacity: 0.4; }
+
+    /* Layout */
+    .grid-demo {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 8px;
+      background: var(--bw-mono-200);
+      padding: 16px;
+      border-radius: var(--bw-r-3);
+    }
+    .grid-demo > div {
+      background: var(--bw-blue-400);
+      color: var(--bw-mono-100);
+      padding: 12px;
+      border-radius: var(--bw-r-2);
+      font-size: 12px;
+      font-weight: 500;
+      text-align: center;
+    }
+
+    .scale-row {
+      display: flex; gap: var(--bw-s-3); flex-wrap: wrap; align-items: flex-end;
+      margin-bottom: var(--bw-s-4);
+    }
+    .scale-item { display: flex; flex-direction: column; gap: 6px; align-items: center; }
+    .scale-item .swatch { background: var(--bw-mono-1000); }
+    .scale-item .lbl { font-size: 11px; font-family: var(--bw-mono); color: var(--bw-text-subtle); }
+
+    .shadow-demo {
+      width: 80px; height: 80px;
+      background: var(--bw-surface);
+      border-radius: var(--bw-r-3);
+      display: inline-flex; align-items: center; justify-content: center;
+      margin-right: 16px; margin-bottom: 16px;
+      font-size: 11px; font-family: var(--bw-mono); color: var(--bw-text-muted);
+    }
+
+    /* Footer */
+    .ds-footer {
+      background: var(--bw-mono-1000);
+      color: var(--bw-mono-300);
+      padding: var(--bw-s-7);
+      margin-top: var(--bw-s-8);
+    }
+    .ds-footer h3 { margin-top: 0; color: var(--bw-mono-100); font-size: 18px; }
+    .ds-footer ul { padding-left: 20px; }
+    .ds-footer li { margin-bottom: 4px; word-break: break-all; font-size: 13px; }
+    .ds-footer a { color: var(--bw-blue-200); text-decoration: none; }
+    .ds-footer a:hover { color: var(--bw-blue-100); text-decoration: underline; }
+    .license-note { font-size: 13px; color: var(--bw-mono-500); margin-top: var(--bw-s-4); }
+    .meta-note { font-size: 12px; color: var(--bw-mono-600); font-family: var(--bw-mono); margin-top: var(--bw-s-2); }
+
+    @media (max-width: 720px) {
+      .ds-header h1 { font-size: 36px; line-height: 40px; }
+      main { padding: var(--bw-s-4); }
+      section { padding: var(--bw-s-5); }
+      .type-row { grid-template-columns: 1fr; }
+      .color-grid { grid-template-columns: repeat(4, 1fr); }
+      .grid-demo > div:nth-child(n+7) { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="ds-header">
+    <a href="index.html" class="back-link">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Catalog
+    </a>
+    <h1>Base Web</h1>
+    <div class="meta">
+      <span class="badge kind-ds">design-system</span>
+      <span class="badge fidelity-approximated">approximated</span>
+      <span class="badge source-homepage-only">source: homepage-only</span>
+      <a href="https://baseweb.design" target="_blank" rel="noopener" class="official">Official ↗</a>
+    </div>
+    <p class="tagline">Uber's cross-platform design system. Confident blue accent on a pure mono palette, dense data UIs, and conservative shape — built for ride-hailing and mobility surfaces.</p>
+  </header>
+
+  <nav class="toc" aria-label="Table of contents">
+    <ul>
+      <li><a href="#brand">Brand</a></li>
+      <li><a href="#color">Color</a></li>
+      <li><a href="#typography">Typography</a></li>
+      <li><a href="#buttons">Buttons</a></li>
+      <li><a href="#form">Form</a></li>
+      <li><a href="#surfaces">Surfaces</a></li>
+      <li><a href="#feedback">Feedback</a></li>
+      <li><a href="#navigation">Navigation</a></li>
+      <li><a href="#data">Data</a></li>
+      <li><a href="#layout">Layout</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="brand" data-fidelity="approximated">
+      <h2>
+        <span>Brand</span>
+        <span class="badge fidelity-approximated">approximated</span>
+      </h2>
+      <div class="brand-mark">
+        <span class="dot"></span>
+        Base Web
+      </div>
+      <p style="margin-top: 24px; max-width: 720px; font-size: 16px; color: var(--bw-text-muted);">
+        Base Web is Uber's open-source React component library — the web expression of the broader Base Design System. It's optimized for data-dense ride-hailing dashboards: a near-monochrome palette, a single confident blue accent, and modest 4–8px corner rounding. Layouts breathe through whitespace rather than ornament.
+      </p>
+      <div class="pillars">
+        <div class="pillar">
+          <h4>Confident</h4>
+          <p style="font-size:14px;color:var(--bw-text-muted);margin:0">Blue 400 (#276EF1) carries primary action; mono carries everything else.</p>
+        </div>
+        <div class="pillar">
+          <h4>Functional</h4>
+          <p style="font-size:14px;color:var(--bw-text-muted);margin:0">Components are tuned for data tables, forms, and operational consoles.</p>
+        </div>
+        <div class="pillar">
+          <h4>Themable</h4>
+          <p style="font-size:14px;color:var(--bw-text-muted);margin:0">A token-driven theme provider lets each Uber surface inherit the same primitives.</p>
+        </div>
+        <div class="pillar">
+          <h4>Conservative shape</h4>
+          <p style="font-size:14px;color:var(--bw-text-muted);margin:0">Most surfaces use 4–8px radii; pills are reserved for tags, avatars, and toggles.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="color" data-fidelity="documented">
+      <h2>
+        <span>Color</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://baseweb.design/guides/theming/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--bw-text-muted)">Base Web's palette is built on three families: a single accent blue, a 10-step mono ramp, and minimal semantic colors for success / warning / negative. The aesthetic is closer to a black-and-white photo with a single splash of brand blue.</p>
+
+      <h3>Brand blue</h3>
+      <div class="color-grid">
+        <div class="color-cell" style="background:var(--bw-blue-50);color:#133D87">50</div>
+        <div class="color-cell" style="background:var(--bw-blue-100);color:#133D87">100</div>
+        <div class="color-cell" style="background:var(--bw-blue-200);color:#133D87">200</div>
+        <div class="color-cell" style="background:var(--bw-blue-300);color:#133D87">300</div>
+        <div class="color-cell" style="background:var(--bw-blue-400);color:white">400</div>
+        <div class="color-cell" style="background:var(--bw-blue-500);color:white">500</div>
+        <div class="color-cell" style="background:var(--bw-blue-600);color:white">600</div>
+        <div class="color-cell" style="background:var(--bw-blue-700);color:white">700</div>
+      </div>
+
+      <h3>Mono ramp</h3>
+      <div class="color-grid">
+        <div class="color-cell" style="background:var(--bw-mono-100);color:var(--bw-mono-1000);border:1px solid var(--bw-border)">100</div>
+        <div class="color-cell" style="background:var(--bw-mono-200);color:var(--bw-mono-1000)">200</div>
+        <div class="color-cell" style="background:var(--bw-mono-300);color:var(--bw-mono-1000)">300</div>
+        <div class="color-cell" style="background:var(--bw-mono-400);color:var(--bw-mono-1000)">400</div>
+        <div class="color-cell" style="background:var(--bw-mono-500);color:var(--bw-mono-1000)">500</div>
+        <div class="color-cell" style="background:var(--bw-mono-700);color:white">700</div>
+        <div class="color-cell" style="background:var(--bw-mono-800);color:white">800</div>
+        <div class="color-cell" style="background:var(--bw-mono-1000);color:white">1000</div>
+      </div>
+
+      <h3>Semantic roles</h3>
+      <div class="semantic-grid">
+        <div class="sem-card" style="background:var(--bw-green-fade);color:#00683B">
+          <span class="label">Positive</span><span class="hex">#00A05B</span>
+        </div>
+        <div class="sem-card" style="background:var(--bw-red-fade);color:#8E1100">
+          <span class="label">Negative</span><span class="hex">#E11900</span>
+        </div>
+        <div class="sem-card" style="background:var(--bw-yellow-fade);color:#8C5A00">
+          <span class="label">Warning</span><span class="hex">#FFC043</span>
+        </div>
+        <div class="sem-card" style="background:var(--bw-blue-50);color:#133D87">
+          <span class="label">Accent</span><span class="hex">#276EF1</span>
+        </div>
+      </div>
+
+      <h3>Color roles</h3>
+      <div class="role-grid">
+        <div class="role-chip" style="background:var(--bw-mono-1000);color:var(--bw-mono-100)">Background Inverse <code>#000000</code></div>
+        <div class="role-chip" style="background:var(--bw-mono-100);color:var(--bw-text);border:1px solid var(--bw-border)">Background Primary <code>#FFFFFF</code></div>
+        <div class="role-chip" style="background:var(--bw-mono-200);color:var(--bw-text)">Background Secondary <code>#F6F6F6</code></div>
+        <div class="role-chip" style="background:var(--bw-mono-300);color:var(--bw-text)">Background Tertiary <code>#EEEEEE</code></div>
+        <div class="role-chip" style="background:var(--bw-blue-400);color:var(--bw-mono-100)">Accent <code>#276EF1</code></div>
+        <div class="role-chip" style="background:var(--bw-mono-800);color:var(--bw-mono-100)">Content Primary Inverse <code>#545454</code></div>
+        <div class="role-chip" style="background:var(--bw-green);color:#fff">Positive <code>#00A05B</code></div>
+        <div class="role-chip" style="background:var(--bw-red);color:#fff">Negative <code>#E11900</code></div>
+      </div>
+    </section>
+
+    <section id="typography" data-fidelity="documented">
+      <h2>
+        <span>Typography</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://baseweb.design/components/typography/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--bw-text-muted)">Uber Move (proprietary) is the brand face. This reproduction falls back to Inter / system-ui — keep weight 400/500/600/700 to mirror Base Web's display vs. body distinction.</p>
+      <p style="color:var(--bw-text-muted);font-size:13px">Token families: <code>DisplayLarge / DisplayMedium / DisplaySmall · HeadingXXLarge…XSmall · LabelLarge / Medium / Small · ParagraphLarge / Medium / Small / XSmall · MonoDisplayLarge…</code></p>
+
+      <div class="type-row"><div class="label">Display 1 · 56/60 · 700</div><div class="display-1">Move at city scale</div></div>
+      <div class="type-row"><div class="label">Display 2 · 44/48 · 700</div><div class="display-2">Confident motion</div></div>
+      <div class="type-row"><div class="label">Display 3 · 32/36 · 700</div><div class="display-3">Operational clarity</div></div>
+      <div class="type-row"><div class="label">Heading XL · 28/32</div><div class="heading-xl">Driver onboarding flow</div></div>
+      <div class="type-row"><div class="label">Heading LG · 22/28</div><div class="heading-lg">Trip summary</div></div>
+      <div class="type-row"><div class="label">Heading MD · 18/24</div><div class="heading-md">Section title</div></div>
+      <div class="type-row"><div class="label">Heading SM · 16/20</div><div class="heading-sm">Sub-section</div></div>
+      <div class="type-row"><div class="label">Heading XS · 14/18</div><div class="heading-xs">Field group</div></div>
+      <div class="type-row"><div class="label">Label LG · 16/20 · 500</div><div class="label-lg">Primary action</div></div>
+      <div class="type-row"><div class="label">Label MD · 14/18 · 500</div><div class="label-md">Default action</div></div>
+      <div class="type-row"><div class="label">Label SM · 12/16 · 500</div><div class="label-sm">Caption / Tag</div></div>
+      <div class="type-row"><div class="label">Body LG · 16/24</div><div class="body-lg">Base Web's typography emphasizes legibility at long line-lengths. Display sizes are tightly tracked while body remains relaxed for table cells and form copy.</div></div>
+      <div class="type-row"><div class="label">Body MD · 14/20</div><div class="body-md">The default for paragraph copy in dashboards and forms.</div></div>
+      <div class="type-row"><div class="label">Body SM · 12/16</div><div class="body-sm">Used for helper text, dense table cells, and tag content.</div></div>
+      <div class="type-row"><div class="label">Mono</div><div class="mono-sample">/* trip_id */ "a3f9-c2-b1" · ETA 04:17</div></div>
+    </section>
+
+    <section id="buttons" data-fidelity="documented">
+      <h2>
+        <span>Buttons</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://baseweb.design/components/button/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--bw-text-muted)">Base Web offers Primary, Secondary, Tertiary, and Minimal kinds. Primary is mono-1000 (true black) — accent blue is reserved for links and the brand surface. 2px corner radius keeps the geometry quietly Uber.</p>
+
+      <h3>Kinds</h3>
+      <div class="button-row">
+        <button class="bw-btn bw-btn--primary">Primary</button>
+        <button class="bw-btn bw-btn--secondary">Secondary</button>
+        <button class="bw-btn bw-btn--tertiary">Tertiary</button>
+        <button class="bw-btn bw-btn--minimal">Minimal</button>
+        <button class="bw-btn bw-btn--accent">Accent</button>
+        <button class="bw-btn bw-btn--danger">Negative</button>
+        <button class="bw-btn bw-btn--primary bw-btn--icon" aria-label="navigate">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+
+      <h3>Sizes</h3>
+      <div class="button-row">
+        <button class="bw-btn bw-btn--primary bw-btn--mini">Mini</button>
+        <button class="bw-btn bw-btn--primary bw-btn--compact">Compact</button>
+        <button class="bw-btn bw-btn--primary bw-btn--default">Default</button>
+        <button class="bw-btn bw-btn--primary bw-btn--large">Large</button>
+      </div>
+
+      <h3>States</h3>
+      <div class="button-row">
+        <button class="bw-btn bw-btn--primary">Enabled</button>
+        <button class="bw-btn bw-btn--primary" style="background:var(--bw-mono-800)">Hover</button>
+        <button class="bw-btn bw-btn--primary" style="outline:2px solid var(--bw-blue-400);outline-offset:2px">Focus</button>
+        <button class="bw-btn bw-btn--primary" disabled>Disabled</button>
+        <button class="bw-btn bw-btn--primary"><span class="bw-spinner" style="width:14px;height:14px;border-width:2px;border-color:rgba(255,255,255,0.3);border-top-color:#fff"></span> Loading</button>
+      </div>
+
+      <h3>Shape options</h3>
+      <div class="button-row">
+        <button class="bw-btn bw-btn--primary" style="border-radius:0">Rectangle</button>
+        <button class="bw-btn bw-btn--primary" style="border-radius:var(--bw-r-2)">Default</button>
+        <button class="bw-btn bw-btn--primary" style="border-radius:var(--bw-r-pill)">Pill</button>
+        <button class="bw-btn bw-btn--primary" style="border-radius:var(--bw-r-pill);width:40px;padding:0;justify-content:center">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+      </div>
+    </section>
+
+    <section id="form" data-fidelity="documented">
+      <h2>
+        <span>Form</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://baseweb.design/components/input/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--bw-text-muted)">Inputs default to a filled gray surface with a 2px transparent border that becomes mono-1000 on focus. The label sits above; helper text below; error state swaps to negative red surface.</p>
+
+      <h3>Text fields</h3>
+      <div class="form-grid">
+        <div class="bw-field">
+          <label class="field-label" for="b1">Pickup address</label>
+          <input class="bw-input" id="b1" type="text" value="525 Market St, San Francisco">
+          <span class="bw-helper">Default · filled surface</span>
+        </div>
+        <div class="bw-field">
+          <label class="field-label" for="b2">Email</label>
+          <input class="bw-input" id="b2" type="email" placeholder="driver@uber.com">
+          <span class="bw-helper">Hover deepens to mono-300; focus locks border at mono-1000.</span>
+        </div>
+        <div class="bw-field">
+          <label class="field-label" for="b3">Notes for driver</label>
+          <textarea class="bw-textarea" id="b3" placeholder="Leave at the gate"></textarea>
+          <span class="bw-helper">Multiline · 88px min-height</span>
+        </div>
+        <div class="bw-field">
+          <label class="field-label" for="b4">Vehicle type</label>
+          <select class="bw-select" id="b4">
+            <option>UberX</option>
+            <option>Uber Comfort</option>
+            <option>UberXL</option>
+            <option>Uber Black</option>
+          </select>
+        </div>
+        <div class="bw-field">
+          <label class="field-label" for="b5">Card number</label>
+          <input class="bw-input error" id="b5" type="text" value="4242 4242">
+          <span class="bw-error-text">Card number must be 16 digits.</span>
+        </div>
+        <div class="bw-field">
+          <label class="field-label" for="b6">Promo code</label>
+          <input class="bw-input" id="b6" type="text" disabled value="SUMMER2024">
+          <span class="bw-helper">Disabled · already redeemed</span>
+        </div>
+      </div>
+
+      <h3>Selection controls</h3>
+      <div class="button-row">
+        <label class="bw-checkbox"><input type="checkbox" checked> Schedule for later</label>
+        <label class="bw-checkbox"><input type="checkbox"> Notify on arrival</label>
+        <label class="bw-radio"><input type="radio" name="r" checked> Mono-1000 indicator</label>
+        <label class="bw-radio"><input type="radio" name="r"> Default</label>
+        <label class="bw-switch"><input type="checkbox" checked><span class="slider"></span></label>
+        <label class="bw-switch"><input type="checkbox"><span class="slider"></span></label>
+      </div>
+
+      <h3>Slider</h3>
+      <input class="bw-slider" type="range" min="0" max="100" value="62">
+    </section>
+
+    <section id="surfaces" data-fidelity="documented">
+      <h2>
+        <span>Surfaces</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://baseweb.design/components/card/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--bw-text-muted)">Cards are flat by default — bordered rather than shadowed — to match Base Web's reserved tone. Mono-on-black cards are common in dashboards.</p>
+
+      <h3>Cards</h3>
+      <div class="surface-grid">
+        <div class="bw-card">
+          <div class="media"></div>
+          <h4>Trip in progress</h4>
+          <p>ETA 4 min · Driver arriving from the north entrance.</p>
+        </div>
+        <div class="bw-card bw-card--shadow">
+          <div class="media" style="background:linear-gradient(135deg,var(--bw-teal),var(--bw-blue-400))"></div>
+          <h4>Earnings this week</h4>
+          <p>$1,284.20 across 47 trips. Up 12% from last week.</p>
+        </div>
+        <div class="bw-card bw-card--mono">
+          <h4 style="color:var(--bw-mono-100)">Driver dashboard</h4>
+          <p style="color:var(--bw-mono-400)">Operations console. Black surfaces are standard for night-shift density.</p>
+        </div>
+      </div>
+
+      <h3>Statistics</h3>
+      <div class="surface-grid">
+        <div class="bw-stat"><div class="num">12,847</div><div class="lbl">Trips today</div></div>
+        <div class="bw-stat" style="background:var(--bw-blue-400)"><div class="num">98.4%</div><div class="lbl">On-time arrival</div></div>
+        <div class="bw-stat" style="background:var(--bw-mono-200);color:var(--bw-text)"><div class="num" style="color:var(--bw-text)">$2.4M</div><div class="lbl" style="color:var(--bw-text-muted)">Gross bookings</div></div>
+      </div>
+
+      <h3>Modal & Popover</h3>
+      <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start">
+        <div class="bw-modal">
+          <h4 style="margin:0 0 8px;font-size:18px">Confirm trip</h4>
+          <p style="font-size:14px;color:var(--bw-text-muted);margin:0 0 12px">Trip from 525 Market to SFO Terminal 2. Estimated $48–$56.</p>
+          <div class="bw-modal-actions">
+            <button class="bw-btn bw-btn--tertiary bw-btn--compact">Cancel</button>
+            <button class="bw-btn bw-btn--primary bw-btn--compact">Book ride</button>
+          </div>
+        </div>
+        <div class="bw-popover">Tap a vehicle category to compare price and ETA.</div>
+      </div>
+    </section>
+
+    <section id="feedback" data-fidelity="documented">
+      <h2>
+        <span>Feedback</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://baseweb.design/components/notification/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--bw-text-muted)">Notifications use a left-edge accent bar in the semantic color, with a faint tinted background. Toasts slide up from the bottom on mono-1000.</p>
+
+      <h3>Notifications</h3>
+      <div class="bw-notification bw-notification--info"><span>Driver is 3 minutes away. License plate 7XYZ123.</span></div>
+      <div class="bw-notification bw-notification--positive"><span>Trip complete. $24.80 charged to Visa ending 4242.</span></div>
+      <div class="bw-notification bw-notification--warning"><span>Surge pricing in effect — fare is 1.4× normal.</span></div>
+      <div class="bw-notification bw-notification--negative"><span>Could not reach driver. Tap to retry.</span></div>
+
+      <h3>Toast</h3>
+      <div class="bw-toast">
+        <span>Receipt sent to email.</span>
+        <button>Undo</button>
+      </div>
+
+      <h3>Banner</h3>
+      <div class="bw-banner" style="margin-top:12px">
+        <div style="display:flex;align-items:center;gap:12px">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+          <span style="font-size:14px">App update available — restart to get the latest pricing.</span>
+        </div>
+        <button class="bw-btn bw-btn--primary bw-btn--compact">Restart</button>
+      </div>
+
+      <h3>Tags & badges</h3>
+      <div class="bw-tag-row" style="margin-bottom:12px">
+        <span class="bw-tag">Default</span>
+        <span class="bw-tag bw-tag--accent">Accent</span>
+        <span class="bw-tag bw-tag--positive">Positive</span>
+        <span class="bw-tag bw-tag--negative">Negative</span>
+        <span class="bw-tag bw-tag--warning">Warning</span>
+        <span class="bw-tag bw-tag--solid">Solid</span>
+        <span class="bw-badge">12 NEW</span>
+      </div>
+
+      <h3>Progress & loading</h3>
+      <div class="bw-progress" style="margin-bottom:12px"></div>
+      <div class="bw-skeleton" style="width:60%;margin-bottom:8px"></div>
+      <div class="bw-skeleton" style="width:80%;margin-bottom:16px"></div>
+      <div class="bw-spinner"></div>
+    </section>
+
+    <section id="navigation" data-fidelity="documented">
+      <h2>
+        <span>Navigation</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://baseweb.design/components/tabs/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--bw-text-muted)">Tabs use a 2px underline indicator in mono-1000. The top app bar is dark by default — true black is the operations console standard.</p>
+
+      <h3>Tabs</h3>
+      <div class="bw-tabs">
+        <div class="bw-tab active">Trips</div>
+        <div class="bw-tab">Earnings</div>
+        <div class="bw-tab">Promos</div>
+        <div class="bw-tab">Vehicle</div>
+        <div class="bw-tab">Account</div>
+      </div>
+
+      <h3>Breadcrumb</h3>
+      <div class="bw-breadcrumb">
+        <a href="#">Driver Hub</a>
+        <span>/</span>
+        <a href="#">Earnings</a>
+        <span>/</span>
+        <span>Weekly summary</span>
+      </div>
+
+      <h3>Pagination</h3>
+      <div class="bw-pagination" style="margin-top:12px">
+        <button>‹</button>
+        <button>1</button>
+        <button class="active">2</button>
+        <button>3</button>
+        <button>4</button>
+        <button>…</button>
+        <button>17</button>
+        <button>›</button>
+      </div>
+
+      <h3>Stepper</h3>
+      <div class="bw-stepper" style="margin-top:16px">
+        <div class="step"><span class="num active">1</span> Pickup</div>
+        <div class="line"></div>
+        <div class="step"><span class="num active">2</span> Vehicle</div>
+        <div class="line"></div>
+        <div class="step"><span class="num">3</span> Payment</div>
+        <div class="line"></div>
+        <div class="step"><span class="num">4</span> Confirm</div>
+      </div>
+
+      <h3>App shell</h3>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:12px">
+        <div class="bw-sidebar">
+          <a href="#" class="active">Trips</a>
+          <a href="#">Drivers</a>
+          <a href="#">Routes</a>
+          <a href="#">Earnings</a>
+          <a href="#">Settings</a>
+        </div>
+        <div style="flex:1;min-width:240px">
+          <div class="bw-topbar">
+            <span class="brand-text">Base Web</span>
+            <input class="bw-input" placeholder="Search trips…" style="background:var(--bw-mono-800);border-color:var(--bw-mono-800);color:var(--bw-mono-100);max-width:260px">
+            <span class="bw-avatar">MK</span>
+          </div>
+          <div class="bw-menu" style="margin-top:12px">
+            <div class="item">Profile</div>
+            <div class="item">Driver settings</div>
+            <div class="divider"></div>
+            <div class="item">Sign out</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="data" data-fidelity="documented">
+      <h2>
+        <span>Data</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://baseweb.design/components/table-grid/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--bw-text-muted)">Tables use uppercase tracked-out headers on mono-200, body cells on mono-100, and a quiet hover. Designed for hundreds of rows of trip and driver data.</p>
+
+      <table class="bw-table">
+        <thead>
+          <tr>
+            <th>Trip ID</th>
+            <th>Driver</th>
+            <th>Origin → Destination</th>
+            <th>Fare</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><code>a3f9-c2-b1</code></td><td>Maria L.</td><td>SFO → Mission</td><td>$48.20</td><td><span class="bw-tag bw-tag--positive">Completed</span></td></tr>
+          <tr><td><code>b7a1-e4-92</code></td><td>James O.</td><td>SoMa → Oakland</td><td>$34.10</td><td><span class="bw-tag bw-tag--accent">In progress</span></td></tr>
+          <tr><td><code>c2d8-19-77</code></td><td>Priya S.</td><td>Marina → Castro</td><td>$18.40</td><td><span class="bw-tag bw-tag--warning">Surge 1.4×</span></td></tr>
+          <tr><td><code>d4e1-2b-30</code></td><td>Kenji T.</td><td>Embarcadero → SFO</td><td>$52.80</td><td><span class="bw-tag bw-tag--negative">Cancelled</span></td></tr>
+          <tr><td><code>e9b3-4c-58</code></td><td>Yuki K.</td><td>Hayes Valley → Sausalito</td><td>$41.05</td><td><span class="bw-tag bw-tag--positive">Completed</span></td></tr>
+        </tbody>
+      </table>
+
+      <h3>List & key-value</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:12px">
+        <ul class="bw-list">
+          <li><span class="bw-avatar">M</span><div><div style="font-weight:600">Maria Lopez</div><div style="font-size:12px;color:var(--bw-text-muted)">5.0 ★ · 2,341 trips</div></div></li>
+          <li><span class="bw-avatar" style="background:var(--bw-mono-800)">J</span><div><div style="font-weight:600">James Owens</div><div style="font-size:12px;color:var(--bw-text-muted)">4.95 ★ · 8,720 trips</div></div></li>
+          <li><span class="bw-avatar" style="background:var(--bw-green)">P</span><div><div style="font-weight:600">Priya Shah</div><div style="font-size:12px;color:var(--bw-text-muted)">4.98 ★ · 4,012 trips</div></div></li>
+        </ul>
+        <dl class="bw-kv">
+          <dt>Driver</dt><dd>Maria Lopez</dd>
+          <dt>Vehicle</dt><dd>Toyota Prius · 7XYZ123</dd>
+          <dt>Trips today</dt><dd>14</dd>
+          <dt>Earnings</dt><dd>$284.10</dd>
+          <dt>Online since</dt><dd>06:32 PT</dd>
+        </dl>
+      </div>
+
+      <h3>Empty state</h3>
+      <div class="bw-empty">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9 9h.01M15 9h.01M9 15c1 1 2 1.5 3 1.5s2-.5 3-1.5"/></svg>
+        <h4 style="margin:8px 0 4px;color:var(--bw-text)">No trips yet today</h4>
+        <p style="margin:0;font-size:13px">Once you go online, your first trip will appear here.</p>
+      </div>
+    </section>
+
+    <section id="layout" data-fidelity="documented">
+      <h2>
+        <span>Layout</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://baseweb.design/components/layout-grid/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--bw-text-muted)">Base Web ships a responsive 12-column grid. Spacing follows a 4px base scale; shape stays conservative; elevation is rare on light surfaces.</p>
+
+      <h3>12-column grid</h3>
+      <div class="grid-demo">
+        <div style="grid-column:span 12">12</div>
+        <div style="grid-column:span 6">6</div>
+        <div style="grid-column:span 6">6</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+      </div>
+
+      <h3>Spacing scale (4px base)</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div class="swatch" style="width:4px;height:32px"></div><span class="lbl">4</span></div>
+        <div class="scale-item"><div class="swatch" style="width:8px;height:32px"></div><span class="lbl">8</span></div>
+        <div class="scale-item"><div class="swatch" style="width:12px;height:32px"></div><span class="lbl">12</span></div>
+        <div class="scale-item"><div class="swatch" style="width:16px;height:32px"></div><span class="lbl">16</span></div>
+        <div class="scale-item"><div class="swatch" style="width:20px;height:32px"></div><span class="lbl">20</span></div>
+        <div class="scale-item"><div class="swatch" style="width:24px;height:32px"></div><span class="lbl">24</span></div>
+        <div class="scale-item"><div class="swatch" style="width:32px;height:32px"></div><span class="lbl">32</span></div>
+        <div class="scale-item"><div class="swatch" style="width:48px;height:32px"></div><span class="lbl">48</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:32px"></div><span class="lbl">64</span></div>
+      </div>
+
+      <h3>Shape scale</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:0;background:var(--bw-blue-400)"></div><span class="lbl">0</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:2px;background:var(--bw-blue-400)"></div><span class="lbl">2</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:4px;background:var(--bw-blue-400)"></div><span class="lbl">4 default</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:8px;background:var(--bw-blue-400)"></div><span class="lbl">8</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:12px;background:var(--bw-blue-400)"></div><span class="lbl">12</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:50%;background:var(--bw-blue-400)"></div><span class="lbl">pill</span></div>
+      </div>
+
+      <h3>Elevation</h3>
+      <div>
+        <div class="shadow-demo" style="box-shadow:none;border:1px solid var(--bw-border)">0</div>
+        <div class="shadow-demo" style="box-shadow:var(--bw-shadow-1)">1</div>
+        <div class="shadow-demo" style="box-shadow:var(--bw-shadow-2)">2</div>
+        <div class="shadow-demo" style="box-shadow:var(--bw-shadow-3)">3</div>
+        <div class="shadow-demo" style="box-shadow:var(--bw-shadow-4)">4</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="ds-footer">
+    <h3>Sources</h3>
+    <ul>
+      <li><a href="https://baseweb.design" target="_blank" rel="noopener">https://baseweb.design</a></li>
+      <li><a href="https://baseweb.design/guides/theming/" target="_blank" rel="noopener">https://baseweb.design/guides/theming/</a></li>
+      <li><a href="https://baseweb.design/components/typography/" target="_blank" rel="noopener">https://baseweb.design/components/typography/</a></li>
+      <li><a href="https://baseweb.design/components/button/" target="_blank" rel="noopener">https://baseweb.design/components/button/</a></li>
+      <li><a href="https://baseweb.design/components/input/" target="_blank" rel="noopener">https://baseweb.design/components/input/</a></li>
+      <li><a href="https://baseweb.design/components/card/" target="_blank" rel="noopener">https://baseweb.design/components/card/</a></li>
+      <li><a href="https://baseweb.design/components/notification/" target="_blank" rel="noopener">https://baseweb.design/components/notification/</a></li>
+      <li><a href="https://baseweb.design/components/tabs/" target="_blank" rel="noopener">https://baseweb.design/components/tabs/</a></li>
+      <li><a href="https://baseweb.design/components/table-grid/" target="_blank" rel="noopener">https://baseweb.design/components/table-grid/</a></li>
+      <li><a href="https://baseweb.design/components/layout-grid/" target="_blank" rel="noopener">https://baseweb.design/components/layout-grid/</a></li>
+    </ul>
+    <p class="license-note">This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Uber. Base Web and related trademarks belong to Uber. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</p>
+    <p class="meta-note">Reproduction date: 2026-05-05 · sourceStatus: homepage-only · fidelity: approximated</p>
+  </footer>
+</body>
+</html>

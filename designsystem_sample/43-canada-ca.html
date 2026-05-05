@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Canada.ca Design System — Design System Reference</title>
+  <script id="ds-meta" type="application/json">
+{"id":"43-canada-ca","fileSlug":"43-canada-ca","schemaVersion":"1"}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Noto+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Canada.ca FIP palette */
+      --ca-blue: #284162;          /* FIP signature blue */
+      --ca-blue-text: #335075;     /* Body link / accent text */
+      --ca-blue-deep: #26374A;     /* Deep navy */
+      --ca-blue-royal: #1F73B7;    /* Active link */
+      --ca-blue-hover: #0535D2;
+      --ca-bg: #F1F2F3;
+      --ca-bg-alt: #EAEBED;
+      --ca-surface: #FFFFFF;
+      --ca-surface-dark: #26374A;
+      --ca-text: #333333;
+      --ca-text-muted: #5C5C5C;
+      --ca-border: #DDDDDD;
+      --ca-border-strong: #BBBBBB;
+
+      /* Semantic */
+      --ca-success: #278400;
+      --ca-success-bg: #D8EECA;
+      --ca-warning: #EE7100;
+      --ca-warning-bg: #F9F4D4;
+      --ca-danger: #D3080C;
+      --ca-danger-bg: #F3E9E8;
+      --ca-info: #269ABC;
+      --ca-info-bg: #D7FAFF;
+
+      /* Type */
+      --ca-font: 'Lato', 'Noto Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+      --ca-mono: ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+      /* Shape — Canada.ca conservative 4px radius */
+      --ca-radius-sm: 2px;
+      --ca-radius: 4px;
+      --ca-radius-md: 6px;
+      --ca-radius-lg: 8px;
+
+      /* Spacing */
+      --ca-space-1: 4px;
+      --ca-space-2: 8px;
+      --ca-space-3: 12px;
+      --ca-space-4: 16px;
+      --ca-space-5: 24px;
+      --ca-space-6: 32px;
+      --ca-space-7: 48px;
+      --ca-space-8: 64px;
+
+      /* Shadows — Canada.ca minimal */
+      --ca-shadow-sm: 0 1px 2px rgba(0,0,0,0.06);
+      --ca-shadow: 0 2px 4px rgba(0,0,0,0.08);
+      --ca-shadow-md: 0 4px 8px rgba(0,0,0,0.10);
+
+      /* Focus ring (WCAG-conscious) */
+      --ca-focus: 3px solid #FFBF47;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--ca-font);
+      background: var(--ca-bg);
+      color: var(--ca-text);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    code, kbd, pre { font-family: var(--ca-mono); }
+    a { color: var(--ca-blue-text); }
+    a:hover { color: var(--ca-blue-hover); text-decoration: underline; }
+    a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+      outline: var(--ca-focus); outline-offset: 2px;
+    }
+
+    /* Header — FIP style */
+    .ds-header {
+      background: var(--ca-blue-deep);
+      color: #FFFFFF;
+      padding: var(--ca-space-7) var(--ca-space-6) var(--ca-space-6);
+      border-bottom: 4px solid var(--ca-blue);
+    }
+    .back-link {
+      display: inline-flex; align-items: center; gap: var(--ca-space-2);
+      color: #E1E4E7; text-decoration: none;
+      padding: 6px 12px; border-radius: var(--ca-radius);
+      font-size: 14px; font-weight: 700;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .back-link:hover { background: rgba(255,255,255,0.1); color: #FFFFFF; text-decoration: none; }
+    .ds-header h1 { font-size: 44px; line-height: 1.15; font-weight: 900; margin: var(--ca-space-4) 0 var(--ca-space-3); letter-spacing: -0.5px; }
+    .ds-header .meta { display: flex; flex-wrap: wrap; gap: var(--ca-space-2); align-items: center; margin-bottom: var(--ca-space-3); }
+    .badge {
+      display: inline-flex; align-items: center;
+      padding: 4px 10px; border-radius: var(--ca-radius);
+      font-size: 11px; font-weight: 700; letter-spacing: 0.4px;
+      text-transform: uppercase;
+      background: rgba(255,255,255,0.12); color: #FFFFFF;
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+    .badge.kind-ds { background: var(--ca-blue); color: #FFFFFF; border-color: transparent; }
+    .badge.fidelity-documented { background: var(--ca-success-bg); color: #143C00; border-color: transparent; }
+    .badge.fidelity-approximated { background: #FCEACB; color: #6C3B00; border-color: transparent; }
+    .badge.fidelity-inspired { background: #E5DBF5; color: #2C1A50; border-color: transparent; }
+    .badge.source-verified { background: var(--ca-info-bg); color: #003E5C; border-color: transparent; }
+    .ds-header a.official {
+      color: #FFFFFF; text-decoration: none;
+      padding: 4px 10px; border: 1px solid rgba(255,255,255,0.4);
+      border-radius: var(--ca-radius); font-size: 13px; font-weight: 700;
+    }
+    .ds-header a.official:hover { background: rgba(255,255,255,0.1); }
+    .tagline { font-size: 18px; line-height: 1.5; max-width: 760px; margin: var(--ca-space-4) 0 0; opacity: 0.92; font-weight: 400; }
+    .lang-bar { display: inline-flex; gap: 0; margin-top: var(--ca-space-3); border: 1px solid rgba(255,255,255,0.3); border-radius: var(--ca-radius); overflow: hidden; }
+    .lang-bar span { padding: 4px 12px; font-size: 12px; font-weight: 700; }
+    .lang-bar span.active { background: #FFFFFF; color: var(--ca-blue-deep); }
+    .lang-bar span.inactive { color: #FFFFFF; }
+
+    /* TOC */
+    .toc {
+      position: sticky; top: 0; z-index: 50;
+      background: var(--ca-surface);
+      border-bottom: 1px solid var(--ca-border);
+      box-shadow: var(--ca-shadow-sm);
+    }
+    .toc ul { list-style: none; margin: 0; padding: var(--ca-space-3) var(--ca-space-6); display: flex; gap: var(--ca-space-2); overflow-x: auto; max-width: 100%; }
+    .toc a {
+      display: inline-block; padding: 6px 14px;
+      border-radius: var(--ca-radius);
+      color: var(--ca-blue-text); text-decoration: none;
+      font-size: 14px; font-weight: 700;
+      white-space: nowrap; border: 1px solid var(--ca-border);
+    }
+    .toc a:hover { background: var(--ca-blue-deep); color: #FFFFFF; border-color: var(--ca-blue-deep); text-decoration: none; }
+
+    /* Main */
+    main { max-width: 1280px; margin: 0 auto; padding: var(--ca-space-6); }
+    section {
+      background: var(--ca-surface);
+      border-radius: var(--ca-radius-md);
+      padding: var(--ca-space-6);
+      margin-bottom: var(--ca-space-6);
+      box-shadow: var(--ca-shadow-sm);
+      border: 1px solid var(--ca-border);
+    }
+    section h2 {
+      display: flex; align-items: center; gap: var(--ca-space-3); flex-wrap: wrap;
+      font-size: 28px; line-height: 1.25; font-weight: 700;
+      margin: 0 0 var(--ca-space-5);
+      color: var(--ca-blue-deep);
+      padding-bottom: var(--ca-space-3);
+      border-bottom: 2px solid var(--ca-blue);
+    }
+    .source-link { font-size: 13px; color: var(--ca-blue-text); text-decoration: none; font-weight: 700; }
+    .source-link:hover { text-decoration: underline; }
+    h3 { font-size: 20px; line-height: 1.3; font-weight: 700; margin: var(--ca-space-5) 0 var(--ca-space-3); color: var(--ca-blue-deep); }
+    h4 { font-size: 15px; line-height: 1.4; font-weight: 700; margin: var(--ca-space-4) 0 var(--ca-space-2); color: var(--ca-text); }
+    p { margin: 0 0 var(--ca-space-3); }
+
+    /* Brand */
+    #brand .brand-mark {
+      display: inline-flex; align-items: center; gap: var(--ca-space-3);
+      padding: var(--ca-space-3) var(--ca-space-5);
+      background: var(--ca-blue-deep);
+      border-radius: var(--ca-radius);
+      color: #FFFFFF;
+      font-size: 22px; font-weight: 900; letter-spacing: -0.3px;
+    }
+    #brand .brand-mark .glyph {
+      width: 36px; height: 36px;
+      display: inline-flex; align-items: center; justify-content: center;
+      background: #FFFFFF; color: var(--ca-blue-deep);
+      border-radius: 50%; font-weight: 900; font-size: 18px;
+    }
+    #brand .pillars {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: var(--ca-space-4);
+      margin-top: var(--ca-space-5);
+    }
+    #brand .pillar {
+      padding: var(--ca-space-4);
+      background: var(--ca-bg);
+      border-radius: var(--ca-radius);
+      border-left: 4px solid var(--ca-blue);
+    }
+    #brand .pillar h4 { margin-top: 0; color: var(--ca-blue-deep); }
+    .bilingual-row {
+      display: grid; grid-template-columns: 1fr 1fr; gap: var(--ca-space-4);
+      margin-top: var(--ca-space-5); padding: var(--ca-space-4);
+      background: var(--ca-bg); border-radius: var(--ca-radius);
+    }
+    .bilingual-row .lang-block .lang-tag {
+      display: inline-block; padding: 2px 8px; background: var(--ca-blue);
+      color: #FFFFFF; font-size: 11px; font-weight: 700; border-radius: var(--ca-radius-sm);
+      margin-bottom: 6px; text-transform: uppercase;
+    }
+    .bilingual-row p { font-size: 14px; color: var(--ca-text-muted); margin: 0; }
+
+    /* Color */
+    .color-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); gap: var(--ca-space-3); margin-bottom: var(--ca-space-4); }
+    .color-cell {
+      display: flex; flex-direction: column; gap: 4px;
+      padding: var(--ca-space-3) var(--ca-space-3); border-radius: var(--ca-radius);
+      font-family: var(--ca-mono); font-size: 12px;
+      min-height: 96px; justify-content: flex-end;
+      border: 1px solid rgba(0,0,0,0.05);
+    }
+    .color-cell .name { font-family: var(--ca-font); font-weight: 700; font-size: 13px; }
+    .semantic-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: var(--ca-space-3); }
+    .sem-card { padding: var(--ca-space-4); border-radius: var(--ca-radius); display: flex; flex-direction: column; gap: 4px; border-left: 4px solid; }
+    .sem-card .label { font-size: 14px; font-weight: 700; }
+    .sem-card .hex { font-family: var(--ca-mono); font-size: 12px; opacity: 0.85; }
+    .role-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: var(--ca-space-2); margin-bottom: var(--ca-space-4); }
+    .role-chip {
+      padding: var(--ca-space-3) var(--ca-space-4); border-radius: var(--ca-radius);
+      font-size: 13px; display: flex; justify-content: space-between; align-items: center;
+      font-weight: 700;
+    }
+    .role-chip code { font-size: 11px; opacity: 0.85; font-weight: 400; }
+
+    /* Typography */
+    .type-row {
+      display: grid; grid-template-columns: 220px 1fr; gap: var(--ca-space-4);
+      padding: var(--ca-space-3) 0;
+      border-bottom: 1px solid var(--ca-border);
+      align-items: baseline;
+    }
+    .type-row:last-child { border-bottom: 0; }
+    .type-row .label { font-family: var(--ca-mono); font-size: 12px; color: var(--ca-text-muted); }
+    .display-l { font-size: 48px; line-height: 1.15; font-weight: 900; color: var(--ca-blue-deep); }
+    .display-m { font-size: 36px; line-height: 1.2; font-weight: 700; color: var(--ca-blue-deep); }
+    .heading-1 { font-size: 32px; line-height: 1.25; font-weight: 700; color: var(--ca-blue-deep); }
+    .heading-2 { font-size: 26px; line-height: 1.3; font-weight: 700; color: var(--ca-blue-deep); }
+    .heading-3 { font-size: 22px; line-height: 1.35; font-weight: 700; }
+    .heading-4 { font-size: 18px; line-height: 1.4; font-weight: 700; }
+    .body-lg { font-size: 18px; line-height: 1.6; }
+    .body { font-size: 16px; line-height: 1.55; }
+    .body-sm { font-size: 14px; line-height: 1.5; color: var(--ca-text-muted); }
+    .caption { font-size: 12px; line-height: 1.45; color: var(--ca-text-muted); }
+    .mono-sample { font-family: var(--ca-mono); font-size: 14px; color: var(--ca-text-muted); }
+
+    /* Buttons */
+    .button-row { display: flex; flex-wrap: wrap; gap: var(--ca-space-3); align-items: center; margin-bottom: var(--ca-space-3); }
+    .ca-btn {
+      font-family: var(--ca-font); font-size: 16px; font-weight: 700;
+      padding: 8px 18px; border-radius: var(--ca-radius);
+      border: 1px solid transparent; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 8px;
+      min-height: 44px; /* WCAG target */
+      transition: background 0.15s, border-color 0.15s;
+      line-height: 1.4;
+    }
+    .ca-btn--primary { background: var(--ca-blue-deep); color: #FFFFFF; border-color: var(--ca-blue-deep); }
+    .ca-btn--primary:hover { background: #1C2738; border-color: #1C2738; }
+    .ca-btn--call { background: var(--ca-blue-royal); color: #FFFFFF; border-color: var(--ca-blue-royal); }
+    .ca-btn--call:hover { background: #155182; border-color: #155182; }
+    .ca-btn--secondary { background: #FFFFFF; color: var(--ca-blue-deep); border-color: var(--ca-blue-deep); }
+    .ca-btn--secondary:hover { background: var(--ca-bg); }
+    .ca-btn--danger { background: var(--ca-danger); color: #FFFFFF; border-color: var(--ca-danger); }
+    .ca-btn--danger:hover { background: #A00609; border-color: #A00609; }
+    .ca-btn--success { background: var(--ca-success); color: #FFFFFF; border-color: var(--ca-success); }
+    .ca-btn--link { background: transparent; color: var(--ca-blue-text); border: 0; padding: 8px 4px; min-height: auto; text-decoration: underline; }
+    .ca-btn--link:hover { color: var(--ca-blue-hover); }
+    .ca-btn:disabled { background: #DCDCDC; color: #767676; border-color: #DCDCDC; cursor: not-allowed; }
+    .ca-btn--sm { font-size: 14px; padding: 6px 14px; min-height: 36px; }
+    .ca-btn--lg { font-size: 18px; padding: 12px 28px; min-height: 52px; }
+
+    /* Form */
+    .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: var(--ca-space-4); }
+    .ca-field { display: flex; flex-direction: column; gap: 6px; }
+    .ca-field label { font-size: 14px; font-weight: 700; color: var(--ca-text); }
+    .ca-field .hint { font-size: 13px; color: var(--ca-text-muted); margin: -2px 0 4px; }
+    .ca-input, .ca-select, .ca-textarea {
+      font-family: var(--ca-font); font-size: 16px;
+      padding: 8px 12px; border: 2px solid var(--ca-border-strong);
+      border-radius: var(--ca-radius); background: #FFFFFF;
+      color: var(--ca-text); width: 100%;
+      min-height: 44px;
+    }
+    .ca-input:focus, .ca-select:focus, .ca-textarea:focus { border-color: var(--ca-blue-royal); outline: var(--ca-focus); outline-offset: 0; }
+    .ca-textarea { min-height: 96px; resize: vertical; }
+    .ca-select {
+      appearance: none; padding-right: 36px;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23335075' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+      background-repeat: no-repeat; background-position: right 10px center;
+    }
+    .ca-error-msg { color: var(--ca-danger); font-size: 13px; font-weight: 700; }
+    .ca-field--error .ca-input { border-color: var(--ca-danger); }
+    .ca-checkbox, .ca-radio { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-size: 15px; padding: 6px 0; }
+    .ca-checkbox input, .ca-radio input { width: 22px; height: 22px; accent-color: var(--ca-blue-royal); }
+    .ca-fieldset { border: 1px solid var(--ca-border-strong); padding: var(--ca-space-4); border-radius: var(--ca-radius); }
+    .ca-fieldset legend { padding: 0 8px; font-weight: 700; color: var(--ca-blue-deep); }
+
+    /* Surfaces */
+    .surface-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: var(--ca-space-4); }
+    .ca-card {
+      background: #FFFFFF; border-radius: var(--ca-radius);
+      padding: var(--ca-space-4); border: 1px solid var(--ca-border);
+      box-shadow: var(--ca-shadow-sm);
+    }
+    .ca-card--feature {
+      border-top: 4px solid var(--ca-blue);
+    }
+    .ca-card .media { height: 110px; background: linear-gradient(135deg, var(--ca-blue), var(--ca-blue-deep)); border-radius: var(--ca-radius); margin-bottom: var(--ca-space-3); }
+    .ca-card h4 { margin: 0 0 4px; color: var(--ca-blue-deep); font-size: 17px; }
+    .ca-card p { font-size: 14px; color: var(--ca-text-muted); margin: 0 0 var(--ca-space-3); }
+    .ca-card a.read-more { font-size: 14px; font-weight: 700; }
+
+    .ca-stat {
+      padding: var(--ca-space-4); background: var(--ca-blue-deep); color: #FFFFFF;
+      border-radius: var(--ca-radius);
+    }
+    .ca-stat .num { font-size: 32px; font-weight: 900; line-height: 1; }
+    .ca-stat .lbl { font-size: 13px; opacity: 0.8; margin-top: 6px; }
+
+    .ca-modal {
+      background: #FFFFFF; padding: var(--ca-space-5);
+      border-radius: var(--ca-radius); border: 1px solid var(--ca-border);
+      box-shadow: var(--ca-shadow-md); max-width: 420px;
+    }
+    .ca-modal h3 { margin-top: 0; }
+
+    /* Feedback / Alerts (Government Notification pattern) */
+    .ca-alert {
+      display: flex; gap: var(--ca-space-3); padding: var(--ca-space-3) var(--ca-space-4);
+      border-radius: var(--ca-radius); margin-bottom: var(--ca-space-2);
+      font-size: 14px; align-items: flex-start;
+      border-left: 4px solid; background: #FFFFFF;
+    }
+    .ca-alert--info { border-color: var(--ca-info); background: var(--ca-info-bg); color: #002E40; }
+    .ca-alert--success { border-color: var(--ca-success); background: var(--ca-success-bg); color: #143C00; }
+    .ca-alert--warn { border-color: var(--ca-warning); background: var(--ca-warning-bg); color: #6C3B00; }
+    .ca-alert--error { border-color: var(--ca-danger); background: var(--ca-danger-bg); color: #69060A; }
+    .ca-alert h4 { margin: 0 0 4px; font-size: 15px; font-weight: 700; }
+
+    .ca-toast {
+      background: var(--ca-blue-deep); color: #FFFFFF;
+      padding: 12px 16px; border-radius: var(--ca-radius);
+      max-width: 360px; display: flex; gap: 12px;
+      box-shadow: var(--ca-shadow-md); font-size: 14px;
+    }
+    .ca-progress { background: var(--ca-bg-alt); height: 10px; border-radius: var(--ca-radius-sm); overflow: hidden; }
+    .ca-progress .bar { background: var(--ca-blue-royal); height: 100%; border-radius: var(--ca-radius-sm); }
+    .ca-spinner {
+      width: 24px; height: 24px;
+      border: 3px solid var(--ca-border); border-top-color: var(--ca-blue-royal);
+      border-radius: 50%; animation: spin 0.9s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Navigation */
+    .ca-breadcrumbs { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 14px; }
+    .ca-breadcrumbs a { color: var(--ca-blue-text); text-decoration: underline; }
+    .ca-breadcrumbs .sep { color: var(--ca-text-muted); }
+    .ca-breadcrumbs .current { color: var(--ca-text-muted); font-weight: 700; }
+
+    .ca-tabs { display: flex; gap: 0; border-bottom: 2px solid var(--ca-border); margin-bottom: var(--ca-space-4); flex-wrap: wrap; }
+    .ca-tabs button {
+      padding: 10px 18px; background: transparent; border: 0;
+      font-family: var(--ca-font); font-size: 15px; font-weight: 700; cursor: pointer;
+      color: var(--ca-text-muted);
+      border-bottom: 3px solid transparent; margin-bottom: -2px;
+    }
+    .ca-tabs button.active { color: var(--ca-blue-deep); border-bottom-color: var(--ca-blue); }
+
+    .ca-pagination { display: inline-flex; gap: 4px; border: 1px solid var(--ca-border); border-radius: var(--ca-radius); overflow: hidden; }
+    .ca-pagination button {
+      width: 40px; height: 40px; border: 0; background: #FFFFFF;
+      cursor: pointer; font-weight: 700; font-family: var(--ca-font); font-size: 14px;
+      color: var(--ca-blue-text);
+      border-right: 1px solid var(--ca-border);
+    }
+    .ca-pagination button:last-child { border-right: 0; }
+    .ca-pagination button.active { background: var(--ca-blue-deep); color: #FFFFFF; }
+    .ca-pagination button:hover:not(.active) { background: var(--ca-bg); }
+
+    .ca-stepper { display: flex; align-items: center; gap: 8px; font-size: 13px; flex-wrap: wrap; }
+    .ca-stepper .step { display: inline-flex; align-items: center; gap: 8px; }
+    .ca-stepper .num {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--ca-bg-alt); color: var(--ca-text-muted);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700; border: 2px solid var(--ca-border);
+    }
+    .ca-stepper .num.active { background: var(--ca-blue); color: #FFFFFF; border-color: var(--ca-blue); }
+    .ca-stepper .num.done { background: var(--ca-success); color: #FFFFFF; border-color: var(--ca-success); }
+    .ca-stepper .line { flex: 1; height: 2px; background: var(--ca-border); min-width: 24px; }
+
+    .ca-sidebar {
+      background: var(--ca-bg); border-radius: var(--ca-radius);
+      padding: 8px; width: 240px; border: 1px solid var(--ca-border);
+    }
+    .ca-sidebar a {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 14px; border-radius: var(--ca-radius);
+      color: var(--ca-text); text-decoration: none;
+      font-size: 14px; font-weight: 700;
+    }
+    .ca-sidebar a.active { background: var(--ca-blue-deep); color: #FFFFFF; }
+    .ca-sidebar a:hover:not(.active) { background: #FFFFFF; text-decoration: none; }
+
+    .ca-topbar {
+      display: flex; align-items: center; gap: 16px;
+      padding: 12px 16px; background: var(--ca-blue-deep); color: #FFFFFF;
+      border-radius: var(--ca-radius);
+    }
+    .ca-topbar .brand { font-weight: 900; }
+
+    /* Data */
+    table.ca-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    table.ca-table th, table.ca-table td {
+      text-align: left; padding: 12px 14px;
+      border-bottom: 1px solid var(--ca-border);
+    }
+    table.ca-table thead { background: var(--ca-bg); }
+    table.ca-table th { font-weight: 700; color: var(--ca-blue-deep); }
+    table.ca-table tr:hover { background: var(--ca-bg); }
+    table.ca-table tr.zebra { background: #F8F9FA; }
+
+    .ca-list { list-style: none; padding: 0; margin: 0; }
+    .ca-list li {
+      padding: 12px 14px; display: flex; gap: 12px; align-items: center;
+      border-bottom: 1px solid var(--ca-border);
+    }
+    .ca-list li:last-child { border-bottom: 0; }
+
+    .ca-kv { display: grid; grid-template-columns: 180px 1fr; gap: 12px; font-size: 14px; }
+    .ca-kv dt { color: var(--ca-text-muted); font-weight: 700; }
+
+    .ca-avatar {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--ca-blue); color: #FFFFFF;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-weight: 700;
+    }
+    .ca-empty { text-align: center; padding: var(--ca-space-7) var(--ca-space-4); color: var(--ca-text-muted); }
+    .ca-empty svg { width: 48px; height: 48px; opacity: 0.4; }
+
+    /* Layout */
+    .grid-demo {
+      display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px;
+      background: var(--ca-bg); padding: 16px; border-radius: var(--ca-radius);
+    }
+    .grid-demo > div {
+      background: var(--ca-blue); color: #FFFFFF;
+      padding: 12px; border-radius: var(--ca-radius-sm);
+      font-size: 12px; font-weight: 700; text-align: center;
+    }
+    .scale-row { display: flex; gap: var(--ca-space-3); flex-wrap: wrap; align-items: flex-end; margin-bottom: var(--ca-space-4); }
+    .scale-item { display: flex; flex-direction: column; gap: 6px; align-items: center; }
+    .scale-item .swatch { background: var(--ca-blue); border-radius: var(--ca-radius-sm); }
+    .scale-item .lbl { font-size: 11px; font-family: var(--ca-mono); color: var(--ca-text-muted); }
+    .shadow-demo {
+      width: 90px; height: 90px; background: #FFFFFF;
+      border-radius: var(--ca-radius);
+      display: inline-flex; align-items: center; justify-content: center;
+      margin-right: 16px; margin-bottom: 16px;
+      font-size: 11px; font-family: var(--ca-mono); color: var(--ca-text-muted);
+      border: 1px solid var(--ca-border);
+    }
+
+    /* Footer */
+    .ds-footer {
+      background: var(--ca-blue-deep); color: #E1E4E7;
+      padding: var(--ca-space-6); margin-top: var(--ca-space-7);
+    }
+    .ds-footer h3 { margin-top: 0; color: #FFFFFF; }
+    .ds-footer ul { padding-left: 20px; }
+    .ds-footer li { margin-bottom: 4px; word-break: break-all; font-size: 13px; }
+    .ds-footer a { color: #C7E0F4; text-decoration: underline; }
+    .license-note { font-size: 13px; color: #B6BFC9; margin-top: var(--ca-space-4); max-width: 920px; }
+    .meta-note { font-size: 12px; color: #8B96A2; font-family: var(--ca-mono); margin-top: var(--ca-space-2); }
+
+    @media (max-width: 720px) {
+      .ds-header h1 { font-size: 32px; }
+      main { padding: var(--ca-space-4); }
+      section { padding: var(--ca-space-4); }
+      .type-row { grid-template-columns: 1fr; }
+      .ca-kv { grid-template-columns: 1fr; }
+      .bilingual-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="ds-header">
+    <a href="index.html" class="back-link">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Catalog
+    </a>
+    <h1>Canada.ca Design System</h1>
+    <div class="meta">
+      <span class="badge kind-ds">design-system</span>
+      <span class="badge fidelity-documented">documented</span>
+      <span class="badge source-verified">source: verified</span>
+      <a href="https://design.canada.ca" target="_blank" rel="noopener" class="official">Official ↗</a>
+    </div>
+    <p class="tagline">Canada's bilingual government design system. Federal Identity Program (FIP) blue, accessibility-first patterns, and conservative typography prioritise legibility for every citizen.</p>
+    <div class="lang-bar">
+      <span class="active">EN</span>
+      <span class="inactive">FR</span>
+    </div>
+  </header>
+
+  <nav class="toc" aria-label="Table of contents">
+    <ul>
+      <li><a href="#brand">Brand</a></li>
+      <li><a href="#color">Color</a></li>
+      <li><a href="#typography">Typography</a></li>
+      <li><a href="#buttons">Buttons</a></li>
+      <li><a href="#form">Form</a></li>
+      <li><a href="#surfaces">Surfaces</a></li>
+      <li><a href="#feedback">Feedback</a></li>
+      <li><a href="#navigation">Navigation</a></li>
+      <li><a href="#data">Data</a></li>
+      <li><a href="#layout">Layout</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="brand" data-fidelity="documented">
+      <h2>
+        <span>Brand</span>
+        <span class="badge fidelity-documented">documented</span>
+      </h2>
+      <div class="brand-mark">
+        <span class="glyph">C</span>
+        Canada.ca
+      </div>
+      <p style="margin-top: 24px; max-width: 760px; font-size: 16px; color: var(--ca-text-muted);">
+        The Canada.ca Design System unifies the digital experience of every Government of Canada service. Rooted in the Federal Identity Program (FIP), it places bilingual content, accessibility, and trust above visual flourish. Pages are clear, conservative, and designed to work for every citizen on every device.
+      </p>
+      <div class="pillars">
+        <div class="pillar">
+          <h4>Bilingual</h4>
+          <p style="font-size:14px;color:var(--ca-text-muted);margin:0">Every interface ships in English and French as a constitutional requirement, not an afterthought.</p>
+        </div>
+        <div class="pillar">
+          <h4>Accessible</h4>
+          <p style="font-size:14px;color:var(--ca-text-muted);margin:0">WCAG 2.1 AA is the floor. High-contrast palettes, 44px touch targets, visible focus.</p>
+        </div>
+        <div class="pillar">
+          <h4>Trustworthy</h4>
+          <p style="font-size:14px;color:var(--ca-text-muted);margin:0">FIP blue and conservative typography signal an official Government of Canada service.</p>
+        </div>
+        <div class="pillar">
+          <h4>Service-first</h4>
+          <p style="font-size:14px;color:var(--ca-text-muted);margin:0">Patterns are written for transactional flows: applying, paying, renewing.</p>
+        </div>
+      </div>
+      <div class="bilingual-row">
+        <div class="lang-block">
+          <span class="lang-tag">EN</span>
+          <p>"Apply for a passport — get the documents you need to travel internationally."</p>
+        </div>
+        <div class="lang-block">
+          <span class="lang-tag">FR</span>
+          <p>"Demander un passeport — obtenez les documents nécessaires pour voyager à l'étranger."</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="color" data-fidelity="documented">
+      <h2>
+        <span>Color</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://design.canada.ca/style-guide/colour-fonts.html" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--ca-text-muted)">Canada.ca uses a constrained FIP-derived palette. Primary blues carry the institutional identity; semantic colours communicate status with WCAG-compliant contrast.</p>
+
+      <h3>FIP Identity</h3>
+      <div class="color-grid">
+        <div class="color-cell" style="background:var(--ca-blue);color:#FFFFFF"><span class="name">FIP Blue</span><span>#284162</span></div>
+        <div class="color-cell" style="background:var(--ca-blue-deep);color:#FFFFFF"><span class="name">Deep Navy</span><span>#26374A</span></div>
+        <div class="color-cell" style="background:var(--ca-blue-text);color:#FFFFFF"><span class="name">Text Blue</span><span>#335075</span></div>
+        <div class="color-cell" style="background:var(--ca-blue-royal);color:#FFFFFF"><span class="name">Royal Blue</span><span>#1F73B7</span></div>
+        <div class="color-cell" style="background:var(--ca-blue-hover);color:#FFFFFF"><span class="name">Visited</span><span>#0535D2</span></div>
+      </div>
+
+      <h3>Neutrals</h3>
+      <div class="color-grid">
+        <div class="color-cell" style="background:#FFFFFF;color:#333;border:1px solid var(--ca-border)"><span class="name">White</span><span>#FFFFFF</span></div>
+        <div class="color-cell" style="background:var(--ca-bg);color:#333"><span class="name">Background</span><span>#F1F2F3</span></div>
+        <div class="color-cell" style="background:var(--ca-bg-alt);color:#333"><span class="name">Background Alt</span><span>#EAEBED</span></div>
+        <div class="color-cell" style="background:var(--ca-border);color:#333"><span class="name">Border</span><span>#DDDDDD</span></div>
+        <div class="color-cell" style="background:var(--ca-text-muted);color:#FFFFFF"><span class="name">Text Muted</span><span>#5C5C5C</span></div>
+        <div class="color-cell" style="background:var(--ca-text);color:#FFFFFF"><span class="name">Text</span><span>#333333</span></div>
+      </div>
+
+      <h3>Semantic roles</h3>
+      <div class="semantic-grid">
+        <div class="sem-card" style="background:var(--ca-success-bg);color:#143C00;border-color:var(--ca-success)">
+          <span class="label">Success</span><span class="hex">#278400</span>
+        </div>
+        <div class="sem-card" style="background:var(--ca-warning-bg);color:#6C3B00;border-color:var(--ca-warning)">
+          <span class="label">Warning</span><span class="hex">#EE7100</span>
+        </div>
+        <div class="sem-card" style="background:var(--ca-danger-bg);color:#69060A;border-color:var(--ca-danger)">
+          <span class="label">Danger</span><span class="hex">#D3080C</span>
+        </div>
+        <div class="sem-card" style="background:var(--ca-info-bg);color:#002E40;border-color:var(--ca-info)">
+          <span class="label">Info</span><span class="hex">#269ABC</span>
+        </div>
+      </div>
+
+      <h3>Color roles</h3>
+      <div class="role-grid">
+        <div class="role-chip" style="background:var(--ca-blue-deep);color:#FFFFFF">Header / Footer <code>#26374A</code></div>
+        <div class="role-chip" style="background:var(--ca-blue-royal);color:#FFFFFF">Action / Link <code>#1F73B7</code></div>
+        <div class="role-chip" style="background:var(--ca-blue);color:#FFFFFF">Brand / Accent <code>#284162</code></div>
+        <div class="role-chip" style="background:var(--ca-bg);color:#333;border:1px solid var(--ca-border)">Surface <code>#F1F2F3</code></div>
+        <div class="role-chip" style="background:#FFFFFF;color:var(--ca-blue-deep);border:1px solid var(--ca-border)">Card <code>#FFFFFF</code></div>
+        <div class="role-chip" style="background:var(--ca-text);color:#FFFFFF">Body Text <code>#333333</code></div>
+      </div>
+    </section>
+
+    <section id="typography" data-fidelity="documented">
+      <h2>
+        <span>Typography</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://design.canada.ca/style-guide/colour-fonts.html" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--ca-text-muted)">Lato is the official Canada.ca face, with Noto Sans as the bilingual fallback for diacritics and accented forms in French. Headings are 700 weight; bold display uses 900 sparingly.</p>
+
+      <div class="type-row"><div class="label">Display L · 48 / 900</div><div class="display-l">Apply for a passport</div></div>
+      <div class="type-row"><div class="label">Display M · 36 / 700</div><div class="display-m">Renew your benefits online</div></div>
+      <div class="type-row"><div class="label">Heading 1 · 32 / 700</div><div class="heading-1">Programs and services</div></div>
+      <div class="type-row"><div class="label">Heading 2 · 26 / 700</div><div class="heading-2">Eligibility and how to apply</div></div>
+      <div class="type-row"><div class="label">Heading 3 · 22 / 700</div><div class="heading-3">Documents you'll need</div></div>
+      <div class="type-row"><div class="label">Heading 4 · 18 / 700</div><div class="heading-4">Step 1 — Confirm your information</div></div>
+      <div class="type-row"><div class="label">Body Lg · 18 / 400</div><div class="body-lg">Most applications can be completed entirely online in under 30 minutes.</div></div>
+      <div class="type-row"><div class="label">Body · 16 / 400</div><div class="body">Read carefully before continuing. Lisez attentivement avant de poursuivre.</div></div>
+      <div class="type-row"><div class="label">Body Sm · 14 / 400</div><div class="body-sm">Please review your contact information for accuracy.</div></div>
+      <div class="type-row"><div class="label">Caption · 12 / 400</div><div class="caption">Last updated: 2026-05-05 · Date de modification</div></div>
+      <div class="type-row"><div class="label">Mono</div><div class="mono-sample">CA-2026-05-05-PASSPORT-001234</div></div>
+    </section>
+
+    <section id="buttons" data-fidelity="documented">
+      <h2>
+        <span>Buttons</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://design.canada.ca/web-templates/buttons-call-action.html" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--ca-text-muted)">Action buttons are tall (44px minimum) with bold labels for accessibility. Primary action uses the deep navy; "call to action" uses Royal Blue for outbound links.</p>
+
+      <h3>Variants</h3>
+      <div class="button-row">
+        <button class="ca-btn ca-btn--primary">Apply now</button>
+        <button class="ca-btn ca-btn--call">Get started</button>
+        <button class="ca-btn ca-btn--secondary">Save draft</button>
+        <button class="ca-btn ca-btn--danger">Withdraw application</button>
+        <button class="ca-btn ca-btn--success">Confirm submission</button>
+        <button class="ca-btn ca-btn--link">Learn more</button>
+      </div>
+
+      <h3>Sizes</h3>
+      <div class="button-row">
+        <button class="ca-btn ca-btn--primary ca-btn--sm">Small</button>
+        <button class="ca-btn ca-btn--primary">Default</button>
+        <button class="ca-btn ca-btn--primary ca-btn--lg">Large (call-to-action)</button>
+      </div>
+
+      <h3>States</h3>
+      <div class="button-row">
+        <button class="ca-btn ca-btn--primary">Default</button>
+        <button class="ca-btn ca-btn--primary" style="background:#1C2738;border-color:#1C2738">Hover</button>
+        <button class="ca-btn ca-btn--primary" disabled>Disabled</button>
+        <button class="ca-btn ca-btn--primary" style="outline:var(--ca-focus); outline-offset:2px">Focused</button>
+      </div>
+
+      <h3>With icon</h3>
+      <div class="button-row">
+        <button class="ca-btn ca-btn--primary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          Continue
+        </button>
+        <button class="ca-btn ca-btn--secondary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back
+        </button>
+        <button class="ca-btn ca-btn--call">
+          Download PDF
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+        </button>
+      </div>
+    </section>
+
+    <section id="form" data-fidelity="documented">
+      <h2>
+        <span>Form</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://design.canada.ca/web-templates/forms.html" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--ca-text-muted)">Form patterns prioritise plain-language labels, persistent help text, and high-contrast error messaging. Required fields are stated explicitly in the label, not by symbol alone.</p>
+
+      <h3>Inputs</h3>
+      <div class="form-grid">
+        <div class="ca-field">
+          <label for="ca-given">Given name <span style="color:var(--ca-danger)">(required)</span></label>
+          <span class="hint">As it appears on your passport.</span>
+          <input class="ca-input" id="ca-given" type="text" placeholder="Marie">
+        </div>
+        <div class="ca-field">
+          <label for="ca-email">Email address</label>
+          <span class="hint">We'll send your reference number here.</span>
+          <input class="ca-input" id="ca-email" type="email" value="marie.tremblay@example.ca">
+        </div>
+        <div class="ca-field ca-field--error">
+          <label for="ca-postal">Postal code <span style="color:var(--ca-danger)">(required)</span></label>
+          <input class="ca-input" id="ca-postal" type="text" value="K1A">
+          <span class="ca-error-msg">Enter a valid Canadian postal code (A1A 1A1).</span>
+        </div>
+        <div class="ca-field">
+          <label for="ca-prov">Province or territory</label>
+          <select class="ca-select" id="ca-prov">
+            <option>Ontario</option><option>Québec</option><option>British Columbia</option><option>Alberta</option><option>Manitoba</option><option>Nunavut</option>
+          </select>
+        </div>
+        <div class="ca-field" style="grid-column: 1 / -1">
+          <label for="ca-msg">Additional information</label>
+          <span class="hint">Maximum 500 characters.</span>
+          <textarea class="ca-textarea" id="ca-msg" placeholder="Describe your circumstances..."></textarea>
+        </div>
+      </div>
+
+      <h3>Choice controls</h3>
+      <fieldset class="ca-fieldset">
+        <legend>Preferred official language</legend>
+        <label class="ca-radio"><input type="radio" name="lang" checked> English</label>
+        <label class="ca-radio"><input type="radio" name="lang"> Français</label>
+      </fieldset>
+      <div style="margin-top: var(--ca-space-3); display: flex; flex-direction: column; gap: 4px;">
+        <label class="ca-checkbox"><input type="checkbox" checked> I consent to the collection of personal information.</label>
+        <label class="ca-checkbox"><input type="checkbox"> Send updates by email.</label>
+        <label class="ca-checkbox"><input type="checkbox"> Subscribe to newsletter / Abonnez-vous à l'infolettre.</label>
+      </div>
+
+      <h3>Search</h3>
+      <div class="form-grid">
+        <div class="ca-field">
+          <label for="ca-search">Search Canada.ca</label>
+          <input class="ca-input" id="ca-search" type="search" placeholder="e.g. apply for EI">
+        </div>
+      </div>
+    </section>
+
+    <section id="surfaces" data-fidelity="documented">
+      <h2>
+        <span>Surfaces</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://design.canada.ca/web-templates/cards.html" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--ca-text-muted)">Cards, panels, and dialogs use minimal shadows and a subtle hairline border. Feature cards use a 4px FIP blue accent at the top.</p>
+
+      <h3>Cards</h3>
+      <div class="surface-grid">
+        <div class="ca-card">
+          <div class="media"></div>
+          <h4>Apply for benefits</h4>
+          <p>Determine your eligibility and submit a complete application online.</p>
+          <a href="#" class="read-more">Get started →</a>
+        </div>
+        <div class="ca-card ca-card--feature">
+          <h4>Renew your passport</h4>
+          <p>Adults can renew online in three steps with a valid prior passport.</p>
+          <a href="#" class="read-more">Renew now →</a>
+        </div>
+        <div class="ca-card">
+          <h4>Find a service</h4>
+          <p>Browse all federal programs by topic, audience, or department.</p>
+          <a href="#" class="read-more">Browse services →</a>
+        </div>
+      </div>
+
+      <h3>Statistics</h3>
+      <div class="surface-grid">
+        <div class="ca-stat"><div class="num">12.4M</div><div class="lbl">Online applications submitted in 2025</div></div>
+        <div class="ca-stat"><div class="num">99.8%</div><div class="lbl">Service availability target</div></div>
+        <div class="ca-stat"><div class="num">2 min</div><div class="lbl">Median page load on rural connections</div></div>
+      </div>
+
+      <h3>Modal dialog</h3>
+      <div class="ca-modal">
+        <h3 style="margin-top:0">Confirm submission?</h3>
+        <p>Once submitted, your application cannot be modified. You'll receive a confirmation email at <strong>marie.tremblay@example.ca</strong>.</p>
+        <div class="button-row" style="margin-bottom:0">
+          <button class="ca-btn ca-btn--primary">Submit</button>
+          <button class="ca-btn ca-btn--secondary">Cancel</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="feedback" data-fidelity="documented">
+      <h2>
+        <span>Feedback</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://design.canada.ca/web-templates/alerts.html" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--ca-text-muted)">Government notifications use a 4px coloured left border with high-contrast pastel fills. Headings are bold; body text always meets WCAG AA against the background.</p>
+
+      <h3>Alerts</h3>
+      <div class="ca-alert ca-alert--info">
+        <strong style="font-size:18px">i</strong>
+        <div><h4>Information</h4>You'll need a valid Government of Canada sign-in partner to continue.</div>
+      </div>
+      <div class="ca-alert ca-alert--success">
+        <strong style="font-size:18px">✓</strong>
+        <div><h4>Success</h4>Your application was received on May 5, 2026. Reference: CA-2026-PASSP-001234.</div>
+      </div>
+      <div class="ca-alert ca-alert--warn">
+        <strong style="font-size:18px">!</strong>
+        <div><h4>Attention required</h4>Some sections are missing. Please complete them before submitting.</div>
+      </div>
+      <div class="ca-alert ca-alert--error">
+        <strong style="font-size:18px">⨯</strong>
+        <div><h4>Error</h4>The system is temporarily unavailable. Try again in a few minutes.</div>
+      </div>
+
+      <h3>Toast / snackbar</h3>
+      <div class="ca-toast">
+        <span style="font-weight:700">✓</span>
+        <span>Draft saved automatically.</span>
+      </div>
+
+      <h3>Progress &amp; loading</h3>
+      <div class="ca-progress" style="margin-bottom:12px"><div class="bar" style="width:60%"></div></div>
+      <p class="body-sm">Step 3 of 5 — 60% complete.</p>
+      <div style="display:inline-flex;align-items:center;gap:12px;margin-top:8px;font-size:14px">
+        <div class="ca-spinner"></div>
+        Submitting your application...
+      </div>
+    </section>
+
+    <section id="navigation" data-fidelity="documented">
+      <h2>
+        <span>Navigation</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://design.canada.ca/web-templates/breadcrumbs.html" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--ca-text-muted)">Breadcrumbs anchor users in deep service trees. Tabs, paginators, and steppers signal multi-page transactional flows clearly.</p>
+
+      <h3>Breadcrumbs</h3>
+      <nav class="ca-breadcrumbs" aria-label="Breadcrumb">
+        <a href="#">Canada.ca</a>
+        <span class="sep">›</span>
+        <a href="#">Immigration and citizenship</a>
+        <span class="sep">›</span>
+        <a href="#">Travel documents</a>
+        <span class="sep">›</span>
+        <span class="current">Apply for a passport</span>
+      </nav>
+
+      <h3>Tabs</h3>
+      <div class="ca-tabs">
+        <button class="active">Overview</button>
+        <button>Eligibility</button>
+        <button>How to apply</button>
+        <button>Fees</button>
+        <button>Processing times</button>
+      </div>
+
+      <h3>Pagination</h3>
+      <div class="ca-pagination">
+        <button>‹</button>
+        <button>1</button>
+        <button class="active">2</button>
+        <button>3</button>
+        <button>4</button>
+        <button>5</button>
+        <button>›</button>
+      </div>
+
+      <h3>Multi-step process</h3>
+      <div class="ca-stepper">
+        <div class="step"><span class="num done">1</span> Eligibility</div>
+        <span class="line"></span>
+        <div class="step"><span class="num done">2</span> Personal info</div>
+        <span class="line"></span>
+        <div class="step"><span class="num active">3</span> Documents</div>
+        <span class="line"></span>
+        <div class="step"><span class="num">4</span> Pay fees</div>
+        <span class="line"></span>
+        <div class="step"><span class="num">5</span> Submit</div>
+      </div>
+
+      <h3>Side navigation</h3>
+      <div style="display:flex; gap: 24px; flex-wrap: wrap; margin-top:12px">
+        <aside class="ca-sidebar">
+          <a href="#">Overview</a>
+          <a href="#" class="active">Eligibility</a>
+          <a href="#">Required documents</a>
+          <a href="#">Fees</a>
+          <a href="#">Processing times</a>
+          <a href="#">Contact us</a>
+        </aside>
+        <div style="flex:1; min-width:240px">
+          <h4 style="margin-top:0">Eligibility</h4>
+          <p class="body-sm">You may be eligible to apply online if you are a Canadian citizen aged 16 or older, currently in Canada or the United States, and you hold a valid prior passport issued in the last 15 years.</p>
+        </div>
+      </div>
+
+      <h3>Top bar</h3>
+      <div class="ca-topbar">
+        <span class="brand">Canada.ca</span>
+        <span style="opacity:0.7">|</span>
+        <span>Services</span>
+        <span style="margin-left:auto;font-size:13px;opacity:0.85">EN / FR</span>
+      </div>
+    </section>
+
+    <section id="data" data-fidelity="documented">
+      <h2>
+        <span>Data</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://design.canada.ca/web-templates/tables.html" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--ca-text-muted)">Tables use a tinted header row, hairline rules, and zebra striping to remain readable across long datasets typical of government data releases.</p>
+
+      <h3>Data table</h3>
+      <table class="ca-table">
+        <thead>
+          <tr><th>Reference</th><th>Application type</th><th>Status</th><th>Submitted</th><th>Action</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>CA-26-PASSP-001234</td><td>Passport renewal</td><td><span style="color:var(--ca-success);font-weight:700">In progress</span></td><td>2026-05-04</td><td><a href="#">View →</a></td></tr>
+          <tr class="zebra"><td>CA-26-EI-008812</td><td>Employment Insurance</td><td><span style="color:var(--ca-warning);font-weight:700">Action required</span></td><td>2026-04-29</td><td><a href="#">Resolve →</a></td></tr>
+          <tr><td>CA-26-CRA-554102</td><td>Tax return</td><td><span style="color:var(--ca-blue-text);font-weight:700">Submitted</span></td><td>2026-04-12</td><td><a href="#">View →</a></td></tr>
+          <tr class="zebra"><td>CA-26-SIN-998771</td><td>SIN replacement</td><td><span style="color:var(--ca-success);font-weight:700">Completed</span></td><td>2026-03-08</td><td><a href="#">Receipt →</a></td></tr>
+        </tbody>
+      </table>
+
+      <h3>List</h3>
+      <ul class="ca-list">
+        <li><span class="ca-avatar">MT</span> <div><strong>Marie Tremblay</strong><div class="body-sm">Application reference: CA-26-PASSP-001234</div></div></li>
+        <li><span class="ca-avatar">JB</span> <div><strong>James Brown</strong><div class="body-sm">Application reference: CA-26-PASSP-002445</div></div></li>
+        <li><span class="ca-avatar">SK</span> <div><strong>Sophie Kim</strong><div class="body-sm">Application reference: CA-26-PASSP-003812</div></div></li>
+      </ul>
+
+      <h3>Key / value</h3>
+      <dl class="ca-kv">
+        <dt>Reference number</dt><dd>CA-2026-PASSP-001234</dd>
+        <dt>Submitted</dt><dd>May 4, 2026 · le 4 mai 2026</dd>
+        <dt>Status</dt><dd>In progress</dd>
+        <dt>Estimated decision</dt><dd>May 18, 2026 (10 business days)</dd>
+        <dt>Fee paid</dt><dd>$160.00 CAD</dd>
+      </dl>
+
+      <h3>Empty state</h3>
+      <div class="ca-empty">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <p style="margin-top:12px"><strong>No results match your search.</strong></p>
+        <p class="body-sm">Try a different keyword or browse services by topic.</p>
+      </div>
+    </section>
+
+    <section id="layout" data-fidelity="documented">
+      <h2>
+        <span>Layout</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://design.canada.ca/style-guide/layout.html" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--ca-text-muted)">Canada.ca layouts follow a 12-column responsive grid with generous reading-line widths (max ~720px) for body content. Spacing is on a 4px scale.</p>
+
+      <h3>12-column grid</h3>
+      <div class="grid-demo">
+        <div style="grid-column: span 12">12</div>
+        <div style="grid-column: span 6">6</div>
+        <div style="grid-column: span 6">6</div>
+        <div style="grid-column: span 4">4</div>
+        <div style="grid-column: span 4">4</div>
+        <div style="grid-column: span 4">4</div>
+        <div style="grid-column: span 3">3</div>
+        <div style="grid-column: span 3">3</div>
+        <div style="grid-column: span 3">3</div>
+        <div style="grid-column: span 3">3</div>
+      </div>
+
+      <h3>Spacing scale (4px base)</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div class="swatch" style="width:4px;height:4px"></div><div class="lbl">4 (1)</div></div>
+        <div class="scale-item"><div class="swatch" style="width:8px;height:8px"></div><div class="lbl">8 (2)</div></div>
+        <div class="scale-item"><div class="swatch" style="width:12px;height:12px"></div><div class="lbl">12 (3)</div></div>
+        <div class="scale-item"><div class="swatch" style="width:16px;height:16px"></div><div class="lbl">16 (4)</div></div>
+        <div class="scale-item"><div class="swatch" style="width:24px;height:24px"></div><div class="lbl">24 (5)</div></div>
+        <div class="scale-item"><div class="swatch" style="width:32px;height:32px"></div><div class="lbl">32 (6)</div></div>
+        <div class="scale-item"><div class="swatch" style="width:48px;height:48px"></div><div class="lbl">48 (7)</div></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px"></div><div class="lbl">64 (8)</div></div>
+      </div>
+
+      <h3>Radius</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:0"></div><div class="lbl">0</div></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:2px"></div><div class="lbl">2</div></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:4px"></div><div class="lbl">4 (default)</div></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:6px"></div><div class="lbl">6</div></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:8px"></div><div class="lbl">8</div></div>
+      </div>
+
+      <h3>Shadow / elevation</h3>
+      <div>
+        <span class="shadow-demo" style="box-shadow:none">none</span>
+        <span class="shadow-demo" style="box-shadow:var(--ca-shadow-sm)">sm</span>
+        <span class="shadow-demo" style="box-shadow:var(--ca-shadow)">md</span>
+        <span class="shadow-demo" style="box-shadow:var(--ca-shadow-md)">lg</span>
+      </div>
+
+      <h3>Container width &amp; reading line</h3>
+      <p style="color:var(--ca-text-muted)">Body content caps at ~720px wide for comfortable line lengths. Full-width sections (data, hero, dashboards) use the full 1280px container.</p>
+      <div style="background: var(--ca-bg); border-radius: var(--ca-radius); padding: 16px;">
+        <div style="background: var(--ca-blue-deep); height: 24px; max-width: 1280px; margin: 0 auto; border-radius: var(--ca-radius-sm); position: relative;">
+          <div style="position: absolute; left: 50%; top: 0; transform: translateX(-50%); background: var(--ca-blue); height: 100%; width: 720px; border-radius: var(--ca-radius-sm); display:flex; align-items:center; justify-content:center; color:#FFFFFF; font-size:11px; font-family: var(--ca-mono);">Reading 720</div>
+          <span style="position: absolute; right: 8px; top: 4px; color:#FFFFFF; font-size:11px; font-family: var(--ca-mono);">Container 1280</span>
+        </div>
+      </div>
+
+      <h3>Breakpoints</h3>
+      <table class="ca-table">
+        <thead><tr><th>Token</th><th>Min width</th><th>Use</th></tr></thead>
+        <tbody>
+          <tr><td>xs</td><td>0px</td><td>Mobile portrait</td></tr>
+          <tr class="zebra"><td>sm</td><td>576px</td><td>Mobile landscape</td></tr>
+          <tr><td>md</td><td>768px</td><td>Tablet portrait</td></tr>
+          <tr class="zebra"><td>lg</td><td>992px</td><td>Tablet landscape / desktop</td></tr>
+          <tr><td>xl</td><td>1200px</td><td>Wide desktop</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Accessibility checklist</h3>
+      <ul class="ca-list" style="border:1px solid var(--ca-border); border-radius: var(--ca-radius);">
+        <li><span class="ca-avatar" style="background:var(--ca-success)">✓</span> <div><strong>Contrast ratio</strong><div class="body-sm">All body text passes WCAG 2.1 AA (4.5:1) and large text passes AAA (7:1) on the FIP palette.</div></div></li>
+        <li><span class="ca-avatar" style="background:var(--ca-success)">✓</span> <div><strong>Touch targets</strong><div class="body-sm">Minimum 44×44px for any clickable element on mobile.</div></div></li>
+        <li><span class="ca-avatar" style="background:var(--ca-success)">✓</span> <div><strong>Focus visible</strong><div class="body-sm">A 3px solid #FFBF47 ring marks the keyboard-focused element on every interactive surface.</div></div></li>
+        <li><span class="ca-avatar" style="background:var(--ca-success)">✓</span> <div><strong>Bilingual labels</strong><div class="body-sm">Every label, hint, and error has been translated. EN and FR strings ship together at the page level.</div></div></li>
+        <li><span class="ca-avatar" style="background:var(--ca-success)">✓</span> <div><strong>Semantic HTML</strong><div class="body-sm">Use native &lt;button&gt;, &lt;label&gt;, &lt;fieldset&gt;, &lt;legend&gt;. No div-buttons.</div></div></li>
+      </ul>
+    </section>
+
+    <section data-fidelity="documented">
+      <h2>
+        <span>Patterns &amp; voice</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://design.canada.ca/style-guide/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--ca-text-muted)">Canada.ca content is plain language at a Grade 6–8 reading level. Tone is calm, factual, and second-person ("you"). The bilingual page model places EN and FR side-by-side at the URL level (not inline).</p>
+
+      <h3>Voice &amp; tone</h3>
+      <div class="surface-grid">
+        <div class="ca-card">
+          <h4>Plain</h4>
+          <p>Use simple words. "Use" not "utilize". Short sentences. Active voice.</p>
+          <a href="#" class="read-more">Style guide →</a>
+        </div>
+        <div class="ca-card">
+          <h4>Direct</h4>
+          <p>Tell the user what to do, in order. "Sign in. Choose a service. Confirm your details."</p>
+        </div>
+        <div class="ca-card">
+          <h4>Respectful</h4>
+          <p>No jargon, no acronyms on first use, no marketing language. The Government of Canada speaks to citizens, not customers.</p>
+        </div>
+        <div class="ca-card">
+          <h4>Bilingual-first</h4>
+          <p>Write content with translation in mind. Avoid idioms, puns, and metaphors that don't survive crossing languages.</p>
+        </div>
+      </div>
+
+      <h3>Common service patterns</h3>
+      <table class="ca-table">
+        <thead><tr><th>Pattern</th><th>When to use</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td>Task list</td><td>Index of services on a topic</td><td>"Apply, renew, replace your passport"</td></tr>
+          <tr class="zebra"><td>Step-by-step</td><td>Multi-step transactional flows</td><td>EI application: 5 steps</td></tr>
+          <tr><td>Question-led</td><td>Eligibility decision trees</td><td>"Do you qualify?"</td></tr>
+          <tr class="zebra"><td>Reference page</td><td>Long-form policy reading</td><td>Income tax guide</td></tr>
+          <tr><td>Notice</td><td>Time-sensitive operational info</td><td>"Service unavailable Saturday"</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Privacy &amp; consent</h3>
+      <div class="ca-alert ca-alert--info">
+        <strong style="font-size:18px">i</strong>
+        <div>
+          <h4>Collection of personal information</h4>
+          <p style="margin:0">Personal information is collected under the authority of the relevant federal legislation, used to deliver the requested service, and protected under the <em>Privacy Act</em>. Citizens may request access to their record at any time.</p>
+        </div>
+      </div>
+
+      <h3>Error recovery</h3>
+      <div class="ca-alert ca-alert--error" style="margin-top:8px">
+        <strong style="font-size:18px">⨯</strong>
+        <div>
+          <h4>3 errors on this page — corrigez les 3 erreurs sur cette page</h4>
+          <ul style="margin: 8px 0 0 20px; padding: 0; font-size: 14px;">
+            <li><a href="#" style="color:#69060A;font-weight:700">Date of birth — enter a valid date</a></li>
+            <li><a href="#" style="color:#69060A;font-weight:700">Postal code — enter a Canadian postal code</a></li>
+            <li><a href="#" style="color:#69060A;font-weight:700">Consent — confirm you've read the privacy notice</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>Page templates</h3>
+      <div class="surface-grid">
+        <div class="ca-card">
+          <h4>Topic page</h4>
+          <p>Hub linking to all services on a topic. Includes featured tasks, "most requested," and contact info.</p>
+          <a href="#" class="read-more">Example →</a>
+        </div>
+        <div class="ca-card">
+          <h4>Service page</h4>
+          <p>Single-service home: eligibility, how to apply, fees, processing times, and FAQ.</p>
+          <a href="#" class="read-more">Example →</a>
+        </div>
+        <div class="ca-card">
+          <h4>Task / form page</h4>
+          <p>One step in a transactional flow. Single column, max 720px reading width, clear "next/back".</p>
+          <a href="#" class="read-more">Example →</a>
+        </div>
+        <div class="ca-card">
+          <h4>News &amp; statements</h4>
+          <p>Press releases, ministerial statements, and operational notices. Date-stamped, archive-friendly.</p>
+          <a href="#" class="read-more">Example →</a>
+        </div>
+      </div>
+
+      <h3>Date of modification</h3>
+      <p class="body-sm">Every page on Canada.ca shows a Date of modification near the footer to signal authoritativeness and freshness. Users can trust that information has been reviewed recently.</p>
+      <div style="background: var(--ca-bg); border-radius: var(--ca-radius); padding: 14px 16px; font-size: 13px; color: var(--ca-text-muted); display: flex; gap: 16px; flex-wrap: wrap;">
+        <span><strong>Date modified:</strong> 2026-05-05</span>
+        <span><strong>Date de modification :</strong> 2026-05-05</span>
+      </div>
+
+      <h3>Token reference</h3>
+      <table class="ca-table">
+        <thead><tr><th>Token</th><th>Value</th><th>Use</th></tr></thead>
+        <tbody>
+          <tr><td><code>--ca-blue</code></td><td><code>#284162</code></td><td>FIP signature</td></tr>
+          <tr class="zebra"><td><code>--ca-blue-deep</code></td><td><code>#26374A</code></td><td>Header / footer surface</td></tr>
+          <tr><td><code>--ca-blue-text</code></td><td><code>#335075</code></td><td>Body link</td></tr>
+          <tr class="zebra"><td><code>--ca-blue-royal</code></td><td><code>#1F73B7</code></td><td>Active link / call-to-action</td></tr>
+          <tr><td><code>--ca-bg</code></td><td><code>#F1F2F3</code></td><td>Page background</td></tr>
+          <tr class="zebra"><td><code>--ca-text</code></td><td><code>#333333</code></td><td>Body text</td></tr>
+          <tr><td><code>--ca-success</code></td><td><code>#278400</code></td><td>Success status</td></tr>
+          <tr class="zebra"><td><code>--ca-warning</code></td><td><code>#EE7100</code></td><td>Warning status</td></tr>
+          <tr><td><code>--ca-danger</code></td><td><code>#D3080C</code></td><td>Error / destructive</td></tr>
+          <tr class="zebra"><td><code>--ca-radius</code></td><td><code>4px</code></td><td>Default radius (conservative)</td></tr>
+          <tr><td><code>--ca-focus</code></td><td><code>3px solid #FFBF47</code></td><td>Keyboard focus ring</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Government integrations</h3>
+      <div class="surface-grid">
+        <div class="ca-card ca-card--feature">
+          <h4>GCKey</h4>
+          <p>Sign-in service shared across federal departments. Single credential, multiple services.</p>
+        </div>
+        <div class="ca-card ca-card--feature">
+          <h4>Sign-In Partner</h4>
+          <p>Bank-based authentication via the major Canadian banks for trusted second-factor identity.</p>
+        </div>
+        <div class="ca-card ca-card--feature">
+          <h4>Pay.ca</h4>
+          <p>Centralised payment service for fees, fines, and applications. Visa / MasterCard / Interac.</p>
+        </div>
+        <div class="ca-card ca-card--feature">
+          <h4>Notify GC</h4>
+          <p>Government-wide email + SMS service for application status and operational notices.</p>
+        </div>
+      </div>
+
+      <h3>FAQ pattern</h3>
+      <div style="border:1px solid var(--ca-border); border-radius: var(--ca-radius); overflow:hidden;">
+        <details style="border-bottom: 1px solid var(--ca-border);">
+          <summary style="padding: 14px 16px; cursor: pointer; font-weight: 700; color: var(--ca-blue-deep); background: var(--ca-bg);">How long does it take to receive a passport?</summary>
+          <div style="padding: 0 16px 14px; font-size: 14px; color: var(--ca-text-muted);">Standard online renewals take 10 business days. Urgent and express services are available for an additional fee.</div>
+        </details>
+        <details style="border-bottom: 1px solid var(--ca-border);">
+          <summary style="padding: 14px 16px; cursor: pointer; font-weight: 700; color: var(--ca-blue-deep); background: var(--ca-bg);">What documents do I need?</summary>
+          <div style="padding: 0 16px 14px; font-size: 14px; color: var(--ca-text-muted);">Your prior passport, two passport-style photos, and proof of Canadian citizenship if applying for the first time.</div>
+        </details>
+        <details>
+          <summary style="padding: 14px 16px; cursor: pointer; font-weight: 700; color: var(--ca-blue-deep); background: var(--ca-bg);">Can I track my application?</summary>
+          <div style="padding: 0 16px 14px; font-size: 14px; color: var(--ca-text-muted);">Yes — sign in to your Canada.ca account and select "My applications" to view status updates.</div>
+        </details>
+      </div>
+
+      <h3>Notice / contact card</h3>
+      <div style="background: var(--ca-blue-deep); color: #FFFFFF; border-radius: var(--ca-radius); padding: var(--ca-space-5); margin-top: 12px; display: grid; grid-template-columns: auto 1fr; gap: var(--ca-space-4); align-items: center;">
+        <div style="width: 56px; height: 56px; border-radius: 50%; background: var(--ca-blue-royal); display: inline-flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 900;">?</div>
+        <div>
+          <div style="font-weight: 700; font-size: 18px; margin-bottom: 4px;">Need help with your application?</div>
+          <div style="font-size: 14px; opacity: 0.9;">Call Service Canada at 1-800-622-6232 (TTY: 1-800-926-9105) — available Monday to Friday, 8 AM to 8 PM local time.</div>
+        </div>
+      </div>
+
+      <h3>Most-requested tasks</h3>
+      <ul class="ca-list" style="background: var(--ca-bg); border-radius: var(--ca-radius);">
+        <li><a href="#" style="color: var(--ca-blue-text); font-weight: 700; flex: 1;">Apply for or renew a passport →</a></li>
+        <li><a href="#" style="color: var(--ca-blue-text); font-weight: 700; flex: 1;">File your taxes online (NETFILE) →</a></li>
+        <li><a href="#" style="color: var(--ca-blue-text); font-weight: 700; flex: 1;">Apply for Employment Insurance benefits →</a></li>
+        <li><a href="#" style="color: var(--ca-blue-text); font-weight: 700; flex: 1;">Get a Canadian visa or eTA →</a></li>
+        <li><a href="#" style="color: var(--ca-blue-text); font-weight: 700; flex: 1;">Find a job — Job Bank →</a></li>
+        <li><a href="#" style="color: var(--ca-blue-text); font-weight: 700; flex: 1;">Update your address with the CRA →</a></li>
+      </ul>
+
+      <h3>Brand do / don't</h3>
+      <div class="surface-grid">
+        <div class="ca-card" style="border-left: 4px solid var(--ca-success)">
+          <h4 style="color: var(--ca-success)">Do</h4>
+          <p>Use the FIP wordmark only on the official Canada.ca chrome — header and footer.</p>
+        </div>
+        <div class="ca-card" style="border-left: 4px solid var(--ca-success)">
+          <h4 style="color: var(--ca-success)">Do</h4>
+          <p>Pair English and French at the URL level — `/en/` and `/fr/` mirrors, not inline.</p>
+        </div>
+        <div class="ca-card" style="border-left: 4px solid var(--ca-danger)">
+          <h4 style="color: var(--ca-danger)">Don't</h4>
+          <p>Re-colour the FIP blue or apply gradients. The signature blue is non-negotiable.</p>
+        </div>
+        <div class="ca-card" style="border-left: 4px solid var(--ca-danger)">
+          <h4 style="color: var(--ca-danger)">Don't</h4>
+          <p>Use marketing slogans, exclamation marks, or emoji in service copy.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="ds-footer">
+    <h3>Sources</h3>
+    <ul>
+      <li><a href="https://design.canada.ca" target="_blank" rel="noopener">https://design.canada.ca</a></li>
+      <li><a href="https://design.canada.ca/style-guide/colour-fonts.html" target="_blank" rel="noopener">https://design.canada.ca/style-guide/colour-fonts.html</a></li>
+      <li><a href="https://design.canada.ca/web-templates/buttons-call-action.html" target="_blank" rel="noopener">https://design.canada.ca/web-templates/buttons-call-action.html</a></li>
+      <li><a href="https://design.canada.ca/web-templates/forms.html" target="_blank" rel="noopener">https://design.canada.ca/web-templates/forms.html</a></li>
+      <li><a href="https://design.canada.ca/web-templates/cards.html" target="_blank" rel="noopener">https://design.canada.ca/web-templates/cards.html</a></li>
+      <li><a href="https://design.canada.ca/web-templates/alerts.html" target="_blank" rel="noopener">https://design.canada.ca/web-templates/alerts.html</a></li>
+      <li><a href="https://design.canada.ca/web-templates/breadcrumbs.html" target="_blank" rel="noopener">https://design.canada.ca/web-templates/breadcrumbs.html</a></li>
+      <li><a href="https://design.canada.ca/web-templates/tables.html" target="_blank" rel="noopener">https://design.canada.ca/web-templates/tables.html</a></li>
+      <li><a href="https://design.canada.ca/style-guide/layout.html" target="_blank" rel="noopener">https://design.canada.ca/style-guide/layout.html</a></li>
+    </ul>
+    <p class="license-note">This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Government of Canada. Canada.ca Design System and related trademarks belong to Government of Canada. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</p>
+    <p class="meta-note">Reproduction date: 2026-05-05 · sourceStatus: verified · fidelity: documented</p>
+  </footer>
+</body>
+</html>

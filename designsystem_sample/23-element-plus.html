@@ -1,0 +1,1324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Element Plus — Design System Reference</title>
+  <script id="ds-meta" type="application/json">
+{"id":"23-element-plus","fileSlug":"23-element-plus","schemaVersion":"1"}
+  </script>
+  <style>
+    :root {
+      /* Element Plus Brand */
+      --ep-primary: #409EFF;
+      --ep-primary-light-3: #79BBFF;
+      --ep-primary-light-5: #A0CFFF;
+      --ep-primary-light-7: #C6E2FF;
+      --ep-primary-light-8: #D9ECFF;
+      --ep-primary-light-9: #ECF5FF;
+      --ep-primary-dark-2: #337ECC;
+
+      /* Semantic */
+      --ep-success: #67C23A;
+      --ep-success-light: #E1F3D8;
+      --ep-success-dark: #529B2E;
+      --ep-warning: #E6A23C;
+      --ep-warning-light: #FAECD8;
+      --ep-warning-dark: #B88230;
+      --ep-danger: #F56C6C;
+      --ep-danger-light: #FDE2E2;
+      --ep-danger-dark: #C45656;
+      --ep-info: #909399;
+      --ep-info-light: #E9E9EB;
+
+      /* Text */
+      --ep-text-primary: #303133;
+      --ep-text-regular: #606266;
+      --ep-text-secondary: #909399;
+      --ep-text-placeholder: #A8ABB2;
+      --ep-text-disabled: #C0C4CC;
+
+      /* Backgrounds */
+      --ep-bg: #FFFFFF;
+      --ep-page-bg: #F2F3F5;
+      --ep-fill: #F5F7FA;
+      --ep-fill-light: #FAFAFA;
+      --ep-fill-lighter: #FAFCFF;
+      --ep-fill-dark: #EBEEF5;
+
+      /* Borders */
+      --ep-border: #DCDFE6;
+      --ep-border-light: #E4E7ED;
+      --ep-border-lighter: #EBEEF5;
+      --ep-border-extra-light: #F2F6FC;
+
+      /* Type */
+      --ep-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+      --ep-mono: ui-monospace, "JetBrains Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+
+      /* Shape */
+      --ep-radius-sm: 2px;
+      --ep-radius: 4px;
+      --ep-radius-md: 8px;
+      --ep-radius-lg: 12px;
+      --ep-radius-round: 999px;
+
+      /* Spacing */
+      --ep-space-1: 4px;
+      --ep-space-2: 8px;
+      --ep-space-3: 12px;
+      --ep-space-4: 16px;
+      --ep-space-5: 20px;
+      --ep-space-6: 24px;
+      --ep-space-8: 32px;
+      --ep-space-10: 40px;
+
+      /* Shadows */
+      --ep-shadow-light: 0 0 12px rgba(0,0,0,0.12);
+      --ep-shadow: 0 12px 32px 4px rgba(0,0,0,0.04), 0 8px 20px rgba(0,0,0,0.08);
+      --ep-shadow-dark: 0 16px 48px 16px rgba(0,0,0,0.08), 0 12px 32px rgba(0,0,0,0.12), 0 8px 16px -8px rgba(0,0,0,0.16);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--ep-font);
+      background: var(--ep-page-bg);
+      color: var(--ep-text-primary);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      font-size: 14px;
+    }
+
+    code, kbd, pre { font-family: var(--ep-mono); }
+
+    /* Header */
+    .ds-header {
+      background: linear-gradient(135deg, var(--ep-primary-light-9), #FFFFFF);
+      padding: var(--ep-space-10) var(--ep-space-8) var(--ep-space-6);
+      border-bottom: 1px solid var(--ep-border-light);
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--ep-space-2);
+      color: var(--ep-primary);
+      text-decoration: none;
+      padding: 6px 12px;
+      border-radius: var(--ep-radius);
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .back-link:hover { background: var(--ep-primary-light-9); }
+    .ds-header h1 {
+      font-size: 38px;
+      line-height: 48px;
+      font-weight: 600;
+      margin: var(--ep-space-4) 0 var(--ep-space-3);
+      color: var(--ep-text-primary);
+      letter-spacing: -0.5px;
+    }
+    .ds-header .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--ep-space-2);
+      align-items: center;
+      margin-bottom: var(--ep-space-3);
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 10px;
+      border-radius: var(--ep-radius);
+      font-size: 12px;
+      font-weight: 500;
+      border: 1px solid var(--ep-border);
+      background: var(--ep-bg);
+      color: var(--ep-text-regular);
+    }
+    .badge.kind-cl { background: var(--ep-primary); color: white; border-color: transparent; }
+    .badge.fidelity-documented { background: var(--ep-success-light); color: var(--ep-success-dark); border-color: transparent; }
+    .badge.fidelity-approximated { background: var(--ep-warning-light); color: var(--ep-warning-dark); border-color: transparent; }
+    .badge.fidelity-inspired { background: #F3E5F5; color: #4A148C; border-color: transparent; }
+    .badge.source-verified { background: var(--ep-primary-light-9); color: var(--ep-primary-dark-2); border-color: transparent; }
+    .ds-header a[href*="element-plus"] {
+      color: var(--ep-primary);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 4px 12px;
+      border: 1px solid var(--ep-primary);
+      border-radius: var(--ep-radius);
+      font-size: 13px;
+      background: var(--ep-bg);
+    }
+    .ds-header a[href*="element-plus"]:hover { background: var(--ep-primary); color: white; }
+    .tagline {
+      font-size: 16px;
+      line-height: 24px;
+      max-width: 720px;
+      margin: var(--ep-space-4) 0 0;
+      color: var(--ep-text-regular);
+    }
+
+    /* TOC */
+    .toc {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--ep-border-light);
+    }
+    .toc ul {
+      list-style: none;
+      margin: 0;
+      padding: var(--ep-space-3) var(--ep-space-8);
+      display: flex;
+      gap: var(--ep-space-1);
+      overflow-x: auto;
+    }
+    .toc a {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: var(--ep-radius);
+      color: var(--ep-text-regular);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .toc a:hover { background: var(--ep-primary-light-9); color: var(--ep-primary); }
+
+    /* Main */
+    main {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: var(--ep-space-6);
+    }
+    section {
+      background: var(--ep-bg);
+      border-radius: var(--ep-radius-md);
+      padding: var(--ep-space-6);
+      margin-bottom: var(--ep-space-5);
+      border: 1px solid var(--ep-border-lighter);
+    }
+    section h2 {
+      display: flex;
+      align-items: center;
+      gap: var(--ep-space-3);
+      flex-wrap: wrap;
+      font-size: 24px;
+      line-height: 32px;
+      font-weight: 600;
+      margin: 0 0 var(--ep-space-5);
+      color: var(--ep-text-primary);
+    }
+    .source-link {
+      font-size: 13px;
+      color: var(--ep-primary);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .source-link:hover { text-decoration: underline; }
+    h3 {
+      font-size: 18px;
+      line-height: 26px;
+      font-weight: 600;
+      margin: var(--ep-space-5) 0 var(--ep-space-3);
+      color: var(--ep-text-primary);
+    }
+    h4 {
+      font-size: 14px;
+      line-height: 22px;
+      font-weight: 600;
+      margin: var(--ep-space-4) 0 var(--ep-space-2);
+      color: var(--ep-text-regular);
+    }
+    p { margin: 0 0 var(--ep-space-3); }
+
+    /* Brand */
+    #brand .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--ep-space-3);
+      padding: var(--ep-space-3) var(--ep-space-5);
+      background: var(--ep-primary);
+      border-radius: var(--ep-radius-md);
+      color: white;
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: -0.5px;
+    }
+    #brand .pillars {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--ep-space-4);
+      margin-top: var(--ep-space-5);
+    }
+    #brand .pillar {
+      padding: var(--ep-space-4);
+      background: var(--ep-fill);
+      border: 1px solid var(--ep-border-lighter);
+      border-radius: var(--ep-radius-md);
+    }
+    #brand .pillar h4 { margin-top: 0; color: var(--ep-primary); }
+    #brand .pillar p { font-size: 13px; color: var(--ep-text-regular); margin: 0; }
+
+    /* Color */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+      margin-bottom: var(--ep-space-4);
+    }
+    .color-cell {
+      aspect-ratio: 2/1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 6px 8px;
+      font-size: 11px;
+      font-family: var(--ep-mono);
+      border-radius: var(--ep-radius);
+    }
+    .semantic-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
+      gap: var(--ep-space-3);
+    }
+    .sem-card {
+      padding: var(--ep-space-4);
+      border-radius: var(--ep-radius-md);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .sem-card .label { font-size: 14px; font-weight: 600; }
+    .sem-card .hex { font-family: var(--ep-mono); font-size: 12px; opacity: 0.85; }
+
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--ep-space-2);
+      margin-bottom: var(--ep-space-4);
+    }
+    .role-chip {
+      padding: var(--ep-space-3) var(--ep-space-4);
+      border-radius: var(--ep-radius);
+      font-size: 13px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .role-chip code { font-size: 11px; opacity: 0.85; }
+
+    /* Typography */
+    .type-row {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: var(--ep-space-4);
+      padding: var(--ep-space-3) 0;
+      border-bottom: 1px solid var(--ep-border-lighter);
+      align-items: baseline;
+    }
+    .type-row:last-child { border-bottom: 0; }
+    .type-row .label {
+      font-family: var(--ep-mono);
+      font-size: 12px;
+      color: var(--ep-text-secondary);
+    }
+    .h1-sample { font-size: 32px; line-height: 44px; font-weight: 600; }
+    .h2-sample { font-size: 26px; line-height: 36px; font-weight: 600; }
+    .h3-sample { font-size: 22px; line-height: 30px; font-weight: 600; }
+    .h4-sample { font-size: 18px; line-height: 26px; font-weight: 600; }
+    .h5-sample { font-size: 16px; line-height: 24px; font-weight: 600; }
+    .h6-sample { font-size: 14px; line-height: 22px; font-weight: 600; }
+    .body-base { font-size: 14px; line-height: 22px; }
+    .body-small { font-size: 13px; line-height: 20px; color: var(--ep-text-regular); }
+    .body-tiny { font-size: 12px; line-height: 18px; color: var(--ep-text-secondary); }
+    .mono-sample { font-family: var(--ep-mono); font-size: 13px; color: var(--ep-text-regular); }
+
+    /* Iconography */
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(80px,1fr));
+      gap: var(--ep-space-3);
+    }
+    .icon-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: var(--ep-space-3);
+      background: var(--ep-fill);
+      border-radius: var(--ep-radius-md);
+      border: 1px solid var(--ep-border-lighter);
+    }
+    .icon-cell svg { width: 22px; height: 22px; stroke: var(--ep-text-regular); }
+    .icon-cell span { font-size: 11px; color: var(--ep-text-secondary); }
+
+    /* Buttons */
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--ep-space-3);
+      align-items: center;
+      margin-bottom: var(--ep-space-3);
+    }
+    .ep-btn {
+      font-family: var(--ep-font);
+      font-size: 14px;
+      font-weight: 500;
+      padding: 8px 16px;
+      border-radius: var(--ep-radius);
+      border: 1px solid var(--ep-border);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      height: 32px;
+      background: var(--ep-bg);
+      color: var(--ep-text-regular);
+      transition: all 0.1s;
+    }
+    .ep-btn:hover { color: var(--ep-primary); border-color: var(--ep-primary-light-7); background: var(--ep-primary-light-9); }
+    .ep-btn--primary { background: var(--ep-primary); color: white; border-color: var(--ep-primary); }
+    .ep-btn--primary:hover { background: var(--ep-primary-light-3); border-color: var(--ep-primary-light-3); color: white; }
+    .ep-btn--success { background: var(--ep-success); color: white; border-color: var(--ep-success); }
+    .ep-btn--success:hover { background: #85CE61; border-color: #85CE61; color: white; }
+    .ep-btn--warning { background: var(--ep-warning); color: white; border-color: var(--ep-warning); }
+    .ep-btn--warning:hover { background: #EBB563; border-color: #EBB563; color: white; }
+    .ep-btn--danger { background: var(--ep-danger); color: white; border-color: var(--ep-danger); }
+    .ep-btn--danger:hover { background: #F78989; border-color: #F78989; color: white; }
+    .ep-btn--info { background: var(--ep-info); color: white; border-color: var(--ep-info); }
+    .ep-btn--info:hover { background: #A6A9AD; border-color: #A6A9AD; color: white; }
+    .ep-btn--text { border: 0; background: transparent; color: var(--ep-primary); padding: 8px 12px; }
+    .ep-btn--text:hover { background: var(--ep-primary-light-9); color: var(--ep-primary-dark-2); }
+    .ep-btn--plain { background: var(--ep-primary-light-9); color: var(--ep-primary); border-color: var(--ep-primary-light-7); }
+    .ep-btn--plain:hover { background: var(--ep-primary); color: white; border-color: var(--ep-primary); }
+    .ep-btn--round { border-radius: var(--ep-radius-round); }
+    .ep-btn--circle { width: 32px; padding: 0; justify-content: center; border-radius: 50%; }
+    .ep-btn--sm { height: 24px; padding: 5px 11px; font-size: 12px; }
+    .ep-btn--lg { height: 40px; padding: 12px 19px; font-size: 14px; }
+    .ep-btn:disabled { color: var(--ep-text-disabled); background: var(--ep-fill); border-color: var(--ep-border-light); cursor: not-allowed; }
+    .ep-btn--primary:disabled { background: var(--ep-primary-light-5); border-color: var(--ep-primary-light-5); color: white; }
+
+    /* Form */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+      gap: var(--ep-space-4);
+    }
+    .ep-field { display: flex; flex-direction: column; gap: 6px; }
+    .ep-label { font-size: 13px; color: var(--ep-text-regular); font-weight: 500; }
+    .ep-input {
+      height: 32px;
+      padding: 0 11px;
+      border: 1px solid var(--ep-border);
+      border-radius: var(--ep-radius);
+      font-family: var(--ep-font);
+      font-size: 14px;
+      color: var(--ep-text-primary);
+      background: var(--ep-bg);
+      width: 100%;
+      outline: none;
+      transition: border-color 0.1s;
+    }
+    .ep-input:focus { border-color: var(--ep-primary); }
+    .ep-input::placeholder { color: var(--ep-text-placeholder); }
+    .ep-helper { font-size: 12px; color: var(--ep-text-secondary); }
+    .ep-error { color: var(--ep-danger); }
+    textarea.ep-input { height: auto; min-height: 80px; padding: 8px 11px; resize: vertical; line-height: 1.5; }
+    select.ep-input { appearance: none; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23606266' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>"); background-repeat: no-repeat; background-position: right 8px center; padding-right: 28px; }
+
+    .ep-checkbox, .ep-radio {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      color: var(--ep-text-regular);
+    }
+    .ep-checkbox input, .ep-radio input { width: 14px; height: 14px; accent-color: var(--ep-primary); }
+    .ep-switch { position: relative; display: inline-block; width: 40px; height: 20px; }
+    .ep-switch input { opacity: 0; width: 0; height: 0; }
+    .ep-switch .slider {
+      position: absolute; cursor: pointer; inset: 0;
+      background: var(--ep-info);
+      border-radius: var(--ep-radius-round);
+      transition: 0.2s;
+    }
+    .ep-switch .slider::before {
+      content: ''; position: absolute;
+      width: 16px; height: 16px;
+      left: 2px; top: 2px;
+      background: white;
+      border-radius: 50%;
+      transition: 0.2s;
+    }
+    .ep-switch input:checked + .slider { background: var(--ep-primary); }
+    .ep-switch input:checked + .slider::before { transform: translateX(20px); }
+    .ep-slider { width: 100%; accent-color: var(--ep-primary); }
+
+    /* Surfaces */
+    .surface-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
+      gap: var(--ep-space-4);
+    }
+    .ep-card {
+      background: var(--ep-bg);
+      border: 1px solid var(--ep-border-lighter);
+      border-radius: var(--ep-radius);
+      padding: 0;
+      overflow: hidden;
+    }
+    .ep-card .card-header {
+      padding: var(--ep-space-4);
+      border-bottom: 1px solid var(--ep-border-lighter);
+      font-weight: 600;
+      font-size: 14px;
+    }
+    .ep-card .card-body { padding: var(--ep-space-4); font-size: 13px; color: var(--ep-text-regular); }
+    .ep-card--shadow { box-shadow: var(--ep-shadow-light); border-color: transparent; }
+    .ep-card .media { height: 100px; background: linear-gradient(135deg, var(--ep-primary-light-7), var(--ep-primary-light-9)); }
+    .ep-stat { padding: var(--ep-space-4); background: var(--ep-primary-light-9); border-radius: var(--ep-radius); border-left: 3px solid var(--ep-primary); }
+    .ep-stat .num { font-size: 28px; font-weight: 600; color: var(--ep-primary-dark-2); line-height: 1; }
+    .ep-stat .lbl { font-size: 12px; color: var(--ep-text-regular); margin-top: 4px; }
+    .ep-modal {
+      background: var(--ep-bg);
+      padding: var(--ep-space-5);
+      border-radius: var(--ep-radius);
+      box-shadow: var(--ep-shadow-dark);
+      max-width: 360px;
+      border: 1px solid var(--ep-border-lighter);
+    }
+
+    /* Feedback */
+    .ep-alert {
+      display: flex;
+      gap: var(--ep-space-3);
+      padding: 8px 16px;
+      border-radius: var(--ep-radius);
+      margin-bottom: var(--ep-space-2);
+      font-size: 14px;
+      align-items: center;
+    }
+    .ep-alert--info { background: var(--ep-info-light); color: var(--ep-text-regular); }
+    .ep-alert--success { background: var(--ep-success-light); color: var(--ep-success-dark); }
+    .ep-alert--warning { background: var(--ep-warning-light); color: var(--ep-warning-dark); }
+    .ep-alert--danger { background: var(--ep-danger-light); color: var(--ep-danger-dark); }
+
+    .ep-message {
+      background: var(--ep-primary-light-9);
+      color: var(--ep-primary-dark-2);
+      padding: 14px 16px;
+      border: 1px solid var(--ep-primary-light-7);
+      border-radius: var(--ep-radius);
+      box-shadow: var(--ep-shadow-light);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+    }
+
+    .ep-banner {
+      display: flex;
+      gap: var(--ep-space-3);
+      padding: var(--ep-space-3) var(--ep-space-4);
+      background: var(--ep-fill);
+      border-left: 3px solid var(--ep-primary);
+      border-radius: var(--ep-radius);
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .ep-tag-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .ep-tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 0 8px;
+      height: 24px;
+      border-radius: var(--ep-radius);
+      background: var(--ep-primary-light-9);
+      color: var(--ep-primary);
+      font-size: 12px;
+      border: 1px solid var(--ep-primary-light-8);
+    }
+    .ep-tag--success { background: var(--ep-success-light); color: var(--ep-success-dark); border-color: #C2E7B0; }
+    .ep-tag--warning { background: var(--ep-warning-light); color: var(--ep-warning-dark); border-color: #F3D19E; }
+    .ep-tag--danger { background: var(--ep-danger-light); color: var(--ep-danger-dark); border-color: #FAB6B6; }
+    .ep-tag--info { background: var(--ep-info-light); color: var(--ep-text-regular); border-color: #D3D4D6; }
+
+    .ep-badge { background: var(--ep-danger); color: white; border-radius: var(--ep-radius-round); font-size: 11px; padding: 2px 6px; min-width: 18px; display: inline-flex; justify-content: center; }
+
+    .ep-progress {
+      width: 100%; height: 6px;
+      background: var(--ep-fill-dark);
+      border-radius: var(--ep-radius-round);
+      overflow: hidden;
+    }
+    .ep-progress::after {
+      content: ''; display: block;
+      height: 100%; width: 65%;
+      background: var(--ep-primary);
+      border-radius: var(--ep-radius-round);
+    }
+    .ep-skeleton {
+      height: 14px;
+      background: linear-gradient(90deg, var(--ep-fill), var(--ep-fill-dark), var(--ep-fill));
+      background-size: 200% 100%;
+      border-radius: var(--ep-radius);
+      animation: shimmer 1.5s infinite;
+    }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+    .ep-spinner {
+      width: 28px; height: 28px;
+      border: 2px solid var(--ep-fill-dark);
+      border-top-color: var(--ep-primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Navigation */
+    .ep-tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 2px solid var(--ep-border-lighter);
+      margin-bottom: var(--ep-space-3);
+    }
+    .ep-tab {
+      padding: var(--ep-space-3) var(--ep-space-5);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--ep-text-regular);
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      margin-bottom: -2px;
+    }
+    .ep-tab.active { color: var(--ep-primary); border-bottom-color: var(--ep-primary); }
+    .ep-tab:hover:not(.active) { color: var(--ep-primary); }
+
+    .ep-breadcrumb { display: flex; gap: 8px; align-items: center; font-size: 14px; color: var(--ep-text-regular); }
+    .ep-breadcrumb a { color: var(--ep-primary); text-decoration: none; }
+
+    .ep-pagination { display: flex; gap: 4px; align-items: center; }
+    .ep-pagination button {
+      min-width: 32px; height: 32px;
+      padding: 0 8px;
+      border-radius: var(--ep-radius);
+      border: 1px solid var(--ep-border);
+      background: var(--ep-bg);
+      color: var(--ep-text-regular);
+      cursor: pointer;
+      font-family: var(--ep-font);
+      font-size: 13px;
+    }
+    .ep-pagination button.active { background: var(--ep-primary); color: white; border-color: var(--ep-primary); }
+    .ep-pagination button:hover:not(.active) { color: var(--ep-primary); border-color: var(--ep-primary); }
+
+    .ep-stepper { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+    .ep-stepper .step { display: inline-flex; align-items: center; gap: 8px; }
+    .ep-stepper .num {
+      width: 24px; height: 24px; border-radius: 50%;
+      border: 2px solid var(--ep-border);
+      background: var(--ep-bg); color: var(--ep-text-secondary);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 600;
+    }
+    .ep-stepper .num.active { background: var(--ep-primary); color: white; border-color: var(--ep-primary); }
+    .ep-stepper .num.done { background: var(--ep-primary); color: white; border-color: var(--ep-primary); }
+    .ep-stepper .line { flex: 1; height: 2px; background: var(--ep-border-light); min-width: 24px; }
+
+    .ep-sidebar {
+      background: var(--ep-bg);
+      border: 1px solid var(--ep-border-lighter);
+      border-radius: var(--ep-radius);
+      padding: 8px;
+      width: 220px;
+    }
+    .ep-sidebar a {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 12px;
+      border-radius: var(--ep-radius);
+      color: var(--ep-text-regular);
+      text-decoration: none;
+      font-size: 14px;
+    }
+    .ep-sidebar a.active { background: var(--ep-primary-light-9); color: var(--ep-primary); border-right: 3px solid var(--ep-primary); }
+    .ep-sidebar a:hover:not(.active) { background: var(--ep-fill); }
+
+    .ep-topbar {
+      display: flex; align-items: center; gap: 16px;
+      padding: 0 16px;
+      height: 60px;
+      background: var(--ep-bg);
+      border: 1px solid var(--ep-border-lighter);
+      border-radius: var(--ep-radius);
+    }
+
+    .ep-menu {
+      background: var(--ep-bg);
+      border: 1px solid var(--ep-border-light);
+      border-radius: var(--ep-radius);
+      box-shadow: var(--ep-shadow-light);
+      padding: 6px 0;
+      width: 200px;
+    }
+    .ep-menu .item { padding: 8px 16px; font-size: 14px; cursor: pointer; color: var(--ep-text-regular); }
+    .ep-menu .item:hover { background: var(--ep-primary-light-9); color: var(--ep-primary); }
+
+    /* Data */
+    table.ep-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    table.ep-table th, table.ep-table td {
+      text-align: left;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--ep-border-lighter);
+    }
+    table.ep-table th { background: var(--ep-fill); font-weight: 600; color: var(--ep-text-primary); }
+    table.ep-table tr:hover td { background: var(--ep-fill-lighter); }
+
+    .ep-list { list-style: none; padding: 0; margin: 0; }
+    .ep-list li {
+      padding: 12px 16px;
+      display: flex; gap: 12px; align-items: center;
+      border-bottom: 1px solid var(--ep-border-lighter);
+    }
+    .ep-list li:last-child { border-bottom: 0; }
+
+    .ep-kv { display: grid; grid-template-columns: 140px 1fr; gap: 12px; font-size: 14px; }
+    .ep-kv dt { color: var(--ep-text-secondary); font-weight: 500; }
+
+    .ep-avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--ep-primary-light-7);
+      color: var(--ep-primary-dark-2);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-weight: 600;
+      font-size: 13px;
+    }
+    .ep-empty {
+      text-align: center;
+      padding: var(--ep-space-8) var(--ep-space-4);
+      color: var(--ep-text-secondary);
+    }
+    .ep-empty svg { width: 64px; height: 64px; opacity: 0.5; }
+
+    /* Layout */
+    .grid-demo {
+      display: grid;
+      grid-template-columns: repeat(24, 1fr);
+      gap: 8px;
+      background: var(--ep-fill);
+      padding: 12px;
+      border-radius: var(--ep-radius);
+    }
+    .grid-demo > div {
+      background: var(--ep-primary-light-7);
+      color: var(--ep-primary-dark-2);
+      padding: 10px;
+      border-radius: var(--ep-radius);
+      font-size: 12px;
+      font-weight: 500;
+      text-align: center;
+    }
+    .scale-row {
+      display: flex;
+      gap: var(--ep-space-3);
+      flex-wrap: wrap;
+      align-items: flex-end;
+      margin-bottom: var(--ep-space-4);
+    }
+    .scale-item { display: flex; flex-direction: column; gap: 6px; align-items: center; }
+    .scale-item .swatch { background: var(--ep-primary); }
+    .scale-item .lbl { font-size: 11px; font-family: var(--ep-mono); color: var(--ep-text-secondary); }
+    .shadow-demo {
+      width: 80px; height: 80px;
+      background: var(--ep-bg);
+      border-radius: var(--ep-radius);
+      display: inline-flex; align-items: center; justify-content: center;
+      margin: 0 16px 16px 0;
+      font-size: 11px; font-family: var(--ep-mono); color: var(--ep-text-regular);
+    }
+
+    /* Footer */
+    .ds-footer {
+      background: var(--ep-bg);
+      border-top: 1px solid var(--ep-border-light);
+      padding: var(--ep-space-6) var(--ep-space-8);
+      margin-top: var(--ep-space-8);
+      color: var(--ep-text-regular);
+    }
+    .ds-footer h3 { margin-top: 0; }
+    .ds-footer ul { padding-left: 20px; }
+    .ds-footer li { margin-bottom: 4px; word-break: break-all; font-size: 13px; }
+    .ds-footer a { color: var(--ep-primary); text-decoration: none; }
+    .license-note { font-size: 13px; color: var(--ep-text-secondary); margin-top: var(--ep-space-4); }
+    .meta-note { font-size: 12px; color: var(--ep-text-secondary); font-family: var(--ep-mono); margin-top: var(--ep-space-2); }
+
+    @media (max-width: 720px) {
+      .ds-header h1 { font-size: 30px; line-height: 38px; }
+      main { padding: var(--ep-space-4); }
+      section { padding: var(--ep-space-4); }
+      .type-row { grid-template-columns: 1fr; }
+      .color-grid { grid-template-columns: repeat(4, 1fr); }
+      .grid-demo { grid-template-columns: repeat(12, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <header class="ds-header">
+    <a href="index.html" class="back-link">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Catalog
+    </a>
+    <h1>Element Plus</h1>
+    <div class="meta">
+      <span class="badge kind-cl">component-library</span>
+      <span class="badge fidelity-documented">documented</span>
+      <span class="badge source-verified">source: verified</span>
+      <a href="https://element-plus.org" target="_blank" rel="noopener">Official ↗</a>
+    </div>
+    <p class="tagline">Vue 3 component library with the classic Element-style sky blue and balanced enterprise tokens.</p>
+  </header>
+
+  <nav class="toc" aria-label="Table of contents">
+    <ul>
+      <li><a href="#brand">Brand</a></li>
+      <li><a href="#color">Color</a></li>
+      <li><a href="#typography">Typography</a></li>
+      <li><a href="#iconography">Iconography</a></li>
+      <li><a href="#buttons">Buttons</a></li>
+      <li><a href="#form">Form</a></li>
+      <li><a href="#surfaces">Surfaces</a></li>
+      <li><a href="#feedback">Feedback</a></li>
+      <li><a href="#navigation">Navigation</a></li>
+      <li><a href="#data">Data</a></li>
+      <li><a href="#layout">Layout</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="brand" data-fidelity="documented">
+      <h2>
+        <span>Brand</span>
+        <span class="badge fidelity-documented">documented</span>
+      </h2>
+      <div class="brand-mark">Element Plus</div>
+      <p style="margin-top:24px;max-width:720px;font-size:14px;color:var(--ep-text-regular)">
+        Element Plus is the Vue 3 successor to Element UI — a mature enterprise component library with consistent token sets, a recognizable sky-blue primary, and pragmatic defaults tuned for desktop business applications.
+      </p>
+      <div class="pillars">
+        <div class="pillar">
+          <h4>Consistency</h4>
+          <p>Unified spacing, color, and shape tokens across 60+ components.</p>
+        </div>
+        <div class="pillar">
+          <h4>Feedback</h4>
+          <p>Every interaction provides clear visual response — hover, focus, active, disabled.</p>
+        </div>
+        <div class="pillar">
+          <h4>Efficiency</h4>
+          <p>Tuned for productivity-heavy desktop layouts with high information density.</p>
+        </div>
+        <div class="pillar">
+          <h4>Controllability</h4>
+          <p>Designers and developers can customize every token via SCSS or CSS variables.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="color" data-fidelity="documented">
+      <h2>
+        <span>Color</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://element-plus.org/en-US/component/color" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--ep-text-regular)">Element Plus uses a 7-step ramp around each brand color (-9, -8, -7, -5, -3 light tints, base, dark-2). Primary is the iconic Element sky blue.</p>
+
+      <h3>Primary ramp</h3>
+      <div class="color-grid">
+        <div class="color-cell" style="background:var(--ep-primary-light-9);color:#303133">light-9<br>#ECF5FF</div>
+        <div class="color-cell" style="background:var(--ep-primary-light-8);color:#303133">light-8<br>#D9ECFF</div>
+        <div class="color-cell" style="background:var(--ep-primary-light-7);color:#303133">light-7<br>#C6E2FF</div>
+        <div class="color-cell" style="background:var(--ep-primary-light-5);color:#303133">light-5<br>#A0CFFF</div>
+        <div class="color-cell" style="background:var(--ep-primary-light-3);color:white">light-3<br>#79BBFF</div>
+        <div class="color-cell" style="background:var(--ep-primary);color:white">primary<br>#409EFF</div>
+        <div class="color-cell" style="background:var(--ep-primary-dark-2);color:white">dark-2<br>#337ECC</div>
+      </div>
+
+      <h3>Neutral / text</h3>
+      <div class="color-grid">
+        <div class="color-cell" style="background:#FFFFFF;color:#303133;border:1px solid var(--ep-border)">bg<br>#FFFFFF</div>
+        <div class="color-cell" style="background:var(--ep-page-bg);color:#303133">page<br>#F2F3F5</div>
+        <div class="color-cell" style="background:var(--ep-fill);color:#303133">fill<br>#F5F7FA</div>
+        <div class="color-cell" style="background:var(--ep-border);color:#303133">border<br>#DCDFE6</div>
+        <div class="color-cell" style="background:var(--ep-text-disabled);color:white">disabled<br>#C0C4CC</div>
+        <div class="color-cell" style="background:var(--ep-text-secondary);color:white">secondary<br>#909399</div>
+        <div class="color-cell" style="background:var(--ep-text-primary);color:white">primary<br>#303133</div>
+      </div>
+
+      <h3>Semantic</h3>
+      <div class="semantic-grid">
+        <div class="sem-card" style="background:var(--ep-success-light);color:var(--ep-success-dark)">
+          <span class="label">Success</span><span class="hex">#67C23A</span>
+        </div>
+        <div class="sem-card" style="background:var(--ep-warning-light);color:var(--ep-warning-dark)">
+          <span class="label">Warning</span><span class="hex">#E6A23C</span>
+        </div>
+        <div class="sem-card" style="background:var(--ep-danger-light);color:var(--ep-danger-dark)">
+          <span class="label">Danger</span><span class="hex">#F56C6C</span>
+        </div>
+        <div class="sem-card" style="background:var(--ep-info-light);color:var(--ep-text-regular)">
+          <span class="label">Info</span><span class="hex">#909399</span>
+        </div>
+      </div>
+
+      <h3>Token roles</h3>
+      <div class="role-grid">
+        <div class="role-chip" style="background:var(--ep-primary);color:white">Primary <code>#409EFF</code></div>
+        <div class="role-chip" style="background:var(--ep-success);color:white">Success <code>#67C23A</code></div>
+        <div class="role-chip" style="background:var(--ep-warning);color:white">Warning <code>#E6A23C</code></div>
+        <div class="role-chip" style="background:var(--ep-danger);color:white">Danger <code>#F56C6C</code></div>
+        <div class="role-chip" style="background:var(--ep-bg);color:var(--ep-text-primary);border:1px solid var(--ep-border)">Bg <code>#FFFFFF</code></div>
+        <div class="role-chip" style="background:var(--ep-fill);color:var(--ep-text-primary)">Fill <code>#F5F7FA</code></div>
+        <div class="role-chip" style="background:var(--ep-border);color:var(--ep-text-primary)">Border <code>#DCDFE6</code></div>
+        <div class="role-chip" style="background:var(--ep-text-primary);color:white">Text Primary <code>#303133</code></div>
+      </div>
+    </section>
+
+    <section id="typography" data-fidelity="documented">
+      <h2>
+        <span>Typography</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://element-plus.org/en-US/component/typography" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--ep-text-regular)">System font stack. Element Plus's heading scale runs h1-h6 with fixed sizes, paired with three body sizes.</p>
+
+      <div class="type-row"><div class="label">H1 · 32/44 · 600</div><div class="h1-sample">Component design</div></div>
+      <div class="type-row"><div class="label">H2 · 26/36 · 600</div><div class="h2-sample">Heading large</div></div>
+      <div class="type-row"><div class="label">H3 · 22/30 · 600</div><div class="h3-sample">Section title</div></div>
+      <div class="type-row"><div class="label">H4 · 18/26 · 600</div><div class="h4-sample">Card heading</div></div>
+      <div class="type-row"><div class="label">H5 · 16/24 · 600</div><div class="h5-sample">Subsection</div></div>
+      <div class="type-row"><div class="label">H6 · 14/22 · 600</div><div class="h6-sample">Inline label</div></div>
+      <div class="type-row"><div class="label">Body Base · 14/22</div><div class="body-base">Element Plus pairs the system stack with disciplined spacing. The default body is 14px, sized for desktop business interfaces with high information density.</div></div>
+      <div class="type-row"><div class="label">Body Small · 13/20</div><div class="body-small">Helper text and dense tables use the smaller variant.</div></div>
+      <div class="type-row"><div class="label">Body Tiny · 12/18</div><div class="body-tiny">Captions and metadata sit at 12px in the secondary text color.</div></div>
+      <div class="type-row"><div class="label">Mono</div><div class="mono-sample">--el-color-primary: #409EFF;</div></div>
+    </section>
+
+    <section id="iconography" data-fidelity="documented">
+      <h2>
+        <span>Iconography</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://element-plus.org/en-US/component/icon" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--ep-text-regular)">Element Plus Icons ship as Vue components. Below: stroke-style 22px icons approximating the open-source set.</p>
+      <div class="icon-grid">
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12L12 3l9 9"/><path d="M5 10v10h14V10"/></svg><span>house</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><span>search</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg><span>user</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.5-2.5l2-1.5-2-3.5-2.5 1A7 7 0 0 0 13 4l-.5-2.5h-4L8 4a7 7 0 0 0-3 1.5l-2.5-1-2 3.5 2 1.5A7 7 0 0 0 5 12c0 .9.2 1.7.5 2.5l-2 1.5 2 3.5 2.5-1c.9.7 2 1.2 3 1.5l.5 2.5h4l.5-2.5c1-.3 2.1-.8 3-1.5l2.5 1 2-3.5-2-1.5c.3-.8.5-1.6.5-2.5z"/></svg><span>setting</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>check</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg><span>close</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg><span>plus</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg><span>minus</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6l9 13 9-13z"/></svg><span>caret</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s-8-7-8-13a8 8 0 0 1 16 0c0 6-8 13-8 13z"/><circle cx="12" cy="9" r="3"/></svg><span>location</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l9 6 9-6"/><rect x="3" y="5" width="18" height="14" rx="2"/></svg><span>message</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg><span>menu</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>clock</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg><span>warning</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 12l2 2 4-4"/></svg><span>circle-check</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20l-7-7 7-7M5 13h14"/></svg><span>back</span></div>
+      </div>
+    </section>
+
+    <section id="buttons" data-fidelity="documented">
+      <h2>
+        <span>Buttons</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://element-plus.org/en-US/component/button" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--ep-text-regular)">Element Plus offers Default, Primary, Success, Warning, Danger, Info, Plain, Round, Circle, and Text variants — across small/default/large sizes.</p>
+
+      <h3>Variants — semantic</h3>
+      <div class="button-row">
+        <button class="ep-btn">Default</button>
+        <button class="ep-btn ep-btn--primary">Primary</button>
+        <button class="ep-btn ep-btn--success">Success</button>
+        <button class="ep-btn ep-btn--warning">Warning</button>
+        <button class="ep-btn ep-btn--danger">Danger</button>
+        <button class="ep-btn ep-btn--info">Info</button>
+      </div>
+
+      <h3>Variants — style</h3>
+      <div class="button-row">
+        <button class="ep-btn ep-btn--plain">Plain</button>
+        <button class="ep-btn ep-btn--primary ep-btn--round">Round</button>
+        <button class="ep-btn ep-btn--text">Text</button>
+        <button class="ep-btn ep-btn--primary ep-btn--circle" aria-label="add">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+      </div>
+
+      <h3>Sizes</h3>
+      <div class="button-row">
+        <button class="ep-btn ep-btn--primary ep-btn--sm">Small</button>
+        <button class="ep-btn ep-btn--primary">Default</button>
+        <button class="ep-btn ep-btn--primary ep-btn--lg">Large</button>
+      </div>
+
+      <h3>States</h3>
+      <div class="button-row">
+        <button class="ep-btn ep-btn--primary">Enabled</button>
+        <button class="ep-btn ep-btn--primary" style="background:var(--ep-primary-light-3);border-color:var(--ep-primary-light-3)">Hover</button>
+        <button class="ep-btn ep-btn--primary" style="outline:2px solid var(--ep-primary-light-5);outline-offset:1px">Focus</button>
+        <button class="ep-btn ep-btn--primary" disabled>Disabled</button>
+      </div>
+    </section>
+
+    <section id="form" data-fidelity="documented">
+      <h2>
+        <span>Form</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://element-plus.org/en-US/component/input" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--ep-text-regular)">Standard 32px height inputs with focus ring in primary blue. Labels sit above the field by default in vertical layouts.</p>
+
+      <h3>Inputs</h3>
+      <div class="form-grid">
+        <div class="ep-field">
+          <label class="ep-label" for="ef1">Project name</label>
+          <input class="ep-input" id="ef1" type="text" value="Element Plus">
+          <span class="ep-helper">Default text input</span>
+        </div>
+        <div class="ep-field">
+          <label class="ep-label" for="ef2">Email</label>
+          <input class="ep-input" id="ef2" type="email" placeholder="you@example.com">
+          <span class="ep-helper">Required</span>
+        </div>
+        <div class="ep-field">
+          <label class="ep-label" for="ef3">Description</label>
+          <textarea class="ep-input" id="ef3" placeholder="Multiline content..."></textarea>
+        </div>
+        <div class="ep-field">
+          <label class="ep-label" for="ef4">Type</label>
+          <select class="ep-input" id="ef4">
+            <option>Vue 3</option><option>React</option><option>Vanilla</option>
+          </select>
+        </div>
+        <div class="ep-field">
+          <label class="ep-label" for="ef5">Email</label>
+          <input class="ep-input" id="ef5" type="text" value="invalid@" style="border-color:var(--ep-danger)">
+          <span class="ep-helper ep-error">Please enter a valid email address</span>
+        </div>
+        <div class="ep-field">
+          <label class="ep-label" for="ef6">Search</label>
+          <input class="ep-input" id="ef6" type="search" placeholder="Search components...">
+        </div>
+      </div>
+
+      <h3>Selection controls</h3>
+      <div class="button-row">
+        <label class="ep-checkbox"><input type="checkbox" checked>Subscribe</label>
+        <label class="ep-checkbox"><input type="checkbox">Marketing</label>
+        <label class="ep-radio"><input type="radio" name="er1" checked>Light</label>
+        <label class="ep-radio"><input type="radio" name="er1">Dark</label>
+        <label class="ep-switch"><input type="checkbox" checked><span class="slider"></span></label>
+        <label class="ep-switch"><input type="checkbox"><span class="slider"></span></label>
+      </div>
+
+      <h3>Slider &amp; file</h3>
+      <div style="max-width:400px;display:flex;flex-direction:column;gap:12px">
+        <input type="range" class="ep-slider" min="0" max="100" value="65">
+        <input type="file" class="ep-input" style="height:auto;padding:6px 8px">
+      </div>
+    </section>
+
+    <section id="surfaces" data-fidelity="documented">
+      <h2>
+        <span>Surfaces</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://element-plus.org/en-US/component/card" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--ep-text-regular)">Cards have an optional header and a 1px border. Shadow can be set always / hover / never.</p>
+
+      <div class="surface-grid">
+        <div class="ep-card">
+          <div class="card-header">Card title</div>
+          <div class="card-body">Default Element Plus card with a 1px border and no shadow.</div>
+        </div>
+        <div class="ep-card ep-card--shadow">
+          <div class="card-header">Shadow card</div>
+          <div class="card-body">Shadow="always" — sits above the surface for emphasis.</div>
+        </div>
+        <div class="ep-card">
+          <div class="media"></div>
+          <div class="card-body"><strong>Media card</strong><div style="color:var(--ep-text-secondary);margin-top:4px">Top media + body content.</div></div>
+        </div>
+        <div class="ep-stat">
+          <div class="num">2,847</div>
+          <div class="lbl">Active sessions</div>
+        </div>
+      </div>
+
+      <h3>Modal (Dialog)</h3>
+      <div class="ep-modal">
+        <h4 style="margin-top:0;font-size:16px">Reset preferences?</h4>
+        <p style="font-size:13px;color:var(--ep-text-regular)">This will revert color and shape tokens to baseline. Saved themes are not affected.</p>
+        <div class="button-row" style="justify-content:flex-end;margin:0">
+          <button class="ep-btn">Cancel</button>
+          <button class="ep-btn ep-btn--primary">Confirm</button>
+        </div>
+      </div>
+
+      <h3>Popover &amp; menu</h3>
+      <div style="display:flex;gap:24px;flex-wrap:wrap">
+        <div class="ep-menu">
+          <div class="item">Edit</div>
+          <div class="item">Duplicate</div>
+          <div class="item">Archive</div>
+          <div class="item" style="color:var(--ep-danger)">Delete</div>
+        </div>
+        <div class="ep-sidebar">
+          <a href="#" class="active">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12L12 3l9 9"/><path d="M5 10v10h14V10"/></svg>
+            Dashboard
+          </a>
+          <a href="#">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            Search
+          </a>
+          <a href="#">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.5-2.5l2-1.5-2-3.5-2.5 1A7 7 0 0 0 13 4l-.5-2.5h-4L8 4a7 7 0 0 0-3 1.5l-2.5-1-2 3.5 2 1.5A7 7 0 0 0 5 12c0 .9.2 1.7.5 2.5l-2 1.5 2 3.5 2.5-1c.9.7 2 1.2 3 1.5l.5 2.5h4l.5-2.5c1-.3 2.1-.8 3-1.5l2.5 1 2-3.5-2-1.5c.3-.8.5-1.6.5-2.5z"/></svg>
+            Settings
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section id="feedback" data-fidelity="documented">
+      <h2>
+        <span>Feedback</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://element-plus.org/en-US/component/alert" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+
+      <h3>Alerts</h3>
+      <div class="ep-alert ep-alert--info"><strong>Info ·</strong> System-stack typography keeps install footprint zero.</div>
+      <div class="ep-alert ep-alert--success"><strong>Success ·</strong> Theme variables synced.</div>
+      <div class="ep-alert ep-alert--warning"><strong>Warning ·</strong> Custom seed may not pass WCAG AA at all tones.</div>
+      <div class="ep-alert ep-alert--danger"><strong>Danger ·</strong> Token resolution failed for color-primary.</div>
+
+      <h3>Message (Toast)</h3>
+      <div class="ep-message">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+        Saved successfully
+      </div>
+
+      <h3>Banner / Notification</h3>
+      <div class="ep-banner" style="margin-top:12px">
+        <span><strong>Element Plus 2.x</strong> — Vue 3 composition API and SSR ready.</span>
+        <button class="ep-btn ep-btn--text" style="padding:4px 8px;height:auto">Dismiss</button>
+      </div>
+
+      <h3>Tags &amp; badges</h3>
+      <div class="ep-tag-row">
+        <span class="ep-tag">Default</span>
+        <span class="ep-tag ep-tag--success">Success</span>
+        <span class="ep-tag ep-tag--warning">Warning</span>
+        <span class="ep-tag ep-tag--danger">Danger</span>
+        <span class="ep-tag ep-tag--info">Info</span>
+        <span class="ep-badge">3</span>
+        <span class="ep-badge" style="background:var(--ep-primary)">12</span>
+      </div>
+
+      <h3>Progress &amp; loading</h3>
+      <div style="display:flex;flex-direction:column;gap:12px;max-width:480px">
+        <div class="ep-progress"></div>
+        <div class="ep-skeleton" style="width:80%"></div>
+        <div class="ep-skeleton" style="width:60%"></div>
+        <div class="ep-spinner"></div>
+      </div>
+    </section>
+
+    <section id="navigation" data-fidelity="documented">
+      <h2>
+        <span>Navigation</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://element-plus.org/en-US/component/tabs" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+
+      <h3>Tabs</h3>
+      <div class="ep-tabs">
+        <div class="ep-tab active">Overview</div>
+        <div class="ep-tab">Tokens</div>
+        <div class="ep-tab">Components</div>
+        <div class="ep-tab">Foundations</div>
+      </div>
+
+      <h3>Breadcrumb</h3>
+      <div class="ep-breadcrumb">
+        <a href="#">Home</a><span>/</span>
+        <a href="#">Components</a><span>/</span>
+        <span>Button</span>
+      </div>
+
+      <h3>Pagination</h3>
+      <div class="ep-pagination">
+        <button>‹</button>
+        <button class="active">1</button>
+        <button>2</button>
+        <button>3</button>
+        <button>4</button>
+        <button>5</button>
+        <button>›</button>
+      </div>
+
+      <h3>Steps</h3>
+      <div class="ep-stepper">
+        <div class="step"><span class="num done">1</span> Theme</div>
+        <span class="line"></span>
+        <div class="step"><span class="num active">2</span> Type</div>
+        <span class="line"></span>
+        <div class="step"><span class="num">3</span> Shape</div>
+        <span class="line"></span>
+        <div class="step"><span class="num">4</span> Done</div>
+      </div>
+
+      <h3>Top bar</h3>
+      <div class="ep-topbar">
+        <button class="ep-btn ep-btn--circle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+        <strong style="flex:1">Element Plus</strong>
+        <button class="ep-btn ep-btn--circle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></button>
+        <div class="ep-avatar">MK</div>
+      </div>
+    </section>
+
+    <section id="data" data-fidelity="documented">
+      <h2>
+        <span>Data</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://element-plus.org/en-US/component/table" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+
+      <h3>Table</h3>
+      <table class="ep-table">
+        <thead>
+          <tr><th>Token</th><th>Value</th><th>Role</th><th>State</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>--el-color-primary</code></td><td>#409EFF</td><td>Primary</td><td><span class="ep-tag ep-tag--success">Active</span></td></tr>
+          <tr><td><code>--el-color-success</code></td><td>#67C23A</td><td>Success</td><td><span class="ep-tag ep-tag--success">Active</span></td></tr>
+          <tr><td><code>--el-color-warning</code></td><td>#E6A23C</td><td>Warning</td><td><span class="ep-tag ep-tag--warning">Test</span></td></tr>
+          <tr><td><code>--el-color-danger</code></td><td>#F56C6C</td><td>Danger</td><td><span class="ep-tag ep-tag--info">Idle</span></td></tr>
+        </tbody>
+      </table>
+
+      <h3>List</h3>
+      <ul class="ep-list">
+        <li><div class="ep-avatar">A</div><div><strong>Avery Tan</strong><div style="font-size:12px;color:var(--ep-text-secondary)">Updated theme · 2m ago</div></div></li>
+        <li><div class="ep-avatar" style="background:var(--ep-success-light);color:var(--ep-success-dark)">B</div><div><strong>Brett Yu</strong><div style="font-size:12px;color:var(--ep-text-secondary)">Imported tokens · 14m ago</div></div></li>
+        <li><div class="ep-avatar" style="background:var(--ep-warning-light);color:var(--ep-warning-dark)">C</div><div><strong>Cleo Park</strong><div style="font-size:12px;color:var(--ep-text-secondary)">Created palette · 1h ago</div></div></li>
+      </ul>
+
+      <h3>Key – value</h3>
+      <dl class="ep-kv">
+        <dt>Vue</dt><dd>3.x</dd>
+        <dt>Theme</dt><dd>Light</dd>
+        <dt>Density</dt><dd>Default · 32px</dd>
+        <dt>Built</dt><dd>2026-05-05</dd>
+      </dl>
+
+      <h3>Empty state</h3>
+      <div class="ep-empty">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><circle cx="9" cy="10" r="0.5" fill="currentColor"/><circle cx="15" cy="10" r="0.5" fill="currentColor"/></svg>
+        <h4 style="margin:8px 0 4px">No data</h4>
+        <p style="font-size:13px;margin:0">Add a record to get started.</p>
+      </div>
+    </section>
+
+    <section id="layout" data-fidelity="documented">
+      <h2>
+        <span>Layout</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://element-plus.org/en-US/component/layout" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--ep-text-regular)">Element Plus uses a 24-column grid via Row/Col with span. Default gutter is 0; common gutter 8/16/24.</p>
+
+      <h3>24-column grid</h3>
+      <div class="grid-demo">
+        <div style="grid-column:span 24">span 24</div>
+        <div style="grid-column:span 12">span 12</div>
+        <div style="grid-column:span 12">span 12</div>
+        <div style="grid-column:span 8">8</div>
+        <div style="grid-column:span 8">8</div>
+        <div style="grid-column:span 8">8</div>
+        <div style="grid-column:span 6">6</div>
+        <div style="grid-column:span 6">6</div>
+        <div style="grid-column:span 6">6</div>
+        <div style="grid-column:span 6">6</div>
+      </div>
+
+      <h3>Spacing scale</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div class="swatch" style="width:4px;height:32px"></div><span class="lbl">4</span></div>
+        <div class="scale-item"><div class="swatch" style="width:8px;height:32px"></div><span class="lbl">8</span></div>
+        <div class="scale-item"><div class="swatch" style="width:12px;height:32px"></div><span class="lbl">12</span></div>
+        <div class="scale-item"><div class="swatch" style="width:16px;height:32px"></div><span class="lbl">16</span></div>
+        <div class="scale-item"><div class="swatch" style="width:20px;height:32px"></div><span class="lbl">20</span></div>
+        <div class="scale-item"><div class="swatch" style="width:24px;height:32px"></div><span class="lbl">24</span></div>
+        <div class="scale-item"><div class="swatch" style="width:32px;height:32px"></div><span class="lbl">32</span></div>
+        <div class="scale-item"><div class="swatch" style="width:40px;height:32px"></div><span class="lbl">40</span></div>
+      </div>
+
+      <h3>Radius scale</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:0;background:var(--ep-primary-light-7)"></div><span class="lbl">none</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:2px;background:var(--ep-primary-light-7)"></div><span class="lbl">sm 2</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:4px;background:var(--ep-primary-light-7)"></div><span class="lbl">base 4</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:8px;background:var(--ep-primary-light-7)"></div><span class="lbl">md 8</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:12px;background:var(--ep-primary-light-7)"></div><span class="lbl">lg 12</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:50%;background:var(--ep-primary-light-7)"></div><span class="lbl">round</span></div>
+      </div>
+
+      <h3>Shadows</h3>
+      <div>
+        <div class="shadow-demo" style="box-shadow:none;border:1px solid var(--ep-border-light)">none</div>
+        <div class="shadow-demo" style="box-shadow:var(--ep-shadow-light)">light</div>
+        <div class="shadow-demo" style="box-shadow:var(--ep-shadow)">base</div>
+        <div class="shadow-demo" style="box-shadow:var(--ep-shadow-dark)">dark</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="ds-footer">
+    <h3>Sources</h3>
+    <ul>
+      <li><a href="https://element-plus.org" target="_blank" rel="noopener">https://element-plus.org</a></li>
+      <li><a href="https://element-plus.org/en-US/component/color" target="_blank" rel="noopener">https://element-plus.org/en-US/component/color</a></li>
+      <li><a href="https://element-plus.org/en-US/component/typography" target="_blank" rel="noopener">https://element-plus.org/en-US/component/typography</a></li>
+      <li><a href="https://element-plus.org/en-US/component/icon" target="_blank" rel="noopener">https://element-plus.org/en-US/component/icon</a></li>
+      <li><a href="https://element-plus.org/en-US/component/button" target="_blank" rel="noopener">https://element-plus.org/en-US/component/button</a></li>
+      <li><a href="https://element-plus.org/en-US/component/input" target="_blank" rel="noopener">https://element-plus.org/en-US/component/input</a></li>
+      <li><a href="https://element-plus.org/en-US/component/card" target="_blank" rel="noopener">https://element-plus.org/en-US/component/card</a></li>
+      <li><a href="https://element-plus.org/en-US/component/alert" target="_blank" rel="noopener">https://element-plus.org/en-US/component/alert</a></li>
+      <li><a href="https://element-plus.org/en-US/component/tabs" target="_blank" rel="noopener">https://element-plus.org/en-US/component/tabs</a></li>
+      <li><a href="https://element-plus.org/en-US/component/table" target="_blank" rel="noopener">https://element-plus.org/en-US/component/table</a></li>
+      <li><a href="https://element-plus.org/en-US/component/layout" target="_blank" rel="noopener">https://element-plus.org/en-US/component/layout</a></li>
+    </ul>
+    <p class="license-note">This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Element Plus Team. Element Plus and related trademarks belong to Element Plus Team. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</p>
+    <p class="meta-note">Reproduction date: 2026-05-05 · sourceStatus: verified · fidelity: documented</p>
+  </footer>
+</body>
+</html>

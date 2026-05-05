@@ -1,0 +1,1570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Geist (Vercel) — Design System Reference</title>
+  <script id="ds-meta" type="application/json">
+{"id":"29-geist-vercel","fileSlug":"29-geist-vercel","schemaVersion":"1"}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Geist core */
+      --gs-black: #000000;
+      --gs-white: #FFFFFF;
+
+      /* Geist gray scale */
+      --gs-gray-1: #FAFAFA;
+      --gs-gray-2: #EAEAEA;
+      --gs-gray-3: #999999;
+      --gs-gray-4: #888888;
+      --gs-gray-5: #666666;
+      --gs-gray-6: #444444;
+      --gs-gray-7: #333333;
+      --gs-gray-8: #222222;
+      --gs-gray-9: #111111;
+      --gs-gray-100: #F5F5F5;
+      --gs-gray-200: #E5E5E5;
+      --gs-gray-700: #2A2A2A;
+
+      /* Vercel accents */
+      --gs-blue: #0070F3;
+      --gs-blue-dark: #0761D1;
+      --gs-pink: #FF0080;
+      --gs-cyan: #50E3C2;
+      --gs-violet: #7928CA;
+      --gs-amber: #F5A623;
+
+      /* Semantic */
+      --gs-success: #0070F3;
+      --gs-error: #FF0000;
+      --gs-warning: #F5A623;
+
+      /* Type */
+      --gs-font: 'Geist', 'Geist Sans', Inter, -apple-system, system-ui, sans-serif;
+      --gs-mono: 'Geist Mono', ui-monospace, 'SF Mono', monospace;
+
+      /* Radii */
+      --gs-r-2: 2px;
+      --gs-r-4: 4px;
+      --gs-r-5: 5px;
+      --gs-r-6: 6px;
+      --gs-r-8: 8px;
+      --gs-r-12: 12px;
+      --gs-r-full: 999px;
+
+      /* Spacing 4px scale */
+      --gs-1: 4px;
+      --gs-2: 8px;
+      --gs-3: 12px;
+      --gs-4: 16px;
+      --gs-5: 20px;
+      --gs-6: 24px;
+      --gs-7: 32px;
+      --gs-8: 40px;
+      --gs-9: 48px;
+      --gs-10: 64px;
+
+      /* Shadows (subtle) */
+      --gs-shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+      --gs-shadow-md: 0 4px 8px rgba(0,0,0,0.04), 0 0 0 1px var(--gs-gray-2);
+      --gs-shadow-lg: 0 12px 32px rgba(0,0,0,0.10), 0 0 0 1px var(--gs-gray-2);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: var(--gs-font);
+      background: var(--gs-white);
+      color: var(--gs-black);
+      line-height: 1.5;
+      font-size: 14px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      letter-spacing: -0.01em;
+    }
+
+    code, kbd, pre { font-family: var(--gs-mono); font-size: 13px; }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* Header */
+    .ds-header {
+      background: var(--gs-white);
+      padding: var(--gs-9) var(--gs-7) var(--gs-7);
+      border-bottom: 1px solid var(--gs-gray-2);
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--gs-gray-4);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      transition: color 0.12s;
+    }
+    .back-link:hover { color: var(--gs-black); }
+
+    .ds-header h1 {
+      font-size: 64px;
+      line-height: 1.0;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      margin: var(--gs-6) 0 var(--gs-4);
+      color: var(--gs-black);
+    }
+
+    .ds-header .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+      margin-bottom: var(--gs-3);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: var(--gs-r-full);
+      font-size: 11.5px;
+      font-weight: 500;
+      letter-spacing: 0;
+      border: 1px solid var(--gs-gray-2);
+      background: var(--gs-white);
+      color: var(--gs-gray-5);
+      font-family: var(--gs-mono);
+    }
+    .badge.kind-ds { background: var(--gs-black); color: var(--gs-white); border-color: transparent; }
+    .badge.fidelity-documented { background: rgba(0,112,243,0.08); color: var(--gs-blue); border-color: rgba(0,112,243,0.18); }
+    .badge.fidelity-approximated { background: rgba(245,166,35,0.10); color: #B47700; border-color: rgba(245,166,35,0.25); }
+    .badge.fidelity-inspired { background: rgba(121,40,202,0.08); color: var(--gs-violet); border-color: rgba(121,40,202,0.18); }
+    .badge.source-verified { background: rgba(0,112,243,0.08); color: var(--gs-blue); border-color: rgba(0,112,243,0.18); }
+
+    .official-link {
+      color: var(--gs-black);
+      font-weight: 500;
+      padding: 4px 10px;
+      border: 1px solid var(--gs-gray-2);
+      border-radius: var(--gs-r-full);
+      font-size: 12.5px;
+      background: var(--gs-white);
+      transition: background 0.12s;
+    }
+    .official-link:hover { background: var(--gs-gray-1); }
+
+    .tagline {
+      font-size: 22px;
+      line-height: 1.4;
+      max-width: 720px;
+      margin: var(--gs-5) 0 0;
+      color: var(--gs-gray-5);
+      letter-spacing: -0.015em;
+    }
+
+    /* TOC */
+    .toc {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255,255,255,0.85);
+      border-bottom: 1px solid var(--gs-gray-2);
+      backdrop-filter: blur(12px);
+    }
+    .toc ul {
+      list-style: none;
+      margin: 0;
+      padding: var(--gs-3) var(--gs-7);
+      display: flex;
+      gap: 4px;
+      overflow-x: auto;
+      max-width: 100%;
+    }
+    .toc a {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: var(--gs-r-full);
+      color: var(--gs-gray-4);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      white-space: nowrap;
+      transition: color 0.12s, background 0.12s;
+    }
+    .toc a:hover { background: var(--gs-gray-1); color: var(--gs-black); }
+
+    /* Main */
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: var(--gs-7);
+    }
+
+    section {
+      background: var(--gs-white);
+      border: 1px solid var(--gs-gray-2);
+      border-radius: var(--gs-r-12);
+      padding: var(--gs-7);
+      margin-bottom: var(--gs-5);
+    }
+
+    section h2 {
+      display: flex;
+      align-items: center;
+      gap: var(--gs-3);
+      flex-wrap: wrap;
+      font-size: 32px;
+      line-height: 1.1;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      margin: 0 0 var(--gs-5);
+      color: var(--gs-black);
+    }
+
+    .source-link {
+      font-size: 13px;
+      color: var(--gs-blue);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .source-link:hover { text-decoration: underline; }
+
+    h3 {
+      font-size: 18px;
+      line-height: 1.3;
+      font-weight: 600;
+      letter-spacing: -0.015em;
+      margin: var(--gs-6) 0 var(--gs-3);
+      color: var(--gs-black);
+    }
+
+    h4 {
+      font-size: 14px;
+      line-height: 1.3;
+      font-weight: 600;
+      letter-spacing: -0.005em;
+      margin: var(--gs-4) 0 var(--gs-2);
+      color: var(--gs-black);
+    }
+
+    p { margin: 0 0 var(--gs-3); color: var(--gs-gray-5); }
+
+    /* Brand */
+    #brand .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--gs-3);
+      padding: 16px 24px;
+      background: var(--gs-black);
+      border-radius: var(--gs-r-12);
+      color: var(--gs-white);
+      font-size: 24px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+    #brand .brand-mark svg { width: 22px; height: 22px; }
+    #brand .pillars {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--gs-3);
+      margin-top: var(--gs-6);
+    }
+    #brand .pillar {
+      padding: var(--gs-5);
+      background: var(--gs-white);
+      border: 1px solid var(--gs-gray-2);
+      border-radius: var(--gs-r-8);
+    }
+    #brand .pillar h4 { color: var(--gs-black); margin-top: 0; }
+    #brand .pillar p { font-size: 13px; margin: 0; color: var(--gs-gray-5); }
+
+    /* Color */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(11, 1fr);
+      gap: 2px;
+      margin-bottom: var(--gs-3);
+    }
+    .color-cell {
+      aspect-ratio: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 6px;
+      font-size: 10px;
+      font-family: var(--gs-mono);
+    }
+    .color-cell:first-child { border-radius: var(--gs-r-6) 0 0 var(--gs-r-6); }
+    .color-cell:last-child { border-radius: 0 var(--gs-r-6) var(--gs-r-6) 0; }
+
+    .swatch-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px,1fr));
+      gap: var(--gs-2);
+    }
+    .swatch-card {
+      border-radius: var(--gs-r-8);
+      border: 1px solid var(--gs-gray-2);
+      overflow: hidden;
+      background: var(--gs-white);
+    }
+    .swatch-card .fill { height: 80px; }
+    .swatch-card .info { padding: 10px 12px; }
+    .swatch-card .info .name { font-size: 12.5px; font-weight: 500; }
+    .swatch-card .info .hex { font-size: 11.5px; font-family: var(--gs-mono); color: var(--gs-gray-4); margin-top: 2px; }
+
+    .semantic-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
+      gap: var(--gs-2);
+    }
+    .sem-card {
+      padding: var(--gs-4);
+      border-radius: var(--gs-r-8);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      border: 1px solid var(--gs-gray-2);
+    }
+    .sem-card .label { font-size: 13px; font-weight: 600; }
+    .sem-card .hex { font-family: var(--gs-mono); font-size: 11.5px; opacity: 0.85; }
+
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--gs-2);
+      margin-bottom: var(--gs-3);
+    }
+    .role-chip {
+      padding: 10px var(--gs-3);
+      border-radius: var(--gs-r-6);
+      font-size: 12.5px;
+      font-weight: 500;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid var(--gs-gray-2);
+    }
+    .role-chip code { font-size: 11px; opacity: 0.75; font-family: var(--gs-mono); }
+
+    /* Typography */
+    .type-row {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: var(--gs-4);
+      padding: var(--gs-3) 0;
+      border-bottom: 1px solid var(--gs-gray-2);
+      align-items: baseline;
+    }
+    .type-row:last-child { border-bottom: 0; }
+    .type-row .label {
+      font-family: var(--gs-mono);
+      font-size: 11.5px;
+      color: var(--gs-gray-4);
+    }
+    .display-l { font-size: 72px; line-height: 1.0; font-weight: 700; letter-spacing: -0.045em; }
+    .display-m { font-size: 56px; line-height: 1.0; font-weight: 700; letter-spacing: -0.04em; }
+    .display-s { font-size: 40px; line-height: 1.05; font-weight: 700; letter-spacing: -0.03em; }
+    .heading-l { font-size: 32px; line-height: 1.15; font-weight: 600; letter-spacing: -0.025em; }
+    .heading-m { font-size: 24px; line-height: 1.2; font-weight: 600; letter-spacing: -0.02em; }
+    .heading-s { font-size: 20px; line-height: 1.3; font-weight: 600; letter-spacing: -0.015em; }
+    .title-l { font-size: 16px; line-height: 1.4; font-weight: 600; }
+    .title-m { font-size: 14px; line-height: 1.4; font-weight: 500; }
+    .body-l { font-size: 16px; line-height: 1.6; color: var(--gs-gray-5); }
+    .body-m { font-size: 14px; line-height: 1.6; color: var(--gs-gray-5); }
+    .body-s { font-size: 12.5px; line-height: 1.5; color: var(--gs-gray-4); }
+    .label-l { font-size: 12px; line-height: 1.4; font-weight: 500; letter-spacing: 0.02em; }
+    .label-m { font-size: 11px; line-height: 1.4; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gs-gray-4); }
+    .mono-sample { font-family: var(--gs-mono); font-size: 14px; color: var(--gs-gray-7); }
+
+    /* Iconography */
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(80px,1fr));
+      gap: 6px;
+    }
+    .icon-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: var(--gs-3);
+      background: var(--gs-white);
+      border: 1px solid var(--gs-gray-2);
+      border-radius: var(--gs-r-6);
+      transition: background 0.12s, border-color 0.12s;
+    }
+    .icon-cell:hover { background: var(--gs-gray-1); border-color: var(--gs-gray-200); }
+    .icon-cell svg { width: 20px; height: 20px; stroke: var(--gs-black); }
+    .icon-cell span { font-size: 10.5px; color: var(--gs-gray-4); font-family: var(--gs-mono); }
+
+    /* Buttons */
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--gs-2);
+      align-items: center;
+      margin-bottom: var(--gs-3);
+    }
+
+    .gs-btn {
+      font-family: var(--gs-font);
+      font-size: 13.5px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      padding: 0 14px;
+      border-radius: var(--gs-r-6);
+      border: 1px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      height: 32px;
+      transition: background 0.12s, color 0.12s, border-color 0.12s, opacity 0.12s;
+    }
+    .gs-btn--primary {
+      background: var(--gs-black);
+      color: var(--gs-white);
+      border-color: var(--gs-black);
+    }
+    .gs-btn--primary:hover { background: var(--gs-gray-7); border-color: var(--gs-gray-7); }
+    .gs-btn--secondary {
+      background: var(--gs-white);
+      color: var(--gs-black);
+      border-color: var(--gs-gray-2);
+    }
+    .gs-btn--secondary:hover { background: var(--gs-gray-1); border-color: var(--gs-gray-200); }
+    .gs-btn--tertiary {
+      background: transparent;
+      color: var(--gs-gray-5);
+      border-color: transparent;
+    }
+    .gs-btn--tertiary:hover { background: var(--gs-gray-1); color: var(--gs-black); }
+    .gs-btn--blue {
+      background: var(--gs-blue);
+      color: var(--gs-white);
+      border-color: var(--gs-blue);
+    }
+    .gs-btn--blue:hover { background: var(--gs-blue-dark); border-color: var(--gs-blue-dark); }
+    .gs-btn--danger {
+      background: var(--gs-error);
+      color: var(--gs-white);
+      border-color: var(--gs-error);
+    }
+    .gs-btn--danger:hover { opacity: 0.92; }
+    .gs-btn--icon { width: 32px; height: 32px; padding: 0; justify-content: center; }
+    .gs-btn--sm { height: 24px; font-size: 12px; padding: 0 10px; }
+    .gs-btn--lg { height: 40px; font-size: 14px; padding: 0 18px; }
+    .gs-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+    .gs-btn:focus-visible { outline: 2px solid var(--gs-blue); outline-offset: 2px; }
+    .gs-btn .arrow { font-size: 14px; line-height: 1; }
+
+    /* Form */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+      gap: var(--gs-4);
+    }
+    .gs-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .gs-field label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--gs-black);
+    }
+    .gs-input, .gs-textarea, .gs-select {
+      background: var(--gs-white);
+      border: 1px solid var(--gs-gray-2);
+      border-radius: var(--gs-r-5);
+      padding: 8px 12px;
+      font-family: var(--gs-font);
+      font-size: 14px;
+      color: var(--gs-black);
+      outline: none;
+      width: 100%;
+      transition: border-color 0.12s, box-shadow 0.12s;
+      height: 36px;
+    }
+    .gs-input::placeholder { color: var(--gs-gray-4); }
+    .gs-input:focus, .gs-textarea:focus, .gs-select:focus {
+      border-color: var(--gs-black);
+      box-shadow: 0 0 0 3px var(--gs-gray-2);
+    }
+    .gs-input--error { border-color: var(--gs-error); }
+    .gs-input--error:focus { box-shadow: 0 0 0 3px rgba(255,0,0,0.15); }
+    .gs-textarea { min-height: 96px; height: auto; resize: vertical; }
+    .gs-select {
+      appearance: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 36px;
+    }
+    .gs-input-group {
+      display: flex;
+      border: 1px solid var(--gs-gray-2);
+      border-radius: var(--gs-r-5);
+      background: var(--gs-white);
+      overflow: hidden;
+    }
+    .gs-input-group:focus-within { border-color: var(--gs-black); box-shadow: 0 0 0 3px var(--gs-gray-2); }
+    .gs-input-group .prefix {
+      padding: 8px 12px;
+      background: var(--gs-gray-1);
+      border-right: 1px solid var(--gs-gray-2);
+      color: var(--gs-gray-4);
+      font-size: 13.5px;
+      display: flex; align-items: center;
+      font-family: var(--gs-mono);
+    }
+    .gs-input-group input {
+      flex: 1; border: 0; outline: none;
+      padding: 8px 12px;
+      font-family: var(--gs-font);
+      font-size: 14px;
+      background: var(--gs-white);
+      color: var(--gs-black);
+    }
+
+    .gs-helper { font-size: 12px; color: var(--gs-gray-4); }
+    .gs-helper.error { color: var(--gs-error); }
+
+    .gs-checkbox, .gs-radio {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      color: var(--gs-black);
+    }
+    .gs-checkbox input, .gs-radio input { width: 16px; height: 16px; accent-color: var(--gs-black); }
+
+    .gs-switch { position: relative; display: inline-block; width: 36px; height: 20px; }
+    .gs-switch input { opacity: 0; width: 0; height: 0; }
+    .gs-switch .slider {
+      position: absolute; cursor: pointer; inset: 0;
+      background: var(--gs-gray-2);
+      border-radius: var(--gs-r-full);
+      transition: 0.15s;
+    }
+    .gs-switch .slider::before {
+      content: ''; position: absolute;
+      width: 14px; height: 14px;
+      left: 3px; top: 3px;
+      background: var(--gs-white);
+      border-radius: 50%;
+      transition: 0.15s;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    }
+    .gs-switch input:checked + .slider { background: var(--gs-black); }
+    .gs-switch input:checked + .slider::before { transform: translateX(16px); }
+
+    /* Surfaces */
+    .surface-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
+      gap: var(--gs-3);
+    }
+    .gs-card {
+      background: var(--gs-white);
+      border: 1px solid var(--gs-gray-2);
+      border-radius: var(--gs-r-12);
+      padding: var(--gs-5);
+      transition: border-color 0.15s, transform 0.15s;
+    }
+    .gs-card h4 { margin: 0 0 4px; }
+    .gs-card p { font-size: 13px; margin: 0; color: var(--gs-gray-5); }
+    .gs-card--shadow { box-shadow: var(--gs-shadow-md); border: 0; }
+    .gs-card--inverted {
+      background: var(--gs-black);
+      color: var(--gs-white);
+      border-color: var(--gs-black);
+    }
+    .gs-card--inverted h4 { color: var(--gs-white); }
+    .gs-card--inverted p { color: var(--gs-gray-3); }
+    .gs-card--gradient {
+      background: linear-gradient(135deg, var(--gs-violet) 0%, var(--gs-pink) 100%);
+      color: var(--gs-white);
+      border: 0;
+    }
+    .gs-card--gradient h4 { color: var(--gs-white); }
+    .gs-card--gradient p { color: rgba(255,255,255,0.85); }
+
+    .gs-stat {
+      padding: var(--gs-5);
+      background: var(--gs-white);
+      border: 1px solid var(--gs-gray-2);
+      border-radius: var(--gs-r-12);
+    }
+    .gs-stat .num { font-size: 36px; font-weight: 700; line-height: 1; letter-spacing: -0.03em; }
+    .gs-stat .lbl { font-size: 12px; color: var(--gs-gray-4); margin-top: 6px; text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--gs-mono); }
+
+    .gs-modal {
+      background: var(--gs-white);
+      border: 1px solid var(--gs-gray-2);
+      padding: var(--gs-6);
+      border-radius: var(--gs-r-12);
+      box-shadow: var(--gs-shadow-lg);
+      max-width: 420px;
+    }
+    .gs-modal h4 { font-size: 18px; margin-top: 0; letter-spacing: -0.015em; }
+    .gs-modal p { font-size: 14px; }
+
+    /* Feedback (Note) */
+    .gs-note {
+      display: flex;
+      gap: var(--gs-3);
+      padding: 12px var(--gs-4);
+      border-radius: var(--gs-r-8);
+      margin-bottom: var(--gs-2);
+      font-size: 13.5px;
+      align-items: flex-start;
+      border: 1px solid;
+    }
+    .gs-note--info { background: rgba(0,112,243,0.05); color: var(--gs-blue); border-color: rgba(0,112,243,0.20); }
+    .gs-note--success { background: rgba(0,112,243,0.05); color: var(--gs-blue); border-color: rgba(0,112,243,0.20); }
+    .gs-note--warn { background: rgba(245,166,35,0.06); color: #B47700; border-color: rgba(245,166,35,0.25); }
+    .gs-note--error { background: rgba(255,0,0,0.05); color: var(--gs-error); border-color: rgba(255,0,0,0.20); }
+    .gs-note--secondary { background: var(--gs-gray-1); color: var(--gs-gray-7); border-color: var(--gs-gray-2); }
+
+    .gs-toast {
+      background: var(--gs-black);
+      color: var(--gs-white);
+      padding: 12px 16px;
+      border-radius: var(--gs-r-8);
+      box-shadow: var(--gs-shadow-lg);
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 13.5px;
+    }
+    .gs-toast button { background: transparent; color: var(--gs-cyan); border: 0; font-weight: 500; cursor: pointer; font-size: 13.5px; font-family: var(--gs-font); }
+
+    .gs-banner {
+      display: flex;
+      gap: var(--gs-3);
+      padding: 12px var(--gs-4);
+      background: var(--gs-black);
+      color: var(--gs-white);
+      border-radius: var(--gs-r-8);
+      align-items: center;
+      justify-content: space-between;
+      font-size: 13.5px;
+    }
+
+    .gs-chip-row { display: flex; flex-wrap: wrap; gap: 6px; }
+    .gs-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 10px;
+      border-radius: var(--gs-r-full);
+      border: 1px solid var(--gs-gray-2);
+      background: var(--gs-white);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--gs-gray-7);
+    }
+    .gs-chip--filled { background: var(--gs-black); color: var(--gs-white); border-color: transparent; }
+    .gs-chip--blue { background: rgba(0,112,243,0.10); color: var(--gs-blue); border-color: rgba(0,112,243,0.25); }
+    .gs-chip--success { background: rgba(0,112,243,0.10); color: var(--gs-blue); border-color: rgba(0,112,243,0.25); }
+    .gs-chip--warn { background: rgba(245,166,35,0.10); color: #B47700; border-color: rgba(245,166,35,0.25); }
+    .gs-chip--error { background: rgba(255,0,0,0.08); color: var(--gs-error); border-color: rgba(255,0,0,0.20); }
+
+    .gs-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 18px;
+      height: 18px;
+      padding: 0 6px;
+      background: var(--gs-error);
+      color: var(--gs-white);
+      border-radius: var(--gs-r-full);
+      font-size: 11px;
+      font-weight: 500;
+      font-family: var(--gs-mono);
+    }
+
+    .gs-progress {
+      width: 100%; height: 6px;
+      background: var(--gs-gray-2);
+      border-radius: var(--gs-r-full);
+      overflow: hidden;
+    }
+    .gs-progress::after {
+      content: ''; display: block;
+      height: 100%; width: 64%;
+      background: var(--gs-black);
+    }
+
+    .gs-skeleton {
+      height: 14px;
+      background: linear-gradient(90deg, var(--gs-gray-2), var(--gs-gray-100), var(--gs-gray-2));
+      background-size: 200% 100%;
+      border-radius: var(--gs-r-4);
+      animation: shimmer 1.5s infinite;
+    }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+    .gs-spinner {
+      width: 24px; height: 24px;
+      border: 2px solid var(--gs-gray-2);
+      border-top-color: var(--gs-black);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Navigation */
+    .gs-tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--gs-gray-2);
+      margin-bottom: var(--gs-3);
+    }
+    .gs-tab {
+      padding: 10px var(--gs-4);
+      font-size: 13.5px;
+      font-weight: 500;
+      color: var(--gs-gray-4);
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      margin-bottom: -1px;
+      transition: color 0.12s;
+    }
+    .gs-tab.active { color: var(--gs-black); border-bottom-color: var(--gs-black); }
+    .gs-tab:hover:not(.active) { color: var(--gs-black); }
+
+    .gs-breadcrumb { display: flex; gap: 8px; align-items: center; font-size: 13px; color: var(--gs-gray-4); }
+    .gs-breadcrumb a { color: var(--gs-gray-5); }
+    .gs-breadcrumb a:hover { color: var(--gs-black); }
+    .gs-breadcrumb svg { width: 12px; height: 12px; opacity: 0.5; }
+
+    .gs-pagination { display: flex; gap: 4px; align-items: center; }
+    .gs-pagination button {
+      min-width: 32px; height: 32px;
+      border-radius: var(--gs-r-5);
+      border: 1px solid var(--gs-gray-2);
+      background: var(--gs-white);
+      color: var(--gs-gray-7);
+      cursor: pointer;
+      font-family: var(--gs-font);
+      font-size: 13px;
+      padding: 0 10px;
+    }
+    .gs-pagination button.active { background: var(--gs-black); color: var(--gs-white); border-color: transparent; }
+    .gs-pagination button:hover:not(.active) { background: var(--gs-gray-1); }
+
+    .gs-stepper { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+    .gs-stepper .step { display: inline-flex; align-items: center; gap: 8px; color: var(--gs-gray-4); }
+    .gs-stepper .step.active { color: var(--gs-black); }
+    .gs-stepper .num {
+      width: 24px; height: 24px; border-radius: 50%;
+      background: var(--gs-white); color: var(--gs-gray-4);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 600;
+      border: 1px solid var(--gs-gray-2);
+      font-family: var(--gs-mono);
+    }
+    .gs-stepper .num.active { background: var(--gs-black); color: var(--gs-white); border-color: transparent; }
+    .gs-stepper .num.done { background: var(--gs-blue); color: var(--gs-white); border-color: transparent; }
+    .gs-stepper .line { flex: 1; height: 1px; background: var(--gs-gray-2); }
+
+    .gs-sidebar {
+      background: var(--gs-white);
+      border: 1px solid var(--gs-gray-2);
+      border-radius: var(--gs-r-8);
+      padding: 12px;
+      width: 240px;
+    }
+    .gs-sidebar a {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 10px;
+      border-radius: var(--gs-r-5);
+      color: var(--gs-gray-5);
+      text-decoration: none;
+      font-size: 13.5px;
+      font-weight: 500;
+    }
+    .gs-sidebar a:hover { background: var(--gs-gray-1); color: var(--gs-black); }
+    .gs-sidebar a.active { background: var(--gs-gray-1); color: var(--gs-black); }
+    .gs-sidebar a svg { width: 16px; height: 16px; opacity: 0.85; }
+
+    .gs-topbar {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px var(--gs-4);
+      background: var(--gs-white);
+      border: 1px solid var(--gs-gray-2);
+      border-radius: var(--gs-r-8);
+    }
+
+    .gs-menu {
+      background: var(--gs-white);
+      border: 1px solid var(--gs-gray-2);
+      border-radius: var(--gs-r-8);
+      box-shadow: var(--gs-shadow-md);
+      padding: 4px;
+      width: 200px;
+    }
+    .gs-menu .item {
+      padding: 8px 12px; font-size: 13.5px; cursor: pointer;
+      border-radius: var(--gs-r-5);
+      color: var(--gs-gray-7);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .gs-menu .item:hover { background: var(--gs-gray-1); color: var(--gs-black); }
+    .gs-menu .divider { height: 1px; background: var(--gs-gray-2); margin: 4px 0; }
+    .gs-menu .item .kbd { font-family: var(--gs-mono); font-size: 11px; color: var(--gs-gray-4); }
+
+    /* Data */
+    table.gs-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+    }
+    table.gs-table th, table.gs-table td {
+      text-align: left;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--gs-gray-2);
+    }
+    table.gs-table th {
+      font-weight: 500;
+      color: var(--gs-gray-4);
+      font-size: 11.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-family: var(--gs-mono);
+    }
+    table.gs-table tr:hover td { background: var(--gs-gray-1); }
+    table.gs-table code { font-family: var(--gs-mono); font-size: 12.5px; }
+
+    .gs-list { list-style: none; padding: 0; margin: 0; }
+    .gs-list li {
+      padding: 12px 0;
+      display: flex; gap: 12px; align-items: center;
+      border-bottom: 1px solid var(--gs-gray-2);
+    }
+    .gs-list li:last-child { border-bottom: 0; }
+
+    .gs-kv { display: grid; grid-template-columns: 140px 1fr; gap: 12px; font-size: 13.5px; }
+    .gs-kv dt { color: var(--gs-gray-4); font-weight: 500; }
+    .gs-kv dd { margin: 0; color: var(--gs-black); font-family: var(--gs-mono); font-size: 13px; }
+
+    .gs-avatar {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: var(--gs-black);
+      color: var(--gs-white);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 600;
+      flex-shrink: 0;
+    }
+    .gs-avatar--gradient { background: linear-gradient(135deg, var(--gs-violet), var(--gs-pink)); }
+    .gs-avatar--cyan { background: linear-gradient(135deg, var(--gs-blue), var(--gs-cyan)); }
+
+    .gs-empty {
+      text-align: center;
+      padding: var(--gs-9) var(--gs-4);
+      color: var(--gs-gray-4);
+    }
+    .gs-empty svg { width: 40px; height: 40px; opacity: 0.4; margin-bottom: 12px; }
+    .gs-empty h4 { color: var(--gs-black); margin: 0 0 4px; }
+
+    /* Layout */
+    .grid-demo {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 12px;
+      background: var(--gs-gray-1);
+      padding: 16px;
+      border-radius: var(--gs-r-8);
+      border: 1px solid var(--gs-gray-2);
+    }
+    .grid-demo > div {
+      background: var(--gs-black);
+      color: var(--gs-white);
+      padding: 10px;
+      border-radius: var(--gs-r-4);
+      font-size: 11.5px;
+      font-weight: 500;
+      text-align: center;
+      font-family: var(--gs-mono);
+    }
+
+    .scale-row {
+      display: flex;
+      gap: var(--gs-3);
+      flex-wrap: wrap;
+      align-items: flex-end;
+      margin-bottom: var(--gs-4);
+    }
+    .scale-item {
+      display: flex; flex-direction: column; gap: 6px;
+      align-items: center;
+    }
+    .scale-item .swatch {
+      background: var(--gs-black);
+    }
+    .scale-item .lbl { font-size: 11px; font-family: var(--gs-mono); color: var(--gs-gray-4); }
+
+    .shadow-demo {
+      width: 80px; height: 80px;
+      background: var(--gs-white);
+      border-radius: var(--gs-r-8);
+      display: inline-flex; align-items: center; justify-content: center;
+      margin-right: 16px; margin-bottom: 16px;
+      font-size: 11px; font-family: var(--gs-mono); color: var(--gs-gray-5);
+    }
+
+    /* Footer */
+    .ds-footer {
+      background: var(--gs-gray-1);
+      border-top: 1px solid var(--gs-gray-2);
+      padding: var(--gs-7) var(--gs-7) var(--gs-6);
+      margin-top: var(--gs-7);
+      color: var(--gs-gray-5);
+    }
+    .ds-footer h3 { margin-top: 0; color: var(--gs-black); }
+    .ds-footer ul { padding-left: 20px; }
+    .ds-footer li { margin-bottom: 4px; word-break: break-all; font-size: 12.5px; }
+    .ds-footer a { color: var(--gs-blue); }
+    .license-note { font-size: 12.5px; color: var(--gs-gray-4); margin-top: var(--gs-4); }
+    .meta-note { font-size: 11.5px; color: var(--gs-gray-4); font-family: var(--gs-mono); margin-top: var(--gs-2); }
+
+    @media (max-width: 720px) {
+      .ds-header h1 { font-size: 44px; }
+      main { padding: var(--gs-4); }
+      section { padding: var(--gs-4); }
+      .type-row { grid-template-columns: 1fr; }
+      .color-grid { grid-template-columns: repeat(6, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <header class="ds-header">
+    <a href="index.html" class="back-link">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Catalog
+    </a>
+    <h1>Geist</h1>
+    <div class="meta">
+      <span class="badge kind-ds">design-system</span>
+      <span class="badge fidelity-documented">documented</span>
+      <span class="badge source-verified">source: verified</span>
+      <a href="https://vercel.com/geist/introduction" target="_blank" rel="noopener" class="official-link">Official ↗</a>
+    </div>
+    <p class="tagline">Vercel's monochrome-first design system with razor-sharp typography and high-contrast minimal interfaces.</p>
+  </header>
+
+  <nav class="toc" aria-label="Table of contents">
+    <ul>
+      <li><a href="#brand">Brand</a></li>
+      <li><a href="#color">Color</a></li>
+      <li><a href="#typography">Typography</a></li>
+      <li><a href="#iconography">Iconography</a></li>
+      <li><a href="#buttons">Buttons</a></li>
+      <li><a href="#form">Form</a></li>
+      <li><a href="#surfaces">Surfaces</a></li>
+      <li><a href="#feedback">Feedback</a></li>
+      <li><a href="#navigation">Navigation</a></li>
+      <li><a href="#data">Data</a></li>
+      <li><a href="#layout">Layout</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="brand" data-fidelity="documented">
+      <h2>
+        <span>Brand</span>
+        <span class="badge fidelity-documented">documented</span>
+      </h2>
+      <div class="brand-mark">
+        <svg viewBox="0 0 24 24" fill="white"><path d="M12 2L22 20H2z"/></svg>
+        Vercel · Geist
+      </div>
+      <p style="margin-top:24px;max-width:720px;font-size:15px;color:var(--gs-gray-5)">
+        Geist is Vercel's design system. The aesthetic is unapologetically monochromatic: pure black and pure white anchor the system, with a 9-step gray scale providing the entire grayscale information hierarchy. Vercel blue, pink, and cyan are reserved as accent moments — never decoration.
+      </p>
+      <div class="pillars">
+        <div class="pillar">
+          <h4>Monochrome-first</h4>
+          <p>Pure black on pure white. Color is a feature flag, not a default.</p>
+        </div>
+        <div class="pillar">
+          <h4>Editorial typography</h4>
+          <p>Geist Sans was designed for code and editorial. Tracking is tight, weights are intentional.</p>
+        </div>
+        <div class="pillar">
+          <h4>High contrast</h4>
+          <p>Strong borders, hairline strokes, and crisp 5-8px corner radii. No gradients in core UI.</p>
+        </div>
+        <div class="pillar">
+          <h4>Open source</h4>
+          <p>Geist Sans + Mono are released under SIL OFL. Geist Icons are MIT.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="color" data-fidelity="documented">
+      <h2>
+        <span>Color</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://vercel.com/geist/colors" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p>The Geist palette is grayscale-first with 9 named gray steps. Brand accents — Vercel blue, pink, cyan, violet, amber — appear sparingly for status, interaction, and storytelling.</p>
+
+      <h3>Geist gray ramp</h3>
+      <div class="color-grid">
+        <div class="color-cell" style="background:#FFFFFF;color:#666;border:1px solid var(--gs-gray-2)">0</div>
+        <div class="color-cell" style="background:#FAFAFA;color:#666;border:1px solid var(--gs-gray-2)">1</div>
+        <div class="color-cell" style="background:#EAEAEA;color:#444">2</div>
+        <div class="color-cell" style="background:#999999;color:white">3</div>
+        <div class="color-cell" style="background:#888888;color:white">4</div>
+        <div class="color-cell" style="background:#666666;color:white">5</div>
+        <div class="color-cell" style="background:#444444;color:white">6</div>
+        <div class="color-cell" style="background:#333333;color:white">7</div>
+        <div class="color-cell" style="background:#222222;color:white">8</div>
+        <div class="color-cell" style="background:#111111;color:white">9</div>
+        <div class="color-cell" style="background:#000000;color:white">10</div>
+      </div>
+
+      <h3>Brand accents</h3>
+      <div class="swatch-row">
+        <div class="swatch-card"><div class="fill" style="background:#000000"></div><div class="info"><div class="name">Foreground</div><div class="hex">#000000</div></div></div>
+        <div class="swatch-card"><div class="fill" style="background:#FFFFFF;border-bottom:1px solid var(--gs-gray-2)"></div><div class="info"><div class="name">Background</div><div class="hex">#FFFFFF</div></div></div>
+        <div class="swatch-card"><div class="fill" style="background:#0070F3"></div><div class="info"><div class="name">Vercel Blue</div><div class="hex">#0070F3</div></div></div>
+        <div class="swatch-card"><div class="fill" style="background:#FF0080"></div><div class="info"><div class="name">Pink</div><div class="hex">#FF0080</div></div></div>
+        <div class="swatch-card"><div class="fill" style="background:#50E3C2"></div><div class="info"><div class="name">Cyan</div><div class="hex">#50E3C2</div></div></div>
+        <div class="swatch-card"><div class="fill" style="background:#7928CA"></div><div class="info"><div class="name">Violet</div><div class="hex">#7928CA</div></div></div>
+        <div class="swatch-card"><div class="fill" style="background:#F5A623"></div><div class="info"><div class="name">Amber</div><div class="hex">#F5A623</div></div></div>
+        <div class="swatch-card"><div class="fill" style="background:#FF0000"></div><div class="info"><div class="name">Error Red</div><div class="hex">#FF0000</div></div></div>
+      </div>
+
+      <h3>Semantic roles</h3>
+      <div class="semantic-grid">
+        <div class="sem-card" style="background:rgba(0,112,243,0.06);color:var(--gs-blue);border-color:rgba(0,112,243,0.2)">
+          <span class="label">Success / Info</span><span class="hex">#0070F3</span>
+        </div>
+        <div class="sem-card" style="background:rgba(245,166,35,0.06);color:#B47700;border-color:rgba(245,166,35,0.25)">
+          <span class="label">Warning</span><span class="hex">#F5A623</span>
+        </div>
+        <div class="sem-card" style="background:rgba(255,0,0,0.05);color:var(--gs-error);border-color:rgba(255,0,0,0.2)">
+          <span class="label">Error</span><span class="hex">#FF0000</span>
+        </div>
+        <div class="sem-card" style="background:var(--gs-gray-1);color:var(--gs-gray-7);border-color:var(--gs-gray-2)">
+          <span class="label">Secondary</span><span class="hex">#666666</span>
+        </div>
+      </div>
+
+      <h3>Color roles</h3>
+      <div class="role-grid">
+        <div class="role-chip" style="background:var(--gs-black);color:var(--gs-white)">Foreground <code>#000</code></div>
+        <div class="role-chip" style="background:var(--gs-white);color:var(--gs-black);border:1px solid var(--gs-gray-2)">Background <code>#FFF</code></div>
+        <div class="role-chip" style="background:var(--gs-gray-1);color:var(--gs-gray-7)">Subtle <code>gray-1</code></div>
+        <div class="role-chip" style="background:var(--gs-gray-2);color:var(--gs-gray-7)">Hover <code>gray-2</code></div>
+        <div class="role-chip" style="background:var(--gs-blue);color:var(--gs-white)">Accent <code>blue</code></div>
+        <div class="role-chip" style="background:var(--gs-gray-9);color:var(--gs-white)">Emphasis <code>gray-9</code></div>
+      </div>
+    </section>
+
+    <section id="typography" data-fidelity="documented">
+      <h2>
+        <span>Typography</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://vercel.com/geist/typography" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p>Geist Sans for everything. Geist Mono for code, technical data, and labels. Display weights run 600/700 with aggressive negative tracking — letterspacing is part of the brand voice.</p>
+
+      <div class="type-row"><div class="label">Display L · 72/700 · -0.045em</div><div class="display-l">Develop. Preview. Ship.</div></div>
+      <div class="type-row"><div class="label">Display M · 56/700 · -0.04em</div><div class="display-m">Build for the web</div></div>
+      <div class="type-row"><div class="label">Display S · 40/700 · -0.03em</div><div class="display-s">Frontend cloud</div></div>
+      <div class="type-row"><div class="label">Heading L · 32/600</div><div class="heading-l">Built with Next.js, deployed on Vercel</div></div>
+      <div class="type-row"><div class="label">Heading M · 24/600</div><div class="heading-m">Framework-defined infrastructure</div></div>
+      <div class="type-row"><div class="label">Heading S · 20/600</div><div class="heading-s">Section heading</div></div>
+      <div class="type-row"><div class="label">Title L · 16/600</div><div class="title-l">Component title</div></div>
+      <div class="type-row"><div class="label">Title M · 14/500</div><div class="title-m">List heading</div></div>
+      <div class="type-row"><div class="label">Body L · 16</div><div class="body-l">Geist is a typeface and design system created at Vercel for developer-facing surfaces. Tight tracking, deliberate weights, and a high contrast between hairline borders and bold display make Geist instantly recognizable.</div></div>
+      <div class="type-row"><div class="label">Body M · 14</div><div class="body-m">Body M handles standard paragraph copy, descriptions, and supporting text. The Geist x-height keeps it readable down to 13px.</div></div>
+      <div class="type-row"><div class="label">Body S · 12.5</div><div class="body-s">Body S is metadata: timestamps, breadcrumbs, helper text. Always paired with gray-3 or gray-4.</div></div>
+      <div class="type-row"><div class="label">Label L · 12 / 500</div><div class="label-l">Tab label</div></div>
+      <div class="type-row"><div class="label">Label M · 11 / UPPER</div><div class="label-m">Eyebrow / Group</div></div>
+      <div class="type-row"><div class="label">Mono · Geist Mono</div><div class="mono-sample">const config = { framework: 'next' };</div></div>
+    </section>
+
+    <section id="iconography" data-fidelity="documented">
+      <h2>
+        <span>Iconography</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://vercel.com/geist/icons" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p>Geist Icons are an open-source 24px stroke icon set (MIT license), designed to pair directly with Geist Sans. Below: a sampling that approximates the Geist iconography style.</p>
+      <div class="icon-grid">
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12L12 3l9 9"/><path d="M5 10v10h14V10"/></svg><span>home</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><span>search</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg><span>user</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.5-2.5l2-1.5-2-3.5-2.5 1A7 7 0 0 0 13 4l-.5-2.5h-4L8 4a7 7 0 0 0-3 1.5l-2.5-1-2 3.5 2 1.5A7 7 0 0 0 5 12c0 .9.2 1.7.5 2.5l-2 1.5 2 3.5 2.5-1c.9.7 2 1.2 3 1.5l.5 2.5h4l.5-2.5c1-.3 2.1-.8 3-1.5l2.5 1 2-3.5-2-1.5c.3-.8.5-1.6.5-2.5z"/></svg><span>settings</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L22 20H2z"/></svg><span>vercel</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>check</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg><span>x</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg><span>plus</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg><span>chevron</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg><span>chat</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg><span>code</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span>download</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.2-8.5"/><polyline points="21 4 21 10 15 10"/></svg><span>refresh</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v6l3 2"/></svg><span>clock</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.5V12a10 10 0 1 1-5.93-9.14"/></svg><span>loader</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg><span>info</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.7l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.7l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg><span>package</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg><span>arrow-right</span></div>
+      </div>
+    </section>
+
+    <section id="buttons" data-fidelity="documented">
+      <h2>
+        <span>Buttons</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://vercel.com/geist/button" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p>Geist's buttons are unapologetically minimal — pure black primary, hairline secondary, and a tertiary that's barely there. 5px corner radius is one of the system's signatures.</p>
+
+      <h3>Variants</h3>
+      <div class="button-row">
+        <button class="gs-btn gs-btn--primary">Deploy <span class="arrow">→</span></button>
+        <button class="gs-btn gs-btn--secondary">Cancel</button>
+        <button class="gs-btn gs-btn--tertiary">Skip</button>
+        <button class="gs-btn gs-btn--blue">Continue with GitHub</button>
+        <button class="gs-btn gs-btn--danger">Delete project</button>
+        <button class="gs-btn gs-btn--secondary gs-btn--icon" aria-label="more">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="1.5"/><circle cx="6" cy="12" r="1.5"/><circle cx="18" cy="12" r="1.5"/></svg>
+        </button>
+      </div>
+
+      <h3>Sizes</h3>
+      <div class="button-row">
+        <button class="gs-btn gs-btn--primary gs-btn--sm">Small</button>
+        <button class="gs-btn gs-btn--primary">Default</button>
+        <button class="gs-btn gs-btn--primary gs-btn--lg">Large</button>
+      </div>
+
+      <h3>States</h3>
+      <div class="button-row">
+        <button class="gs-btn gs-btn--primary">Default</button>
+        <button class="gs-btn gs-btn--primary" style="background:var(--gs-gray-7);border-color:var(--gs-gray-7)">Hover</button>
+        <button class="gs-btn gs-btn--primary" style="outline:2px solid var(--gs-blue);outline-offset:2px">Focus</button>
+        <button class="gs-btn gs-btn--primary" disabled>Disabled</button>
+        <button class="gs-btn gs-btn--secondary"><span class="gs-spinner" style="width:12px;height:12px;border-width:1.5px"></span>Loading</button>
+      </div>
+    </section>
+
+    <section id="form" data-fidelity="documented">
+      <h2>
+        <span>Form</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://vercel.com/geist/input" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p>36px input height. Hairline border, 5px radius. Focus state uses a 3px gray ring (instead of a colored glow) — keeps inputs feeling editorial rather than UI-y.</p>
+
+      <h3>Inputs</h3>
+      <div class="form-grid">
+        <div class="gs-field">
+          <label for="g1">Project name</label>
+          <input class="gs-input" id="g1" type="text" value="my-next-app">
+          <span class="gs-helper">Lowercase letters, numbers, and dashes.</span>
+        </div>
+        <div class="gs-field">
+          <label for="g2">Email</label>
+          <input class="gs-input" id="g2" type="email" placeholder="you@vercel.com">
+          <span class="gs-helper">We'll send a verification link.</span>
+        </div>
+        <div class="gs-field">
+          <label for="g3">Domain</label>
+          <div class="gs-input-group">
+            <span class="prefix">https://</span>
+            <input id="g3" type="text" value="my-app.vercel.app">
+          </div>
+          <span class="gs-helper">Domains can be customized after deployment.</span>
+        </div>
+        <div class="gs-field">
+          <label for="g4">Framework preset</label>
+          <select class="gs-select" id="g4">
+            <option>Next.js</option>
+            <option>SvelteKit</option>
+            <option>Nuxt</option>
+            <option>Remix</option>
+            <option>Astro</option>
+          </select>
+        </div>
+        <div class="gs-field">
+          <label for="g5">Repository</label>
+          <input class="gs-input gs-input--error" id="g5" value="not a valid url">
+          <span class="gs-helper error">Repository URL is invalid.</span>
+        </div>
+        <div class="gs-field">
+          <label for="g6">README</label>
+          <textarea class="gs-textarea" id="g6" placeholder="Describe your project...">A serverless edge runtime for the modern web.</textarea>
+        </div>
+      </div>
+
+      <h3>Selection controls</h3>
+      <div class="button-row">
+        <label class="gs-checkbox"><input type="checkbox" checked>Add environment variables</label>
+        <label class="gs-checkbox"><input type="checkbox">Override build command</label>
+        <label class="gs-radio"><input type="radio" name="r1" checked>Production</label>
+        <label class="gs-radio"><input type="radio" name="r1">Preview</label>
+        <label class="gs-switch"><input type="checkbox" checked><span class="slider"></span></label>
+        <label class="gs-switch"><input type="checkbox"><span class="slider"></span></label>
+      </div>
+    </section>
+
+    <section id="surfaces" data-fidelity="documented">
+      <h2>
+        <span>Surfaces</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://vercel.com/geist/card" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p>Cards in Geist favor flat, hairline-bordered containers over shadows. The inverted (black-on-white-on-black) card is a signature pattern, as is the violet-to-pink gradient card from the Vercel marketing surface.</p>
+
+      <h3>Cards</h3>
+      <div class="surface-grid">
+        <div class="gs-card">
+          <h4>Default card</h4>
+          <p>Hairline border, 12px corner radius. The default surface across product UI.</p>
+        </div>
+        <div class="gs-card gs-card--shadow">
+          <h4>Elevated card</h4>
+          <p>Subtle shadow only. Geist almost never uses heavy elevation.</p>
+        </div>
+        <div class="gs-card gs-card--inverted">
+          <h4>Inverted card</h4>
+          <p>Pure black surface. Used for emphasis on light pages, footers, and CTAs.</p>
+        </div>
+        <div class="gs-card gs-card--gradient">
+          <h4>Gradient card</h4>
+          <p>Vercel's signature violet-to-pink gradient. Marketing surfaces only.</p>
+        </div>
+        <div class="gs-stat">
+          <div class="num">99.99%</div>
+          <div class="lbl">Uptime · last 30d</div>
+        </div>
+        <div class="gs-stat">
+          <div class="num">42ms</div>
+          <div class="lbl">P95 edge latency</div>
+        </div>
+      </div>
+
+      <h3>Modal</h3>
+      <div class="gs-modal">
+        <h4>Delete this project?</h4>
+        <p>This action cannot be undone. All deployments, environment variables, and domains attached to this project will be permanently removed.</p>
+        <div class="gs-field" style="margin-top:16px">
+          <label for="confirm">Type the project name to confirm:</label>
+          <input class="gs-input" id="confirm" placeholder="my-next-app">
+        </div>
+        <div class="button-row" style="justify-content:flex-end;margin:0;margin-top:20px">
+          <button class="gs-btn gs-btn--secondary">Cancel</button>
+          <button class="gs-btn gs-btn--danger">Delete project</button>
+        </div>
+      </div>
+
+      <h3>Popover &amp; menu</h3>
+      <div style="display:flex;gap:24px;flex-wrap:wrap">
+        <div class="gs-menu">
+          <div class="item">View deployment <span class="kbd">⌘D</span></div>
+          <div class="item">Inspect logs <span class="kbd">⌘L</span></div>
+          <div class="item">Promote to production</div>
+          <div class="divider"></div>
+          <div class="item" style="color:var(--gs-error)">Delete deployment <span class="kbd">⌫</span></div>
+        </div>
+        <div class="gs-sidebar">
+          <a href="#" class="active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12L12 3l9 9"/><path d="M5 10v10h14V10"/></svg>
+            Overview
+          </a>
+          <a href="#">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.7l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.7l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+            Deployments
+          </a>
+          <a href="#">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg>
+            Domains
+          </a>
+          <a href="#">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Settings
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section id="feedback" data-fidelity="documented">
+      <h2>
+        <span>Feedback</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://vercel.com/geist/note" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+
+      <h3>Notes (Alerts)</h3>
+      <div class="gs-note gs-note--info">
+        <strong>Note:</strong>&nbsp;Edge functions deploy to all 18 regions automatically.
+      </div>
+      <div class="gs-note gs-note--success">
+        <strong>Deployed:</strong>&nbsp;commit a3f8b21 is live at my-next-app.vercel.app.
+      </div>
+      <div class="gs-note gs-note--warn">
+        <strong>Warning:</strong>&nbsp;You are using a deprecated build setting. See migration guide.
+      </div>
+      <div class="gs-note gs-note--error">
+        <strong>Build failed:</strong>&nbsp;ENOENT — package.json not found in repo root.
+      </div>
+      <div class="gs-note gs-note--secondary">
+        <strong>Tip:</strong>&nbsp;Press <code>⌘K</code> to open the command palette anywhere in the dashboard.
+      </div>
+
+      <h3>Toast</h3>
+      <div class="gs-toast">
+        Deployment promoted to production.
+        <button>View</button>
+      </div>
+
+      <h3>Banner</h3>
+      <div class="gs-banner" style="margin-top:12px">
+        <span><strong>v0 is now generally available.</strong> Generate UI from a prompt.</span>
+        <button class="gs-btn gs-btn--secondary gs-btn--sm" style="background:var(--gs-white);color:var(--gs-black)">Try it →</button>
+      </div>
+
+      <h3>Chips &amp; badges</h3>
+      <div class="gs-chip-row">
+        <span class="gs-chip">Production</span>
+        <span class="gs-chip gs-chip--filled">Featured</span>
+        <span class="gs-chip gs-chip--blue">Ready</span>
+        <span class="gs-chip gs-chip--success">Deployed</span>
+        <span class="gs-chip gs-chip--warn">Building</span>
+        <span class="gs-chip gs-chip--error">Failed</span>
+        <span class="gs-badge">3</span>
+        <span class="gs-badge" style="background:var(--gs-blue)">New</span>
+      </div>
+
+      <h3>Progress &amp; loading</h3>
+      <div style="display:flex;flex-direction:column;gap:12px;max-width:480px">
+        <div class="gs-progress"></div>
+        <div class="gs-skeleton" style="width:80%"></div>
+        <div class="gs-skeleton" style="width:60%"></div>
+        <div class="gs-skeleton" style="width:45%"></div>
+        <div class="gs-spinner"></div>
+      </div>
+    </section>
+
+    <section id="navigation" data-fidelity="documented">
+      <h2>
+        <span>Navigation</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://vercel.com/geist/tabs" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+
+      <h3>Tabs</h3>
+      <div class="gs-tabs">
+        <div class="gs-tab active">Overview</div>
+        <div class="gs-tab">Deployments</div>
+        <div class="gs-tab">Analytics</div>
+        <div class="gs-tab">Logs</div>
+        <div class="gs-tab">Settings</div>
+      </div>
+
+      <h3>Breadcrumb</h3>
+      <div class="gs-breadcrumb">
+        <a href="#">vercel</a>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        <a href="#">my-next-app</a>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        <a href="#">deployments</a>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        <span>a3f8b21</span>
+      </div>
+
+      <h3>Pagination</h3>
+      <div class="gs-pagination">
+        <button>‹</button>
+        <button class="active">1</button>
+        <button>2</button>
+        <button>3</button>
+        <button>4</button>
+        <button>›</button>
+      </div>
+
+      <h3>Stepper</h3>
+      <div class="gs-stepper">
+        <div class="step active"><span class="num done">✓</span> Import</div>
+        <span class="line"></span>
+        <div class="step active"><span class="num done">✓</span> Configure</div>
+        <span class="line"></span>
+        <div class="step active"><span class="num active">3</span> Deploy</div>
+        <span class="line"></span>
+        <div class="step"><span class="num">4</span> Done</div>
+      </div>
+
+      <h3>Top bar</h3>
+      <div class="gs-topbar">
+        <div class="gs-avatar gs-avatar--gradient">V</div>
+        <strong style="flex:1;font-size:14px;font-weight:600">my-next-app</strong>
+        <span class="gs-chip gs-chip--success"><span style="width:6px;height:6px;border-radius:50%;background:currentColor;display:inline-block;margin-right:4px"></span>Ready</span>
+        <button class="gs-btn gs-btn--secondary gs-btn--sm">Visit</button>
+        <button class="gs-btn gs-btn--secondary gs-btn--icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="1.5"/><circle cx="6" cy="12" r="1.5"/><circle cx="18" cy="12" r="1.5"/></svg></button>
+        <div class="gs-avatar">MK</div>
+      </div>
+    </section>
+
+    <section id="data" data-fidelity="documented">
+      <h2>
+        <span>Data</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://vercel.com/geist/table" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+
+      <h3>Deployments table</h3>
+      <table class="gs-table">
+        <thead>
+          <tr><th>Status</th><th>Commit</th><th>Branch</th><th>Duration</th><th>Updated</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="gs-chip gs-chip--success">Ready</span></td><td><code>a3f8b21</code> Fix nav overflow</td><td><code>main</code></td><td>32s</td><td>2m ago</td></tr>
+          <tr><td><span class="gs-chip gs-chip--warn">Building</span></td><td><code>b9c1d04</code> Update deps</td><td><code>main</code></td><td>—</td><td>5m ago</td></tr>
+          <tr><td><span class="gs-chip gs-chip--error">Failed</span></td><td><code>c4d22e8</code> WIP: edge runtime</td><td><code>edge-rt</code></td><td>—</td><td>14m ago</td></tr>
+          <tr><td><span class="gs-chip">Canceled</span></td><td><code>d711a77</code> Test infra</td><td><code>preview</code></td><td>—</td><td>22m ago</td></tr>
+          <tr><td><span class="gs-chip gs-chip--success">Ready</span></td><td><code>e0f3aaa</code> Initial commit</td><td><code>main</code></td><td>28s</td><td>1d ago</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Members list</h3>
+      <ul class="gs-list">
+        <li>
+          <div class="gs-avatar">MK</div>
+          <div style="flex:1">
+            <strong style="font-size:14px">Motohiro Koma</strong>
+            <div style="font-size:12px;color:var(--gs-gray-4)">motohiro.koma@gmail.com · Owner</div>
+          </div>
+          <span class="gs-chip gs-chip--filled">Owner</span>
+        </li>
+        <li>
+          <div class="gs-avatar gs-avatar--cyan">AT</div>
+          <div style="flex:1">
+            <strong style="font-size:14px">Avery Tan</strong>
+            <div style="font-size:12px;color:var(--gs-gray-4)">avery@example.com · Member</div>
+          </div>
+          <span class="gs-chip">Member</span>
+        </li>
+        <li>
+          <div class="gs-avatar gs-avatar--gradient">BY</div>
+          <div style="flex:1">
+            <strong style="font-size:14px">Brett Yu</strong>
+            <div style="font-size:12px;color:var(--gs-gray-4)">brett@example.com · Viewer</div>
+          </div>
+          <span class="gs-chip">Viewer</span>
+        </li>
+      </ul>
+
+      <h3>Project metadata</h3>
+      <dl class="gs-kv">
+        <dt>Project ID</dt><dd>prj_3kF8aq2X9bN7vR5</dd>
+        <dt>Framework</dt><dd>next@14.2.3</dd>
+        <dt>Node version</dt><dd>20.11.1</dd>
+        <dt>Region</dt><dd>Washington, D.C., USA (iad1)</dd>
+        <dt>Created</dt><dd>2026-05-05</dd>
+      </dl>
+
+      <h3>Empty state</h3>
+      <div class="gs-empty">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25"><path d="M21 16V8a2 2 0 0 0-1-1.7l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.7l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        <h4>No deployments yet</h4>
+        <p style="font-size:13px;margin:0">Push a commit or run <code>vercel deploy</code> from the CLI to get started.</p>
+        <button class="gs-btn gs-btn--primary" style="margin-top:16px">Import Git Repository <span class="arrow">→</span></button>
+      </div>
+    </section>
+
+    <section id="layout" data-fidelity="documented">
+      <h2>
+        <span>Layout</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://vercel.com/geist/grid" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p>Geist uses a 12-column grid with 4px spacing primitives. Container max-widths step at 720, 960, 1200, and 1440px.</p>
+
+      <h3>12-column grid</h3>
+      <div class="grid-demo">
+        <div style="grid-column:span 12">12</div>
+        <div style="grid-column:span 6">6</div>
+        <div style="grid-column:span 6">6</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+      </div>
+
+      <h3>Spacing scale (4px)</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div class="swatch" style="width:4px;height:32px"></div><span class="lbl">4</span></div>
+        <div class="scale-item"><div class="swatch" style="width:8px;height:32px"></div><span class="lbl">8</span></div>
+        <div class="scale-item"><div class="swatch" style="width:12px;height:32px"></div><span class="lbl">12</span></div>
+        <div class="scale-item"><div class="swatch" style="width:16px;height:32px"></div><span class="lbl">16</span></div>
+        <div class="scale-item"><div class="swatch" style="width:24px;height:32px"></div><span class="lbl">24</span></div>
+        <div class="scale-item"><div class="swatch" style="width:32px;height:32px"></div><span class="lbl">32</span></div>
+        <div class="scale-item"><div class="swatch" style="width:48px;height:32px"></div><span class="lbl">48</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:32px"></div><span class="lbl">64</span></div>
+      </div>
+
+      <h3>Radius scale</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:0;background:var(--gs-gray-2)"></div><span class="lbl">0</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:2px;background:var(--gs-gray-2)"></div><span class="lbl">2</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:4px;background:var(--gs-gray-2)"></div><span class="lbl">4</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:5px;background:var(--gs-gray-2)"></div><span class="lbl">5</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:8px;background:var(--gs-gray-2)"></div><span class="lbl">8</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:12px;background:var(--gs-gray-2)"></div><span class="lbl">12</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:50%;background:var(--gs-gray-2)"></div><span class="lbl">full</span></div>
+      </div>
+
+      <h3>Elevation</h3>
+      <div>
+        <div class="shadow-demo" style="box-shadow:none;border:1px solid var(--gs-gray-2)">flat</div>
+        <div class="shadow-demo" style="box-shadow:var(--gs-shadow-sm)">sm</div>
+        <div class="shadow-demo" style="box-shadow:var(--gs-shadow-md)">md</div>
+        <div class="shadow-demo" style="box-shadow:var(--gs-shadow-lg)">lg</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="ds-footer">
+    <h3>Sources</h3>
+    <ul>
+      <li><a href="https://vercel.com/geist/introduction" target="_blank" rel="noopener">https://vercel.com/geist/introduction</a></li>
+      <li><a href="https://vercel.com/geist/colors" target="_blank" rel="noopener">https://vercel.com/geist/colors</a></li>
+      <li><a href="https://vercel.com/geist/typography" target="_blank" rel="noopener">https://vercel.com/geist/typography</a></li>
+      <li><a href="https://vercel.com/geist/icons" target="_blank" rel="noopener">https://vercel.com/geist/icons</a></li>
+      <li><a href="https://vercel.com/geist/button" target="_blank" rel="noopener">https://vercel.com/geist/button</a></li>
+      <li><a href="https://vercel.com/geist/input" target="_blank" rel="noopener">https://vercel.com/geist/input</a></li>
+      <li><a href="https://vercel.com/geist/card" target="_blank" rel="noopener">https://vercel.com/geist/card</a></li>
+      <li><a href="https://vercel.com/geist/note" target="_blank" rel="noopener">https://vercel.com/geist/note</a></li>
+      <li><a href="https://vercel.com/geist/tabs" target="_blank" rel="noopener">https://vercel.com/geist/tabs</a></li>
+      <li><a href="https://vercel.com/geist/table" target="_blank" rel="noopener">https://vercel.com/geist/table</a></li>
+      <li><a href="https://vercel.com/geist/grid" target="_blank" rel="noopener">https://vercel.com/geist/grid</a></li>
+    </ul>
+    <p class="license-note">This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Vercel. Geist (Vercel) and related trademarks belong to Vercel. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</p>
+    <p class="meta-note">Reproduction date: 2026-05-05 · sourceStatus: verified · fidelity: documented</p>
+  </footer>
+</body>
+</html>

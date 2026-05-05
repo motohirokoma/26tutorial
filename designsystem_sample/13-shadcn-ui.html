@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>shadcn/ui — Design System Reference</title>
+  <script id="ds-meta" type="application/json">
+{"id":"13-shadcn-ui","fileSlug":"13-shadcn-ui","schemaVersion":"1"}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* shadcn/ui Light Theme (Zinc-based default) */
+      --sh-background: #FFFFFF;
+      --sh-foreground: #09090B;
+      --sh-card: #FFFFFF;
+      --sh-card-foreground: #09090B;
+      --sh-popover: #FFFFFF;
+      --sh-popover-foreground: #09090B;
+      --sh-primary: #18181B;
+      --sh-primary-foreground: #FAFAFA;
+      --sh-secondary: #F4F4F5;
+      --sh-secondary-foreground: #18181B;
+      --sh-muted: #F4F4F5;
+      --sh-muted-foreground: #71717A;
+      --sh-accent: #F4F4F5;
+      --sh-accent-foreground: #18181B;
+      --sh-destructive: #EF4444;
+      --sh-destructive-foreground: #FAFAFA;
+      --sh-border: #E4E4E7;
+      --sh-input: #E4E4E7;
+      --sh-ring: #18181B;
+
+      /* Zinc scale */
+      --sh-zinc-50: #FAFAFA;
+      --sh-zinc-100: #F4F4F5;
+      --sh-zinc-200: #E4E4E7;
+      --sh-zinc-300: #D4D4D8;
+      --sh-zinc-400: #A1A1AA;
+      --sh-zinc-500: #71717A;
+      --sh-zinc-600: #52525B;
+      --sh-zinc-700: #3F3F46;
+      --sh-zinc-800: #27272A;
+      --sh-zinc-900: #18181B;
+      --sh-zinc-950: #09090B;
+
+      /* Semantic accents (used in charts / themes) */
+      --sh-blue: #3B82F6;
+      --sh-emerald: #10B981;
+      --sh-orange: #F97316;
+      --sh-violet: #8B5CF6;
+
+      /* Type */
+      --sh-font: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+      --sh-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+      /* Radius (default --radius = 0.5rem) */
+      --sh-radius-sm: calc(0.5rem - 4px);
+      --sh-radius: 0.5rem;
+      --sh-radius-md: calc(0.5rem - 2px);
+      --sh-radius-lg: 0.5rem;
+      --sh-radius-xl: 0.75rem;
+      --sh-radius-full: 9999px;
+
+      /* Spacing */
+      --sh-1: 0.25rem;
+      --sh-2: 0.5rem;
+      --sh-3: 0.75rem;
+      --sh-4: 1rem;
+      --sh-6: 1.5rem;
+      --sh-8: 2rem;
+      --sh-12: 3rem;
+      --sh-16: 4rem;
+
+      /* Shadow (subtle) */
+      --sh-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --sh-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+      --sh-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      --sh-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: var(--sh-font);
+      background: var(--sh-background);
+      color: var(--sh-foreground);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      font-feature-settings: 'cv11';
+    }
+
+    code, kbd, pre, samp { font-family: var(--sh-mono); }
+
+    /* Header */
+    .ds-header {
+      background: var(--sh-background);
+      color: var(--sh-foreground);
+      padding: var(--sh-12) var(--sh-8) var(--sh-8);
+      border-bottom: 1px solid var(--sh-border);
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--sh-2);
+      color: var(--sh-muted-foreground);
+      text-decoration: none;
+      padding: var(--sh-1) var(--sh-3);
+      border-radius: var(--sh-radius);
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: all 0.15s;
+    }
+    .back-link:hover { background: var(--sh-accent); color: var(--sh-foreground); }
+
+    .ds-header h1 {
+      font-size: 3.75rem;
+      line-height: 1;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      margin: var(--sh-4) 0 var(--sh-3);
+    }
+
+    .ds-header .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--sh-2);
+      align-items: center;
+      margin-bottom: var(--sh-3);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.125rem 0.625rem;
+      border-radius: var(--sh-radius-full);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.025em;
+      border: 1px solid var(--sh-border);
+      background: var(--sh-background);
+      color: var(--sh-foreground);
+    }
+    .badge.kind-ds { background: var(--sh-primary); color: var(--sh-primary-foreground); border-color: transparent; }
+    .badge.fidelity-documented { background: var(--sh-zinc-100); color: var(--sh-zinc-900); border-color: var(--sh-border); }
+    .badge.fidelity-approximated { background: #FEF3C7; color: #92400E; border-color: transparent; }
+    .badge.fidelity-inspired { background: #EDE9FE; color: #5B21B6; border-color: transparent; }
+    .badge.source-verified { background: #DBEAFE; color: #1E3A8A; border-color: transparent; }
+
+    .ds-header a[href*="ui.shadcn.com"] {
+      color: var(--sh-foreground);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 0.125rem 0.625rem;
+      border: 1px solid var(--sh-border);
+      border-radius: var(--sh-radius-full);
+      font-size: 0.8125rem;
+      background: var(--sh-background);
+    }
+    .ds-header a[href*="ui.shadcn.com"]:hover { background: var(--sh-accent); }
+
+    .tagline {
+      font-size: 1.25rem;
+      line-height: 1.6;
+      max-width: 720px;
+      margin: var(--sh-4) 0 0;
+      color: var(--sh-muted-foreground);
+    }
+
+    /* TOC */
+    .toc {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255,255,255,0.85);
+      border-bottom: 1px solid var(--sh-border);
+      backdrop-filter: blur(12px);
+    }
+    .toc ul {
+      list-style: none;
+      margin: 0;
+      padding: var(--sh-3) var(--sh-8);
+      display: flex;
+      gap: var(--sh-1);
+      overflow-x: auto;
+    }
+    .toc a {
+      display: inline-block;
+      padding: 0.375rem 0.75rem;
+      border-radius: var(--sh-radius);
+      color: var(--sh-muted-foreground);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      white-space: nowrap;
+      transition: all 0.15s;
+    }
+    .toc a:hover { background: var(--sh-accent); color: var(--sh-accent-foreground); }
+
+    /* Main */
+    main {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: var(--sh-8);
+    }
+
+    section {
+      background: var(--sh-card);
+      border-radius: var(--sh-radius-xl);
+      padding: var(--sh-8);
+      margin-bottom: var(--sh-6);
+      border: 1px solid var(--sh-border);
+      box-shadow: var(--sh-shadow-sm);
+    }
+
+    section h2 {
+      display: flex;
+      align-items: center;
+      gap: var(--sh-3);
+      flex-wrap: wrap;
+      font-size: 1.875rem;
+      line-height: 1.2;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      margin: 0 0 var(--sh-6);
+      color: var(--sh-foreground);
+    }
+
+    .source-link {
+      font-size: 0.8125rem;
+      color: var(--sh-muted-foreground);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .source-link:hover { color: var(--sh-foreground); text-decoration: underline; }
+
+    h3 {
+      font-size: 1.25rem;
+      line-height: 1.4;
+      font-weight: 600;
+      letter-spacing: -0.015em;
+      margin: var(--sh-6) 0 var(--sh-3);
+      color: var(--sh-foreground);
+    }
+
+    h4 {
+      font-size: 0.9375rem;
+      line-height: 1.4;
+      font-weight: 600;
+      margin: var(--sh-4) 0 var(--sh-2);
+      color: var(--sh-foreground);
+    }
+
+    p { margin: 0 0 var(--sh-3); }
+
+    /* Brand */
+    #brand .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--sh-3);
+      padding: var(--sh-3) var(--sh-6);
+      background: var(--sh-primary);
+      border-radius: var(--sh-radius-lg);
+      color: var(--sh-primary-foreground);
+      font-size: 1.875rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+    }
+    #brand .brand-mark svg { width: 36px; height: 36px; }
+    #brand .pillars {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--sh-4);
+      margin-top: var(--sh-6);
+    }
+    #brand .pillar {
+      padding: var(--sh-4);
+      background: var(--sh-muted);
+      border-radius: var(--sh-radius);
+    }
+    #brand .pillar h4 { margin-top: 0; }
+
+    /* Color */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(11, 1fr);
+      gap: 2px;
+      margin-bottom: var(--sh-4);
+    }
+    .color-cell {
+      aspect-ratio: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0.375rem;
+      font-size: 0.625rem;
+      font-family: var(--sh-mono);
+      font-weight: 500;
+    }
+    .color-cell:first-child { border-radius: var(--sh-radius) 0 0 var(--sh-radius); }
+    .color-cell:last-child { border-radius: 0 var(--sh-radius) var(--sh-radius) 0; }
+
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--sh-2);
+      margin-bottom: var(--sh-4);
+    }
+    .role-chip {
+      padding: var(--sh-3) var(--sh-4);
+      border-radius: var(--sh-radius);
+      font-size: 0.8125rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 500;
+      border: 1px solid var(--sh-border);
+    }
+    .role-chip code { font-size: 11px; opacity: 0.7; font-family: var(--sh-mono); }
+
+    /* Typography */
+    .type-row {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: var(--sh-4);
+      padding: var(--sh-3) 0;
+      border-bottom: 1px solid var(--sh-border);
+      align-items: baseline;
+    }
+    .type-row:last-child { border-bottom: 0; }
+    .type-row .label {
+      font-family: var(--sh-mono);
+      font-size: 0.75rem;
+      color: var(--sh-muted-foreground);
+    }
+    .h1-text { font-size: 3rem; font-weight: 800; line-height: 1; letter-spacing: -0.04em; }
+    .h2-text { font-size: 2.25rem; font-weight: 600; line-height: 1.2; letter-spacing: -0.025em; }
+    .h3-text { font-size: 1.875rem; font-weight: 600; line-height: 1.2; letter-spacing: -0.025em; }
+    .h4-text { font-size: 1.5rem; font-weight: 600; line-height: 1.3; letter-spacing: -0.015em; }
+    .lead-text { font-size: 1.25rem; line-height: 1.6; color: var(--sh-muted-foreground); }
+    .body-text { font-size: 1rem; line-height: 1.75; }
+    .small-text { font-size: 0.875rem; font-weight: 500; line-height: 1.4; }
+    .muted-text { font-size: 0.875rem; color: var(--sh-muted-foreground); line-height: 1.4; }
+    .blockquote-text { font-size: 1rem; line-height: 1.75; border-left: 2px solid var(--sh-border); padding-left: 1rem; font-style: italic; }
+    .code-text { font-family: var(--sh-mono); font-size: 0.875rem; background: var(--sh-muted); padding: 0.2rem 0.4rem; border-radius: var(--sh-radius-sm); font-weight: 600; }
+
+    /* Iconography */
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(80px,1fr));
+      gap: var(--sh-3);
+    }
+    .icon-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.375rem;
+      padding: var(--sh-3);
+      background: var(--sh-muted);
+      border-radius: var(--sh-radius);
+    }
+    .icon-cell svg { width: 24px; height: 24px; stroke: var(--sh-foreground); }
+    .icon-cell span { font-size: 0.6875rem; color: var(--sh-muted-foreground); }
+
+    /* Buttons */
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--sh-2);
+      align-items: center;
+      margin-bottom: var(--sh-3);
+    }
+
+    .sh-btn {
+      font-family: var(--sh-font);
+      font-size: 0.875rem;
+      font-weight: 500;
+      line-height: 1;
+      padding: 0.625rem 1rem;
+      border-radius: var(--sh-radius);
+      border: 1px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      height: 2.25rem;
+      transition: all 0.15s;
+    }
+    .sh-btn--default { background: var(--sh-primary); color: var(--sh-primary-foreground); }
+    .sh-btn--default:hover { background: var(--sh-zinc-800); }
+    .sh-btn--secondary { background: var(--sh-secondary); color: var(--sh-secondary-foreground); }
+    .sh-btn--secondary:hover { background: var(--sh-zinc-200); }
+    .sh-btn--destructive { background: var(--sh-destructive); color: var(--sh-destructive-foreground); }
+    .sh-btn--destructive:hover { background: #DC2626; }
+    .sh-btn--outline { background: var(--sh-background); color: var(--sh-foreground); border-color: var(--sh-border); }
+    .sh-btn--outline:hover { background: var(--sh-accent); color: var(--sh-accent-foreground); }
+    .sh-btn--ghost { background: transparent; color: var(--sh-foreground); }
+    .sh-btn--ghost:hover { background: var(--sh-accent); }
+    .sh-btn--link { background: transparent; color: var(--sh-foreground); text-decoration: underline; padding: 0.625rem 0.5rem; }
+    .sh-btn--icon { width: 2.25rem; padding: 0; justify-content: center; }
+    .sh-btn--sm { height: 2rem; padding: 0.375rem 0.75rem; font-size: 0.8125rem; }
+    .sh-btn--lg { height: 2.5rem; padding: 0.75rem 2rem; font-size: 0.9375rem; }
+    .sh-btn:disabled { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
+    .sh-btn:focus-visible { outline: 2px solid var(--sh-ring); outline-offset: 2px; }
+
+    /* Form */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+      gap: var(--sh-4);
+    }
+    .sh-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .sh-label {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--sh-foreground);
+      line-height: 1;
+    }
+    .sh-input {
+      display: flex;
+      width: 100%;
+      height: 2.25rem;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.875rem;
+      line-height: 1.4;
+      color: var(--sh-foreground);
+      background-color: var(--sh-background);
+      border: 1px solid var(--sh-input);
+      border-radius: var(--sh-radius);
+      transition: all 0.15s;
+      font-family: inherit;
+    }
+    .sh-input:focus {
+      outline: 2px solid var(--sh-ring);
+      outline-offset: 2px;
+      border-color: var(--sh-ring);
+    }
+    .sh-input::placeholder { color: var(--sh-muted-foreground); }
+    .sh-input.invalid { border-color: var(--sh-destructive); }
+    textarea.sh-input { height: auto; min-height: 80px; padding: 0.5rem 0.75rem; }
+    .sh-help { font-size: 0.8125rem; color: var(--sh-muted-foreground); }
+    .sh-error { font-size: 0.8125rem; color: var(--sh-destructive); font-weight: 500; }
+
+    .sh-check {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+    .sh-check input { width: 1rem; height: 1rem; accent-color: var(--sh-primary); border-radius: var(--sh-radius-sm); }
+
+    .sh-switch {
+      position: relative; display: inline-block; width: 2.75rem; height: 1.5rem;
+    }
+    .sh-switch input { opacity: 0; width: 0; height: 0; }
+    .sh-switch .slider {
+      position: absolute; cursor: pointer; inset: 0;
+      background: var(--sh-zinc-200);
+      border-radius: 9999px;
+      transition: 0.2s;
+    }
+    .sh-switch .slider::before {
+      content: ''; position: absolute;
+      width: 1.125rem; height: 1.125rem;
+      left: 3px; top: 3px;
+      background: var(--sh-background);
+      border-radius: 50%;
+      transition: 0.2s;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+    .sh-switch input:checked + .slider { background: var(--sh-primary); }
+    .sh-switch input:checked + .slider::before { transform: translateX(1.25rem); }
+
+    .sh-range { width: 100%; accent-color: var(--sh-primary); }
+
+    /* Surfaces / Cards */
+    .surface-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
+      gap: var(--sh-4);
+    }
+    .sh-card {
+      background: var(--sh-card);
+      border: 1px solid var(--sh-border);
+      border-radius: var(--sh-radius-xl);
+      box-shadow: var(--sh-shadow-sm);
+      overflow: hidden;
+    }
+    .sh-card-header { padding: var(--sh-6) var(--sh-6) 0; }
+    .sh-card-title { font-size: 1.5rem; font-weight: 600; margin: 0; letter-spacing: -0.015em; }
+    .sh-card-description { font-size: 0.875rem; color: var(--sh-muted-foreground); margin: 0.375rem 0 0; }
+    .sh-card-content { padding: var(--sh-6); }
+    .sh-card-footer { padding: 0 var(--sh-6) var(--sh-6); display: flex; gap: 0.5rem; }
+
+    .sh-stat {
+      padding: var(--sh-4);
+      background: var(--sh-card);
+      border: 1px solid var(--sh-border);
+      border-radius: var(--sh-radius-xl);
+    }
+    .sh-stat .label { font-size: 0.875rem; color: var(--sh-muted-foreground); margin-bottom: 0.25rem; font-weight: 500; }
+    .sh-stat .num { font-size: 2rem; font-weight: 700; line-height: 1; letter-spacing: -0.025em; }
+    .sh-stat .delta { font-size: 0.75rem; color: var(--sh-muted-foreground); margin-top: 0.5rem; }
+
+    .sh-modal {
+      background: var(--sh-background);
+      padding: var(--sh-6);
+      border-radius: var(--sh-radius-lg);
+      box-shadow: var(--sh-shadow-lg);
+      max-width: 425px;
+      border: 1px solid var(--sh-border);
+    }
+
+    /* Feedback */
+    .sh-alert {
+      padding: var(--sh-4);
+      border-radius: var(--sh-radius);
+      margin-bottom: var(--sh-2);
+      font-size: 0.875rem;
+      border: 1px solid var(--sh-border);
+      background: var(--sh-background);
+      color: var(--sh-foreground);
+      display: flex;
+      gap: var(--sh-3);
+      align-items: flex-start;
+    }
+    .sh-alert--default { background: var(--sh-background); border-color: var(--sh-border); }
+    .sh-alert--destructive { background: var(--sh-background); border-color: var(--sh-destructive); color: var(--sh-destructive); }
+    .sh-alert .title { font-weight: 500; line-height: 1.2; margin-bottom: 0.25rem; }
+    .sh-alert .desc { font-size: 0.875rem; opacity: 0.85; }
+
+    .sh-toast {
+      background: var(--sh-background);
+      border: 1px solid var(--sh-border);
+      border-radius: var(--sh-radius);
+      box-shadow: var(--sh-shadow-lg);
+      padding: 1rem;
+      max-width: 380px;
+      display: flex;
+      gap: var(--sh-3);
+      align-items: flex-start;
+    }
+    .sh-toast .title { font-weight: 600; font-size: 0.875rem; }
+    .sh-toast .desc { font-size: 0.8125rem; color: var(--sh-muted-foreground); margin-top: 0.25rem; }
+
+    .sh-chip-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+    .sh-bdg {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.125rem 0.625rem;
+      border-radius: var(--sh-radius-full);
+      font-size: 0.75rem;
+      font-weight: 600;
+      border: 1px solid transparent;
+    }
+    .sh-bdg--default { background: var(--sh-primary); color: var(--sh-primary-foreground); }
+    .sh-bdg--secondary { background: var(--sh-secondary); color: var(--sh-secondary-foreground); }
+    .sh-bdg--destructive { background: var(--sh-destructive); color: var(--sh-destructive-foreground); }
+    .sh-bdg--outline { background: transparent; color: var(--sh-foreground); border-color: var(--sh-border); }
+
+    .sh-progress {
+      width: 100%; height: 0.5rem;
+      background: var(--sh-secondary);
+      border-radius: var(--sh-radius-full);
+      overflow: hidden;
+    }
+    .sh-progress::after {
+      content: ''; display: block;
+      height: 100%; width: 60%;
+      background: var(--sh-primary);
+      transition: width 0.3s;
+    }
+
+    .sh-spinner {
+      width: 1.25rem; height: 1.25rem;
+      border: 2px solid var(--sh-border);
+      border-top-color: var(--sh-primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .sh-skeleton {
+      height: 1rem;
+      background: var(--sh-muted);
+      border-radius: var(--sh-radius);
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    @keyframes pulse { 50% { opacity: 0.5; } }
+
+    /* Navigation */
+    .sh-tabs {
+      display: inline-flex;
+      gap: 0;
+      background: var(--sh-muted);
+      padding: 0.25rem;
+      border-radius: var(--sh-radius);
+      margin-bottom: var(--sh-3);
+    }
+    .sh-tab {
+      padding: 0.375rem 0.75rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--sh-muted-foreground);
+      border: 0;
+      background: transparent;
+      cursor: pointer;
+      border-radius: var(--sh-radius-sm);
+    }
+    .sh-tab.active { background: var(--sh-background); color: var(--sh-foreground); box-shadow: var(--sh-shadow-sm); }
+
+    .sh-breadcrumb { display: flex; gap: 0.5rem; align-items: center; font-size: 0.875rem; color: var(--sh-muted-foreground); }
+    .sh-breadcrumb a { color: var(--sh-muted-foreground); text-decoration: none; }
+    .sh-breadcrumb a:hover { color: var(--sh-foreground); }
+    .sh-breadcrumb .current { color: var(--sh-foreground); font-weight: 500; }
+
+    .sh-pagination { display: flex; gap: 0.25rem; align-items: center; }
+    .sh-pagination button {
+      width: 2.25rem; height: 2.25rem;
+      border-radius: var(--sh-radius);
+      border: 1px solid var(--sh-border);
+      background: var(--sh-background);
+      color: var(--sh-foreground);
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+    .sh-pagination button.active { background: var(--sh-primary); color: var(--sh-primary-foreground); border-color: var(--sh-primary); }
+    .sh-pagination button:hover:not(.active) { background: var(--sh-accent); }
+
+    .sh-navbar {
+      display: flex; align-items: center; gap: 1rem;
+      padding: 0.75rem 1rem;
+      background: var(--sh-background);
+      border-radius: var(--sh-radius);
+      border: 1px solid var(--sh-border);
+    }
+    .sh-navbar .brand { font-size: 1rem; font-weight: 700; flex: 1; letter-spacing: -0.015em; }
+    .sh-navbar a { color: var(--sh-muted-foreground); text-decoration: none; padding: 0.375rem 0.75rem; border-radius: var(--sh-radius-sm); font-size: 0.875rem; font-weight: 500; }
+    .sh-navbar a:hover { color: var(--sh-foreground); background: var(--sh-accent); }
+
+    .sh-menu {
+      background: var(--sh-popover);
+      border: 1px solid var(--sh-border);
+      border-radius: var(--sh-radius);
+      box-shadow: var(--sh-shadow-md);
+      padding: 0.25rem;
+      width: 220px;
+    }
+    .sh-menu .label { padding: 0.375rem 0.5rem; font-size: 0.75rem; color: var(--sh-muted-foreground); font-weight: 500; }
+    .sh-menu .item { padding: 0.375rem 0.5rem; font-size: 0.875rem; cursor: pointer; border-radius: var(--sh-radius-sm); display: flex; align-items: center; gap: 0.5rem; }
+    .sh-menu .item:hover { background: var(--sh-accent); }
+    .sh-menu .separator { height: 1px; background: var(--sh-border); margin: 0.25rem 0; }
+    .sh-menu .shortcut { margin-left: auto; font-size: 0.75rem; color: var(--sh-muted-foreground); font-family: var(--sh-mono); }
+
+    /* Data */
+    table.sh-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+      caption-side: bottom;
+    }
+    table.sh-table th, table.sh-table td {
+      text-align: left;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--sh-border);
+    }
+    table.sh-table thead th {
+      font-weight: 500;
+      color: var(--sh-muted-foreground);
+      height: 2.5rem;
+      vertical-align: middle;
+    }
+    table.sh-table tbody tr:hover { background: var(--sh-muted); }
+
+    .sh-list { list-style: none; padding: 0; margin: 0; border: 1px solid var(--sh-border); border-radius: var(--sh-radius); }
+    .sh-list li { padding: var(--sh-3) var(--sh-4); display: flex; gap: var(--sh-3); align-items: center; border-bottom: 1px solid var(--sh-border); }
+    .sh-list li:last-child { border-bottom: 0; }
+
+    .sh-kv { display: grid; grid-template-columns: 140px 1fr; gap: 0.75rem; font-size: 0.875rem; }
+    .sh-kv dt { color: var(--sh-muted-foreground); font-weight: 500; }
+    .sh-kv dd { margin: 0; color: var(--sh-foreground); }
+
+    .sh-avatar {
+      width: 2.5rem; height: 2.5rem;
+      border-radius: 50%;
+      background: var(--sh-muted);
+      color: var(--sh-foreground);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-weight: 500;
+      font-size: 0.875rem;
+      border: 1px solid var(--sh-border);
+    }
+
+    .sh-empty {
+      text-align: center;
+      padding: var(--sh-12) var(--sh-4);
+      color: var(--sh-muted-foreground);
+      border: 1px dashed var(--sh-border);
+      border-radius: var(--sh-radius);
+    }
+    .sh-empty svg { width: 48px; height: 48px; opacity: 0.4; }
+
+    /* Layout */
+    .grid-demo {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 0.5rem;
+      background: var(--sh-muted);
+      padding: 1rem;
+      border-radius: var(--sh-radius);
+    }
+    .grid-demo > div {
+      background: var(--sh-background);
+      color: var(--sh-foreground);
+      padding: 0.625rem;
+      border-radius: var(--sh-radius-sm);
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-align: center;
+      border: 1px solid var(--sh-border);
+    }
+
+    .scale-row { display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: flex-end; margin-bottom: var(--sh-4); }
+    .scale-item { display: flex; flex-direction: column; gap: 0.375rem; align-items: center; }
+    .scale-item .swatch { background: var(--sh-primary); }
+    .scale-item .lbl { font-size: 0.6875rem; font-family: var(--sh-mono); color: var(--sh-muted-foreground); }
+
+    .shadow-demo {
+      width: 96px; height: 96px;
+      background: var(--sh-background);
+      border-radius: var(--sh-radius);
+      display: inline-flex; align-items: center; justify-content: center;
+      margin-right: 1rem; margin-bottom: 1rem;
+      font-size: 0.6875rem; font-family: var(--sh-mono); color: var(--sh-muted-foreground);
+      border: 1px solid var(--sh-border);
+    }
+
+    /* Footer */
+    .ds-footer {
+      background: var(--sh-zinc-950);
+      padding: var(--sh-8);
+      margin-top: var(--sh-12);
+      color: var(--sh-zinc-300);
+    }
+    .ds-footer h3 { margin-top: 0; color: var(--sh-zinc-50); }
+    .ds-footer ul { padding-left: 1.25rem; }
+    .ds-footer li { margin-bottom: 0.25rem; word-break: break-all; font-size: 0.8125rem; }
+    .ds-footer a { color: var(--sh-zinc-300); text-decoration: none; }
+    .ds-footer a:hover { color: var(--sh-zinc-50); text-decoration: underline; }
+    .license-note { font-size: 0.8125rem; color: var(--sh-zinc-400); margin-top: var(--sh-4); }
+    .meta-note { font-size: 0.75rem; color: var(--sh-zinc-500); font-family: var(--sh-mono); margin-top: 0.5rem; }
+
+    @media (max-width: 720px) {
+      .ds-header h1 { font-size: 2.5rem; }
+      main { padding: var(--sh-4); }
+      section { padding: var(--sh-4); }
+      .type-row { grid-template-columns: 1fr; }
+      .color-grid { grid-template-columns: repeat(6, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <header class="ds-header">
+    <a href="index.html" class="back-link">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Catalog
+    </a>
+    <h1>shadcn/ui</h1>
+    <div class="meta">
+      <span class="badge kind-ds">component-library</span>
+      <span class="badge fidelity-documented">documented</span>
+      <span class="badge source-verified">source: verified</span>
+      <a href="https://ui.shadcn.com" target="_blank" rel="noopener">Official ↗</a>
+    </div>
+    <p class="tagline">A copy-paste component collection built on Radix and Tailwind, defining the modern minimalist aesthetic.</p>
+  </header>
+
+  <nav class="toc" aria-label="Table of contents">
+    <ul>
+      <li><a href="#brand">Brand</a></li>
+      <li><a href="#color">Color</a></li>
+      <li><a href="#typography">Typography</a></li>
+      <li><a href="#iconography">Iconography</a></li>
+      <li><a href="#buttons">Buttons</a></li>
+      <li><a href="#form">Form</a></li>
+      <li><a href="#surfaces">Surfaces</a></li>
+      <li><a href="#feedback">Feedback</a></li>
+      <li><a href="#navigation">Navigation</a></li>
+      <li><a href="#data">Data</a></li>
+      <li><a href="#layout">Layout</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="brand" data-fidelity="documented">
+      <h2>
+        <span>Brand</span>
+        <span class="badge fidelity-documented">documented</span>
+      </h2>
+      <div class="brand-mark">
+        <svg viewBox="0 0 36 36" fill="none">
+          <path d="M9 27 L27 9" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+          <path d="M19 27 L27 19" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+        shadcn/ui
+      </div>
+      <p style="margin-top: 1.5rem; max-width: 720px; font-size: 1rem; color: var(--sh-muted-foreground);">
+        shadcn/ui is not a component library — it's a collection of re-usable components you copy directly into your project. Built on Radix Primitives for accessibility and Tailwind CSS for styling, it gives you full ownership of the source code and complete control over how every component looks and behaves.
+      </p>
+      <div class="pillars">
+        <div class="pillar">
+          <h4>Open code</h4>
+          <p style="font-size:0.875rem;color:var(--sh-muted-foreground);margin:0">No black box. The CLI scaffolds component source directly into your repo.</p>
+        </div>
+        <div class="pillar">
+          <h4>Accessible</h4>
+          <p style="font-size:0.875rem;color:var(--sh-muted-foreground);margin:0">Radix Primitives handle keyboard, focus, ARIA, and screen reader behaviour out of the box.</p>
+        </div>
+        <div class="pillar">
+          <h4>Themeable</h4>
+          <p style="font-size:0.875rem;color:var(--sh-muted-foreground);margin:0">CSS variables drive every token. Swap themes (Zinc, Slate, Stone, Gray, Neutral) instantly.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="color" data-fidelity="documented">
+      <h2>
+        <span>Color</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://ui.shadcn.com/colors" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--sh-muted-foreground)">shadcn/ui exposes a small set of semantic CSS variables (background, foreground, primary, muted, accent, destructive, border, ring) and ships five base themes: Zinc, Slate, Stone, Gray, Neutral. Below: the default Zinc scale.</p>
+
+      <h3>Zinc scale</h3>
+      <div class="color-grid">
+        <div class="color-cell" style="background:var(--sh-zinc-50);color:var(--sh-zinc-900);border:1px solid var(--sh-border)">50</div>
+        <div class="color-cell" style="background:var(--sh-zinc-100);color:var(--sh-zinc-900)">100</div>
+        <div class="color-cell" style="background:var(--sh-zinc-200);color:var(--sh-zinc-900)">200</div>
+        <div class="color-cell" style="background:var(--sh-zinc-300);color:var(--sh-zinc-900)">300</div>
+        <div class="color-cell" style="background:var(--sh-zinc-400);color:var(--sh-zinc-900)">400</div>
+        <div class="color-cell" style="background:var(--sh-zinc-500);color:white">500</div>
+        <div class="color-cell" style="background:var(--sh-zinc-600);color:white">600</div>
+        <div class="color-cell" style="background:var(--sh-zinc-700);color:white">700</div>
+        <div class="color-cell" style="background:var(--sh-zinc-800);color:white">800</div>
+        <div class="color-cell" style="background:var(--sh-zinc-900);color:white">900</div>
+        <div class="color-cell" style="background:var(--sh-zinc-950);color:white">950</div>
+      </div>
+
+      <h3>Semantic roles (Light)</h3>
+      <div class="role-grid">
+        <div class="role-chip" style="background:var(--sh-background);color:var(--sh-foreground)">background <code>#FFFFFF</code></div>
+        <div class="role-chip" style="background:var(--sh-foreground);color:var(--sh-background);border-color:transparent">foreground <code>#09090B</code></div>
+        <div class="role-chip" style="background:var(--sh-primary);color:var(--sh-primary-foreground);border-color:transparent">primary <code>#18181B</code></div>
+        <div class="role-chip" style="background:var(--sh-secondary);color:var(--sh-secondary-foreground)">secondary <code>#F4F4F5</code></div>
+        <div class="role-chip" style="background:var(--sh-muted);color:var(--sh-muted-foreground)">muted <code>#F4F4F5</code></div>
+        <div class="role-chip" style="background:var(--sh-accent);color:var(--sh-accent-foreground)">accent <code>#F4F4F5</code></div>
+        <div class="role-chip" style="background:var(--sh-destructive);color:var(--sh-destructive-foreground);border-color:transparent">destructive <code>#EF4444</code></div>
+        <div class="role-chip" style="background:var(--sh-background);color:var(--sh-foreground);border:2px solid var(--sh-border)">border <code>#E4E4E7</code></div>
+      </div>
+
+      <h3>Chart palette (samples)</h3>
+      <div class="role-grid">
+        <div class="role-chip" style="background:var(--sh-blue);color:white;border-color:transparent">chart-1 <code>#3B82F6</code></div>
+        <div class="role-chip" style="background:var(--sh-emerald);color:white;border-color:transparent">chart-2 <code>#10B981</code></div>
+        <div class="role-chip" style="background:var(--sh-orange);color:white;border-color:transparent">chart-3 <code>#F97316</code></div>
+        <div class="role-chip" style="background:var(--sh-violet);color:white;border-color:transparent">chart-4 <code>#8B5CF6</code></div>
+      </div>
+    </section>
+
+    <section id="typography" data-fidelity="documented">
+      <h2>
+        <span>Typography</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://ui.shadcn.com/docs/components/typography" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--sh-muted-foreground)">shadcn/ui pairs Inter (default) or Geist Sans with a tight letter-spacing scale on display sizes. The typography component documents h1-h4, lead, large, small, muted, and blockquote utility classes.</p>
+
+      <div class="type-row"><div class="label">h1 · 3rem · 800</div><div class="h1-text">Taxing Laws Concept</div></div>
+      <div class="type-row"><div class="label">h2 · 2.25rem · 600</div><div class="h2-text">The People of the Kingdom</div></div>
+      <div class="type-row"><div class="label">h3 · 1.875rem · 600</div><div class="h3-text">The Joke Tax</div></div>
+      <div class="type-row"><div class="label">h4 · 1.5rem · 600</div><div class="h4-text">People stopped telling jokes</div></div>
+      <div class="type-row"><div class="label">p (lead)</div><div class="lead-text">A modal dialog that interrupts the user with important content and expects a response.</div></div>
+      <div class="type-row"><div class="label">p (default)</div><div class="body-text">The default body text style. Inter at 1rem with line-height 1.75. Used for paragraph copy in articles and documentation pages.</div></div>
+      <div class="type-row"><div class="label">small</div><div class="small-text">Email Address</div></div>
+      <div class="type-row"><div class="label">muted</div><div class="muted-text">Enter your email address.</div></div>
+      <div class="type-row"><div class="label">blockquote</div><div class="blockquote-text">"After all," he said, "everyone enjoys a good joke, so it's only fair that they should pay for the privilege."</div></div>
+      <div class="type-row"><div class="label">code</div><div><span class="code-text">@radix-ui/react-dialog</span></div></div>
+    </section>
+
+    <section id="iconography" data-fidelity="documented">
+      <h2>
+        <span>Iconography</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://lucide.dev/" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--sh-muted-foreground)">shadcn/ui uses Lucide (ISC) as the official icon set: 24px stroke icons with a 2px stroke-width and rounded line-cap. The samples below mirror Lucide's house, search, user, send and other widely-used icons.</p>
+      <div class="icon-grid">
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Home</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><span>Search</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>User</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg><span>Send</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg><span>FileText</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span>Clock</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg><span>Settings</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg><span>Camera</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>Check</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg><span>X</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg><span>Plus</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>MessageSquare</span></div>
+      </div>
+    </section>
+
+    <section id="buttons" data-fidelity="documented">
+      <h2>
+        <span>Buttons</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://ui.shadcn.com/docs/components/button" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--sh-muted-foreground)">Six button variants — default, secondary, destructive, outline, ghost, link — and three sizes (sm, default, lg, icon). Default radius 0.5rem with focus-visible ring.</p>
+
+      <h3>Variants</h3>
+      <div class="button-row">
+        <button class="sh-btn sh-btn--default">Default</button>
+        <button class="sh-btn sh-btn--secondary">Secondary</button>
+        <button class="sh-btn sh-btn--destructive">Destructive</button>
+        <button class="sh-btn sh-btn--outline">Outline</button>
+        <button class="sh-btn sh-btn--ghost">Ghost</button>
+        <button class="sh-btn sh-btn--link">Link</button>
+        <button class="sh-btn sh-btn--outline sh-btn--icon" aria-label="add">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+        </button>
+      </div>
+
+      <h3>Sizes</h3>
+      <div class="button-row">
+        <button class="sh-btn sh-btn--default sh-btn--sm">Small</button>
+        <button class="sh-btn sh-btn--default">Default</button>
+        <button class="sh-btn sh-btn--default sh-btn--lg">Large</button>
+      </div>
+
+      <h3>States</h3>
+      <div class="button-row">
+        <button class="sh-btn sh-btn--default">Enabled</button>
+        <button class="sh-btn sh-btn--default" style="background:var(--sh-zinc-800)">Hover</button>
+        <button class="sh-btn sh-btn--default" style="outline:2px solid var(--sh-ring);outline-offset:2px">Focus</button>
+        <button class="sh-btn sh-btn--default" disabled>Disabled</button>
+        <button class="sh-btn sh-btn--default"><div class="sh-spinner" style="width:0.875rem;height:0.875rem;border-width:1.5px;border-color:rgba(255,255,255,0.3);border-top-color:white"></div>Loading</button>
+      </div>
+    </section>
+
+    <section id="form" data-fidelity="documented">
+      <h2>
+        <span>Form</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://ui.shadcn.com/docs/components/input" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--sh-muted-foreground)">Inputs use h-9 (2.25rem), border, rounded-md (0.5rem), and a focus-visible ring matching the primary color. Form fields stack label, input, description, and message vertically.</p>
+
+      <h3>Inputs</h3>
+      <div class="form-grid">
+        <div class="sh-field">
+          <label class="sh-label" for="sh1">Email</label>
+          <input class="sh-input" type="email" id="sh1" placeholder="name@example.com">
+          <span class="sh-help">We'll never share your email.</span>
+        </div>
+        <div class="sh-field">
+          <label class="sh-label" for="sh2">Username</label>
+          <input class="sh-input" type="text" id="sh2" value="shadcn">
+          <span class="sh-help">This is your public display name.</span>
+        </div>
+        <div class="sh-field">
+          <label class="sh-label" for="sh3">Bio</label>
+          <textarea class="sh-input" id="sh3" rows="3">I own a copy of every component on this page.</textarea>
+        </div>
+        <div class="sh-field">
+          <label class="sh-label" for="sh4">Theme</label>
+          <select class="sh-input" id="sh4">
+            <option>Zinc</option>
+            <option>Slate</option>
+            <option>Stone</option>
+            <option>Gray</option>
+            <option>Neutral</option>
+          </select>
+        </div>
+        <div class="sh-field">
+          <label class="sh-label" for="sh5">Invalid</label>
+          <input class="sh-input invalid" type="text" id="sh5" value="invalid@">
+          <span class="sh-error">Please enter a valid email.</span>
+        </div>
+        <div class="sh-field">
+          <label class="sh-label" for="sh6">Search</label>
+          <input class="sh-input" type="search" id="sh6" placeholder="Search components...">
+        </div>
+      </div>
+
+      <h3>Selection controls</h3>
+      <div class="button-row">
+        <label class="sh-check"><input type="checkbox" checked>Accept terms</label>
+        <label class="sh-check"><input type="checkbox">Newsletter</label>
+        <label class="sh-check"><input type="radio" name="r1" checked>Light</label>
+        <label class="sh-check"><input type="radio" name="r1">Dark</label>
+        <label class="sh-switch"><input type="checkbox" checked><span class="slider"></span></label>
+        <label class="sh-switch"><input type="checkbox"><span class="slider"></span></label>
+      </div>
+
+      <h3>Range &amp; file</h3>
+      <div style="max-width:400px;display:flex;flex-direction:column;gap:0.75rem">
+        <input type="range" class="sh-range" min="0" max="100" value="60">
+        <input type="file" class="sh-input" style="height:auto;padding:0.5rem 0.75rem">
+      </div>
+    </section>
+
+    <section id="surfaces" data-fidelity="documented">
+      <h2>
+        <span>Surfaces</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://ui.shadcn.com/docs/components/card" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--sh-muted-foreground)">The card primitive composes Header (Title + Description), Content, and Footer. All edges share a 0.75rem radius and a 1px border + tiny shadow for separation.</p>
+
+      <div class="surface-grid">
+        <div class="sh-card">
+          <div class="sh-card-header">
+            <h3 class="sh-card-title">Create project</h3>
+            <p class="sh-card-description">Deploy your new project in one click.</p>
+          </div>
+          <div class="sh-card-content">
+            <div class="sh-field"><label class="sh-label">Name</label><input class="sh-input" type="text" value="My Project"></div>
+          </div>
+          <div class="sh-card-footer">
+            <button class="sh-btn sh-btn--outline" style="margin-left:auto">Cancel</button>
+            <button class="sh-btn sh-btn--default">Deploy</button>
+          </div>
+        </div>
+        <div class="sh-card">
+          <div class="sh-card-header">
+            <h3 class="sh-card-title">Notifications</h3>
+            <p class="sh-card-description">You have 3 unread messages.</p>
+          </div>
+          <div class="sh-card-content">
+            <div style="display:flex;flex-direction:column;gap:0.5rem">
+              <div style="display:flex;gap:0.5rem;align-items:flex-start"><span style="width:8px;height:8px;background:var(--sh-blue);border-radius:50%;margin-top:6px"></span><div><div style="font-size:0.875rem;font-weight:500">Your call has been confirmed.</div><div style="font-size:0.75rem;color:var(--sh-muted-foreground)">1 hour ago</div></div></div>
+              <div style="display:flex;gap:0.5rem;align-items:flex-start"><span style="width:8px;height:8px;background:var(--sh-emerald);border-radius:50%;margin-top:6px"></span><div><div style="font-size:0.875rem;font-weight:500">You have a new message.</div><div style="font-size:0.75rem;color:var(--sh-muted-foreground)">2 hours ago</div></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="sh-stat">
+          <div class="label">Total Revenue</div>
+          <div class="num">$45,231</div>
+          <div class="delta">+20.1% from last month</div>
+        </div>
+        <div class="sh-stat">
+          <div class="label">Subscriptions</div>
+          <div class="num">+2,350</div>
+          <div class="delta">+180.1% from last month</div>
+        </div>
+      </div>
+
+      <h3>Modal</h3>
+      <div class="sh-modal">
+        <h3 style="margin-top:0;font-size:1.125rem;font-weight:600;letter-spacing:-0.015em">Are you absolutely sure?</h3>
+        <p style="font-size:0.875rem;color:var(--sh-muted-foreground)">This action cannot be undone. This will permanently delete your account and remove your data from our servers.</p>
+        <div class="button-row" style="justify-content:flex-end;margin:1rem 0 0">
+          <button class="sh-btn sh-btn--outline">Cancel</button>
+          <button class="sh-btn sh-btn--default">Continue</button>
+        </div>
+      </div>
+
+      <h3>Dropdown menu</h3>
+      <div class="sh-menu">
+        <div class="label">My Account</div>
+        <div class="item">Profile <span class="shortcut">⇧⌘P</span></div>
+        <div class="item">Billing <span class="shortcut">⌘B</span></div>
+        <div class="item">Settings <span class="shortcut">⌘S</span></div>
+        <div class="separator"></div>
+        <div class="item">Team</div>
+        <div class="item">Invite users</div>
+        <div class="separator"></div>
+        <div class="item" style="color:var(--sh-destructive)">Log out <span class="shortcut" style="color:var(--sh-destructive)">⇧⌘Q</span></div>
+      </div>
+    </section>
+
+    <section id="feedback" data-fidelity="documented">
+      <h2>
+        <span>Feedback</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://ui.shadcn.com/docs/components/alert" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+
+      <h3>Alerts</h3>
+      <div class="sh-alert sh-alert--default">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.018 0L2 7"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg>
+        <div>
+          <div class="title">Heads up!</div>
+          <div class="desc">You can add components to your app using the cli.</div>
+        </div>
+      </div>
+      <div class="sh-alert sh-alert--destructive">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+        <div>
+          <div class="title">Error</div>
+          <div class="desc">Your session has expired. Please log in again.</div>
+        </div>
+      </div>
+
+      <h3>Toast</h3>
+      <div class="sh-toast">
+        <div style="flex:1">
+          <div class="title">Scheduled: Catch up</div>
+          <div class="desc">Friday, February 10, 2024 at 5:57 PM</div>
+        </div>
+        <button class="sh-btn sh-btn--outline sh-btn--sm">Undo</button>
+      </div>
+
+      <h3>Badges</h3>
+      <div class="sh-chip-row">
+        <span class="sh-bdg sh-bdg--default">Default</span>
+        <span class="sh-bdg sh-bdg--secondary">Secondary</span>
+        <span class="sh-bdg sh-bdg--destructive">Destructive</span>
+        <span class="sh-bdg sh-bdg--outline">Outline</span>
+      </div>
+
+      <h3>Progress &amp; loading</h3>
+      <div style="display:flex;flex-direction:column;gap:0.75rem;max-width:480px">
+        <div class="sh-progress"></div>
+        <div style="display:flex;gap:0.75rem;align-items:center"><div class="sh-spinner"></div><span style="font-size:0.875rem;color:var(--sh-muted-foreground)">Loading...</span></div>
+        <div class="sh-skeleton" style="width:80%"></div>
+        <div class="sh-skeleton" style="width:60%"></div>
+        <div class="sh-skeleton" style="width:40%"></div>
+      </div>
+    </section>
+
+    <section id="navigation" data-fidelity="documented">
+      <h2>
+        <span>Navigation</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://ui.shadcn.com/docs/components/tabs" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+
+      <h3>Tabs</h3>
+      <div class="sh-tabs">
+        <button class="sh-tab active">Account</button>
+        <button class="sh-tab">Password</button>
+        <button class="sh-tab">Billing</button>
+        <button class="sh-tab">Notifications</button>
+      </div>
+
+      <h3>Breadcrumb</h3>
+      <div class="sh-breadcrumb">
+        <a href="#">Home</a><span>/</span>
+        <a href="#">Components</a><span>/</span>
+        <span class="current">Breadcrumb</span>
+      </div>
+
+      <h3>Pagination</h3>
+      <div class="sh-pagination">
+        <button>‹</button>
+        <button class="active">1</button>
+        <button>2</button>
+        <button>3</button>
+        <button>4</button>
+        <button>›</button>
+      </div>
+
+      <h3>Navbar</h3>
+      <div class="sh-navbar">
+        <span class="brand">shadcn/ui</span>
+        <a href="#">Docs</a>
+        <a href="#">Components</a>
+        <a href="#">Themes</a>
+        <a href="#">Examples</a>
+        <button class="sh-btn sh-btn--default sh-btn--sm">Get Started</button>
+      </div>
+    </section>
+
+    <section id="data" data-fidelity="documented">
+      <h2>
+        <span>Data</span>
+        <span class="badge fidelity-documented">documented</span>
+        <a href="https://ui.shadcn.com/docs/components/table" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+
+      <h3>Table</h3>
+      <table class="sh-table">
+        <thead>
+          <tr><th>Invoice</th><th>Status</th><th>Method</th><th style="text-align:right">Amount</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>INV001</td><td><span class="sh-bdg sh-bdg--default">Paid</span></td><td>Credit Card</td><td style="text-align:right">$250.00</td></tr>
+          <tr><td>INV002</td><td><span class="sh-bdg sh-bdg--outline">Pending</span></td><td>PayPal</td><td style="text-align:right">$150.00</td></tr>
+          <tr><td>INV003</td><td><span class="sh-bdg sh-bdg--destructive">Unpaid</span></td><td>Bank Transfer</td><td style="text-align:right">$350.00</td></tr>
+          <tr><td>INV004</td><td><span class="sh-bdg sh-bdg--default">Paid</span></td><td>Credit Card</td><td style="text-align:right">$450.00</td></tr>
+        </tbody>
+      </table>
+
+      <h3>List</h3>
+      <ul class="sh-list">
+        <li><div class="sh-avatar">CN</div><div><strong style="font-size:0.875rem">@shadcn</strong><div style="font-size:0.8125rem;color:var(--sh-muted-foreground)">Maintainer · 2m ago</div></div></li>
+        <li><div class="sh-avatar">AT</div><div><strong style="font-size:0.875rem">Avery Tan</strong><div style="font-size:0.8125rem;color:var(--sh-muted-foreground)">Updated theme · 14m ago</div></div></li>
+        <li><div class="sh-avatar">BY</div><div><strong style="font-size:0.875rem">Brett Yu</strong><div style="font-size:0.8125rem;color:var(--sh-muted-foreground)">Imported tokens · 1h ago</div></div></li>
+      </ul>
+
+      <h3>Description list</h3>
+      <dl class="sh-kv">
+        <dt>Stack</dt><dd>Radix UI + Tailwind CSS</dd>
+        <dt>License</dt><dd>MIT</dd>
+        <dt>Default theme</dt><dd>Zinc · Light</dd>
+        <dt>Generated</dt><dd>2026-05-05</dd>
+      </dl>
+
+      <h3>Empty state</h3>
+      <div class="sh-empty">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><circle cx="9" cy="10" r="0.5" fill="currentColor"/><circle cx="15" cy="10" r="0.5" fill="currentColor"/></svg>
+        <h4 style="margin:0.5rem 0 0.25rem">No components added</h4>
+        <p style="font-size:0.875rem;margin:0">Run <code style="font-size:0.8125rem;background:var(--sh-muted);padding:0.125rem 0.375rem;border-radius:var(--sh-radius-sm)">npx shadcn-ui add button</code> to install your first component.</p>
+      </div>
+    </section>
+
+    <section id="layout" data-fidelity="approximated">
+      <h2>
+        <span>Layout</span>
+        <span class="badge fidelity-approximated">approximated</span>
+        <a href="https://ui.shadcn.com/examples/dashboard" target="_blank" rel="noopener" class="source-link">Official ↗</a>
+      </h2>
+      <p style="color:var(--sh-muted-foreground)">shadcn/ui doesn't ship a grid system — it inherits Tailwind's grid utilities. The dashboard examples use a 12-column responsive layout with consistent gap-4 / gap-6.</p>
+
+      <h3>12-column grid</h3>
+      <div class="grid-demo">
+        <div style="grid-column:span 12">col-span-12</div>
+        <div style="grid-column:span 6">6</div>
+        <div style="grid-column:span 6">6</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+      </div>
+
+      <h3>Spacing scale</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div class="swatch" style="width:4px;height:32px"></div><span class="lbl">1 · 4px</span></div>
+        <div class="scale-item"><div class="swatch" style="width:8px;height:32px"></div><span class="lbl">2 · 8px</span></div>
+        <div class="scale-item"><div class="swatch" style="width:12px;height:32px"></div><span class="lbl">3 · 12px</span></div>
+        <div class="scale-item"><div class="swatch" style="width:16px;height:32px"></div><span class="lbl">4 · 16px</span></div>
+        <div class="scale-item"><div class="swatch" style="width:24px;height:32px"></div><span class="lbl">6 · 24px</span></div>
+        <div class="scale-item"><div class="swatch" style="width:32px;height:32px"></div><span class="lbl">8 · 32px</span></div>
+        <div class="scale-item"><div class="swatch" style="width:48px;height:32px"></div><span class="lbl">12 · 48px</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:32px"></div><span class="lbl">16 · 64px</span></div>
+      </div>
+
+      <h3>Border radius (--radius)</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:0;background:var(--sh-zinc-100);border:1px solid var(--sh-border)"></div><span class="lbl">none</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:calc(0.5rem - 4px);background:var(--sh-zinc-100);border:1px solid var(--sh-border)"></div><span class="lbl">sm</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:calc(0.5rem - 2px);background:var(--sh-zinc-100);border:1px solid var(--sh-border)"></div><span class="lbl">md</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:0.5rem;background:var(--sh-zinc-100);border:1px solid var(--sh-border)"></div><span class="lbl">lg (default)</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:0.75rem;background:var(--sh-zinc-100);border:1px solid var(--sh-border)"></div><span class="lbl">xl</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:9999px;background:var(--sh-zinc-100);border:1px solid var(--sh-border)"></div><span class="lbl">full</span></div>
+      </div>
+
+      <h3>Shadows</h3>
+      <div>
+        <div class="shadow-demo" style="box-shadow:none">none</div>
+        <div class="shadow-demo" style="box-shadow:var(--sh-shadow-sm)">sm</div>
+        <div class="shadow-demo" style="box-shadow:var(--sh-shadow)">DEFAULT</div>
+        <div class="shadow-demo" style="box-shadow:var(--sh-shadow-md)">md</div>
+        <div class="shadow-demo" style="box-shadow:var(--sh-shadow-lg)">lg</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="ds-footer">
+    <h3>Sources</h3>
+    <ul>
+      <li><a href="https://ui.shadcn.com" target="_blank" rel="noopener">https://ui.shadcn.com</a></li>
+      <li><a href="https://ui.shadcn.com/colors" target="_blank" rel="noopener">https://ui.shadcn.com/colors</a></li>
+      <li><a href="https://ui.shadcn.com/docs/components/typography" target="_blank" rel="noopener">https://ui.shadcn.com/docs/components/typography</a></li>
+      <li><a href="https://lucide.dev/" target="_blank" rel="noopener">https://lucide.dev/</a></li>
+      <li><a href="https://ui.shadcn.com/docs/components/button" target="_blank" rel="noopener">https://ui.shadcn.com/docs/components/button</a></li>
+      <li><a href="https://ui.shadcn.com/docs/components/input" target="_blank" rel="noopener">https://ui.shadcn.com/docs/components/input</a></li>
+      <li><a href="https://ui.shadcn.com/docs/components/card" target="_blank" rel="noopener">https://ui.shadcn.com/docs/components/card</a></li>
+      <li><a href="https://ui.shadcn.com/docs/components/alert" target="_blank" rel="noopener">https://ui.shadcn.com/docs/components/alert</a></li>
+      <li><a href="https://ui.shadcn.com/docs/components/tabs" target="_blank" rel="noopener">https://ui.shadcn.com/docs/components/tabs</a></li>
+      <li><a href="https://ui.shadcn.com/docs/components/table" target="_blank" rel="noopener">https://ui.shadcn.com/docs/components/table</a></li>
+      <li><a href="https://ui.shadcn.com/examples/dashboard" target="_blank" rel="noopener">https://ui.shadcn.com/examples/dashboard</a></li>
+    </ul>
+    <p class="license-note">This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with shadcn. shadcn/ui and related trademarks belong to shadcn. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</p>
+    <p class="meta-note">Reproduction date: 2026-05-05 · sourceStatus: verified · fidelity: documented</p>
+  </footer>
+</body>
+</html>

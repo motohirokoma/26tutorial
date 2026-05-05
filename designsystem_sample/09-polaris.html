@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Polaris — Design System Reference</title>
+  <script id="ds-meta" type="application/json">
+{"id":"09-polaris","fileSlug":"09-polaris","schemaVersion":"1"}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Shopify Green */
+      --pl-green: #008060;
+      --pl-green-dark: #004C3F;
+      --pl-green-darker: #002E25;
+      --pl-green-100: #E0F0E9;
+      --pl-green-200: #AEE9D1;
+      --pl-green-300: #6FCDA9;
+      --pl-green-400: #38A582;
+
+      /* Surface */
+      --pl-surface: #FFFFFF;
+      --pl-surface-subdued: #F6F6F7;
+      --pl-surface-bg: #F1F1F1;
+      --pl-surface-hover: #F1F2F3;
+      --pl-surface-pressed: #EDEEEF;
+      --pl-surface-emphasis: #2C6ECB;
+
+      /* Text */
+      --pl-text: #303030;
+      --pl-text-subdued: #6D7175;
+      --pl-text-disabled: #8C9196;
+      --pl-text-on-color: #FFFFFF;
+
+      /* Border */
+      --pl-border: #C9CCCF;
+      --pl-border-subdued: #E1E3E5;
+      --pl-border-disabled: #D2D5D8;
+      --pl-border-input: #8A8A8A;
+
+      /* Semantic */
+      --pl-critical: #D72C0D;
+      --pl-critical-bg: #FED3D1;
+      --pl-critical-text: #8E2C0B;
+      --pl-warning: #FFC453;
+      --pl-warning-bg: #FFF6BC;
+      --pl-warning-text: #916A00;
+      --pl-success: #008060;
+      --pl-success-bg: #AEE9D1;
+      --pl-success-text: #0E5135;
+      --pl-info: #2C6ECB;
+      --pl-info-bg: #DBE7FA;
+      --pl-info-text: #1A2B6A;
+      --pl-highlight: #1A2B6A;
+
+      /* Type — Inter via Google Fonts */
+      --pl-font: Inter, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      --pl-mono: ui-monospace, 'SF Mono', Menlo, monospace;
+
+      /* Shape — Polaris uses 8px primary */
+      --pl-radius-1: 4px;
+      --pl-radius-2: 6px;
+      --pl-radius-3: 8px;
+      --pl-radius-4: 12px;
+      --pl-radius-5: 16px;
+      --pl-radius-pill: 999px;
+
+      /* Spacing — 4px base */
+      --pl-space-1: 4px;
+      --pl-space-2: 8px;
+      --pl-space-3: 12px;
+      --pl-space-4: 16px;
+      --pl-space-5: 20px;
+      --pl-space-6: 24px;
+      --pl-space-7: 32px;
+      --pl-space-8: 48px;
+
+      /* Elevation */
+      --pl-shadow-card: 0 0 0 1px rgba(63,63,68,0.05), 0 1px 3px rgba(63,63,68,0.15);
+      --pl-shadow-md: 0 1px 4px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.08);
+      --pl-shadow-lg: 0 4px 8px rgba(0,0,0,0.08), 0 16px 32px rgba(0,0,0,0.12);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--pl-font);
+      background: var(--pl-surface-bg);
+      color: var(--pl-text);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    code, kbd, pre { font-family: var(--pl-mono); }
+
+    /* Header */
+    .ds-header {
+      background: linear-gradient(135deg, var(--pl-green) 0%, var(--pl-green-dark) 100%);
+      color: white;
+      padding: var(--pl-space-8) var(--pl-space-6) var(--pl-space-6);
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--pl-space-2);
+      color: white;
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: var(--pl-radius-2);
+      font-size: 14px;
+      font-weight: 500;
+      background: rgba(255,255,255,0.15);
+      transition: background 0.15s;
+    }
+    .back-link:hover { background: rgba(255,255,255,0.25); }
+
+    .ds-header h1 {
+      font-size: 44px;
+      line-height: 1.15;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin: var(--pl-space-4) 0 var(--pl-space-3);
+    }
+    .ds-header .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--pl-space-2);
+      align-items: center;
+      margin-bottom: var(--pl-space-3);
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 10px;
+      border-radius: var(--pl-radius-1);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      background: rgba(255,255,255,0.2);
+      color: white;
+    }
+    .badge.kind-ds { background: white; color: var(--pl-green-dark); }
+    .badge.fidelity-documented { background: var(--pl-success-bg); color: var(--pl-success-text); }
+    .badge.fidelity-approximated { background: var(--pl-warning-bg); color: var(--pl-warning-text); }
+    .badge.fidelity-inspired { background: #F0E6FF; color: #4A148C; }
+    .badge.source-legacy { background: var(--pl-warning-bg); color: var(--pl-warning-text); }
+
+    .ds-header a[href*="polaris"] {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 4px 12px;
+      border: 1px solid rgba(255,255,255,0.4);
+      border-radius: var(--pl-radius-2);
+      font-size: 13px;
+    }
+    .ds-header a[href*="polaris"]:hover { background: rgba(255,255,255,0.1); }
+
+    .tagline {
+      font-size: 18px;
+      line-height: 1.5;
+      max-width: 720px;
+      margin: var(--pl-space-4) 0 0;
+      opacity: 0.95;
+    }
+
+    /* TOC */
+    .toc {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255,255,255,0.96);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--pl-border-subdued);
+    }
+    .toc ul {
+      list-style: none;
+      margin: 0;
+      padding: var(--pl-space-3) var(--pl-space-6);
+      display: flex;
+      gap: 4px;
+      overflow-x: auto;
+    }
+    .toc a {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: var(--pl-radius-2);
+      color: var(--pl-text-subdued);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      white-space: nowrap;
+      transition: all 0.15s;
+    }
+    .toc a:hover { background: var(--pl-green-100); color: var(--pl-green-dark); }
+
+    /* Main */
+    main {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: var(--pl-space-6);
+    }
+    section {
+      background: var(--pl-surface);
+      border-radius: var(--pl-radius-4);
+      padding: var(--pl-space-6);
+      margin-bottom: var(--pl-space-5);
+      box-shadow: var(--pl-shadow-card);
+    }
+    section h2 {
+      display: flex;
+      align-items: center;
+      gap: var(--pl-space-3);
+      flex-wrap: wrap;
+      font-size: 28px;
+      line-height: 1.2;
+      font-weight: 700;
+      margin: 0 0 var(--pl-space-5);
+      color: var(--pl-text);
+      letter-spacing: -0.01em;
+    }
+    .source-link {
+      font-size: 13px;
+      color: var(--pl-green);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .source-link:hover { text-decoration: underline; }
+
+    h3 {
+      font-size: 18px;
+      line-height: 1.3;
+      font-weight: 600;
+      margin: var(--pl-space-5) 0 var(--pl-space-3);
+      color: var(--pl-text);
+    }
+    h4 {
+      font-size: 14px;
+      line-height: 1.4;
+      font-weight: 600;
+      margin: var(--pl-space-4) 0 var(--pl-space-2);
+      color: var(--pl-text);
+    }
+    p { margin: 0 0 var(--pl-space-3); }
+
+    /* Brand */
+    #brand .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--pl-space-3);
+      padding: var(--pl-space-3) var(--pl-space-5);
+      background: var(--pl-green);
+      border-radius: var(--pl-radius-3);
+      color: white;
+      font-size: 24px;
+      font-weight: 700;
+    }
+    #brand .brand-mark svg { width: 32px; height: 32px; }
+    #brand .pillars {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--pl-space-4);
+      margin-top: var(--pl-space-5);
+    }
+    #brand .pillar {
+      padding: var(--pl-space-4);
+      background: var(--pl-surface-subdued);
+      border-radius: var(--pl-radius-3);
+    }
+    #brand .pillar h4 { margin-top: 0; color: var(--pl-green-dark); }
+
+    /* Color */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(11, 1fr);
+      gap: 2px;
+      margin-bottom: var(--pl-space-4);
+    }
+    .color-cell {
+      aspect-ratio: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 6px;
+      font-size: 10px;
+      font-family: var(--pl-mono);
+    }
+    .color-cell:first-child { border-radius: var(--pl-radius-2) 0 0 var(--pl-radius-2); }
+    .color-cell:last-child { border-radius: 0 var(--pl-radius-2) var(--pl-radius-2) 0; }
+    .semantic-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
+      gap: var(--pl-space-3);
+    }
+    .sem-card {
+      padding: var(--pl-space-4);
+      border-radius: var(--pl-radius-3);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .sem-card .label { font-size: 13px; font-weight: 600; }
+    .sem-card .hex { font-family: var(--pl-mono); font-size: 12px; opacity: 0.85; }
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: var(--pl-space-2);
+      margin-bottom: var(--pl-space-4);
+    }
+    .role-chip {
+      padding: var(--pl-space-3) var(--pl-space-4);
+      border-radius: var(--pl-radius-2);
+      font-size: 13px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 500;
+    }
+    .role-chip code { font-size: 11px; opacity: 0.85; }
+
+    /* Typography */
+    .type-row {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: var(--pl-space-4);
+      padding: var(--pl-space-3) 0;
+      border-bottom: 1px solid var(--pl-border-subdued);
+      align-items: baseline;
+    }
+    .type-row:last-child { border-bottom: 0; }
+    .type-row .label {
+      font-family: var(--pl-mono);
+      font-size: 12px;
+      color: var(--pl-text-subdued);
+    }
+    .heading-3xl { font-size: 36px; line-height: 1.2; font-weight: 700; letter-spacing: -0.02em; }
+    .heading-2xl { font-size: 30px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01em; }
+    .heading-xl { font-size: 24px; line-height: 1.25; font-weight: 700; }
+    .heading-lg { font-size: 20px; line-height: 1.3; font-weight: 600; }
+    .heading-md { font-size: 16px; line-height: 1.4; font-weight: 600; }
+    .heading-sm { font-size: 14px; line-height: 1.4; font-weight: 600; }
+    .heading-xs { font-size: 12px; line-height: 1.4; font-weight: 600; text-transform: uppercase; letter-spacing: 0.6px; }
+    .body-lg { font-size: 16px; line-height: 1.5; }
+    .body-md { font-size: 14px; line-height: 1.5; }
+    .body-sm { font-size: 12px; line-height: 1.5; color: var(--pl-text-subdued); }
+    .mono-sample { font-family: var(--pl-mono); font-size: 14px; color: var(--pl-text-subdued); }
+
+    /* Iconography */
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(80px,1fr));
+      gap: var(--pl-space-3);
+    }
+    .icon-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: var(--pl-space-3);
+      background: var(--pl-surface-subdued);
+      border-radius: var(--pl-radius-3);
+    }
+    .icon-cell svg { width: 20px; height: 20px; fill: var(--pl-text); }
+    .icon-cell span { font-size: 11px; color: var(--pl-text-subdued); }
+
+    /* Buttons */
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--pl-space-3);
+      align-items: center;
+      margin-bottom: var(--pl-space-3);
+    }
+    .pl-btn {
+      font-family: var(--pl-font);
+      font-size: 14px;
+      font-weight: 500;
+      padding: 7px 14px;
+      border-radius: var(--pl-radius-3);
+      border: 1px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 36px;
+      transition: background 0.1s, border-color 0.1s;
+      box-shadow: 0 1px 0 rgba(0,0,0,0.05);
+    }
+    .pl-btn--primary { background: var(--pl-green); color: white; }
+    .pl-btn--primary:hover { background: var(--pl-green-dark); }
+    .pl-btn--primary:disabled { background: var(--pl-text-disabled); cursor: not-allowed; box-shadow: none; }
+    .pl-btn--default {
+      background: white;
+      color: var(--pl-text);
+      border-color: var(--pl-border);
+    }
+    .pl-btn--default:hover { background: var(--pl-surface-hover); }
+    .pl-btn--plain { background: transparent; color: var(--pl-green); padding: 7px 8px; box-shadow: none; }
+    .pl-btn--plain:hover { background: var(--pl-green-100); }
+    .pl-btn--destructive { background: var(--pl-critical); color: white; }
+    .pl-btn--destructive:hover { background: #B22209; }
+    .pl-btn--monochrome { background: var(--pl-text); color: white; }
+    .pl-btn--monochrome:hover { background: #1F1F1F; }
+    .pl-btn--icon { width: 36px; padding: 0; justify-content: center; }
+    .pl-btn--sm { min-height: 28px; padding: 4px 10px; font-size: 13px; }
+    .pl-btn--lg { min-height: 44px; padding: 10px 20px; font-size: 15px; }
+    .pl-btn:focus-visible { outline: 2px solid var(--pl-info); outline-offset: 1px; }
+
+    /* Form */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+      gap: var(--pl-space-4);
+    }
+    .pl-field { display: flex; flex-direction: column; gap: 4px; }
+    .pl-field label { font-size: 13px; font-weight: 500; color: var(--pl-text); }
+    .pl-input {
+      background: white;
+      border: 1px solid var(--pl-border-input);
+      border-radius: var(--pl-radius-3);
+      padding: 7px 12px;
+      font-family: var(--pl-font);
+      font-size: 14px;
+      color: var(--pl-text);
+      outline: none;
+      width: 100%;
+      min-height: 36px;
+      transition: border-color 0.1s, box-shadow 0.1s;
+    }
+    .pl-input:focus { border-color: var(--pl-info); box-shadow: 0 0 0 1px var(--pl-info); }
+    .pl-input--error { border-color: var(--pl-critical); }
+    .pl-input--error:focus { box-shadow: 0 0 0 1px var(--pl-critical); }
+    .pl-helper { font-size: 12px; color: var(--pl-text-subdued); }
+    .pl-helper.error { color: var(--pl-critical); }
+    textarea.pl-input { min-height: 80px; resize: vertical; padding: 8px 12px; }
+    select.pl-input {
+      appearance: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%236D7175' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      padding-right: 36px;
+    }
+    .pl-checkbox, .pl-radio {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .pl-checkbox input, .pl-radio input { width: 18px; height: 18px; accent-color: var(--pl-green); }
+    .pl-switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+    .pl-switch input { opacity: 0; width: 0; height: 0; }
+    .pl-switch .slider {
+      position: absolute; cursor: pointer; inset: 0;
+      background: var(--pl-border);
+      border-radius: var(--pl-radius-pill);
+      transition: 0.15s;
+    }
+    .pl-switch .slider::before {
+      content: ''; position: absolute;
+      width: 18px; height: 18px;
+      left: 3px; top: 3px;
+      background: white;
+      border-radius: 50%;
+      transition: 0.15s;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    }
+    .pl-switch input:checked + .slider { background: var(--pl-green); }
+    .pl-switch input:checked + .slider::before { transform: translateX(20px); }
+    .pl-slider { width: 100%; accent-color: var(--pl-green); }
+
+    /* Surfaces */
+    .surface-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
+      gap: var(--pl-space-4);
+    }
+    .pl-card {
+      background: white;
+      border-radius: var(--pl-radius-3);
+      padding: var(--pl-space-4);
+      box-shadow: var(--pl-shadow-card);
+    }
+    .pl-card .media {
+      height: 120px;
+      background: linear-gradient(135deg, var(--pl-green-100), var(--pl-green-200));
+      border-radius: var(--pl-radius-2);
+      margin-bottom: var(--pl-space-3);
+    }
+    .pl-card h4 { margin: 0 0 4px; font-size: 16px; font-weight: 600; }
+    .pl-card p { font-size: 13px; color: var(--pl-text-subdued); margin: 0; }
+
+    .pl-stat {
+      padding: var(--pl-space-4);
+      background: var(--pl-green-100);
+      border-radius: var(--pl-radius-3);
+      color: var(--pl-green-dark);
+    }
+    .pl-stat .num { font-size: 32px; font-weight: 700; line-height: 1; }
+    .pl-stat .lbl { font-size: 12px; opacity: 0.9; margin-top: 4px; font-weight: 500; }
+
+    .pl-modal {
+      background: white;
+      padding: var(--pl-space-5);
+      border-radius: var(--pl-radius-4);
+      box-shadow: var(--pl-shadow-lg);
+      max-width: 400px;
+    }
+
+    /* Feedback */
+    .pl-banner {
+      display: flex;
+      gap: var(--pl-space-3);
+      padding: var(--pl-space-3) var(--pl-space-4);
+      border-radius: var(--pl-radius-3);
+      margin-bottom: var(--pl-space-2);
+      font-size: 14px;
+      align-items: flex-start;
+      border-left: 4px solid;
+    }
+    .pl-banner--info { background: var(--pl-info-bg); color: var(--pl-info-text); border-color: var(--pl-info); }
+    .pl-banner--success { background: var(--pl-success-bg); color: var(--pl-success-text); border-color: var(--pl-success); }
+    .pl-banner--warning { background: var(--pl-warning-bg); color: var(--pl-warning-text); border-color: var(--pl-warning); }
+    .pl-banner--critical { background: var(--pl-critical-bg); color: var(--pl-critical-text); border-color: var(--pl-critical); }
+
+    .pl-toast {
+      background: var(--pl-text);
+      color: white;
+      padding: 12px 18px;
+      border-radius: var(--pl-radius-3);
+      box-shadow: var(--pl-shadow-md);
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 14px;
+    }
+    .pl-toast button {
+      background: transparent;
+      color: var(--pl-green-300);
+      border: 0;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .pl-callout {
+      display: flex;
+      gap: var(--pl-space-3);
+      padding: var(--pl-space-3) var(--pl-space-4);
+      background: var(--pl-surface-subdued);
+      border-radius: var(--pl-radius-3);
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid var(--pl-border-subdued);
+    }
+
+    .pl-tag-row { display: flex; flex-wrap: wrap; gap: 6px; }
+    .pl-tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: var(--pl-radius-pill);
+      background: var(--pl-surface-subdued);
+      color: var(--pl-text);
+      font-size: 12px;
+      font-weight: 500;
+      border: 1px solid var(--pl-border-subdued);
+    }
+    .pl-tag--green { background: var(--pl-green-100); color: var(--pl-green-dark); border-color: var(--pl-green-200); }
+    .pl-tag--info { background: var(--pl-info-bg); color: var(--pl-info-text); border-color: transparent; }
+    .pl-tag--warn { background: var(--pl-warning-bg); color: var(--pl-warning-text); border-color: transparent; }
+    .pl-tag--critical { background: var(--pl-critical-bg); color: var(--pl-critical-text); border-color: transparent; }
+
+    .pl-badge {
+      background: var(--pl-text);
+      color: white;
+      border-radius: var(--pl-radius-pill);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      min-width: 20px;
+      display: inline-flex;
+      justify-content: center;
+    }
+
+    .pl-progress {
+      width: 100%; height: 6px;
+      background: var(--pl-surface-subdued);
+      border-radius: var(--pl-radius-pill);
+      overflow: hidden;
+    }
+    .pl-progress::after {
+      content: ''; display: block;
+      height: 100%; width: 65%;
+      background: var(--pl-green);
+      border-radius: var(--pl-radius-pill);
+    }
+    .pl-skeleton {
+      height: 14px;
+      background: linear-gradient(90deg, var(--pl-surface-subdued), var(--pl-surface-hover), var(--pl-surface-subdued));
+      background-size: 200% 100%;
+      border-radius: var(--pl-radius-1);
+      animation: shimmer 1.5s infinite;
+    }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+    .pl-spinner {
+      width: 28px; height: 28px;
+      border: 3px solid var(--pl-surface-subdued);
+      border-top-color: var(--pl-green);
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Navigation */
+    .pl-tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--pl-border-subdued);
+      margin-bottom: var(--pl-space-3);
+    }
+    .pl-tab {
+      padding: 10px 16px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--pl-text-subdued);
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      margin-bottom: -1px;
+    }
+    .pl-tab:hover { color: var(--pl-text); background: var(--pl-surface-subdued); }
+    .pl-tab.active { color: var(--pl-green-dark); border-bottom-color: var(--pl-green); }
+
+    .pl-breadcrumb { display: flex; gap: 6px; align-items: center; font-size: 13px; color: var(--pl-text-subdued); }
+    .pl-breadcrumb a { color: var(--pl-green); text-decoration: none; font-weight: 500; }
+    .pl-breadcrumb a:hover { text-decoration: underline; }
+
+    .pl-pagination { display: flex; gap: 4px; align-items: center; }
+    .pl-pagination button {
+      min-width: 32px; height: 32px;
+      border-radius: var(--pl-radius-2);
+      border: 1px solid var(--pl-border);
+      background: white;
+      color: var(--pl-text);
+      cursor: pointer;
+      font-family: var(--pl-font);
+      font-size: 13px;
+      padding: 0 8px;
+    }
+    .pl-pagination button.active { background: var(--pl-text); color: white; border-color: var(--pl-text); }
+    .pl-pagination button:hover:not(.active) { background: var(--pl-surface-hover); }
+
+    .pl-stepper { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+    .pl-stepper .step { display: inline-flex; align-items: center; gap: 8px; }
+    .pl-stepper .num {
+      width: 24px; height: 24px; border-radius: 50%;
+      background: var(--pl-surface-subdued); color: var(--pl-text-subdued);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 600;
+      border: 1px solid var(--pl-border);
+    }
+    .pl-stepper .num.active { background: var(--pl-green); color: white; border-color: var(--pl-green); }
+    .pl-stepper .line { flex: 1; height: 2px; background: var(--pl-border-subdued); }
+
+    .pl-sidebar {
+      background: var(--pl-surface-subdued);
+      border-radius: var(--pl-radius-3);
+      padding: 8px;
+      width: 240px;
+    }
+    .pl-sidebar a {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 12px;
+      border-radius: var(--pl-radius-2);
+      color: var(--pl-text);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .pl-sidebar a.active { background: white; color: var(--pl-green-dark); box-shadow: var(--pl-shadow-card); }
+    .pl-sidebar a:hover:not(.active) { background: var(--pl-surface-hover); }
+
+    .pl-topbar {
+      display: flex; align-items: center; gap: 16px;
+      padding: 10px 16px;
+      background: var(--pl-text);
+      color: white;
+      border-radius: var(--pl-radius-3);
+    }
+    .pl-topbar a { color: white; text-decoration: none; }
+
+    .pl-menu {
+      background: white;
+      border-radius: var(--pl-radius-3);
+      box-shadow: var(--pl-shadow-md);
+      padding: 4px 0;
+      width: 220px;
+      border: 1px solid var(--pl-border-subdued);
+    }
+    .pl-menu .item { padding: 8px 14px; font-size: 14px; cursor: pointer; }
+    .pl-menu .item:hover { background: var(--pl-surface-hover); }
+
+    /* Data — IndexTable */
+    table.pl-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    table.pl-table th, table.pl-table td {
+      text-align: left;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--pl-border-subdued);
+    }
+    table.pl-table th {
+      font-weight: 500;
+      color: var(--pl-text-subdued);
+      font-size: 12px;
+      background: var(--pl-surface-subdued);
+    }
+    table.pl-table tr:hover { background: var(--pl-surface-hover); }
+
+    .pl-list { list-style: none; padding: 0; margin: 0; }
+    .pl-list li {
+      padding: 12px 16px;
+      display: flex; gap: 12px; align-items: center;
+      border-bottom: 1px solid var(--pl-border-subdued);
+    }
+    .pl-list li:last-child { border-bottom: 0; }
+
+    .pl-kv { display: grid; grid-template-columns: 140px 1fr; gap: 10px; font-size: 14px; }
+    .pl-kv dt { color: var(--pl-text-subdued); font-weight: 500; }
+
+    .pl-avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--pl-green-100);
+      color: var(--pl-green-dark);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    .pl-empty {
+      text-align: center;
+      padding: var(--pl-space-8) var(--pl-space-4);
+      color: var(--pl-text-subdued);
+    }
+    .pl-empty svg { width: 48px; height: 48px; opacity: 0.4; }
+
+    /* Layout */
+    .grid-demo {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 8px;
+      background: var(--pl-surface-subdued);
+      padding: 12px;
+      border-radius: var(--pl-radius-3);
+    }
+    .grid-demo > div {
+      background: var(--pl-green);
+      color: white;
+      padding: 10px;
+      border-radius: var(--pl-radius-1);
+      font-size: 12px;
+      font-weight: 600;
+      text-align: center;
+    }
+    .scale-row {
+      display: flex;
+      gap: var(--pl-space-3);
+      flex-wrap: wrap;
+      align-items: flex-end;
+      margin-bottom: var(--pl-space-4);
+    }
+    .scale-item { display: flex; flex-direction: column; gap: 6px; align-items: center; }
+    .scale-item .swatch { background: var(--pl-green); }
+    .scale-item .lbl { font-size: 11px; font-family: var(--pl-mono); color: var(--pl-text-subdued); }
+    .shadow-demo {
+      width: 80px; height: 80px;
+      background: white;
+      border-radius: var(--pl-radius-3);
+      display: inline-flex; align-items: center; justify-content: center;
+      margin-right: 16px; margin-bottom: 16px;
+      font-size: 11px; font-family: var(--pl-mono); color: var(--pl-text-subdued);
+    }
+
+    /* Footer */
+    .ds-footer {
+      background: var(--pl-green-darker);
+      padding: var(--pl-space-6);
+      margin-top: var(--pl-space-8);
+      color: var(--pl-green-200);
+    }
+    .ds-footer h3 { margin-top: 0; color: white; }
+    .ds-footer ul { padding-left: 20px; }
+    .ds-footer li { margin-bottom: 4px; word-break: break-all; font-size: 13px; }
+    .ds-footer a { color: var(--pl-green-300); text-decoration: none; }
+    .license-note { font-size: 13px; color: var(--pl-green-200); margin-top: var(--pl-space-4); opacity: 0.85; }
+    .meta-note { font-size: 12px; color: var(--pl-green-300); font-family: var(--pl-mono); margin-top: var(--pl-space-2); opacity: 0.85; }
+
+    @media (max-width: 720px) {
+      .ds-header h1 { font-size: 32px; }
+      main { padding: var(--pl-space-4); }
+      section { padding: var(--pl-space-4); }
+      .type-row { grid-template-columns: 1fr; }
+      .color-grid { grid-template-columns: repeat(6, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <header class="ds-header">
+    <a href="index.html" class="back-link">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Catalog
+    </a>
+    <h1>Polaris</h1>
+    <div class="meta">
+      <span class="badge kind-ds">design-system</span>
+      <span class="badge fidelity-approximated">approximated</span>
+      <span class="badge source-legacy">source: legacy</span>
+      <a href="https://polaris.shopify.com" target="_blank" rel="noopener">Official ↗</a>
+    </div>
+    <p class="tagline">Shopify's e-commerce design system with the signature Shopify Green and merchant-first interaction patterns.</p>
+  </header>
+
+  <nav class="toc" aria-label="Table of contents">
+    <ul>
+      <li><a href="#brand">Brand</a></li>
+      <li><a href="#color">Color</a></li>
+      <li><a href="#typography">Typography</a></li>
+      <li><a href="#iconography">Iconography</a></li>
+      <li><a href="#buttons">Buttons</a></li>
+      <li><a href="#form">Form</a></li>
+      <li><a href="#surfaces">Surfaces</a></li>
+      <li><a href="#feedback">Feedback</a></li>
+      <li><a href="#navigation">Navigation</a></li>
+      <li><a href="#data">Data</a></li>
+      <li><a href="#layout">Layout</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="brand" data-fidelity="documented">
+      <h2><span>Brand</span><span class="badge fidelity-documented">documented</span></h2>
+      <div class="brand-mark">
+        <svg viewBox="0 0 32 32" fill="none">
+          <path d="M16 2C8.8 2 3 7.8 3 15v9l5-2 4 3 4-3 4 3 4-3 5 2v-9C29 7.8 23.2 2 16 2zm0 4c4.4 0 8 3.6 8 8H8c0-4.4 3.6-8 8-8z" fill="white"/>
+        </svg>
+        Polaris
+      </div>
+      <p style="margin-top: 24px; max-width: 720px; font-size: 16px; color: var(--pl-text-subdued);">
+        Polaris is Shopify's open-source design system for building merchant experiences. It centers on the Shopify Green palette, generous 8px radius, and a warm, retail-friendly tone of voice.
+      </p>
+      <div class="pillars">
+        <div class="pillar"><h4>Merchant-first</h4><p style="font-size:13px;color:var(--pl-text-subdued);margin:0">Every component supports a real merchant task — selling, fulfilling, growing.</p></div>
+        <div class="pillar"><h4>Trustworthy</h4><p style="font-size:13px;color:var(--pl-text-subdued);margin:0">Clear hierarchy, calm density, and honest copy build merchant confidence.</p></div>
+        <div class="pillar"><h4>Inclusive</h4><p style="font-size:13px;color:var(--pl-text-subdued);margin:0">Accessible color, type, and motion across global merchant geographies.</p></div>
+      </div>
+    </section>
+
+    <section id="color" data-fidelity="documented">
+      <h2><span>Color</span><span class="badge fidelity-documented">documented</span><a href="https://polaris.shopify.com/tokens/colors" target="_blank" rel="noopener" class="source-link">Official ↗</a></h2>
+      <p style="color:var(--pl-text-subdued)">Polaris centers on Shopify Green (#008060) for primary actions, with neutral surfaces and tightly defined semantic tokens.</p>
+
+      <h3>Shopify Green scale</h3>
+      <div class="color-grid">
+        <div class="color-cell" style="background:#F1F8F5;color:var(--pl-green-darker)">25</div>
+        <div class="color-cell" style="background:var(--pl-green-100);color:var(--pl-green-darker)">100</div>
+        <div class="color-cell" style="background:var(--pl-green-200);color:var(--pl-green-darker)">200</div>
+        <div class="color-cell" style="background:var(--pl-green-300);color:var(--pl-green-darker)">300</div>
+        <div class="color-cell" style="background:var(--pl-green-400);color:white">400</div>
+        <div class="color-cell" style="background:var(--pl-green);color:white">500</div>
+        <div class="color-cell" style="background:#006650;color:white">600</div>
+        <div class="color-cell" style="background:var(--pl-green-dark);color:white">700</div>
+        <div class="color-cell" style="background:#003D33;color:white">800</div>
+        <div class="color-cell" style="background:var(--pl-green-darker);color:white">900</div>
+        <div class="color-cell" style="background:#001A14;color:white">950</div>
+      </div>
+
+      <h3>Neutral / Surface</h3>
+      <div class="color-grid">
+        <div class="color-cell" style="background:white;color:var(--pl-text);border:1px solid var(--pl-border-subdued)">0</div>
+        <div class="color-cell" style="background:var(--pl-surface-subdued);color:var(--pl-text)">50</div>
+        <div class="color-cell" style="background:var(--pl-surface-bg);color:var(--pl-text)">100</div>
+        <div class="color-cell" style="background:var(--pl-border-subdued);color:var(--pl-text)">200</div>
+        <div class="color-cell" style="background:var(--pl-border);color:var(--pl-text)">300</div>
+        <div class="color-cell" style="background:#B5B8BB;color:var(--pl-text)">400</div>
+        <div class="color-cell" style="background:#9CA1A4;color:white">500</div>
+        <div class="color-cell" style="background:var(--pl-text-disabled);color:white">600</div>
+        <div class="color-cell" style="background:var(--pl-text-subdued);color:white">700</div>
+        <div class="color-cell" style="background:#494D52;color:white">800</div>
+        <div class="color-cell" style="background:var(--pl-text);color:white">900</div>
+      </div>
+
+      <h3>Semantic</h3>
+      <div class="semantic-grid">
+        <div class="sem-card" style="background:var(--pl-success-bg);color:var(--pl-success-text)"><span class="label">Success</span><span class="hex">#008060</span></div>
+        <div class="sem-card" style="background:var(--pl-warning-bg);color:var(--pl-warning-text)"><span class="label">Warning</span><span class="hex">#FFC453</span></div>
+        <div class="sem-card" style="background:var(--pl-critical-bg);color:var(--pl-critical-text)"><span class="label">Critical</span><span class="hex">#D72C0D</span></div>
+        <div class="sem-card" style="background:var(--pl-info-bg);color:var(--pl-info-text)"><span class="label">Highlight</span><span class="hex">#1A2B6A</span></div>
+      </div>
+
+      <h3>Color roles</h3>
+      <div class="role-grid">
+        <div class="role-chip" style="background:var(--pl-green);color:white">Primary <code>#008060</code></div>
+        <div class="role-chip" style="background:var(--pl-green-dark);color:white">Primary dark <code>#004C3F</code></div>
+        <div class="role-chip" style="background:var(--pl-text);color:white">Text <code>#303030</code></div>
+        <div class="role-chip" style="background:var(--pl-text-subdued);color:white">Text subdued <code>#6D7175</code></div>
+        <div class="role-chip" style="background:var(--pl-surface-subdued);color:var(--pl-text)">Surface subdued <code>#F6F6F7</code></div>
+        <div class="role-chip" style="background:white;color:var(--pl-text);border:1px solid var(--pl-border-subdued)">Surface <code>#FFFFFF</code></div>
+      </div>
+    </section>
+
+    <section id="typography" data-fidelity="documented">
+      <h2><span>Typography</span><span class="badge fidelity-documented">documented</span><a href="https://polaris.shopify.com/tokens/font" target="_blank" rel="noopener" class="source-link">Official ↗</a></h2>
+      <p style="color:var(--pl-text-subdued)">Inter is the primary web font. Polaris uses a clear heading scale 3xl → xs plus body sizes.</p>
+
+      <div class="type-row"><div class="label">Heading 3XL · 36/44</div><div class="heading-3xl">Build a merchant store</div></div>
+      <div class="type-row"><div class="label">Heading 2XL · 30/38</div><div class="heading-2xl">Manage products & orders</div></div>
+      <div class="type-row"><div class="label">Heading XL · 24/30</div><div class="heading-xl">Section overview</div></div>
+      <div class="type-row"><div class="label">Heading LG · 20/26</div><div class="heading-lg">Subsection title</div></div>
+      <div class="type-row"><div class="label">Heading MD · 16/22</div><div class="heading-md">Card title</div></div>
+      <div class="type-row"><div class="label">Heading SM · 14/20</div><div class="heading-sm">Field group label</div></div>
+      <div class="type-row"><div class="label">Heading XS · 12/16</div><div class="heading-xs">Eyebrow Label</div></div>
+      <div class="type-row"><div class="label">Body LG · 16/24</div><div class="body-lg">Polaris components compose into Shopify's admin, Point of Sale, and merchant-facing apps with consistent green-accented density.</div></div>
+      <div class="type-row"><div class="label">Body MD · 14/20</div><div class="body-md">Default body size for paragraph copy and form fields.</div></div>
+      <div class="type-row"><div class="label">Body SM · 12/16</div><div class="body-sm">Body SM is reserved for captions, helper text, and metadata.</div></div>
+      <div class="type-row"><div class="label">Mono</div><div class="mono-sample">--p-color-bg-fill-brand: #008060;</div></div>
+    </section>
+
+    <section id="iconography" data-fidelity="documented">
+      <h2><span>Iconography</span><span class="badge fidelity-documented">documented</span><a href="https://polaris.shopify.com/icons" target="_blank" rel="noopener" class="source-link">Official ↗</a></h2>
+      <p style="color:var(--pl-text-subdued)">Polaris Icons (MIT) ship as 20px filled and minor variants. Below is a representative set.</p>
+      <div class="icon-grid">
+        <div class="icon-cell"><svg viewBox="0 0 20 20"><path d="M10 2L2 9h2v7h4v-4h4v4h4V9h2z"/></svg><span>home</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 20 20"><path d="M9 2a7 7 0 1 0 4.2 12.6l3.6 3.6 1.4-1.4-3.6-3.6A7 7 0 0 0 9 2zm0 2a5 5 0 1 1 0 10 5 5 0 0 1 0-10z"/></svg><span>search</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 20 20"><circle cx="10" cy="6" r="3.5"/><path d="M3 18c0-3.5 3-6 7-6s7 2.5 7 6z"/></svg><span>customer</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 20 20"><path d="M3 4h2l1 8h10l1-6H6M7 17a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm9 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/></svg><span>cart</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 20 20"><path d="M2 6l8-4 8 4-8 4z"/><path d="M2 11l8 4 8-4"/></svg><span>orders</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 20 20"><path d="M16 4H4a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4H4V6h12z"/></svg><span>credit-card</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 20 20"><path d="M3 5h14v2H3zm0 4h14v2H3zm0 4h10v2H3z"/></svg><span>list</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 20 20"><path d="M10 2l2 6h6l-5 4 2 6-5-4-5 4 2-6L2 8h6z"/></svg><span>star</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 20 20"><path d="M10 2a8 8 0 1 0 0 16 8 8 0 0 0 0-16zm1 12H9v-2h2zm0-4H9V6h2z"/></svg><span>info</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 20 20"><path d="M16 11h-5v5H9v-5H4V9h5V4h2v5h5z"/></svg><span>add</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 20 20"><path d="M16 5.5L14.5 4 10 8.5 5.5 4 4 5.5 8.5 10 4 14.5 5.5 16 10 11.5 14.5 16 16 14.5 11.5 10z"/></svg><span>close</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 20 20"><path d="M7.5 13.5L4 10l-1.4 1.4L7.5 16 18 5.5 16.5 4z"/></svg><span>check</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 20 20"><path d="M3 5h14v2H3zm0 4h14v2H3zm0 4h14v2H3z"/></svg><span>menu</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 20 20"><path d="M4 4h12v12H4zm2 2v8h8V6z"/></svg><span>collection</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 20 20"><path d="M10 18a2.5 2.5 0 0 0 2.5-2.5h-5A2.5 2.5 0 0 0 10 18zm5-5V9a5 5 0 0 0-4-4.9V3a1 1 0 0 0-2 0v1.1A5 5 0 0 0 5 9v4l-2 2h14z"/></svg><span>bell</span></div>
+        <div class="icon-cell"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="2"/><path d="M16 10a6 6 0 0 1-.1 1l1.7 1.3-1.6 2.7-2-.8c-.5.5-1.1.9-1.7 1.1l-.3 2H9.5l-.3-2c-.6-.2-1.2-.6-1.7-1.1l-2 .8-1.6-2.7L5.6 11A6 6 0 0 1 5.5 10c0-.3 0-.7.1-1L4 7.7l1.6-2.7 2 .8C8.1 5.3 8.7 4.9 9.3 4.7l.3-2h2.4l.3 2c.6.2 1.2.6 1.7 1.1l2-.8 1.6 2.7L15.9 9c.1.3.1.7.1 1z"/></svg><span>settings</span></div>
+      </div>
+    </section>
+
+    <section id="buttons" data-fidelity="documented">
+      <h2><span>Buttons</span><span class="badge fidelity-documented">documented</span><a href="https://polaris.shopify.com/components/actions/button" target="_blank" rel="noopener" class="source-link">Official ↗</a></h2>
+      <p style="color:var(--pl-text-subdued)">Polaris buttons: primary (Shopify Green), default, plain, monochrome, destructive. Subtle box-shadow gives a tactile retail feel.</p>
+
+      <h3>Variants</h3>
+      <div class="button-row">
+        <button class="pl-btn pl-btn--primary">Save</button>
+        <button class="pl-btn pl-btn--default">Cancel</button>
+        <button class="pl-btn pl-btn--plain">View details</button>
+        <button class="pl-btn pl-btn--monochrome">Add product</button>
+        <button class="pl-btn pl-btn--destructive">Delete</button>
+        <button class="pl-btn pl-btn--default pl-btn--icon" aria-label="more">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor"><circle cx="4" cy="10" r="1.5"/><circle cx="10" cy="10" r="1.5"/><circle cx="16" cy="10" r="1.5"/></svg>
+        </button>
+      </div>
+
+      <h3>Sizes</h3>
+      <div class="button-row">
+        <button class="pl-btn pl-btn--primary pl-btn--sm">Slim</button>
+        <button class="pl-btn pl-btn--primary">Medium</button>
+        <button class="pl-btn pl-btn--primary pl-btn--lg">Large</button>
+      </div>
+
+      <h3>States</h3>
+      <div class="button-row">
+        <button class="pl-btn pl-btn--primary">Enabled</button>
+        <button class="pl-btn pl-btn--primary" style="background:var(--pl-green-dark)">Hover</button>
+        <button class="pl-btn pl-btn--primary" style="outline:2px solid var(--pl-info);outline-offset:1px">Focus</button>
+        <button class="pl-btn pl-btn--primary" disabled>Disabled</button>
+      </div>
+    </section>
+
+    <section id="form" data-fidelity="documented">
+      <h2><span>Form</span><span class="badge fidelity-documented">documented</span><a href="https://polaris.shopify.com/components/selection-and-input/text-field" target="_blank" rel="noopener" class="source-link">Official ↗</a></h2>
+      <p style="color:var(--pl-text-subdued)">TextField, Select, Checkbox, RadioButton, ChoiceList, RangeSlider with 8px radius and an Inter-tuned focus ring.</p>
+
+      <h3>Text fields</h3>
+      <div class="form-grid">
+        <div class="pl-field">
+          <label for="p1">Product title</label>
+          <input class="pl-input" id="p1" type="text" value="Organic cotton tee">
+          <span class="pl-helper">Default text field</span>
+        </div>
+        <div class="pl-field">
+          <label for="p2">Email</label>
+          <input class="pl-input" id="p2" type="email" placeholder="merchant@store.com">
+        </div>
+        <div class="pl-field">
+          <label for="p3">Description</label>
+          <textarea class="pl-input" id="p3">Soft-touch cotton, perfect for everyday wear...</textarea>
+        </div>
+        <div class="pl-field">
+          <label for="p4">Status</label>
+          <select class="pl-input" id="p4">
+            <option>Active</option>
+            <option>Draft</option>
+            <option>Archived</option>
+          </select>
+        </div>
+        <div class="pl-field">
+          <label for="p5">Email</label>
+          <input class="pl-input pl-input--error" id="p5" value="invalid@" type="email">
+          <span class="pl-helper error">Enter a valid email</span>
+        </div>
+        <div class="pl-field">
+          <label for="p6">Search</label>
+          <input class="pl-input" id="p6" type="search" placeholder="Search products...">
+        </div>
+      </div>
+
+      <h3>Selection</h3>
+      <div class="button-row">
+        <label class="pl-checkbox"><input type="checkbox" checked>Track inventory</label>
+        <label class="pl-checkbox"><input type="checkbox">Continue selling when out of stock</label>
+        <label class="pl-radio"><input type="radio" name="r1" checked>Online store</label>
+        <label class="pl-radio"><input type="radio" name="r1">Point of Sale</label>
+        <label class="pl-switch"><input type="checkbox" checked><span class="slider"></span></label>
+        <label class="pl-switch"><input type="checkbox"><span class="slider"></span></label>
+      </div>
+
+      <h3>Slider & file</h3>
+      <div style="max-width:400px;display:flex;flex-direction:column;gap:12px">
+        <input type="range" class="pl-slider" min="0" max="100" value="60">
+        <input type="file" class="pl-input" style="padding:6px">
+      </div>
+    </section>
+
+    <section id="surfaces" data-fidelity="documented">
+      <h2><span>Surfaces</span><span class="badge fidelity-documented">documented</span><a href="https://polaris.shopify.com/components/layout-and-structure/card" target="_blank" rel="noopener" class="source-link">Official ↗</a></h2>
+      <p style="color:var(--pl-text-subdued)">Card, Modal, Popover, Sheet. Cards use 8px radius with a subtle border-shadow combination.</p>
+
+      <div class="surface-grid">
+        <div class="pl-card">
+          <div class="media"></div>
+          <h4>Organic cotton tee</h4>
+          <p>SKU OCT-001 · 142 in stock · $24.99</p>
+        </div>
+        <div class="pl-card">
+          <div class="media" style="background:linear-gradient(135deg,var(--pl-warning-bg),var(--pl-success-bg))"></div>
+          <h4>Order #1042</h4>
+          <p>Paid · 3 items · $84.50</p>
+        </div>
+        <div class="pl-card">
+          <div class="media" style="background:linear-gradient(135deg,var(--pl-info-bg),var(--pl-green-100))"></div>
+          <h4>Customer · Avery Tan</h4>
+          <p>12 orders · $1,242 lifetime value</p>
+        </div>
+        <div class="pl-stat"><div class="num">$8,420</div><div class="lbl">Sales today</div></div>
+      </div>
+
+      <h3>Modal</h3>
+      <div class="pl-modal">
+        <h4 style="margin-top:0;font-size:18px">Discard unsaved changes?</h4>
+        <p style="font-size:14px;color:var(--pl-text-subdued)">If you discard changes, you'll delete any edits you made since last saving.</p>
+        <div class="button-row" style="justify-content:flex-end;margin:0">
+          <button class="pl-btn pl-btn--default">Continue editing</button>
+          <button class="pl-btn pl-btn--destructive">Discard</button>
+        </div>
+      </div>
+
+      <h3>Popover & sidebar</h3>
+      <div style="display:flex;gap:24px;flex-wrap:wrap">
+        <div class="pl-menu">
+          <div class="item">Edit product</div>
+          <div class="item">Duplicate</div>
+          <div class="item">Archive</div>
+          <div class="item" style="color:var(--pl-critical)">Delete</div>
+        </div>
+        <div class="pl-sidebar">
+          <a href="#" class="active">
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor"><path d="M10 2L2 9h2v7h4v-4h4v4h4V9h2z"/></svg>
+            Home
+          </a>
+          <a href="#">
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor"><path d="M2 6l8-4 8 4-8 4z"/><path d="M2 11l8 4 8-4"/></svg>
+            Orders
+          </a>
+          <a href="#">
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor"><path d="M3 4h14v12H3z"/></svg>
+            Products
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section id="feedback" data-fidelity="documented">
+      <h2><span>Feedback</span><span class="badge fidelity-documented">documented</span><a href="https://polaris.shopify.com/components/feedback-indicators/banner" target="_blank" rel="noopener" class="source-link">Official ↗</a></h2>
+
+      <h3>Banners</h3>
+      <div class="pl-banner pl-banner--info"><strong>Info ·</strong> Your monthly invoice is ready to download.</div>
+      <div class="pl-banner pl-banner--success"><strong>Success ·</strong> Product published to Online Store.</div>
+      <div class="pl-banner pl-banner--warning"><strong>Warning ·</strong> Low inventory on 4 products.</div>
+      <div class="pl-banner pl-banner--critical"><strong>Critical ·</strong> Payment failed — please update your billing.</div>
+
+      <h3>Toast</h3>
+      <div class="pl-toast">Product saved <button>Undo</button></div>
+
+      <h3>Callout</h3>
+      <div class="pl-callout" style="margin-top:12px">
+        <span><strong>Free shipping unlocked</strong> — automatically applied to all qualifying orders.</span>
+        <button class="pl-btn pl-btn--plain pl-btn--sm">Manage</button>
+      </div>
+
+      <h3>Tags & badges</h3>
+      <div class="pl-tag-row">
+        <span class="pl-tag">Default</span>
+        <span class="pl-tag pl-tag--green">Active</span>
+        <span class="pl-tag pl-tag--info">Highlight</span>
+        <span class="pl-tag pl-tag--warn">Low stock</span>
+        <span class="pl-tag pl-tag--critical">Out of stock</span>
+        <span class="pl-badge">3</span>
+        <span class="pl-badge" style="background:var(--pl-green)">12</span>
+      </div>
+
+      <h3>Progress & loading</h3>
+      <div style="display:flex;flex-direction:column;gap:12px;max-width:480px">
+        <div class="pl-progress"></div>
+        <div class="pl-skeleton" style="width:80%"></div>
+        <div class="pl-skeleton" style="width:60%"></div>
+        <div class="pl-spinner"></div>
+      </div>
+    </section>
+
+    <section id="navigation" data-fidelity="documented">
+      <h2><span>Navigation</span><span class="badge fidelity-documented">documented</span><a href="https://polaris.shopify.com/components/navigation/tabs" target="_blank" rel="noopener" class="source-link">Official ↗</a></h2>
+
+      <h3>Tabs</h3>
+      <div class="pl-tabs">
+        <div class="pl-tab active">All products</div>
+        <div class="pl-tab">Active</div>
+        <div class="pl-tab">Draft</div>
+        <div class="pl-tab">Archived</div>
+      </div>
+
+      <h3>Breadcrumb</h3>
+      <div class="pl-breadcrumb">
+        <a href="#">Products</a><span>/</span>
+        <a href="#">Apparel</a><span>/</span>
+        <span style="color:var(--pl-text);font-weight:500">Organic cotton tee</span>
+      </div>
+
+      <h3>Pagination</h3>
+      <div class="pl-pagination">
+        <button>‹ Previous</button>
+        <button class="active">1</button>
+        <button>2</button>
+        <button>3</button>
+        <button>…</button>
+        <button>9</button>
+        <button>Next ›</button>
+      </div>
+
+      <h3>Stepper</h3>
+      <div class="pl-stepper">
+        <div class="step"><span class="num active">1</span> Setup store</div>
+        <span class="line"></span>
+        <div class="step"><span class="num active">2</span> Add products</div>
+        <span class="line"></span>
+        <div class="step"><span class="num">3</span> Customize theme</div>
+        <span class="line"></span>
+        <div class="step"><span class="num">4</span> Launch</div>
+      </div>
+
+      <h3>Top bar</h3>
+      <div class="pl-topbar">
+        <strong style="color:var(--pl-green-200)">Shopify</strong>
+        <a href="#" style="opacity:0.85">Home</a>
+        <a href="#" style="opacity:0.85">Orders</a>
+        <a href="#" style="opacity:0.85">Products</a>
+        <span style="flex:1"></span>
+        <button class="pl-btn pl-btn--icon" style="background:rgba(255,255,255,0.15);color:white;border:0" aria-label="search"><svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor"><path d="M9 2a7 7 0 1 0 4.2 12.6l3.6 3.6 1.4-1.4-3.6-3.6A7 7 0 0 0 9 2z"/></svg></button>
+        <div class="pl-avatar" style="background:var(--pl-green);color:white">MK</div>
+      </div>
+    </section>
+
+    <section id="data" data-fidelity="documented">
+      <h2><span>Data</span><span class="badge fidelity-documented">documented</span><a href="https://polaris.shopify.com/components/tables/index-table" target="_blank" rel="noopener" class="source-link">Official ↗</a></h2>
+
+      <h3>IndexTable</h3>
+      <table class="pl-table">
+        <thead>
+          <tr><th>Product</th><th>Status</th><th>Inventory</th><th>Type</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Organic cotton tee</td><td><span class="pl-tag pl-tag--green">Active</span></td><td>142 in stock</td><td>Apparel</td></tr>
+          <tr><td>Linen shirt</td><td><span class="pl-tag pl-tag--green">Active</span></td><td>56 in stock</td><td>Apparel</td></tr>
+          <tr><td>Denim jacket</td><td><span class="pl-tag">Draft</span></td><td>0 in stock</td><td>Apparel</td></tr>
+          <tr><td>Wool beanie</td><td><span class="pl-tag pl-tag--warn">Low</span></td><td>4 in stock</td><td>Accessories</td></tr>
+        </tbody>
+      </table>
+
+      <h3>List</h3>
+      <ul class="pl-list">
+        <li><div class="pl-avatar">A</div><div><strong>Avery Tan</strong><div style="font-size:13px;color:var(--pl-text-subdued)">Order #1042 · $84.50 · 2m ago</div></div></li>
+        <li><div class="pl-avatar" style="background:var(--pl-warning-bg);color:var(--pl-warning-text)">B</div><div><strong>Brett Yu</strong><div style="font-size:13px;color:var(--pl-text-subdued)">Order #1041 · $156.00 · 14m ago</div></div></li>
+        <li><div class="pl-avatar" style="background:var(--pl-info-bg);color:var(--pl-info-text)">C</div><div><strong>Cleo Park</strong><div style="font-size:13px;color:var(--pl-text-subdued)">Order #1040 · $42.00 · 1h ago</div></div></li>
+      </ul>
+
+      <h3>Key – value</h3>
+      <dl class="pl-kv">
+        <dt>Store</dt><dd>example.myshopify.com</dd>
+        <dt>Plan</dt><dd>Shopify · $79/mo</dd>
+        <dt>Products</dt><dd>248 total · 12 archived</dd>
+        <dt>Generated</dt><dd>2026-05-05</dd>
+      </dl>
+
+      <h3>Empty state</h3>
+      <div class="pl-empty">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6v6H9z"/></svg>
+        <h4 style="margin:8px 0 4px">No orders yet</h4>
+        <p style="font-size:14px;margin:0">Once your first sale comes in, you'll see it here.</p>
+      </div>
+    </section>
+
+    <section id="layout" data-fidelity="documented">
+      <h2><span>Layout</span><span class="badge fidelity-documented">documented</span><a href="https://polaris.shopify.com/components/layout-and-structure/page" target="_blank" rel="noopener" class="source-link">Official ↗</a></h2>
+      <p style="color:var(--pl-text-subdued)">Polaris uses a 12-column responsive grid with 16px gutter. 4px spacing base.</p>
+
+      <h3>12-column grid</h3>
+      <div class="grid-demo">
+        <div style="grid-column:span 12">12</div>
+        <div style="grid-column:span 6">6</div>
+        <div style="grid-column:span 6">6</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 4">4</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+        <div style="grid-column:span 3">3</div>
+      </div>
+
+      <h3>Spacing scale (4px base)</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div class="swatch" style="width:4px;height:32px"></div><span class="lbl">4</span></div>
+        <div class="scale-item"><div class="swatch" style="width:8px;height:32px"></div><span class="lbl">8</span></div>
+        <div class="scale-item"><div class="swatch" style="width:12px;height:32px"></div><span class="lbl">12</span></div>
+        <div class="scale-item"><div class="swatch" style="width:16px;height:32px"></div><span class="lbl">16</span></div>
+        <div class="scale-item"><div class="swatch" style="width:20px;height:32px"></div><span class="lbl">20</span></div>
+        <div class="scale-item"><div class="swatch" style="width:24px;height:32px"></div><span class="lbl">24</span></div>
+        <div class="scale-item"><div class="swatch" style="width:32px;height:32px"></div><span class="lbl">32</span></div>
+        <div class="scale-item"><div class="swatch" style="width:48px;height:32px"></div><span class="lbl">48</span></div>
+      </div>
+
+      <h3>Radius scale</h3>
+      <div class="scale-row">
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:0;background:var(--pl-green-100)"></div><span class="lbl">0</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:4px;background:var(--pl-green-100)"></div><span class="lbl">4</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:6px;background:var(--pl-green-100)"></div><span class="lbl">6</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:8px;background:var(--pl-green-100)"></div><span class="lbl">8</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:12px;background:var(--pl-green-100)"></div><span class="lbl">12</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:16px;background:var(--pl-green-100)"></div><span class="lbl">16</span></div>
+        <div class="scale-item"><div class="swatch" style="width:64px;height:64px;border-radius:50%;background:var(--pl-green-100)"></div><span class="lbl">pill</span></div>
+      </div>
+
+      <h3>Shadow scale</h3>
+      <div>
+        <div class="shadow-demo" style="box-shadow:none;border:1px solid var(--pl-border-subdued)">0</div>
+        <div class="shadow-demo" style="box-shadow:var(--pl-shadow-card)">card</div>
+        <div class="shadow-demo" style="box-shadow:var(--pl-shadow-md)">md</div>
+        <div class="shadow-demo" style="box-shadow:var(--pl-shadow-lg)">lg</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="ds-footer">
+    <h3>Sources</h3>
+    <ul>
+      <li><a href="https://polaris.shopify.com" target="_blank" rel="noopener">https://polaris.shopify.com</a> (legacy redirect)</li>
+      <li><a href="https://polaris.shopify.com/tokens/colors" target="_blank" rel="noopener">https://polaris.shopify.com/tokens/colors</a></li>
+      <li><a href="https://polaris.shopify.com/tokens/font" target="_blank" rel="noopener">https://polaris.shopify.com/tokens/font</a></li>
+      <li><a href="https://polaris.shopify.com/icons" target="_blank" rel="noopener">https://polaris.shopify.com/icons</a></li>
+      <li><a href="https://polaris.shopify.com/components/actions/button" target="_blank" rel="noopener">https://polaris.shopify.com/components/actions/button</a></li>
+      <li><a href="https://polaris.shopify.com/components/selection-and-input/text-field" target="_blank" rel="noopener">https://polaris.shopify.com/components/selection-and-input/text-field</a></li>
+      <li><a href="https://polaris.shopify.com/components/layout-and-structure/card" target="_blank" rel="noopener">https://polaris.shopify.com/components/layout-and-structure/card</a></li>
+      <li><a href="https://polaris.shopify.com/components/feedback-indicators/banner" target="_blank" rel="noopener">https://polaris.shopify.com/components/feedback-indicators/banner</a></li>
+      <li><a href="https://polaris.shopify.com/components/navigation/tabs" target="_blank" rel="noopener">https://polaris.shopify.com/components/navigation/tabs</a></li>
+      <li><a href="https://polaris.shopify.com/components/tables/index-table" target="_blank" rel="noopener">https://polaris.shopify.com/components/tables/index-table</a></li>
+      <li><a href="https://polaris.shopify.com/components/layout-and-structure/page" target="_blank" rel="noopener">https://polaris.shopify.com/components/layout-and-structure/page</a></li>
+    </ul>
+    <p class="license-note">This page is part of the public Design Systems Reference Catalog by Motohiro Koma — a personal project archiving major design systems, component libraries, and brand guidelines as a learning reference. Not affiliated with Shopify. Polaris and related trademarks belong to Shopify. Removal requests via GitHub Issues: https://github.com/motohirokoma/26tutorial/issues</p>
+    <p class="meta-note">Reproduction date: 2026-05-05 · sourceStatus: legacy · fidelity: approximated</p>
+  </footer>
+</body>
+</html>
